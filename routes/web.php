@@ -8,7 +8,7 @@ use App\Http\Controllers\AsramaController;
 use App\Http\Controllers\KelasmiController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PengaturanController;
-use App\Http\Controllers\AsramaSiswaController;
+use App\Http\Controllers\AsramasiswaController;
 use App\Http\Controllers\GuruController;
 use App\Http\Controllers\MapelController;
 use App\Http\Controllers\RaportController;
@@ -61,16 +61,16 @@ Route::post('asrama', [AsramaController::class, 'store'])->middleware(['auth'])-
 Route::delete('asrama/{asrama}', [AsramaController::class, 'destroy'])->middleware(['auth']);
 Route::get('addasrama', [AsramaController::class, 'create'])->middleware(['auth'])->name('addasrama');
 // Controller Asrama Siswa
-Route::get('asramasiswa', [AsramaSiswaController::class, 'index'])->middleware(['auth'])->name('asramasiswa');
-Route::post('asramasiswa', [AsramaSiswaController::class, 'store'])->middleware(['auth']);
-Route::patch('asramasiswa/{asramasiswa}', [AsramaSiswaController::class, 'update']);
-Route::get('asramasiswa/{asramasiswa}/edit', [AsramaSiswaController::class, 'edit'])->middleware(['auth']);
-Route::get('addasramasiswa', [AsramaSiswaController::class, 'create'])->middleware(['auth']);
-Route::get('pesertaasrama/{asramasiswa}', [AsramaSiswaController::class, 'show'])->middleware(['auth']);
-Route::delete('asramasiswa/{asramasiswa}', [AsramaSiswaController::class, 'destroy'])->middleware(['auth']);
-Route::delete('pesertaasrama/{pesertaasrama}', [AsramaSiswaController::class, 'PesertaAsrama'])->middleware(['auth']);
-Route::get('kolektifasrama', [AsramaSiswaController::class, 'kolelktifasrama'])->middleware(['auth']);
-Route::post('kolektifasrama', [AsramaSiswaController::class, 'StoreKolektifasrama'])->middleware(['auth']);
+Route::get('asramasiswa', [AsramasiswaController::class, 'index'])->middleware(['auth'])->name('asramasiswa');
+Route::post('asramasiswa', [AsramasiswaController::class, 'store'])->middleware(['auth']);
+Route::patch('asramasiswa/{asramasiswa}', [AsramasiswaController::class, 'update']);
+Route::get('asramasiswa/{asramasiswa}/edit', [AsramasiswaController::class, 'edit'])->middleware(['auth']);
+Route::get('addasramasiswa', [AsramasiswaController::class, 'create'])->middleware(['auth']);
+Route::get('pesertaasrama/{asramasiswa}', [AsramasiswaController::class, 'show'])->middleware(['auth']);
+Route::delete('asramasiswa/{asramasiswa}', [AsramasiswaController::class, 'destroy'])->middleware(['auth']);
+Route::delete('pesertaasrama/{pesertaasrama}', [AsramasiswaController::class, 'PesertaAsrama'])->middleware(['auth']);
+Route::get('kolektifasrama', [AsramasiswaController::class, 'kolelktifasrama'])->middleware(['auth']);
+Route::post('kolektifasrama', [AsramasiswaController::class, 'StoreKolektifasrama'])->middleware(['auth']);
 // Controller Guru
 Route::get('guru', [GuruController::class, 'index'])->middleware(['auth'])->name('guru');
 Route::get('guru/{guru}', [GuruController::class, 'show'])->middleware(['auth']);
