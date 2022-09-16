@@ -109,8 +109,8 @@
                         </tr>
                         <tr>
                             <td class=" px-2 border text-right font-semibold" colspan="3">Rata Rata</td>
-                            <td class=" px-2 border text-center">{{number_format($data->sum('nilai_harian')/$data->count('nilai_hari'),2,',',2)}}</td>
-                            <td class=" px-2 border text-center">{{number_format($data->sum('nilai_ujian')/$data->count('nilai_ujian'),2,',',2)}}</td>
+                            <td class=" px-2 border text-center"></td>
+                            <td class=" px-2 border text-center"></td>
 
                         </tr>
                         <tr>
