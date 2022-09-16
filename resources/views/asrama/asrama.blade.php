@@ -45,7 +45,9 @@
                                 <th class=" py-1">#</th>
                                 <th class=" text-left">Kelas</th>
                                 <th class=" text-left">Type Asrama</th>
+                                @role('admin')
                                 <th class=" text-center">Aksi</th>
+                                @endrole
                             </tr>
                         </thead>
                         <tbody>
@@ -55,6 +57,7 @@
                                 <th class=" text-center">{{$loop->iteration}}</th>
                                 <td> {{$buah->nama_asrama}}</td>
                                 <td> {{$buah->type_asrama}}</td>
+                                @role('admin')
                                 <td class=" text-center py-1">
                                     <form action="/asrama/{{$buah->id}}" method="post">
                                         @csrf
@@ -64,6 +67,7 @@
                                             </svg></button>
                                     </form>
                                 </td>
+                                @endrole
                             </tr>
                             @endforeach
                             @else
