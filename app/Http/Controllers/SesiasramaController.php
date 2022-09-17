@@ -133,13 +133,15 @@ class SesiasramaController extends Controller
             ->where('asramasiswa.id', $sesiasrama->asramasiswa_id)
             ->get();
         $update_terakhir = $peserta->max('updated_at');
+        $create_at = $peserta->max('create_at');
         return view(
             'presensi/asrama/presensiasrama',
             [
                 'sesiasrama' => $sesiasrama,
                 'presensi' => $presensi,
                 'peserta' => $peserta,
-                'update_terakhir' => $update_terakhir
+                'update_terakhir' => $update_terakhir,
+                'create_at' => $create_at
             ]
         );
     }
