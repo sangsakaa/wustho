@@ -66,12 +66,24 @@ class RaportController extends Controller
             ->join('guru', 'guru.id', '=', 'nilaimapel.guru_id')
             ->where('nilai.pesertakelas_id', $pesertakelas->id)
             ->get();
+        $harian = Nilai::where('nilai.pesertakelas_id', $pesertakelas->id)->count('nilai_harian');
+        $ujian = Nilai::where('nilai.pesertakelas_id', $pesertakelas->id)->count('nilai_ujian');
+        $jmlujian = Nilai::where('nilai.pesertakelas_id', $pesertakelas->id)->sum('nilai_ujian');
+        $jmlharian = Nilai::where('nilai.pesertakelas_id', $pesertakelas->id)->sum('nilai_harian');
+        
+        
         return view(
             'report/report',
             [
                 'siswa' => $siswa,
                 'data' => $dataraport,
                 'nilai' => $siswa,
+                'harian' => $harian,
+                'ujian' => $ujian,
+                'jmlujian' => $jmlujian,
+                'jmlharian' => $jmlharian,
+
+                
 
             ]
         );

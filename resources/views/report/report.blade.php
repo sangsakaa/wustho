@@ -78,14 +78,14 @@
                     <span class=" font-semibold">A. Natijah Dirrosiyyah</span>
 
                     <table class=" w-full">
-                        <thead class=" bg-gray-100  border font-semibold ">
-                            <tr>
+                        <thead class=" bg-green-800  border font-semibold ">
+                            <tr class=" text-white">
                                 <th class=" border px-2" rowspan="2">No </th>
                                 <th class=" border px-2" rowspan="2">MATA PELAJARAN</th>
                                 <th class=" border px-2" rowspan="2">USTADZ / USTADZAH</th>
                                 <td colspan="2" class=" border text-center"> NILAI AKHIR </td>
                             </tr>
-                            <tr>
+                            <tr class=" text-white">
                                 <td class=" PX-2 text-center">YAUMIYYAH</td>
                                 <td class=" PX-2 text-center">IMTIHAMIYYAH</td>
                             </tr>
@@ -103,15 +103,15 @@
                         @endforeach
                         <tr>
                             <td class=" px-2 border text-right font-semibold" colspan="3">Jumlah</td>
-                            <td class=" px-2 border text-center">{{$data->sum('nilai_harian')}}</td>
-                            <td class=" px-2 border text-center">{{$data->sum('nilai_ujian')}}</td>
-
+                            <td class=" px-2 border text-center">{{$jmlharian}}</td>
+                            <td class=" px-2 border text-center">{{$jmlujian}}</td>
                         </tr>
                         <tr>
                             <td class=" px-2 border text-right font-semibold" colspan="3">Rata Rata</td>
-                            <td class=" px-2 border text-center"></td>
-                            <td class=" px-2 border text-center"></td>
-
+                            <td class=" px-2 border text-center">
+                            </td>
+                            <td class=" px-2 border text-center">
+                            </td>
                         </tr>
                         <tr>
                             <td class=" px-2 border text-right font-semibold" colspan="3">Darojah</td>
@@ -124,11 +124,10 @@
                             <td class=" px-2 border text-center">-</td>
                         </tr>
                     </table>
-
                     <span class=" font-semibold">B. Natijah Dirrosiyyah</span>
                     <table class=" w-full">
-                        <thead class=" bg-gray-100  border text-sm">
-                            <tr class=" px-2" class=" border text-sm">
+                        <thead class=" bg-green-800  border text-sm text-white ">
+                            <tr class=" px-2" class=" border text-sm  ">
                                 <th class="border px-2">No</th>
                                 <th class="border px-2 w-50"> Al Amaliyyah</th>
                                 <th class="border px-2 w-5 text-sm">Attaqdir Al Mukhutasab</th>
@@ -190,7 +189,7 @@
 
                     <span class=" font-semibold">C. Kehadiran</span>
                     <table class=" w-1/3 ">
-                        <thead class=" bg-gray-100  border">
+                        <thead class=" text-white bg-green-800  border">
                             <tr class=" px-2" class=" border">
                                 <th class="border px-2 w-5">No</th>
 
@@ -226,7 +225,7 @@
                                         echo date_format($date, "d-M-Y");
                                         ?></p>
                             Al Mudir / Kepala <br><br><br><br>
-                            Muh. Babrul Ulum, S.H
+                            Muh. Bahrul Ulum, S.H
                         </div>
                     </div>
 
