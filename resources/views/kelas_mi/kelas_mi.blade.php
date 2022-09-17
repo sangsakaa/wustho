@@ -40,15 +40,16 @@
                             </div>
                         </form>
                         <div class=" overflow-auto">
-                            <Table class=" w-full  border-collapse border border-slate-500">
+                            <Table class=" w-full  border-collapse border border-slate-500 mt-2">
                                 <thead>
                                     <tr class=" border bg-gray-100 ">
-                                        <th class=" py-1">#</th>
+                                        <th class=" py-1">No</th>
                                         <th>Periode</th>
                                         <th>Kelas</th>
                                         <th>Nama Kelas</th>
                                         <th class=" text-center">Kapasitas</th>
                                         <th class=" text-center">Jml Peserta</th>
+                                        <th class=" text-center">Status Kelas</th>
                                         <th class=" text-center">Aksi</th>
                                     </tr>
                                 </thead>
@@ -56,12 +57,21 @@
                                     @if($kelasMI->count() != null)
                                     @foreach ($kelasMI as $item)
                                     <tr class=" hover:bg-green-200 border">
-                                        <th class=" text-center">{{$loop->iteration}}</th>
-                                        <td class=" text-center"> {{$item->periode}} {{$item->ket_semester}}</td>
-                                        <td class=" text-center"><a href="/pesertakelas/{{$item->id}}"> {{$item->kelas}}</a></td>
-                                        <td class=" text-center"><a href="/pesertakelas/{{$item->id}}"> {{$item->nama_kelas}}</a></td>
-                                        <td class=" text-center"> {{$item->kuota}}</td>
-                                        <td class=" text-center"> {{$item->jumlah_nilai_ujian}}</td>
+                                        <th class=" text-center border">{{$loop->iteration}}</th>
+                                        <td class=" text-center border"> {{$item->periode}} {{$item->ket_semester}}</td>
+                                        <td class=" text-center border"><a href="/pesertakelas/{{$item->id}}"> {{$item->kelas}}</a></td>
+                                        <td class=" text-center py-2"><a href="/pesertakelas/{{$item->id}}" class=" bg-blue-600 text-white py-1 px-2 rounded-md hover:bg-purple-600">Kelas {{$item->nama_kelas}}</a></td>
+                                        <td class=" text-center border"> {{$item->kuota}}</td>
+                                        <td class=" text-center border"> {{$item->jumlah_nilai_ujian}}</td>
+                                        <td class=" px-2 border text-center w-40">
+                                            @if($item->kuota == $item->jumlah_nilai_ujian )
+                                            <span class=" bg-yellow-300 px-4 py-1 rounded-md capitalize text-black">full</span>
+                                            @elseif ($item->kuota <= $item->jumlah_nilai_ujian)
+                                                <span class=" bg-red-600 px-4 py-1 rounded-md capitalize text-white">over</span>
+                                                @elseif ($item->kuota >= $item->jumlah_nilai_ujian)
+                                                <span class=" bg-green-800 px-4 py-1 rounded-md capitalize text-white">still</span>
+                                                @endif
+                                        </td>
                                         <td class="  text-center py-1 grid grid-cols-1 ">
                                             <form action="/kelas_mi/{{$item->id}}" method="post">
                                                 @csrf
@@ -70,6 +80,7 @@
                                             </form>
 
                                         </td>
+
                                     </tr>
                                     @endforeach
                                     @else
