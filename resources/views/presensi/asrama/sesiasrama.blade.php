@@ -72,7 +72,9 @@
                 <td class=" px-2 text-center">{{$item->periode}} {{$item->ket_semester}}</td>
                 <td class=" px-2 text-center">{{$item->kegiatan}}</td>
                 <td class=" px-2 text-center">{{$item->nama_asrama}}</td>
-                <td class=" px-2 text-center">Sudah</td>
+                <td class=" px-2 text-center">
+                  {{$item->created_at}}
+                </td>
                 <td class=" px-2 text-center">
                   @role('admin')
                   <form action="/sesiasrama/{{$item->id}}" method="post">
