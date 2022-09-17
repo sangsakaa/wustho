@@ -48,7 +48,7 @@
                                 <input type="hidden" name="siswa_id" value="{{$siswa->id}}" class=" py-1">
                                 <input type="text" name="nis" class=" py-1" placeholder="NIS : 2023010001">
                                 <select name="madrasah_diniyah" id="" class=" py-1">
-                                    <option value="Wustha">--Wustha--</option>
+                                    <option value="Wustho">--Wustho--</option>
                                 </select>
                                 <select name="nama_lembaga" id="" class=" py-1">
                                     <option value="Wahidiyah">--Wahidiyah--</option>

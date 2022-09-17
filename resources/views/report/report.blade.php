@@ -48,7 +48,7 @@
                             : {{$siswa->nama_siswa}}
                         </div>
                         <div>
-                            Tempa ,Tanggal Lahir
+                            Tempat ,Tanggal Lahir
                         </div>
                         <div>
                             : {{$siswa->tempat_lahir}}, <?php
@@ -80,7 +80,7 @@
                     <table class=" w-full">
                         <thead class=" bg-green-800  border font-semibold ">
                             <tr class=" text-white">
-                                <th class=" border px-2" rowspan="2">No </th>
+                                <th class=" border px-2" rowspan="2">NO </th>
                                 <th class=" border px-2" rowspan="2">MATA PELAJARAN</th>
                                 <th class=" border px-2" rowspan="2">USTADZ / USTADZAH</th>
                                 <td colspan="2" class=" border text-center"> NILAI AKHIR </td>
@@ -128,7 +128,7 @@
                     <table class=" w-full">
                         <thead class=" bg-green-800  border text-sm text-white ">
                             <tr class=" px-2" class=" border text-sm  ">
-                                <th class="border px-2">No</th>
+                                <th class="border px-2">NO</th>
                                 <th class="border px-2 w-50"> Al Amaliyyah</th>
                                 <th class="border px-2 w-5 text-sm">Attaqdir Al Mukhutasab</th>
                                 <th class="border px-2">Al Bayan</th>
@@ -191,7 +191,7 @@
                     <table class=" w-1/3 ">
                         <thead class=" text-white bg-green-800  border">
                             <tr class=" px-2" class=" border">
-                                <th class="border px-2 w-5">No</th>
+                                <th class="border px-2 w-5">NO</th>
 
                                 <th class="border px-2">KETERANGAN</th>
                                 <th class="border px-2 w-5">JML</th>
