@@ -40,7 +40,28 @@
                             </div>
                         </form>
                         <div class=" overflow-auto">
-                            <Table class=" w-full  border-collapse border border-slate-500 mt-2">
+                            @if (session('delete'))
+                            <div class=" py-2">
+                                <div class=" bg-red-500 px-2 py-1 text-white">
+                                    {{ session('delete') }}
+                                </div>
+                            </div>
+                            @endif
+                            @if (session('success'))
+                            <div class=" py-2">
+                                <div class=" bg-green-500 px-2 py-1 text-white">
+                                    {{ session('success') }}
+                                </div>
+                            </div>
+                            @endif
+                            @if (session('update'))
+                            <div class=" py-2">
+                                <div class=" bg-blue-500 px-2 py-1 text-white">
+                                    {{ session('update') }}
+                                </div>
+                            </div>
+                            @endif
+                            <Table class=" w-full  border-collapse border border-slate-500 ">
                                 <thead>
                                     <tr class=" border bg-gray-100 ">
                                         <th class=" py-1">No</th>

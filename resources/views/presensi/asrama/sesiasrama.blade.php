@@ -23,12 +23,14 @@
             </select>
             <label for=""> Asrama</label>
             <select name="asramasiswa_id" id="" class=" py-1">
+              <option value="">-- Pilih Asrama --</option>
               @foreach($asramasiswa as $peri)
               <option value="{{$peri->id}}">{{$peri->nama_asrama}} {{$peri->ket_semester}}</option>
               @endforeach
             </select>
             <label for=""> Kegiatan</label>
             <select name="kegiatan_id" id="" class=" py-1">
+              <option value="">-- Pilih kegiatan --</option>
               @foreach($kegiatan as $peri)
               <option value="{{$peri->id}}">{{$peri->kegiatan}}</option>
               @endforeach
@@ -43,13 +45,13 @@
   <div class="px-4 mt-4">
     <div class=" bg-white overflow-hidden shadow-sm sm:rounded-lg">
       <div class=" p-4 ">
-        <div class=" flex">
+        <div class=" flex gap-2">
           @role('admin')
           <a href="/asrama"><button class=" flex bg-blue-500 rounded-md py-1 px-2 text-white">Kembali Ke Asrama</button></a>
+          <a href="/kegiatan"><button class=" flex bg-blue-500 rounded-md py-1 px-2 text-white">Tambah Kegiatan</button></a>
           @endrole
         </div>
         <div class=" overflow-scroll w-full rounded-md">
-
           <table class=" w-full mt-2  ">
             <thead>
               <tr class=" capitalize bg-gray-100  ">

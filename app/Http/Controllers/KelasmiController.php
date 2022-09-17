@@ -161,9 +161,18 @@ class KelasmiController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Kelasmi $kelasmi)
     {
-        //
+        Kelasmi::where('id', $kelasmi->id)
+            ->update([
+                'kelas_id' => $request->kelas_id,
+                'periode_id' => $request->periode_id,
+                'kuota' => $request->kuota,
+                'nama_kelas' => $request->nama_kelas,
+
+
+            ]);
+        return redirect('/kelas_mi')->with('update', 'pembaharuan data berhasil');
     }
 
     /**

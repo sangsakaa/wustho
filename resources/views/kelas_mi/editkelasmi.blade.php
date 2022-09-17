@@ -14,10 +14,14 @@
                     </a>
 
                     <div class=" grid grid-cols-1 py-6 px-4">
-                        <form action="/kelas" method="post">
+                        <form action="/kelas_mi/{{$kelasmi->id}}" method="post">
                             @csrf
-                            <input type="text" name="kelas" class=" w-1/4 py-1 " placeholder=" Kelas : 1" value="{{$kelasmi->nama_kelas}}">
-                            <button class=" bg-blue-600 text-white rounded-md px-2 py-1"> simpan</button>
+                            @method('patch')
+                            <input type="hidden" name="nama_kelas" class=" w-1/4 py-1 " placeholder=" Kelas : 40" value="{{$kelasmi->nama_kelas}}">
+                            <input type="hidden" name="periode_id" class=" w-1/4 py-1 " placeholder=" Kelas : 40" value="{{$kelasmi->periode_id}}">
+                            <input type="hidden" name="kelas_id" class=" w-1/4 py-1 " placeholder=" Kelas : 40" value="{{$kelasmi->kelas_id}}">
+                            <input type="text" name="kuota" class=" w-1/4 py-1 " placeholder=" Kelas : 40" value="{{$kelasmi->kuota}}">
+                            <button class=" bg-sky-400 text-white rounded-md px-2 py-1">Update</button>
                             <a href="/kelas_mi" class=" bg-blue-600 text-white rounded-md px-2 py-1">Kembali</a>
                         </form>
 

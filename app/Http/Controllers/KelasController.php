@@ -117,11 +117,19 @@ class KelasController extends Controller
             ->join('asrama', 'asrama.id', '=', 'asramasiswa.asrama_id')
             ->orderBy('jenis_kelamin')
         ->select('siswa.*', 'nis.nis', 'nis.tanggal_masuk', 'asrama.nama_asrama')
-        ->orderBy('nis')->get();
+        ->orderBy('nis');
+        if (request('cari')) {
+            $Datasiswa->where(
+                'nama_siswa',
+                'like',
+                '%' . request('cari') . '%'
+            )
+                ->orWhere('nama_asrama', 'like', '%' . request('cari') . '%');
+        };
         return view(
             'kelas_mi/pesertakolektif',
             [
-                'Datasiswa' => $Datasiswa,
+                'Datasiswa' => $Datasiswa->get(),
                 'kelas' => $kelas
             ]
         );

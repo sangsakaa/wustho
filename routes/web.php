@@ -10,6 +10,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PengaturanController;
 use App\Http\Controllers\AsramasiswaController;
 use App\Http\Controllers\GuruController;
+use App\Http\Controllers\KegiatanController;
 use App\Http\Controllers\MapelController;
 use App\Http\Controllers\RaportController;
 use App\Http\Controllers\SesiasramaController;
@@ -46,6 +47,7 @@ Route::get('addkelas_mi', [KelasmiController::class, 'create'])->middleware(['au
 Route::post('kelas_mi', [KelasmiController::class, 'store'])->middleware(['auth'])->name('kelas_mi');
 Route::get('kelas_mi/{kelasmi}/edit', [KelasmiController::class, 'edit'])->middleware(['auth']);
 Route::delete('kelas_mi/{kelasmi}', [KelasmiController::class, 'destroy'])->middleware(['auth']);
+Route::patch('kelas_mi/{kelasmi}', [KelasmiController::class, 'update'])->middleware(['auth']);
 // peseta kelas
 Route::get('pesertakelas/{kelasmi}', [KelasmiController::class, 'show'])->middleware(['auth'])->name('pesertakelas');
 Route::delete('pesertakelas/{pesertakelas}', [KelasmiController::class, 'hapus'])->middleware(['auth'])->name('pesertakelas');
@@ -102,5 +104,14 @@ Route::get('sesiasrama/{sesiasrama}', [SesiasramaController::class, 'show'])->mi
 Route::post('sesiasrama', [SesiasramaController::class, 'store'])->middleware(['auth']);
 Route::post('sesiasrama/presensi', [SesiasramaController::class, 'simpanpresensi'])->middleware(['auth']);
 Route::delete('sesiasrama/{sesiasrama}', [SesiasramaController::class, 'destroy'])->middleware(['auth']);
+
+
+// Controller Kegiatan
+Route::get('kegiatan', [KegiatanController::class, 'index'])->middleware(['auth'])->name('kegiatan');
+Route::get('kegiatan/{kegiatan}/edit', [KegiatanController::class, 'edit'])->middleware(['auth']);
+Route::post('kegiatan', [KegiatanController::class, 'store'])->middleware(['auth']);
+Route::get('addkegiatan', [KegiatanController::class, 'create'])->middleware(['auth']);
+Route::delete('kegiatan/{kegiatan}', [KegiatanController::class, 'destroy'])->middleware(['auth']);
+Route::patch('kegiatan/{kegiatan}', [KegiatanController::class, 'update']);
 
 require __DIR__ . '/auth.php';
