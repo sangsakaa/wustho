@@ -110,7 +110,7 @@
                                 </tr>
                                 @endif
                                 <tr class=" border">
-                                    <td colspan="11">
+                                    <td colspan="11" class=" px-2">
                                         {{$data}}
                                     </td>
                                 </tr>

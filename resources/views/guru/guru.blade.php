@@ -56,7 +56,7 @@
                             </a>
                         </div>
                     </div>
-                    <Table class=" w-full ">
+                    <Table class=" w-full mt-2 ">
                         <thead class=" bg-gray-50">
                             <tr class=" border  ">
                                 <th class="px-2 py-1 border">#</th>

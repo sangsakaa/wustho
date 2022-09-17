@@ -28,12 +28,18 @@
         <form action="/sesiasrama/presensi" method="post">
           @csrf
           <div class=" flex justify-end gap-1">
-            @if($update_terakhir == $update_terakhir)
-            <span>sudah</span>
-            @else
-            belum
-            @endif
-            <button class=" bg-blue-400 py-1 px-2 rounded-md text-white ">simpan presensi</button>
+            @if($create_at == $update_terakhir)
+
+            <span class=" text-white bg-red-600 py-1 px-1 rounded-md"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+              </svg>
+            </span>
+            @elseif($update_terakhir >= $create_at) <span class=" text-white  bg-green-700 px-1 py-1 rounded-md">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+
+            </span> @endif <button class=" bg-blue-400 py-1 px-2 rounded-md text-white ">simpan presensi</button>
             <a href="/sesiasrama" class=" bg-red-500 px-2 py-1 rounded-md text-white">batal</a>
 
           </div>

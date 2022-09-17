@@ -48,7 +48,7 @@
                             : {{$siswa->nama_siswa}}
                         </div>
                         <div>
-                            Tempa ,Tanggal Lahir
+                            Tempat ,Tanggal Lahir
                         </div>
                         <div>
                             : {{$siswa->tempat_lahir}}, <?php
@@ -61,11 +61,11 @@
                         </div>
                         <div>
 
-                            : {{$siswa->kelas}} / {{$siswa->madrasah_diniyah}}
+                            : {{$siswa->kelas}} / {{$siswa->nama_kelas}} / {{$siswa->madrasah_diniyah}}
                         </div>
 
                         <div>
-                            Periode
+                            Imtihan / Periode
                         </div>
                         <div>
                             : {{$siswa->periode}} {{$siswa->ket_periode}} {{$siswa->ket_semester}}
@@ -80,10 +80,10 @@
                     <table class=" w-full">
                         <thead class=" bg-green-800  border font-semibold ">
                             <tr class=" text-white">
-                                <th class=" border px-2" rowspan="2">No </th>
+                                <th class=" border px-2" rowspan="2">NO </th>
                                 <th class=" border px-2" rowspan="2">MATA PELAJARAN</th>
                                 <th class=" border px-2" rowspan="2">USTADZ / USTADZAH</th>
-                                <td colspan="2" class=" border text-center"> NILAI AKHIR </td>
+                                <td colspan="2" class=" border text-center"> NILAI </td>
                             </tr>
                             <tr class=" text-white">
                                 <td class=" PX-2 text-center">YAUMIYYAH</td>
@@ -126,13 +126,13 @@
                             <td class=" px-2 border text-center">-</td>
                         </tr>
                     </table>
-                    <span class=" font-semibold">B. Natijah Dirrosiyyah</span>
+                    <span class=" font-semibold">B. Natijah Amaliyah Yaumiyyah</span>
                     <table class=" w-full">
-                        <thead class=" bg-green-800  border text-sm text-white ">
-                            <tr class=" px-2" class=" border text-sm  ">
-                                <th class="border px-2">No</th>
+                        <thead class=" bg-green-800  border text-sm text-white uppercase ">
+                            <tr class=" px-2" class=" border text-sm   ">
+                                <th class="border px-2 py-2">no</th>
                                 <th class="border px-2 w-50"> Al Amaliyyah</th>
-                                <th class="border px-2 w-5 text-sm">Attaqdir Al Mukhutasab</th>
+                                <th class="border px-2 w-50 text-sm">Attaqdir Al Muktasab</th>
                                 <th class="border px-2">Al Bayan</th>
                             </tr>
                         </thead>
@@ -140,9 +140,9 @@
                             <tr class=" border ">
                                 <th class=" px-2 border ">1</th>
                                 <td class=" px-2 border ">Jama'ah Al Maktubah</td>
-                                <td class=" px-2 border ">Jayyid</td>
+                                <td class=" px-2 border text-center ">Jayyid</td>
                                 <td class=" px-2 border " rowspan="8">
-                                    <p>Keterangan</p>
+                                    <p>Al Bayan</p>
                                     <div class=" grid grid-cols-2">
                                         <div>1. Rodi'</div>
                                         <div> : Buruk / Jelek</div>
@@ -159,32 +159,32 @@
                             <tr class=" border">
                                 <th class=" px-2 border ">2</th>
                                 <td class=" px-2 border ">Al Mujahadah</td>
-                                <td class=" px-2 border ">Jayyid</td>
+                                <td class=" px-2 border text-center ">Jayyid</td>
                             </tr>
                             <tr class=" border">
                                 <th class=" px-2 border ">3</th>
                                 <td class=" px-2 border ">Al Muhadhloroh</td>
-                                <td class=" px-2 border ">Jayyid</td>
+                                <td class=" px-2 border text-center ">Jayyid</td>
                             </tr>
                             <tr class=" border">
                                 <th class=" px-2 border ">4</th>
                                 <td class=" px-2 border ">An Nadzhofah</td>
-                                <td class=" px-2 border ">Jayyid</td>
+                                <td class=" px-2 border text-center ">Jayyid</td>
                             </tr>
                             <tr class=" border">
                                 <th class=" px-2 border ">5</th>
                                 <td class=" px-2 border ">Al Muwadhobah</td>
-                                <td class=" px-2 border ">Jayyid</td>
+                                <td class=" px-2 border text-center ">Jayyid</td>
                             </tr>
                             <tr class=" border">
                                 <th class=" px-2 border ">6</th>
                                 <td class=" px-2 border ">As Suluk</td>
-                                <td class=" px-2 border ">Jayyid</td>
+                                <td class=" px-2 border text-center ">Jayyid</td>
                             </tr>
                             <tr class=" border">
                                 <th class=" px-2 border ">7</th>
-                                <td class=" px-2 border ">At Taslim</td>
-                                <td class=" px-2 border ">Jayyid</td>
+                                <td class=" px-2 border ">At Tasliim</td>
+                                <td class=" px-2 border text-center ">Jayyid</td>
                             </tr>
                         </tbody>
                     </table>
@@ -193,8 +193,7 @@
                     <table class=" w-1/3 ">
                         <thead class=" text-white bg-green-800  border">
                             <tr class=" px-2" class=" border">
-                                <th class="border px-2 w-5">No</th>
-
+                                <th class="border px-2 w-5 py-2">NO</th>
                                 <th class="border px-2">KETERANGAN</th>
                                 <th class="border px-2 w-5">JML</th>
 

@@ -40,15 +40,16 @@
                             </div>
                         </form>
                         <div class=" overflow-auto">
-                            <Table class=" w-full  border-collapse border border-slate-500">
+                            <Table class=" w-full  border-collapse border border-slate-500 mt-2">
                                 <thead>
                                     <tr class=" border bg-gray-100 ">
-                                        <th class=" py-1">#</th>
+                                        <th class=" py-1">No</th>
                                         <th>Periode</th>
                                         <th>Kelas</th>
                                         <th>Nama Kelas</th>
                                         <th class=" text-center">Kapasitas</th>
                                         <th class=" text-center">Jml Peserta</th>
+                                        <th class=" text-center">Status Kelas</th>
                                         <th class=" text-center">Aksi</th>
                                     </tr>
                                 </thead>
@@ -56,20 +57,40 @@
                                     @if($kelasMI->count() != null)
                                     @foreach ($kelasMI as $item)
                                     <tr class=" hover:bg-green-200 border">
-                                        <th class=" text-center">{{$loop->iteration}}</th>
-                                        <td class=" text-center"> {{$item->periode}} {{$item->ket_semester}}</td>
-                                        <td class=" text-center"><a href="/pesertakelas/{{$item->id}}"> {{$item->kelas}}</a></td>
-                                        <td class=" text-center"><a href="/pesertakelas/{{$item->id}}"> {{$item->nama_kelas}}</a></td>
-                                        <td class=" text-center"> {{$item->kuota}}</td>
-                                        <td class=" text-center"> {{$item->jumlah_nilai_ujian}}</td>
-                                        <td class="  text-center py-1 grid grid-cols-1 ">
+                                        <th class=" text-center border">{{$loop->iteration}}</th>
+                                        <td class=" text-center border"> {{$item->periode}} {{$item->ket_semester}}</td>
+                                        <td class=" text-center border"><a href="/pesertakelas/{{$item->id}}"> {{$item->kelas}}</a></td>
+                                        <td class=" text-center py-2"><a href="/pesertakelas/{{$item->id}}" class=" bg-blue-600 text-white py-1 px-2 rounded-md hover:bg-purple-600">Kelas {{$item->nama_kelas}}</a></td>
+                                        <td class=" text-center border"> {{$item->kuota}}</td>
+                                        <td class=" text-center border"> {{$item->jumlah_nilai_ujian}}</td>
+                                        <td class=" px-2 border text-center w-40">
+                                            @if($item->kuota == $item->jumlah_nilai_ujian )
+                                            <span class=" bg-yellow-300 px-4 py-1 rounded-md capitalize text-black">full</span>
+                                            @elseif ($item->kuota <= $item->jumlah_nilai_ujian)
+                                                <span class=" bg-red-600 px-4 py-1 rounded-md capitalize text-white">over</span>
+                                                @elseif ($item->kuota >= $item->jumlah_nilai_ujian)
+                                                <span class=" bg-green-800 px-4 py-1 rounded-md capitalize text-white">still</span>
+                                                @endif
+                                        </td>
+                                        <td class="  text-center mt-2  flex gap-1 justify-center  align-middle   ">
                                             <form action="/kelas_mi/{{$item->id}}" method="post">
                                                 @csrf
                                                 @method('delete')
-                                                <button type="submit" class="  bg-red-600 py-1 px-2 text-white hover:bg-purple-600 rounded-md ">delete</button>
+                                                <button class=" bg-red-500 text-white p-1 rounded-md"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                    </svg></button>
                                             </form>
+                                            <a href="kelas_mi/{{$item->id}}/edit">
+                                                <button class=" bg-yellow-400 p-1 rounded-md">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                                                    </svg>
+                                                </button>
+
+                                            </a>
 
                                         </td>
+
                                     </tr>
                                     @endforeach
                                     @else

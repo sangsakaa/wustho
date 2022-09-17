@@ -19,6 +19,9 @@ class SesiasramaController extends Controller
      */
     public function index()
     {
+        $peserta = Presensiasrama::all();
+        $update_terakhir = $peserta->max('updated_at');
+        $create_at = $peserta->max('create_at');
         $asramasiswa = Asramasiswa::query()
             ->join('asrama', 'asrama.id', '=', 'asramasiswa.asrama_id')
             ->join('periode', 'periode.id', '=', 'asramasiswa.periode_id')
@@ -35,6 +38,7 @@ class SesiasramaController extends Controller
             ->join('semester', 'semester.id', '=', 'periode.semester_id')
             ->join('kegiatan', 'kegiatan.id', '=', 'sesiasrama.kegiatan_id')
             ->join('asramasiswa', 'asramasiswa.id', '=', 'sesiasrama.asramasiswa_id')
+            // ->crossjoin('presensiasrama', 'asramasiswa.id', '=', 'presensiasrama.sesiasrama_id')
             ->join('asrama', 'asrama.id', '=', 'asramasiswa.asrama_id')
             ->select(
                 [
@@ -43,7 +47,9 @@ class SesiasramaController extends Controller
                     'sesiasrama.tanggal',
                     'semester.ket_semester',
                     'asrama.nama_asrama',
-                    'kegiatan.kegiatan'
+                'kegiatan.kegiatan',
+                // 'presensiasrama.created_at',
+                // 'presensiasrama.updated_at'
                 ]
             )
 
@@ -54,7 +60,9 @@ class SesiasramaController extends Controller
                 'periode' => $periode,
                 'asramasiswa' => $asramasiswa,
                 'sesiasrama' => $sesiasrama,
-                'kegiatan' => $kegiatan
+                'kegiatan' => $kegiatan,
+                'update_terakhir' => $update_terakhir,
+                'create_at' => $create_at
             ]
         );
     }
@@ -133,13 +141,15 @@ class SesiasramaController extends Controller
             ->where('asramasiswa.id', $sesiasrama->asramasiswa_id)
             ->get();
         $update_terakhir = $peserta->max('updated_at');
+        $create_at = $peserta->max('create_at');
         return view(
             'presensi/asrama/presensiasrama',
             [
                 'sesiasrama' => $sesiasrama,
                 'presensi' => $presensi,
                 'peserta' => $peserta,
-                'update_terakhir' => $update_terakhir
+                'update_terakhir' => $update_terakhir,
+                'create_at' => $create_at
             ]
         );
     }
