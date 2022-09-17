@@ -103,20 +103,22 @@
                         @endforeach
                         <tr>
                             <td class=" px-2 border text-right font-semibold" colspan="3">Jumlah</td>
-                            <td class=" px-2 border text-center">{{$jmlharian}}</td>
-                            <td class=" px-2 border text-center">{{$jmlujian}}</td>
+                            <td class=" px-2 border text-center">{{$ringkasan['jmlharian']}}</td>
+                            <td class=" px-2 border text-center">{{$ringkasan['jmlujian']}}</td>
                         </tr>
                         <tr>
                             <td class=" px-2 border text-right font-semibold" colspan="3">Rata Rata</td>
                             <td class=" px-2 border text-center">
+                                {{number_format($ringkasan['rata2harian'], 2, ",", "")}}
                             </td>
                             <td class=" px-2 border text-center">
+                                {{number_format($ringkasan['rata2ujian'], 2, ",", "")}}
                             </td>
                         </tr>
                         <tr>
                             <td class=" px-2 border text-right font-semibold" colspan="3">Darojah</td>
                             <td class=" px-2 border text-center"></td>
-                            <td class=" px-2 border text-center">-</td>
+                            <td class=" px-2 border text-center">{{$peringkat}} dari {{$jumlahsiswa}}</td>
                         </tr>
                         <tr>
                             <td class=" px-2 border text-right font-semibold" colspan="3">Al Bayan</td>

@@ -59,32 +59,52 @@ class RaportController extends Controller
             // ->join('semester', 'semester.id', '=', 'kelasmi.periode_id')
             // ->select('kelas.kelas', 'siswa.nama_siswa', 'periode.periode', 'periode.ket_periode', 'semester.semester')
             ->where('pesertakelas.id', $pesertakelas->id)->first();
-        $dataraport = Nilaimapel::query()
+        $dataraportkelas = Nilaimapel::query()
             ->join('nilai', 'nilai.nilaimapel_id', '=', 'nilaimapel.id')
             // ->join('siswa', 'siswa.id', '=', 'nilai.siswa_id')
             ->join('mapel', 'mapel.id', '=', 'nilaimapel.mapel_id')
             ->join('guru', 'guru.id', '=', 'nilaimapel.guru_id')
-            ->where('nilai.pesertakelas_id', $pesertakelas->id)
+            ->where('nilaimapel.kelasmi_id', $siswa->kelasmi_id)
             ->get();
-        $harian = Nilai::where('nilai.pesertakelas_id', $pesertakelas->id)->count('nilai_harian');
-        $ujian = Nilai::where('nilai.pesertakelas_id', $pesertakelas->id)->count('nilai_ujian');
-        $jmlujian = Nilai::where('nilai.pesertakelas_id', $pesertakelas->id)->sum('nilai_ujian');
-        $jmlharian = Nilai::where('nilai.pesertakelas_id', $pesertakelas->id)->sum('nilai_harian');
-        
-        
+
+        $ringkasanraportkelas = $dataraportkelas
+            ->groupBy('pesertakelas_id')
+            ->map(function ($item, $key) {
+                $item = collect($item);
+                $jmlujian = $item->sum('nilai_ujian');
+                $jmlharian = $item->sum('nilai_harian');
+                $rata2ujian = $jmlujian / $item->count();
+                $rata2harian = $jmlharian / $item->count();
+                $nilaiperingkat = $rata2ujian * 0.4 + $rata2harian * 0.6;
+
+                return [
+                    'id' => $key,
+                    'jmlujian' => $jmlujian,
+                    'jmlharian' => $jmlharian,
+                    'rata2ujian' => $rata2ujian,
+                    'rata2harian' => $rata2harian,
+                    'nilaiperingkat' => $nilaiperingkat
+                ];
+            });
+
+        $peringkatpeserta = $ringkasanraportkelas
+            ->sortByDesc('nilaiperingkat')
+            ->values()
+            ->search(function ($item, $key) use ($pesertakelas) {
+                return $item['id'] == $pesertakelas->id;
+            }) + 1;
+
+        $dataraport = $dataraportkelas->where("pesertakelas_id", $pesertakelas->id);
+        $ringkasanraportpeserta = $ringkasanraportkelas[$pesertakelas->id];
+
         return view(
             'report/report',
             [
                 'siswa' => $siswa,
                 'data' => $dataraport,
-                'nilai' => $siswa,
-                'harian' => $harian,
-                'ujian' => $ujian,
-                'jmlujian' => $jmlujian,
-                'jmlharian' => $jmlharian,
-
-                
-
+                'ringkasan' => $ringkasanraportpeserta,
+                'peringkat' => $peringkatpeserta,
+                'jumlahsiswa' => $ringkasanraportkelas->count()
             ]
         );
     }
