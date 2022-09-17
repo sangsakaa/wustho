@@ -117,7 +117,7 @@
                         </tr>
                         <tr>
                             <td class=" px-2 border text-right font-semibold" colspan="3">Darojah</td>
-                            <td class=" px-2 border text-center"></td>
+                            <td class=" px-2 border text-center">{{$peringkat}}</td>
                             <td class=" px-2 border text-center">{{$peringkat}} dari {{$jumlahsiswa}}</td>
                         </tr>
                         <tr>
