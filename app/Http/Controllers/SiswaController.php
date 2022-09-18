@@ -30,6 +30,7 @@ class SiswaController extends Controller
             ->leftjoin('pesertakelas', 'pesertakelas.siswa_id', '=', 'siswa.id')
             ->leftjoin('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
             ->orderBy('nis')
+            ->orderBy('nama_siswa')
             // ->orderBy('nama_siswa')
 
             ->select(
@@ -156,10 +157,11 @@ class SiswaController extends Controller
         ->join('kelas', 'kelas.id', '=', 'kelasmi.kelas_id')
         ->join('mapel', 'mapel.id', '=', 'nilaimapel.mapel_id')
         ->join('siswa', 'siswa.id', '=', 'nilai.pesertakelas_id');
+        // ->where('pesertakelas_id', $pesertakelas->id);
         if (request('cari')) {
             $transkip->where('nama_siswa', 'like', '%' . request('cari') . '%')
-                ->orWhere('nama_kelas', 'like', '%' . request('cari') . '%');
-            // ->orWhere('nama_kelas', 'like', '%' . request('cari') . '%')
+                ->orWhere('nama_kelas', 'like', '%' . request('cari') . '%')
+                ->orWhere('mapel', 'like', '%' . request('cari') . '%');
             // ->orWhere('nis', 'like', '%' . request('cari') . '%')
             // ->orWhere('tanggal_masuk', 'like', '%' . request('cari') . '%')
             // ->orderBy('nis', 'asc');
