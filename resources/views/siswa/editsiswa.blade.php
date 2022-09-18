@@ -23,7 +23,7 @@
                                 <option value="">-- Pilih Jenis Kelamin --</option>
                                 <option {{old('jenis_kelamin',$siswa->jenis_kelamin)=="L"? 'selected':''}} value="L">
                                     Laki-Laki</option>
-                                <option {{old('jenis_kelamin',$siswa->jk)=="P"? 'selected':''}} value="P">
+                                <option {{old('jenis_kelamin',$siswa->jenis_kelamin)=="P"? 'selected':''}} value="P">
                                     Perempuan</option>
 
                             </select>
@@ -39,11 +39,20 @@
                             </select>
                             <label for="">Kota Asal</label>
                             <input value="{{$siswa->kota_asal}}" name="kota_asal" type="text" class=" w-full py-1 rounded-md @error('kota_asal') is-invalid @enderror" placeholder=" masukan nama lengkap">
+                            <input value="{{$siswa->id}}" name="siswa_id" type="text" class=" w-full py-1 rounded-md " placeholder=" masukan nama lengkap">
+                            <label for="">Status Pengamal</label>
+                            <select name=" status_pengamal" id="" class=" w-full py-1 rounded-md" required>
+                                <option {{old('status_pengamal',$statuspengamal->status_pengamal)=="Pengamal"? 'selected':''}} value="Pengamal">
+                                    Pengamal</option>
+                                <option {{old('status_pengamal',$statuspengamal->status_pengamal)=="Simpatisan"? 'selected':''}} value="Simpatisan">
+                                    Simpatisan</option>
+                            </select>
                             <button type="submit" class=" px-2 py-1 bg-sky-600 text-white rounded-md mt-1">Update</button>
                             <a href="/siswa" class=" px-2 py-1 bg-red-600 text-white rounded-md mt-1">
                                 Batal
                             </a>
                         </form>
+
                     </div>
 
                 </div>

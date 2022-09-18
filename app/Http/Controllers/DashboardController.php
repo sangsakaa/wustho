@@ -21,6 +21,7 @@ class DashboardController extends Controller
     public function index()
     {
 
+        $siswa = Siswa::count();
         $profil = Profile::first();
         $dataJumlahPeserta = Asramasiswa::query()
             ->select(['asramasiswa.id', DB::raw('count(pesertaasrama.id) as jumlah_peserta_asrama')])
@@ -52,7 +53,8 @@ class DashboardController extends Controller
             [
                 'data' => $dataasrama,
                 'datasrama' => $asrama,
-                'profile' => $profil
+                'profile' => $profil,
+                'siswa' => $siswa
             ]
         );
     }

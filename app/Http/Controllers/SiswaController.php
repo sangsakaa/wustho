@@ -4,12 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Nis;
 use App\Models\Kelas;
+use App\Models\Mapel;
 use App\Models\Nilai;
 use App\Models\Siswa;
 use App\Models\Pesertakelas;
+use App\Models\Statuspengamal;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\DB;
+
 
 class SiswaController extends Controller
 {
@@ -89,17 +91,16 @@ class SiswaController extends Controller
         $siswa->tanggal_lahir = $request->tanggal_lahir;
         $siswa->kota_asal = $request->kota_asal;
         $siswa->save();
-        
 
+        $status_pengamal = new Statuspengamal();
+        $status_pengamal->siswa_id = $siswa->id;
+        $status_pengamal->status_pengamal = $request->status_pengamal;
+        $status_pengamal->save();
         return redirect('siswa')->with('success', 'data berhasil ditambahkan');
     }
     public function storeNis(Request $request)
     {
-        // $siswa = $request->validate(
-        //     [
-        //         'nama_siswa' => 'required',
-        //     ]
-        // );
+        
         $nis = new nis();
         $nis->siswa_id = $request->siswa_id;
         $nis->nis = $request->nis;
@@ -123,7 +124,8 @@ class SiswaController extends Controller
     public function biodata(Siswa $siswa)
     {
         $data = Siswa::where('siswa.id', $siswa->id)
-            ->leftjoin('nis', 'nis.siswa_id', '=', 'siswa.id')
+            // ->join('nis', 'siswa.id', '=', 'nis.siswa_id')
+            ->join('statuspengamal', 'siswa.id', '=', 'statuspengamal.siswa_id')
             ->first();
         return view('siswa/biodata', ['siswa' => $data]);
     }
@@ -150,10 +152,35 @@ class SiswaController extends Controller
     {
         $transkip = Nilai::query()
             ->join('nilaimapel', 'nilaimapel.id', '=', 'nilai.nilaimapel_id')
-            ->join('mapel', 'nilaimapel.mapel_id', '=', 'mapel.id')
-            // ->select('nilai.nilaimapel_id')
-            ->find($pesertakelas)->first();
-        return view('siswa/transkip', ['siswa' => $transkip,]);
+        ->join('kelasmi', 'kelasmi.id', '=', 'nilaimapel.kelasmi_id')
+        ->join('kelas', 'kelas.id', '=', 'kelasmi.kelas_id')
+        ->join('mapel', 'mapel.id', '=', 'nilaimapel.mapel_id')
+        ->join('siswa', 'siswa.id', '=', 'nilai.pesertakelas_id');
+        if (request('cari')) {
+            $transkip->where('nama_siswa', 'like', '%' . request('cari') . '%')
+                ->orWhere('nama_kelas', 'like', '%' . request('cari') . '%');
+            // ->orWhere('nama_kelas', 'like', '%' . request('cari') . '%')
+            // ->orWhere('nis', 'like', '%' . request('cari') . '%')
+            // ->orWhere('tanggal_masuk', 'like', '%' . request('cari') . '%')
+            // ->orderBy('nis', 'asc');
+        }
+        $harian = $transkip->sum('nilai_harian');
+        $ujian = $transkip->sum('nilai_ujian');
+        $mapel = $transkip->count('nilaimapel_id');
+        $rata2harian = $harian / $mapel;
+        $rata2ujian = $ujian / $mapel;
+        return view(
+            'siswa/transkip',
+            [
+                'siswa' => $transkip->get(),
+                'harian' => $harian,
+                'ujian' => $ujian,
+                'mapel' => $mapel,
+                'rata2harian' => $rata2harian,
+                'rata2ujian' => $rata2ujian
+            ]
+        );
+       
     }
 
     /**
@@ -162,9 +189,16 @@ class SiswaController extends Controller
      * @param  \App\Models\Siswa  $siswa
      * @return \Illuminate\Http\Response
      */
-    public function edit(Siswa $siswa)
+    public function edit(Siswa $siswa, Statuspengamal $statuspengamal)
     {
-        return view('siswa/editsiswa', ['siswa' => $siswa]);
+        $status_pengamal = Statuspengamal::find($siswa)->first();
+        return view(
+            'siswa/editsiswa',
+            [
+                'siswa' => $siswa,
+                'statuspengamal' => $status_pengamal
+            ]
+        );
     }
 
     /**
@@ -184,6 +218,11 @@ class SiswaController extends Controller
                 'tempat_lahir' => $request->tempat_lahir,
                 'tanggal_lahir' => $request->tanggal_lahir,
                 'kota_asal' => $request->kota_asal,
+            ]);
+        Statuspengamal::where('siswa_id', $siswa->id)
+            ->update([
+                'siswa_id' => $siswa->id,
+                'status_pengamal' => $request->status_pengamal,
             ]);
         return redirect('/siswa')->with('update', 'pembaharuan data berhasil');
     }

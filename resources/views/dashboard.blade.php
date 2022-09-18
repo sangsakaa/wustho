@@ -21,7 +21,7 @@
         <hr class=" border-2 bg-blue-800 border-blue-800 ">
         <div class=" mx-auto mt-6 ">
             <div class="bg-blue-800 overflow-hidden shadow-sm sm:rounded-lg">
-                -
+                {{$siswa}}
             </div>
         </div>
     </div>

@@ -44,7 +44,7 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-4 bg-white border-b border-gray-200">
                     <div class=" flex grid-cols-1 justify-end gap-2">
-                        <a href="/siswa/{{$siswa->id}}" class=" bg-blue-500 px-2 py-1 text-white">Kembali</a>
+                        <a href="/siswa/{{$siswa->siswa_id}}" class=" bg-blue-500 px-2 py-1 text-white">Kembali</a>
 
                         <button class="flex text-white rounded-md  bg-green-800 px-2 py-1 " onclick="printContent('div1')">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
@@ -52,6 +52,7 @@
                             </svg>
                             Cetak Biodata</button>
                     </div>
+
                     <div id="div1" class=" grid grid-cols-1">
                         <div class=" text-center font-semibold border py-2 text-md mt-2 text-2xl bg-gray-100">BIODATA SISWA</div>
                         <div class=" grid grid-cols-2 py-2">
@@ -66,7 +67,7 @@
                             <div class=" border py-2 px-2" class=" w-1/2">5. Tempat,Tanggal Lahir</div>
                             <div class=" border py-2 px-2">: {{$siswa->tempat_lahir}},{{$siswa->tanggal_lahir}}</div>
                             <div class=" border py-2 px-2" class=" w-1/2">6. Status Pengamal</div>
-                            <div class=" border py-2 px-2">: Pengamal / Belum Pengamal / Simpatisan</div>
+                            <div class=" border py-2 px-2">: {{$siswa->status_pengamal}}</div>
                             <div class=" border py-2 px-2" class=" w-1/2">7. Jumlah Saudara Kandung</div>
                             <div class=" border py-2 px-2">: 5 </div>
                             <div class=" border py-2 px-2" class=" w-1/2">8. Anak Ke</div>

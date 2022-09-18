@@ -8,4 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class Statuspengamal extends Model
 {
     use HasFactory;
+    protected $table = "statuspengamal";
 }
