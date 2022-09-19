@@ -39,6 +39,27 @@
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class=" bg-white border-b border-gray-200">
                         <div class=" p-4 grid grid-cols-1">
+                            @if (session('delete'))
+                            <div class=" py-2">
+                                <div class=" bg-red-500 px-2 py-1 text-white">
+                                    {{ session('delete') }}
+                                </div>
+                            </div>
+                            @endif
+                            @if (session('success'))
+                            <div class=" py-2">
+                                <div class=" bg-green-500 px-2 py-1 text-white">
+                                    {{ session('success') }}
+                                </div>
+                            </div>
+                            @endif
+                            @if (session('update'))
+                            <div class=" py-2">
+                                <div class=" bg-blue-500 px-2 py-1 text-white">
+                                    {{ session('update') }}
+                                </div>
+                            </div>
+                            @endif
                             <span class=" text-2xl">Daftar Mata Pelajaran</span>
                             <table class=" border">
                                 <thead class=" border bg-gray-200 ">
@@ -47,6 +68,7 @@
                                         <th class=" border px-2 text-center">Mata Pelajaran</th>
                                         <th class=" border px-2 text-center">Nama Kitab</th>
                                         <th class=" border px-2 text-center">Kelas</th>
+                                        <th class=" border px-2 text-center">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -68,6 +90,13 @@
                                             <a href="/report/{{$list->id}}">
                                                 {{$list->kelas}}
                                             </a>
+                                        </th>
+                                        <th class=" border">
+                                            <form action="/mapel/{{$list->id}}" method="post">
+                                                @csrf
+                                                @method('delete')
+                                                <button class="py-1 px-2 bg-red-600 text-white rounded-md capitalize">hapus</button>
+                                            </form>
                                         </th>
 
                                     </tr>

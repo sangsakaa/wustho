@@ -89,6 +89,7 @@ Route::get('report/{pesertakelas}', [RaportController::class, 'show'])->middlewa
 // Controller Mata Pelajaran
 Route::get('mapel', [MapelController::class, 'index'])->middleware(['auth'])->name('mapel');
 Route::post('mapel', [MapelController::class, 'store'])->middleware(['auth']);
+Route::delete('mapel/{mapel}', [MapelController::class, 'destroy'])->middleware(['auth']);
 
 // Controller Pengaturan
 Route::get('pengaturan', [PengaturanController::class, 'pengaturan'])->middleware(['auth'])->name('pengaturan');

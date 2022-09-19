@@ -65,7 +65,7 @@
                             <div class=" border py-2 px-2" class=" w-1/2">4. Agama</div>
                             <div class=" border py-2 px-2">: {{$siswa->agama}}</div>
                             <div class=" border py-2 px-2" class=" w-1/2">5. Tempat,Tanggal Lahir</div>
-                            <div class=" border py-2 px-2">: {{$siswa->tempat_lahir}},{{$siswa->tanggal_lahir}}</div>
+                            <div class=" border py-2 px-2">: {{$siswa->tempat_lahir}}, {{$siswa->tanggal_lahir}}</div>
                             <div class=" border py-2 px-2" class=" w-1/2">6. Status Pengamal</div>
                             <div class=" border py-2 px-2">: {{$siswa->status_pengamal}}</div>
                             <div class=" border py-2 px-2" class=" w-1/2">7. Jumlah Saudara Kandung</div>
@@ -73,21 +73,21 @@
                             <div class=" border py-2 px-2" class=" w-1/2">8. Anak Ke</div>
                             <div class=" border py-2 px-2">: 5 </div>
                             <div class=" border py-2 px-2" class=" w-1/2">9. Status Anak </div>
-                            <div class=" border py-2 px-2">: Kandung / Angkat</div>
+                            <div class=" border py-2 px-2">: -</div>
                             <div class=" border py-2 px-2" class=" w-1/2">10. Nama Ayah </div>
-                            <div class=" border py-2 px-2">: Ahmad Bastomi Wahid</div>
+                            <div class=" border py-2 px-2">: -</div>
                             <div class=" border py-2 px-6" class=" w-1/2">Pekerjaan </div>
-                            <div class=" border py-2 px-2">: Swasta</div>
+                            <div class=" border py-2 px-2">: -</div>
                             <div class=" border py-2 px-6" class=" w-1/2">Nomor Hp </div>
-                            <div class=" border py-2 px-2">: 083234345678</div>
+                            <div class=" border py-2 px-2">: - </div>
                             <div class=" border py-2 px-2" class=" w-1/2">11. Nama Ibu </div>
-                            <div class=" border py-2 px-2">: Wartini</div>
+                            <div class=" border py-2 px-2">: - </div>
                             <div class=" border py-2 px-2" class=" w-1/2">12. Nama Wali </div>
-                            <div class=" border py-2 px-2">: Ahmad Bastomi Wahid</div>
+                            <div class=" border py-2 px-2">: - </div>
                             <div class=" border py-2 px-6" class=" w-1/2">Pekerjaan </div>
-                            <div class=" border py-2 px-2">: Swasta</div>
+                            <div class=" border py-2 px-2">: - </div>
                             <div class=" border py-2 px-6" class=" w-1/2">Nomor Hp </div>
-                            <div class=" border py-2 px-2">: Swasta</div>
+                            <div class=" border py-2 px-2">: - </div>
                             <div class=" border py-2 px-2" class=" w-1/2">13. Daerah Asal </div>
                             <div class=" border py-2 px-2">: {{$siswa->kota_asal}}</div>
                         </div>

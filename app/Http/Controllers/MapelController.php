@@ -56,7 +56,7 @@ class MapelController extends Controller
         $mapel->nama_kitab = $request->nama_kitab;
         $mapel->kelas_id = $request->kelas_id;
         $mapel->save();
-        return redirect()->back();
+        return redirect()->back()->with('success', 'berhasil menambahkan data ini');
     }
 
     /**
@@ -99,8 +99,9 @@ class MapelController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Mapel $mapel)
     {
-        //
+        Mapel::destroy($mapel->id);
+        return redirect()->back()->with('delete', 'berhasil menghapus data ini');
     }
 }
