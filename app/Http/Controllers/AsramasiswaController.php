@@ -26,9 +26,9 @@ class AsramasiswaController extends Controller
             ->groupBy('asramasiswa.id');
         $asrama = Asrama::all();
         $periode = Periode::query()
-        ->join('semester', 'semester.id', '=', 'periode.semester_id')
-        ->select('periode.id', 'ket_semester', 'periode.periode')
-        ->get();
+            ->join('semester', 'semester.id', '=', 'periode.semester_id')
+            ->select('periode.id', 'ket_semester', 'periode.periode')
+            ->get();
         $dataasrama = Asramasiswa::query()
             ->leftjoin('asrama', 'asrama.id', '=', 'asramasiswa.asrama_id')
             ->leftjoin('periode', 'periode.id', '=', 'asramasiswa.periode_id')
@@ -99,8 +99,8 @@ class AsramasiswaController extends Controller
     public function show(Asramasiswa $asramasiswa)
     {
         $tittle = $asramasiswa->join('asrama', 'asrama.id', '=', 'asramasiswa.asrama_id')
-        ->select('asrama.nama_asrama', 'asramasiswa.kuota', 'asramasiswa.id')
-        ->find($asramasiswa)->first();
+            ->select('asrama.nama_asrama', 'asramasiswa.kuota', 'asramasiswa.id')
+            ->find($asramasiswa)->first();
         $data = Pesertaasrama::query()
             ->join('siswa', 'siswa.id', '=', 'pesertaasrama.siswa_id')
             ->join('asramasiswa', 'asramasiswa.id', '=', 'pesertaasrama.asramasiswa_id')
@@ -185,28 +185,31 @@ class AsramasiswaController extends Controller
 
         $Datasiswa = Siswa::query()
             ->leftjoin('nis', 'nis.siswa_id', '=', 'siswa.id')
-            ->leftjoin('pesertaasrama', 'pesertaasrama.id', '=', 'pesertaasrama.siswa_id')
+            ->leftjoin('pesertaasrama', 'pesertaasrama.siswa_id', '=', 'siswa.id')
             ->where('pesertaasrama.siswa_id', '=', null)
-        ->select(
-            [
-                'siswa.id',
-                'siswa.nama_siswa',
-                'siswa.jenis_kelamin',
-                'nis.nis',
-                'nis.tanggal_masuk'
-            ]
-        )
-        ->orderBy('nis.nis')
-        ->orderBy('siswa.nama_siswa')
-        ->orderBy('siswa.jenis_kelamin');
+            ->select(
+                [
+                    'siswa.id',
+                    'siswa.nama_siswa',
+                    'siswa.jenis_kelamin',
+                    'nis.nis',
+                    'nis.tanggal_masuk'
+                ]
+            )
+            // ->orderBy('nis.nis')
+            ->orderBy('siswa.nama_siswa');
+        // ->orderBy('siswa.jenis_kelamin');
         if (request('cari')) {
-            $Datasiswa->where('nis', 'like', '%' . request('cari') . '%')
-            ->orWhere('nama_siswa', 'like', '%' . request('cari') . '%');
+            $Datasiswa->where(function ($query) {
+                $query->where('nis', 'like', '%' . request('cari') . '%')
+                    ->orWhere('nama_siswa', 'like', '%' . request('cari') . '%');
+            });
             // ->orWhere('nama_kelas', 'like', '%' . request('cari') . '%')
             // ->orWhere('nis', 'like', '%' . request('cari') . '%')
             // ->orWhere('tanggal_masuk', 'like', '%' . request('cari') . '%')
 
         }
+        // dd($Datasiswa->toSql());
         return view(
             'asrama/kolektifasrama',
             [
