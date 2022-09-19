@@ -52,7 +52,6 @@
           @endrole
         </div>
         <div class=" overflow-scroll w-full rounded-md">
-
           <table class=" w-full mt-2  ">
             <thead>
               <tr class=" capitalize bg-gray-100  ">
