@@ -21,6 +21,7 @@ class DashboardController extends Controller
     public function index()
     {
 
+        $pa = Asrama::count();
         $siswa = Siswa::count();
         $pr = Siswa::where('jenis_kelamin', 'p')->count();
         $lk = Siswa::where('jenis_kelamin', 'l')->count();
@@ -58,7 +59,8 @@ class DashboardController extends Controller
                 'profile' => $profil,
                 'siswa' => $siswa,
                 'pr' => $pr,
-                'lk' => $lk
+                'lk' => $lk,
+                'pa' => $pa,
             ]
         );
     }
