@@ -1,11 +1,12 @@
 <x-guest-layout>
 
     <x-auth-card>
-        <x-slot name="logo">
-            <a href="/">
-                <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
-            </a>
-        </x-slot>
+
+        <div class=" grid grid-cols-1 justify-items-center   ">
+            <img src="asset/images/logo.png" alt="">
+            <span class=" uppercase text-center">s m e d i</span>
+            <span class="  capitalize text-center text-2xl">sistem manajemen diniyah</span>
+        </div>
 
         <!-- Session Status -->
         <x-auth-session-status class="mb-4" :status="session('status')" />
