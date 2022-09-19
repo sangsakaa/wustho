@@ -52,6 +52,7 @@
           @endrole
         </div>
         <div class=" overflow-scroll w-full rounded-md">
+
           <table class=" w-full mt-2  ">
             <thead>
               <tr class=" capitalize bg-gray-100  ">
@@ -75,7 +76,7 @@
                 <td class=" px-2 text-center">{{$item->kegiatan}}</td>
                 <td class=" px-2 text-center">{{$item->nama_asrama}}</td>
                 <td class=" px-2 text-center">
-                  {{$item->created_at}}
+
                 </td>
                 <td class=" px-2 text-center">
                   @role('admin')

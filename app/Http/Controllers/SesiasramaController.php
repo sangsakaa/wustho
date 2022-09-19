@@ -38,7 +38,6 @@ class SesiasramaController extends Controller
             ->join('semester', 'semester.id', '=', 'periode.semester_id')
             ->join('kegiatan', 'kegiatan.id', '=', 'sesiasrama.kegiatan_id')
             ->join('asramasiswa', 'asramasiswa.id', '=', 'sesiasrama.asramasiswa_id')
-            // ->crossjoin('presensiasrama', 'asramasiswa.id', '=', 'presensiasrama.sesiasrama_id')
             ->join('asrama', 'asrama.id', '=', 'asramasiswa.asrama_id')
             ->select(
                 [
@@ -48,12 +47,11 @@ class SesiasramaController extends Controller
                     'semester.ket_semester',
                     'asrama.nama_asrama',
                 'kegiatan.kegiatan',
-                // 'presensiasrama.created_at',
-                // 'presensiasrama.updated_at'
+                
                 ]
-            )
-
+        )
             ->get();
+        
         return view(
             'presensi/asrama/sesiasrama',
             [
@@ -62,7 +60,8 @@ class SesiasramaController extends Controller
                 'sesiasrama' => $sesiasrama,
                 'kegiatan' => $kegiatan,
                 'update_terakhir' => $update_terakhir,
-                'create_at' => $create_at
+                'create_at' => $create_at,
+               
             ]
         );
     }
