@@ -209,12 +209,15 @@ class AsramasiswaController extends Controller
             // ->orWhere('tanggal_masuk', 'like', '%' . request('cari') . '%')
 
         }
+        $a = $Datasiswa->count();
+
         // dd($Datasiswa->toSql());
         return view(
             'asrama/kolektifasrama',
             [
                 'Datasiswa' => $Datasiswa->get(),
-                'kelas' => $kelas
+                'kelas' => $kelas,
+                'a' => $a,
             ]
         );
     }

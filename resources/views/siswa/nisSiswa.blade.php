@@ -46,7 +46,7 @@
                             <form action="/nis/{{$siswa->id}}" method="post">
                                 @csrf
                                 <input type="hidden" name="siswa_id" value="{{$siswa->id}}" class=" py-1" required>
-                                <input type="text" name="nis" class=" py-1" placeholder="NIS : 2023010001">
+                                <input type="text" name="nis" class=" py-1" placeholder="NIS : 2023010001" autofocus>
                                 <select name="madrasah_diniyah" id="" class=" py-1">
                                     <option value="Wustho">--Wustho--</option>
                                 </select>

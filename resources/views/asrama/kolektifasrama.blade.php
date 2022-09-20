@@ -24,7 +24,7 @@
 
                     <form action="/kolektifasrama" method="post" enctype="multipart/form-data">
                         @csrf
-                        <div class=" py-1 w-3/5 grid grid-cols-2 gap-2 ">
+                        <div class=" py-1 w-3/5 flex grid-cols-2 gap-2 ">
                             <select name="asramasiswa_id" id="" class=" py-1 w-full" required>
                                 <option value="">-- Pilih Sesui kelas --</option>
                                 @foreach($kelas as $kelas )
@@ -32,6 +32,7 @@
                                 @endforeach
                             </select>
                             <button type="submit" class=" w-1/5 bg-blue-600 text-white rounded-sm px-2 py-1"> Kolektif</button>
+                            <div class=" flex justify-end ">{{$a}}</div>
                         </div>
                         <table class=" w-full">
                             <thead>
