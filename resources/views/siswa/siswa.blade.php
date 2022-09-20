@@ -18,7 +18,7 @@
                     </a>
                     @endrole
                     <form action="/siswa" method="get" class=" flex gap-1">
-                        <input type="text" name="cari" value="{{ request('cari') }}" class=" border border-green-800 text-green-800 rounded-md py-1 " placeholder=" Cari ..">
+                        <input type="text" name="cari" value="{{ request('cari') }}" class=" border border-green-800 text-green-800 rounded-md py-1 " placeholder=" Cari .." autofocus>
 
                         <button type="submit" class=" px-2   bg-blue-500  rounded-md text-white">
                             Cari </button>
