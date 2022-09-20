@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Nis;
 use App\Models\Kelas;
+use App\Models\Kelasmi;
 use App\Models\Mapel;
 use App\Models\Nilai;
+use App\Models\Periode;
 use App\Models\Siswa;
 use App\Models\Pesertakelas;
 use App\Models\Statuspengamal;
@@ -154,22 +156,51 @@ class SiswaController extends Controller
     }
     public function transkip(Pesertakelas $pesertakelas, Siswa $siswa)
     {
+        
         $transkip = Nilai::query()
             ->join('pesertakelas', 'pesertakelas.id', '=', 'nilai.pesertakelas_id')
             ->join('siswa', 'siswa.id', '=', 'pesertakelas.siswa_id')
             ->join('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
             ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
             ->join('semester', 'semester.id', '=', 'periode.semester_id')
+            ->join('nilaimapel', 'nilaimapel.id', '=', 'nilai.nilaimapel_id')
+            ->join('mapel', 'mapel.id', '=', 'nilaimapel.mapel_id')
         ->join('kelas', 'kelas.id', '=', 'kelasmi.kelas_id')
-        // ->select('siswa.id', 'siswa.nama_siswa', 'nilai.nilai_ujian', 'nilai.nilai_harian', 'kelasmi.nama_kelas')
-        ->where('pesertakelas.siswa_id', $siswa->id)
+            ->select(
+                [
+                    'siswa.id',
+                    'siswa.nama_siswa',
+                    'nilai.nilai_ujian',
+                    'nilai.nilai_harian',
+                    'kelasmi.nama_kelas',
+                    'kelasmi.periode_id',
+                    'periode.periode',
+                    'periode.id',
+                    'semester.ket_semester',
+                    'mapel.mapel',
+                ]
+            )
+            ->where('pesertakelas.siswa_id', $siswa->id);
+        if (request('cari')) {
+            $transkip->where(function ($query) {
+                $query->where('periode', 'like', '%' . request('cari') . '%')
+                ->orWhere('ket_semester', 'like', '%' . request('cari') . '%');
+            });
+            // ->orWhere('nama_kelas', 'like', '%' . request('cari') . '%')
+            // ->orWhere('nis', 'like', '%' . request('cari') . '%')
+            // ->orWhere('tanggal_masuk', 'like', '%' . request('cari') . '%')
+
+        }
+        $periode = Kelasmi::query()
+        ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
+        ->select('periode.id', 'periode.periode')
         ->get();
         return view(
             'siswa/transkip',
             [
-                'siswa' => $transkip,
-                
-                
+                'periode' => $periode,
+                'siswa' => $siswa,
+                'transkip' => $transkip->get(),
             ]
         );
        

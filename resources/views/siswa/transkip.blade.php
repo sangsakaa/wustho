@@ -32,17 +32,33 @@
                             </svg>
                             Cetak Transkip Nilai</button>
                         @endrole
-                        <form action="/transkip" method="get" class=" flex gap-1">
+                        <form action="/transkip/{{$siswa->id}}" method="get" class="  gap-1">
                             <input type="text" name="cari" value="{{ request('cari') }}" class=" border border-green-800 text-green-800 rounded-md py-1 " placeholder=" Cari ..">
 
-                            <button type="submit" class=" px-2   bg-blue-500  rounded-md text-white">
-                                Cari </button>
+                            <!-- <select name="cari" id="" value="{{ request('cari') }}" class=" py-1 rounded-md ">
+                                @foreach($periode as $item)
+                                <option value="{{$item->id}}">{{$item->periode}} {{$item->ket_semester}}</option>
+                                @endforeach
+                            </select> -->
+                            <button type="submit" class=" px-2 py-1   bg-blue-500  rounded-md text-white">
+                                Filter </button>
                         </form>
                     </div>
                     <div id="div1">
                         <p class=" capitalize text-center mt-2 mb-2 text-2xl ">kartu hasil tadris</p>
 
-                        <table class=" w-full">
+                        <div class=" grid grid-cols-4">
+                            <div>Nomor Induk Siswa</div>
+                            <div class=" text-sm">: {{$siswa->nama_siswa}}</div>
+                            <div>Periode / Semester</div>
+                            <div>: -</div>
+                            <div>Kelas</div>
+                            <div>: {{$siswa->nama_siswa}}</div>
+                            <div>Periode / Semester</div>
+                            <div>: -</div>
+                        </div>
+                        <hr>
+                        <table class=" w-full mt-2">
                             <thead>
                                 <tr class=" border bg-gray-100">
                                     <th class=" px-2 py-1 border capitalize">no</th>
@@ -55,22 +71,25 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($siswa as $nilai)
+                                @if($transkip->count() !== null)
+                                @foreach($transkip as $nilai)
                                 <tr class=" hover:bg-gray-50">
                                     <th class=" border w-5">{{$loop->iteration}}</th>
-                                    <td class=" px-2 border ">{{$nilai->periode}} {{$nilai->ket_semester}}</td>
+                                    <td class=" px-2 border  ">{{$nilai->periode}} {{$nilai->ket_semester}}</td>
                                     <!-- <td class=" px-2 border ">{{$nilai->nama_siswa}}</td> -->
-                                    <td class=" px-2 border w-5 text-center">{{$nilai->nama_kelas}}</td>
-                                    <td class=" px-2 border w-40">{{$nilai->mapel}}</td>
-                                    <td class=" px-2 border w-20 text-center">{{$nilai->nilai_harian}}</td>
-                                    <td class=" px-2 border w-20 text-center">{{$nilai->nilai_ujian}}</td>
+                                    <td class=" px-2 border  text-center">{{$nilai->nama_kelas}}</td>
+                                    <td class=" px-2 border ">{{$nilai->mapel}}</td>
+                                    <td class=" px-2 border  text-center w-10">{{$nilai->nilai_harian}}</td>
+                                    <td class=" px-2 border  text-center w-10">{{$nilai->nilai_ujian}}</td>
                                 </tr>
                                 @endforeach
+                                @else
+                                ok
+                                @endif
                                 <tr>
                                     <td class=" px-2 border w-40  text-center" colspan="4">Jumlah Nilai</td>
                                     <td class=" px-2 border w-40  text-center"></td>
                                     <td class=" px-2 border w-40  text-center"></td>
-
                                 </tr>
                                 <tr>
                                     <td class=" px-2 border  text-center " colspan="4">

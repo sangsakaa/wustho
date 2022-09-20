@@ -82,7 +82,7 @@
                                 @endif
                                 <tr>
                                     <td class=" py-1 " colspan="6">
-                                        {{$Datasiswa}}
+
                                     </td>
                                 </tr>
                             </tbody>

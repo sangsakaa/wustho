@@ -66,6 +66,7 @@
                                     <th class=" border px-1  py-1">#</th>
                                     <th class=" border px-1">Periode</th>
                                     <th class=" border px-1">Semester</th>
+                                    <th class=" border px-1">Nilai</th>
                                     <th class=" border px-1">Nama Guru</th>
                                     <th class=" border px-1">Kelas</th>
                                     <th class=" border px-1">Nama Kelas</th>
@@ -83,15 +84,23 @@
                                     <th class=" border px-1">{{$loop->iteration}}</th>
                                     <th class=" border text-center px-1">{{$nilai->periode}} {{$nilai->ket_semester}} </td>
                                     <th class=" border text-center px-1">{{$nilai->semester}} </td>
-
-                                    <th class=" border text-left px-1"><a href="/nilai/{{$nilai->id}}">{{$nilai->nama_guru}}</a> </td>
+                                    <th class=" border text-center px-1 py-2">
+                                        <a href="/nilai/{{$nilai->id}}" class=" text-white bg-blue-600 hover:bg-purple-700  px-4 py-1 rounded-md">
+                                            Nilai
+                                        </a>
+                                    </th>
+                                    <th class=" border text-left px-1">
+                                        <a href="/nilai/{{$nilai->id}}">
+                                            {{$nilai->nama_guru}}
+                                        </a>
+                                    </th>
                                     <th class=" border text-center px-1"><a href="/nilai/{{$nilai->id}}">{{$nilai->kelas}}</a> </td>
                                     <th class=" border text-center px-1"><a href="/nilai/{{$nilai->id}}">{{$nilai->nama_kelas}}</a> </td>
                                     <th class=" border text-center px-1">{{$nilai->mapel}} </td>
                                     <th class=" border text-center px-1">{{$nilai->jumlah_peserta_kelas}} </td>
                                     <th class=" border text-center px-1">{{$nilai->jumlah_nilai_harian}} </td>
                                     <th class=" border text-center px-1">{{$nilai->jumlah_nilai_ujian}} </td>
-                                    <td class=" grid justify-items-center">
+                                    <td class=" grid justify-items-center py-1">
                                         <form action="/nilaimapel/{{$nilai->id}}" method="post">
                                             @csrf
                                             @method('delete')

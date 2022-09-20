@@ -213,7 +213,7 @@ class AsramasiswaController extends Controller
         return view(
             'asrama/kolektifasrama',
             [
-                'Datasiswa' => $Datasiswa->paginate(20),
+                'Datasiswa' => $Datasiswa->get(),
                 'kelas' => $kelas
             ]
         );
