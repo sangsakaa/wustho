@@ -45,7 +45,7 @@
                             @role('admin')
                             <form action="/nis/{{$siswa->id}}" method="post">
                                 @csrf
-                                <input type="hidden" name="siswa_id" value="{{$siswa->id}}" class=" py-1">
+                                <input type="hidden" name="siswa_id" value="{{$siswa->id}}" class=" py-1" required>
                                 <input type="text" name="nis" class=" py-1" placeholder="NIS : 2023010001">
                                 <select name="madrasah_diniyah" id="" class=" py-1">
                                     <option value="Wustho">--Wustho--</option>
@@ -53,7 +53,7 @@
                                 <select name="nama_lembaga" id="" class=" py-1">
                                     <option value="Wahidiyah">--Wahidiyah--</option>
                                 </select>
-                                <input type="date" name="tanggal_masuk" id="" class=" py-1">
+                                <input type="date" name="tanggal_masuk" id="" class=" py-1" required>
                                 <button class=" bg-blue-600 py-1 px-2 text-white rounded-sm">Create NIS</button>
                             </form>
                             @endrole
