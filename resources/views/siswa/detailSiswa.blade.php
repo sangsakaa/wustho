@@ -39,10 +39,12 @@
                         <div class=" grid grid-cols-1 justify-items-end">
                             <a href="/biodata/{{$siswa->id}}" class=" bg-blue-500 px-2 py-1 hover:bg-purple-500 text-white">Biodata Lengkap</a>
                         </div>
-                        {{$pesertakelas}}
+                        @if ($pesertakelas !== null)
+
                         <div class=" grid grid-cols-1 justify-items-end">
-                            <a href="/transkip/" class=" bg-blue-500 px-2 py-1 hover:bg-purple-500 text-white">Transkip Nilai</a>
+                            <a href="/transkip/{{$pesertakelas->siswa_id}}" class=" bg-blue-500 px-2 py-1 hover:bg-purple-500 text-white">Transkip Nilai</a>
                         </div>
+                        @endif
                         <div class=" grid grid-cols-1 justify-items-end">
                             <a href="/nis/{{$siswa->id}}" class=" bg-blue-500 px-2 py-1 hover:bg-purple-500 text-white">Nomor Induk siswa</a>
                         </div>
@@ -51,9 +53,7 @@
                     </div>
                     <div class=" grid grid-cols-1 sm:grid-cols-2 gap-2">
                         <div>
-
                             <span>Detail Kelas</span>
-
                             <table class=" w-full    ">
                                 <thead>
                                     <tr class=" border-collapse">
@@ -63,10 +63,8 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-
                                 </tbody>
                             </table>
-
                         </div>
                     </div>
                 </div>

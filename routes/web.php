@@ -24,7 +24,7 @@ Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['au
 Route::get('siswa', [SiswaController::class, 'index'])->middleware(['auth'])->name('siswa');
 Route::get('siswa/{siswa}', [SiswaController::class, 'show']);
 Route::get('biodata/{siswa}', [SiswaController::class, 'biodata']);
-Route::get('transkip', [SiswaController::class, 'transkip']);
+Route::get('transkip/{siswa}', [SiswaController::class, 'transkip']);
 Route::get('nis/{siswa}', [SiswaController::class, 'nis']);
 Route::get('addsiswa', [SiswaController::class, 'create']);
 Route::post('siswa', [SiswaController::class, 'store']);

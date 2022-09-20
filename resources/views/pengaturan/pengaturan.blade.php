@@ -33,6 +33,7 @@
                                         <th class=" border px-2">#</th>
                                         <th class=" border px-2 text-center">Daftar Raport</th>
                                         <th class=" border px-2 text-center">Kelas</th>
+                                        <th class=" border px-2 text-center">Nama Kelas</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -47,6 +48,10 @@
                                         <th class=" border px-2 text-center">
                                             <a href="/report/{{$list->id}}"> {{$list->kelas}}</a>
                                         </th>
+                                        <th class=" border px-2 text-center">
+                                            <a href="/report/{{$list->id}}"> {{$list->nama_kelas}}</a>
+                                        </th>
+
                                     </tr>
                                     @endforeach
                                 </tbody>

@@ -37,18 +37,17 @@
 
                             <button type="submit" class=" px-2   bg-blue-500  rounded-md text-white">
                                 Cari </button>
-
                         </form>
-
                     </div>
-
                     <div id="div1">
-                        <p class=" capitalize text-center mt-2 mb-2 ">Daftar nilai Setiap Mata pelajaran</p>
+                        <p class=" capitalize text-center mt-2 mb-2 text-2xl ">kartu hasil tadris</p>
+
                         <table class=" w-full">
                             <thead>
                                 <tr class=" border bg-gray-100">
                                     <th class=" px-2 py-1 border capitalize">no</th>
-                                    <th class=" px-2 border capitalize">Peserta Kelas</th>
+                                    <th class=" px-2 border capitalize">Periode</th>
+                                    <!-- <th class=" px-2 border capitalize">Peserta Kelas</th> -->
                                     <th class=" px-2 border capitalize">Kelas</th>
                                     <th class=" px-2 border capitalize">Mata Pelajaran</th>
                                     <th class=" px-2 border capitalize text-center">nilai harian</th>
@@ -59,17 +58,18 @@
                                 @foreach($siswa as $nilai)
                                 <tr class=" hover:bg-gray-50">
                                     <th class=" border w-5">{{$loop->iteration}}</th>
-                                    <td class=" px-2 border w-1/2">{{$nilai->nama_siswa}}</td>
+                                    <td class=" px-2 border ">{{$nilai->periode}} {{$nilai->ket_semester}}</td>
+                                    <!-- <td class=" px-2 border ">{{$nilai->nama_siswa}}</td> -->
                                     <td class=" px-2 border w-5 text-center">{{$nilai->nama_kelas}}</td>
                                     <td class=" px-2 border w-40">{{$nilai->mapel}}</td>
-                                    <td class=" px-2 border w-40 text-center">{{$nilai->nilai_harian}}</td>
-                                    <td class=" px-2 border w-40 text-center">{{$nilai->nilai_ujian}}</td>
+                                    <td class=" px-2 border w-20 text-center">{{$nilai->nilai_harian}}</td>
+                                    <td class=" px-2 border w-20 text-center">{{$nilai->nilai_ujian}}</td>
                                 </tr>
                                 @endforeach
                                 <tr>
                                     <td class=" px-2 border w-40  text-center" colspan="4">Jumlah Nilai</td>
-                                    <td class=" px-2 border w-40  text-center">{{$harian}}</td>
-                                    <td class=" px-2 border w-40  text-center">{{$ujian}}</td>
+                                    <td class=" px-2 border w-40  text-center"></td>
+                                    <td class=" px-2 border w-40  text-center"></td>
 
                                 </tr>
                                 <tr>
@@ -77,10 +77,10 @@
                                         Rata Rata
                                     </td>
                                     <td class=" px-2 border  text-center " colspan="1">
-                                        {{number_format($rata2harian,2,',')}}
+
                                     </td>
                                     <td class=" px-2 border  text-center " colspan="1">
-                                        {{number_format($rata2ujian,2,',')}}
+
                                     </td>
                                 </tr>
                             </tbody>

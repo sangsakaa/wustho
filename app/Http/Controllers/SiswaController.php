@@ -119,7 +119,10 @@ class SiswaController extends Controller
      */
     public function show(Siswa $siswa, Pesertakelas $pesertakelas)
     {
-        $pes = Nilai::Find($pesertakelas)->first();
+        $pes = Pesertakelas::query()
+            ->join('siswa', 'siswa.id', 'pesertakelas.siswa_id')
+            ->select('pesertakelas.siswa_id')
+            ->where('siswa_id', $siswa->id)->first();
         return view('siswa/detailSiswa', ['siswa' => $siswa, 'pesertakelas' => $pes]);
     }
     public function biodata(Siswa $siswa)
@@ -149,37 +152,24 @@ class SiswaController extends Controller
             ->get();
         return view('siswa/detailSiswa', ['detailKelas' => $data, 'siswa' => $siswa, 'dataKelas' => $dataKelas]);
     }
-    public function transkip(Pesertakelas $pesertakelas)
+    public function transkip(Pesertakelas $pesertakelas, Siswa $siswa)
     {
         $transkip = Nilai::query()
-            ->join('nilaimapel', 'nilaimapel.id', '=', 'nilai.nilaimapel_id')
-        ->join('kelasmi', 'kelasmi.id', '=', 'nilaimapel.kelasmi_id')
+            ->join('pesertakelas', 'pesertakelas.id', '=', 'nilai.pesertakelas_id')
+            ->join('siswa', 'siswa.id', '=', 'pesertakelas.siswa_id')
+            ->join('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
+            ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
+            ->join('semester', 'semester.id', '=', 'periode.semester_id')
         ->join('kelas', 'kelas.id', '=', 'kelasmi.kelas_id')
-        ->join('mapel', 'mapel.id', '=', 'nilaimapel.mapel_id')
-        ->join('siswa', 'siswa.id', '=', 'nilai.pesertakelas_id');
-        // ->where('pesertakelas_id', $pesertakelas->id);
-        if (request('cari')) {
-            $transkip->where('nama_siswa', 'like', '%' . request('cari') . '%')
-                ->orWhere('nama_kelas', 'like', '%' . request('cari') . '%')
-                ->orWhere('mapel', 'like', '%' . request('cari') . '%');
-            // ->orWhere('nis', 'like', '%' . request('cari') . '%')
-            // ->orWhere('tanggal_masuk', 'like', '%' . request('cari') . '%')
-            // ->orderBy('nis', 'asc');
-        }
-        $harian = $transkip->sum('nilai_harian');
-        $ujian = $transkip->sum('nilai_ujian');
-        $mapel = $transkip->count('nilaimapel_id');
-        $rata2harian = $harian / $mapel;
-        $rata2ujian = $ujian / $mapel;
+        // ->select('siswa.id', 'siswa.nama_siswa', 'nilai.nilai_ujian', 'nilai.nilai_harian', 'kelasmi.nama_kelas')
+        ->where('pesertakelas.siswa_id', $siswa->id)
+        ->get();
         return view(
             'siswa/transkip',
             [
-                'siswa' => $transkip->get(),
-                'harian' => $harian,
-                'ujian' => $ujian,
-                'mapel' => $mapel,
-                'rata2harian' => $rata2harian,
-                'rata2ujian' => $rata2ujian
+                'siswa' => $transkip,
+                
+                
             ]
         );
        
