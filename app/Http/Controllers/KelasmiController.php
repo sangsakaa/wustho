@@ -130,7 +130,7 @@ class KelasmiController extends Controller
         return view(
             'kelas_mi/pesertakelas',
             [
-                'dataKelas' => $dataKelas->paginate(20),
+                'dataKelas' => $dataKelas->paginate(15),
                 'datakelasmi' => $datakelasmi,
                 'kelasmi' => $kelasmi,
                 'hitung' => $anggota
