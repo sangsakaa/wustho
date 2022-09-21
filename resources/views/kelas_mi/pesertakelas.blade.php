@@ -33,7 +33,7 @@
                     </div>
                     <div class=" grid grid-cols-2">
                         <div>
-                            <a href="/pesertakolektif">
+                            <a href="/pesertakolektif/{{ $kelasmi->id }}">
                                 <button class=" bg-blue-600 text-white rounded-sm px-2 py-1 "> Kolektif</button>
                             </a>
                             <a href="/kelas_mi">

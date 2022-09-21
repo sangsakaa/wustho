@@ -40,7 +40,7 @@ Route::get('kelas/{kelas}/edit', [KelasController::class, 'edit'])->middleware([
 Route::post('kelas', [KelasController::class, 'store'])->middleware(['auth'])->name('kelas');
 Route::delete('kelas/{kelas}', [KelasController::class, 'destroy'])->middleware(['auth']);
 Route::post('pesertakolektif', [KelasController::class, 'StoreKolektif'])->middleware(['auth'])->name('pesertakolektif');
-Route::get('pesertakolektif', [KelasController::class, 'pesertakolektif'])->middleware(['auth']);
+Route::get('pesertakolektif/{kelasmi}', [KelasController::class, 'pesertakolektif'])->middleware(['auth']);
 // CONTROLLER KELAS MI
 Route::get('kelas_mi', [KelasmiController::class, 'index'])->middleware(['auth'])->name('kelas_mi');
 Route::get('addkelas_mi', [KelasmiController::class, 'create'])->middleware(['auth'])->name('addkelas_mi');
