@@ -195,11 +195,23 @@ class SiswaController extends Controller
         ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
         ->select('periode.id', 'periode.periode')
         ->get();
+        $tittle = $siswa->query()
+            ->join('nis', 'nis.siswa_id', '=', 'siswa.id')
+            ->select(
+                [
+                    'nis.nis',
+                    'siswa.id',
+                    'siswa.nama_siswa'
+                ]
+            )
+            ->where('siswa.id', $siswa->id)
+            ->first();
         return view(
             'siswa/transkip',
             [
-                'periode' => $periode,
                 'siswa' => $siswa,
+                'periode' => $periode,
+                'tittle' => $tittle,
                 'transkip' => $transkip->get(),
             ]
         );
