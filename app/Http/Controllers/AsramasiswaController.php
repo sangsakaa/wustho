@@ -197,8 +197,8 @@ class AsramasiswaController extends Controller
                 ]
             )
             // ->orderBy('nis.nis')
-            ->orderBy('siswa.nama_siswa');
-        // ->orderBy('siswa.jenis_kelamin');
+            // ->orderBy('siswa.nama_siswa');
+            ->orderBy('siswa.jenis_kelamin');
         if (request('cari')) {
             $Datasiswa->where(function ($query) {
                 $query->where('nis', 'like', '%' . request('cari') . '%')
