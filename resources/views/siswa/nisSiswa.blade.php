@@ -53,7 +53,7 @@
                                 <select name="nama_lembaga" id="" class=" py-1">
                                     <option value="Wahidiyah">--Wahidiyah--</option>
                                 </select>
-                                <input type="date" name="tanggal_masuk" id="" class=" py-1" required>
+                                <input type="date" name="tanggal_masuk" id="" class=" py-1" value="01-01-2021" required>
                                 <button class=" bg-blue-600 py-1 px-2 text-white rounded-sm">Create NIS</button>
                             </form>
                             @endrole
