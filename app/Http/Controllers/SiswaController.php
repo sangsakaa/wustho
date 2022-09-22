@@ -186,11 +186,14 @@ class SiswaController extends Controller
             $transkip->where(function ($query) {
                 $query->where('semester', 'like', '%' . request('cari') . '%');
             });
-            // ->orWhere('nama_kelas', 'like', '%' . request('cari') . '%')
-            // ->orWhere('nis', 'like', '%' . request('cari') . '%')
-            // ->orWhere('tanggal_masuk', 'like', '%' . request('cari') . '%')
+            
 
         }
+        $jmlujian = $transkip->sum('nilai_ujian');
+        $countujian = $transkip->count('nilai_ujian');
+        $jmlharian = $transkip->sum('nilai_harian');
+        $rata1 = $jmlharian / $countujian;
+        $rata2 = $jmlujian / $countujian;
         $periode = Periode::query()
         ->join('semester', 'semester.id', '=', 'periode.semester_id')
         ->select('semester.id', 'periode.periode', 'semester.ket_semester')
@@ -203,7 +206,11 @@ class SiswaController extends Controller
             [
                 'siswa' => $siswa,
                 'periode' => $periode,
-                // 'tittle' => $tittle,
+                'jmlujian' => $jmlujian,
+                'jmlharian' => $jmlharian,
+                'countujian' => $countujian,
+                'rata2' => $rata2,
+                'rata1' => $rata1,
                 'transkip' => $transkip->get(),
             ]
         );

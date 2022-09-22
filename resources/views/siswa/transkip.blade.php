@@ -80,22 +80,26 @@
                                 @endif
                                 <tr>
                                     <td class=" px-2 border w-40  text-center" colspan="4">Jumlah Nilai</td>
-                                    <td class=" px-2 border w-40  text-center"></td>
-                                    <td class=" px-2 border w-40  text-center"></td>
+                                    <td class=" px-2 border w-40  text-center">{{$jmlharian}}</td>
+                                    <td class=" px-2 border w-40  text-center">{{$jmlujian}}</td>
                                 </tr>
                                 <tr>
                                     <td class=" px-2 border  text-center " colspan="4">
                                         Rata Rata
                                     </td>
                                     <td class=" px-2 border  text-center " colspan="1">
-
+                                        {{$rata1}}
                                     </td>
                                     <td class=" px-2 border  text-center " colspan="1">
-
+                                        {{$rata2}}
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
+                        <div class=" grid  grid-cols-2">
+                            <div>Jumlah Mata Pelajaran yang diambil</div>
+                            <div> : {{$countujian}}</div>
+                        </div>
                     </div>
 
                 </div>
