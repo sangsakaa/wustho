@@ -57,7 +57,7 @@ class SiswaController extends Controller
             ->orWhere('tanggal_masuk', 'like', '%' . request('cari') . '%')
             ->orderBy('nis', 'asc');
         }
-        return view('siswa/siswa', ['dataSiswa' => $data->paginate(20)]);
+        return view('siswa/siswa', ['dataSiswa' => $data->paginate(10)]);
     }
 
 
