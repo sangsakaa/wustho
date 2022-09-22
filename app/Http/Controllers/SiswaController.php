@@ -168,14 +168,15 @@ class SiswaController extends Controller
         ->join('kelas', 'kelas.id', '=', 'kelasmi.kelas_id')
             ->select(
                 [
-                    'siswa.id',
+                    
                     'siswa.nama_siswa',
                     'nilai.nilai_ujian',
                     'nilai.nilai_harian',
                     'kelasmi.nama_kelas',
                     'kelasmi.periode_id',
                     'periode.periode',
-                    'periode.id',
+                // 'periode.id',
+                'semester.id',
                     'semester.ket_semester',
                     'mapel.mapel',
                 ]
@@ -183,35 +184,26 @@ class SiswaController extends Controller
             ->where('pesertakelas.siswa_id', $siswa->id);
         if (request('cari')) {
             $transkip->where(function ($query) {
-                $query->where('periode', 'like', '%' . request('cari') . '%')
-                ->orWhere('ket_semester', 'like', '%' . request('cari') . '%');
+                $query->where('semester', 'like', '%' . request('cari') . '%');
             });
             // ->orWhere('nama_kelas', 'like', '%' . request('cari') . '%')
             // ->orWhere('nis', 'like', '%' . request('cari') . '%')
             // ->orWhere('tanggal_masuk', 'like', '%' . request('cari') . '%')
 
         }
-        $periode = Kelasmi::query()
-        ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
-        ->select('periode.id', 'periode.periode')
+        $periode = Periode::query()
+        ->join('semester', 'semester.id', '=', 'periode.semester_id')
+        ->select('semester.id', 'periode.periode', 'semester.ket_semester')
         ->get();
-        $tittle = $siswa->query()
-            ->join('nis', 'nis.siswa_id', '=', 'siswa.id')
-            ->select(
-                [
-                    'nis.nis',
-                    'siswa.id',
-                    'siswa.nama_siswa'
-                ]
-            )
-            ->where('siswa.id', $siswa->id)
-            ->first();
+        // $tittle = $transkip->join('nis', 'nis.siswa_id', '=', 'siswa.id')
+        //     // ->where('pesertakelas.siswa_id', $siswa->id)
+        //     ->first();
         return view(
             'siswa/transkip',
             [
                 'siswa' => $siswa,
                 'periode' => $periode,
-                'tittle' => $tittle,
+                // 'tittle' => $tittle,
                 'transkip' => $transkip->get(),
             ]
         );
