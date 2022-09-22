@@ -1,13 +1,10 @@
 <x-guest-layout>
-
     <x-auth-card>
-
         <div class=" grid grid-cols-1 justify-items-center   ">
-            <img src="asset/images/logo.png" alt="">
+            <img src="asset/images/logo.png" alt="" width="100px">
             <span class=" uppercase text-center">s m e d i</span>
-            <span class="  capitalize text-center text-2xl">sistem manajemen diniyah</span>
+            <span class="  capitalize text-center sm:text-2xl text-sm">sistem manajemen diniyah</span>
         </div>
-
         <!-- Session Status -->
         <x-auth-session-status class="mb-4" :status="session('status')" />
 
