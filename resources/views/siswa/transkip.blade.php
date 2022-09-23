@@ -47,10 +47,11 @@
                     </div>
                     <div id="div1">
 
+                        <img src="{{ asset('images/04.jpg') }}" alt="">f
                         <div class=" text-center p-2 bg-green-800 text-white ">
                             <p class=" uppercase text-2xl">pondok pesantren kedunglo al munadhdhoro</p>
-                            <p class=" uppercase text-2xl  text-bold">madrasah diniyah wusto wahidiyah</p>
-                            <p class=" capitalize  sm:text-2xl text-sm">jln. KH. Wahid hasyim bandar lor kec. mojoro kediri 64114 telp.(0354) 771018 - 774511</p>
+                            <p class=" uppercase text-2xl  text-bold">madrasah diniyah wustho wahidiyah</p>
+                            <p class=" capitalize  sm:text-sm text-sm">jln. KH. Wahid hasyim bandar lor kec. mojoro kediri 64114 telp.(0354) 771018 - 774511</p>
                         </div>
                         <hr class="py-1  border-green-800">
                         <p class=" capitalize text-center mt-2 mb-2 text-2xl ">kartu hasil tadris</p>

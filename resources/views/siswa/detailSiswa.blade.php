@@ -54,6 +54,7 @@
                     <div class=" grid grid-cols-1 sm:grid-cols-2 gap-2">
                         <div>
                             <span>Detail Kelas</span>
+
                             <table class=" w-full    ">
                                 <thead>
                                     <tr class=" border-collapse">
