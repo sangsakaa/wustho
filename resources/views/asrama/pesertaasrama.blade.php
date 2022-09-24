@@ -69,9 +69,8 @@
                             </tr>
                         </thead>
                         <tbody>
-
                             @foreach($datapeserta as $siswa)
-                            <tr class=" boerder hover:bg-gray-100">
+                            <tr class="  hover:bg-gray-100">
                                 <td class=" border px-2 text-center">
                                     {{$loop->iteration}}
                                 </td>
@@ -94,14 +93,19 @@
                                 <td class=" border px-2">
                                     {{$siswa->kota_asal}}
                                 </td>
-                                <td class=" flex justify-center border  px-2">
+                                <td class=" text-sm flex justify-center py-1  gap-1 border">
                                     <form action="/pesertaasrama/{{$siswa->id}}" method="post">
                                         @csrf
                                         @method('delete')
-                                        <button class=" bg-red-500 text-white p-1 rounded-md"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <button class=" bg-red-500 text-white p-1 rounded-md flex"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
                                             </svg></button>
                                     </form>
+                                    <a href="/pesertaasrama/{{$siswa->id}}/edit" class=" bg-yellow-500 rounded p-1 flex ">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                        </svg></a>
+
                                 </td>
                             </tr>
                             @endforeach

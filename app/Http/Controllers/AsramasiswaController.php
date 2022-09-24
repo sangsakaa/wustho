@@ -140,6 +140,24 @@ class AsramasiswaController extends Controller
     {
         return view('asrama/editasramasiswa', ['asramasiswa' => $asramasiswa]);
     }
+    public function editpeserta(Pesertaasrama $pesertaasrama,)
+    {
+        $anggota = $pesertaasrama
+            ->join('siswa', 'siswa.id', '=', 'pesertaasrama.siswa_id')
+            ->join('asramasiswa', 'asramasiswa.id', '=', 'pesertaasrama.asramasiswa_id')
+            ->find($pesertaasrama->id);
+
+        $siswaasrama = Asramasiswa::query()
+            ->join('asrama', 'asrama.id', '=', 'asramasiswa.asrama_id')->get();
+        return view(
+            'asrama/editpeserta',
+            [
+                'pesertaasrama' => $pesertaasrama,
+                'anggota' => $anggota,
+                'siswaasrama' => $siswaasrama
+            ]
+        );
+    }
 
     /**
      * Update the specified resource in storage.
