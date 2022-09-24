@@ -12,16 +12,31 @@
                         <!-- <button class=" bg-blue-600 text-white rounded-sm px-2 py-1"> siswa</button> -->
                     </a>
                     <div class=" grid grid-cols-1 py-6 px-4">
-                        <form action="/asrama" method="post">
+                        <form action="/asramasiswa" method="post">
                             @csrf
-                            <select name="type_asrama" id="" class=" w-1/4 py-1">
-                                <option value=""> -- Pilih Type Asrama --</option>
-                                <option value="Putra"> Asrama Putra</option>
-                                <option value="Putri"> Asrama Putri</option>
-                            </select>
-                            <input type="text" name="nama_asrama" class=" w-1/4 py-1 " placeholder=" Asrama : Al Hikam">
-                            <button class=" bg-blue-600 text-white rounded-md px-2 py-1"> simpan</button>
-                            <a href="/asramasiswa" class=" bg-blue-600 text-white rounded-md px-2 py-1">Kembali</a>
+                            <div class=" flex grid-cols-2   gap-2 ">
+
+                                <div>
+                                    <select name="asrama_id" id="" class="  py-1">
+                                        <option value=""> -- Pilih Asrama --</option>
+                                        @foreach($datasrama as $item )
+                                        <option value="{{$item->id}}"> {{$item->nama_asrama}}</option>
+                                        @endforeach
+                                    </select>
+                                    <select name="periode_id" id="" class="  py-1">
+                                        <option value=""> -- Pilih Periode --</option>
+                                        @foreach($periode as $item )
+                                        <option value="{{$item->id}}"> {{$item->periode}} {{$item->ket_semester}}</option>
+                                        @endforeach
+                                    </select>
+                                    <input type="text" name="kuota" class=" py-1 " placeholder=" Kuota : 40">
+                                </div>
+                                <div>
+
+                                    <button class=" bg-blue-600 text-white rounded-md px-2 py-1"> create asrama siswa </button>
+                                    <a href="/asramasiswa" class=" bg-red-600 text-white rounded-md px-2 py-1"> back asrama siswa </a>
+                                </div>
+                            </div>
                         </form>
 
                     </div>

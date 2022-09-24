@@ -72,8 +72,20 @@ class AsramasiswaController extends Controller
      */
     public function create()
     {
-        // $asrama = Asrama::all();
-        return view('asrama/addasramasiswa');
+        $periode = Periode::query()
+            ->join('semester', 'semester.id', '=', 'periode.semester_id')
+            ->select('periode.id', 'ket_semester', 'periode.periode')
+            ->get();
+        $dataasrama = Asrama::query()
+
+            ->get();
+        return view(
+            'asrama/addasramasiswa',
+            [
+                'datasrama' => $dataasrama,
+                'periode' => $periode
+            ]
+        );
     }
 
     /**

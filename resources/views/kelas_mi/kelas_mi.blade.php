@@ -62,7 +62,7 @@
                             </div>
                             @endif
                             <div class=" overflow-auto">
-                                <Table class=" w-full  border-collapse border border-slate-500 ">
+                                <Table class=" w-full  border-collapse border border-slate-500 mt-2 ">
                                     <thead>
                                         <tr class=" text-xs border bg-gray-100 ">
                                             <th class=" text-xs py-1">No</th>
