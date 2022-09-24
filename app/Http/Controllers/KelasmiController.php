@@ -56,6 +56,7 @@ class KelasmiController extends Controller
             ->orderBy('periode')
             ->orderBy('ket_semester')
             ->orderBy('kelas')
+            ->orderBy('nama_kelas')
             ->get();
         // dd($kelasMI);
         return view(
