@@ -26,7 +26,7 @@ class KelasmiController extends Controller
 
         $dataPeriode = Periode::query()
             ->join('semester', 'semester.id', '=', 'periode.semester_id')
-            ->select('periode.id', 'periode.periode')
+            ->select('periode.id', 'periode.periode', 'semester.ket_semester')
             ->orderBy('periode')->get();
         $dataKelas = Kelas::query()
             ->select('kelas.kelas', 'kelas.id')
