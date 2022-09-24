@@ -74,30 +74,30 @@
                                         <th class=" text-center">Aksi</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody class="">
                                     @if($kelasMI->count() != null)
                                     @foreach ($kelasMI as $item)
                                     <tr class=" hover:bg-green-200 border">
-                                        <th class=" text-center border">{{$loop->iteration}}</th>
-                                        <td class=" text-center border"> {{$item->periode}} {{$item->ket_semester}}</td>
-                                        <td class=" text-center border"><a href="/pesertakelas/{{$item->id}}"> {{$item->kelas}}</a></td>
-                                        <td class=" text-center py-2"><a href="/pesertakelas/{{$item->id}}" class=" bg-blue-600 text-white py-1 px-2 rounded-md hover:bg-purple-600">Kelas {{$item->nama_kelas}}</a></td>
-                                        <td class=" text-center border"> {{$item->kuota}}</td>
-                                        <td class=" text-center border"> {{$item->jumlah_nilai_ujian}}</td>
-                                        <td class=" px-2 border text-center w-40">
+                                        <th class=" text-xs text-center border">{{$loop->iteration}}</th>
+                                        <td class=" text-xs text-center border"> {{$item->periode}} {{$item->ket_semester}}</td>
+                                        <td class=" text-xs text-center border"><a href="/pesertakelas/{{$item->id}}"> {{$item->kelas}}</a></td>
+                                        <td class=" text-xs text-center py-2"><a href="/pesertakelas/{{$item->id}}" class=" text-xs bg-blue-600 text-white py-1 px-2 rounded-md hover:bg-purple-600">Kelas {{$item->nama_kelas}}</a></td>
+                                        <td class=" text-xs text-center border"> {{$item->kuota}}</td>
+                                        <td class=" text-xs text-center border"> {{$item->jumlah_nilai_ujian}}</td>
+                                        <td class=" text-xs px-2 border text-center w-40">
                                             @if($item->kuota == $item->jumlah_nilai_ujian )
-                                            <span class=" bg-yellow-300 px-4 py-1 rounded-md capitalize text-black">full</span>
+                                            <span class=" text-xs bg-yellow-300 px-4 py-1 rounded-md capitalize text-black">full</span>
                                             @elseif ($item->kuota <= $item->jumlah_nilai_ujian)
-                                                <span class=" bg-red-600 px-4 py-1 rounded-md capitalize text-white">over</span>
+                                                <span class=" text-xs bg-red-600 px-4 py-1 rounded-md capitalize text-white">over</span>
                                                 @elseif ($item->kuota >= $item->jumlah_nilai_ujian)
-                                                <span class=" bg-green-800 px-4 py-1 rounded-md capitalize text-white">still</span>
+                                                <span class=" text-xs bg-green-800 px-4 py-1 rounded-md capitalize text-white">still</span>
                                                 @endif
                                         </td>
-                                        <td class="  text-center mt-2  flex gap-1 justify-center  align-middle   ">
+                                        <td class=" text-xs  text-center mt-2  flex gap-1 justify-center  align-middle   ">
                                             <form action="/kelas_mi/{{$item->id}}" method="post">
                                                 @csrf
                                                 @method('delete')
-                                                <button class=" bg-red-500 text-white p-1 rounded-md"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                                <button class=" text-xs bg-red-500 text-white p-1 rounded-md"><svg xmlns="http://www.w3.org/2000/svg" class=" text-xsh-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                                         <path stroke-linecap="round" stroke-linejoin="round" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
                                                     </svg></button>
                                             </form>
