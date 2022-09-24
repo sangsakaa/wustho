@@ -23,7 +23,7 @@
                         <select name="kelasmi_id" id="" class=" px-2 py-1    ">
                             <option value="">-- Pilih Kelas --</option>
                             @foreach ($datakelasmi as $item)
-                                <option value="{{ $item->id }}" {{ $kelasmi->id == $item->id ? 'selected' : '' }}>
+                                <option value="{{ $item->id }}" {{ $kelasmi?->id == $item->id ? 'selected' : '' }}>
                                     {{ $item->nama_kelas }} - {{ $item->periode }}
                                 </option>
                             @endforeach

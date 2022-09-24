@@ -121,15 +121,17 @@ class RaportController extends Controller
 
         $kelasmi = Kelasmi::find($request->kelasmi_id);
 
-        $dataraportkelas = Nilaimapel::query()
-            ->join('nilai', 'nilai.nilaimapel_id', '=', 'nilaimapel.id')
-            ->join('mapel', 'mapel.id', '=', 'nilaimapel.mapel_id')
-            ->join('guru', 'guru.id', '=', 'nilaimapel.guru_id')
-            ->where('nilaimapel.kelasmi_id', $kelasmi->id)
-            ->get()
-            ->groupBy('pesertakelas_id');
+        if ($kelasmi) {
+            $dataraportkelas = Nilaimapel::query()
+                ->join('nilai', 'nilai.nilaimapel_id', '=', 'nilaimapel.id')
+                ->join('mapel', 'mapel.id', '=', 'nilaimapel.mapel_id')
+                ->join('guru', 'guru.id', '=', 'nilaimapel.guru_id')
+                ->where('nilaimapel.kelasmi_id', $kelasmi->id)
+                ->get()
+                ->groupBy('pesertakelas_id');
+        }
 
-        if ($dataraportkelas->isEmpty()) {
+        if (!$kelasmi || $dataraportkelas->isEmpty()) {
             return view(
                 'report/raportkelas',
                 [
