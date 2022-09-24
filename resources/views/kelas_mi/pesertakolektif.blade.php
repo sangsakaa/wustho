@@ -16,10 +16,11 @@
                                 </svg>
                                 Kembali</button>
                         </a>
-                        <form action="/pesertakolektif" method="get" class=" flex gap-1">
+
+                        <form action="/pesertakolektif/{{$kelasmi->id}}" method="get" class=" flex gap-1">
                             <input type="text" name="cari" value="{{ request('cari') }}" class=" border border-green-800 text-green-800 rounded-md py-1 " placeholder=" Cari ..">
                             <button type="submit" class=" px-2   bg-blue-500  rounded-md text-white">
-                                Cari </button>
+                                Cari by Nama </button>
                         </form>
                     </div>
                     <form action="/pesertakolektif" method="post" enctype="multipart/form-data">
