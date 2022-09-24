@@ -85,6 +85,8 @@ Route::get('guru/{guru}/edit', [GuruController::class, 'edit'])->middleware(['au
 
 // Controller Raport
 Route::get('report/{pesertakelas}', [RaportController::class, 'show'])->middleware(['auth'])->name('report');
+Route::get('raportkelas', [RaportController::class, 'raportkelas'])->middleware(['auth']);
+Route::post('raportkelas', [RaportController::class, 'raportkelas'])->middleware(['auth']);
 
 // Controller Mata Pelajaran
 Route::get('mapel', [MapelController::class, 'index'])->middleware(['auth'])->name('mapel');

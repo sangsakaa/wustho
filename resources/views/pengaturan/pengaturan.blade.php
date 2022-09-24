@@ -16,6 +16,9 @@
                             <a href="/semester" class=" py-1 px-2 bg-blue-600 rounded-md text-white hover:bg-purple-500">
                                 semester
                             </a>
+                            <a href="/raportkelas" class=" py-1 px-2 bg-blue-600 rounded-md text-white hover:bg-purple-500">
+                                raport kelas
+                            </a>
                         </div>
 
                     </div>

@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Kelasmi;
 use App\Models\Nilai;
 use App\Models\Nilaimapel;
 use App\Models\Pesertakelas;
 use App\Models\Semester;
 use App\Models\Siswa;
 use Illuminate\Http\Request;
+
+use function PHPUnit\Framework\isEmpty;
 
 class RaportController extends Controller
 {
@@ -109,6 +112,89 @@ class RaportController extends Controller
         );
     }
 
+    public function raportkelas(Request $request)
+    {
+        $datakelasmi = Kelasmi::query()
+            ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
+            ->select('kelasmi.id', 'kelasmi.nama_kelas', 'periode.periode')
+            ->get();
+
+        $kelasmi = Kelasmi::find($request->kelasmi_id);
+
+        $dataraportkelas = Nilaimapel::query()
+            ->join('nilai', 'nilai.nilaimapel_id', '=', 'nilaimapel.id')
+            ->join('mapel', 'mapel.id', '=', 'nilaimapel.mapel_id')
+            ->join('guru', 'guru.id', '=', 'nilaimapel.guru_id')
+            ->where('nilaimapel.kelasmi_id', $kelasmi->id)
+            ->get()
+            ->groupBy('pesertakelas_id');
+
+        if ($dataraportkelas->isEmpty()) {
+            return view(
+                'report/raportkelas',
+                [
+                    'siswa' => [],
+                    'data' => [],
+                    'ringkasanraportkelas' => [],
+                    'jumlahsiswa' => 0,
+                    'datakelasmi' => $datakelasmi,
+                    'kelasmi' => $kelasmi
+                ]
+            );
+        }
+
+        $siswa = Pesertakelas::query()
+            ->join('siswa', 'pesertakelas.siswa_id', '=', 'siswa.id')
+            ->join('nis', 'nis.siswa_id', '=', 'siswa.id')
+            ->join('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
+            ->join('kelas', 'kelas.id', '=', 'kelasmi.kelas_id')
+            ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
+            ->join('semester', 'semester.id', '=', 'periode.semester_id')
+            // ->join('semester', 'semester.id', '=', 'kelasmi.periode_id')
+            ->select('*', 'pesertakelas.id as peserta_id')
+            ->where('kelasmi.id', $kelasmi->id)
+            ->orderBy('pesertakelas.id')
+            ->get();
+
+
+        $ringkasanraportkelas = $dataraportkelas
+            ->map(function ($item, $key) {
+                $item = collect($item);
+                $jmlujian = $item->sum('nilai_ujian');
+                $jmlharian = $item->sum('nilai_harian');
+                $rata2ujian = $jmlujian / $item->count();
+                $rata2harian = $jmlharian / $item->count();
+                $nilaiperingkat = $rata2ujian * 0.4 + $rata2harian * 0.6;
+
+                return [
+                    'id' => $key,
+                    'jmlujian' => $jmlujian,
+                    'jmlharian' => $jmlharian,
+                    'rata2ujian' => $rata2ujian,
+                    'rata2harian' => $rata2harian,
+                    'nilaiperingkat' => $nilaiperingkat
+                ];
+            })
+            ->sortByDesc('nilaiperingkat')
+            ->values()
+            ->map(function ($item, $key) {
+                $item['peringkat'] = $key + 1;
+                return $item;
+            })
+            ->keyBy('id');
+
+        return view(
+            'report/raportkelas',
+            [
+                'siswa' => $siswa,
+                'data' => $dataraportkelas,
+                'ringkasanraportkelas' => $ringkasanraportkelas,
+                'jumlahsiswa' => $ringkasanraportkelas->count(),
+                'datakelasmi' => $datakelasmi,
+                'kelasmi' => $kelasmi
+            ]
+        );
+    }
     /**
      * Show the form for editing the specified resource.
      *
