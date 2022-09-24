@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Siswa;
 use App\Models\Asrama;
 use App\Models\Asramasiswa;
+use App\Models\Nis;
 use App\Models\Profile;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -23,7 +24,7 @@ class DashboardController extends Controller
 
         $pa = Asrama::where('type_asrama', 'putra')->count();
         $pi = Asrama::where('type_asrama', 'putri')->count();
-        $siswa = Siswa::count();
+        $siswa = Nis::count();
         $pr = Siswa::where('jenis_kelamin', 'p')->count();
         $lk = Siswa::where('jenis_kelamin', 'l')->count();
         $profil = Profile::first();
