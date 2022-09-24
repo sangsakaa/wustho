@@ -69,34 +69,34 @@
                         <tbody>
                             @if($dataSiswa->count())
                             @foreach ( $dataSiswa as $peserta)
-                            <tr class=" text-xs  border hover:bg-blue-100 ">
-                                <td class=" text-xs  border  text-center py-1 ">
+                            <tr class=" text-sm  border hover:bg-blue-100 ">
+                                <td class=" text-sm  border  text-center py-1 ">
                                     {{$loop->iteration}}
                                 </td>
-                                <td class=" text-xs  px-2 border  text-center ">
+                                <td class=" text-sm  px-2 border  text-center ">
                                     {{$peserta->nis}}
                                 </td>
-                                <td class=" text-xs  border px-2">
+                                <td class=" text-sm  border px-2">
                                     <a href="/siswa/{{$peserta->id}}">
                                         {{$peserta->nama_siswa}}
                                     </a>
                                 </td>
-                                <td class=" text-xs  border text-center ">
+                                <td class=" text-sm  border text-center ">
                                     {{$peserta->jenis_kelamin}}
                                 </td>
-                                <td class=" text-xs  border text-center">
+                                <td class=" text-sm  border text-center">
                                     {{$peserta->tempat_lahir}}
                                 </td>
-                                <td class=" text-xs  border text-center ">
+                                <td class=" text-sm  border text-center ">
                                     {{$peserta->tanggal_lahir}}
                                 </td>
-                                <td class=" text-xs  border text-center ">
+                                <td class=" text-sm  border text-center ">
                                     {{$peserta->nama_asrama}}
                                 </td>
-                                <td class=" text-xs  border text-center ">
+                                <td class=" text-sm  border text-center ">
                                     {{$peserta->nama_kelas}}
                                 </td>
-                                <td class=" text-xs  border text-center ">
+                                <td class=" text-sm  border text-center ">
                                     <?php
                                     $date = date_create($peserta->tanggal_masuk);
                                     echo date_format($date, "Y");
@@ -104,7 +104,7 @@
                                 </td>
 
                                 @role('admin')
-                                <td class=" text-xs flex justify-center py-1  gap-1">
+                                <td class=" text-sm flex justify-center py-1  gap-1">
                                     <form action="/siswa/{{$peserta->id}}" method="post">
                                         @csrf
                                         @method('delete')
