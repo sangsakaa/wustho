@@ -131,11 +131,10 @@ class KelasController extends Controller
             ->orderBy('nis');
         if (request('cari')) {
             $Datasiswa->where(
-                'nama_siswa',
+                'nama_asrama',
                 'like',
                 '%' . request('cari') . '%'
-            )
-                ->orWhere('nama_asrama', 'like', '%' . request('cari') . '%');
+            );
         };
         return view(
             'kelas_mi/pesertakolektif',
