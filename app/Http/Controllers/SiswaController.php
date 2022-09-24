@@ -190,7 +190,7 @@ class SiswaController extends Controller
 
         }
         $jmlujian = $transkip->sum('nilai_ujian');
-        $countujian = $transkip->count('nilai_ujian');
+        $countujian = $transkip->count('nilaimapel_id');
         $jmlharian = $transkip->sum('nilai_harian');
         $rata1 = $jmlharian / $countujian;
         $rata2 = $jmlujian / $countujian;

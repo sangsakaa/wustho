@@ -21,7 +21,6 @@ class DashboardController extends Controller
      */
     public function index()
     {
-
         $pa = Asrama::where('type_asrama', 'putra')->count();
         $pi = Asrama::where('type_asrama', 'putri')->count();
         $siswa = Nis::count();
