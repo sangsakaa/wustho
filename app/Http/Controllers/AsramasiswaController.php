@@ -51,7 +51,7 @@ class AsramasiswaController extends Controller
                 'kuota',
                 'jumlah_peserta_asrama'
             )
-            ->get();
+            ->orderBy('type_asrama')->get();
         // dd($data);
         return view(
             'asrama/asramasiswa',
