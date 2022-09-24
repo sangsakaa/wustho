@@ -34,7 +34,6 @@
                     <hr>
 
                     <div class=" text-1xl py-2 grid  grid-cols-2 w-full">
-
                         <div>
                             Nomor Induk Siswa
                         </div>
