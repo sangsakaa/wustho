@@ -68,7 +68,9 @@ class NilaiController extends Controller
                 'kelasmi.periode_id',
                 'periode.periode',
                 'jumlah_peserta_kelas'
-            )->orderBy('mapel');
+        )
+        ->orderBy('mapel')
+        ->orderBy('nama_kelas');
         if (request('cari')) {
             $data->where('nama_kelas', 'like', '%' . request('cari') . '%')
             ->orWhere('ket_semester', 'like', '%' . request('cari') . '%')
@@ -79,7 +81,7 @@ class NilaiController extends Controller
         return view(
             'nilai/nilaimapel',
             [
-                'data' => $data->paginate(6),
+                'data' => $data->paginate(12),
                 'dataGuru' => $dataGuru,
                 'dataKelas' => $dataKelas,
                 'dataSmt' => $datSmt,
