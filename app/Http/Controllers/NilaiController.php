@@ -69,7 +69,6 @@ class NilaiController extends Controller
                 'periode.periode',
                 'jumlah_peserta_kelas'
         )
-        ->orderBy('mapel')
         ->orderBy('nama_kelas');
         if (request('cari')) {
             $data->where('nama_kelas', 'like', '%' . request('cari') . '%')
