@@ -61,9 +61,8 @@
                                 <th class=" border text-center">Madin</th>
                                 <th class=" border text-center">Angkatan</th>
 
-                                @role('admin')
                                 <th class=" border text-center">Aksi</th>
-                                @endrole
+
                             </tr>
                         </thead>
                         <tbody>
