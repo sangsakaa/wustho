@@ -80,7 +80,7 @@ class NilaiController extends Controller
         return view(
             'nilai/nilaimapel',
             [
-                'data' => $data->paginate(12),
+                'data' => $data->paginate(6),
                 'dataGuru' => $dataGuru,
                 'dataKelas' => $dataKelas,
                 'dataSmt' => $datSmt,
