@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        @section('title', ' | Detail Data Siswa' )
+        @section('title', ' | Status Pengamal' )
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Dashboard Detail Siswa ') }}
         </h2>
@@ -39,12 +39,7 @@
                         <div class=" grid grid-cols-1 justify-items-end">
                             <a href="/biodata/{{$siswa->id}}" class=" bg-blue-500 px-2 py-1 hover:bg-purple-500 text-white">Biodata Lengkap</a>
                         </div>
-                        @if ($pesertakelas !== null)
 
-                        <div class=" grid grid-cols-1 justify-items-end">
-                            <a href="/transkip/{{$pesertakelas->siswa_id}}" class=" bg-blue-500 px-2 py-1 hover:bg-purple-500 text-white">Transkip Nilai</a>
-                        </div>
-                        @endif
                         <div class=" grid grid-cols-1 justify-items-end">
                             <a href="/nis/{{$siswa->id}}" class=" bg-blue-500 px-2 py-1 hover:bg-purple-500 text-white">Nomor Induk siswa</a>
                         </div>

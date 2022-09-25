@@ -140,6 +140,11 @@ class SiswaController extends Controller
         $nisSiswa = Nis::where('siswa_id', $siswa->id)->get();
         return view('siswa/nisSiswa', ['siswa' => $siswa, 'nis' => $nisSiswa]);
     }
+    public function statuspengamal(Siswa $siswa)
+    {
+        $nisSiswa = Nis::where('siswa_id', $siswa->id)->get();
+        return view('siswa/statuspengamal', ['siswa' => $siswa, 'nis' => $nisSiswa]);
+    }
     public function DetailKelas(Siswa $siswa, Kelas $kelas)
     {
 
@@ -165,11 +170,13 @@ class SiswaController extends Controller
             ->join('semester', 'semester.id', '=', 'periode.semester_id')
             ->join('nilaimapel', 'nilaimapel.id', '=', 'nilai.nilaimapel_id')
             ->join('mapel', 'mapel.id', '=', 'nilaimapel.mapel_id')
+            ->join('guru', 'guru.id', '=', 'nilaimapel.guru_id')
         ->join('kelas', 'kelas.id', '=', 'kelasmi.kelas_id')
             ->select(
                 [
                     
                     'siswa.nama_siswa',
+                'guru.nama_guru',
                     'nilai.nilai_ujian',
                     'nilai.nilai_harian',
                     'kelasmi.nama_kelas',

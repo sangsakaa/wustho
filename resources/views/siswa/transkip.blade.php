@@ -63,12 +63,12 @@
                             <thead>
                                 <tr class=" border bg-gray-100">
                                     <th class=" text-xs sm:text-sm px-2 py-1 border capitalize">no</th>
-                                    <th class=" text-xs sm:text-sm px-2 border capitalize">Periode</th>
-                                    <!-- <th class=" text-xs sm:text-sm px-2 border capitalize">Peserta Kelas</th> -->
+                                    <th class=" text-xs sm:text-sm px-2 border capitalize w-1/4">Periode</th>
+                                    <th class=" text-xs sm:text-sm px-2 border capitalize w-1/4">nama guru</th>
                                     <th class=" text-xs sm:text-sm px-2 border capitalize">Kelas</th>
-                                    <th class=" text-xs sm:text-sm px-2 border capitalize">Mata Pelajaran</th>
-                                    <th class=" text-xs sm:text-sm px-2 border capitalize text-center">nilai harian</th>
-                                    <th class=" text-xs sm:text-sm px-2 border capitalize text-center">nilai ujian</th>
+                                    <th class=" text-xs sm:text-sm px-2 border capitalize w-1/4">Mata Pelajaran</th>
+                                    <th class=" text-xs sm:text-sm px-2 border capitalize text-center w-1">n h</th>
+                                    <th class=" text-xs sm:text-sm px-2 border capitalize text-center">n u</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -76,30 +76,30 @@
                                 @foreach($transkip as $nilai)
                                 <tr class=" hover:bg-gray-50">
                                     <th class="text-xs sm:text-sm border w-5">{{$loop->iteration}}</th>
-                                    <td class="text-xs sm:text-sm px-2 border  ">{{$nilai->periode}} {{$nilai->ket_semester}}</td>
-                                    <!-- <td class="text-xs sm:text-sm px-2 border ">{{$nilai->nama_siswa}}</td> -->
+                                    <td class="text-xs sm:text-sm px-2 border text-center  ">{{$nilai->periode}} {{$nilai->ket_semester}}</td>
+                                    <td class="text-xs sm:text-sm px-2 border ">{{$nilai->nama_guru}}</td>
                                     <td class="text-xs sm:text-sm px-2 border  text-center">{{$nilai->nama_kelas}}</td>
                                     <td class="text-xs sm:text-sm px-2 border ">{{$nilai->mapel}}</td>
-                                    <td class="text-xs sm:text-sm px-2 border  text-center w-10">{{$nilai->nilai_harian}}</td>
-                                    <td class="text-xs sm:text-sm px-2 border  text-center w-10">{{$nilai->nilai_ujian}}</td>
+                                    <td class="text-xs sm:text-sm px-2 border  text-center   ">{{$nilai->nilai_harian}}</td>
+                                    <td class="text-xs sm:text-sm px-2 border  text-center   ">{{$nilai->nilai_ujian}}</td>
                                 </tr>
                                 @endforeach
                                 @else
                                 ok
                                 @endif
                                 <tr>
-                                    <td class=" px-2 border w-40  text-center" colspan="4">Jumlah Nilai</td>
-                                    <td class=" px-2 border w-40  text-center">{{$jmlharian}}</td>
-                                    <td class=" px-2 border w-40  text-center">{{$jmlujian}}</td>
+                                    <td class=" px-2 border w-40  text-center" colspan="5">Jumlah Nilai</td>
+                                    <td class=" px-2 border w-40  text-sm text-center">{{$jmlharian}}</td>
+                                    <td class=" px-2 border w-40  text-sm text-center">{{$jmlujian}}</td>
                                 </tr>
                                 <tr>
-                                    <td class=" px-2 border  text-center " colspan="4">
+                                    <td class=" px-2 border  text-center " colspan="5">
                                         Rata Rata
                                     </td>
-                                    <td class=" px-2 border  text-center " colspan="1">
+                                    <td class=" px-2 border  text-center text-sm " colspan="1">
                                         {{$rata1}}
                                     </td>
-                                    <td class=" px-2 border  text-center " colspan="1">
+                                    <td class=" px-2 border  text-center text-sm " colspan="1">
                                         {{number_format($rata2)}}
                                     </td>
                                 </tr>

@@ -14,8 +14,8 @@
                     <div class=" grid grid-cols-1 py-6 px-4">
                         <form action="/asrama" method="post">
                             @csrf
-                            <input type="text" name="nama_asrama" class=" w-1/4 py-1 " placeholder=" Asrama : Al Hikam">
-                            <select name="type_asrama" id="" class=" w-1/4 py-1">
+                            <input type="text" name="nama_asrama" class=" form-input w-1/4 py-1 " placeholder=" Asrama : Al Hikam" required>
+                            <select name="type_asrama" id="" class=" w-1/4 py-1 form-multiselect" required>
                                 <option value=""> -- Pilih Type Asrama --</option>
                                 <option value="Putra"> Asrama Putra</option>
                                 <option value="Putri"> Asrama Putri</option>
@@ -28,6 +28,6 @@
                 </div>
             </div>
         </div>
-
     </div>
+
 </x-app-layout>
