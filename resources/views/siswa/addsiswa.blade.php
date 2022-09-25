@@ -36,16 +36,7 @@
                                 <input name="tanggal_lahir" type="date" class=" w-full py-1 rounded-md" placeholder=" masukan nama lengkap" required>
                                 <label for="">Asal Kota</label>
                                 <input name="kota_asal" type="text" class=" w-full py-1 rounded-md" placeholder=" masukan nama tempat Lahir" required value="{{old('kota_asal')}}">
-                                <input name="siswa_id" type="hidden" class=" w-full py-1 rounded-md @error('nama_siswa') is-invalid @enderror" placeholder=" masukan nama lengkap" value="{{old('nama_siswa')}}">
-                                @error('nama_siswa')
-                                <div class=" text-red-500">{{ $message }}</div>
-                                @enderror
-                                <label for="">Status Pengamal</label>
-                                <select name="status_pengamal" id="" class=" w-full py-1 rounded-md" required>
-                                    <option value="">-- Pilih Status Pengamal --</option>
-                                    <option value="Pengamal"> Pengamal </option>
-                                    <option value="Simpatisan"> Simpatisan </option>
-                                </select>
+
                                 <button type="submit" class=" px-2 py-1 bg-blue-600 text-white rounded-md mt-1">Simpan</button>
                                 <a href="/siswa" class=" px-2 py-1 bg-red-600 text-white rounded-md mt-1">
                                     Batal

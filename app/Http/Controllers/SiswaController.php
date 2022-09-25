@@ -94,11 +94,7 @@ class SiswaController extends Controller
         $siswa->tanggal_lahir = $request->tanggal_lahir;
         $siswa->kota_asal = $request->kota_asal;
         $siswa->save();
-
-        $status_pengamal = new Statuspengamal();
-        $status_pengamal->siswa_id = $siswa->id;
-        $status_pengamal->status_pengamal = $request->status_pengamal;
-        $status_pengamal->save();
+        
         return redirect('siswa')->with('success', 'data berhasil ditambahkan');
     }
     public function storeNis(Request $request)
@@ -259,11 +255,7 @@ class SiswaController extends Controller
                 'tanggal_lahir' => $request->tanggal_lahir,
                 'kota_asal' => $request->kota_asal,
             ]);
-        Statuspengamal::where('siswa_id', $siswa->id)
-            ->update([
-                'siswa_id' => $siswa->id,
-                'status_pengamal' => $request->status_pengamal,
-            ]);
+        
         return redirect('/siswa')->with('update', 'pembaharuan data berhasil');
     }
 
