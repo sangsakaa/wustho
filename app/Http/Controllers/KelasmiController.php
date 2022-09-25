@@ -118,7 +118,8 @@ class KelasmiController extends Controller
             ->join('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
             ->join('kelas', 'kelas.id', '=', 'kelasmi.kelas_id')
         ->select('siswa.nama_siswa', 'nis.nis', 'siswa.kota_asal', 'pesertakelas.id', 'kelas.kelas', 'kelasmi.nama_kelas')
-        ->where('pesertakelas.kelasmi_id', $kelasmi->id);
+        ->where('pesertakelas.kelasmi_id', $kelasmi->id)
+        ->orderby('nama_siswa');
         if (request('cari')) {
             $dataKelas->where(
                 'nama_siswa',
