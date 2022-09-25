@@ -40,7 +40,8 @@ class MapelController extends Controller
      */
     public function create()
     {
-        //
+        $datakelas = Kelas::all();
+        return view('mapel/addmapel', ['datakelas' => $datakelas]);
     }
 
     /**

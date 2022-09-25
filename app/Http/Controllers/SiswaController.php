@@ -198,9 +198,7 @@ class SiswaController extends Controller
         ->join('semester', 'semester.id', '=', 'periode.semester_id')
         ->select('semester.id', 'periode.periode', 'semester.ket_semester')
         ->get();
-        // $tittle = $transkip->join('nis', 'nis.siswa_id', '=', 'siswa.id')
-        //     // ->where('pesertakelas.siswa_id', $siswa->id)
-        //     ->first();
+        $harini = $transkip->get();
         return view(
             'siswa/transkip',
             [
@@ -212,6 +210,7 @@ class SiswaController extends Controller
                 'rata2' => $rata2,
                 'rata1' => $rata1,
                 'transkip' => $transkip->get(),
+                'harini' => $harini
             ]
         );
        

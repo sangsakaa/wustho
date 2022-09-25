@@ -106,7 +106,7 @@
                             </tbody>
                         </table>
                         <div class=" flex grid-cols-2">
-                            <div class=" bg-red-50">Jumlah Mata Pelajaran yang diambil pada semeter ini</div>
+                            <div class=" ">Jumlah Mata Pelajaran yang diambil pada semeter ini </div>
                             <div class=" px-2"> : {{$countujian}}</div>
                         </div>
                     </div>
