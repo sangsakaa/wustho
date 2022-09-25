@@ -57,7 +57,11 @@
                         <div class=" text-center font-semibold border py-2 text-md mt-2 text-2xl bg-gray-100">BIODATA SISWA</div>
                         <div class=" grid grid-cols-2 py-2">
                             <div class=" border py-2 px-2">1. Nomor Induk Siswa</div>
-                            <div class=" border py-1 px-2 font-semibold text-2xl">: {{$siswa->nis}}</div>
+
+                            <div class=" border py-1 px-2 ">: <span class="font-semibold text-2xl">
+                                    {{$siswa->nis}}
+                                </span>
+                            </div>
                             <div class=" border py-2 px-2">2. Nama Lengkap</div>
                             <div class=" border py-2 px-2">: {{$siswa->nama_siswa}}</div>
                             <div class=" border py-2 px-2" class=" w-1/2">3. Jenis Kelamin</div>
