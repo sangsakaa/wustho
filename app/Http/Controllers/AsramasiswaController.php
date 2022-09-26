@@ -217,7 +217,7 @@ class AsramasiswaController extends Controller
 
         $pesertaAsramaPeriodeTerpilih = Pesertaasrama::query()
             ->join('asramasiswa', 'asramasiswa.id', '=', 'pesertaasrama.asramasiswa_id')
-            ->where('asramasiswa.periode_id', $asramasiswa->id)
+            ->where('asramasiswa.periode_id', $asramasiswa->periode_id)
             ->select('pesertaasrama.siswa_id');
 
         $Datasiswa = Siswa::query()
@@ -225,7 +225,7 @@ class AsramasiswaController extends Controller
             ->leftJoinSub($pesertaAsramaPeriodeTerpilih, 'peserta_asrama_periode_terpilih', function ($join) {
                 $join->on('peserta_asrama_periode_terpilih.siswa_id', '=', 'siswa.id');
             })
-            ->where('peserta_asrama_periode_terpilih.siswa_id', '=', null)
+            ->where('peserta_asrama_periode_terpilih.siswa_id', null)
             ->select(
                 [
                     'siswa.id',
