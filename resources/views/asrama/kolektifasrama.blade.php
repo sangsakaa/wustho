@@ -15,7 +15,7 @@
                                 </svg>
                                 Kembali</button>
                         </a>
-                        <form action="/kolektifasrama" method="get" class=" flex gap-1">
+                        <form action="/kolektifasrama/{{ $asramasiswa->id }}" method="get" class=" flex gap-1">
                             <input type="text" name="cari" value="{{ request('cari') }}" class=" border border-green-800 text-green-800 rounded-md py-1 " placeholder=" Cari ..">
                             <button type="submit" class=" px-2   bg-blue-500  rounded-md text-white">
                                 Cari </button>
@@ -26,9 +26,9 @@
                         @csrf
                         <div class=" py-1 w-3/5 flex grid-cols-2 gap-2 ">
                             <select name="asramasiswa_id" id="" class=" py-1 w-full" required>
-                                <option value="">-- Pilih Sesui kelas --</option>
+                                <option value="">-- Pilih asrama --</option>
                                 @foreach($kelas as $kelas )
-                                <option value="{{$kelas->id}}">{{$loop->iteration}} | {{$kelas->nama_asrama}} |{{$kelas->type_asrama}}</option>
+                                <option value="{{$kelas->id}}" {{ $asramasiswa->id == $kelas->id ? "selected" : "" }}>{{$loop->iteration}} | {{$kelas->nama_asrama}} |{{$kelas->type_asrama}}</option>
                                 @endforeach
                             </select>
                             <button type="submit" class=" w-1/5 bg-blue-600 text-white rounded-sm px-2 py-1"> Kolektif</button>

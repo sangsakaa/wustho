@@ -208,17 +208,24 @@ class AsramasiswaController extends Controller
         Pesertaasrama::destroy($pesertaasrama->id);
         return redirect()->back();
     }
-    public function kolelktifasrama()
+    public function kolelktifasrama(Asramasiswa $asramasiswa)
     {
         $kelas = Asramasiswa::query()
             ->join('asrama', 'asrama.id', '=', 'asramasiswa.asrama_id')
             ->select('asrama.nama_asrama', 'asramasiswa.id')
             ->get();
 
+        $pesertaAsramaPeriodeTerpilih = Pesertaasrama::query()
+            ->join('asramasiswa', 'asramasiswa.id', '=', 'pesertaasrama.asramasiswa_id')
+            ->where('asramasiswa.periode_id', $asramasiswa->id)
+            ->select('pesertaasrama.siswa_id');
+
         $Datasiswa = Siswa::query()
-            ->leftjoin('nis', 'nis.siswa_id', '=', 'siswa.id')
-            ->leftjoin('pesertaasrama', 'pesertaasrama.siswa_id', '=', 'siswa.id')
-            ->where('pesertaasrama.siswa_id', '=', null)
+            ->leftJoin('nis', 'nis.siswa_id', '=', 'siswa.id')
+            ->leftJoinSub($pesertaAsramaPeriodeTerpilih, 'peserta_asrama_periode_terpilih', function ($join) {
+                $join->on('peserta_asrama_periode_terpilih.siswa_id', '=', 'siswa.id');
+            })
+            ->where('peserta_asrama_periode_terpilih.siswa_id', '=', null)
             ->select(
                 [
                     'siswa.id',
@@ -251,6 +258,7 @@ class AsramasiswaController extends Controller
                 'Datasiswa' => $Datasiswa->get(),
                 'kelas' => $kelas,
                 'a' => $a,
+                'asramasiswa' => $asramasiswa
             ]
         );
     }

@@ -41,7 +41,7 @@
 
                             </button>
                         </a>
-                        <a href="/kolektifasrama" class=" flex justify-end">
+                        <a href="/kolektifasrama/{{ $asramasiswa->id }}" class=" flex justify-end">
                             <div class="">
                                 <button class=" flex bg-blue-500 text-white py-1 px-2 rounded-md d-inline-block">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">

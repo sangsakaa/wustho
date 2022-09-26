@@ -74,7 +74,7 @@ Route::get('pesertaasrama/{asramasiswa}', [AsramasiswaController::class, 'show']
 Route::delete('asramasiswa/{asramasiswa}', [AsramasiswaController::class, 'destroy'])->middleware(['auth']);
 Route::delete('pesertaasrama/{pesertaasrama}', [AsramasiswaController::class, 'PesertaAsrama'])->middleware(['auth']);
 Route::get('pesertaasrama/{pesertaasrama}/edit', [AsramasiswaController::class, 'editpeserta'])->middleware(['auth']);
-Route::get('kolektifasrama', [AsramasiswaController::class, 'kolelktifasrama'])->middleware(['auth']);
+Route::get('kolektifasrama/{asramasiswa}', [AsramasiswaController::class, 'kolelktifasrama'])->middleware(['auth']);
 Route::post('kolektifasrama', [AsramasiswaController::class, 'StoreKolektifasrama'])->middleware(['auth']);
 // Controller Guru
 Route::get('guru', [GuruController::class, 'index'])->middleware(['auth'])->name('guru');
