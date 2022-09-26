@@ -83,7 +83,7 @@ class SiswaController extends Controller
 
         ], [
             'nama_siswa.min' => 'tidak boleh kurang dari 2 karakter',
-            'nama_siswa.max' => 'tidak boleh lebih dari 60 karakter'
+            'nama_siswa.max' => 'tidak boleh lebih dari 70 karakter'
         ]);
         $siswa = new Siswa();
         $siswa->nama_siswa = $request->nama_siswa;
