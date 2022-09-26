@@ -82,8 +82,8 @@ class SiswaController extends Controller
         $validated = $request->validate(['nama_siswa' => 'required|min:5|max:50',
 
         ], [
-            'nama_siswa.min' => 'tidak boleh kurang dari 2 karakter',
-            'nama_siswa.max' => 'tidak boleh lebih dari 70 karakter'
+            'nama_siswa.min' => 'tidak boleh kurang dari 5 karakter',
+            'nama_siswa.max' => 'tidak boleh lebih dari 60 karakter'
         ]);
         $siswa = new Siswa();
         $siswa->nama_siswa = $request->nama_siswa;
