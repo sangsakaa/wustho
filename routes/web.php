@@ -27,6 +27,8 @@ Route::get('biodata/{siswa}', [SiswaController::class, 'biodata']);
 Route::get('transkip/{siswa}', [SiswaController::class, 'transkip']);
 Route::get('nis/{siswa}', [SiswaController::class, 'nis']);
 Route::get('statuspengamal/{siswa}', [SiswaController::class, 'statuspengamal']);
+Route::post('statuspengamal/{siswa}', [SiswaController::class, 'storeSP']);
+Route::delete('statuspengamal/{siswa}', [SiswaController::class, 'destroySP']);
 Route::get('addsiswa', [SiswaController::class, 'create']);
 Route::post('siswa', [SiswaController::class, 'store']);
 Route::post('nis/{siswa}', [SiswaController::class, 'storeNis']);
@@ -76,6 +78,7 @@ Route::delete('pesertaasrama/{pesertaasrama}', [AsramasiswaController::class, 'P
 Route::get('pesertaasrama/{pesertaasrama}/edit', [AsramasiswaController::class, 'editpeserta'])->middleware(['auth']);
 Route::get('kolektifasrama/{asramasiswa}', [AsramasiswaController::class, 'kolelktifasrama'])->middleware(['auth']);
 Route::post('kolektifasrama', [AsramasiswaController::class, 'StoreKolektifasrama'])->middleware(['auth']);
+Route::patch('pesertaasrama/{asramasiswa}', [AsramasiswaController::class, 'updatepeserta']);
 // Controller Guru
 Route::get('guru', [GuruController::class, 'index'])->middleware(['auth'])->name('guru');
 Route::get('guru/{guru}', [GuruController::class, 'show'])->middleware(['auth']);

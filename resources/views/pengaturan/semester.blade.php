@@ -36,19 +36,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($raport as $list)
-                                    <tr>
-                                        <th class=" border">
-                                            <a href="/report/{{$list->id}}"> {{$loop->iteration}}</a>
-                                        </th>
-                                        <th class=" border px-2 text-left">
-                                            <a href="/report/{{$list->id}}"> {{$list->nama_siswa}}</a>
-                                        </th>
-                                        <th class=" border px-2 text-center">
-                                            <a href="/report/{{$list->id}}"> {{$list->kelas}}</a>
-                                        </th>
-                                    </tr>
-                                    @endforeach
+
                                 </tbody>
                             </table>
                         </div>

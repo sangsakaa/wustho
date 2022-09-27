@@ -9,12 +9,13 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-2 bg-white border-b border-gray-200">
                     <div class=" flex w-full gap-1">
-                        <form action="/pesertaasrama/{{$anggota->id}}" method="post">
+                        <form action="/pesertaasrama/{{$asramasiswa->id}}" method="post">
                             @csrf
                             @method('patch')
+
                             <div class=" flex grid-cols-2   gap-2 ">
                                 <div>
-                                    <input type="hidden" name="siswa_id" class=" py-1 " placeholder=" Kuota : 40" value="{{$anggota->siswa_id}}" readonly>
+                                    <input type="text" name="siswa_id" class=" py-1 " placeholder=" Kuota : 40" value="{{$anggota->id}}" readonly>
 
                                 </div>
                                 <div>

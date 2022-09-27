@@ -120,7 +120,17 @@ class AsramasiswaController extends Controller
             ->join('asramasiswa', 'asramasiswa.id', '=', 'pesertaasrama.asramasiswa_id')
             ->join('asrama', 'asrama.id', '=', 'asramasiswa.asrama_id')
             ->join('nis', 'nis.siswa_id', '=', 'siswa.id')
-            ->select('pesertaasrama.id', 'siswa.nama_siswa', 'asrama.nama_asrama', 'nis.nis', 'siswa.jenis_kelamin', 'siswa.kota_asal')
+            ->select(
+                [
+                    'pesertaasrama.id',
+                    'siswa.nama_siswa',
+                    'asrama.nama_asrama',
+                    'nis.nis',
+                    'siswa.jenis_kelamin',
+                    'siswa.kota_asal',
+                    // 'asramasiswa.id'
+                ]
+            )
             ->where('asramasiswa_id', $asramasiswa->id)
             ->orderBy('nis.nis')
             ->orderBy('siswa.nama_siswa');
@@ -152,7 +162,7 @@ class AsramasiswaController extends Controller
     {
         return view('asrama/editasramasiswa', ['asramasiswa' => $asramasiswa]);
     }
-    public function editpeserta(Pesertaasrama $pesertaasrama,)
+    public function editpeserta(Pesertaasrama $pesertaasrama, Asramasiswa $asramasiswa)
     {
         $anggota = $pesertaasrama
             ->join('siswa', 'siswa.id', '=', 'pesertaasrama.siswa_id')
@@ -166,7 +176,8 @@ class AsramasiswaController extends Controller
             [
                 'pesertaasrama' => $pesertaasrama,
                 'anggota' => $anggota,
-                'siswaasrama' => $siswaasrama
+                'siswaasrama' => $siswaasrama,
+                'asramasiswa' => $asramasiswa
             ]
         );
     }
@@ -187,6 +198,16 @@ class AsramasiswaController extends Controller
 
             ]);
         return redirect('/asramasiswa')->with('update', 'pembaharuan data berhasil');
+    }
+    public function updatepeserta(Request $request, Pesertaasrama $pesertaasrama)
+    {
+        Pesertaasrama::where('id', $pesertaasrama->id)
+            ->update([
+                'siswa_id' => $request->siswa_id,
+                'asramasiswa_id' => $request->asramasiswa_id,
+
+            ]);
+        return redirect('pesertaasrama')->with('update', 'pembaharuan data berhasil');
     }
 
     /**

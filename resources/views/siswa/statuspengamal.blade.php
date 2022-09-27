@@ -2,7 +2,7 @@
     <x-slot name="header">
         @section('title', ' | Status Pengamal' )
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard Detail Siswa ') }}
+            {{ __('Dashboard Status Pengamal ') }}
         </h2>
     </x-slot>
     <div class="py-2 px-4">
@@ -49,20 +49,45 @@
 
                         @endrole
                     </div>
-                    <div class=" grid grid-cols-1 sm:grid-cols-2 gap-2">
+                    <div class=" grid grid-cols-1 sm:grid-cols-1 gap-2 py-1">
+                        <form action="/statuspengamal/{{$siswa->id}}" method="post">
+                            @csrf
+                            <input type="text" name="siswa_id" class=" py-1" placeholder="siswa" value="{{$siswa->id}}">
+                            <select name="status_pengamal" id="" class=" py-1">
+                                <option value="pengamal" class=" capitalize">pengamal</option>
+                                <option value="simpatisan" class=" capitalize">simpatisan</option>
+                            </select>
+                            <button class=" bg-green-600 py-1 px-2 rounded-sm text-white capitalize">create status pengamal</button>
+                        </form>
                         <div>
                             <span>Detail Kelas</span>
 
-                            <table class=" w-full    ">
+                            <table class=" w-1/2    ">
                                 <thead>
                                     <tr class=" border-collapse">
                                         <th class=" border text-center">#</th>
-                                        <th class=" border text-center"> Periode</th>
-                                        <th class=" border text-center"> Kelas</th>
+                                        <th class=" border text-center"> Status Pengamal</th>
+                                        <th class=" border text-center"> Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @foreach($statuspengamal as $org)
+                                    <tr class=" border">
+                                        <td class=" px-2 border ">{{$org->nama_siswa}}</td>
+                                        <td class=" px-2 border ">{{$org->status_pengamal}}</td>
+                                        <td class=" text-sm flex justify-center py-1  gap-1">
+                                            <form action="/statuspengamal/{{$siswa->id}}" method="post">
+                                                @csrf
+                                                @method('delete')
+                                                <button class=" bg-red-500 text-white p-1 rounded-md flex"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                                    </svg></button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    @endforeach
                                 </tbody>
+
                             </table>
                         </div>
                     </div>

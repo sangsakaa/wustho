@@ -108,6 +108,14 @@ class SiswaController extends Controller
         $nis->save();
         return redirect('siswa');
     }
+    public function storeSP(Request $request)
+    {
+        $status_pengamal = new Statuspengamal();
+        $status_pengamal->siswa_id = $request->siswa_id;
+        $status_pengamal->status_pengamal = $request->status_pengamal;
+        $status_pengamal->save();
+        return redirect()->back();
+    }
     /**
      * Display the specified resource.
      *
@@ -118,9 +126,16 @@ class SiswaController extends Controller
     {
         $pes = Pesertakelas::query()
             ->join('siswa', 'siswa.id', 'pesertakelas.siswa_id')
-            ->select('pesertakelas.siswa_id')
-            ->where('siswa_id', $siswa->id)->first();
-        return view('siswa/detailSiswa', ['siswa' => $siswa, 'pesertakelas' => $pes]);
+            ->select('pesertakelas.siswa_id', 'siswa.nama_siswa')
+            ->where('siswa_id', $siswa->id)
+            ->first();
+        return view(
+            'siswa/detailSiswa',
+            [
+                'siswa' => $siswa,
+                'pesertakelas' => $pes
+            ]
+        );
     }
     public function biodata(Siswa $siswa)
     {
@@ -135,10 +150,27 @@ class SiswaController extends Controller
         $nisSiswa = Nis::where('siswa_id', $siswa->id)->get();
         return view('siswa/nisSiswa', ['siswa' => $siswa, 'nis' => $nisSiswa]);
     }
-    public function statuspengamal(Siswa $siswa)
+    public function statuspengamal(Siswa $siswa,)
     {
+        $statuspengamal = Statuspengamal::query()
+            // ->join('siswa', 'siswa.id', '=', 'statuspengamal.siswa_id')
+            // ->select(
+            //     [
+            //         'siswa.id',
+            //         'siswa.nama_siswa',
+            //         'statuspengamal.status_pengamal',
+            //     ]
+            // )
+            ->where('siswa_id', $siswa->id)->get();
         $nisSiswa = Nis::where('siswa_id', $siswa->id)->get();
-        return view('siswa/statuspengamal', ['siswa' => $siswa, 'nis' => $nisSiswa]);
+        return view(
+            'siswa/statuspengamal',
+            [
+                'siswa' => $siswa,
+                'nis' => $nisSiswa,
+                'statuspengamal' => $statuspengamal,
+            ]
+        );
     }
     public function DetailKelas(Siswa $siswa, Kelas $kelas)
     {
@@ -164,32 +196,30 @@ class SiswaController extends Controller
             ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
             ->join('semester', 'semester.id', '=', 'periode.semester_id')
             ->join('nilaimapel', 'nilaimapel.id', '=', 'nilai.nilaimapel_id')
-            ->join('mapel', 'mapel.id', '=', 'nilaimapel.mapel_id')
-            ->join('guru', 'guru.id', '=', 'nilaimapel.guru_id')
+        ->join('mapel', 'mapel.id', '=', 'nilaimapel.mapel_id')
+        ->join('guru', 'guru.id', '=', 'nilaimapel.guru_id')
         ->join('kelas', 'kelas.id', '=', 'kelasmi.kelas_id')
-            ->select(
-                [
-                    
-                    'siswa.nama_siswa',
+        ->select(
+            [
+
+                'siswa.nama_siswa',
                 'guru.nama_guru',
-                    'nilai.nilai_ujian',
-                    'nilai.nilai_harian',
-                    'kelasmi.nama_kelas',
-                    'kelasmi.periode_id',
-                    'periode.periode',
+                'nilai.nilai_ujian',
+                'nilai.nilai_harian',
+                'kelasmi.nama_kelas',
+                'kelasmi.periode_id',
+                'periode.periode',
                 // 'periode.id',
                 'semester.id',
-                    'semester.ket_semester',
-                    'mapel.mapel',
-                ]
-            )
+                'semester.ket_semester',
+                'mapel.mapel',
+            ]
+        )
             ->where('pesertakelas.siswa_id', $siswa->id);
         if (request('cari')) {
             $transkip->where(function ($query) {
                 $query->where('semester', 'like', '%' . request('cari') . '%');
             });
-            
-
         }
         $jmlujian = $transkip->sum('nilai_ujian');
         $countujian = $transkip->count('nilaimapel_id');
@@ -197,9 +227,9 @@ class SiswaController extends Controller
         $rata1 = $jmlharian / $countujian;
         $rata2 = $jmlujian / $countujian;
         $periode = Periode::query()
-        ->join('semester', 'semester.id', '=', 'periode.semester_id')
-        ->select('semester.id', 'periode.periode', 'semester.ket_semester')
-        ->get();
+            ->join('semester', 'semester.id', '=', 'periode.semester_id')
+            ->select('semester.id', 'periode.periode', 'semester.ket_semester')
+            ->get();
         $harini = $transkip->get();
         return view(
             'siswa/transkip',
@@ -224,14 +254,14 @@ class SiswaController extends Controller
      * @param  \App\Models\Siswa  $siswa
      * @return \Illuminate\Http\Response
      */
-    public function edit(Siswa $siswa, Statuspengamal $statuspengamal)
+    public function edit(Siswa $siswa)
     {
-        $status_pengamal = Statuspengamal::find($siswa)->first();
+
         return view(
             'siswa/editsiswa',
             [
                 'siswa' => $siswa,
-                'statuspengamal' => $status_pengamal
+
             ]
         );
     }
@@ -273,6 +303,12 @@ class SiswaController extends Controller
     {
         // dd($nis);
         Nis::destroy($nis->id);
+        return redirect()->back();
+    }
+    public function destroySP(statuspengamal $statuspengamal)
+
+    {
+        Statuspengamal::destroy($statuspengamal->id);
         return redirect()->back();
     }
 }
