@@ -19,9 +19,16 @@ class PengaturanController extends Controller
             ->join('siswa', 'siswa.id', '=', 'pesertakelas.siswa_id')
             ->join('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
             ->join('kelas', 'kelas.id', '=', 'kelasmi.kelas_id')
-            ->select('pesertakelas.id', 'siswa.nama_siswa', 'kelas.kelas', 'kelasmi.nama_kelas')
-            ->get();
-        return view('pengaturan/pengaturan', ['raport' => $raport]);
+        ->select('pesertakelas.id', 'siswa.nama_siswa', 'kelas.kelas', 'kelasmi.nama_kelas');
+        if (request('cari')) {
+            $raport->where('nama_siswa', 'like', '%' . request('cari') . '%');
+        }
+        return view(
+            'pengaturan/pengaturan',
+            [
+                'raport' => $raport->paginate(5)
+            ]
+        );
     }
     // Controller Periode
     public function periode()
