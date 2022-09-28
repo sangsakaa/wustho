@@ -152,7 +152,7 @@ class SiswaController extends Controller
     }
     public function statuspengamal(Siswa $siswa,)
     {
-        $statuspengamal = Statuspengamal::query()
+        $sp = Statuspengamal::query()
             // ->join('siswa', 'siswa.id', '=', 'statuspengamal.siswa_id')
             // ->select(
             //     [
@@ -161,14 +161,14 @@ class SiswaController extends Controller
             //         'statuspengamal.status_pengamal',
             //     ]
             // )
-            ->where('siswa_id', $siswa->id)->get();
+            ->where('statuspengamal.siswa_id', $siswa->id)->get();
         $nisSiswa = Nis::where('siswa_id', $siswa->id)->get();
         return view(
             'siswa/statuspengamal',
             [
                 'siswa' => $siswa,
                 'nis' => $nisSiswa,
-                'statuspengamal' => $statuspengamal,
+                'sp' => $sp,
             ]
         );
     }
@@ -305,10 +305,11 @@ class SiswaController extends Controller
         Nis::destroy($nis->id);
         return redirect()->back();
     }
-    public function destroySP(statuspengamal $statuspengamal)
+    public function destroySP(Statuspengamal $siswa)
 
     {
-        Statuspengamal::destroy($statuspengamal->id);
+
+        Statuspengamal::destroy($siswa->id);
         return redirect()->back();
     }
 }
