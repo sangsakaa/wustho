@@ -45,14 +45,10 @@
                             </div>
                         </form>
                     </div>
-                    <img src={{ asset("asset/images/logo.png") }} alt="" width="40px">
                     <div id="div1">
-                        <div class=" text-center p-2 bg-green-800 text-white ">
-                            <p class=" uppercase text-2xl">pondok pesantren kedunglo al munadhdhoro</p>
-                            <p class=" uppercase text-2xl  text-bold">madrasah diniyah wustho wahidiyah</p>
-                            <p class=" capitalize  sm:text-sm text-sm">jln. KH. Wahid hasyim bandar lor kec. mojoro kediri 64114 telp.(0354) 771018 - 774511</p>
-                        </div>
-                        <hr class="py-1  border-green-800">
+                        <img src={{ asset("asset/images/04.jpg") }} alt="" width="100%">
+
+
                         <p class=" capitalize text-center mt-2 mb-2 text-2xl ">kartu hasil tadris</p>
                         <div class=" grid sm:grid-cols-2 grid-cols-2">
                             <div class=" w-1/4">Nama Siswa</div>

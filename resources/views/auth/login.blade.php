@@ -2,6 +2,7 @@
     <x-auth-card>
         <div class=" grid grid-cols-1 justify-items-center   ">
             <img src="asset/images/logo.png" alt="" width="100px">
+
             <span class=" uppercase text-center">s m e d i</span>
             <span class="  capitalize text-center sm:text-2xl text-sm">sistem manajemen diniyah</span>
         </div>
