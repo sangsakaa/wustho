@@ -10,6 +10,7 @@ use App\Models\Nilai;
 use App\Models\Periode;
 use App\Models\Siswa;
 use App\Models\Pesertakelas;
+use App\Models\Statusanak;
 use App\Models\Statuspengamal;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -116,6 +117,16 @@ class SiswaController extends Controller
         $status_pengamal->save();
         return redirect()->back();
     }
+    public function storeSA(Request $request)
+    {
+        $statusanak = new Statusanak();
+        $statusanak->siswa_id = $request->siswa_id;
+        $statusanak->status_anak = $request->status_anak;
+        $statusanak->anak_ke = $request->anak_ke;
+        $statusanak->jumlah_saudara = $request->jumlah_saudara;
+        $statusanak->save();
+        return redirect()->back();
+    }
     /**
      * Display the specified resource.
      *
@@ -142,6 +153,7 @@ class SiswaController extends Controller
         $data = Siswa::where('siswa.id', $siswa->id)
             ->leftjoin('nis', 'siswa.id', '=', 'nis.siswa_id')
             ->join('statuspengamal', 'siswa.id', '=', 'statuspengamal.siswa_id')
+            ->join('statusanak', 'siswa.id', '=', 'statusanak.siswa_id')
             ->first();
         return view('siswa/biodata', ['siswa' => $data]);
     }
@@ -168,6 +180,20 @@ class SiswaController extends Controller
             [
                 'siswa' => $siswa,
                 'nis' => $nisSiswa,
+                'sp' => $sp,
+            ]
+        );
+    }
+    public function statusanak(Siswa $siswa)
+    {
+        $sp = Statusanak::query()
+            ->where('statusanak.siswa_id', $siswa->id)->get();
+
+        return view(
+            'siswa/statusanak',
+            [
+                'siswa' => $siswa,
+                
                 'sp' => $sp,
             ]
         );

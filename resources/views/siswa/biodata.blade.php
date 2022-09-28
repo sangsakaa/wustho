@@ -73,12 +73,12 @@
                             <div class=" border py-2 px-2" class=" w-1/2">6. Status Pengamal</div>
                             <div class=" border py-2 px-2">: {{$siswa->status_pengamal}}</div>
                             <div class=" border py-2 px-2" class=" w-1/2">7. Jumlah Saudara Kandung</div>
-                            <div class=" border py-2 px-2">: 5 </div>
+                            <div class=" border py-2 px-2">: {{$siswa->jumlah_saudara}} </div>
                             <div class=" border py-2 px-2" class=" w-1/2">8. Anak Ke</div>
-                            <div class=" border py-2 px-2">: 5 </div>
+                            <div class=" border py-2 px-2">: {{$siswa->anak_ke}} </div>
                             <div class=" border py-2 px-2" class=" w-1/2">9. Status Anak </div>
-                            <div class=" border py-2 px-2">: -</div>
-                            <div class=" border py-2 px-2" class=" w-1/2">10. Nama Ayah </div>
+                            <div class=" border py-2 px-2 capitalize">: {{$siswa->status_anak}}</div>
+                            <div class=" border py-2 px-2 " class=" w-1/2">10. Nama Ayah </div>
                             <div class=" border py-2 px-2">: -</div>
                             <div class=" border py-2 px-6" class=" w-1/2">Pekerjaan </div>
                             <div class=" border py-2 px-2">: -</div>
