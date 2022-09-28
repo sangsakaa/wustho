@@ -9,6 +9,7 @@
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="shortcut icon" href="{{ asset('asset/images/logo.ico') }}" type="image/x-icon">
 
     <!-- Styles -->
     <style>
