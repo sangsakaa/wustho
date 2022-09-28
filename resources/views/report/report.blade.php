@@ -37,6 +37,7 @@
                         </script>
                         <span class=" font-semibold "> DAFTAR NILAI HASIL TADRIS</span>
                         <span class=" font-semibold"> MADRASAH DINIYAH WUSTHO WAHIDIYAH</span>
+                        <span class=" uppercase"> Tahun Pelajaran {{$siswa->periode}} {{$siswa->ket_periode}} {{$siswa->ket_semester}}</span>
                     </div>
                     <hr>
 
