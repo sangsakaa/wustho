@@ -78,7 +78,7 @@
                                 </tbody>
                             </table>
                             <div class=" py-1">
-                                {{$raport}}
+
                             </div>
 
                         </div>
