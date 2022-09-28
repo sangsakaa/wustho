@@ -45,6 +45,7 @@
                             </div>
                         </form>
                     </div>
+                    <img src={{ asset("asset/images/logo.png") }} alt="" width="40px">
                     <div id="div1">
                         <div class=" text-center p-2 bg-green-800 text-white ">
                             <p class=" uppercase text-2xl">pondok pesantren kedunglo al munadhdhoro</p>
