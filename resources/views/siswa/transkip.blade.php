@@ -47,12 +47,12 @@
                     </div>
                     <div id="div1">
                         <img src={{ asset("asset/images/04.jpg") }} alt="" width="100%">
-
-
                         <p class=" capitalize text-center mt-2 mb-2 text-2xl ">kartu hasil tadris</p>
-                        <div class=" grid sm:grid-cols-2 grid-cols-2">
-                            <div class=" w-1/4">Nama Siswa</div>
-                            <div> : {{$siswa->nama_siswa}}</div>
+                        <div class=" grid sm:grid-cols-4 grid-cols-2">
+                            <div class=" w-full capitalize">nomor induk siswa</div>
+                            <div> : {{$tittle->nis}}</div>
+                            <div class=" w-full">Nama Siswa</div>
+                            <div> : {{$tittle->nama_siswa}}</div>
                         </div>
                         <hr>
 
@@ -106,8 +106,20 @@
                             <div class=" ">Jumlah Mata Pelajaran yang diambil pada semeter ini </div>
                             <div class=" px-2"> : {{$countujian}}</div>
                         </div>
-                    </div>
+                        <p>Ket : NH: Nilai Harian NU : Nilai ujian</p>
+                        <div class="  flex grid-cols-2 text-right">
+                            <div class=" w-2/3"></div>
+                            <div class="  text-left">
+                                Kedunglo, <?php
+                                            $date = date_create(now());
+                                            echo date_format($date, "d-M-Y");
+                                            ?></p>
+                                Al Mudir / Kepala <br><br><br><br>
+                                Muh. Bahrul Ulum, S.H
+                            </div>
+                        </div>
 
+                    </div>
                 </div>
             </div>
         </div>

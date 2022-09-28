@@ -52,12 +52,11 @@
                     </div>
                 </div>
             </div>
-
             <div class=" bg-red-600  text-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class=" grid grid-cols-2 ">
-                    <div class=" mt-6 px-6">
-                        <span class=" ">Asrama </span>
-                        <p>{{$pa}} Pa {{$pi}} Pi </p>
+                    <div class=" p-6">
+                        <span> total asrama </span>
+                        <p>{{$pa}} pi {{$pi}} pi</p>
                     </div>
                     <div class=" p-6 grid justify-end">
                         <span>
