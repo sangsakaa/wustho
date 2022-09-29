@@ -47,8 +47,10 @@
                     </div>
                     <div id="div1">
                         <img src={{ asset("asset/images/04.jpg") }} alt="" width="100%">
-                        <p class=" capitalize text-center mt-2 mb-2 text-2xl ">kartu hasil tadris</p>
-                        <div class=" grid sm:grid-cols-4 grid-cols-2">
+                        <p class=" capitalize text-center mt-2 mb-2 text-2xl ">kartu hasil tadris
+
+                        </p>
+                        <div class=" grid sm:grid-cols-4 grid-cols-2 text-sm">
                             <div class=" w-full capitalize">nomor induk siswa</div>
                             <div> : {{$tittle->nis}}</div>
                             <div class=" w-full">Nama Siswa</div>
@@ -72,13 +74,13 @@
                                 @if($transkip->count() !== null)
                                 @foreach($transkip as $nilai)
                                 <tr class=" hover:bg-gray-50">
-                                    <th class="text-xs sm:text-sm border w-5">{{$loop->iteration}}</th>
-                                    <td class="text-xs sm:text-sm px-2 border text-center  ">{{$nilai->periode}} {{$nilai->ket_semester}}</td>
-                                    <td class="text-xs sm:text-sm px-2 border ">{{$nilai->nama_guru}}</td>
-                                    <td class="text-xs sm:text-sm px-2 border  text-center">{{$nilai->nama_kelas}}</td>
-                                    <td class="text-xs sm:text-sm px-2 border ">{{$nilai->mapel}}</td>
-                                    <td class="text-xs sm:text-sm px-2 border  text-center   ">{{$nilai->nilai_harian}}</td>
-                                    <td class="text-xs sm:text-sm px-2 border  text-center   ">{{$nilai->nilai_ujian}}</td>
+                                    <th class="text-sm sm:text-sm py-2 border w-5">{{$loop->iteration}}</th>
+                                    <td class="text-sm sm:text-sm py-2 px-2 border text-center  ">{{$nilai->periode}} {{$nilai->ket_semester}}</td>
+                                    <td class="text-sm sm:text-sm py-2 px-2 border ">{{$nilai->nama_guru}}</td>
+                                    <td class="text-sm sm:text-sm py-2 px-2 border  text-center">{{$nilai->nama_kelas}}</td>
+                                    <td class="text-sm sm:text-sm py-2 px-2 border ">{{$nilai->mapel}}</td>
+                                    <td class="text-sm sm:text-sm py-2 px-2 border  text-center   ">{{$nilai->nilai_harian}}</td>
+                                    <td class="text-sm sm:text-sm py-2 px-2 border  text-center   ">{{$nilai->nilai_ujian}}</td>
                                 </tr>
                                 @endforeach
                                 @else
@@ -103,13 +105,13 @@
                             </tbody>
                         </table>
                         <div class=" flex grid-cols-2">
-                            <div class=" ">Jumlah Mata Pelajaran yang diambil pada semeter ini </div>
-                            <div class=" px-2"> : {{$countujian}}</div>
+                            <div class=" text-sm ">Jumlah Mata Pelajaran yang diambil pada semeter ini </div>
+                            <div class=" px-2 text-sm"> : {{$countujian}}</div>
                         </div>
-                        <p>Ket : NH: Nilai Harian NU : Nilai ujian</p>
+                        <p class=" text-sm">Ket : NH: Nilai Harian NU : Nilai ujian</p>
                         <div class="  flex grid-cols-2 text-right">
                             <div class=" w-2/3"></div>
-                            <div class="  text-left">
+                            <div class="  text-left text-sm">
                                 Kedunglo, <?php
                                             $date = date_create(now());
                                             echo date_format($date, "d-M-Y");
