@@ -47,16 +47,19 @@
                     </div>
                     <div id="div1">
                         <img src={{ asset("asset/images/04.jpg") }} alt="" width="100%">
-                        <p class=" capitalize text-center mt-2 mb-2 text-2xl ">kartu hasil tadris
+                        <p class=" capitalize text-center mt-2 mb-2 text-2xl underline  ">kartu hasil tadris
 
                         </p>
                         <div class=" grid sm:grid-cols-4 grid-cols-4 text-sm">
                             <div class=" w-full capitalize">nomor induk siswa</div>
                             <div> : {{$tittle->nis}}</div>
-                            <div class=" w-full">Nama Siswa</div>
-                            <div> : {{$tittle->nama_siswa}}</div>
-                            <div class=" w-full">Nama Siswa</div>
-                            <div> : {{$tittle}}</div>
+                            <div class=" w-full">Periode</div>
+                            <div> : {{$tittle->periode}}</div>
+                            <div class=" w-full text-xs sm:text-xs">Nama Siswa</div>
+                            <div class=" text-xs sm:text-xs "> : {{$tittle->nama_siswa}}</div>
+                            <div class=" w-full text-xs sm:text-xs"> Madrsah Diniyah</div>
+                            <div class=" "> : {{$tittle->madrasah_diniyah}}</div>
+
                         </div>
                         <hr>
 

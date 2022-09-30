@@ -256,8 +256,12 @@ class SiswaController extends Controller
             ->join('semester', 'semester.id', '=', 'periode.semester_id')
             ->select('semester.id', 'periode.periode', 'semester.ket_semester')
             ->get();
-        $tittle = Siswa::join('nis', 'siswa.id', '=', 'nis.siswa_id')
-            ->select('nis.nis', 'siswa.nama_siswa')
+        $tittle = Siswa::query()
+            ->join('nis', 'siswa.id', '=', 'nis.siswa_id')
+            ->join('pesertakelas', 'siswa.id', '=', 'pesertakelas.siswa_id')
+            ->join('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
+            ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
+            ->select('nis.nis', 'siswa.nama_siswa', 'nis.madrasah_diniyah', 'periode.periode')
             ->find($siswa->id);
         $harini = $transkip->get();
         return view(
