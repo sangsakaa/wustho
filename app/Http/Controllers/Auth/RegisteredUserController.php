@@ -22,7 +22,7 @@ class RegisteredUserController extends Controller
     {
         $users = User::query()
             ->leftjoin('siswa', 'users.siswa_id', 'siswa.id')
-            ->select('users.email', 'siswa.nama_siswa')
+            ->select('users.email', 'siswa.nama_siswa', 'users.name')
             ->get();
         return view('admin/admin', ['users' => $users]);
     }

@@ -10,6 +10,7 @@ use App\Models\Kelasmi;
 use App\Models\Semester;
 use App\Models\Nilaimapel;
 use App\Models\Pesertakelas;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -223,6 +224,11 @@ class NilaiController extends Controller
     public function nilaipersiswa(Request $request)
     {
         $siswa_id = Auth::user()->siswa_id;
+        $title = User::query()
+        ->join('siswa', 'siswa.id', 'users.siswa_id')
+        ->where('users.siswa_id', $siswa_id)
+            // ->select('siswa.nama_siswa')
+            ->first();
 
         $kelasmiSiswa = Kelasmi::query()
             ->join('pesertakelas', 'pesertakelas.kelasmi_id', '=', 'kelasmi.id')
@@ -258,7 +264,8 @@ class NilaiController extends Controller
         return view('nilai.nilaipersiswa', [
             'kelasmiSiswa' => $kelasmiSiswa->get(),
             'kelasmiTerpilih' => $kelasmiTerpilih,
-            'dataNilai' => $dataNilai
+            'dataNilai' => $dataNilai,
+            'title' => $title
         ]);
     }
 }

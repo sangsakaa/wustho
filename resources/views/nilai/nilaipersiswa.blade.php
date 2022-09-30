@@ -15,14 +15,12 @@
                         </div>
                         <div class=" flex grid-cols-1 justify-end">
                             <form action="/nilai" method="get" class="flex gap-1">
-                                <select name="kelasmi" id=""
-                                    class=" border border-green-800 text-green-800 rounded-md py-1" required>
+                                <select name="kelasmi" id="" class=" border border-green-800 text-green-800 rounded-md py-1" required>
                                     <option value="">-- Pilih Kelas --</option>
                                     @foreach ($kelasmiSiswa as $kelas)
-                                        <option value="{{ $kelas->id }}"
-                                            {{ $kelasmiTerpilih->id == $kelas->id ? 'selected' : '' }}>
-                                            {{ $kelas->nama_kelas }} {{ $kelas->periode }} {{ $kelas->ket_semester }}
-                                        </option>
+                                    <option value="{{ $kelas->id }}" {{ $kelasmiTerpilih->id == $kelas->id ? 'selected' : '' }}>
+                                        {{ $kelas->nama_kelas }} {{ $kelas->periode }} {{ $kelas->ket_semester }}
+                                    </option>
                                     @endforeach
                                 </select>
                                 <button type="submit" class=" px-2   bg-blue-500  rounded-md text-white">
@@ -32,6 +30,10 @@
                         </div>
                     </div>
                     <div class=" overflow-auto bg-white rounded-md">
+                        <div class=" grid grid-cols-2">
+                            <div>Nama Siswa</div>
+                            <div> : {{$title->nama_siswa}}</div>
+                        </div>
                         <table class=" w-full">
                             <thead>
                                 <tr class="border bg-gray-200">
@@ -44,21 +46,21 @@
                             </thead>
                             <tbody>
                                 @if ($dataNilai->count())
-                                    @foreach ($dataNilai as $nilai)
-                                        <tr class="border hover:bg-gray-100 ">
-                                            <td class=" border text-center px-1">{{ $loop->iteration }}</td>
-                                            <td class=" border text-center px-1 py-2">{{ $nilai->mapel }}</td>
-                                            <td class=" border text-left px-1">{{ $nilai->nama_guru }}</td>
-                                            <td class=" border text-center px-1">{{ $nilai->nilai_harian }}</td>
-                                            <td class=" border text-center px-1">{{ $nilai->nilai_ujian }}</td>
-                                        </tr>
-                                    @endforeach
+                                @foreach ($dataNilai as $nilai)
+                                <tr class="border hover:bg-gray-100 ">
+                                    <td class=" border text-center px-1">{{ $loop->iteration }}</td>
+                                    <td class=" border text-center px-1 py-2">{{ $nilai->mapel }}</td>
+                                    <td class=" border text-left px-1">{{ $nilai->nama_guru }}</td>
+                                    <td class=" border text-center px-1">{{ $nilai->nilai_harian }}</td>
+                                    <td class=" border text-center px-1">{{ $nilai->nilai_ujian }}</td>
+                                </tr>
+                                @endforeach
                                 @else
-                                    <tr class="border">
-                                        <td colspan="11" class="text-sm border text-center py-4">
-                                            Tidak ada data
-                                        </td>
-                                    </tr>
+                                <tr class="border">
+                                    <td colspan="11" class="text-sm border text-center py-4">
+                                        Tidak ada data
+                                    </td>
+                                </tr>
                                 @endif
                             </tbody>
                         </table>
