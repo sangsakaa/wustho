@@ -61,6 +61,7 @@ Route::delete('pesertakelas/{pesertakelas}', [KelasmiController::class, 'hapus']
 Route::get('nilaimapel', [NilaiController::class, 'index'])->middleware(['auth'])->name('nilaimapel');
 Route::get('nilai/{nilaimapel}', [NilaiController::class, 'show'])->middleware(['auth']);
 Route::post('nilai', [NilaiController::class, 'store'])->middleware(['auth'])->name('nilai');
+Route::get('nilai', [NilaiController::class, 'nilaipersiswa'])->middleware(['auth'])->name('nilaipersiswa');
 Route::post('nilaimapel', [NilaiController::class, 'storeNilaimapel'])->middleware(['auth'])->name('nilaimapel');
 Route::delete('nilaimapel/{nilaimapel}', [NilaiController::class, 'destroy'])->middleware(['auth']);
 // Controller Asrama

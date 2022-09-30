@@ -12,6 +12,7 @@ use App\Models\Nilaimapel;
 use App\Models\Pesertakelas;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class NilaiController extends Controller
@@ -217,5 +218,47 @@ class NilaiController extends Controller
         $kelas->mapel_id = $request->mapel_id;
         $kelas->save();
         return redirect()->back();
+    }
+
+    public function nilaipersiswa(Request $request)
+    {
+        $siswa_id = Auth::user()->siswa_id;
+
+        $kelasmiSiswa = Kelasmi::query()
+            ->join('pesertakelas', 'pesertakelas.kelasmi_id', '=', 'kelasmi.id')
+            ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
+            ->join('semester', 'semester.id', 'periode.semester_id')
+            ->where('pesertakelas.siswa_id', $siswa_id)
+            ->select('kelasmi.id', 'kelasmi.nama_kelas', 'periode.periode', 'semester.ket_semester');
+
+        $kelasmiTerpilih =
+            Kelasmi::query()
+            ->join('pesertakelas', 'pesertakelas.kelasmi_id', '=', 'kelasmi.id')
+            ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
+            ->join('semester', 'semester.id', 'periode.semester_id')
+            ->where('pesertakelas.siswa_id', $siswa_id)
+            ->select('kelasmi.id', 'kelasmi.nama_kelas', 'periode.periode', 'semester.ket_semester', 'pesertakelas.id as pesertakelas_id')
+            ->when($request->kelasmi, function ($query, $kelasmi) {
+                $query->where('kelasmi.id', $kelasmi);
+            }, function ($query) {
+                $query->latest('periode.created_at');
+            })
+            ->first();
+
+        $dataNilai = Nilaimapel::query()
+            ->join('nilai', function ($join) use ($kelasmiTerpilih) {
+                $join->on('nilai.nilaimapel_id', '=', 'nilaimapel.id')
+                    ->where('nilai.pesertakelas_id', $kelasmiTerpilih->pesertakelas_id);
+            })
+            ->join('mapel', 'mapel.id', '=', 'nilaimapel.mapel_id')
+            ->join('guru', 'guru.id', '=', 'nilaimapel.guru_id')
+            ->where('nilaimapel.kelasmi_id', $kelasmiTerpilih->id)
+            ->get();
+
+        return view('nilai.nilaipersiswa', [
+            'kelasmiSiswa' => $kelasmiSiswa->get(),
+            'kelasmiTerpilih' => $kelasmiTerpilih,
+            'dataNilai' => $dataNilai
+        ]);
     }
 }

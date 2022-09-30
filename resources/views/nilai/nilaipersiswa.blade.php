@@ -1,0 +1,70 @@
+<x-app-layout>
+    <x-slot name="header">
+        @section('title', ' | Nilai Mata Pelajaran')
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            {{ __('Nilai Mata Pelajaran') }}
+        </h2>
+    </x-slot>
+    <div class=" px-4">
+        <div class="mt-2">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-4 bg-white border-b border-gray-200">
+                    <div class=" grid grid-cols-1 sm:grid-cols-2  py-1">
+                        <div class=" grid text-blue-400 text-2xl">
+                            Daftar Nilai Mata Pelajaran
+                        </div>
+                        <div class=" flex grid-cols-1 justify-end">
+                            <form action="/nilai" method="get" class="flex gap-1">
+                                <select name="kelasmi" id=""
+                                    class=" border border-green-800 text-green-800 rounded-md py-1" required>
+                                    <option value="">-- Pilih Kelas --</option>
+                                    @foreach ($kelasmiSiswa as $kelas)
+                                        <option value="{{ $kelas->id }}"
+                                            {{ $kelasmiTerpilih->id == $kelas->id ? 'selected' : '' }}>
+                                            {{ $kelas->nama_kelas }} {{ $kelas->periode }} {{ $kelas->ket_semester }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                <button type="submit" class=" px-2   bg-blue-500  rounded-md text-white">
+                                    Pilih
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class=" overflow-auto bg-white rounded-md">
+                        <table class=" w-full">
+                            <thead>
+                                <tr class="border bg-gray-200">
+                                    <th class=" border px-1  py-1">#</th>
+                                    <th class=" border px-1">Pelajaran</th>
+                                    <th class=" border px-1">Nama Guru</th>
+                                    <th class=" border px-1">HARIAN</th>
+                                    <th class=" border px-1">UJIAN</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if ($dataNilai->count())
+                                    @foreach ($dataNilai as $nilai)
+                                        <tr class="border hover:bg-gray-100 ">
+                                            <td class=" border text-center px-1">{{ $loop->iteration }}</td>
+                                            <td class=" border text-center px-1 py-2">{{ $nilai->mapel }}</td>
+                                            <td class=" border text-left px-1">{{ $nilai->nama_guru }}</td>
+                                            <td class=" border text-center px-1">{{ $nilai->nilai_harian }}</td>
+                                            <td class=" border text-center px-1">{{ $nilai->nilai_ujian }}</td>
+                                        </tr>
+                                    @endforeach
+                                @else
+                                    <tr class="border">
+                                        <td colspan="11" class="text-sm border text-center py-4">
+                                            Tidak ada data
+                                        </td>
+                                    </tr>
+                                @endif
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</x-app-layout>
