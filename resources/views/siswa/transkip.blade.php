@@ -50,18 +50,20 @@
                         <p class=" capitalize text-center mt-2 mb-2 text-2xl ">kartu hasil tadris
 
                         </p>
-                        <div class=" grid sm:grid-cols-4 grid-cols-2 text-sm">
+                        <div class=" grid sm:grid-cols-4 grid-cols-4 text-sm">
                             <div class=" w-full capitalize">nomor induk siswa</div>
                             <div> : {{$tittle->nis}}</div>
                             <div class=" w-full">Nama Siswa</div>
                             <div> : {{$tittle->nama_siswa}}</div>
+                            <div class=" w-full">Nama Siswa</div>
+                            <div> : {{$tittle}}</div>
                         </div>
                         <hr>
 
                         <table class=" w-full mt-2">
                             <thead>
-                                <tr class=" border bg-gray-100">
-                                    <th class=" text-xs sm:text-sm px-2 py-1 border capitalize">no</th>
+                                <tr class=" border bg-gray-100 ">
+                                    <th class=" text-xs sm:text-sm px-2 py-2 border capitalize">no</th>
                                     <th class=" text-xs sm:text-sm px-2 border capitalize w-1/4">Periode</th>
                                     <th class=" text-xs sm:text-sm px-2 border capitalize w-1/4">nama guru</th>
                                     <th class=" text-xs sm:text-sm px-2 border capitalize">Kelas</th>

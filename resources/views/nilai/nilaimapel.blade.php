@@ -13,20 +13,20 @@
                         <span class=" text-blue-500">Form Tambah Nilai</span>
                         <form action="/nilaimapel" method="post" class=" py-1 px-2 w-full">
                             @csrf
-                            <select name="mapel_id" id="" class=" w-full sm:w-1/5 py-1">
+                            <select name="mapel_id" id="" class=" w-full sm:w-1/5 py-1" required>
                                 <option value="">-- Pilih Mata Pelajaran --</option>
                                 @foreach($dataMapel as $mapel)
                                 <option value="{{$mapel->id}}">{{$mapel->kelas}} - {{$mapel->mapel}} - {{$mapel->nama_kitab}}</option>
                                 @endforeach
                             </select>
-                            <select name="guru_id" id="" class=" w-full sm:w-1/5 py-1">
+                            <select name="guru_id" id="" class=" w-full sm:w-1/5 py-1" required>
                                 <option value="">-- Pilih Pendidik --</option>
                                 @foreach($dataGuru as $guru)
                                 <option value="{{$guru->id}}">{{$guru->nama_guru}}</option>
                                 @endforeach
                             </select>
 
-                            <select name="kelasmi_id" id="" class=" w-full sm:w-1/5 py-1">
+                            <select name="kelasmi_id" id="" class=" w-full sm:w-1/5 py-1" required>
                                 <option value="">-- Pilih Kelas --</option>
                                 @foreach($dataKelas as $kelas)
                                 <option value="{{$kelas->id}}">{{$kelas->nama_kelas}} {{$kelas->periode}} {{$kelas->ket_semester}}</option>
@@ -100,7 +100,7 @@
                                             <form action="/nilaimapel/{{$nilai->id}}" method="post">
                                                 @csrf
                                                 @method('delete')
-                                                <button class=" bg-red-500 text-white p-1 rounded-md"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                                <button class=" bg-red-500 text-white p-1 rounded-md" onclick=" return confirm ('apakah anda yakin menghapus data ini : {{$nilai->mapel}}')"><svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                                         <path stroke-linecap="round" stroke-linejoin="round" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
                                                     </svg></button>
                                             </form>
@@ -109,18 +109,17 @@
                                     @endforeach
                                     @else
                                     <tr class="  border">
-                                        <td colspan="11" class=" text-sm border text-center">
-                                            Tidak ada data
+                                        <td colspan="11" class=" text-md text-red-600  border text-center">
+                                            Tidak ada data yang ditemukan
                                         </td>
                                     </tr>
                                     @endif
-                                    <tr class=" border">
-                                        <td colspan="12" class=" px-1 py-1">
-                                            {{$data}}
-                                        </td>
-                                    </tr>
+
                                 </tbody>
                             </table>
+                            <div class=" py-1">
+                                {{$data}}
+                            </div>
                         </div>
 
 
