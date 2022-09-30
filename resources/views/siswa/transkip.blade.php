@@ -51,14 +51,7 @@
 
                         </p>
                         <div class=" grid sm:grid-cols-4 grid-cols-4 text-sm">
-                            <div class=" w-full capitalize">nomor induk siswa</div>
-                            <div> : {{$tittle->nis}}</div>
-                            <div class=" w-full">Periode</div>
-                            <div> : {{$tittle->periode}}</div>
-                            <div class=" w-full text-xs sm:text-xs">Nama Siswa</div>
-                            <div class=" text-xs sm:text-xs "> : {{$tittle->nama_siswa}}</div>
-                            <div class=" w-full text-xs sm:text-xs"> Madrsah Diniyah</div>
-                            <div class=" "> : {{$tittle->madrasah_diniyah}}</div>
+
 
                         </div>
                         <hr>

@@ -18,6 +18,14 @@ class RegisteredUserController extends Controller
      *
      * @return \Illuminate\View\View
      */
+    public function index()
+    {
+        $users = User::query()
+            ->leftjoin('siswa', 'users.siswa_id', 'siswa.id')
+            ->select('users.email', 'siswa.nama_siswa')
+            ->get();
+        return view('admin/admin', ['users' => $users]);
+    }
     public function create()
     {
         return view('auth.register');

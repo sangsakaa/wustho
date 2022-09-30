@@ -261,7 +261,8 @@ class SiswaController extends Controller
             ->join('pesertakelas', 'siswa.id', '=', 'pesertakelas.siswa_id')
             ->join('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
             ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
-            ->select('nis.nis', 'siswa.nama_siswa', 'nis.madrasah_diniyah', 'periode.periode')
+            ->join('semester', 'semester.id', '=', 'periode.semester_id')
+            ->select('nis.nis', 'siswa.nama_siswa', 'nis.madrasah_diniyah', 'semester.ket_semester', 'periode.periode')
             ->find($siswa->id);
         $harini = $transkip->get();
         return view(

@@ -1,23 +1,25 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\GuruController;
 use App\Http\Controllers\KelasController;
+use App\Http\Controllers\MapelController;
 use App\Http\Controllers\NilaiController;
 use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\AsramaController;
+use App\Http\Controllers\RaportController;
 use App\Http\Controllers\KelasmiController;
+use App\Http\Controllers\KegiatanController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PengaturanController;
-use App\Http\Controllers\AsramasiswaController;
-use App\Http\Controllers\GuruController;
-use App\Http\Controllers\KegiatanController;
-use App\Http\Controllers\MapelController;
-use App\Http\Controllers\RaportController;
 use App\Http\Controllers\SesiasramaController;
+use App\Http\Controllers\AsramasiswaController;
+use App\Http\Controllers\Auth\RegisteredUserController;
 
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('admin', [RegisteredUserController::class, 'index'])->middleware(['auth'])->name('admin');
 
 // CONTROLLER SISWA
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth'])->name('dashboard');
