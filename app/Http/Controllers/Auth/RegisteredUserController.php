@@ -76,13 +76,17 @@ class RegisteredUserController extends Controller
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
-        $siswa = Siswa::find($siswa);
+
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'siswa_id' => $request->siswa,
+            'siswa_id' => $request->siswa_id,
             'password' => Hash::make($request->password),
         ]);
+
+        if ($request->siswa_id) {
+            $user->assignRole('siswa');
+        }
 
         event(new Registered($user));
 
