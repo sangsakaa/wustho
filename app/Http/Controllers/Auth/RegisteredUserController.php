@@ -52,7 +52,10 @@ class RegisteredUserController extends Controller
     }
     public function create()
     {
-        $siswa = Siswa::all();
+        $siswa = Siswa::query()
+            ->leftJoin('users', 'users.siswa_id', '=', 'siswa.id')
+            ->where('users.siswa_id', null)
+            ->get();
         return view(
             'auth.register',
             [
@@ -86,6 +89,8 @@ class RegisteredUserController extends Controller
 
         if ($request->siswa_id) {
             $user->assignRole('siswa');
+        } else {
+            $user->assignRole('admin');
         }
 
         event(new Registered($user));
