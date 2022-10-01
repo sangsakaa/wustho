@@ -2,7 +2,7 @@
     <x-slot name="header">
         @section('title', ' | Raport' )
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard Report') }}
+            Raport : {{$siswa->nama_siswa}}
         </h2>
     </x-slot>
 
