@@ -20,6 +20,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 Route::get('admin', [RegisteredUserController::class, 'index'])->middleware(['auth'])->name('admin');
+Route::get('register', [RegisteredUserController::class, 'create'])->middleware(['auth'])->name('register');
+Route::get('HasRole', [RegisteredUserController::class, 'HasRole'])->middleware(['auth'])->name('HasRole');
 
 // CONTROLLER SISWA
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth'])->name('dashboard');
