@@ -5,8 +5,12 @@
             {{ __('Dashboard') }}
         </h2>
     </x-slot>
-    <div class="px-4 mt-4">
+    <div class="px-4 mt-4 ">
+        <div class=" p-4 mt-1 mb-4 bg-sky-600 text-center">
+            <span class=" capitalize text-center  font-serif sm:text-2xl  text-sm text-white rounded-md "> dashboard madin wustho Wahidiyah</span>
+        </div>
         <div class=" grid grid-cols-1 sm:grid-cols-4 gap-2">
+
             <div class=" bg-green-800  text-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class=" grid grid-cols-2 ">
                     <div class=" p-6">
@@ -69,6 +73,8 @@
                 </div>
             </div>
         </div>
+
     </div>
+
 
 </x-app-layout>

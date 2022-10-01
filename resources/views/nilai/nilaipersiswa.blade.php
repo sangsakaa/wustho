@@ -1,8 +1,8 @@
 <x-app-layout>
     <x-slot name="header">
-        @section('title', ' | Nilai Mata Pelajaran')
+        @section('title', ' | KHT')
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Nilai Mata Pelajaran') }}
+            {{ __('Kartu Hasil Tadris') }}
         </h2>
     </x-slot>
     <div class=" px-4">
@@ -29,11 +29,17 @@
                             </form>
                         </div>
                     </div>
-                    <div class=" overflow-auto bg-white rounded-md">
-                        <div class=" grid grid-cols-2">
+                    <div class=" overflow-auto bg-white rounded-md ">
+                        <div class=" text-center text-2xl capitalize py-2">
+                            <span> kartu hasil tadris</span>
+                        </div>
+                        <div class=" grid grid-cols-4">
                             <div>Nama Siswa</div>
                             <div> : {{$title->nama_siswa}}</div>
+                            <div>Tempat Lahir</div>
+                            <div> : {{$title->tempat_lahir}}, {{$title->tanggal_lahir}}</div>
                         </div>
+                        <hr class=" py-1">
                         <table class=" w-full">
                             <thead>
                                 <tr class="border bg-gray-200">

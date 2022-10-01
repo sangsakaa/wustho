@@ -164,20 +164,15 @@ class AsramasiswaController extends Controller
     }
     public function editpeserta(Pesertaasrama $pesertaasrama, Asramasiswa $asramasiswa)
     {
-        $anggota = $pesertaasrama
-            ->join('siswa', 'siswa.id', '=', 'pesertaasrama.siswa_id')
-            ->join('asramasiswa', 'asramasiswa.id', '=', 'pesertaasrama.asramasiswa_id')
-            ->find($pesertaasrama->id);
 
-        $siswaasrama = Asramasiswa::query()
-            ->join('asrama', 'asrama.id', '=', 'asramasiswa.asrama_id')->get();
+        
         return view(
             'asrama/editpeserta',
             [
                 'pesertaasrama' => $pesertaasrama,
-                'anggota' => $anggota,
-                'siswaasrama' => $siswaasrama,
                 'asramasiswa' => $asramasiswa
+                
+                
             ]
         );
     }
@@ -207,7 +202,7 @@ class AsramasiswaController extends Controller
                 'asramasiswa_id' => $request->asramasiswa_id,
 
             ]);
-        return redirect('pesertaasrama')->with('update', 'pembaharuan data berhasil');
+        return redirect()->back()->with('update', 'pembaharuan data berhasil');
     }
 
     /**

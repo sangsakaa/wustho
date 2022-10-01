@@ -72,10 +72,11 @@ class DashboardController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function JS()
     {
-        //
+        
     }
+    
 
     /**
      * Store a newly created resource in storage.

@@ -407,26 +407,24 @@
 
 <body class="antialiased">
     <div class="relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center py-4 sm:pt-0">
-
-
         <div class="max-w-6xl mx-auto sm:px-2 lg:px-2">
             <div class=" text-center">
                 <img src="asset/images/logo.png" alt="" width="100px"><br>
                 <span class=" dark:text-white text-lg">S M E D I</span><br>
-                <span class=" dark:text-white capitalize">sistem manajemen diniyah</span>
+                <span class=" dark:text-white capitalize text-lg">Sistem Manajemen Diniyah</span>
             </div>
             <div class="mt-8 bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg">
                 <div class="grid grid-cols-1 md:grid-cols-1">
                     <div class="p-6 text-center">
                         @if(Route::has('login'))
                         @auth
-                        <a href="{{ url('/dashboard') }}" class="text-sm text-gray-700 dark:text-gray-500 underline">Dashboard</a>
+                        <a href="{{ url('/dashboard') }}" class="text-md text-gray-700 dark:text-gray-500 ">Dashboard</a>
                         @else
                         <a href="{{ route('login') }}" class="text-sm text-gray-700  dark:text-white ">Log in</a>
                         @endif
                         @endauth
                         <div class="ml-4 text-center text-sm text-gray-500 sm:text-right sm:ml-0">
-                            Laravel v{{ Illuminate\Foundation\Application::VERSION }} (PHP v{{ PHP_VERSION }})
+                            Laravel v {{ Illuminate\Foundation\Application::VERSION }} (PHP v {{ PHP_VERSION }})
                         </div>
                     </div>
                 </div>
