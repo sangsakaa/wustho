@@ -38,7 +38,7 @@
         </div>
 
     </div>
-    <div class=" grid grid-cols-1 sm:grid-cols-1 gap-2 px-2 py-2">
+    <div class=" grid grid-cols-1 sm:grid-cols-1 gap-2 sm:px-1 px-2 py-2">
         <div class="">
             <div class=" mx-auto ">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
@@ -68,7 +68,7 @@
                             <div class=" overflow-auto">
                                 <table class=" w-full border">
                                     <thead class=" border bg-gray-200 ">
-                                        <tr class="">
+                                        <tr class=" overflow-auto">
                                             <th class=" border px-2 py-1">No</th>
                                             <th class=" border px-2 text-center sm:text-sm text-xs">Mata Pelajaran</th>
                                             <th class=" border px-2 text-center sm:text-sm text-xs">Nama Kitab</th>
