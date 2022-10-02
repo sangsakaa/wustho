@@ -63,6 +63,17 @@ class PengaturanController extends Controller
 
     public function semester()
     {
-        return view('pengaturan/semester');
+        $peserta = Pesertakelas::query()
+            ->join('siswa', 'siswa.id', '=', 'pesertakelas.siswa_id')
+            ->join('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
+            ->leftjoin('kelas', 'kelasmi.id', '=', 'kelasmi.kelas_id')
+            ->select('siswa.nama_siswa', 'kelasmi.nama_kelas')
+            ->get();
+        return view(
+            'pengaturan/semester',
+            [
+                'peserta' => $peserta
+            ]
+        );
     }
 }
