@@ -4,7 +4,7 @@
             {{ __('Dashboard Pengaturan') }}
         </h2>
     </x-slot>
-    <div class=" grid grid-cols-2 gap-2 px-2 py-2">
+    <div class=" grid grid-cols-1 sm:grid-cols-2 gap-2 px-2 py-2">
         <div class="">
             <div class=" mx-auto ">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">

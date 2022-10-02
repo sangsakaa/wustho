@@ -5,7 +5,7 @@
             {{ __('Dashboard Pengaturan') }}
         </h2>
     </x-slot>
-    <div class=" grid grid-cols-2 gap-2 px-2 py-2">
+    <div class=" grid grid grid-cols-1 sm:grid-cols-2 gap-2 px-2 py-2">
         <div class="">
             <div class=" mx-auto ">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
@@ -37,7 +37,7 @@
                                 <input type="text" name="cari" value="{{ request('cari') }}" class=" border border-green-800 text-green-800 rounded-md py-1 " placeholder=" Cari .." autofocus>
 
                                 <button type="submit" class=" px-2   bg-blue-500  rounded-md text-white">
-                                    Cari Raport by Nama Siswa </button>
+                                    Cari Raport </button>
 
                             </form>
 
