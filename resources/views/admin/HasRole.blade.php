@@ -26,8 +26,8 @@
           <span> Permission</span>
           <table class=" w-full">
             <thead>
-              <tr class=" border">
-                <th class=" border">No</th>
+              <tr class=" border bg-gray-100">
+                <th class=" border py-1 ">No</th>
                 <th class=" border">Permissions</th>
                 <th class=" border">Role</th>
               </tr>
@@ -46,8 +46,8 @@
           <span> Roles User</span>
           <table class=" w-full">
             <thead>
-              <tr class=" border">
-                <th class=" border">No</th>
+              <tr class=" border bg-gray-100">
+                <th class=" border py-1">No</th>
                 <th class=" border">Permissions</th>
                 <th class=" border">Role</th>
               </tr>

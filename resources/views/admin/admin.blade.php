@@ -12,7 +12,7 @@
           <span class=" text-sky-500"> User Management Role</span>
           <div class=" flex grid-cols-1 gap-1">
             <a href="/admin" class=" bg-sky-400 py-1 px-4 rounded-md text-white hover:bg-purple-500">ListUsers</a>
-            <a href="/register" class=" bg-sky-400 py-1 px-4 rounded-md text-white hover:bg-purple-500">register</a>
+
             <a href="#" class=" bg-sky-400 py-1 px-4 rounded-md text-white hover:bg-purple-500">Manajemen Role User</a>
             <a href="HasRole" class=" bg-sky-400 py-1 px-4 rounded-md text-white hover:bg-purple-500">Has Role</a>
           </div>
@@ -27,11 +27,11 @@
       <div class=" bg-white border-b border-gray-200">
         <div class=" p-4 grid grid-cols-1">
           <span> User Role</span>
-          {{$hasRole}}
+
           <table class=" w-full">
             <thead>
-              <tr class=" border">
-                <th class=" border">No</th>
+              <tr class=" border bg-gray-100 ">
+                <th class=" border py-2">No</th>
                 <th class=" border">Username</th>
                 <th class=" border">Email</th>
                 <th class=" border">Nama Pengguna</th>
