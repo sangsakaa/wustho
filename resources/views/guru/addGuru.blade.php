@@ -16,24 +16,24 @@
                         <div class=" grid grid-cols-1 py-6 px-4 sm:w-1/4">
                             @csrf
                             <label for="">Nama Lengkap <span class=" text-red-600">*</span></label>
-                            <input type="text" name="nama_guru" class=" w-full py-1 " placeholder=" Nama Lengkap : M. Izul Ula">
+                            <input type="text" name="nama_guru" class=" w-full py-1 " placeholder=" Nama Lengkap : M. Izul Ula" required>
                             <label for="">Jenis Kelamin <span class=" text-red-600">*</span></label>
-                            <select name="jenis_kelamin" id="" class=" py-1">
+                            <select name="jenis_kelamin" id="" class=" py-1" required>
                                 <option value=""> -Pilih Jenis Kelamin</option>
                                 <option value="L"> -Laki Laki- </option>
                                 <option value="P"> -Perempuan- </option>
                             </select>
                             <label for="">Agama <span class=" text-red-600">*</span></label>
-                            <select name="agama" id="" class=" py-1">
+                            <select name="agama" id="" class=" py-1" required>
                                 <option value=""> -Pilih Agama</option>
                                 <option value="Islam"> Islam </option>
                             </select>
                             <label for="">Tempat Lahir <span class=" text-red-600">*</span></label>
-                            <input type="text" name="tempat_lahir" class=" w-full py-1 " placeholder=" Tempat Lahir : Malang">
+                            <input type="text" name="tempat_lahir" class=" w-full py-1 " placeholder=" Tempat Lahir : Malang" required>
                             <label for="">Tempat Lahir <span class=" text-red-600">*</span></label>
-                            <input type="date" name="tanggal_lahir" class=" w-full py-1 " placeholder=" Nama Lengkap : M. Izul Ula">
+                            <input type="date" name="tanggal_lahir" class=" w-full py-1 " placeholder=" Nama Lengkap : M. Izul Ula" required>
                             <label for="">Tempat Masuk <span class=" text-red-600">*</span></label>
-                            <input type="date" name="tanggal_masuk" class=" w-full py-1 " placeholder=" Nama Lengkap : M. Izul Ula">
+                            <input type="date" name="tanggal_masuk" class=" w-full py-1 " placeholder=" Nama Lengkap : M. Izul Ula" required>
                             <div class=" flex grid-cols-2 gap-2 py-2">
 
                                 <div class=" flex grid-cols-2 gap-2 py-2">

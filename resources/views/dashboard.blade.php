@@ -9,12 +9,11 @@
         <div class=" grid grid-cols-1 sm:grid-cols-4 gap-2">
             <div class=" bg-green-800 hover:bg-purple-500  text-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class=" grid  grid-cols-2   ">
-                    <div class=" mt-4 px-4 ">
+                    <div class=" mt-3 px-4 ">
                         <span class=" text-5xl font-mono  ">
                             {{$siswa}}
                         </span>
                         <p>Nomor Induk Siswa</p>
-
                     </div>
                     <div class=" flex justify-end py-1 ">
                         <span class=" text-5xl font-mono">
