@@ -55,6 +55,7 @@ class RegisteredUserController extends Controller
         $siswa = Siswa::query()
             ->leftJoin('users', 'users.siswa_id', '=', 'siswa.id')
             ->where('users.siswa_id', null)
+            ->select('siswa.*')
             ->get();
         return view(
             'auth.register',
