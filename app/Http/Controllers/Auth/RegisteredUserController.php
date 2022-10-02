@@ -8,11 +8,13 @@ use App\Models\Hasrole;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rules;
 use App\Http\Controllers\Controller;
+use App\Models\Roles;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\Events\Registered;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Validation\Rules\Password;
+use Spatie\Permission\Models\Permission;
 
 class RegisteredUserController extends Controller
 {
@@ -39,14 +41,14 @@ class RegisteredUserController extends Controller
     public function HasRole()
     {
 
-        $hasRole = Hasrole::query()
-            // ->join('permissions', 'permission.id', '=', 'role_has_permissions.permission_id ')
+        $roles = Roles::all();
+        $permissions = Permission::query()
             ->get();
         return view(
             'admin/HasRole',
             [
-
-                'hasRole' => $hasRole
+                'hasRole' => $permissions,
+                'roles' => $roles
             ]
         );
     }

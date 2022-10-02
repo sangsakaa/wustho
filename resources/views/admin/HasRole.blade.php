@@ -23,7 +23,7 @@
     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
       <div class=" bg-white border-b border-gray-200">
         <div class=" p-4 grid grid-cols-1">
-          <span> User Role</span>
+          <span> Permission</span>
           <table class=" w-full">
             <thead>
               <tr class=" border">
@@ -36,8 +36,28 @@
               @foreach($hasRole as $user)
               <tr class=" border ">
                 <th class=" border">{{$loop->iteration}}</th>
-                <th class=" border">{{$user->permission_id}}</th>
-                <th class=" border">{{$user->role_id}}</th>
+                <th class=" border">{{$user->name}}</th>
+                <th class=" border">{{$user->guard_name}}</th>
+
+              </tr>
+              @endforeach
+            </tbody>
+          </table>
+          <span> Roles User</span>
+          <table class=" w-full">
+            <thead>
+              <tr class=" border">
+                <th class=" border">No</th>
+                <th class=" border">Permissions</th>
+                <th class=" border">Role</th>
+              </tr>
+            </thead>
+            <tbody>
+              @foreach($roles as $user)
+              <tr class=" border ">
+                <th class=" border">{{$loop->iteration}}</th>
+                <th class=" border">{{$user->name}}</th>
+                <th class=" border">{{$user->guard_name}}</th>
 
               </tr>
               @endforeach
