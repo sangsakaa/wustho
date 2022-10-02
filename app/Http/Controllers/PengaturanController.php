@@ -68,6 +68,7 @@ class PengaturanController extends Controller
             ->join('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
             ->leftjoin('kelas', 'kelasmi.id', '=', 'kelasmi.kelas_id')
             ->select('siswa.nama_siswa', 'kelasmi.nama_kelas')
+            ->orderBy('kelasmi.nama_kelas')
             ->get();
         return view(
             'pengaturan/semester',
