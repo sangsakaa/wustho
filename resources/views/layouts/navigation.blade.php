@@ -11,7 +11,6 @@
                 </div>
                 <!-- Navigation Links -->
 
-
                 @role('siswa')
                 <div class="hidden space-x-8 sm:-my-px sm:ml-5 sm:flex">
                     <x-nav-link :href="route('user')" :active="request()->routeIs('user')">
