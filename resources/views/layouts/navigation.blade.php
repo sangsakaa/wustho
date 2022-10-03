@@ -11,12 +11,13 @@
                 </div>
                 <!-- Navigation Links -->
 
+
+                @role('siswa')
                 <div class="hidden space-x-8 sm:-my-px sm:ml-5 sm:flex">
                     <x-nav-link :href="route('user')" :active="request()->routeIs('user')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
                 </div>
-                @role('siswa')
                 <div class="hidden space-x-8 sm:-my-px sm:ml-5 sm:flex">
                     <x-nav-link :href="route('nilaipersiswa')" :active="request()->routeIs('nilaipersiswa')">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
