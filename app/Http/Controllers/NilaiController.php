@@ -10,6 +10,7 @@ use App\Models\Kelasmi;
 use App\Models\Semester;
 use App\Models\Nilaimapel;
 use App\Models\Pesertakelas;
+use App\Models\Siswa;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -224,29 +225,24 @@ class NilaiController extends Controller
     public function nilaipersiswa(Request $request)
     {
         $siswa_id = Auth::user()->siswa_id;
-        $title = User::query()
-        ->join('siswa', 'siswa.id', 'users.siswa_id')
-            ->join('nis', 'siswa.id', 'nis.siswa_id')
-            ->join('pesertakelas', 'siswa.id', 'pesertakelas.siswa_id')
-            ->join('kelasmi', 'kelasmi.id', 'pesertakelas.kelasmi_id')
-        ->where('users.siswa_id', $siswa_id)
-            // ->select('siswa.nama_siswa')
-            ->first();
-
+        $user = Siswa::query()
+        ->join('nis', 'nis.siswa_id', '=', 'siswa.id')
+        ->where('siswa.id', $siswa_id)->first();
         $kelasmiSiswa = Kelasmi::query()
             ->join('pesertakelas', 'pesertakelas.kelasmi_id', '=', 'kelasmi.id')
             ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
             ->join('semester', 'semester.id', 'periode.semester_id')
             ->where('pesertakelas.siswa_id', $siswa_id)
             ->select('kelasmi.id', 'kelasmi.nama_kelas', 'periode.periode', 'semester.ket_semester');
-
+        
+        
         $kelasmiTerpilih =
             Kelasmi::query()
             ->join('pesertakelas', 'pesertakelas.kelasmi_id', '=', 'kelasmi.id')
             ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
             ->join('semester', 'semester.id', 'periode.semester_id')
             ->where('pesertakelas.siswa_id', $siswa_id)
-            ->select('kelasmi.id', 'kelasmi.nama_kelas', 'periode.periode', 'semester.ket_semester', 'pesertakelas.id as pesertakelas_id')
+        ->select('kelasmi.id', 'kelasmi.nama_kelas', 'semester.semester', 'periode.periode', 'semester.ket_semester', 'pesertakelas.id as pesertakelas_id')
             ->when($request->kelasmi, function ($query, $kelasmi) {
                 $query->where('kelasmi.id', $kelasmi);
             }, function ($query) {
@@ -263,12 +259,15 @@ class NilaiController extends Controller
             ->join('guru', 'guru.id', '=', 'nilaimapel.guru_id')
             ->where('nilaimapel.kelasmi_id', $kelasmiTerpilih->id)
             ->get();
+        $title = $kelasmiTerpilih;
 
         return view('nilai.nilaipersiswa', [
             'kelasmiSiswa' => $kelasmiSiswa->get(),
             'kelasmiTerpilih' => $kelasmiTerpilih,
             'dataNilai' => $dataNilai,
-            'title' => $title
+            'title' => $title,
+            'user' => $user
+            
         ]);
     }
 }

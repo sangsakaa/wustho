@@ -35,14 +35,16 @@
                         </div>
 
                         <div class=" grid grid-cols-4">
-                            <div>Nomor Induk Siswa</div>
-                            <div> : {{$title->nis}}</div>
-                            <div>Tempat Lahir</div>
-                            <div> : {{$title->tempat_lahir}}, {{$title->tanggal_lahir}}</div>
-                            <div>Nama Siswa</div>
-                            <div> : {{$title->nama_siswa}}</div>
-                            <div>Kelas</div>
-                            <div> : {{$title->nama_kelas}}</div>
+                            <div>Nomor Induk Siswa </div>
+                            <div> : {{$user->nis}} </div>
+
+                            <div>Kelas / Semester </div>
+                            <div> : {{$title->nama_kelas}}/{{$title->semester}}</div>
+                            <div>Nama Siswa </div>
+                            <div> : {{$user->nama_siswa}} </div>
+
+                            <div>Periode </div>
+                            <div> : {{$title->periode}} {{$title->ket_semester}}</div>
                         </div>
                         <hr class=" py-1">
                         <table class=" w-full">
