@@ -24,7 +24,7 @@ Route::get('admin', [RegisteredUserController::class, 'index'])->middleware(['au
 Route::get('register', [RegisteredUserController::class, 'create'])->middleware(['auth'])->name('register');
 Route::get('HasRole', [RegisteredUserController::class, 'HasRole'])->middleware(['auth'])->name('HasRole');
 // User
-Route::get('user', [UserController::class, 'Personal'])->middleware(['auth'])->name('user');
+Route::get('/user', [UserController::class, 'Personal'])->middleware(['auth'])->name('user');
 
 // CONTROLLER SISWA
 Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth'])->name('dashboard');
