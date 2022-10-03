@@ -33,11 +33,16 @@
                         <div class=" text-center text-2xl capitalize py-2">
                             <span> kartu hasil tadris</span>
                         </div>
+
                         <div class=" grid grid-cols-4">
-                            <div>Nama Siswa</div>
-                            <div> : {{$title->nama_siswa}}</div>
+                            <div>Nomor Induk Siswa</div>
+                            <div> : {{$title->nis}}</div>
                             <div>Tempat Lahir</div>
                             <div> : {{$title->tempat_lahir}}, {{$title->tanggal_lahir}}</div>
+                            <div>Nama Siswa</div>
+                            <div> : {{$title->nama_siswa}}</div>
+                            <div>Kelas</div>
+                            <div> : {{$title->nama_kelas}}</div>
                         </div>
                         <hr class=" py-1">
                         <table class=" w-full">

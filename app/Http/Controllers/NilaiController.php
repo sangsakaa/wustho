@@ -226,6 +226,9 @@ class NilaiController extends Controller
         $siswa_id = Auth::user()->siswa_id;
         $title = User::query()
         ->join('siswa', 'siswa.id', 'users.siswa_id')
+            ->join('nis', 'siswa.id', 'nis.siswa_id')
+            ->join('pesertakelas', 'siswa.id', 'pesertakelas.siswa_id')
+            ->join('kelasmi', 'kelasmi.id', 'pesertakelas.kelasmi_id')
         ->where('users.siswa_id', $siswa_id)
             // ->select('siswa.nama_siswa')
             ->first();
