@@ -13,7 +13,7 @@
                         <span class=" text-5xl font-mono  ">
                             {{$siswa}}
                         </span>
-                        <p>Nomor Induk Siswa</p>
+                        <p class=" text-sm">Nomor Induk Siswa</p>
                     </div>
                     <div class=" flex justify-end py-1 ">
                         <span class=" text-5xl font-mono">
