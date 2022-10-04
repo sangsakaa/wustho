@@ -52,6 +52,7 @@
                                 <tr class="border bg-gray-200">
                                     <th class=" border px-1  py-1">#</th>
                                     <th class=" border px-1">Pelajaran</th>
+                                    <th class=" border px-1">Nama Kitab</th>
                                     <th class=" border px-1">Nama Guru</th>
                                     <th class=" border px-1">HARIAN</th>
                                     <th class=" border px-1">UJIAN</th>
@@ -63,6 +64,7 @@
                                 <tr class="border hover:bg-gray-100 ">
                                     <td class=" border text-center px-1">{{ $loop->iteration }}</td>
                                     <td class=" border text-center px-1 py-2">{{ $nilai->mapel }}</td>
+                                    <td class=" border text-center px-1 py-2">{{ $nilai->nama_kitab }}</td>
                                     <td class=" border text-left px-1">{{ $nilai->nama_guru }}</td>
                                     <td class=" border text-center px-1">{{ $nilai->nilai_harian }}</td>
                                     <td class=" border text-center px-1">{{ $nilai->nilai_ujian }}</td>
