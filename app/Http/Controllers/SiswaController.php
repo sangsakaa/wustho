@@ -4,15 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Models\Nis;
 use App\Models\Kelas;
-use App\Models\Kelasmi;
 use App\Models\Mapel;
 use App\Models\Nilai;
-use App\Models\Periode;
 use App\Models\Siswa;
-use App\Models\Pesertakelas;
+use App\Models\Kelasmi;
+use App\Models\Periode;
+use App\Models\Nilaimapel;
 use App\Models\Statusanak;
-use App\Models\Statuspengamal;
+use App\Models\Pesertakelas;
 use Illuminate\Http\Request;
+use App\Models\Statuspengamal;
 use Illuminate\Routing\Controller;
 
 
@@ -133,18 +134,18 @@ class SiswaController extends Controller
      * @param  \App\Models\Siswa  $siswa
      * @return \Illuminate\Http\Response
      */
-    public function show(Siswa $siswa, Pesertakelas $pesertakelas)
+    public function show(Siswa $siswa)
     {
-        $pes = Pesertakelas::query()
-            ->join('siswa', 'siswa.id', 'pesertakelas.siswa_id')
-            ->select('pesertakelas.siswa_id', 'siswa.nama_siswa')
-            ->where('siswa_id', $siswa->id)
-            ->first();
+        $nilai = Pesertakelas::query()
+            ->join('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
+            ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
+            ->join('semester', 'semester.id', '=', 'periode.semester_id')
+            ->where('pesertakelas.siswa_id', $siswa->id)->get();
         return view(
             'siswa/detailSiswa',
             [
                 'siswa' => $siswa,
-                'pesertakelas' => $pes
+                'pesertakelas' => $nilai
             ]
         );
     }
@@ -198,87 +199,26 @@ class SiswaController extends Controller
             ]
         );
     }
-    public function DetailKelas(Siswa $siswa, Kelas $kelas)
+
+    public function transkip(Request $request, Siswa $siswa)
     {
 
-        $data = siswa::query()
-            ->get();
-        $dataKelas = Pesertakelas::query()
-            ->join('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelas_id')
-            ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
-            ->join('kelas', 'kelas.id', '=', 'pesertakelas.kelas_id')
-            ->join('siswa', 'siswa.id', '=', 'pesertakelas.siswa_id')
-            // ->where('Pesertakelas.siswa_id', $siswa->id)
-            ->get();
-        return view('siswa/detailSiswa', ['detailKelas' => $data, 'siswa' => $siswa, 'dataKelas' => $dataKelas]);
-    }
-    public function transkip(Pesertakelas $pesertakelas, Siswa $siswa)
-    {
-        
-        $transkip = Nilai::query()
-            ->join('pesertakelas', 'pesertakelas.id', '=', 'nilai.pesertakelas_id')
-            ->join('siswa', 'siswa.id', '=', 'pesertakelas.siswa_id')
-            ->join('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
-            ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
-            ->join('semester', 'semester.id', '=', 'periode.semester_id')
-            ->join('nilaimapel', 'nilaimapel.id', '=', 'nilai.nilaimapel_id')
-        ->join('mapel', 'mapel.id', '=', 'nilaimapel.mapel_id')
-        ->join('guru', 'guru.id', '=', 'nilaimapel.guru_id')
-        ->join('kelas', 'kelas.id', '=', 'kelasmi.kelas_id')
-        ->select(
-            [
-
-                'siswa.nama_siswa',
-                'guru.nama_guru',
-                'nilai.nilai_ujian',
-                'nilai.nilai_harian',
-                'kelasmi.nama_kelas',
-                'kelasmi.periode_id',
-                'periode.periode',
-                // 'periode.id',
-                'semester.id',
-                'semester.ket_semester',
-                'mapel.mapel',
-            ]
-        )
+        $nilai = Pesertakelas::query()
             ->where('pesertakelas.siswa_id', $siswa->id);
+        
         if (request('cari')) {
-            $transkip->where(function ($query) {
-                $query->where('semester', 'like', '%' . request('cari') . '%');
-            });
+            $nilai->where('ket_semester', 'like', '%' . request('cari') . '%');
         }
-        $jmlujian = $transkip->sum('nilai_ujian');
-        $countujian = $transkip->count('nilaimapel_id');
-        $jmlharian = $transkip->sum('nilai_harian');
-        $rata1 = $jmlharian / $countujian;
-        $rata2 = $jmlujian / $countujian;
-        $periode = Periode::query()
-            ->join('semester', 'semester.id', '=', 'periode.semester_id')
-            ->select('semester.id', 'periode.periode', 'semester.ket_semester')
-            ->get();
-        $tittle = Siswa::query()
-            ->join('nis', 'siswa.id', '=', 'nis.siswa_id')
-            ->join('pesertakelas', 'siswa.id', '=', 'pesertakelas.siswa_id')
-            ->join('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
-            ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
-            ->join('semester', 'semester.id', '=', 'periode.semester_id')
-            ->select('nis.nis', 'siswa.nama_siswa', 'nis.madrasah_diniyah', 'semester.ket_semester', 'periode.periode')
-            ->find($siswa->id);
-        $harini = $transkip->get();
+        $title = $siswa;
         return view(
             'siswa/transkip',
             [
-
-                'tittle' => $tittle,
                 'siswa' => $siswa,
-                'periode' => $periode,
-                'jmlujian' => $jmlujian,
-                'jmlharian' => $jmlharian,
-                'countujian' => $countujian,
-                'rata2' => $rata2,
-                'rata1' => $rata1,
-                'transkip' => $transkip->get(),
-                'harini' => $harini
+                'title' => $title,
+                'nilai' => $nilai->get(),
+
+                
+                
             ]
         );
        
