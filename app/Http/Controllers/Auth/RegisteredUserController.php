@@ -26,8 +26,15 @@ class RegisteredUserController extends Controller
     public function index()
     {
         $users = User::query()
-            ->leftjoin('siswa', 'users.siswa_id', 'siswa.id')
-            ->select('users.email', 'siswa.nama_siswa', 'users.name')
+            ->leftjoin('siswa', 'users.siswa_id', '=', 'siswa.id')
+            ->select(
+                [
+                    'users.id',
+                    'users.email',
+                    'siswa.nama_siswa',
+                    'users.name',
+                ]
+            )
             ->get();
         $hasRole = Hasrole::all();
         return view(
@@ -103,5 +110,10 @@ class RegisteredUserController extends Controller
         Auth::login($user);
 
         return redirect(RouteServiceProvider::HOME);
+    }
+    public function destroy(User $user)
+    {
+        User::destroy($user->id);
+        return redirect('admin');
     }
 }

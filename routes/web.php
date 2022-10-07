@@ -16,6 +16,7 @@ use App\Http\Controllers\SesiasramaController;
 use App\Http\Controllers\AsramasiswaController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Auth;
 
 Route::get('/', function () {
     return view('welcome');
@@ -23,6 +24,7 @@ Route::get('/', function () {
 Route::get('admin', [RegisteredUserController::class, 'index'])->middleware(['auth'])->name('admin');
 Route::get('register', [RegisteredUserController::class, 'create'])->middleware(['auth'])->name('register');
 Route::get('HasRole', [RegisteredUserController::class, 'HasRole'])->middleware(['auth'])->name('HasRole');
+Route::delete('admin/{user}', [RegisteredUserController::class, 'destroy']);
 // User
 Route::get('/user', [UserController::class, 'Personal'])->middleware(['auth'])->name('user');
 
