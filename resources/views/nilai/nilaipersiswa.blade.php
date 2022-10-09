@@ -5,7 +5,7 @@
             {{ __('Kartu Hasil Tadris') }}
         </h2>
     </x-slot>
-    <div class=" px-4">
+    <div class=" px-2">
         <div class="mt-2">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-4 bg-white border-b border-gray-200">
@@ -33,21 +33,18 @@
                         <div class=" text-center text-2xl capitalize py-2">
                             <span> kartu hasil tadris</span>
                         </div>
-
-                        <div class=" grid grid-cols-4">
+                        <div class=" text-xs sm:text-sm grid grid-cols-2 sm:grid-cols-2 gap-1">
                             <div>Nomor Induk Siswa </div>
                             <div> : {{$user->nis}} </div>
-
                             <div>Kelas / Semester </div>
                             <div> : {{$title->nama_kelas}}/{{$title->semester}}</div>
                             <div>Nama Siswa </div>
-                            <div> : {{$user->nama_siswa}} </div>
-
+                            <div class=" w-full"> : {{$user->nama_siswa}} </div>
                             <div>Periode </div>
                             <div> : {{$title->periode}} {{$title->ket_semester}}</div>
                         </div>
                         <hr class=" py-1">
-                        <table class=" w-full">
+                        <table class=" text-xs sm:text-sm w-full">
                             <thead>
                                 <tr class="border bg-gray-200">
                                     <th class=" border px-1  py-1">#</th>
