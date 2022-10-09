@@ -5,13 +5,20 @@
             {{ __('Dashboard') }}
         </h2>
     </x-slot>
-    <div class=" p-4">
-        <div class=" grid p-4  bg-white ">
+    <div class=" flex grid-cols-2 p-4 gap-2 ">
+        <div class="  rounded bg-white ">
             <img src={{ asset("asset/images/logo_kop.jpeg") }} alt="" width="300px" class=" p-2">
         </div>
-        <div>Nomor Induk siswa</div>
-        <div> : {{$siswa->nis}}</div>
-        <div>Nama Siswa</div>
-        <div>{{$siswa->nama_siswa}}</div>
+        <div class=" p-4 grid w-full bg-white ">
+            <div class=" grid grid-cols-4">Nomor Induk siswa</div>
+            <div> {{$siswa->nis}}</div>
+            <div>Nama Siswa</div>
+            <div> {{$siswa->nama_siswa}}</div>
+            <div>Tempat ,Tanggal Lahir</div>
+            <div> {{$siswa->tempat_lahir}}, {{$siswa->tanggal_lahir}}</div>
+
+        </div>
     </div>
+
+
 </x-app-layout>
