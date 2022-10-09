@@ -5,7 +5,7 @@
             {{ __('Dashboard Pengaturan') }}
         </h2>
     </x-slot>
-    <div class=" grid grid grid-cols-1 sm:grid-cols-2 gap-2 px-2 py-2">
+    <div class=" grid grid-cols-1 sm:grid-cols-2 gap-2 px-2 py-2">
         <div class="">
             <div class=" mx-auto ">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
@@ -19,6 +19,9 @@
                             </a>
                             <a href="/raportkelas" class=" py-1 px-2 bg-blue-600 rounded-md text-white hover:bg-purple-500">
                                 raport kelas
+                            </a>
+                            <a href="/addpelanggaran" class=" py-1 px-2 bg-blue-600 rounded-md text-white hover:bg-purple-500">
+                                Add pelanggaran
                             </a>
                         </div>
 

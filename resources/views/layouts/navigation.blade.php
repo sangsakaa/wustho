@@ -10,8 +10,8 @@
                     </a>
                 </div>
                 <!-- Navigation Links -->
-
                 @role('siswa')
+
                 <div class="hidden space-x-8 sm:-my-px sm:ml-5 sm:flex">
                     <x-nav-link :href="route('user')" :active="request()->routeIs('user')">
                         {{ __('Profil') }}
@@ -24,9 +24,9 @@
                         </svg> {{ __('KHT') }}
                     </x-nav-link>
                 </div>
-
                 @endrole
-                @role('admin')
+
+                @role('super admin')
                 <div class="hidden text-xs space-x-8 sm:-my-px sm:ml-5 sm:flex">
                     <x-nav-link :href="route('admin')" :active="request()->routeIs('admin')">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -111,6 +111,7 @@
                             @csrf
                             <x-dropdown-link :href="route('logout')" onclick="event.preventDefault();
                                                 this.closest('form').submit();">
+                                {{ Auth::user()->nama_siswa }} <br>
                                 {{ __('Log Out') }}
                             </x-dropdown-link>
                         </form>
@@ -145,7 +146,7 @@
         <div class="pt-4 pb-1 border-t border-gray-200">
             <div class="px-4">
                 <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
-                <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
+                <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }} </div>
             </div>
 
             <div class="mt-3 space-y-1">

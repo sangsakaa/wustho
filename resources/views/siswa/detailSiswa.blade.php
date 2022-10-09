@@ -35,11 +35,12 @@
                             <a href="/nis/{{$siswa->id}}" class=" bg-blue-500 px-2 py-1 hover:bg-purple-500 text-white">Nomor Induk siswa</a>
                         </div>
                         @endrole
-                        @role('admin')
+                        @role('super admin')
+                        @if($siswa->count() != null)
                         <div class=" grid grid-cols-1 justify-items-end">
                             <a href="/biodata/{{$siswa->id}}" class=" bg-blue-500 px-2 py-1 hover:bg-purple-500 text-white">Biodata Lengkap</a>
                         </div>
-
+                        @endif
                         <div class=" grid grid-cols-1 justify-items-end">
                             <a href="/nis/{{$siswa->id}}" class=" bg-blue-500 px-2 py-1 hover:bg-purple-500 text-white">Nomor Induk siswa</a>
                         </div>
@@ -54,7 +55,7 @@
                     </div>
                     <div class=" grid grid-cols-1 sm:grid-cols-2 gap-2">
                         <div>
-                            <span>Detail Riwayat Kelas</span>
+                            <span class=" text-lg">Detail Riwayat Kelas</span>
 
                             <table class=" w-full    ">
                                 <thead>
@@ -65,9 +66,10 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @if($pesertakelas->count() != null)
                                     @foreach($pesertakelas as $kelas)
                                     <tr>
-                                        <td class=" border px-2 text-center ">
+                                        <td class=" border px-2 py-1 text-center ">
                                             {{$loop->iteration}}
                                         </td>
                                         <td class=" border px-2 text-center ">
@@ -76,8 +78,16 @@
                                         <td class=" border px-2 text-center ">
                                             {{$kelas->nama_kelas}}
                                         </td>
+
                                     </tr>
                                     @endforeach
+                                    @else
+                                    <tr>
+                                        <td colspan="3" class=" border  text-center text-red-600">
+                                            Data Kelas tidak ada
+                                        </td>
+                                    </tr>
+                                    @endif
                                 </tbody>
                             </table>
                         </div>

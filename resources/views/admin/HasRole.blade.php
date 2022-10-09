@@ -48,7 +48,7 @@
             <thead>
               <tr class=" border bg-gray-100">
                 <th class=" border py-1">No</th>
-                <th class=" border">Permissions</th>
+                <th class=" border">Roles Users</th>
                 <th class=" border">Role</th>
               </tr>
             </thead>

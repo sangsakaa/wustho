@@ -15,6 +15,7 @@ use App\Http\Controllers\PengaturanController;
 use App\Http\Controllers\SesiasramaController;
 use App\Http\Controllers\AsramasiswaController;
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\PelanggaranController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 
@@ -79,7 +80,7 @@ Route::post('asrama', [AsramaController::class, 'store'])->middleware(['auth'])-
 Route::delete('asrama/{asrama}', [AsramaController::class, 'destroy'])->middleware(['auth']);
 Route::get('addasrama', [AsramaController::class, 'create'])->middleware(['auth'])->name('addasrama');
 // Controller Asrama Siswa
-Route::get('asramasiswa', [AsramasiswaController::class, 'index'])->middleware(['auth', 'role:admin'])->name('asramasiswa');
+Route::get('asramasiswa', [AsramasiswaController::class, 'index'])->middleware(['auth'])->name('asramasiswa');
 Route::post('asramasiswa', [AsramasiswaController::class, 'store'])->middleware(['auth']);
 Route::patch('asramasiswa/{asramasiswa}', [AsramasiswaController::class, 'update']);
 Route::get('asramasiswa/{asramasiswa}/edit', [AsramasiswaController::class, 'edit'])->middleware(['auth']);
@@ -134,5 +135,11 @@ Route::post('kegiatan', [KegiatanController::class, 'store'])->middleware(['auth
 Route::get('addkegiatan', [KegiatanController::class, 'create'])->middleware(['auth']);
 Route::delete('kegiatan/{kegiatan}', [KegiatanController::class, 'destroy'])->middleware(['auth']);
 Route::patch('kegiatan/{kegiatan}', [KegiatanController::class, 'update']);
+
+
+// List Pelanggaran
+Route::get('addpelanggaran', [PelanggaranController::class, 'create'])->middleware(['auth']);
+Route::post('addpelanggaran', [PelanggaranController::class, 'store'])->middleware(['auth']);
+Route::delete('addpelanggaran/{pelanggaran}', [PelanggaranController::class, 'destroy'])->middleware(['auth']);
 
 require __DIR__ . '/auth.php';

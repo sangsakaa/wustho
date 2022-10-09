@@ -20,11 +20,8 @@
                 <div class="p-4 bg-white border-b border-gray-200">
                     <div class=" grid sm:grid-cols-4 grid-cols-2">
                         <div>Nama </div>
-
                         <div>:
-
                             {{$siswa->nama_siswa}}
-
                         </div>
                         <div>Tanggal Lahir </div>
                         <div>: {{$siswa->tempat_lahir}}</div>

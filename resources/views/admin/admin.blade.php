@@ -46,7 +46,7 @@
                 <th class=" border">{{$user->email}}</th>
                 <th class=" border">{{$user->nama_siswa}}</th>
                 <td class=" text-sm flex justify-center py-1  gap-1">
-                  @role('admin')
+
                   <form action="/admin/{{$user->id}}" method="post">
                     @csrf
                     @method('delete')
@@ -54,7 +54,7 @@
                         <path stroke-linecap=" round" stroke-linejoin="round" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg></button>
                   </form>
-                  @endrole
+
                 </td>
               </tr>
               @endforeach

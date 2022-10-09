@@ -76,8 +76,18 @@ class KelasmiController extends Controller
      */
     public function create()
     {
+        $dataPeriode = Periode::query()
+            ->join('semester', 'semester.id', '=', 'periode.semester_id')
+            ->select('periode.id', 'periode.periode', 'semester.ket_semester')
+            ->orderBy('periode')->get();
         $dataKelas = Kelas::all();
-        return view('kelas_mi/addkelas_mi', ['dataKelas' => $dataKelas]);
+        return view(
+            'kelas_mi/addkelas_mi',
+            [
+                'dataKelas' => $dataKelas,
+                'dataPeriode' => $dataPeriode,
+            ]
+        );
     }
 
     /**
@@ -185,7 +195,7 @@ class KelasmiController extends Controller
     public function destroy(Kelasmi $kelasmi)
     {
         Kelasmi::destroy($kelasmi->id);
-        return redirect()->back();
+        return redirect()->back()->with('delete', 'anda berhasil mengahapus data ini');
     }
     public function hapus(Pesertakelas $pesertakelas)
     {

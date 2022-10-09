@@ -25,6 +25,7 @@
                                     <option value="L"> Laki Laki </option>
                                     <option value="P"> Perempuan </option>
                                 </select>
+
                                 <label for="">Agama</label>
                                 <select name="agama" id="" class=" w-full py-1 rounded-md" required>
                                     <option value="">-- Pilih Jenis Kelamin --</option>
