@@ -10,10 +10,7 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-4 bg-white border-b border-gray-200">
                     <div class=" grid grid-cols-1 sm:grid-cols-2  py-1">
-                        <div class=" grid text-blue-400 text-2xl">
-                            Daftar Nilai Mata Pelajaran
-                        </div>
-                        <div class=" flex grid-cols-1 justify-end">
+                        <div class=" flex sm:grid-cols-1 justify-start">
                             <form action="/nilai" method="get" class="flex gap-1">
                                 <select name="kelasmi" id="" class=" border border-green-800 text-green-800 rounded-md py-1" required>
                                     <option value="">-- Pilih Kelas --</option>
@@ -27,10 +24,15 @@
                                     Pilih
                                 </button>
                             </form>
+
                         </div>
+
+                    </div>
+                    <div class="sm:text-2xl text-center text-2xl sm:text-left  grid text-blue-400 ">
+                        Daftar Nilai Mata Pelajaran
                     </div>
                     <div class=" overflow-auto bg-white rounded-md ">
-                        <div class=" text-center text-2xl capitalize py-2">
+                        <div class=" text-center  text-2xl capitalize py-2">
                             <span> kartu hasil tadris</span>
                         </div>
                         <div class=" text-xs sm:text-sm grid grid-cols-2 sm:grid-cols-2 gap-1">
@@ -39,7 +41,7 @@
                             <div>Kelas / Semester </div>
                             <div> : {{$title->nama_kelas}}/{{$title->semester}}</div>
                             <div>Nama Siswa </div>
-                            <div class=" w-full"> : {{$user->nama_siswa}} </div>
+                            <div class=" w-full text-xs"> : {{$user->nama_siswa}} </div>
                             <div>Periode </div>
                             <div> : {{$title->periode}} {{$title->ket_semester}}</div>
                         </div>
@@ -49,10 +51,10 @@
                                 <tr class="border bg-gray-200">
                                     <th class=" border px-1  py-1">#</th>
                                     <th class=" border px-1">Pelajaran</th>
-                                    <th class=" border px-1">Nama Kitab</th>
+
                                     <th class=" border px-1">Nama Guru</th>
-                                    <th class=" border px-1">HARIAN</th>
-                                    <th class=" border px-1">UJIAN</th>
+                                    <th class=" border px-1">NH</th>
+                                    <th class=" border px-1">NU</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -61,7 +63,7 @@
                                 <tr class="border hover:bg-gray-100 ">
                                     <td class=" border text-center px-1">{{ $loop->iteration }}</td>
                                     <td class=" border text-center px-1 py-2">{{ $nilai->mapel }}</td>
-                                    <td class=" border text-center px-1 py-2">{{ $nilai->nama_kitab }}</td>
+
                                     <td class=" border text-left px-1">{{ $nilai->nama_guru }}</td>
                                     <td class=" border text-center px-1">{{ $nilai->nilai_harian }}</td>
                                     <td class=" border text-center px-1">{{ $nilai->nilai_ujian }}</td>
