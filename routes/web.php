@@ -28,6 +28,7 @@ Route::get('HasRole', [RegisteredUserController::class, 'HasRole'])->middleware(
 Route::delete('admin/{user}', [RegisteredUserController::class, 'destroy']);
 // User
 Route::get('/user', [UserController::class, 'Personal'])->middleware(['auth'])->name('user');
+Route::get('/riwayatkelas', [UserController::class, 'Riwayatkelas'])->middleware(['auth'])->name('riwayatkelas');
 
 // CONTROLLER SISWA
 Route::get('dashboard', [DashboardController::class, 'index'])->middleware(['auth'])->name('dashboard');

@@ -9,13 +9,17 @@
         <div class="  rounded bg-white ">
             <img src={{ asset("asset/images/logo_kop.jpeg") }} alt="" width="300px" class=" p-2">
         </div>
-        <div class=" p-4 grid w-full bg-white ">
-            <div class=" grid grid-cols-4">Nomor Induk siswa</div>
-            <div> {{$siswa->nis}}</div>
-            <div>Nama Siswa</div>
-            <div> {{$siswa->nama_siswa}}</div>
-            <div>Tempat ,Tanggal Lahir</div>
-            <div> {{$siswa->tempat_lahir}}, {{$siswa->tanggal_lahir}}</div>
+        <div class=" p-4   grid-cols-2 w-full bg-white ">
+            <div class=" px-4 border">Nomor Induk siswa</div>
+            <div class=" px-4 border"> {{$siswa->nis}}</div>
+            <div class=" px-4 border">Nama Lengkap </div>
+            <div class=" px-4 border"> {{$siswa->nama_siswa}}</div>
+            <div class=" px-4 border">Tempat Lahir</div>
+            <div class=" px-4 border"> {{$siswa->tempat_lahir}}</div>
+            <div class=" px-4 border">Tanggal Lahir</div>
+            <div class=" px-4 border"> {{$siswa->tanggal_lahir}}</div>
+
+
 
         </div>
     </div>
