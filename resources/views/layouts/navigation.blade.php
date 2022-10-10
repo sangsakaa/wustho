@@ -167,7 +167,7 @@
         @endrole
         @role('pengurus')
         <x-responsive-nav-link :href="route('asramasiswa')" :active="request()->routeIs('asramasiswa')">
-            {{ __('KHT') }}
+            {{ __('Presensi Asrama') }}
         </x-responsive-nav-link>
         @endrole
 
