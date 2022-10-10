@@ -165,6 +165,11 @@
             </x-responsive-nav-link>
         </div>
         @endrole
+        @role('pengurus')
+        <x-responsive-nav-link :href="route('asramasiswa')" :active="request()->routeIs('asramasiswa')">
+            {{ __('KHT') }}
+        </x-responsive-nav-link>
+        @endrole
 
 
         <!-- Responsive Settings Options -->
