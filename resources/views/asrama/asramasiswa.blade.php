@@ -97,13 +97,17 @@
                             <thead class=" bg-gray-100">
                                 <tr class=" border capitalize ">
                                     <th class=" text-center px-1 border py-1">#</th>
+                                    @role('super admin')
                                     <th class=" text-center px-1 border ">periode</th>
+                                    @endrole
                                     <th class=" text-center px-1 border ">anggota</th>
                                     <th class=" text-center px-1 border "> asrama</th>
                                     <th class=" text-center px-1 border ">asrama </th>
+                                    @role('super admin')
                                     <th class=" text-center px-1 border "> kuota</th>
                                     <th class=" text-center px-1 border "> jml</th>
                                     <th class=" text-center px-1 border "> sisa kuota</th>
+                                    @endrole
                                     <th class=" text-center px-1 border "> Status</th>
                                     <th class=" text-center px-1 border ">Aksi</th>
                                 </tr>
@@ -115,12 +119,14 @@
                                     <td class=" px-2 border text-center">
                                         {{$loop->iteration}}
                                     </td>
+                                    @role('super admin')
                                     <td class=" px-2 border text-center">
                                         <a href="pesertaasrama/{{$item->id}}">
                                             {{$item->periode}}
                                             {{$item->ket_semester}}
                                         </a>
                                     </td>
+                                    @endrole
                                     <td class=" px-2 border text-center">
                                         <a href="pesertaasrama/{{$item->id}}" class=" py-1 px-2 hover:bg-purple-600 bg-blue-600 rounded-md capitalize text-center text-white">peserta</a>
                                     </td>
@@ -130,6 +136,7 @@
                                     <td class=" px-2 border text-center">
                                         {{$item->type_asrama}}
                                     </td>
+                                    @role('super admin')
                                     <td class=" px-2 border text-center">
                                         {{$item->kuota}}
                                     </td>
@@ -139,6 +146,7 @@
                                     <td class=" px-2 border text-center ">
                                         {{($item->kuota)-($item->jumlah_nilai_ujian)}}
                                     </td>
+                                    @endrole
                                     <td class=" px-2 border text-center ">
                                         @if($item->kuota == $item->jumlah_nilai_ujian )
                                         <span class=" bg-yellow-300 px-4 py-1 rounded-md capitalize text-black">full</span>
