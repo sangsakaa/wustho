@@ -37,6 +37,16 @@
                     </x-nav-link>
                 </div>
                 @endrole
+                @role('pengurus')
+                <div class="hidden space-x-8 sm:-my-px sm:ml-5 sm:flex">
+                    <x-nav-link :href="route('asramasiswa')" :active="request()->routeIs('asramasiswa')">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                        </svg>
+                        {{ __('Asrama') }}
+                    </x-nav-link>
+                </div>
+                @endrole
 
                 @role('super admin')
                 <div class="hidden text-xs space-x-8 sm:-my-px sm:ml-5 sm:flex">
@@ -155,6 +165,8 @@
             </x-responsive-nav-link>
         </div>
         @endrole
+
+
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-gray-200">
             <div class="px-4">
