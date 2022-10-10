@@ -35,7 +35,7 @@
                         <div class=" text-center  text-2xl capitalize py-2">
                             <span> kartu hasil tadris</span>
                         </div>
-                        <div class=" text-xs sm:text-sm grid grid-cols-2 sm:grid-cols-2 gap-1">
+                        <div class=" text-xs sm:text-sm grid grid-cols-2 sm:grid-cols-4 gap-1">
                             <div>Nomor Induk Siswa </div>
                             <div> : {{$user->nis}} </div>
                             <div>Kelas / Semester </div>

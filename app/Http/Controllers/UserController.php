@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Pesertakelas;
 use App\Models\Siswa;
-use Illuminate\Http\Request;
+
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 
