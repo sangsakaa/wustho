@@ -5,7 +5,7 @@
       {{ __('Sesi Pesensi Asrama') }}
     </h2>
   </x-slot>
-  @role('admin')
+  @role('super admin')
   <div class="px-4 mt-4">
     <div class=" mx-auto ">
       <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">

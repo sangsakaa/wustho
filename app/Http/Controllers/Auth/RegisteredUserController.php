@@ -36,11 +36,17 @@ class RegisteredUserController extends Controller
             )
             ->get();
         $hasRole = Hasrole::all();
+        $RoleHas = HasRole::query()
+        ->join('permissions', 'permissions.id',  '=', 'role_has_permissions.permission_id',)
+        ->join('roles', 'roles.id', '=', 'role_has_permissions.role_id')
+        ->select('roles.name AS Role', 'permissions.name AS Permission')
+        ->get();
         return view(
             'admin/admin',
             [
                 'users' => $users,
-                'hasRole' => $hasRole
+                'hasRole' => $hasRole,
+                'HasRole' => $RoleHas
             ]
         );
     }

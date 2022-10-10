@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Hasrole;
 use App\Models\Pesertakelas;
 use App\Models\Siswa;
 
@@ -16,7 +17,12 @@ class UserController extends Controller
         $user = Siswa::query()
             ->join('nis', 'nis.siswa_id', '=', 'siswa.id')
             ->where('siswa.id', $siswa_id)->first();
-        return view('user/user', ['siswa' => $user]);
+        return view(
+            'user/user',
+            [
+                'siswa' => $user,
+            ]
+        );
     }
     public function Riwayatkelas()
     {

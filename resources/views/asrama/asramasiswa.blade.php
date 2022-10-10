@@ -37,40 +37,11 @@
                 </div>
             </div>
         </div>
-
     </div>
     <div class="px-4 mt-2">
         <div class=" mx-auto ">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-2 bg-white border-b border-gray-200">
-                    <!-- <div class=" flex w-full gap-1">
-
-                        <form action="/asramasiswa" method="post">
-                            @csrf
-                            <div class=" flex grid-cols-2   gap-2 ">
-                                <div>
-                                    <select name="asrama_id" id="" class="  py-1">
-                                        <option value=""> -- Pilih Asrama --</option>
-                                        @foreach($datasrama as $item )
-                                        <option value="{{$item->id}}"> {{$item->nama_asrama}}</option>
-                                        @endforeach
-                                    </select>
-
-                                    <select name="periode_id" id="" class="  py-1">
-                                        <option value=""> -- Pilih Periode --</option>
-                                        @foreach($periode as $item )
-                                        <option value="{{$item->id}}"> {{$item->periode}} {{$item->ket_semester}}</option>
-                                        @endforeach
-                                    </select>
-                                    <input type="text" name="kuota" class=" py-1 " placeholder=" Kuota : 40">
-                                </div>
-                                <div>
-
-                                    <button class=" bg-blue-600 text-white rounded-md px-2 py-1"> create kelas </button>
-                                </div>
-                            </div>
-                        </form>
-                    </div> -->
                     @if (session('delete'))
                     <div class=" py-2">
                         <div class=" bg-red-500 px-2 py-1 text-white">

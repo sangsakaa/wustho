@@ -32,6 +32,29 @@
             <thead>
               <tr class=" border bg-gray-100 ">
                 <th class=" border py-2">No</th>
+                <th class=" border">Role User</th>
+                <th class=" border"> Permission</th>
+
+              </tr>
+            </thead>
+            <tbody>
+              @foreach($HasRole as $user)
+              <tr class=" border ">
+                <th class=" border">{{$loop->iteration}}</th>
+                <th class=" border">{{$user->Role}}</th>
+                <th class=" border">{{$user->Permission}}</th>
+              </tr>
+              @endforeach
+            </tbody>
+          </table>
+        </div>
+        <div class=" p-4 grid grid-cols-1">
+          <span> User Role</span>
+
+          <table class=" w-full">
+            <thead>
+              <tr class=" border bg-gray-100 ">
+                <th class=" border py-2">No</th>
                 <th class=" border">Username</th>
                 <th class=" border">Email</th>
                 <th class=" border">Nama Pengguna</th>

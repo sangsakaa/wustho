@@ -6,6 +6,7 @@
         </h2>
     </x-slot>
     <div class=" p-2 sm:p-4 sm:flex grid sm:grid-cols-1  grid-cols-1 gap-2 ">
+
         <div class=" text-center  sm:text-center   rounded bg-white ">
             <center>
                 <img src={{ asset("asset/images/logo_kop.jpeg") }} alt="" width="300" class=" h-300 p-2">
@@ -21,6 +22,7 @@
             <div class=" px-1 border">Tanggal Lahir</div>
             <div class=" px-1 border"> {{$siswa->tanggal_lahir}}</div>
         </div>
+
     </div>
 
 
