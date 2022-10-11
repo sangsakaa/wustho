@@ -415,11 +415,34 @@
             </div>
             <div class="mt-8 bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg">
                 <div class="grid grid-cols-1 md:grid-cols-1">
+                    <div class="p-6 text-center">
+                        @if(Route::has('login'))
+                        @auth
+                        Selemat Anda Sudah Login
+                        @else
+                        <a href="{{ route('login') }}" class="text-sm text-gray-700  dark:text-white ">Log in</a>
+                        @endif
+                        @endauth
+                    </div>
                     @role('super admin')
                     <div class="p-6 text-center">
                         @if(Route::has('login'))
                         @auth
                         <a href="{{ url('/dashboard') }}" class="text-md text-gray-700 dark:text-gray-500 ">Dashboard</a>
+                        @else
+                        <a href="{{ route('login') }}" class="text-sm text-gray-700  dark:text-white ">Log in</a>
+                        @endif
+                        @endauth
+                        <div class="ml-4 text-center text-sm text-gray-500 sm:text-right sm:ml-0">
+                            Laravel v {{ Illuminate\Foundation\Application::VERSION }} (PHP v {{ PHP_VERSION }})
+                        </div>
+                    </div>
+                    @endrole
+                    @role('siswa')
+                    <div class="p-6 text-center">
+                        @if(Route::has('login'))
+                        @auth
+                        <a href="{{ url('/userdashboard') }}" class="text-md text-gray-700 dark:text-gray-500 ">User Dashboard</a>
                         @else
                         <a href="{{ route('login') }}" class="text-sm text-gray-700  dark:text-white ">Log in</a>
                         @endif
