@@ -17,6 +17,7 @@
                         </button>
                     </a>
                     @endcan
+                    @can('show post')
                     <form action="/siswa" method="get" class=" flex gap-1">
                         <input type="text" name="cari" value="{{ request('cari') }}" class=" border border-green-800 text-green-800 rounded-md py-1 " placeholder=" Cari .." autofocus>
 
@@ -141,6 +142,7 @@
                         </tbody>
                     </table>
                 </div>
+                @endcan
             </div>
         </div>
 
