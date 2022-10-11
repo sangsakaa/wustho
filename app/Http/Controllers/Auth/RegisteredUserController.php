@@ -126,8 +126,16 @@ class RegisteredUserController extends Controller
         event(new Registered($user));
 
         Auth::login($user);
+        if (Auth::login($user->siswa_id)) {
 
-        return redirect(RouteServiceProvider::HOME);
+            return redirect(RouteServiceProvider::HOME);
+        } else {
+            ok
+
+        }
+        
+
+        
     }
     public function destroy(User $user)
     {
