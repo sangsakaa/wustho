@@ -439,7 +439,7 @@
                         </div>
                     </div>
                     @endrole
-                    @role('pengurus')
+                    @role('siswa')
                     <div class="p-6 text-center">
                         @if(Route::has('login'))
                         @auth
