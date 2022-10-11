@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Hasrole;
+use App\Models\Pesertaasrama;
 use App\Models\Pesertakelas;
 use App\Models\Siswa;
 
@@ -34,4 +35,17 @@ class UserController extends Controller
             ->where('pesertakelas.siswa_id', $siswa_id)->get();
         return view('user/riwayatkelas', ['siswa' => $user]);
     }
+    public function DashboardUser()
+    {
+        $siswa_id = Auth::user()->siswa_id;
+        $user = Pesertaasrama::query()
+            ->join('asramasiswa', 'asramasiswa.id', '=', 'pesertaasrama.asramasiswa_id')
+            ->join('periode', 'periode.id', 'asramasiswa.periode_id')
+            ->join('semester', 'semester.id', 'periode.semester_id')
+            ->join('asrama', 'asrama.id', '=', 'asramasiswa.asrama_id')
+            ->where('pesertaasrama.siswa_id', $siswa_id)
+            ->get();
+        return view('user/userdashboard', ['Asrama' => $user]);
+    }
+    
 }

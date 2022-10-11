@@ -4,13 +4,20 @@
         <div class="flex justify-between h-16">
             <div class="flex">
                 <!-- Logo -->
+                @role('super admin')
                 <div class="shrink-0 flex items-center">
                     <a href="/dashboard">
                         <x-application-logo class="block h-10 w-auto fill-current text-gray-600" />
                     </a>
                 </div>
+                @endrole
                 <!-- Navigation Links -->
                 @role('siswa')
+                <div class="shrink-0 flex items-center">
+                    <a href="/userdashboard">
+                        <x-application-logo class="block h-10 w-auto fill-current text-gray-600" />
+                    </a>
+                </div>
                 <div class="hidden space-x-8 sm:-my-px sm:ml-5 sm:flex">
                     <x-nav-link :href="route('user')" :active="request()->routeIs('user')">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">

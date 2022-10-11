@@ -25,6 +25,8 @@ Route::get('/', function () {
 
 
 Route::get('admin', [RegisteredUserController::class, 'index'])->middleware(['auth'])->name('admin');
+Route::get('/userdashboard', [UserController::class, 'DashboardUser'])->middleware(['auth'])->name('userdashboard');
+Route::get('manajemen', [RegisteredUserController::class, 'manajemen'])->middleware(['auth'])->name('manajemen');
 Route::get('register', [RegisteredUserController::class, 'create'])->middleware(['auth'])->name('register');
 Route::get('HasRole', [RegisteredUserController::class, 'HasRole'])->middleware(['auth'])->name('HasRole');
 Route::delete('admin/{user}', [RegisteredUserController::class, 'destroy']);
@@ -33,7 +35,7 @@ Route::get('/user', [UserController::class, 'Personal'])->middleware(['auth'])->
 Route::get('/riwayatkelas', [UserController::class, 'Riwayatkelas'])->middleware(['auth'])->name('riwayatkelas');
 
 // CONTROLLER SISWA
-Route::get('dashboard', [DashboardController::class, 'index'])->middleware(['auth'])->name('dashboard');
+Route::get('dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'role:super admin'])->name('dashboard');
 Route::get('siswa', [SiswaController::class, 'index'])->middleware(['auth'])->name('siswa');
 Route::get('siswa/{siswa}', [SiswaController::class, 'show']);
 Route::get('biodata/{siswa}', [SiswaController::class, 'biodata']);

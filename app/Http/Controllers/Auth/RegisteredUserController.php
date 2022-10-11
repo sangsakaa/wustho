@@ -22,6 +22,7 @@ class RegisteredUserController extends Controller
      *
      * @return \Illuminate\View\View
      */
+    
     public function index()
     {
         $users = User::query()
@@ -47,6 +48,19 @@ class RegisteredUserController extends Controller
                 'users' => $users,
                 'hasRole' => $hasRole,
                 'HasRole' => $RoleHas
+            ]
+        );
+    }
+    public function manajemen()
+    {
+        $roles = Roles::all();
+        $permissions = Permission::query()
+            ->get();
+        return view(
+            'admin/manajemen',
+            [
+                'hasRole' => $permissions,
+                'roles' => $roles
             ]
         );
     }

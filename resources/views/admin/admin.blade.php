@@ -13,10 +13,9 @@
           <div class=" flex grid-cols-1 gap-1">
             <a href="/admin" class=" bg-sky-400 py-1 px-4 rounded-md text-white hover:bg-purple-500">ListUsers</a>
 
-            <a href="#" class=" bg-sky-400 py-1 px-4 rounded-md text-white hover:bg-purple-500">Manajemen Role User</a>
-            <a href="HasRole" class=" bg-sky-400 py-1 px-4 rounded-md text-white hover:bg-purple-500">Has Role</a>
+            <a href="/manajemen" class=" bg-sky-400 py-1 px-4 rounded-md text-white hover:bg-purple-500">Manajemen Role User</a>
+            <a href="/HasRole" class=" bg-sky-400 py-1 px-4 rounded-md text-white hover:bg-purple-500">Has Role</a>
           </div>
-
 
         </div>
       </div>
@@ -50,7 +49,6 @@
         </div>
         <div class=" p-4 grid grid-cols-1">
           <span> User Role</span>
-
           <table class=" w-full">
             <thead>
               <tr class=" border bg-gray-100 ">
