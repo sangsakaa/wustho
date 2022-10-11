@@ -6,6 +6,7 @@
         </h2>
     </x-slot>
     <div class="px-4 mt-4">
+        @can('show post')
         <div class=" mx-auto ">
             <div class=" px-2 bg-white overflow-hidden shadow-sm sm:rounded-md">
                 <div class="px-1 py-2 bg-white border-b border-gray-200 flex gap-1">
@@ -17,7 +18,7 @@
                         </button>
                     </a>
                     @endcan
-                    @can('show post')
+
                     <form action="/siswa" method="get" class=" flex gap-1">
                         <input type="text" name="cari" value="{{ request('cari') }}" class=" border border-green-800 text-green-800 rounded-md py-1 " placeholder=" Cari .." autofocus>
 

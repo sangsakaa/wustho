@@ -12,11 +12,9 @@
           <span class=" text-sky-500"> User Management Role</span>
           <div class=" flex grid-cols-1 gap-1">
             <a href="/admin" class=" bg-sky-400 py-1 px-4 rounded-md text-white hover:bg-purple-500">ListUsers</a>
-
             <a href="/manajemen" class=" bg-sky-400 py-1 px-4 rounded-md text-white hover:bg-purple-500">Manajemen Role User</a>
             <a href="/HasRole" class=" bg-sky-400 py-1 px-4 rounded-md text-white hover:bg-purple-500">Has Role</a>
           </div>
-
         </div>
       </div>
     </div>
@@ -25,15 +23,31 @@
     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
       <div class=" bg-white border-b border-gray-200">
         <div class=" p-4 grid grid-cols-1">
-          <span> User Role</span>
+          <span>
+            User Role
+          </span>
+          {{$hasRole}}
+          <form action="/admin" method="post">
+            @csrf
+            <select name="permission_id" id="" class=" py-1">
+              @foreach($permissions as $permission)
+              <option value="{{$permission->id}}">{{$permission->name}}</option>
+              @endforeach
+            </select>
+            <select name="role_id" id="" class=" py-1">
+              @foreach($hasrole as $permission)
+              <option value="{{$permission->id}}">{{$permission->name}}</option>
+              @endforeach
+            </select>
 
-          <table class=" w-full">
+            <button class=" bg-sky-500 px-2 py-1 text-white"> create role</button>
+          </form>
+          <table class=" mt-2 w-full">
             <thead>
               <tr class=" border bg-gray-100 ">
                 <th class=" border py-2">No</th>
                 <th class=" border">Role User</th>
                 <th class=" border"> Permission</th>
-
               </tr>
             </thead>
             <tbody>

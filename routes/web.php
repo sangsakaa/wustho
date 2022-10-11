@@ -29,6 +29,7 @@ Route::get('/userdashboard', [UserController::class, 'DashboardUser'])->middlewa
 Route::get('manajemen', [RegisteredUserController::class, 'manajemen'])->middleware(['auth'])->name('manajemen');
 Route::get('register', [RegisteredUserController::class, 'create'])->middleware(['auth'])->name('register');
 Route::get('HasRole', [RegisteredUserController::class, 'HasRole'])->middleware(['auth'])->name('HasRole');
+Route::post('admin', [RegisteredUserController::class, 'role_has_permission'])->middleware(['auth']);
 Route::delete('admin/{user}', [RegisteredUserController::class, 'destroy']);
 // User
 Route::get('/user', [UserController::class, 'Personal'])->middleware(['auth'])->name('user');
@@ -46,7 +47,7 @@ Route::post('statuspengamal/{siswa}', [SiswaController::class, 'storeSP']);
 Route::post('statusanak/{siswa}', [SiswaController::class, 'storeSA']);
 Route::delete('statuspengamal/{siswa}', [SiswaController::class, 'destroySP']);
 Route::get('statusanak/{siswa}', [SiswaController::class, 'statusanak']);
-Route::get('addsiswa', [SiswaController::class, 'create']);
+Route::get('addsiswa', [SiswaController::class, 'create'])->middleware(['auth', 'role:super admin']);
 Route::post('siswa', [SiswaController::class, 'store']);
 Route::post('nis/{siswa}', [SiswaController::class, 'storeNis']);
 Route::delete('siswa/{siswa}', [SiswaController::class, 'destroy']);
@@ -71,7 +72,6 @@ Route::patch('kelas_mi/{kelasmi}', [KelasmiController::class, 'update'])->middle
 // peseta kelas
 Route::get('pesertakelas/{kelasmi}', [KelasmiController::class, 'show'])->middleware(['auth'])->name('pesertakelas');
 Route::delete('pesertakelas/{pesertakelas}', [KelasmiController::class, 'hapus'])->middleware(['auth'])->name('pesertakelas');
-
 // Controller nilai
 Route::get('nilaimapel', [NilaiController::class, 'index'])->middleware(['auth'])->name('nilaimapel');
 Route::get('nilai/{nilaimapel}', [NilaiController::class, 'show'])->middleware(['auth']);

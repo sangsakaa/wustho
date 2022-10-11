@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Hasrole;
+use App\Models\Nilai;
 use App\Models\Pesertaasrama;
 use App\Models\Pesertakelas;
 use App\Models\Siswa;
@@ -37,7 +38,14 @@ class UserController extends Controller
     }
     public function DashboardUser()
     {
+        
         $siswa_id = Auth::user()->siswa_id;
+        $jmlmapel = Pesertakelas::query()
+            ->join('nilai', 'nilai.pesertakelas_id', '=', 'pesertakelas.id')
+            ->join('nilaimapel', 'nilaimapel.id', '=', 'nilai.nilaimapel_id')
+            ->join('mapel', 'mapel.id', '=', 'nilaimapel.mapel_id')
+            ->Where('siswa_id', $siswa_id)
+            ->count(); 
         $user = Pesertaasrama::query()
             ->join('asramasiswa', 'asramasiswa.id', '=', 'pesertaasrama.asramasiswa_id')
             ->join('periode', 'periode.id', 'asramasiswa.periode_id')
@@ -45,7 +53,13 @@ class UserController extends Controller
             ->join('asrama', 'asrama.id', '=', 'asramasiswa.asrama_id')
             ->where('pesertaasrama.siswa_id', $siswa_id)
             ->get();
-        return view('user/userdashboard', ['Asrama' => $user]);
+        return view(
+            'user/userdashboard',
+            [
+                'Asrama' => $user,
+                'jmlmapel' => $jmlmapel,
+            ]
+        );
     }
     
 }

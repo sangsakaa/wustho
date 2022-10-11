@@ -8,6 +8,7 @@ use App\Models\Hasrole;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rules;
 use App\Http\Controllers\Controller;
+use App\Models\Permissions;
 use App\Models\Roles;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -25,6 +26,8 @@ class RegisteredUserController extends Controller
     
     public function index()
     {
+        $permissions = Permissions::all();
+        $hasrole = Roles::all();
         $users = User::query()
             ->leftjoin('siswa', 'users.siswa_id', '=', 'siswa.id')
             ->select(
@@ -47,7 +50,9 @@ class RegisteredUserController extends Controller
             [
                 'users' => $users,
                 'hasRole' => $hasRole,
-                'HasRole' => $RoleHas
+                'HasRole' => $RoleHas,
+                'permissions' => $permissions,
+                'hasrole' => $hasrole
             ]
         );
     }
@@ -101,6 +106,16 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
+    public function role_has_permission(Request $request)
+    {
+
+        $role_has_permission = new Hasrole();
+        $role_has_permission->permission_id = $request->permission_id;
+        $role_has_permission->role_id = $request->role_id;
+        dd($role_has_permission);
+        $role_has_permission->save();
+        return redirect()->back();
+    }
     public function store(Request $request)
     {
         $request->validate([
