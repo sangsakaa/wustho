@@ -45,19 +45,36 @@ class UserController extends Controller
             ->join('nilaimapel', 'nilaimapel.id', '=', 'nilai.nilaimapel_id')
             ->join('mapel', 'mapel.id', '=', 'nilaimapel.mapel_id')
             ->Where('siswa_id', $siswa_id)
-            ->count(); 
+            ->get();
+        $NH = $jmlmapel->sum('nilai_harian');
+        $NU = $jmlmapel->sum('nilai_ujian');
+        $jmlNH = $jmlmapel->count('nilai_harian');
+        $jmlNU = $jmlmapel->count('nilai_ujian');
+        $x = $jmlNH * 2 + $jmlNU * 2;
+        $a = $NH / $jmlNH;
+        $b = $NU / $jmlNU;
+        $c = $a + $b / $x;
+        $jml = $jmlmapel->count();  
+        
         $user = Pesertaasrama::query()
             ->join('asramasiswa', 'asramasiswa.id', '=', 'pesertaasrama.asramasiswa_id')
             ->join('periode', 'periode.id', 'asramasiswa.periode_id')
             ->join('semester', 'semester.id', 'periode.semester_id')
             ->join('asrama', 'asrama.id', '=', 'asramasiswa.asrama_id')
+            
             ->where('pesertaasrama.siswa_id', $siswa_id)
+        
             ->get();
         return view(
             'user/userdashboard',
             [
                 'Asrama' => $user,
                 'jmlmapel' => $jmlmapel,
+                'NU' => $NU,
+                'jml' => $jml,
+                'a' => $a,
+                'b' => $c,
+                
             ]
         );
     }

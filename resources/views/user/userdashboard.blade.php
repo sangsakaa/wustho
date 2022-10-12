@@ -9,12 +9,17 @@
         <div class="mx-auto">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-4 bg-white border-b border-gray-200">
-                    <div class=" grid sm:grid-cols-4 grid-cols-2">
+                    <div class=" grid sm:grid-cols-4 grid-cols-2 gap-2">
                         <div class=" bg-sky-400 p-6 text-center text-white rounded-md">
                             <span class=" capitalize">total mapel</span>
-                            <span>{{$jmlmapel}}</span>
+                            <span>{{$jml}}</span>
+                        </div>
+                        <div class=" bg-sky-400 p-6 text-center text-white rounded-md">
+
+                            <span>IPK : {{$b}}</span>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
