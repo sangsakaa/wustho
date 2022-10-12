@@ -5,7 +5,7 @@
             <span class=" uppercase">{{ __('Dashboard Detail Siswa ') }} </span><br>
         </h2>
     </x-slot>
-    @can(' show post')
+
     <div class="py-4 px-4">
         <div class=" mx-auto">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
@@ -76,5 +76,5 @@
             </div>
         </div>
     </div>
-    @endcan
+
 </x-app-layout>
