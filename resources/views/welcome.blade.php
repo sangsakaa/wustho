@@ -456,7 +456,7 @@
                     <div class="p-6 text-center">
                         @if(Route::has('login'))
                         @auth
-                        <a href="{{ url('/userdashboard') }}" class="text-md text-gray-700 dark:text-gray-500 ">Dashboard</a>
+                        <a href="{{ url('/asramasiswa') }}" class="text-md text-gray-700 dark:text-gray-500 ">Dashboard</a>
                         @else
                         <a href="{{ route('login') }}" class="text-sm text-gray-700  dark:text-white ">Log in</a>
                         @endif

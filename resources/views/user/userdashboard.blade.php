@@ -25,7 +25,6 @@
                             <span>{{$jml}}</span>
                         </div>
                         <div class=" bg-sky-400 p-6 text-center text-white rounded-md">
-
                             <span>IPK : {{(number_format($b,2,','))}}</span>
                         </div>
                     </div>
