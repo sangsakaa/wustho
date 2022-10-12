@@ -15,7 +15,7 @@ use App\Models\Pesertakelas;
 use Illuminate\Http\Request;
 use App\Models\Statuspengamal;
 use Illuminate\Routing\Controller;
-
+use Illuminate\Support\Facades\Gate;
 
 class SiswaController extends Controller
 {
@@ -24,8 +24,15 @@ class SiswaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    // public function __construct()
+    // {
+    //     $this->middleware('can: create post');
+    // }
     public function index()
     {
+        // if (!Gate::allows('create post')) {
+        //     abort(403, 'unauthorized');
+        // }
         $data = Siswa::query()
             ->leftjoin('nis', 'nis.siswa_id', '=', 'siswa.id')
             ->leftjoin('pesertaasrama', 'pesertaasrama.siswa_id', '=', 'siswa.id')

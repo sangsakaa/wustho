@@ -36,8 +36,8 @@ Route::get('/user', [UserController::class, 'Personal'])->middleware(['auth'])->
 Route::get('/riwayatkelas', [UserController::class, 'Riwayatkelas'])->middleware(['auth'])->name('riwayatkelas');
 
 // CONTROLLER SISWA
-Route::get('dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'role:super admin'])->name('dashboard');
-Route::get('siswa', [SiswaController::class, 'index'])->middleware(['auth'])->name('siswa');
+Route::get('dashboard', [DashboardController::class, 'index'])->middleware(['auth'])->name('dashboard');
+Route::get('siswa', [SiswaController::class, 'index'])->middleware(['auth',])->name('siswa');
 Route::get('siswa/{siswa}', [SiswaController::class, 'show']);
 Route::get('biodata/{siswa}', [SiswaController::class, 'biodata']);
 Route::get('transkip/{siswa}', [SiswaController::class, 'transkip']);
