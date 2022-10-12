@@ -44,6 +44,7 @@ class RegisteredUserController extends Controller
         ->join('permissions', 'permissions.id',  '=', 'role_has_permissions.permission_id',)
         ->join('roles', 'roles.id', '=', 'role_has_permissions.role_id')
         ->select('roles.name AS Role', 'permissions.name AS Permission')
+            ->orderBy('roles.name', 'desc')
         ->get();
         return view(
             'admin/admin',
@@ -112,7 +113,7 @@ class RegisteredUserController extends Controller
         $role_has_permission = new Hasrole();
         $role_has_permission->permission_id = $request->permission_id;
         $role_has_permission->role_id = $request->role_id;
-        dd($role_has_permission);
+        // dd($role_has_permission);
         $role_has_permission->save();
         return redirect()->back();
     }
@@ -141,16 +142,13 @@ class RegisteredUserController extends Controller
         event(new Registered($user));
         // Auth::login($user);
         if (Auth::login($user)) {
-            return redirect(RouteServiceProvider::HOME);
-        } else {
             return redirect(RouteServiceProvider::USER);
-        } 
+        } else {
 
-
+            return redirect(RouteServiceProvider::HOME);
+        }    
+        // return redirect(RouteServiceProvider::PONDOK);
         
-        // return redirect(RouteServiceProvider::HOME);
-        
-
         
     }
     public function destroy(User $user)

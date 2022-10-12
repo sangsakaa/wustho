@@ -21,14 +21,28 @@
                     <div class=" grid sm:grid-cols-4 grid-cols-2">
                         <div>Nama </div>
                         <div>:
+                            @if($siswa != null)
                             {{$siswa->nama_siswa}}
+                            @endif
                         </div>
                         <div>Tanggal Lahir </div>
-                        <div>: {{$siswa->tempat_lahir}}</div>
+                        <div>:
+                            @if($siswa != null)
+                            {{$siswa->tempat_lahir}}
+                            @endif
+                        </div>
                         <div>Jenis Kelamin </div>
-                        <div>: {{$siswa->jenis_kelamin}}</div>
+                        <div>:
+                            @if($siswa != null)
+                            {{$siswa->jenis_kelamin}}
+                            @endif
+                        </div>
                         <div>Tempat Lahir </div>
-                        <div>: {{$siswa->tanggal_lahir}}</div>
+                        <div>:
+                            @if($siswa != null)
+                            {{$siswa->tanggal_lahir}}
+                            @endif
+                        </div>
                     </div>
                 </div>
             </div>
@@ -36,7 +50,6 @@
     </div>
     @role('admin')
     <div class=" px-4">
-
         <div class="mx-auto">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-4 bg-white border-b border-gray-200">

@@ -26,7 +26,7 @@
           <span>
             User Role
           </span>
-          {{$hasRole}}
+
           <form action="/admin" method="post">
             @csrf
             <select name="permission_id" id="" class=" py-1">

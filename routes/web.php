@@ -47,14 +47,13 @@ Route::post('statuspengamal/{siswa}', [SiswaController::class, 'storeSP']);
 Route::post('statusanak/{siswa}', [SiswaController::class, 'storeSA']);
 Route::delete('statuspengamal/{siswa}', [SiswaController::class, 'destroySP']);
 Route::get('statusanak/{siswa}', [SiswaController::class, 'statusanak']);
-Route::get('addsiswa', [SiswaController::class, 'create'])->middleware(['auth', 'role:super admin']);
+Route::get('addsiswa', [SiswaController::class, 'create'])->middleware(['auth', 'can:super admin']);
 Route::post('siswa', [SiswaController::class, 'store']);
 Route::post('nis/{siswa}', [SiswaController::class, 'storeNis']);
 Route::delete('siswa/{siswa}', [SiswaController::class, 'destroy']);
 Route::delete('nis/{nis}', [SiswaController::class, 'destroyNis']);
 Route::get('siswa/{siswa}/edit', [SiswaController::class, 'edit']);
 Route::patch('siswa/{siswa}', [SiswaController::class, 'update']);
-
 Route::get('kelas', [KelasController::class, 'index'])->middleware(['auth'])->name('kelas');
 Route::get('addkelas', [KelasController::class, 'create'])->middleware(['auth'])->name('addkelas');
 Route::get('kelas/{kelas}/edit', [KelasController::class, 'edit'])->middleware(['auth']);

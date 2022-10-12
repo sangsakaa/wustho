@@ -11,6 +11,13 @@
                     </a>
                 </div>
                 @endrole
+                @role('pengurus')
+                <div class="shrink-0 flex items-center">
+                    <a href="/dashboard">
+                        <x-application-logo class="block h-10 w-auto fill-current text-gray-600" />
+                    </a>
+                </div>
+                @endrole
                 <!-- Navigation Links -->
                 @role('siswa')
                 <div class="shrink-0 flex items-center">

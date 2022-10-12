@@ -34,6 +34,8 @@ class AuthenticatedSessionController extends Controller
 
         if (Auth::user()->hasRole('super admin')) {
             return redirect()->intended(RouteServiceProvider::HOME);
+        } elseif (Auth::user()->hasRole('pengurus')) {
+            return redirect()->intended(RouteServiceProvider::PONDOK);
         } else {
             return redirect()->intended(RouteServiceProvider::USER);
         }

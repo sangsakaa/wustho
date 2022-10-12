@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Nis;
 use App\Models\Kelas;
 use App\Models\Mapel;
@@ -79,7 +80,6 @@ class SiswaController extends Controller
     {
         return view('siswa/addsiswa');
     }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -88,8 +88,8 @@ class SiswaController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate(['nama_siswa' => 'required|min:5|max:50',
-
+        $validated = $request->validate([
+            'nama_siswa' => 'required|min:5|max:50',
         ], [
             'nama_siswa.min' => 'tidak boleh kurang dari 5 karakter',
             'nama_siswa.max' => 'tidak boleh lebih dari 60 karakter'
@@ -143,6 +143,7 @@ class SiswaController extends Controller
      */
     public function show(Siswa $siswa)
     {
+        
         $nilai = Pesertakelas::query()
             ->join('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
             ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
@@ -152,7 +153,8 @@ class SiswaController extends Controller
             'siswa/detailSiswa',
             [
                 'siswa' => $siswa,
-                'pesertakelas' => $nilai
+                'pesertakelas' => $nilai,
+                
             ]
         );
     }
@@ -223,9 +225,6 @@ class SiswaController extends Controller
                 'siswa' => $siswa,
                 'title' => $title,
                 'nilai' => $nilai->get(),
-
-                
-                
             ]
         );
        
@@ -291,7 +290,6 @@ class SiswaController extends Controller
     public function destroySP(Statuspengamal $siswa)
 
     {
-
         Statuspengamal::destroy($siswa->id);
         return redirect()->back();
     }

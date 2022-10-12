@@ -18,6 +18,7 @@
                         <div>: {{$siswa->jenis_kelamin}}</div>
                         <div>Tempat Lahir </div>
                         <div>: {{$siswa->tanggal_lahir}}</div>
+
                     </div>
                 </div>
             </div>
@@ -50,7 +51,6 @@
                         <div class=" grid grid-cols-1 justify-items-end">
                             <a href="/statusanak/{{$siswa->id}}" class=" bg-blue-500 px-2 py-1 hover:bg-purple-500 text-white">Status Anak</a>
                         </div>
-
                         @endrole
                     </div>
                     <div class=" grid grid-cols-1 sm:grid-cols-2 gap-2">
