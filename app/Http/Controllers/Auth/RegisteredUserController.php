@@ -142,15 +142,17 @@ class RegisteredUserController extends Controller
         // Auth::login($user);
         if (Auth::login($user)) {
             return redirect(RouteServiceProvider::USER);
-        } else {
+        } elseif (Auth::login($user)) {
             return redirect(RouteServiceProvider::HOME);
+        } else {
+            return redirect(RouteServiceProvider::PONDOK);
         }
 
 
         
         // return redirect(RouteServiceProvider::HOME);
         
-      
+
         
     }
     public function destroy(User $user)
