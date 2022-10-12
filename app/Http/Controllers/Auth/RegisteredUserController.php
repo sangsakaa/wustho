@@ -142,7 +142,7 @@ class RegisteredUserController extends Controller
         // Auth::login($user);
         if (Auth::login($user)) {
             return redirect(RouteServiceProvider::USER);
-        } elseif (Auth::login($user)) {
+        } elseif (Auth::login($user == 'pengurus')) {
             return redirect(RouteServiceProvider::PONDOK);
         } else {
             return redirect(RouteServiceProvider::HOME);
