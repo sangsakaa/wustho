@@ -46,54 +46,57 @@
                     <div class="sm:text-2xl text-center text-2xl sm:text-left  grid text-blue-400 ">
                         Daftar Nilai Mata Pelajaran
                     </div>
-                    <div id="div1" class=" overflow-auto bg-white rounded-md ">
-                        <div class=" text-center  text-2xl capitalize py-2">
-                            <span> kartu hasil tadris</span>
-                        </div>
-                        <div class=" text-xs sm:text-sm grid grid-cols-2 sm:grid-cols-4 gap-1">
-                            <div>Nomor Induk Siswa </div>
-                            <div> : {{$user->nis}} </div>
-                            <div>Kelas / Semester </div>
-                            <div> : {{$title->nama_kelas}}/{{$title->semester}}</div>
-                            <div>Nama Siswa </div>
-                            <div class=" w-full text-xs"> : {{$user->nama_siswa}} </div>
-                            <div>Periode </div>
-                            <div> : {{$title->periode}} {{$title->ket_semester}}</div>
-                        </div>
-                        <hr class=" py-1">
-                        <table class=" text-xs sm:text-sm w-full">
-                            <thead>
-                                <tr class="border bg-gray-200">
-                                    <th class=" border px-1  py-1">#</th>
-                                    <th class=" border px-1">Pelajaran</th>
+                    <div id="div1">
+                        <div class=" overflow-auto bg-white rounded-md ">
+                            <div class=" text-center  text-2xl capitalize py-2">
+                                <span> kartu hasil tadris</span>
+                            </div>
+                            <div class=" text-xs sm:text-sm grid grid-cols-2 sm:grid-cols-4 gap-1">
+                                <div>Nomor Induk Siswa </div>
+                                <div> : {{$user->nis}} </div>
+                                <div>Kelas / Semester </div>
+                                <div> : {{$title->nama_kelas}}/{{$title->semester}}</div>
+                                <div>Nama Siswa </div>
+                                <div class=" w-full text-xs"> : {{$user->nama_siswa}} </div>
+                                <div>Periode </div>
+                                <div> : {{$title->periode}} {{$title->ket_semester}}</div>
+                            </div>
+                            <hr class=" py-1">
+                            <table class=" text-xs sm:text-sm w-full">
+                                <thead>
+                                    <tr class="border bg-gray-200">
+                                        <th class=" border px-1  py-1">#</th>
+                                        <th class=" border px-1">Pelajaran</th>
 
-                                    <th class=" border px-1">Nama Guru</th>
-                                    <th class=" border px-1">NH</th>
-                                    <th class=" border px-1">NU</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @if ($dataNilai->count())
-                                @foreach ($dataNilai as $nilai)
-                                <tr class="border hover:bg-gray-100 ">
-                                    <td class=" border text-center px-1">{{ $loop->iteration }}</td>
-                                    <td class=" border text-center px-1 py-2">{{ $nilai->mapel }}</td>
+                                        <th class=" border px-1">Nama Guru</th>
+                                        <th class=" border px-1">NH</th>
+                                        <th class=" border px-1">NU</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if ($dataNilai->count())
+                                    @foreach ($dataNilai as $nilai)
+                                    <tr class="border hover:bg-gray-100 ">
+                                        <td class=" border text-center px-1">{{ $loop->iteration }}</td>
+                                        <td class=" border text-center px-1 py-2">{{ $nilai->mapel }}</td>
 
-                                    <td class=" border text-left px-1">{{ $nilai->nama_guru }}</td>
-                                    <td class=" border text-center px-1">{{ $nilai->nilai_harian }}</td>
-                                    <td class=" border text-center px-1">{{ $nilai->nilai_ujian }}</td>
-                                </tr>
-                                @endforeach
-                                @else
-                                <tr class="border">
-                                    <td colspan="11" class="text-sm border text-center py-4">
-                                        Tidak ada data
-                                    </td>
-                                </tr>
-                                @endif
-                            </tbody>
-                        </table>
+                                        <td class=" border text-left px-1">{{ $nilai->nama_guru }}</td>
+                                        <td class=" border text-center px-1">{{ $nilai->nilai_harian }}</td>
+                                        <td class=" border text-center px-1">{{ $nilai->nilai_ujian }}</td>
+                                    </tr>
+                                    @endforeach
+                                    @else
+                                    <tr class="border">
+                                        <td colspan="11" class="text-sm border text-center py-4">
+                                            Tidak ada data
+                                        </td>
+                                    </tr>
+                                    @endif
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
+
                 </div>
             </div>
         </div>
