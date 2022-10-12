@@ -135,7 +135,7 @@ class RegisteredUserController extends Controller
         if ($request->siswa_id) {
             $user->assignRole('siswa');
         } else {
-            $user->assignRole('admin');
+            $user->assignRole('super admin');
         }
 
         event(new Registered($user));
