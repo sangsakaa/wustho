@@ -38,7 +38,11 @@ class UserController extends Controller
     }
     public function DashboardUser()
     {
-        
+
+        $siswa_id = Auth::user()->siswa_id;
+        $title = Siswa::query()
+            ->join('nis', 'nis.siswa_id', '=', 'siswa.id')
+            ->where('siswa.id', $siswa_id)->first();
         $siswa_id = Auth::user()->siswa_id;
         $jmlmapel = Pesertakelas::query()
             ->join('nilai', 'nilai.pesertakelas_id', '=', 'pesertakelas.id')
@@ -68,6 +72,7 @@ class UserController extends Controller
         return view(
             'user/userdashboard',
             [
+                'title' => $title,
                 'Asrama' => $user,
                 'jmlmapel' => $jmlmapel,
                 'NU' => $NU,
