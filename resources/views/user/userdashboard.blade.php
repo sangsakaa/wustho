@@ -48,7 +48,7 @@
                                         <th class=" border text-center py-1">No</th>
                                         <th class=" border text-center"> Periode</th>
                                         <th class=" border text-center"> Asrama</th>
-                                        <th class=" border text-center"> Type Asrama</th>
+                                        <th class=" border text-center"> Type</th>
                                     </tr>
                                 </thead>
                                 <tbody>
