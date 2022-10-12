@@ -76,7 +76,7 @@
                                 <tbody>
                                     @if ($dataNilai->count())
                                     @foreach ($dataNilai as $nilai)
-                                    <tr class="border hover:bg-gray-100 ">
+                                    <tr class="border ">
                                         <td class=" border text-center px-1">{{ $loop->iteration }}</td>
                                         <td class=" border text-center px-1 py-2">{{ $nilai->mapel }}</td>
 
