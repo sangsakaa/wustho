@@ -5,7 +5,6 @@
             <span class=" uppercase">{{ __('Dashboard Detail Siswa ') }} </span><br>
         </h2>
     </x-slot>
-
     <div class="py-4 px-4">
         <div class=" mx-auto">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
@@ -21,8 +20,8 @@
 
                     <div class=" grid sm:grid-cols-4 grid-cols-2 gap-2">
 
-                        <div class=" bg-sky-400 p-6 text-center text-white rounded-md">
-                            <span class=" capitalize">total mapel</span>
+                        <div class=" bg-sky-400 py-6 text-center text-white rounded-md">
+                            <span class=" capitalize"> MP : </span>
                             <span>{{$jml}}</span>
                         </div>
                         <div class=" bg-sky-400 p-6 text-center text-white rounded-md">
@@ -74,6 +73,18 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+    <div class="py-2 px-4">
+        <div class=" mx-auto">
+            <div class=" overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-2 bg-sky-300 border-b border-gray-200 text-white">
+                    <p class=" uppercase bold">keterangan : </p>
+                    <p class=" capitalize px-2">1. MP : mata pelajaran</p>
+                    <p class=" capitalize px-2">2. IPK : index predikat komulatif</p>
+                </div>
+            </div>
+
         </div>
     </div>
 
