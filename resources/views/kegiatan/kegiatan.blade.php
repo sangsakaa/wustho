@@ -16,6 +16,7 @@
                                 </svg>Tambah Kegiatan
                             </button>
                         </a>
+                        @can('show post')
                         <a href="/kelas_mi">
                             <div class=" ">
                                 <button class=" bg-blue-500 text-white py-1 px-2 rounded-md d-inline-block">
@@ -23,6 +24,7 @@
                                 </button>
                             </div>
                         </a>
+                        @endcan
                     </div>
 
                     <Table class=" w-full sm:w-full mt-1">
