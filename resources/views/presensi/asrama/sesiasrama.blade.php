@@ -9,11 +9,11 @@
   <div class="px-4 mt-4">
     <div class=" mx-auto ">
       <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-        <div class=" p-4">
-          <form action="/sesiasrama" method="post">
-            @csrf
+        <form action="/sesiasrama" method="post">
+          @csrf
+          <div class=" p-4 grid grid-cols-1 sm:flex sm:grid-cols-1 gap-0">
             <label for=""> Tanggal</label>
-            <input type="date" name="tanggal" class=" py-1" value="{{now()}}">
+            <input type="date" name="tanggal" class=" py-1">
             <label for=""> Periode</label>
 
             <select name="periode_id" id="" class=" py-1">
@@ -35,9 +35,9 @@
               <option value="{{$peri->id}}">{{$peri->kegiatan}}</option>
               @endforeach
             </select>
-            <button class=" bg-blue-700 text-white py-1 px-2 rounded-md"> Create Sesi Asrama</button>
-          </form>
-        </div>
+            <button class=" bg-blue-700 mt-2 text-white py-1 px-2 rounded-md"> Create Sesi Asrama</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
@@ -58,7 +58,9 @@
                 <th class=" py-2 px-2 border">No</th>
                 <th class=" px-2 border"> presensi </th>
                 <th class=" px-2 border"> tanggal </th>
+                @role('super admin')
                 <th class=" px-2 border"> periode </th>
+                @endrole
                 <th class=" px-2 border"> Rincian Kegiatan </th>
                 <th class=" px-2 border">asrama </th>
                 <th class=" px-2 border">Status </th>
@@ -71,11 +73,12 @@
                 <th class=" w-5">{{$loop->iteration}}</th>
                 <td class=" px-2 text-center py-1"><a href="/sesiasrama/{{$item->id}}"><button class=" bg-blue-500 py-1 px-2 rounded-md text-white hover:bg-purple-500">Presensi</button></a></td>
                 <td class=" px-2 text-center">{{$item->tanggal}}</td>
+                @role('super admin')
                 <td class=" px-2 text-center">{{$item->periode}} {{$item->ket_semester}}</td>
+                @endrole
                 <td class=" px-2 text-center">{{$item->kegiatan}}</td>
                 <td class=" px-2 text-center">{{$item->nama_asrama}}</td>
-                <td class=" px-2 text-center">
-                </td>
+
                 <td class=" px-2 text-center">
                   @can('delete post')
                   <form action="/sesiasrama/{{$item->id}}" method="post">
