@@ -15,7 +15,6 @@
                         <form action="/asramasiswa" method="post">
                             @csrf
                             <div class=" flex grid-cols-2   gap-2 ">
-
                                 <div>
                                     <select name="asrama_id" id="" class="  py-1">
                                         <option value=""> -- Pilih Asrama --</option>

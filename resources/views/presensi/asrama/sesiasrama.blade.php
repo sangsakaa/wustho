@@ -11,25 +11,24 @@
       <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
         <form action="/sesiasrama" method="post">
           @csrf
-          <div class=" p-4 grid grid-cols-1 sm:flex sm:grid-cols-1 gap-0">
-            <label for=""> Tanggal</label>
-            <input type="date" name="tanggal" class=" py-1">
-            <label for=""> Periode</label>
-
-            <select name="periode_id" id="" class=" py-1">
+          <div class=" p-4 grid grid-cols-5">
+            <label for="" class=" py-2"> Tanggal</label>
+            <input type="date" name="tanggal" class=" py-1 text-xs sm:text-sm">
+            <label for="" class=" py-2"> Periode</label>
+            <select name="periode_id" id="" class=" py-1 text-xs sm:text-sm">
               @foreach($periode as $peri)
               <option value="{{$peri->id}}">{{$peri->periode}} {{$peri->ket_semester}}</option>
               @endforeach
             </select>
-            <label for=""> Asrama</label>
-            <select name="asramasiswa_id" id="" class=" py-1">
+            <label for="" class=" py-2"> Asrama</label>
+            <select name="asramasiswa_id" id="" class=" py-1 text-xs sm:text-sm">
               <option value="">-- Pilih Asrama --</option>
               @foreach($asramasiswa as $peri)
               <option value="{{$peri->id}}">{{$peri->nama_asrama}} {{$peri->ket_semester}}</option>
               @endforeach
             </select>
-            <label for=""> Kegiatan</label>
-            <select name="kegiatan_id" id="" class=" py-1">
+            <label for="" class=" py-2"> Kegiatan</label>
+            <select name="kegiatan_id" id="" class=" py-1 text-xs sm:text-sm">
               <option value="">-- Pilih kegiatan --</option>
               @foreach($kegiatan as $peri)
               <option value="{{$peri->id}}">{{$peri->kegiatan}}</option>
@@ -63,7 +62,6 @@
                 @endrole
                 <th class=" px-2 border"> Rincian Kegiatan </th>
                 <th class=" px-2 border">asrama </th>
-                <th class=" px-2 border">Status </th>
                 <th class=" px-2 border">Aksi </th>
               </tr>
             </thead>
@@ -78,7 +76,6 @@
                 @endrole
                 <td class=" px-2 text-center">{{$item->kegiatan}}</td>
                 <td class=" px-2 text-center">{{$item->nama_asrama}}</td>
-
                 <td class=" px-2 text-center">
                   @can('delete post')
                   <form action="/sesiasrama/{{$item->id}}" method="post">
