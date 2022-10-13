@@ -11,30 +11,30 @@
       <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
         <form action="/sesiasrama" method="post">
           @csrf
-          <div class=" p-4 grid grid-cols-5">
-            <label for="" class=" py-2"> Tanggal</label>
+          <div class=" p-4 grid grid-flow-col sm:grid-cols-5 gap-2  ">
+            <!-- <label for="" class=" py-2"> Tanggal</label> -->
             <input type="date" name="tanggal" class=" py-1 text-xs sm:text-sm">
-            <label for="" class=" py-2"> Periode</label>
+            <!-- <label for="" class=" py-2"> Periode</label> -->
             <select name="periode_id" id="" class=" py-1 text-xs sm:text-sm">
               @foreach($periode as $peri)
               <option value="{{$peri->id}}">{{$peri->periode}} {{$peri->ket_semester}}</option>
               @endforeach
             </select>
-            <label for="" class=" py-2"> Asrama</label>
+            <!-- <label for="" class=" py-2"> Asrama</label> -->
             <select name="asramasiswa_id" id="" class=" py-1 text-xs sm:text-sm">
               <option value="">-- Pilih Asrama --</option>
               @foreach($asramasiswa as $peri)
               <option value="{{$peri->id}}">{{$peri->nama_asrama}} {{$peri->ket_semester}}</option>
               @endforeach
             </select>
-            <label for="" class=" py-2"> Kegiatan</label>
+            <!-- <label for="" class=" py-2"> Kegiatan</label> -->
             <select name="kegiatan_id" id="" class=" py-1 text-xs sm:text-sm">
               <option value="">-- Pilih kegiatan --</option>
               @foreach($kegiatan as $peri)
               <option value="{{$peri->id}}">{{$peri->kegiatan}}</option>
               @endforeach
             </select>
-            <button class=" bg-blue-700 mt-2 text-white py-1 px-2 rounded-md"> Create Sesi Asrama</button>
+            <button class=" bg-blue-700 mt-1 text-white py-1 px-2 rounded-md"> Create Sesi Asrama</button>
           </div>
         </form>
       </div>
