@@ -66,13 +66,13 @@
                   <!-- <td class="border px-2 py-1 text-center">{{$item->nama_asrama}}</td> -->
                   <td class="   text-right   px-1 py-1 border ">
                     <input class="text-xs sm:text-sm float-right" type="radio" id="hadir[{{ $item->id }}]" name="keterangan[{{ $item->id }}]" value="hadir" class=" " {{ $item->keterangan === 'hadir' || $item->keterangan === null ? 'checked' : '' }}>
-                    <label for="hadir[{{ $item->id }}]" class=" ">Hadir</label>
+                    <label for="hadir[{{ $item->id }}]" class=" ">H</label>
                     <input class="text-xs sm:text-sm float-right" type="radio" id="izin[{{ $item->id }}]" name="keterangan[{{ $item->id }}]" value="izin" class=" " {{ $item->keterangan === 'izin' ? 'checked' : '' }}>
-                    <label for="izin[{{ $item->id }}]" class=" ">Izin</label>
+                    <label for="izin[{{ $item->id }}]" class=" ">I</label>
                     <input class="text-xs sm:text-sm float-right" type="radio" id="sakit[{{ $item->id }}]" name="keterangan[{{ $item->id }}]" value="sakit" class=" " {{ $item->keterangan === 'sakit' ? 'checked' : '' }}>
-                    <label for="sakit[{{ $item->id }}]" class=" ">Sakit</label>
+                    <label for="sakit[{{ $item->id }}]" class=" ">S</label>
                     <input class="text-xs sm:text-sm float-right" type="radio" id="alfa[{{ $item->id }}]" name="keterangan[{{ $item->id }}]" value="alfa" class=" " {{ $item->keterangan === 'alfa' ? 'checked' : '' }}>
-                    <label for="alfa[{{ $item->id }}]" class=" ">Alfa</label>
+                    <label for="alfa[{{ $item->id }}]" class=" ">A</label>
                     <input class="text-xs sm:text-sm float-right" type="text" name="alasan[{{ $item->id }}]" class="   py-1 px-2" placeholder="Keterangan untuk semua keadaan">
                   </td>
                 </tr>
