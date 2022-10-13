@@ -75,7 +75,6 @@
                 <td class=" px-2 text-center">{{$item->kegiatan}}</td>
                 <td class=" px-2 text-center">{{$item->nama_asrama}}</td>
                 <td class=" px-2 text-center">
-
                 </td>
                 <td class=" px-2 text-center">
                   @can('delete post')
