@@ -231,18 +231,18 @@
                             <tr class=" border">
                                 <td class=" px-2 border ">1</td>
                                 <td class=" px-2 border ">IZIN</td>
-                                <td class=" px-2 border text-center "> 2</td>
+                                <td class=" px-2 border text-center ">{{ $siswa->izin === 0 || !$siswa->izin ? '-' : $siswa->izin }}</td>
                             </tr>
                             <tr class=" border">
                                 <td class=" px-2 border ">2</td>
                                 <td class=" px-2 border ">SAKIT</td>
-                                <td class=" px-2 border text-center ">3</td>
+                                <td class=" px-2 border text-center ">{{ $siswa->sakit === 0 || !$siswa->sakit ? '-' : $siswa->sakit }}</td>
 
                             </tr>
                             <tr class=" border">
                                 <td class=" px-2 border ">3</td>
                                 <td class=" px-2 border ">ALFA</td>
-                                <td class=" px-2 border text-center "> 5 </td>
+                                <td class=" px-2 border text-center ">{{ $siswa->alfa === 0 || !$siswa->alfa ? '-' : $siswa->alfa }}</td>
                             </tr>
                         </tbody>
                     </table>

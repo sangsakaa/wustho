@@ -59,6 +59,7 @@ class RaportController extends Controller
             ->join('kelas', 'kelas.id', '=', 'kelasmi.kelas_id')
             ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
             ->join('semester', 'semester.id', '=', 'periode.semester_id')
+            ->leftJoin('presensikelas', 'presensikelas.pesertakelas_id', '=', 'pesertakelas.id')
             // ->join('semester', 'semester.id', '=', 'kelasmi.periode_id')
             // ->select('kelas.kelas', 'siswa.nama_siswa', 'periode.periode', 'periode.ket_periode', 'semester.semester')
             ->where('pesertakelas.id', $pesertakelas->id)->first();
@@ -155,6 +156,7 @@ class RaportController extends Controller
             ->join('kelas', 'kelas.id', '=', 'kelasmi.kelas_id')
             ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
             ->join('semester', 'semester.id', '=', 'periode.semester_id')
+            ->leftJoin('presensikelas', 'presensikelas.pesertakelas_id', '=', 'pesertakelas.id')
             // ->join('semester', 'semester.id', '=', 'kelasmi.periode_id')
             ->select('*', 'pesertakelas.id as peserta_id')
             ->where('kelasmi.id', $kelasmi->id)

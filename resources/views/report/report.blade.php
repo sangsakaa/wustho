@@ -210,18 +210,18 @@
                             <tr class=" border border-green-800">
                                 <td class=" px-2 border border-green-800 ">1</td>
                                 <td class=" px-2 border border-green-800 ">IZIN</td>
-                                <td class=" px-2 border border-green-800 text-center "> -</td>
+                                <td class=" px-2 border border-green-800 text-center ">{{ $siswa->izin === 0 || !$siswa->izin ? '-' : $siswa->izin }}</td>
                             </tr>
                             <tr class=" border border-green-800">
                                 <td class=" px-2 border border-green-800 ">2</td>
                                 <td class=" px-2 border border-green-800 ">SAKIT</td>
-                                <td class=" px-2 border border-green-800 text-center ">-</td>
+                                <td class=" px-2 border border-green-800 text-center ">{{ $siswa->sakit === 0 || !$siswa->sakit ? '-' : $siswa->sakit }}</td>
 
                             </tr>
                             <tr class=" border border-green-800">
                                 <td class=" px-2 border border-green-800 ">3</td>
                                 <td class=" px-2 border border-green-800 ">ALFA</td>
-                                <td class=" px-2 border border-green-800 text-center "> - </td>
+                                <td class=" px-2 border border-green-800 text-center ">{{ $siswa->alfa === 0 || !$siswa->alfa ? '-' : $siswa->alfa }}</td>
                             </tr>
                         </tbody>
                     </table>
