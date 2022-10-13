@@ -16,6 +16,7 @@ use App\Http\Controllers\SesiasramaController;
 use App\Http\Controllers\AsramasiswaController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\PelanggaranController;
+use App\Http\Controllers\PresensikelasController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 
@@ -145,5 +146,10 @@ Route::patch('kegiatan/{kegiatan}', [KegiatanController::class, 'update']);
 Route::get('addpelanggaran', [PelanggaranController::class, 'create'])->middleware(['auth']);
 Route::post('addpelanggaran', [PelanggaranController::class, 'store'])->middleware(['auth']);
 Route::delete('addpelanggaran/{pelanggaran}', [PelanggaranController::class, 'destroy'])->middleware(['auth']);
+
+// Controller Presensikelas
+Route::get('presensikelas', [PresensikelasController::class, 'index'])->middleware(['auth']);
+Route::get('presensikelas/{kelasmi}', [PresensikelasController::class, 'show'])->middleware(['auth']);
+Route::post('presensikelas', [PresensikelasController::class, 'store'])->middleware(['auth']);
 
 require __DIR__ . '/auth.php';
