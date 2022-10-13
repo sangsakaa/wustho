@@ -16,7 +16,7 @@
                                 </svg>Tambah Kegiatan
                             </button>
                         </a>
-                        @can('show post')
+                        @can('show create')
                         <a href="/kelas_mi">
                             <div class=" ">
                                 <button class=" bg-blue-500 text-white py-1 px-2 rounded-md d-inline-block">
