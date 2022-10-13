@@ -46,7 +46,7 @@
     <div class=" bg-white overflow-hidden shadow-sm sm:rounded-lg">
       <div class=" p-4 ">
         <div class=" flex gap-2">
-          @role('admin')
+          @role('super admin')
           <a href="/asrama"><button class=" flex bg-blue-500 rounded-md py-1 px-2 text-white">Kembali Ke Asrama</button></a>
           <a href="/kegiatan"><button class=" flex bg-blue-500 rounded-md py-1 px-2 text-white">Tambah Kegiatan</button></a>
           @endrole
@@ -78,13 +78,13 @@
 
                 </td>
                 <td class=" px-2 text-center">
-                  @role('admin')
+                  @can('delete post')
                   <form action="/sesiasrama/{{$item->id}}" method="post">
                     @csrf
                     @method('delete')
                     <button class="py-1 px-2 bg-red-600 text-white rounded-md capitalize">hapus</button>
                   </form>
-                  @endrole
+                  @endcan
                 </td>
               </tr>
               @endforeach
