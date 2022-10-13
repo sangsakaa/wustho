@@ -5,7 +5,7 @@
       {{ __('Sesi Pesensi Asrama') }}
     </h2>
   </x-slot>
-  @role('super admin')
+  @can('show post')
   <div class="px-4 mt-4">
     <div class=" mx-auto ">
       <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
@@ -41,7 +41,7 @@
       </div>
     </div>
   </div>
-  @endrole
+  @endcan
   <div class="px-4 mt-4">
     <div class=" bg-white overflow-hidden shadow-sm sm:rounded-lg">
       <div class=" p-4 ">
