@@ -1,14 +1,18 @@
 <x-perfect-scrollbar as="nav" aria-label="main" class="flex flex-col flex-1 gap-4 px-3">
 
     @role('super admin')
-    <x-sidebar.link title="Dashboard" href="userdashboard" :isActive="request()->routeIs('userdashboard')">
+    <x-sidebar.link title="Dashboard" href="dashboard" :isActive="request()->routeIs('dashboard')">
         <x-slot name="icon">
             <x-icons.dashboard class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
         </x-slot>
     </x-sidebar.link>
     @endrole
     @role('siswa')
-
+    <x-sidebar.link title="Dashboard User" href="userdashboard" :isActive="request()->routeIs('userdashboard')">
+        <x-slot name="icon">
+            <x-icons.dashboard class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
+        </x-slot>
+    </x-sidebar.link>
     @endrole
 
     <!-- <x-sidebar.dropdown title="Buttons" :active="Str::startsWith(request()->route()->uri(), 'buttons')">
@@ -60,10 +64,7 @@
     </x-sidebar.link>
     @endrole
     @role('siswa')
-    <x-sidebar.link title="User" href="/userdashboard" :isActive="request()->routeIs('userdashboard')">
-        <x-slot name="icon">
-            <x-icons.usercircle class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
-        </x-slot>
+
     </x-sidebar.link>
     <x-sidebar.link title="Profil" href="/user" :isActive="request()->routeIs('user')">
         <x-slot name="icon">
