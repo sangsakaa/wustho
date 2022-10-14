@@ -1,5 +1,6 @@
 <x-guest-layout>
     <x-auth-card>
+        <span class=" text-center text-2xl">sistem manejemen diniyah</span>
         <!-- Session Status -->
         <x-auth-session-status class="mb-4" :status="session('status')" />
 

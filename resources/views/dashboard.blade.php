@@ -10,7 +10,6 @@
             </x-button>
         </div>
     </x-slot>
-
     <div class="px-6 py-2 overflow-hidden bg-white rounded-md shadow-md dark:bg-dark-eval-1">
         {{ __("You're logged in!")  }} <br> <span class=" flex capitalize">
             User Log : {{Auth::user()->name}}

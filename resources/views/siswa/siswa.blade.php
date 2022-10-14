@@ -7,7 +7,7 @@
     </x-slot>
 
     @can('show post')
-    <div class=" mx-auto dark:bg-white bg-white  ">
+    <div class=" mx-auto dark:bg-dark-bg  bg-white  ">
         <div class=" px-2  overflow-hidden shadow-sm sm:rounded-md">
             <div class="px-1 py-2 border-b border-gray-200 flex gap-1">
                 @can('create post')
@@ -49,10 +49,10 @@
             @endif
             <div class=" overflow-scroll">
                 <table class=" table table-auto w-full fixed-top ">
-                    <thead class=" bg-gray-100 fixed-top  ">
+                    <thead class=" dark:bg-dark-bg bg-gray-100 fixed-top  ">
                         <tr class=" border-collapse fixed-top">
                             <th class=" py-1 border text-center">No</th>
-                            <th class=" border text-center">Nomor Indus Siswa</th>
+                            <th class=" border text-center">Nomor Induk Siswa</th>
                             <th class=" border text-center">Nama siswa</th>
                             <th class=" border text-center">JK</th>
                             <th class=" border text-center">Tempat Lahir</th>

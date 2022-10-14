@@ -1,7 +1,7 @@
-<main class="flex flex-col items-center flex-1 px-4 pt-6 sm:justify-center">
+<main class="flex flex-col items-center flex-1 px-4 pt-6 text-center capitalize sm:justify-center">
     <div>
         <a href="/">
-            <img {{ $attributes }} src="{{asset('asset/images/logo.png')}}" alt="">
+            <img {{ $attributes }} src="{{asset('asset/images/logo.png')}}" width="100" alt="">
         </a>
     </div>
 

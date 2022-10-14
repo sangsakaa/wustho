@@ -39,7 +39,7 @@
 
                 <!-- Page Heading -->
                 <header>
-                    <div class=" bg-white mt-2 mb-2 p-2 sm:p-2">
+                    <div class=" dark:bg-dark-bg dark:text-gray-200 bg-white mt-2 mb-2 p-2 sm:p-2">
                         {{ $header }}
                     </div>
                 </header>
