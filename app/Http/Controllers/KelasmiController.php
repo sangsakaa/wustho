@@ -118,18 +118,18 @@ class KelasmiController extends Controller
     {
         // dd($kelasmi);
         $anggota = Pesertakelas::where('kelasmi_id', $kelasmi->id)->count('kelasmi_id');
-        $datakelasmi = $kelasmi->query()
+        $datakelasmi = Kelasmi::query()
             ->join('kelas', 'kelas.id', '=', 'kelasmi.kelas_id')
             ->select('kelasmi.id', 'kelasmi.nama_kelas', 'kelasmi.kuota')
-            ->find($kelasmi)->first();
+            ->where('kelasmi.id', $kelasmi->id)->first();
         $dataKelas = Pesertakelas::query()
             ->join('siswa', 'siswa.id', '=', 'pesertakelas.siswa_id')
             ->join('nis', 'nis.siswa_id', '=', 'siswa.id')
             ->join('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
             ->join('kelas', 'kelas.id', '=', 'kelasmi.kelas_id')
-        ->select('siswa.nama_siswa', 'nis.nis', 'siswa.kota_asal', 'pesertakelas.id', 'kelas.kelas', 'kelasmi.nama_kelas')
-        ->where('pesertakelas.kelasmi_id', $kelasmi->id)
-        ->orderby('nama_siswa');
+            ->select('siswa.nama_siswa', 'nis.nis', 'siswa.kota_asal', 'pesertakelas.id', 'kelas.kelas', 'kelasmi.nama_kelas')
+            ->where('pesertakelas.kelasmi_id', $kelasmi->id)
+            ->orderby('nama_siswa');
         if (request('cari')) {
             $dataKelas->where(
                 'nama_siswa',
