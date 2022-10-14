@@ -25,6 +25,7 @@
     @foreach ($links as $index => $link)
     <x-sidebar.link title="Dummy link {{ $index + 1 }}" href="#" />
     @endforeach -->
+    @role('super admin')
     <x-sidebar.link title=" Data Siswa" href="/siswa" :isActive="request()->routeIs('siswa')">
         <x-slot name="icon">
             <x-icons.usercircle class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
@@ -52,6 +53,7 @@
             <x-icons.setting class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
         </x-slot>
     </x-sidebar.link>
+    @endrole
 
     <!-- <x-sidebar.link title="Data Admin" href="{{ route('admin') }}" />
     <x-sidebar.link title="Data Siswa" href="{{ route('siswa') }}" />
