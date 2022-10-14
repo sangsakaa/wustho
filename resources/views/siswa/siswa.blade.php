@@ -50,18 +50,17 @@
             <div class=" overflow-scroll">
                 <table class=" table table-auto w-full fixed-top ">
                     <thead class=" dark:bg-dark-bg bg-gray-100 fixed-top  ">
-                        <tr class=" border-collapse fixed-top">
+                        <tr class=" border-collapse fixed-top sm:text-sm text-xs">
                             <th class=" py-1 border text-center">No</th>
-                            <th class=" border text-center">Nomor Induk Siswa</th>
-                            <th class=" border text-center">Nama siswa</th>
-                            <th class=" border text-center">JK</th>
-                            <th class=" border text-center">Tempat Lahir</th>
-                            <th class=" border text-center">Tanggal Lahir</th>
-                            <th class=" border text-center">Asrama</th>
-                            <th class=" border text-center">Madin</th>
-                            <th class=" border text-center">Angkatan</th>
-                            <th class=" border text-center">Aksi</th>
-
+                            <th class=" px-1 border text-center uppercase">nis</th>
+                            <th class=" px-1 border text-center">Nama</th>
+                            <th class=" px-1 border text-center">JK</th>
+                            <th class=" px-1 border text-center">Tempat</th>
+                            <th class=" px-1 border text-center">Tanggal Lahir</th>
+                            <th class=" px-1 border text-center">Asrama</th>
+                            <th class=" px-1 border text-center">Madin</th>
+                            <th class=" px-1 border text-center">Angkatan</th>
+                            <th class=" px-1 border text-center">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -125,7 +124,7 @@
                         </tr>
                         @endforeach
                         <tr>
-                            <td colspan="10" class=" py-1">
+                            <td colspan="10" class=" text-xs sm:text-sm py-1">
                                 {{$dataSiswa->links()}}
                             </td>
                         </tr>
