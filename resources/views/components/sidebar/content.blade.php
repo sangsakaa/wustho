@@ -8,7 +8,6 @@
     </x-sidebar.link>
     @endrole
 
-
     <!-- <x-sidebar.dropdown title="Buttons" :active="Str::startsWith(request()->route()->uri(), 'buttons')">
         <x-slot name="icon">
             <x-heroicon-o-view-grid class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
@@ -57,9 +56,11 @@
         </x-slot>
     </x-sidebar.link>
     @endrole
-
     @role('siswa')
-
+    <x-sidebar.link title="User" href="/userdashboard" :isActive="request()->routeIs('userdashboard')">
+        <x-slot name="icon">
+            <x-icons.usercircle class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
+        </x-slot>
     </x-sidebar.link>
     <x-sidebar.link title="Profil" href="/user" :isActive="request()->routeIs('user')">
         <x-slot name="icon">
