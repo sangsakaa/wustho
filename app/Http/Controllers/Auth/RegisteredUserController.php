@@ -125,6 +125,7 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
         
+
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -140,14 +141,13 @@ class RegisteredUserController extends Controller
 
         event(new Registered($user));
         // Auth::login($user);
-        if (Auth::login($user = 'siswa')) {
+        if (Auth::login($user)) {
             return redirect(RouteServiceProvider::USER);
-        } elseif (Auth::login($user = 'super admin')) {
-            return redirect(RouteServiceProvider::HOME);
         } else {
-            return redirect(RouteServiceProvider::PONDOK);
-        }  
-        // return redirect(RouteServiceProvider::PONDOK);
+
+            return redirect(RouteServiceProvider::HOME);
+        }    
+        // return redirect(RouteServiceProvider::HOME);
         
         
     }

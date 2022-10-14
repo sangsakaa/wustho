@@ -38,7 +38,7 @@ class AuthenticatedSessionController extends Controller
         } elseif (Auth::user()->hasRole('pengurus')) {
             return redirect()->intended(RouteServiceProvider::PONDOK);
         } else {
-            return redirect()->intended(RouteServiceProvider::PONDOK);
+            return redirect()->intended(RouteServiceProvider::USER);
         }
     }
 
