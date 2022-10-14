@@ -140,12 +140,13 @@ class RegisteredUserController extends Controller
 
         event(new Registered($user));
         // Auth::login($user);
-        if (Auth::login($user)) {
+        if (Auth::login($user = 'siswa')) {
             return redirect(RouteServiceProvider::USER);
-        } else {
-
+        } elseif (Auth::login($user = 'super admin')) {
             return redirect(RouteServiceProvider::HOME);
-        }    
+        } else {
+            return redirect(RouteServiceProvider::PONDOK);
+        }  
         // return redirect(RouteServiceProvider::PONDOK);
         
         
