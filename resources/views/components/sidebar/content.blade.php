@@ -54,6 +54,18 @@
         </x-slot>
     </x-sidebar.link>
     @endrole
+    @role('siswa')
+    <x-sidebar.link title="Profil" href="/user" :isActive="request()->routeIs('user')">
+        <x-slot name="icon">
+            <x-icons.setting class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
+        </x-slot>
+    </x-sidebar.link>
+    <x-sidebar.link title="Kelas" href="/riwayatkelas" :isActive="request()->routeIs('riwayatkelas')">
+        <x-slot name="icon">
+            <x-icons.setting class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
+        </x-slot>
+    </x-sidebar.link>
+    @endrole
 
     <!-- <x-sidebar.link title="Data Admin" href="{{ route('admin') }}" />
     <x-sidebar.link title="Data Siswa" href="{{ route('siswa') }}" />
