@@ -5,7 +5,7 @@
             {{ __('Dashboard Kelas') }}
         </h2>
     </x-slot>
-    <div class=" px-4 mt-2 overflow-auto ">
+    <div class=" ">
         <div class=" mx-auto ">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-md">
                 <div class="p-2 border-b border-gray-200">
@@ -37,7 +37,7 @@
             </div>
         </div>
     </div>
-    <div class="p-2 md:p-4">
+    <div class="">
         <div class=" mx-auto ">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-2 bg-white border-b border-gray-200">

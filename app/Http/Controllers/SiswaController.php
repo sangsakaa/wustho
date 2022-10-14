@@ -44,7 +44,6 @@ class SiswaController extends Controller
             ->orderBy('nis')
             ->orderBy('nama_siswa')
             // ->orderBy('nama_siswa')
-
             ->select(
                 [
                     'nis.nis',
@@ -67,6 +66,7 @@ class SiswaController extends Controller
             ->orWhere('tanggal_masuk', 'like', '%' . request('cari') . '%')
             ->orderBy('nis', 'asc');
         }
+
         return view('siswa/siswa', ['dataSiswa' => $data->paginate(10)]);
     }
 

@@ -1,62 +1,73 @@
 <x-guest-layout>
     <x-auth-card>
-        <x-slot name="logo">
-            <a href="/">
-                <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
-            </a>
-        </x-slot>
-
         <!-- Validation Errors -->
         <x-auth-validation-errors class="mb-4" :errors="$errors" />
 
         <form method="POST" action="{{ route('register') }}">
             @csrf
 
-            <!-- Name -->
-            <div>
-                <x-label for="name" :value="__('Name')" />
+            <div class="grid gap-6">
+                <!-- Name -->
+                <div class="space-y-2">
+                    <x-label for="name" :value="__('Name')" />
+                    <x-input-with-icon-wrapper>
+                        <x-slot name="icon">
+                            <x-heroicon-o-user aria-hidden="true" class="w-5 h-5" />
+                        </x-slot>
+                        <x-input withicon id="name" class="block w-full" type="text" name="name" :value="old('name')"
+                            required autofocus placeholder="{{ __('Name') }}" />
+                    </x-input-with-icon-wrapper>
+                </div>
 
-                <x-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus />
-            </div>
+                <!-- Email Address -->
+                <div class="space-y-2">
+                    <x-label for="email" :value="__('Email')" />
+                    <x-input-with-icon-wrapper>
+                        <x-slot name="icon">
+                            <x-heroicon-o-mail aria-hidden="true" class="w-5 h-5" />
+                        </x-slot>
+                        <x-input withicon id="email" class="block w-full" type="email" name="email"
+                            :value="old('email')" required placeholder="{{ __('Email') }}" />
+                    </x-input-with-icon-wrapper>
+                </div>
 
-            <!-- Email Address -->
-            <div class="mt-4">
-                <x-label for="email" :value="__('Email')" />
+                <!-- Password -->
+                <div class="space-y-2">
+                    <x-label for="password" :value="__('Password')" />
+                    <x-input-with-icon-wrapper>
+                        <x-slot name="icon">
+                            <x-heroicon-o-lock-closed aria-hidden="true" class="w-5 h-5" />
+                        </x-slot>
+                        <x-input withicon id="password" class="block w-full" type="password" name="password" required
+                            autocomplete="new-password" placeholder="{{ __('Password') }}" />
+                    </x-input-with-icon-wrapper>
+                </div>
 
-                <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required />
-            </div>
+                <!-- Confirm Password -->
+                <div class="space-y-2">
+                    <x-label for="password_confirmation" :value="__('Confirm Password')" />
+                    <x-input-with-icon-wrapper>
+                        <x-slot name="icon">
+                            <x-heroicon-o-lock-closed aria-hidden="true" class="w-5 h-5" />
+                        </x-slot>
+                        <x-input withicon id="password_confirmation" class="block w-full" type="password"
+                            name="password_confirmation" required placeholder="{{ __('Confirm Password') }}" />
+                    </x-input-with-icon-wrapper>
+                </div>
 
-            <!-- Password -->
-            <div class="mt-4">
-                <x-label for="password" :value="__('Password')" />
+                <div>
+                    <x-button class="justify-center w-full gap-2">
+                        <x-heroicon-o-user-add class="w-6 h-6" aria-hidden="true" />
+                        <span>{{ __('Register') }}</span>
+                    </x-button>
+                </div>
 
-                <x-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />
-            </div>
-
-            <!-- Confirm Password -->
-            <div class="mt-4">
-                <x-label for="password_confirmation" :value="__('Confirm Password')" />
-
-                <x-input id="password_confirmation" class="block mt-1 w-full" type="password" name="password_confirmation" required />
-            </div>
-            <div class=" mt-4">
-                <x-label :value="__('Username')" />
-                <select name="siswa_id" id="" class=" py-1 w-full border-gray-100">
-                    <option value="">Pilih User </option>
-                    @foreach($siswa as $user)
-                    <option value="{{$user->id}}">{{$user->nama_siswa}} </option>
-                    @endforeach
-                </select>
-            </div>
-
-            <div class="flex items-center justify-end mt-4">
-                <a class="underline text-sm text-gray-600 hover:text-gray-900" href="{{ route('login') }}">
+                <p class="text-sm text-gray-600 dark:text-gray-400">
                     {{ __('Already registered?') }}
-                </a>
-
-                <x-button class="ml-4">
-                    {{ __('Register') }}
-                </x-button>
+                    <a href="{{ route('login') }}" class="text-blue-500 hover:underline">
+                        {{ __('Login') }}
+                    </a>
+                </p>
             </div>
         </form>
     </x-auth-card>

@@ -1,7 +1,9 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GuruController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\KelasController;
 use App\Http\Controllers\MapelController;
 use App\Http\Controllers\NilaiController;
@@ -14,18 +16,12 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PengaturanController;
 use App\Http\Controllers\SesiasramaController;
 use App\Http\Controllers\AsramasiswaController;
-use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\PelanggaranController;
 use App\Http\Controllers\PresensikelasController;
-use App\Http\Controllers\UserController;
-use Illuminate\Support\Facades\Auth;
+use App\Http\Controllers\Auth\RegisteredUserController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-
-Route::get('admin', [RegisteredUserController::class, 'index'])->middleware(['auth'])->name('admin');
+// batas
+Route::get('/admin', [RegisteredUserController::class, 'index'])->middleware(['auth'])->name('admin');
 Route::get('/userdashboard', [UserController::class, 'DashboardUser'])->middleware(['auth'])->name('userdashboard');
 Route::get('manajemen', [RegisteredUserController::class, 'manajemen'])->middleware(['auth'])->name('manajemen');
 Route::get('register', [RegisteredUserController::class, 'create'])->middleware(['auth'])->name('register');
@@ -35,9 +31,8 @@ Route::delete('admin/{user}', [RegisteredUserController::class, 'destroy']);
 // User
 Route::get('/user', [UserController::class, 'Personal'])->middleware(['auth'])->name('user');
 Route::get('/riwayatkelas', [UserController::class, 'Riwayatkelas'])->middleware(['auth'])->name('riwayatkelas');
-
-// CONTROLLER SISWA
-Route::get('dashboard', [DashboardController::class, 'index'])->middleware(['auth'])->name('dashboard');
+// role
+Route::get('dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 Route::get('siswa', [SiswaController::class, 'index'])->middleware(['auth',])->name('siswa');
 Route::get('siswa/{siswa}', [SiswaController::class, 'show']);
 Route::get('biodata/{siswa}', [SiswaController::class, 'biodata']);
@@ -62,6 +57,9 @@ Route::post('kelas', [KelasController::class, 'store'])->middleware(['auth'])->n
 Route::delete('kelas/{kelas}', [KelasController::class, 'destroy'])->middleware(['auth']);
 Route::post('pesertakolektif', [KelasController::class, 'StoreKolektif'])->middleware(['auth'])->name('pesertakolektif');
 Route::get('pesertakolektif/{kelasmi}', [KelasController::class, 'pesertakolektif'])->middleware(['auth']);
+Route::get('/', function () {
+    return view('welcome');
+});
 // CONTROLLER KELAS MI
 Route::get('kelas_mi', [KelasmiController::class, 'index'])->middleware(['auth'])->name('kelas_mi');
 Route::get('addkelas_mi', [KelasmiController::class, 'create'])->middleware(['auth'])->name('addkelas_mi');
@@ -151,5 +149,26 @@ Route::delete('addpelanggaran/{pelanggaran}', [PelanggaranController::class, 'de
 Route::get('presensikelas', [PresensikelasController::class, 'index'])->middleware(['auth']);
 Route::get('presensikelas/{kelasmi}', [PresensikelasController::class, 'show'])->middleware(['auth']);
 Route::post('presensikelas', [PresensikelasController::class, 'store'])->middleware(['auth']);
+
+
+
+
+// Route::get('/siswa', function () {
+//     return view('siswa.siswa');
+// })->middleware(['auth', 'verified'])->name('siswa');
+
+// useless routes
+// Just to demo sidebar dropdown links active states.
+Route::get('/buttons/text', function () {
+    return view('buttons-showcase.text');
+})->middleware(['auth'])->name('buttons.text');
+
+Route::get('/buttons/icon', function () {
+    return view('buttons-showcase.icon');
+})->middleware(['auth'])->name('buttons.icon');
+
+Route::get('/buttons/text-icon', function () {
+    return view('buttons-showcase.text-icon');
+})->middleware(['auth'])->name('buttons.text-icon');
 
 require __DIR__ . '/auth.php';

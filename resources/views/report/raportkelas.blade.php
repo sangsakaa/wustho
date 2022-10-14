@@ -216,18 +216,18 @@
                             </tr>
                         </tbody>
                     </table>
-
                     <span class=" font-semibold">C. Kehadiran</span>
+
                     <table class=" w-1/3 ">
                         <thead class=" text-white bg-green-800  border">
                             <tr class=" px-2" class=" border">
                                 <th class="border px-2 w-5 py-2">NO</th>
                                 <th class="border px-2">KETERANGAN</th>
                                 <th class="border px-2 w-5">JML</th>
-
                             </tr>
                         </thead>
                         <tbody class=" text-sm">
+<<<<<<< HEAD
                             <tr class=" border">
                                 <td class=" px-2 border ">1</td>
                                 <td class=" px-2 border ">IZIN</td>
@@ -244,6 +244,11 @@
                                 <td class=" px-2 border ">ALFA</td>
                                 <td class=" px-2 border text-center ">{{ $siswa->alfa === 0 || !$siswa->alfa ? '-' : $siswa->alfa }}</td>
                             </tr>
+=======
+                            @foreach($presensi as $user)
+                            {{$user->sakit}}
+                            @endforeach
+>>>>>>> 9100077 (new design 2022)
                         </tbody>
                     </table>
                     <div class="  flex grid-cols-2 text-right">

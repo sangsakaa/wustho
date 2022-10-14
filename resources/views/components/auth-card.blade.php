@@ -1,9 +1,11 @@
-<div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0  bg-white">
+<main class="flex flex-col items-center flex-1 px-4 pt-6 sm:justify-center">
     <div>
-
+        <a href="/">
+            <img {{ $attributes }} src="{{asset('asset/images/logo.png')}}" alt="">
+        </a>
     </div>
 
-    <div class="w-full sm:max-w-md mt-6 px-6 py-4  bg-transparent  shadow-md overflow-hidden sm:rounded-lg">
+    <div class="w-full px-6 py-4 my-6 overflow-hidden bg-white rounded-md shadow-md sm:max-w-md dark:bg-dark-eval-1">
         {{ $slot }}
     </div>
-</div>
+</main>

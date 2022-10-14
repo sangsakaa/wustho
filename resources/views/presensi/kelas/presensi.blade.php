@@ -29,30 +29,23 @@
             <div class="">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 bg-white border-b border-gray-200">
-
                         <form action="/presensikelas" method="post">
-                            @csrf
-                            <div class=" grid grid-cols-2  py-1">
-
-                                <div class=" flex gap-1 justify-items-end">
-                                    <button class=" bg-red-600 py-1 rounded-md text-white px-4">simpan presensi</button>
-                                    <a href="/presensikelas"
-                                        class=" bg-red-600 py-1 rounded-md text-white px-4">Kembali</a>
-                                    @if (session('status'))
-                                        <div class="alert alert-success">
-                                            {{ session('status') }}
-                                        </div>
-                                    @endif
-                                </div>
+                            <button class=" bg-red-600 py-1 rounded-md text-white px-4">simpan presensi</button>
+                            <a href="/presensikelas" class=" bg-red-600 py-1 rounded-md text-white px-4">Kembali</a>
+                            @if (session('status'))
+                            <div class="alert alert-success w-full text-sm">
+                                {{ session('status') }}
                             </div>
-                            <table class=" w-full">
+                            @endif
+                            @csrf
+                            <table class=" mt-2 w-full">
                                 <thead>
                                     <tr class="border">
                                         <th class=" border px-1">#</th>
-                                        <th class=" border px-1 w-1/7 ">Nomor Induk Siswa</th>
+                                        <th class=" border px-1 w-1/7 ">NIS</th>
                                         <th class=" border px-1 ">NAMA SISWA</th>
                                         <th class=" border px-1">KELAS</th>
-                                        <th class=" border px-1">NAMAKELAS</th>
+                                        <th class=" border px-1">NAMA KELAS</th>
                                         <th class=" border px-1 ">IZIN</th>
                                         <th class=" border px-1">SAKIT</th>
                                         <th class=" border px-1">ALFA</th>
@@ -60,39 +53,35 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($dataSiswa as $item)
-                                        <tr class=" border hover:bg-gray-100">
-                                            <td class=" px-2 border text-center w-10">
-                                                {{ $loop->iteration }}
-                                                <input type="hidden" name="pesertakelas[]" value="{{ $item->id }}">
-                                                <input type="hidden" name="presensikelas_id[{{ $item->id }}]"
-                                                    value="{{ $item->presensikelas_id }}">
-                                            </td>
-                                            <td class=" px-2 border text-center ">
-                                                {{ $item->nis }}
-                                            </td>
-                                            <td class=" px-2 border ">
-                                                {{ $item->nama_siswa }}
-                                            </td>
-                                            <td class=" px-2 border text-center ">
-                                                {{ $item->kelas }}
-                                            </td>
-                                            <td class=" px-2 border text-center ">
-                                                {{ $item->nama_kelas }}
-                                            </td>
-                                            <td class="  border text-center w-50">
-                                                <input value="{{ $item->izin }}" class=" py-1 w-full text-center"
-                                                    type="number" name="izin[{{ $item->id }}]" default="0">
-                                            </td>
-                                            <td class="  border text-center w-50">
-                                                <input value="{{ $item->sakit }}" class="py-1 w-full text-center"
-                                                    type="number" name="sakit[{{ $item->id }}]">
-                                            </td>
-                                            <td class="  border text-center w-50">
-                                                <input value="{{ $item->alfa }}" class="py-1 w-full text-center"
-                                                    type="number" name="alfa[{{ $item->id }}]">
-                                            </td>
+                                    <tr class=" border hover:bg-gray-100">
+                                        <td class=" px-2 border text-center w-10">
+                                            {{ $loop->iteration }}
+                                            <input type="hidden" name="pesertakelas[]" value="{{ $item->id }}">
+                                            <input type="hidden" name="presensikelas_id[{{ $item->id }}]" value="{{ $item->presensikelas_id }}">
+                                        </td>
+                                        <td class=" px-2 border text-center ">
+                                            {{ $item->nis }}
+                                        </td>
+                                        <td class=" px-2 border text-sm ">
+                                            {{ $item->nama_siswa }}
+                                        </td>
+                                        <td class=" px-2 border text-center ">
+                                            {{ $item->kelas }}
+                                        </td>
+                                        <td class=" px-2 border text-center ">
+                                            {{ $item->nama_kelas }}
+                                        </td>
+                                        <td class="  border text-center w-20">
+                                            <input value="{{ $item->izin }}" class=" py-1 w-full text-center" type="number" name="izin[{{ $item->id }}]" default="0">
+                                        </td>
+                                        <td class="  border text-center w-20">
+                                            <input value="{{ $item->sakit }}" class="py-1 w-full text-center" type="number" name="sakit[{{ $item->id }}]">
+                                        </td>
+                                        <td class="  border text-center w-20">
+                                            <input value="{{ $item->alfa }}" class="py-1 w-full text-center" type="number" name="alfa[{{ $item->id }}]">
+                                        </td>
 
-                                        </tr>
+                                    </tr>
                                     @endforeach
 
                                 </tbody>

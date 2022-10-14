@@ -5,7 +5,7 @@
       {{ __('Dashboard Manajemen User') }}
     </h2>
   </x-slot>
-  <div class=" grid grid-cols-1 sm:grid-cols-1 gap-2 px-2 mt-4">
+  <div class=" grid grid-cols-1 sm:grid-cols-1 gap-2 my-2 ">
     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
       <div class=" bg-white border-b border-gray-200">
         <div class=" p-4 grid grid-cols-1">
@@ -19,14 +19,13 @@
       </div>
     </div>
   </div>
-  <div class=" grid grid-cols-1 sm:grid-cols-1 gap-2 px-2 mt-4">
+  <div class=" grid grid-cols-1 sm:grid-cols-1 gap-2 my-2 ">
     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
       <div class=" bg-white border-b border-gray-200">
         <div class=" p-4 grid grid-cols-1">
           <span>
             User Role
           </span>
-
           <form action="/admin" method="post">
             @csrf
             <select name="permission_id" id="" class=" py-1">

@@ -6,6 +6,7 @@ use App\Models\Kelasmi;
 use App\Models\Nilai;
 use App\Models\Nilaimapel;
 use App\Models\Pesertakelas;
+use App\Models\Presensikelas;
 use App\Models\Semester;
 use App\Models\Siswa;
 use Illuminate\Http\Request;
@@ -189,7 +190,8 @@ class RaportController extends Controller
                 return $item;
             })
             ->keyBy('id');
-
+        $presensi = Presensikelas::join('pesertakelas', 'pesertakelas.id', '=', 'presensikelas.pesertakelas_id')
+        ->where('pesertakelas.peserta_id', $siswa);
         return view(
             'report/raportkelas',
             [
@@ -198,7 +200,8 @@ class RaportController extends Controller
                 'ringkasanraportkelas' => $ringkasanraportkelas,
                 'jumlahsiswa' => $ringkasanraportkelas->count(),
                 'datakelasmi' => $datakelasmi,
-                'kelasmi' => $kelasmi
+                'kelasmi' => $kelasmi,
+                'presensi' => $presensi
             ]
         );
     }
