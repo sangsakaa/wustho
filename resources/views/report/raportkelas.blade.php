@@ -253,7 +253,7 @@
                                         echo date_format($date, 'd-M-Y');
                                         ?></p>
                             Al Mudir / Kepala <br><br><br><br>
-                            Muh. Bahrul Ulum, S.H
+                            <p class=" uppercase"> Muh. Bahrul Ulum, S.H</p>
                         </div>
                     </div>
                 </div>
