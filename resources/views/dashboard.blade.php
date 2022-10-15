@@ -15,19 +15,17 @@
             User Log : {{Auth::user()->name}}
         </span>
     </div>
-    <div class=" grid grid-cols-2 gap-2 sm:grid-cols-4">
-        <div class="p-6 mt-2 overflow-hidden bg-white rounded-md shadow-md dark:bg-dark-eval-1 dark:text-purple-600">
+    <div class=" grid grid-cols-1 gap-2 sm:grid-cols-3">
+        <div class="p-6 mt-2 sm:mt-1 overflow-hidden bg-white rounded-md shadow-md dark:bg-dark-eval-1 dark:text-purple-600">
             NIS : {{$siswa}}
         </div>
-        <div class="p-6 mt-2 overflow-hidden bg-white rounded-md shadow-md dark:bg-dark-eval-1">
-            LK : {{$lk}}
+        <div class=" grid grid-cols-2 p-6 mt-1 sm:mt-1  overflow-hidden bg-white rounded-md shadow-md dark:bg-dark-eval-1">
+            <div>LK : {{$lk}}</div>
+            <div>PR : {{$pr}}</div>
         </div>
-        <div class="p-6 mt-2 overflow-hidden bg-white rounded-md shadow-md dark:bg-dark-eval-1">
-            PR : {{$pr}}
-        </div>
-        <div class=" flex p-6 mt-2 overflow-hidden bg-white rounded-md shadow-md dark:bg-dark-eval-1">
-            <x-icons.home class="flex-shrink-0 w-6 h-6" aria-hidden="true" /> : {{$pa}} Pa <br>
-            <x-icons.home class="flex-shrink-0 w-6 h-6" aria-hidden="true" /> : {{$pi}} Pi
+        <div class=" grid grid-cols-2 p-6 mt-1 sm:mt-1  overflow-hidden bg-white rounded-md shadow-md dark:bg-dark-eval-1">
+            <div>PA : {{$pa}}</div>
+            <div>PI : {{$pi}}</div>
         </div>
     </div>
 </x-app-layout>

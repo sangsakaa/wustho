@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         @section('title', ' | Nilai Mata Pelajaran' )
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <h2 class="font-semibold text-xl leading-tight">
             {{ __('Nilai Mata Pelajaran') }}
         </h2>
     </x-slot>

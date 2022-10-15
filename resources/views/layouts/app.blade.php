@@ -26,7 +26,7 @@
 
 <body class="font-sans antialiased">
     <div x-data="mainState" :class="{ dark: isDarkMode }" @resize.window="handleWindowResize" x-cloak>
-        <div class="min-h-screen text-gray-900 bg-gray-100 dark:bg-dark-bg dark:text-gray-200">
+        <div class="min-h-screen text-gray-900 bg-gray-100  dark:bg-dark-bg dark:text-gray-200">
             <!-- Sidebar -->
             <x-sidebar.sidebar />
             <!-- Page Wrapper -->
@@ -39,16 +39,15 @@
 
                 <!-- Page Heading -->
                 <header>
-                    <div class=" dark:bg-dark-bg dark:text-gray-200 bg-white mt-2 mb-2 p-2 sm:p-2">
-                        {{ $header }}
+                    <div class=" dark:bg-dark-bg dark:text-purple-600 bg-white mt-2 mb-2 p-2 sm:p-2">
+                        Dashboard{{ $header }}
                     </div>
                 </header>
 
                 <!-- Page Content -->
-                <main class="px-2 sm:px-2 flex-1">
+                <main class="  flex-1">
                     {{ $slot }}
                 </main>
-
                 <!-- Page Footer -->
                 <x-footer />
             </div>
