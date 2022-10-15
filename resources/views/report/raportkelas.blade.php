@@ -227,7 +227,6 @@
                             </tr>
                         </thead>
                         <tbody class=" text-sm">
-<<<<<<< HEAD
                             <tr class=" border">
                                 <td class=" px-2 border ">1</td>
                                 <td class=" px-2 border ">IZIN</td>
@@ -244,11 +243,6 @@
                                 <td class=" px-2 border ">ALFA</td>
                                 <td class=" px-2 border text-center ">{{ $siswa->alfa === 0 || !$siswa->alfa ? '-' : $siswa->alfa }}</td>
                             </tr>
-=======
-                            @foreach($presensi as $user)
-                            {{$user->sakit}}
-                            @endforeach
->>>>>>> 9100077 (new design 2022)
                         </tbody>
                     </table>
                     <div class="  flex grid-cols-2 text-right">
