@@ -77,6 +77,13 @@
         </x-slot>
     </x-sidebar.link>
     @endrole
+    @role('pengurus')
+    <x-sidebar.link title="Data Asrama" href="/asramasiswa" :isActive="request()->routeIs('asramasiswa')">
+        <x-slot name="icon">
+            <x-icons.home class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
+        </x-slot>
+    </x-sidebar.link>
+    @endrole
     @role('siswa')
     <x-sidebar.link title="Profil" href="/user" :isActive="request()->routeIs('user')">
         <x-slot name="icon">
