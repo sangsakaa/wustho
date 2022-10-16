@@ -82,7 +82,7 @@
                                     <td class=" px-2 text-center border">{{$nomor->madrasah_diniyah}}</td>
                                     <td class=" px-2 text-center border">{{$nomor->tanggal_masuk}}</td>
                                     <td class="flex justify-center  gap-1">
-                                        @role('admin')
+                                        @role('super admin')
                                         <form action="/nis/{{$nomor->id}}" method="post">
                                             @csrf
                                             @method('delete')

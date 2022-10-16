@@ -2,8 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Hasrole;
-use App\Models\Nilai;
 use App\Models\Pesertaasrama;
 use App\Models\Pesertakelas;
 use App\Models\Siswa;

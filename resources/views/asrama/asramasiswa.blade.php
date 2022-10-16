@@ -1,6 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        @section('title', ' | Asrama Siswa' )
+        <h2 class="font-semibold text-xl  leading-tight">
             {{ __('Dashboard Asrama Siswa') }}
         </h2>
     </x-slot>

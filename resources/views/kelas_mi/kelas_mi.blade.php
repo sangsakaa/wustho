@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         @section('title', ' | Kelas Wustho' )
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight sm:text-left text-center">
+        <h2 class="font-semibold text-xl  leading-tight sm:text-left text-center">
             {{ __('Dashboard Kelas') }}
         </h2>
     </x-slot>

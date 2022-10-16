@@ -6,7 +6,7 @@
     </h2>
   </x-slot>
   <div class=" grid grid-cols-1 sm:grid-cols-1 gap-2 my-2 ">
-    <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+    <div class="bg-white overflow-hidden shadow-sm ">
       <div class=" bg-white border-b border-gray-200">
         <div class=" p-4 grid grid-cols-1">
           <span class=" text-sky-500"> User Management Role</span>
