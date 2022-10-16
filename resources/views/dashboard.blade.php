@@ -15,20 +15,13 @@
             User Log : {{Auth::user()->name}}
         </span>
     </div>
-    <div class=" grid grid-cols-1 gap-2 sm:grid-cols-3">
-        <div class=" grid grid-cols-2 p-6 mt-2 sm:mt-1 overflow-hidden bg-white rounded-md shadow-md dark:bg-dark-eval-1 dark:text-purple-600">
-            <div>NIS : {{$siswa}}</div>
-            <div>USER : {{Auth::user()->count()}}</div>
-
-
-        </div>
-        <div class=" grid grid-cols-2 p-6 mt-1 sm:mt-1  overflow-hidden bg-white rounded-md shadow-md dark:bg-dark-eval-1">
-            <div>LK : {{$lk}}</div>
-            <div>PR : {{$pr}}</div>
-        </div>
-        <div class=" grid grid-cols-2 p-6 mt-1 sm:mt-1  overflow-hidden bg-white rounded-md shadow-md dark:bg-dark-eval-1">
-            <div>PA : {{$pa}}</div>
-            <div>PI : {{$pi}}</div>
-        </div>
+    <div class=" grid grid-cols-2 gap-2 sm:grid-cols-6 p-4">
+        <div class=" bg-green-700 p-3 rounded-md text-center text-white">NIS : {{$siswa}}</div>
+        <div class=" bg-blue-700 p-3 rounded-md text-center text-white">USER : {{Auth::user()->count()}}</div>
+        <div class=" bg-blue-700 p-3 rounded-md text-center text-white">LK : {{$lk}}</div>
+        <div class=" bg-pink-600 p-3 rounded-md text-center text-white">PR : {{$pr}}</div>
+        <div class=" bg-blue-700 p-3 rounded-md text-center text-white">PA : {{$pa}}</div>
+        <div class=" bg-pink-600 p-3 rounded-md text-center text-white">PI : {{$pi}}</div>
+    </div>
     </div>
 </x-app-layout>
