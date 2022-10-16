@@ -162,7 +162,7 @@ class NilaiController extends Controller
                 'nilai.nilai_ujian',
                 'nilai.id as nilai_id'
             )
-            ->get();
+            ->orderby('nama_siswa')->get();
         return view(
             'nilai/nilai',
             [
