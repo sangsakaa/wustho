@@ -88,11 +88,4 @@
         </x-slot>
     </x-sidebar.link>
     @endrole
-
-    <!-- <x-sidebar.link title="Data Admin" href="{{ route('admin') }}" />
-    <x-sidebar.link title="Data Siswa" href="{{ route('siswa') }}" />
-    <x-sidebar.link title="Data Kelas" href="{{ route('kelas_mi') }}" />
-    <x-sidebar.link title="Data Nilai" href="{{ route('nilaimapel') }}" />
-    <x-sidebar.link title="Asrama Siswa" href="{{ route('asramasiswa') }}" />
-    <x-sidebar.link title="Pengaturan" href="{{ route('pengaturan') }}" /> -->
 </x-perfect-scrollbar>
