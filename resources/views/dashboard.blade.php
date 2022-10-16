@@ -16,8 +16,11 @@
         </span>
     </div>
     <div class=" grid grid-cols-1 gap-2 sm:grid-cols-3">
-        <div class="p-6 mt-2 sm:mt-1 overflow-hidden bg-white rounded-md shadow-md dark:bg-dark-eval-1 dark:text-purple-600">
-            NIS : {{$siswa}}
+        <div class=" grid grid-cols-2 p-6 mt-2 sm:mt-1 overflow-hidden bg-white rounded-md shadow-md dark:bg-dark-eval-1 dark:text-purple-600">
+            <div>NIS : {{$siswa}}</div>
+            <div>USER : {{Auth::user()->count()}}</div>
+
+
         </div>
         <div class=" grid grid-cols-2 p-6 mt-1 sm:mt-1  overflow-hidden bg-white rounded-md shadow-md dark:bg-dark-eval-1">
             <div>LK : {{$lk}}</div>
