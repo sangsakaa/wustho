@@ -6,6 +6,13 @@
         </x-slot>
     </x-sidebar.link>
     @endrole
+    @role('pengurus')
+    <x-sidebar.link title="Dashboard" href="#" :isActive="request()->routeIs('dashboard')">
+        <x-slot name="icon">
+            <x-icons.dashboard class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
+        </x-slot>
+    </x-sidebar.link>
+    @endrole
     @role('siswa')
     <x-sidebar.link title="Dashboard" href="userdashboard" :isActive="request()->routeIs('userdashboard')">
         <x-slot name="icon">
