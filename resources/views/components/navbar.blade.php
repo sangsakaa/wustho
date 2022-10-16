@@ -2,7 +2,6 @@
         '-translate-y-full': scrollingDown,
         'translate-y-0': scrollingUp,
     }">
-
     <div class="flex items-center gap-3">
         <x-button type="button" class="md:hidden" iconOnly variant="secondary" srText="Toggle dark mode" @click="toggleTheme">
             <x-heroicon-o-moon x-show="!isDarkMode" aria-hidden="true" class="w-6 h-6" />
@@ -50,10 +49,18 @@
     <x-button type="button" iconOnly variant="secondary" srText="Search">
         <x-heroicon-o-search aria-hidden="true" class="w-6 h-6" />
     </x-button>
+    @role('super admin')
     <a href="{{ route('dashboard') }}">
         <x-application-logo aria-hidden="true" class="w-10 h-10" />
         <span class="sr-only">SMEDI</span>
     </a>
+    @endrole
+    @role('siswa')
+    <a href="{{ route('userdashboard') }}">
+        <x-application-logo aria-hidden="true" class="w-10 h-10" />
+        <span class="sr-only">SMEDI</span>
+    </a>
+    @endrole
     <x-button type="button" iconOnly variant="secondary" srText="Open main menu" @click="isSidebarOpen = !isSidebarOpen">
         <x-heroicon-o-menu x-show="!isSidebarOpen" aria-hidden="true" class="w-6 h-6" />
         <x-heroicon-o-x x-show="isSidebarOpen" aria-hidden="true" class="w-6 h-6" />
