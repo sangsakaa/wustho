@@ -48,7 +48,7 @@
                     <div class=" bg-white border-b border-gray-200">
                         <div class=" p-6 grid grid-cols-1">
                             <span>Akun Smedi Siswa</span>
-                            <table class=" border">
+                            <table class=" w-full ">
                                 <thead class=" border">
                                     <tr class=" bg-gray-100 capitalize">
                                         <th class=" border px-2 py-1">No</th>
@@ -58,7 +58,8 @@
                                         <th class=" border px-2 text-center">Password</th>
                                     </tr>
                                 </thead>
-                                @foreach($peserta as $user) <tbody>
+                                @foreach($peserta as $user)
+                                <tbody>
                                     <tr class=" border hover:bg-gray-100 text-sm">
                                         <th class=" px-2 text-center border">{{$loop->iteration}}</th>
                                         <td class=" px-2 text-left border text-sm">{{$user->nama_siswa}}</td>
