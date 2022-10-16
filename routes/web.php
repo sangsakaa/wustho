@@ -28,6 +28,7 @@ Route::get('register', [RegisteredUserController::class, 'create'])->middleware(
 Route::get('HasRole', [RegisteredUserController::class, 'HasRole'])->middleware(['auth'])->name('HasRole');
 Route::post('admin', [RegisteredUserController::class, 'role_has_permission'])->middleware(['auth']);
 Route::delete('admin/{user}', [RegisteredUserController::class, 'destroy']);
+Route::get('/buatakunsiswa', [RegisteredUserController::class, 'buatAkunSiswa'])->middleware(['auth']);
 // User
 Route::get('/user', [UserController::class, 'Personal'])->middleware(['auth'])->name('user');
 Route::get('/riwayatkelas', [UserController::class, 'Riwayatkelas'])->middleware(['auth'])->name('riwayatkelas');

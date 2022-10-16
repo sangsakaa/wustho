@@ -14,6 +14,10 @@
             <a href="/admin" class=" bg-sky-400 py-1 px-4 rounded-md text-white hover:bg-purple-500">ListUsers</a>
             <a href="/manajemen" class=" bg-sky-400 py-1 px-4 rounded-md text-white hover:bg-purple-500">Manajemen Role User</a>
             <a href="/HasRole" class=" bg-sky-400 py-1 px-4 rounded-md text-white hover:bg-purple-500">Has Role</a>
+            <a href="/buatakunsiswa" class=" bg-sky-400 py-1 px-4 rounded-md text-white hover:bg-purple-500">Buat akun untuk siswa</a>
+            @if ($pesan = Session::get('status'))
+                <p>{{$pesan}}</p>
+            @endif
           </div>
         </div>
       </div>

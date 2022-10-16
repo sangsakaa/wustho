@@ -23,7 +23,7 @@ class RegisteredUserController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    
+
     public function index()
     {
         $permissions = Permissions::all();
@@ -41,11 +41,11 @@ class RegisteredUserController extends Controller
             ->get();
         $hasRole = Hasrole::all();
         $RoleHas = HasRole::query()
-        ->join('permissions', 'permissions.id',  '=', 'role_has_permissions.permission_id',)
-        ->join('roles', 'roles.id', '=', 'role_has_permissions.role_id')
-        ->select('roles.name AS Role', 'permissions.name AS Permission')
+            ->join('permissions', 'permissions.id',  '=', 'role_has_permissions.permission_id',)
+            ->join('roles', 'roles.id', '=', 'role_has_permissions.role_id')
+            ->select('roles.name AS Role', 'permissions.name AS Permission')
             ->orderBy('roles.name', 'desc')
-        ->get();
+            ->get();
         return view(
             'admin/admin',
             [
@@ -124,7 +124,7 @@ class RegisteredUserController extends Controller
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
-        
+
 
         $user = User::create([
             'name' => $request->name,
@@ -146,14 +146,39 @@ class RegisteredUserController extends Controller
         } else {
 
             return redirect(RouteServiceProvider::HOME);
-        }    
+        }
         // return redirect(RouteServiceProvider::HOME);
-        
-        
+
+
     }
     public function destroy(User $user)
     {
         User::destroy($user->id);
         return redirect('admin');
+    }
+
+    public function buatAkunSiswa()
+    {
+        $dataSiswa = Siswa::query()
+            ->join('nis', 'nis.siswa_id', '=', 'siswa.id')
+            ->leftJoin('users', 'users.siswa_id', '=', 'siswa.id')
+            ->select('siswa.id', 'siswa.nama_siswa', 'nis.nis')
+            ->where('users.siswa_id', null)
+            ->get();
+        // dd($siswa->toSql());
+
+        $jumlahUser = 0;
+        foreach ($dataSiswa as $siswa) {
+            $user = User::create([
+                'name' => $siswa->nama_siswa,
+                'email' => $siswa->nis . '@smedi.my.id',
+                'password' => Hash::make($siswa->nis),
+                'siswa_id' => $siswa->id
+            ]);
+            $user->assignRole('siswa');
+            $jumlahUser++;
+        }
+
+        return redirect()->back()->with('status', $jumlahUser . ' user untuk siswa telah dibuat');
     }
 }
