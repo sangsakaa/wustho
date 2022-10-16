@@ -123,8 +123,6 @@
                         <p class=" px-5">Contoh : 202002001</p>
                     </div>
                 </div>
-
-
             </div>
         </div>
     </div>
