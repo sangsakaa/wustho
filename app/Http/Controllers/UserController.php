@@ -53,19 +53,19 @@ class UserController extends Controller
         $jmlNH = $jmlmapel->count('nilai_harian');
         $jmlNU = $jmlmapel->count('nilai_ujian');
         $x = $jmlNH * 2 + $jmlNU * 2;
-        $a = $NH / $jmlNH;
-        $b = $NU / $jmlNU;
-        $c = $a + $b / $x;
-        $jml = $jmlmapel->count();  
-        
+        $a = $jmlNH !== 0 ? $NH / $jmlNH : 0;
+        $b = $jmlNU !== 0 ? $NU / $jmlNU : 0;
+        $c = $x !== 0 ? $a + $b / $x : 0;
+        $jml = $jmlmapel->count();
+
         $user = Pesertaasrama::query()
             ->join('asramasiswa', 'asramasiswa.id', '=', 'pesertaasrama.asramasiswa_id')
             ->join('periode', 'periode.id', 'asramasiswa.periode_id')
             ->join('semester', 'semester.id', 'periode.semester_id')
             ->join('asrama', 'asrama.id', '=', 'asramasiswa.asrama_id')
-            
+
             ->where('pesertaasrama.siswa_id', $siswa_id)
-        
+
             ->get();
         return view(
             'user/userdashboard',
@@ -77,9 +77,8 @@ class UserController extends Controller
                 'jml' => $jml,
                 'a' => $a,
                 'b' => $c,
-                
+
             ]
         );
     }
-    
 }
