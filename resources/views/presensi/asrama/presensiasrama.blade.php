@@ -1,30 +1,27 @@
 <x-app-layout>
   <x-slot name="header">
     @section('title', ' | Sesi Pesensi Asrama' )
-    <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+    <h2 class="font-semibold text-xl  leading-tight">
       {{ __('Pesensi Asrama') }}
     </h2>
   </x-slot>
-  <div class="px-4 mt-4">
-    <div class=" mx-auto ">
-      <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-        <div class=" p-4">
-          <div class=" grid grid-cols-2 sm:grid-cols-4">
-            <div class=" text-xs sm:text-sm">Periode</div>
-            <div class=" text-xs sm:text-sm"> : {{$presensi->periode}} {{$presensi->ket_semester}}</div>
-            <div class=" text-xs sm:text-sm">Asrama</div>
-            <div class=" text-xs sm:text-sm"> : {{$presensi->nama_asrama}} </div>
-            <div class=" text-xs sm:text-sm">Jenis Kegiatan</div>
-            <div class=" text-xs sm:text-sm"> : {{$presensi->kegiatan}} </div>
-          </div>
+  <div class=" mt-2">
+    <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+      <div class=" p-4">
+        <div class=" grid grid-cols-2 sm:grid-cols-4">
+          <div class=" text-xs sm:text-sm">Periode</div>
+          <div class=" text-xs sm:text-sm"> : {{$presensi->periode}} {{$presensi->ket_semester}}</div>
+          <div class=" text-xs sm:text-sm">Asrama</div>
+          <div class=" text-xs sm:text-sm"> : {{$presensi->nama_asrama}} </div>
+          <div class=" text-xs sm:text-sm">Jenis Kegiatan</div>
+          <div class=" text-xs sm:text-sm"> : {{$presensi->kegiatan}} </div>
         </div>
       </div>
     </div>
   </div>
-  <div class=" overflow-scroll px-4 mt-4">
-    <div class=" bg-white overflow-hidden shadow-sm sm:rounded-lg">
-      <div class=" p-4">
-
+  <div class=" overflow-scroll  mt-2">
+    <div class=" bg-white overflow-hidden shadow-sm">
+      <div class=" p-2">
         <form action="/sesiasrama/presensi" method="post">
           @csrf
           <div class=" flex justify-end gap-1">
@@ -50,30 +47,30 @@
                   <th class=" px-2 border py-1">no</th>
                   <th class=" px-2 border ">Peserta</th>
                   <!-- <th class=" px-2 border ">Asrama</th> -->
-                  <th class=" px-2 border ">Keterangan </th>
+                  <th class=" px-1 border ">Keterangan </th>
                 </tr>
               </thead>
               <tbody>
                 @foreach($peserta as $item)
                 <tr class=" hover:bg-gray-100">
-                  <th class=" border px-2 py-1">
+                  <th class=" border px-2 ">
                     {{$loop->iteration}}
                     <input type="hidden" name="pesertaasrama_id[]" value="{{ $item->id }}" />
                     <input type="hidden" name="presensiasrama_id[{{ $item->id }}]" value="{{ $item->presensiasrama_id }}">
                     <input type="hidden" name="sesiasrama_id" value="{{ $sesiasrama->id }}">
                   </th>
-                  <td class="border px-2 py-1 text-xs sm:text-sm">{{$item->nama_siswa}}</td>
-                  <!-- <td class="border px-2 py-1 text-center">{{$item->nama_asrama}}</td> -->
-                  <td class="   text-right   px-1 py-1 border ">
-                    <input class="text-xs sm:text-sm float-right" type="radio" id="hadir[{{ $item->id }}]" name="keterangan[{{ $item->id }}]" value="hadir" class=" " {{ $item->keterangan === 'hadir' || $item->keterangan === null ? 'checked' : '' }}>
+                  <td class="border px-2  text-xs sm:text-sm w-1/2">{{$item->nama_siswa}}</td>
+                  <!-- <td class="border px-2  text-center">{{$item->nama_asrama}}</td> -->
+                  <td class="   text-right   px-1  border ">
+                    <input class="text-xs sm:text-sm " type="radio" id="hadir[{{ $item->id }}]" name="keterangan[{{ $item->id }}]" value="hadir" class=" " {{ $item->keterangan === 'hadir' || $item->keterangan === null ? 'checked' : '' }}>
                     <label for="hadir[{{ $item->id }}]" class=" ">H</label>
-                    <input class="text-xs sm:text-sm float-right" type="radio" id="izin[{{ $item->id }}]" name="keterangan[{{ $item->id }}]" value="izin" class=" " {{ $item->keterangan === 'izin' ? 'checked' : '' }}>
+                    <input class="text-xs sm:text-sm " type="radio" id="izin[{{ $item->id }}]" name="keterangan[{{ $item->id }}]" value="izin" class=" " {{ $item->keterangan === 'izin' ? 'checked' : '' }}>
                     <label for="izin[{{ $item->id }}]" class=" ">I</label>
-                    <input class="text-xs sm:text-sm float-right" type="radio" id="sakit[{{ $item->id }}]" name="keterangan[{{ $item->id }}]" value="sakit" class=" " {{ $item->keterangan === 'sakit' ? 'checked' : '' }}>
+                    <input class="text-xs sm:text-sm " type="radio" id="sakit[{{ $item->id }}]" name="keterangan[{{ $item->id }}]" value="sakit" class=" " {{ $item->keterangan === 'sakit' ? 'checked' : '' }}>
                     <label for="sakit[{{ $item->id }}]" class=" ">S</label>
-                    <input class="text-xs sm:text-sm float-right" type="radio" id="alfa[{{ $item->id }}]" name="keterangan[{{ $item->id }}]" value="alfa" class=" " {{ $item->keterangan === 'alfa' ? 'checked' : '' }}>
+                    <input class="text-xs sm:text-sm " type="radio" id="alfa[{{ $item->id }}]" name="keterangan[{{ $item->id }}]" value="alfa" class=" " {{ $item->keterangan === 'alfa' ? 'checked' : '' }}>
                     <label for="alfa[{{ $item->id }}]" class=" ">A</label>
-                    <input class="text-xs sm:text-sm float-right" type="text" name="alasan[{{ $item->id }}]" class="   py-1 px-2" placeholder="Keterangan untuk semua keadaan">
+                    <input class="text-xs sm:text-sm " type="text" name="alasan[{{ $item->id }}]" class="    px-2" placeholder="Keterangan ">
                   </td>
                 </tr>
                 @endforeach
