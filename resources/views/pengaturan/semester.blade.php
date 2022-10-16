@@ -59,10 +59,10 @@
                                     </tr>
                                 </thead>
                                 @foreach($peserta as $user) <tbody>
-                                    <tr class=" border hover:bg-gray-100">
+                                    <tr class=" border hover:bg-gray-100 text-sm">
                                         <th class=" px-2 text-center border">{{$loop->iteration}}</th>
-                                        <td class=" px-2 text-left border">{{$user->nama_siswa}}</td>
-                                        <td class=" px-2 text-center border">{{$user->nama_kelas}}</td>
+                                        <td class=" px-2 text-left border text-sm">{{$user->nama_siswa}}</td>
+                                        <td class=" px-2 text-center border ">{{$user->nama_kelas}}</td>
                                         <td class=" px-2 text-center border">{{$user->nis}}</td>
                                         <td class=" px-2 text-center border">{{$user->nis}}</td>
                                     </tr>
