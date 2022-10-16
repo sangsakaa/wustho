@@ -1,47 +1,43 @@
 <x-app-layout>
     <x-slot name="header">
         @section('title', ' | Detail Data Siswa' )
-        <h2 class="font-semibold   text-gray-800 leading-tight">
+        <h2 class="font-semibold    leading-tight">
             <span class=" uppercase">{{ __('Dashboard Detail Siswa ') }} </span><br>
         </h2>
     </x-slot>
     <div class="p-2">
-        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-            <div class="p-1 bg-white border-b border-gray-200">
+        <div class=" dark:bg-dark-bg bg-white overflow-hidden shadow-sm sm:rounded-lg">
+            <div class="p-1 ">
                 <div class=" grid grid-cols-1 text-center py-1">
                     <span class=" text-sm">{{ $title->nama_siswa }}</span>
                     <span class=" text-xs  font-semibold">NIS : {{$title->nis}}</span>
                 </div>
             </div>
         </div>
-        <div class=" mt-2 bg-white overflow-hidden shadow-sm sm:rounded-lg">
-            <div class="p-4  bg-white border-b border-gray-200">
-
+        <div class=" mt-2 dark:bg-dark-bg bg-white overflow-hidden shadow-sm sm:rounded-lg">
+            <div class="p-4 ">
                 <div class=" grid sm:grid-cols-4 grid-cols-2 gap-2">
-
-                    <div class=" bg-sky-400 py-6 text-center text-white rounded-md">
+                    <div class=" bg-sky-400 dark:bg-purple-600 py-6 text-center text-white rounded-md">
                         <span class=" capitalize"> MP : </span>
                         <span>{{$jml}}</span>
                     </div>
-                    <div class=" bg-sky-400 p-6 text-center text-white rounded-md">
+                    <div class=" bg-sky-400 dark:bg-purple-600 p-6 text-center text-white rounded-md">
                         <span>IPK : {{(number_format($b,2,','))}}</span>
                     </div>
                 </div>
-
             </div>
         </div>
 
     </div>
     <div class=" p-2">
-        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-            <div class="p-4 bg-white border-b border-gray-200">
+        <div class="bg-white dark:bg-dark-bg overflow-hidden shadow-sm sm:rounded-lg">
+            <div class="p-4">
                 <div class=" grid grid-cols-1 sm:grid-cols-2 gap-2">
                     <div>
                         <span class=" text-lg">Riwayat Asrama </span>
-
                         <table class=" w-full    ">
                             <thead>
-                                <tr class=" border bg-gray-100">
+                                <tr class=" border bg-gray-100 dark:bg-purple-600">
                                     <th class=" border text-center py-1">No</th>
                                     <th class=" border text-center"> Periode</th>
                                     <th class=" border text-center"> Asrama</th>
@@ -74,7 +70,7 @@
     </div>
     <div class="py-2 px-4">
         <div class=" overflow-hidden shadow-sm sm:rounded-lg">
-            <div class="p-2 bg-sky-300 border-b border-gray-200 text-white">
+            <div class="p-2 bg-sky-300 dark:bg-purple-600  text-white">
                 <p class=" uppercase bold">keterangan : </p>
                 <p class=" capitalize px-2">1. MP : mata pelajaran</p>
                 <p class=" capitalize px-2">2. IPK: index predikat komulatif</p>
