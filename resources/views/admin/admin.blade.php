@@ -26,11 +26,10 @@
   <div class=" grid grid-cols-1 sm:grid-cols-1 gap-2 my-2 ">
     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
       <div class=" bg-white border-b border-gray-200">
-        <div class=" p-4 grid grid-cols-1">
+        <div class=" px-4 mt-2 grid grid-cols-1">
           <span>
             User Role
           </span>
-
           <table class=" mt-2 w-full">
             <thead>
               <tr class=" border bg-gray-100 ">
@@ -50,9 +49,16 @@
             </tbody>
           </table>
         </div>
-        <div class=" p-4 grid grid-cols-1">
+        <div class=" py-4 px-4 grid grid-cols-1">
           <span> User Role</span>
-          <table class=" w-full">
+          <form action="/admin" method="get" class="  gap-1">
+            <div class=" grid sm:grid-cols-2 grid-cols-1 gap-1 ">
+              <input type="text" name="cari" value="{{ request('cari') }}" class=" border text-green-800 rounded-sm py-1  sm:w-full " placeholder=" Cari ...">
+              <button type="submit" class=" px-2 py-1     bg-blue-500  rounded-sm text-white">
+                Cari </button>
+            </div>
+          </form>
+          <table class=" w-full ">
             <thead>
               <tr class=" border bg-gray-100 ">
                 <th class=" border py-2">No</th>
@@ -77,7 +83,6 @@
                         <path stroke-linecap=" round" stroke-linejoin="round" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg></button>
                   </form>
-
                 </td>
               </tr>
               @endforeach

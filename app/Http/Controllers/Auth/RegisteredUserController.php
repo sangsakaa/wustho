@@ -37,8 +37,7 @@ class RegisteredUserController extends Controller
                     'siswa.nama_siswa',
                     'users.name',
                 ]
-            )
-            ->get();
+        );
         $hasRole = Hasrole::all();
         $RoleHas = HasRole::query()
             ->join('permissions', 'permissions.id',  '=', 'role_has_permissions.permission_id',)
@@ -46,10 +45,13 @@ class RegisteredUserController extends Controller
             ->select('roles.name AS Role', 'permissions.name AS Permission')
             ->orderBy('roles.name', 'desc')
             ->get();
+        if (request('cari')) {
+            $users->where('nama_siswa', 'like', '%' . request('cari') . '%');
+        }
         return view(
             'admin/admin',
             [
-                'users' => $users,
+                'users' => $users->paginate(5),
                 'hasRole' => $hasRole,
                 'HasRole' => $RoleHas,
                 'permissions' => $permissions,
