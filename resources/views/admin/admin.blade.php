@@ -16,7 +16,7 @@
             <a href="/HasRole" class=" bg-sky-400 py-1 px-4 rounded-md text-white hover:bg-purple-500">Has Role</a>
             <a href="/buatakunsiswa" class=" bg-sky-400 py-1 px-4 rounded-md text-white hover:bg-purple-500">Buat akun untuk siswa</a>
             @if ($pesan = Session::get('status'))
-                <p>{{$pesan}}</p>
+            <p>{{$pesan}}</p>
             @endif
           </div>
         </div>
@@ -30,21 +30,7 @@
           <span>
             User Role
           </span>
-          <form action="/admin" method="post">
-            @csrf
-            <select name="permission_id" id="" class=" py-1">
-              @foreach($permissions as $permission)
-              <option value="{{$permission->id}}">{{$permission->name}}</option>
-              @endforeach
-            </select>
-            <select name="role_id" id="" class=" py-1">
-              @foreach($hasrole as $permission)
-              <option value="{{$permission->id}}">{{$permission->name}}</option>
-              @endforeach
-            </select>
 
-            <button class=" bg-sky-500 px-2 py-1 text-white"> create role</button>
-          </form>
           <table class=" mt-2 w-full">
             <thead>
               <tr class=" border bg-gray-100 ">
@@ -79,12 +65,11 @@
             <tbody>
               @foreach($users as $user)
               <tr class=" border ">
-                <th class=" border">{{$loop->iteration}}</th>
-                <th class=" border">{{$user->name}}</th>
-                <th class=" border">{{$user->email}}</th>
-                <th class=" border">{{$user->nama_siswa}}</th>
+                <th class=" px-2 tex-xs sm:text-sm border">{{$loop->iteration}}</th>
+                <td class=" px-2 tex-xs sm:text-sm border">{{$user->name}}</td>
+                <td class=" px-2 tex-xs sm:text-sm border">{{$user->email}}</td>
+                <td class=" px-2 tex-xs sm:text-sm border">{{$user->nama_siswa}}</td>
                 <td class=" text-sm flex justify-center py-1  gap-1">
-
                   <form action="/admin/{{$user->id}}" method="post">
                     @csrf
                     @method('delete')
