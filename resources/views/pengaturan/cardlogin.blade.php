@@ -46,7 +46,7 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class=" bg-white">
                     <div class="  ">
-                        <span>Akun Smedi Siswa</span>
+
                         <div class=" p-2  gap-2 grid grid-cols-2 ">
                             @foreach($peserta as $user)
                             <div class=" grid grid-cols-1  border p-4 rounded-md">
