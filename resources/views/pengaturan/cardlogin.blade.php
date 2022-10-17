@@ -66,6 +66,12 @@
                                 <hr class=" mt-1">
                                 <div class=" grid grid-cols-2">
                                     <div class=" px-2 text-sm">
+                                        No Absen
+                                    </div>
+                                    <div class=" px-2 text-sm">
+                                        : {{$user->nis}}
+                                    </div>
+                                    <div class=" px-2 text-sm">
                                         Username
                                     </div>
                                     <div class=" px-2 text-sm">

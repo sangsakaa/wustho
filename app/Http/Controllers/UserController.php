@@ -67,6 +67,9 @@ class UserController extends Controller
             ->get();
         $presensi = Presensikelas::query()
         ->join('pesertakelas', 'pesertakelas.id', '=', 'presensikelas.pesertakelas_id')
+            ->join('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
+            ->join('periode', 'periode.id', 'kelasmi.periode_id')
+            ->join('semester', 'semester.id', 'periode.semester_id')
         ->where('pesertakelas.siswa_id', $siswa_id)
         ->get();
         return view(

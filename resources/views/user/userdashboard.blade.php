@@ -63,11 +63,13 @@
                             </tbody>
                         </table>
                         <span class=" text-lg">Riwayat Kehadiran </span>
-                        {{$presensi}}
+
                         <table class=" w-full    ">
                             <thead>
                                 <tr class=" border bg-gray-100 dark:bg-purple-600">
                                     <th class=" border text-center py-1">No</th>
+                                    <th class=" border text-center py-1">Periode</th>
+                                    <th class=" border text-center py-1">Kelas</th>
                                     <th class=" border text-center"> Izin</th>
                                     <th class=" border text-center"> Sakit</th>
                                     <th class=" border text-center"> Alfa</th>
@@ -78,6 +80,12 @@
                                 <tr class=" border">
                                     <td class=" border text-center p-1">
                                         {{$loop->iteration}}
+                                    </td>
+                                    <td class=" border text-center">
+                                        {{$user->periode}} {{$user->ket_semester}}
+                                    </td>
+                                    <td class=" border text-center">
+                                        {{$user->nama_kelas}}
                                     </td>
                                     <td class=" border text-center">
                                         {{$user->izin}}
