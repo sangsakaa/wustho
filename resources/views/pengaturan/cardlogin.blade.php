@@ -45,32 +45,32 @@
         <div id="div1" class="">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class=" bg-white">
-                    <div class="  ">
-
+                    <div class="">
                         <div class=" p-2  gap-2 grid grid-cols-2 ">
                             @foreach($peserta as $user)
-                            <div class=" grid grid-cols-1  border p-4 rounded-md">
+                            <div class=" grid grid-cols-1  border border-green-600 p-4 rounded-md">
                                 <div class=" flex  grid-cols-2">
                                     <div class="">
                                         <img src={{ asset("asset/images/logo.png") }} alt="" width="80" class="">
                                     </div>
                                     <div class=" px-2 py-2  text-center  w-full">
+                                        <p class=" uppercase bold text-xs font-semibold ">madrasah diniyah wahidiyah</p>
                                         <p class=" uppercase bold text-xs font-semibold ">madrasah diniyah wustho wahidiyah</p>
                                         <p class=" uppercase text-sm font-semibold">kartu akun siswa</p>
                                     </div>
                                 </div>
                                 <hr class=" mt-1">
                                 <div class=" grid grid-cols-2">
-                                    <div class=" text-sm">
+                                    <div class=" px-2 text-sm">
                                         Username
                                     </div>
-                                    <div class=" text-sm">
+                                    <div class=" px-2 text-sm">
                                         : {{$user->nis}}
                                     </div>
-                                    <div class=" text-sm">
+                                    <div class=" px-2 text-sm">
                                         Password
                                     </div>
-                                    <div class=" text-sm">
+                                    <div class=" px-2 text-sm">
                                         : {{$user->nis}}
                                     </div>
 
@@ -79,7 +79,6 @@
                                 <div class=" text-right text-sm">
                                     Nama pengguna : <br> {{$user->nama_siswa}} <br>
                                     <p>masa berlaku : status masih aktif</p>
-
                                 </div>
                             </div>
                             @endforeach
