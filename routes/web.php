@@ -119,6 +119,7 @@ Route::delete('mapel/{mapel}', [MapelController::class, 'destroy'])->middleware(
 // Controller Pengaturan
 Route::get('pengaturan', [PengaturanController::class, 'pengaturan'])->middleware(['auth'])->name('pengaturan');
 Route::get('semester', [PengaturanController::class, 'semester'])->middleware(['auth'])->name('semester');
+Route::get('cardlogin', [PengaturanController::class, 'cardlogin'])->middleware(['auth'])->name('cardlogin');
 Route::get('periode', [PengaturanController::class, 'periode'])->middleware(['auth'])->name('periode');
 Route::post('periode', [PengaturanController::class, 'storeperiode'])->middleware(['auth']);
 Route::delete('periode/{periode}', [PengaturanController::class, 'deleteperiode'])->middleware(['auth']);

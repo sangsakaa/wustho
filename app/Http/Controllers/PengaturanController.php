@@ -7,6 +7,7 @@ use App\Models\Periode;
 use App\Models\Nilaimapel;
 use App\Models\Pesertakelas;
 use App\Models\Semester;
+use App\Models\Siswa;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
@@ -74,6 +75,24 @@ class PengaturanController extends Controller
             ->get();
         return view(
             'pengaturan/semester',
+            [
+                'peserta' => $peserta
+            ]
+        );
+    }
+    public function cardlogin()
+    {
+        $peserta = Pesertakelas::query()
+            ->join('siswa', 'siswa.id', '=', 'pesertakelas.siswa_id')
+            ->join('nis', 'siswa.id', '=', 'nis.siswa_id')
+            ->join('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
+            ->leftjoin('kelas', 'kelasmi.id', '=', 'kelasmi.kelas_id')
+            ->select('siswa.nama_siswa', 'kelasmi.nama_kelas', 'nis.nis')
+            ->orderBy('kelasmi.nama_kelas')
+            ->orderBy('siswa.nama_siswa')
+            ->get();
+        return view(
+            'pengaturan/cardlogin',
             [
                 'peserta' => $peserta
             ]

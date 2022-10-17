@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard Pengaturan') }}
+            {{ __('Dashboard Card User Account') }}
         </h2>
     </x-slot>
     <style>
@@ -18,9 +18,9 @@
             document.body.innerHTML = fullbody;
         }
     </script>
-    <div class=" grid grid-cols-1 sm:grid-cols-1 gap-2 px-2 py-2">
+    <div class=" grid grid-cols-1 sm:grid-cols-1 gap-2 p-1">
         <div class="">
-            <div class=" mx-auto ">
+            <div class="  ">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class=" bg-white border-b border-gray-200">
                         <div class=" p-6 flex grid-cols-1 gap-1">
@@ -29,9 +29,6 @@
                             </a>
                             <a href="/semester" class=" py-1 px-2 bg-blue-600 rounded-md text-white hover:bg-purple-500">
                                 semester
-                            </a>
-                            <a href="/cardlogin" class=" py-1 px-2 bg-blue-600 rounded-md text-white hover:bg-purple-500">
-                                User Account
                             </a>
                             <button class="flex text-white rounded-md  bg-green-800 px-2 py-1 " onclick="printContent('div1')">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
@@ -45,33 +42,48 @@
                 </div>
             </div>
         </div>
-        <div id="div1">
+        <div id="div1" class="">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class=" bg-white border-b border-gray-200">
-                    <div class=" p-6 ">
+                <div class=" bg-white">
+                    <div class="  ">
                         <span>Akun Smedi Siswa</span>
-                        <table class=" w-full ">
-                            <thead class=" border">
-                                <tr class=" bg-gray-100 capitalize">
-                                    <th class=" border px-2 py-1">No</th>
-                                    <th class=" border px-2 text-center">Nama Siswa</th>
-                                    <th class=" border px-2 text-center">kelas</th>
-                                    <th class=" border px-2 text-center">User</th>
-                                    <th class=" border px-2 text-center">Password</th>
-                                </tr>
-                            </thead>
+                        <div class=" p-2  gap-2 grid grid-cols-2 ">
                             @foreach($peserta as $user)
-                            <tbody>
-                                <tr class=" border hover:bg-gray-100 text-sm">
-                                    <th class=" px-2 text-center border">{{$loop->iteration}}</th>
-                                    <td class=" px-2 text-left border text-sm">{{$user->nama_siswa}}</td>
-                                    <td class=" px-2 text-center border ">{{$user->nama_kelas}}</td>
-                                    <td class=" px-2 text-center border">{{$user->nis}}</td>
-                                    <td class=" px-2 text-center border">{{$user->nis}}</td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                            <div class=" grid grid-cols-1  border p-4 rounded-md">
+                                <div class=" flex  grid-cols-2">
+                                    <div class="">
+                                        <img src={{ asset("asset/images/logo.png") }} alt="" width="80" class="">
+                                    </div>
+                                    <div class=" px-4 py-2  text-center  w-full">
+                                        <p class=" uppercase bold text-sm font-semibold ">madrasah diniyah wustho wahidiyah</p>
+                                        <p class=" uppercase text-sm font-semibold">kartu akun siswa</p>
+                                    </div>
+                                </div>
+                                <hr class=" mt-1">
+                                <div class=" grid grid-cols-2">
+                                    <div>
+                                        Username
+                                    </div>
+                                    <div>
+                                        : {{$user->nis}}
+                                    </div>
+                                    <div>
+                                        Password
+                                    </div>
+                                    <div>
+                                        : {{$user->nis}}
+                                    </div>
+
+
+                                </div>
+                                <div class=" text-right">
+                                    Nama pengguna : <br> {{$user->nama_siswa}} <br>
+                                    <p>masa berlaku : status masih aktif</p>
+
+                                </div>
+                            </div>
+                            @endforeach
+                        </div>
                     </div>
                 </div>
             </div>
