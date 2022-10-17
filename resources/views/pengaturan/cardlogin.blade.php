@@ -55,28 +55,28 @@
                                         <img src={{ asset("asset/images/logo.png") }} alt="" width="80" class="">
                                     </div>
                                     <div class=" px-4 py-2  text-center  w-full">
-                                        <p class=" uppercase bold text-sm font-semibold ">madrasah diniyah wustho wahidiyah</p>
+                                        <p class=" uppercase bold text-xs font-semibold ">madrasah diniyah wustho wahidiyah</p>
                                         <p class=" uppercase text-sm font-semibold">kartu akun siswa</p>
                                     </div>
                                 </div>
                                 <hr class=" mt-1">
                                 <div class=" grid grid-cols-2">
-                                    <div>
+                                    <div class=" text-sm">
                                         Username
                                     </div>
-                                    <div>
+                                    <div class=" text-sm">
                                         : {{$user->nis}}
                                     </div>
-                                    <div>
+                                    <div class=" text-sm">
                                         Password
                                     </div>
-                                    <div>
+                                    <div class=" text-sm">
                                         : {{$user->nis}}
                                     </div>
 
 
                                 </div>
-                                <div class=" text-right">
+                                <div class=" text-right text-sm">
                                     Nama pengguna : <br> {{$user->nama_siswa}} <br>
                                     <p>masa berlaku : status masih aktif</p>
 
