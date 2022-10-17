@@ -54,7 +54,7 @@
                                     <div class="">
                                         <img src={{ asset("asset/images/logo.png") }} alt="" width="80" class="">
                                     </div>
-                                    <div class=" px-4 py-2  text-center  w-full">
+                                    <div class=" px-2 py-2  text-center  w-full">
                                         <p class=" uppercase bold text-xs font-semibold ">madrasah diniyah wustho wahidiyah</p>
                                         <p class=" uppercase text-sm font-semibold">kartu akun siswa</p>
                                     </div>
