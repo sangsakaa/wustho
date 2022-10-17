@@ -9,21 +9,21 @@
         <div class=" mx-auto ">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-md">
                 <div class="p-2 border-b border-gray-200">
-                    <div class=" sm:flex  grid sm:w-full w-full grid-cols-3 text-xs sm:grid-cols-3 gap-1">
+                    <div class=" sm:flex  grid sm:w-full w-full text-center sm:text-center grid-cols-3 text-xs sm:grid-cols-3 gap-1">
                         @can('show post')
                         <a href="/addasrama">
-                            <button class=" flex  w-full bg-blue-500 text-white p-2 rounded-md">
+                            <button class=" flex  w-full  bg-blue-500 text-white p-2 rounded-md">
                                 Tambah Asrama
                             </button>
                         </a>
                         <a href="/addasramasiswa">
-                            <button class=" flex w-full bg-blue-500 text-white p-2  rounded-md">
-                                Tambah Asrama Siswa
+                            <button class=" flex w-full  bg-blue-500 text-white p-2  rounded-md">
+                                Asrama Siswa
                             </button>
                         </a>
                         @endcan
                         <a href="/sesiasrama">
-                            <button class=" flex w-full   bg-blue-500 text-white p-2 rounded-md">
+                            <button class=" flex w-full    bg-blue-500 text-white p-2 rounded-md">
                                 Presensi Asrama
                             </button>
                         </a>
