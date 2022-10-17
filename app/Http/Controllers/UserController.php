@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Pesertaasrama;
 use App\Models\Pesertakelas;
+use App\Models\Presensikelas;
 use App\Models\Siswa;
 
 use Illuminate\Routing\Controller;
@@ -63,12 +64,16 @@ class UserController extends Controller
             ->join('semester', 'semester.id', 'periode.semester_id')
             ->join('asrama', 'asrama.id', '=', 'asramasiswa.asrama_id')
             ->where('pesertaasrama.siswa_id', $siswa_id)
-
             ->get();
+        $presensi = Presensikelas::query()
+        ->join('pesertakelas', 'pesertakelas.id', '=', 'presensikelas.pesertakelas_id')
+        ->where('pesertakelas.siswa_id', $siswa_id)
+        ->get();
         return view(
             'user/userdashboard',
             [
                 'title' => $title,
+                'presensi' => $presensi,
                 'Asrama' => $user,
                 'jmlmapel' => $jmlmapel,
                 'NU' => $NU,
