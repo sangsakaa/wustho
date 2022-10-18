@@ -1,6 +1,10 @@
 <x-guest-layout>
     <x-auth-card>
-        <span class=" text-center text-2xl">sistem manejemen diniyah</span>
+        <center>
+            <img src="{{asset('asset/images/logo.png')}}" width="120" alt="">
+        </center>
+        <span class=" text-center text-4xl font-semibold">S M E D I</span> <br>
+        <small class=" text-center text-sm py-2">sistem manejemen diniyah</small>
         <!-- Session Status -->
         <x-auth-session-status class="mb-4" :status="session('status')" />
 
@@ -12,8 +16,7 @@
             <div class="grid gap-6">
                 <!-- Email Address -->
                 <div class="space-y-2">
-                    <x-label for="email" :value="__('Email')" />
-
+                    <!-- <x-label for="email" :value="__('Email')" /> -->
                     <x-input-with-icon-wrapper>
                         <x-slot name="icon">
                             <x-heroicon-o-mail aria-hidden="true" class="w-5 h-5" />
@@ -24,7 +27,7 @@
 
                 <!-- Password -->
                 <div class="space-y-2">
-                    <x-label for="password" :value="__('Password')" />
+                    <!-- <x-label for="password" :value="__('Password')" /> -->
 
                     <x-input-with-icon-wrapper>
                         <x-slot name="icon">
