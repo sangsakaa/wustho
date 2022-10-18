@@ -6,6 +6,6 @@
     </div>
     <div class="w-full px-6 py-4 my-6 overflow-hidden bg-white rounded-md shadow-md sm:max-w-md dark:bg-dark-eval-1">
         {{ $slot }}
-        Bacalah selalu dalam hati <br> "Yaa Sayyidii Yaa Rosullah"
+        <div class=" text-xs">Bacalah selalu dalam hati "Yaa Sayyidii Yaa Rosullah"</div>
     </div>
 </main>

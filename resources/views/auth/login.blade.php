@@ -3,8 +3,8 @@
         <center>
             <img src="{{asset('asset/images/logo.png')}}" width="120" alt="">
         </center>
-        <span class=" text-center text-4xl font-semibold">S M E D I</span> <br>
-        <p class=" text-center text-sm py-2">sistem manejemen diniyah</p>
+        <p class=" text-center text-4xl font-semibold mt-2">S M E D I</p>
+        <p class=" text-center text-md mb-4 mt-0 uppercase">sistem manejemen diniyah</p>
         <!-- Session Status -->
         <x-auth-session-status class="mb-4" :status="session('status')" />
 
