@@ -4,7 +4,7 @@
             <img src="{{asset('asset/images/logo.png')}}" width="120" alt="">
         </center>
         <span class=" text-center text-4xl font-semibold">S M E D I</span> <br>
-        <small class=" text-center text-sm py-2">sistem manejemen diniyah</small>
+        <p class=" text-center text-sm py-2">sistem manejemen diniyah</p>
         <!-- Session Status -->
         <x-auth-session-status class="mb-4" :status="session('status')" />
 
