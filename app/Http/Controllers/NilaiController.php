@@ -248,8 +248,7 @@ class NilaiController extends Controller
             }, function ($query) {
                 $query->latest('periode.created_at');
             })
-            ->first();
-
+        ->first();
         $dataNilai = Nilaimapel::query()
             ->join('nilai', function ($join) use ($kelasmiTerpilih) {
                 $join->on('nilai.nilaimapel_id', '=', 'nilaimapel.id')
@@ -260,7 +259,6 @@ class NilaiController extends Controller
             ->where('nilaimapel.kelasmi_id', $kelasmiTerpilih->id)
             ->get();
         $title = $kelasmiTerpilih;
-
         return view('nilai.nilaipersiswa', [
             'kelasmiSiswa' => $kelasmiSiswa->get(),
             'kelasmiTerpilih' => $kelasmiTerpilih,

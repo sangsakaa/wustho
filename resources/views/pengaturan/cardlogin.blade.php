@@ -52,12 +52,11 @@
 
                             <div class=" grid grid-cols-1  border border-green-600 p-4 rounded-md">
                                 <div class=" flex  grid-cols-2">
-
                                     <div class="">
                                         <img src={{ asset("asset/images/logo.png") }} alt="" width="80" class="">
                                     </div>
-                                    <div class=" px-2 py-2  text-center  w-full">
-                                        <p class=" uppercase bold text-xs font-semibold ">madrasah diniyah wahidiyah</p>
+                                    <div class=" px-2 py-0  text-center  w-full">
+                                        <p class=" uppercase bold text-xs font-semibold mt-4 ">madrasah diniyah wahidiyah</p>
                                         <p class=" uppercase bold text-xs font-semibold ">madrasah diniyah wustho wahidiyah</p>
                                         <p class=" uppercase text-sm font-semibold">kartu akun siswa</p>
                                     </div>
@@ -65,12 +64,7 @@
                                 </div>
                                 <hr class=" mt-1">
                                 <div class=" grid grid-cols-2">
-                                    <div class=" px-2 text-sm">
-                                        No Absen
-                                    </div>
-                                    <div class=" px-2 text-sm">
-                                        : {{$user->nis}}
-                                    </div>
+
                                     <div class=" px-2 text-sm">
                                         Username
                                     </div>

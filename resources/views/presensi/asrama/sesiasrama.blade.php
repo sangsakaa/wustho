@@ -8,10 +8,10 @@
   @can('show post')
   <div class="px-4 mt-4">
     <div class=" mx-auto ">
-      <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+      <div class="bg-white overflow-auto shadow-sm  ">
         <form action="/sesiasrama" method="post">
           @csrf
-          <div class=" p-4 grid grid-flow-col sm:grid-cols-5 gap-2  ">
+          <div class=" p-4 grid grid-cols-1  sm:grid-cols-5 gap-2  ">
             <!-- <label for="" class=" py-2"> Tanggal</label> -->
             <input type="date" name="tanggal" class=" py-1 text-xs sm:text-sm">
             <!-- <label for="" class=" py-2"> Periode</label> -->
