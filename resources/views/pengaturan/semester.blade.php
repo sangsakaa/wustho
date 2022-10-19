@@ -27,8 +27,8 @@
                             <a href="/periode" class=" py-1 px-2 bg-blue-600 rounded-md text-white hover:bg-purple-500">
                                 periode
                             </a>
-                            <a href="/semester" class=" py-1 px-2 bg-blue-600 rounded-md text-white hover:bg-purple-500">
-                                semester
+                            <a href="/peringkat" class=" py-1 px-2 bg-blue-600 rounded-md text-white hover:bg-purple-500">
+                                Peringkat
                             </a>
                             <a href="/cardlogin" class=" py-1 px-2 bg-blue-600 rounded-md text-white hover:bg-purple-500">
                                 User Account

@@ -109,6 +109,8 @@ Route::get('guru/{guru}/edit', [GuruController::class, 'edit'])->middleware(['au
 Route::get('report/{pesertakelas}', [RaportController::class, 'show'])->middleware(['auth'])->name('report');
 Route::get('raportkelas', [RaportController::class, 'raportkelas'])->middleware(['auth']);
 Route::post('raportkelas', [RaportController::class, 'raportkelas'])->middleware(['auth']);
+Route::get('peringkat', [RaportController::class, 'peringkat'])->middleware(['auth']);
+Route::post('peringkat', [RaportController::class, 'peringkat'])->middleware(['auth']);
 
 // Controller Mata Pelajaran
 Route::get('mapel', [MapelController::class, 'index'])->middleware(['auth'])->name('mapel');
