@@ -77,6 +77,7 @@ class NilaiController extends Controller
             $data->where('nama_kelas', 'like', '%' . request('cari') . '%')
                 ->orWhere('ket_semester', 'like', '%' . request('cari') . '%')
                 ->orWhere('nama_kelas', 'like', '%' . request('cari') . '%')
+            ->orWhere('nama_guru', 'like', '%' . request('cari') . '%')
                 ->orWhere('mapel', 'like', '%' . request('cari') . '%');
         }
         // dd($data);
