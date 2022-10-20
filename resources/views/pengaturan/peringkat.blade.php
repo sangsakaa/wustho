@@ -78,7 +78,7 @@
                     </thead>
                     @foreach ($ringkasanraportkelas as $pesertakelas_id => $ringkasan)
                         @php
-                            if ($siswa->has($pesertakelas_id)) {
+                            if (!$siswa->has($pesertakelas_id)) {
                                 continue;
                             }
                             $datasiswa = $siswa[$pesertakelas_id];
