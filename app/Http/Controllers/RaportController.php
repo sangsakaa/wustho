@@ -216,7 +216,12 @@ class RaportController extends Controller
             ->orderby('nama_kelas')
             ->get();
 
-        $kelasmi = Kelasmi::find($request->kelasmi_id);
+        $kelasmi = Kelasmi::query()
+            ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
+            ->join('semester', 'semester.id', '=', 'periode.semester_id')
+            ->select('kelasmi.id', 'kelasmi.nama_kelas', 'periode.periode', 'semester.ket_semester')
+            ->where('kelasmi.id', $request->kelasmi_id)
+            ->first();
 
         if ($kelasmi) {
             $dataraportkelas = Nilaimapel::query()
