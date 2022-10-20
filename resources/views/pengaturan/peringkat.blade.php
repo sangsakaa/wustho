@@ -54,7 +54,9 @@
                 <div class=" grid grid-cols-1 justify-items-center">
                     <span class=" font-semibold "> DAFTAR HASIL TADRIS</span>
                     <span class=" font-semibold"> MADRASAH DINIYAH WUSTHO WAHIDIYAH</span>
-                    <span class=" font-semibold"> KELAS {{$kelasmi->nama_kelas}} PERIODE {{$kelasmi->periode}} {{Str::upper($kelasmi->ket_semester)}}</span>
+                    @if ($kelasmi)
+                        <span class=" font-semibold"> KELAS {{$kelasmi->nama_kelas}} PERIODE {{$kelasmi->periode}} {{Str::upper($kelasmi->ket_semester)}}</span>
+                    @endif
                 </div>
             </div>
             <hr>
