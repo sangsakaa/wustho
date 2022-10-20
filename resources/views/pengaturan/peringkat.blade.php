@@ -63,15 +63,15 @@
             <table class=" w-full">
                 <thead class=" bg-green-800  border font-semibold ">
                     <tr class=" text-white">
-                        <th class=" border border-green-800 text-sm px-2" rowspan="2">NO </th>
-                        <th class=" border border-green-800 text-sm px-2" rowspan="2">NIS</th>
-                        <th class=" border border-green-800 text-sm px-2" rowspan="2">NAMA</th>
+                        <th class=" border border-green-800 text-xs px-2" rowspan="2">NO </th>
+                        <th class=" border border-green-800 text-xs px-2" rowspan="2">NIS</th>
+                        <th class=" border border-green-800 text-xs px-2" rowspan="2">NAMA</th>
                         <th colspan="2" class=" border border-green-800 text-center">TOTAL NILAI</th>
-                        <th class=" border border-green-800 text-sm px-2" rowspan="2">PERINGKAT</th>
+                        <th class=" border border-green-800 text-xs px-2" rowspan="2">PERINGKAT</th>
                     </tr>
                     <tr class=" text-white">
-                        <th class=" text-sm px-2 text-center">NH</th>
-                        <th class=" text-sm px-2 text-center">NU</th>
+                        <th class=" text-xs px-2 text-center">NH</th>
+                        <th class=" text-xs px-2 text-center">NU</th>
                     </tr>
                 </thead>
                 @foreach ($ringkasanraportkelas as $pesertakelas_id => $ringkasan)
@@ -81,7 +81,7 @@
                 <tbody class=" text-md">
                     <tr>
                         <th class=" px-2 text-sm border border-green-800">{{ $loop->iteration }}</th>
-                        <td class=" px-2 text-sm border border-green-800">{{ $datasiswa->nis }}</td>
+                        <td class=" px-2 text-sm border text-center border-green-800">{{ $datasiswa->nis }}</td>
                         <td class=" px-2 text-sm border border-green-800"> {{ $datasiswa->nama_siswa }}</td>
                         <td class=" px-2 text-sm border border-green-800 text-center">{{ $ringkasan['jmlharian'] }}
                         </td>
