@@ -55,7 +55,7 @@
                     <span class=" font-semibold "> DAFTAR HASIL TADRIS</span>
                     <span class=" font-semibold"> MADRASAH DINIYAH WUSTHO WAHIDIYAH</span>
                     @if ($kelasmi)
-                        <span class=" font-semibold"> KELAS {{$kelasmi->nama_kelas}} PERIODE {{$kelasmi->periode}} {{Str::upper($kelasmi->ket_semester)}}</span>
+                    <span class=" font-semibold"> KELAS {{$kelasmi->nama_kelas}} PERIODE {{$kelasmi->periode}} {{Str::upper($kelasmi->ket_semester)}}</span>
                     @endif
                 </div>
             </div>
@@ -83,12 +83,7 @@
                     : {{ $datasiswa->nama_siswa }}
                 </div>
 
-                <div>
-                    Imtihan / Periode
-                </div>
-                <div>
-                    : {{ $siswa->periode }} {{ $siswa->ket_periode }} {{ $siswa->ket_semester }}
-                </div>
+
                 <div>Total Nilai</div>
                 <div> : Nilai Harian : {{ $ringkasan['jmlharian'] }}/ Nilai Ujian : {{ $ringkasan['jmlujian'] }}</div>
                 @php
