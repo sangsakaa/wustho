@@ -61,6 +61,11 @@
             <x-icons.home class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
         </x-slot>
     </x-sidebar.link>
+    <x-sidebar.link title=" Persensi" href="/nilaimapel" :isActive="request()->routeIs('nilaimapel')">
+        <x-slot name="icon">
+            <x-icons.books class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
+        </x-slot>
+    </x-sidebar.link>
     <x-sidebar.link title="Data Asrama" href="/asramasiswa" :isActive="request()->routeIs('asramasiswa')">
         <x-slot name="icon">
             <x-icons.home class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
