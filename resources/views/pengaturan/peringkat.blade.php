@@ -64,7 +64,7 @@
             @php
             $datasiswa = $siswa[$pesertakelas_id];
             @endphp
-            <div class="px-2 grid grid-cols-2 border ">
+            <div class="px-2 py-1 grid grid-cols-2 border ">
                 <div>
                     Peringkat
                 </div>
