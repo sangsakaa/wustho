@@ -50,7 +50,7 @@
             }
         </script>
         @if ($kelasmi)
-        <div class=" px-4">
+        <div class=" px-4 py-2">
             <div class="grid p-2 bg-white border-b border-gray-200">
                 <div class=" grid grid-cols-1 justify-items-center">
                     <span class=" font-semibold ">PERINGKAT HASIL TADRIS</span>
