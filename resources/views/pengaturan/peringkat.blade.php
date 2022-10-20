@@ -57,9 +57,9 @@
                 </div>
             </div>
             <hr>
-            @foreach ($siswa as $siswa)
+            @foreach ($ringkasanraportkelas as $pesertakelas_id => $ringkasan)
             @php
-            $ringkasan = $ringkasanraportkelas[$siswa->peserta_id];
+            $datasiswa = $siswa[$pesertakelas_id];
             @endphp
             <div class="px-2 grid grid-cols-2 border ">
 
@@ -72,26 +72,26 @@
                 <div>
                     Nomor Induk Siswa</div>
                 <div>
-                    : <span class=" font-semibold">{{ $siswa->nis }}</span>
+                    : <span class=" font-semibold">{{ $datasiswa->nis }}</span>
                 </div>
                 <div class=" w-40">
                     Nama Lengkap
                 </div>
                 <div class=" text-sm">
-                    : {{ $siswa->nama_siswa }}
+                    : {{ $datasiswa->nama_siswa }}
                 </div>
 
                 <div>
                     Imtihan / Periode
                 </div>
                 <div>
-                    : {{ $siswa->periode }} {{ $siswa->ket_periode }} {{ $siswa->ket_semester }}
+                    : {{ $datasiswa->periode }} {{ $datasiswa->ket_periode }} {{ $datasiswa->ket_semester }}
                 </div>
                 <div>Total Nilai</div>
                 <div> : Nilai Harian : {{ $ringkasan['jmlharian'] }}/ Nilai Ujian : {{ $ringkasan['jmlujian'] }}</div>
 
                 @php
-                $ringkasan = $ringkasanraportkelas[$siswa->peserta_id];
+                $ringkasan = $ringkasanraportkelas[$datasiswa->peserta_id];
                 @endphp
 
 

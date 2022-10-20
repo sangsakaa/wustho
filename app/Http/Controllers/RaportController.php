@@ -191,7 +191,7 @@ class RaportController extends Controller
             })
             ->keyBy('id');
         $presensi = Presensikelas::join('pesertakelas', 'pesertakelas.id', '=', 'presensikelas.pesertakelas_id')
-        ->where('pesertakelas.peserta_id', $siswa);
+            ->where('pesertakelas.peserta_id', $siswa);
         return view(
             'report/raportkelas',
             [
@@ -254,7 +254,10 @@ class RaportController extends Controller
             ->select('*', 'pesertakelas.id as peserta_id')
             ->where('kelasmi.id', $kelasmi->id)
             ->orderBy('pesertakelas.id')
-            ->get();
+            ->get()
+            ->keyBy(function ($item, $key) {
+                return $item->peserta_id;
+            });
 
 
         $ringkasanraportkelas = $dataraportkelas
@@ -283,7 +286,7 @@ class RaportController extends Controller
             })
             ->keyBy('id');
         $presensi = Presensikelas::join('pesertakelas', 'pesertakelas.id', '=', 'presensikelas.pesertakelas_id')
-        ->where('pesertakelas.peserta_id', $siswa);
+            ->where('pesertakelas.peserta_id', $siswa);
         return view(
             'pengaturan/peringkat',
             [
@@ -297,5 +300,4 @@ class RaportController extends Controller
             ]
         );
     }
-    
 }
