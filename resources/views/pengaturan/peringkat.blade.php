@@ -65,7 +65,6 @@
             $datasiswa = $siswa[$pesertakelas_id];
             @endphp
             <div class="px-2 grid grid-cols-2 border ">
-
                 <div>
                     Peringkat
                 </div>
@@ -88,19 +87,15 @@
                     Imtihan / Periode
                 </div>
                 <div>
-                    : {{ $datasiswa->periode }} {{ $datasiswa->ket_periode }} {{ $datasiswa->ket_semester }}
+                    : {{ $siswa->periode }} {{ $siswa->ket_periode }} {{ $siswa->ket_semester }}
                 </div>
                 <div>Total Nilai</div>
                 <div> : Nilai Harian : {{ $ringkasan['jmlharian'] }}/ Nilai Ujian : {{ $ringkasan['jmlujian'] }}</div>
-
                 @php
                 $ringkasan = $ringkasanraportkelas[$datasiswa->peserta_id];
                 @endphp
-
-
             </div>
             @endforeach
-
         </div>
     </div>
 </x-app-layout>
