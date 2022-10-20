@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        @section('title', ' | Juara')
+        @section('title','Peringkat Kelas')
         <h2 class="font-semibold text-xl  leading-tight">
             {{ __('Report Per Peringkat') }}
         </h2>
@@ -63,10 +63,10 @@
             <table class=" w-full">
                 <thead class=" bg-green-800  border font-semibold ">
                     <tr class=" text-white">
-                        <th class=" border border-green-800 text-xs px-2" rowspan="2">NO </th>
-                        <th class=" border border-green-800 text-xs px-2" rowspan="2">NIS</th>
-                        <th class=" border border-green-800 text-xs px-2" rowspan="2">NAMA</th>
-                        <th colspan="2" class=" border border-green-800 text-center">TOTAL NILAI</th>
+                        <th class=" border border-gray-800 text-xs px-2" rowspan="2">NO </th>
+                        <th class=" border border-gray-800 text-xs px-2" rowspan="2">NIS</th>
+                        <th class=" border border-gray-800 text-xs px-2" rowspan="2">NAMA</th>
+                        <th colspan="2" class=" text-xs border border-green-800 text-center">TOTAL NILAI</th>
                         <th class=" border border-green-800 text-xs px-2" rowspan="2">PERINGKAT</th>
                     </tr>
                     <tr class=" text-white">
