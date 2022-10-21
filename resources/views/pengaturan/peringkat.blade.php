@@ -31,7 +31,7 @@
                             </option>
                         @endforeach
                     </select>
-                    <button class=" bg-blue-600 text-white rounded-sm px-2 py-1   "> Tampilkan Peringkat</button>
+                    <button class=" bg-blue-600 text-white rounded-sm px-2 py-1"> Tampilkan Peringkat</button>
                 </div>
             </form>
         </div>

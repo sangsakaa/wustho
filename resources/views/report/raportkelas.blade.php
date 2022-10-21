@@ -109,8 +109,8 @@
                                 <td colspan="2" class=" border text-center"> NILAI </td>
                             </tr>
                             <tr class=" text-white">
-                                <td class=" PX-2 text-center">YAUMIYYAH</td>
-                                <td class=" PX-2 text-center">IMTIHAMIYYAH</td>
+                                <td class=" PX-2 text-center">YAUMIYAH</td>
+                                <td class=" PX-2 text-center">IMTIHANIYAH</td>
                             </tr>
                         </thead>
                         @foreach ($data[$siswa->peserta_id] as $item)
