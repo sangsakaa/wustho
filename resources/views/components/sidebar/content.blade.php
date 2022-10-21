@@ -52,7 +52,7 @@
     </x-sidebar.link>
     <x-sidebar.link title=" Data Guru" href="/guru" :isActive="request()->routeIs('guru')">
         <x-slot name="icon">
-            <x-icons.usercircle class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
+            <x-icons.academi class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
         </x-slot>
     </x-sidebar.link>
 

@@ -7,8 +7,8 @@
     </x-slot>
     <div class="  overflow-auto ">
         <div class=" mx-auto ">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-md">
-                <div class="p-2 border-b border-gray-200">
+            <div class="bg-white  dark:bg-dark-bg overflow-hidden shadow-sm sm:rounded-md">
+                <div class="p-2 ">
                     <div class=" sm:flex  grid sm:w-full w-full text-center sm:text-center grid-cols-3 text-xs sm:grid-cols-3 gap-1">
                         @can('show post')
                         <a href="/addasrama">
@@ -34,8 +34,8 @@
     </div>
     <div class=" my-2">
         <div class=" mx-auto ">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-2 bg-white border-b border-gray-200">
+            <div class="bg-white dark:bg-dark-bg overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-2 ">
                     @if (session('delete'))
                     <div class=" py-2">
                         <div class=" bg-red-500 px-2 py-1 text-white">
@@ -59,7 +59,7 @@
                     @endif
                     <div class=" overflow-auto p-1">
                         <Table class=" sm:w-full  w-full">
-                            <thead class=" bg-gray-100">
+                            <thead class=" bg-gray-100 dark:bg-purple-600">
                                 <tr class=" border capitalize ">
                                     <th class=" text-center px-1 border py-1">#</th>
                                     @role('super admin')
@@ -80,7 +80,7 @@
                             <tbody>
                                 @if($data->count())
                                 @foreach ($data as $item)
-                                <tr class=" border hover:bg-purple-100 ">
+                                <tr class=" border hover:bg-purple-100 dark:hover:bg-purple-600 ">
                                     <td class=" px-2 border text-center">
                                         {{$loop->iteration}}
                                     </td>

@@ -8,8 +8,8 @@
     </x-slot>
     <div class="px-4 py-2">
         <div class=" mx-auto ">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-2 bg-white border-b border-gray-200">
+            <div class="bg-white dark:bg-purple-600  overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-2">
                     <div class=" grid grid-cols-8">
                         <div>Kelas</div>
                         <div>: {{$datakelasmi->nama_kelas}}</div>
@@ -27,8 +27,8 @@
     </div>
     <div class="px-4">
         <div class=" mx-auto ">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-2 bg-white border-b border-gray-200">
+            <div class="bg-white dark:bg-dark-bg overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-2 ">
                     <div class=" grid grid-cols-1 gap-1 py-1 justify-items-end">
 
                     </div>
@@ -43,14 +43,14 @@
                         </div>
                         <div class="grid justify-items-end">
                             <form action="/pesertakelas/{{$datakelasmi->id}}" method="get" class=" flex gap-1">
-                                <input type="text" name="cari" value="{{ request('cari') }}" class=" border text-green-800 rounded-sdm py-1 " placeholder=" Cari ...">
+                                <input type="text" name="cari" value="{{ request('cari') }}" class=" dark:bg-dark-bg  border text-green-800 dark:text-purple-600 rounded-sdm py-1 " placeholder=" Cari ...">
 
                                 <button type="submit" class=" px-2   bg-blue-500  rounded-md text-white">
                                     Cari </button>
                             </form>
                         </div>
                     </div>
-                    <Table class=" table w-full">
+                    <Table class=" table w-full mt-1">
                         <thead>
                             <tr class="border">
                                 <th class=" px-2 border text-center  ">#</th>
@@ -65,7 +65,7 @@
                         <tbody>
                             @if($dataKelas->count())
                             @foreach($dataKelas as $list)
-                            <tr class=" hover:bg-gray-100 ">
+                            <tr class=" hover:bg-gray-100 dark:hover:bg-dark-bg ">
                                 <td class=" border px-2 w-10">
                                     {{$loop->iteration}}
                                 </td>

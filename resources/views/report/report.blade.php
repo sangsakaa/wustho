@@ -93,8 +93,8 @@
                                 <td colspan="2" class=" border border-green-800 text-center"> NILAI </td>
                             </tr>
                             <tr class=" text-white">
-                                <td class=" PX-2 text-center">YAUMIYYAH</td>
-                                <td class=" PX-2 text-center">IMTIHAMIYYAH</td>
+                                <td class=" PX-2 text-center">YAUMIYAH</td>
+                                <td class=" PX-2 text-center">IMTIHANIYAH</td>
                             </tr>
                         </thead>
                         @foreach ($data as $item)
@@ -170,7 +170,7 @@
                             </tr>
                             <tr class=" border border-green-800">
                                 <th class=" px-2 border border-green-800 ">3</th>
-                                <td class=" px-2 border border-green-800 ">Al Muhadhloroh</td>
+                                <td class=" px-2 border border-green-800 ">Al Muhadhdhoroh</td>
                                 <td class=" px-2 border border-green-800 text-center ">Jayyid</td>
                             </tr>
                             <tr class=" border border-green-800">

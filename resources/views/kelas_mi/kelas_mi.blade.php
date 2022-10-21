@@ -7,8 +7,8 @@
     </x-slot>
     <div class=" ">
         <div class=" mx-auto ">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-md">
-                <div class="p-2 border-b border-gray-200">
+            <div class="bg-white dark:bg-dark-bg overflow-hidden shadow-sm sm:rounded-md">
+                <div class="p-2">
                     <div class=" flex w-full gap-1">
                         <a href="/addkelas_mi">
                             <button class=" flex bg-blue-500 text-white p-1 rounded-md">
@@ -32,8 +32,8 @@
     </div>
     <div class="">
         <div class=" mx-auto ">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-2 bg-white border-b border-gray-200">
+            <div class="bg-white dark:bg-dark-bg overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-2 ">
                     <div class=" w-full ">
                         <div class=" overflow-auto">
                             @if (session('delete'))
@@ -60,7 +60,7 @@
                             <div class=" overflow-auto">
                                 <Table class=" w-full  border-collapse border border-slate-500 mt-2 ">
                                     <thead>
-                                        <tr class=" text-xs border bg-gray-100 ">
+                                        <tr class=" text-xs border dark:bg-purple-600  bg-gray-100 ">
                                             <th class=" text-xs py-1">No</th>
                                             <th>Periode</th>
                                             <th>Kelas</th>
@@ -74,7 +74,7 @@
                                     <tbody class="">
                                         @if($kelasMI->count() != null)
                                         @foreach ($kelasMI as $item)
-                                        <tr class=" hover:bg-green-200 border">
+                                        <tr class=" hover:bg-green-200 border dark:hover:bg-purple-600">
                                             <th class=" text-xs text-center border">{{$loop->iteration}}</th>
                                             <td class=" text-xs text-center border"> {{$item->periode}} {{$item->ket_semester}}</td>
                                             <td class=" text-xs text-center border"><a href="/pesertakelas/{{$item->id}}"> {{$item->kelas}}</a></td>

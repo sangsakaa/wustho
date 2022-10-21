@@ -1,14 +1,14 @@
 <x-app-layout>
     <x-slot name="header">
         @section('title', ' | Guru' )
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <h2 class="font-semibold text-xl  leading-tight">
             {{ __('Dashboard Daftat Guru') }}
         </h2>
     </x-slot>
 
 
-    <div class="bg-white overflow-hidden shadow-sm">
-        <div class="p-2 bg-white border-b border-gray-200">
+    <div class="bg-white dark:bg-dark-bg overflow-hidden shadow-sm">
+        <div class="p-2">
             @if (session('delete'))
             <div class=" py-2">
                 <div class=" bg-red-500 px-2 py-1 text-white">
@@ -33,7 +33,7 @@
             <div class=" grid gap-1 grid-cols-1 sm:grid-cols-2 w-full ">
                 <form action="/guru" method="get" class="  gap-1">
                     <div class=" grid sm:grid-cols-2 grid-cols-1 gap-1 ">
-                        <input type="text" name="cari" value="{{ request('cari') }}" class=" border text-green-800 rounded-sm py-1  sm:w-full " placeholder=" Cari ...">
+                        <input type="text" name="cari" value="{{ request('cari') }}" class=" dark:bg-dark-bg border text-green-800 rounded-sm py-1  sm:w-full " placeholder=" Cari ...">
                         <button type="submit" class=" px-2 py-1     bg-blue-500  rounded-sm text-white">
                             Cari </button>
                     </div>
@@ -50,7 +50,7 @@
             </div>
             <div class=" overflow-auto rounded-md">
                 <Table class=" sm:w-full w-full  mt-2">
-                    <thead class=" bg-gray-50">
+                    <thead class=" bg-gray-50 dark:bg-purple-600">
                         <tr class=" border  ">
                             <th class="px-2 border py-1">#</th>
                             <th class="px-2 border text-left w-1/2 sm:w-1/4">Nama Guru</th>
@@ -120,7 +120,7 @@
         </div>
     </div>
     <div class="bg-white overflow-hidden shadow-sm ">
-        <div class="p-2 bg-blue-200 border-b border-gray-200">
+        <div class="p-2 bg-blue-200 dark:bg-dark-bg ">
             <div class="flex justify-items-end grid-cols-1 gap-2  py-1">
                 <div class=" grid grid-cols-1">
                     <span class=" text-bold">Keterangan :</span>

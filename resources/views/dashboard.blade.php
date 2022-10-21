@@ -15,7 +15,7 @@
             User Log : {{Auth::user()->name}}
         </span>
     </div>
-    <div class=" grid grid-cols-2 gap-2 sm:grid-cols-6 p-4">
+    <div class=" grid grid-cols-1 gap-2 sm:grid-cols-6 p-4">
         <div class=" bg-green-700 p-3 rounded-md text-center text-white">NIS : {{$siswa}}</div>
         <div class=" bg-blue-700 p-3 rounded-md text-center text-white">USER : {{Auth::user()->count()}}</div>
         <div class=" bg-blue-700 p-3 rounded-md text-center text-white">LK : {{$lk}}</div>
