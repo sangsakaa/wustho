@@ -1,4 +1,5 @@
 <x-guest-layout>
+    @section('title', '| Login' )
     <x-auth-card>
         <center>
             <img src="{{asset('asset/images/logo.png')}}" width="120" alt="">
@@ -49,14 +50,12 @@
                     </a>
                     @endif
                 </div>
-
                 <div>
                     <x-button class="justify-center w-full gap-2">
                         <x-heroicon-o-login class="w-6 h-6" aria-hidden="true" />
                         <span>{{ __('Log in') }}</span>
                     </x-button>
                 </div>
-
                 @if (Route::has('register'))
                 <p class="text-sm text-gray-600 dark:text-gray-400">
                     {{ __('Don’t have an account?') }}
