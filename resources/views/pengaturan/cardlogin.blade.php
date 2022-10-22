@@ -45,12 +45,11 @@
         </div>
         <div id="div1" class="">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class=" bg-white">
+                <div class=" p-1 bg-white">
                     <div class="">
-                        <div class=" p-2  gap-2 grid grid-cols-2 ">
+                        <div class=" gap-2 grid grid-cols-2 ">
                             @foreach($peserta as $user)
-
-                            <div class=" grid grid-cols-1  border border-green-600 p-4 rounded-md">
+                            <div class=" grid grid-cols-1  border border-green-600 p-2 rounded-md">
                                 <div class=" flex  grid-cols-2">
                                     <div class="">
                                         <img src={{ asset("asset/images/logo.png") }} alt="" width="80" class="">
@@ -62,9 +61,8 @@
                                     </div>
                                     <span class=" flex justify-end font-semibold">{{$user->nama_kelas}}</span>
                                 </div>
-                                <hr class=" mt-1">
+                                <hr class="">
                                 <div class=" grid grid-cols-2">
-
                                     <div class=" px-2 text-sm">
                                         Username
                                     </div>
@@ -77,8 +75,6 @@
                                     <div class=" px-2 text-sm">
                                         : {{$user->nis}}
                                     </div>
-
-
                                 </div>
                                 <div class=" text-right text-sm">
                                     Nama pengguna : <br>
