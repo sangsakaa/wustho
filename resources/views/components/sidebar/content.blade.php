@@ -61,7 +61,7 @@
             <x-icons.home class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
         </x-slot>
     </x-sidebar.link>
-    <x-sidebar.link title=" Persensi" href="/nilaimapel" :isActive="request()->routeIs('nilaimapel')">
+    <x-sidebar.link title=" Persensi" href="/sesikelas" :isActive="request()->routeIs('sesikelas')">
         <x-slot name="icon">
             <x-icons.books class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
         </x-slot>
