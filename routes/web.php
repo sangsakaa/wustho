@@ -16,9 +16,11 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PengaturanController;
 use App\Http\Controllers\SesiasramaController;
 use App\Http\Controllers\AsramasiswaController;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\PelanggaranController;
 use App\Http\Controllers\PresensikelasController;
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\SesikelasController;
 
 // batas
 Route::get('/admin', [RegisteredUserController::class, 'index'])->middleware(['auth'])->name('admin');
@@ -154,7 +156,8 @@ Route::get('presensikelas', [PresensikelasController::class, 'index'])->middlewa
 Route::get('presensikelas/{kelasmi}', [PresensikelasController::class, 'show'])->middleware(['auth']);
 Route::post('presensikelas', [PresensikelasController::class, 'store'])->middleware(['auth']);
 
-
+// Controller AuthenticatedSession
+Route::post('periode', [AuthenticatedSessionController::class, 'setPeriode'])->middleware(['auth'])->name('periode');
 
 
 // Route::get('/siswa', function () {
