@@ -8,13 +8,13 @@
             <x-heroicon-o-sun x-show="isDarkMode" aria-hidden="true" class="w-6 h-6" />
         </x-button>
     </div>
-
     <div class="flex items-center gap-3">
+        @role('super admin')
         <x-dropdown align="top" width="48">
             <x-slot name="trigger">
                 <button class="flex items-center p-2 text-sm font-medium text-gray-500 rounded-md transition duration-150 ease-in-out hover:text-gray-700 focus:outline-none focus:ring focus:ring-purple-500 focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark-eval-1 dark:text-gray-400 dark:hover:text-gray-200">
                     @php
-                        $periode = $dataperiode->find(session('periode_id'));
+                    $periode = $dataperiode->find(session('periode_id'));
                     @endphp
                     <div>{{ $periode->periode }} {{ $periode->ket_semester }}</div>
 
@@ -25,20 +25,20 @@
                     </div>
                 </button>
             </x-slot>
-
             <x-slot name="content">
                 @foreach ($dataperiode as $periode)
-                    <form method="POST" action="{{ route('setperiode') }}">
-                        <input type="hidden" name="periode_id" value="{{ $periode->id }}">
-                        @csrf
-                        <x-dropdown-link :href="route('setperiode')" onclick="event.preventDefault();
+                <form method="POST" action="{{ route('setperiode') }}">
+                    <input type="hidden" name="periode_id" value="{{ $periode->id }}">
+                    @csrf
+                    <x-dropdown-link :href="route('setperiode')" onclick="event.preventDefault();
                                             this.closest('form').submit();">
-                            {{ $periode->periode }} {{ $periode->ket_semester }}
-                        </x-dropdown-link>
-                    </form>
+                        {{ $periode->periode }} {{ $periode->ket_semester }}
+                    </x-dropdown-link>
+                </form>
                 @endforeach
             </x-slot>
         </x-dropdown>
+        @endrole
         <x-button type="button" class="hidden md:inline-flex" iconOnly variant="secondary" srText="Toggle dark mode" @click="toggleTheme">
             <x-heroicon-o-moon x-show="!isDarkMode" aria-hidden="true" class="w-6 h-6" />
             <x-heroicon-o-sun x-show="isDarkMode" aria-hidden="true" class="w-6 h-6" />
