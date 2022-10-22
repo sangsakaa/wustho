@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        @section('title', $datakelasmi->nama_kelas )
+        @section('title',$datakelasmi->nama_kelas )
         <h2 class="font-semibold text-xl  leading-tight">
             Dashboard Kelas : {{$datakelasmi->nama_kelas}}
 
