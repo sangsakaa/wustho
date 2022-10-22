@@ -23,7 +23,7 @@
                                 <option value="">-- Pilih Jenis Kelamin --</option>
                                 <option {{old('jenis_kelamin',$guru->jenis_kelamin)=="L"? 'selected':''}} value="L">
                                     Laki-Laki</option>
-                                <option {{old('jenis_kelamin',$guru->jk)=="P"? 'selected':''}} value="P">
+                                <option {{old('jenis_kelamin',$guru->jenis_kelamin)=="P"? 'selected':''}} value="P">
                                     Perempuan</option>
                             </select>
                             <label for="">Agama</label>
