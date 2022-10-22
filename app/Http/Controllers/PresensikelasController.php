@@ -97,9 +97,9 @@ class PresensikelasController
                 'presensikelas.izin',
                 'presensikelas.sakit',
                 'presensikelas.alfa'
-            )
-            ->orderby('nis.nis')
+        )
             ->orderby('siswa.nama_siswa')
+            ->orderby('nis.nis')
             ->get();
         return view(
             'presensi.kelas.presensi',
