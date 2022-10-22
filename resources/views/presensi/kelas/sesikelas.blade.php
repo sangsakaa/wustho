@@ -49,6 +49,7 @@
                                     <th class=" border px-1  py-1">No</th>
                                     <th class=" border px-1 ">Tanggal</th>
                                     <th class=" border px-1 ">Kelas</th>
+                                    <th class=" border px-1 ">Periode</th>
                                     <th class=" border px-1 w-10 sm:w-10">Status</th>
                                     <th class=" border px-1">Aksi</th>
                                 </tr>
@@ -58,12 +59,17 @@
                                 @foreach ($sesikelas as $sesi)
                                 <tr class=" border hover:bg-gray-100  dark:hover:bg-purple-600 text-xs sm:text-sm ">
                                     <th class=" border px-1">{{ $loop->iteration }}</th>
-                                    <th class=" border text-center px-1">{{ date_format(date_create($sesi->tgl),'d-m-Y') }}</td>
+                                    <th class=" border text-center px-1">{{ date_format(date_create($sesi->tgl),'d-m-Y') }}
+                                    </th>
+                                    <th class=" border text-center px-1">
+                                        <a href="/absensikelas/{{ $sesi->id }}" class=" bg-blue-600 rounded-md px-1 py-1 text-white dark:text-purple-600 dark:bg-dark-bg">
+                                            Peserta {{ $sesi->nama_kelas }}
+                                        </a>
+                                    </th>
                                     <th class=" border text-center px-1">
                                         <a href="/absensikelas/{{ $sesi->id }}">
-                                            {{ $sesi->nama_kelas }} {{ $sesi->periode }} {{ $sesi->ket_semester }}
+                                            {{ $sesi->periode }} {{ $sesi->ket_semester }}
                                         </a>
-
                                     </th>
                                     <th class=" border text-center px-1 py-2">
                                         status
