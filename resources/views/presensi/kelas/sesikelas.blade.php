@@ -60,7 +60,7 @@
                                     <th class=" border px-1">{{ $loop->iteration }}</th>
                                     <th class=" border text-center px-1">{{ date_format(date_create($sesi->tgl),'d-m-Y') }}</td>
                                     <th class=" border text-center px-1">
-                                        <a href="/absenkelas/{{ $sesi->id }}">
+                                        <a href="/absensikelas/{{ $sesi->id }}">
                                             {{ $sesi->nama_kelas }} {{ $sesi->periode }} {{ $sesi->ket_semester }}
                                         </a>
 

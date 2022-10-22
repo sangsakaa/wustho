@@ -13,8 +13,14 @@ return new class extends Migration
             $table->unsignedBigInteger('sesikelas_id');
             $table->unsignedBigInteger('pesertakelas_id');
             $table->string('keterangan');
-            $table->string('alasan');
+            $table->string('alasan')->nullable();
             $table->timestamps();
         });
+    }
+
+
+    public function down()
+    {
+        Schema::dropIfExists('absensikelas');
     }
 };

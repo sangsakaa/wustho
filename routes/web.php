@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AbsensikelasController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GuruController;
@@ -163,6 +164,10 @@ Route::post('setperiode', [AuthenticatedSessionController::class, 'setPeriode'])
 Route::get('sesikelas', [SesikelasController::class, 'index'])->middleware(['auth'])->name('sesikelas');
 Route::post('sesikelas', [SesikelasController::class, 'store'])->middleware(['auth']);
 Route::delete('sesikelas/{sesikelas}', [SesikelasController::class, 'destroy'])->middleware(['auth']);
+
+// Controller Absensikelas
+Route::get('absensikelas/{sesikelas}', [AbsensikelasController::class, 'index'])->middleware(['auth']);
+Route::post('absensikelas', [AbsensikelasController::class, 'store'])->middleware(['auth']);
 
 // Route::get('/siswa', function () {
 //     return view('siswa.siswa');

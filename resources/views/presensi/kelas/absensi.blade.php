@@ -20,6 +20,10 @@
                             <div> : {{ $dataKelas->nama_kelas }} / {{ $dataKelas->semester }}</div>
                             <div>Periode</div>
                             <div> : {{ $dataKelas->periode }} {{ $dataKelas->ket_semester }}</div>
+                            <div>Presensi tanggal</div>
+                            <div> : {{ $sesikelas->tgl }}</div>
+                            <div>Disimpan pada</div>
+                            <div> : {{ $diSimpanPada }}</div>
                         </div>
                     </div>
                 </div>
@@ -29,9 +33,9 @@
             <div class="">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class="p-6 bg-white border-b border-gray-200">
-                        <form action="/presensikelas" method="post">
+                        <form action="/absensikelas" method="post">
                             <button class=" bg-red-600 py-1 rounded-md text-white px-4">simpan presensi</button>
-                            <a href="/presensikelas" class=" bg-red-600 py-1 rounded-md text-white px-4">Kembali</a>
+                            <a href="/sesikelas" class=" bg-red-600 py-1 rounded-md text-white px-4">Kembali</a>
                             @if (session('status'))
                             <div class="alert alert-success w-full text-sm">
                                 {{ session('status') }}
@@ -56,7 +60,8 @@
                                         <td class=" px-2 border text-center w-10">
                                             {{ $loop->iteration }}
                                             <input type="hidden" name="pesertakelas[]" value="{{ $item->id }}">
-                                            <input type="hidden" name="presensikelas_id[{{ $item->id }}]" value="{{ $item->presensikelas_id }}">
+                                            <input type="hidden" name="sesikelas" value="{{ $sesikelas->id }}">
+                                            <input type="hidden" name="absensikelas[{{ $item->id }}]" value="{{ $item->absensikelas_id }}">
                                         </td>
                                         <td class=" px-2 border text-center ">
                                             {{ $item->nis }}
@@ -71,15 +76,17 @@
                                             {{ $item->nama_kelas }}
                                         </td>
                                         <td class="  border text-center w-20">
-                                            <input type="radio" value="hadir" class=" py-1 w-full text-center" type="number" name="izin[{{ $item->id }}]" default="0">
-                                            <label for=""></label>
-                                            <input type="radio" value="sakit" class="py-1 w-full text-center" type="number" name="sakit[{{ $item->id }}]">
-                                            <label for=""></label>
-                                            <input type="radio" value="alfa" class="py-1 w-full text-center" type="number" name="alfa[{{ $item->id }}]">
-                                            <label for=""></label>
+                                            <input type="radio" id="hadir[{{ $item->id }}]" value="hadir" name="keterangan[{{ $item->id }}]" {{ $item->keterangan === "hadir" || $item->keterangan === null ? "checked" : "" }}>
+                                            <label for="hadir[{{ $item->id }}]">Hadir</label>
+                                            <input type="radio" id="izin[{{ $item->id }}]" value="izin" name="keterangan[{{ $item->id }}]" {{ $item->keterangan === "izin" ? "checked" : "" }}>
+                                            <label for="izin[{{ $item->id }}]">Izin</label>
+                                            <input type="radio" id="sakit[{{ $item->id }}]" value="sakit" name="keterangan[{{ $item->id }}]" {{ $item->keterangan === "sakit" ? "checked" : "" }}>
+                                            <label for="sakit[{{ $item->id }}]">Sakit</label>
+                                            <input type="radio" id="alfa[{{ $item->id }}]" value="alfa" name="keterangan[{{ $item->id }}]" {{ $item->keterangan === "alfa" ? "checked" : "" }}>
+                                            <label for="alfa[{{ $item->id }}]">Alfa</label>
                                         </td>
                                         <td class="  border text-center w-20">
-                                            <input value="{{ $item->alfa }}" class="py-1 w-full text-center" type="number" name="keterangan[{{ $item->id }}]">
+                                            <input value="{{ $item->alasan }}" class="py-1 w-full text-center" name="alasan[{{ $item->id }}]">
                                         </td>
 
                                     </tr>
