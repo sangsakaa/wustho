@@ -157,7 +157,7 @@ Route::get('presensikelas/{kelasmi}', [PresensikelasController::class, 'show'])-
 Route::post('presensikelas', [PresensikelasController::class, 'store'])->middleware(['auth']);
 
 // Controller AuthenticatedSession
-Route::post('periode', [AuthenticatedSessionController::class, 'setPeriode'])->middleware(['auth'])->name('periode');
+Route::post('setperiode', [AuthenticatedSessionController::class, 'setPeriode'])->middleware(['auth'])->name('setperiode');
 
 // Controller Sesikelas
 Route::get('sesikelas', [SesikelasController::class, 'index'])->middleware(['auth'])->name('sesikelas');

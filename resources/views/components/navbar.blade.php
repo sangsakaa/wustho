@@ -28,10 +28,10 @@
 
             <x-slot name="content">
                 @foreach ($dataperiode as $periode)
-                    <form method="POST" action="{{ route('periode') }}">
+                    <form method="POST" action="{{ route('setperiode') }}">
                         <input type="hidden" name="periode_id" value="{{ $periode->id }}">
                         @csrf
-                        <x-dropdown-link :href="route('periode')" onclick="event.preventDefault();
+                        <x-dropdown-link :href="route('setperiode')" onclick="event.preventDefault();
                                             this.closest('form').submit();">
                             {{ $periode->periode }} {{ $periode->ket_semester }}
                         </x-dropdown-link>
