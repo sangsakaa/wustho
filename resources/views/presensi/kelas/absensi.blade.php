@@ -47,7 +47,7 @@
                                     <thead>
                                         <tr class="border">
                                             <th class=" border px-1">No</th>
-                                            <th class=" border px-1 w-1/7">NIS</th>
+
                                             <th class=" border px-1 ">NAMA SISWA</th>
                                             <th class=" border px-1">KET</th>
                                             <th class=" border px-1">ALASAN</th>
@@ -62,13 +62,11 @@
                                                 <input type="hidden" name="sesikelas" value="{{ $sesikelas->id }}">
                                                 <input type="hidden" name="absensikelas[{{ $item->id }}]" value="{{ $item->absensikelas_id }}">
                                             </td>
-                                            <td class=" px-2 border text-center ">
-                                                {{ $item->nis }}
-                                            </td>
-                                            <td class=" px-2 border text-sm ">
+
+                                            <td class=" px-2 border text-xs ">
                                                 {{ $item->nama_siswa }}
                                             </td>
-                                            <td class=" justify-center  grid grid-cols-2 w-full sm:py-1 gap-1 sm:flex sm:grid-cols-8 ">
+                                            <td class=" justify-center text-center  w-1/3 ">
                                                 <input type="radio" id="hadir[{{ $item->id }}]" value="hadir" name="keterangan[{{ $item->id }}]" {{ $item->keterangan === "hadir" || $item->keterangan === null ? "checked" : "" }}>
                                                 <label for="hadir[{{ $item->id }}]">H</label>
                                                 <input type="radio" id="izin[{{ $item->id }}]" value="izin" name="keterangan[{{ $item->id }}]" {{ $item->keterangan === "izin" ? "checked" : "" }}>
