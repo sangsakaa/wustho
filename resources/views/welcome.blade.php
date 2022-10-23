@@ -5,11 +5,13 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>SMEDI</title>
+
+    <title>SMEDI @yield('title')</title>
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="shortcut icon" href="{{ asset('asset/images/logo.ico') }}" type="image/x-icon">
+
+    <link rel="shortcut icon" href="{{ asset('asset/images/logo.png') }}" type="image/x-icon">
 
     <!-- Styles -->
     <style>
@@ -119,6 +121,10 @@
 
         .text-sm {
             font-size: .875rem
+        }
+
+        .text-2xl {
+            font-size: 2.25rem;
         }
 
         .text-lg {
@@ -406,26 +412,29 @@
 </head>
 
 <body class="antialiased">
-    <div class="relative flex items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center py-4 sm:pt-0">
+    <div class="relative grid w-full items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center py-4  sm:pt-0">
         <div class="max-w-6xl mx-auto sm:px-2 lg:px-2">
-            <div class=" text-center">
-                <img src="asset/images/logo.png" alt="" width="100px"><br>
-                <span class=" dark:text-white text-lg">S M E D I</span><br>
+            <div class=" text-center  sm:mt-12 mt-12">
+                <img src="asset/images/logo.png" alt="" width="200px"><br>
+                <span class=" dark:text-white text-2xl">S M E D I</span><br>
                 <span class=" dark:text-white capitalize text-lg">Sistem Manajemen Diniyah</span>
             </div>
-            <div class="mt-8 bg-white dark:bg-gray-800 overflow-hidden shadow sm:rounded-lg">
+            <hr class=" dark:border-white">
+            <div class="mt-2 w-full  dark:bg-dark-bg overflow-hidden shadow  ">
                 <div class="grid grid-cols-1 md:grid-cols-1">
-                    <div class="p-6 text-center">
+                    <div class="py-1 text-center">
                         @if(Route::has('login'))
                         @auth
-                        Selemat Anda Sudah Login
+                        <div class=" bg-white p-2   ">
+                            Selamat Anda Sudah Login
+                        </div>
                         @else
-                        <a href="{{ route('login') }}" class="text-sm text-gray-700  dark:text-white ">Log in</a>
+                        <a href="{{ route('login') }}" class="text-sm text-gray-700  dark:text-white  p-4 ">Log in</a>
                         @endif
                         @endauth
                     </div>
                     @role('super admin')
-                    <div class="p-6 text-center">
+                    <div class=" py-1 mt-2 text-center">
                         @if(Route::has('login'))
                         @auth
                         <a href="{{ url('/dashboard') }}" class="text-md text-gray-700 dark:text-gray-500 ">Dashboard</a>
@@ -433,37 +442,39 @@
                         <a href="{{ route('login') }}" class="text-sm text-gray-700  dark:text-white ">Log in</a>
                         @endif
                         @endauth
-                        <div class="ml-4 text-center text-sm text-gray-500 sm:text-right sm:ml-0">
+                        <div class=" text-center text-sm text-gray-500 ">
                             Laravel v {{ Illuminate\Foundation\Application::VERSION }} (PHP v {{ PHP_VERSION }})
                         </div>
                     </div>
                     @endrole
                     @role('siswa')
-                    <div class="p-6 text-center">
+                    <div class="mt-4 px-4 text-center">
                         @if(Route::has('login'))
                         @auth
-                        <a href="{{ url('/userdashboard') }}" class="text-md text-gray-700 dark:text-gray-500 ">User Dashboard</a>
+                        <a href="{{ url('/userdashboard') }}" class="text-md text-gray-700 dark:text-gray-500 ">{{Auth::user()->name}}</a>
                         @else
                         <a href="{{ route('login') }}" class="text-sm text-gray-700  dark:text-white ">Log in</a>
                         @endif
-                        @endauth
-                        <div class="ml-4 text-center text-sm text-gray-500 sm:text-right sm:ml-0">
+                        <div class=" text-center text-sm text-gray-500  ">
                             Laravel v {{ Illuminate\Foundation\Application::VERSION }} (PHP v {{ PHP_VERSION }})
                         </div>
+                        @endauth
+
                     </div>
                     @endrole
                     @role('pengurus')
-                    <div class="p-6 text-center">
+                    <div class=" text-center">
                         @if(Route::has('login'))
                         @auth
                         <a href="{{ url('/asramasiswa') }}" class="text-md text-gray-700 dark:text-gray-500 ">Dashboard</a>
                         @else
                         <a href="{{ route('login') }}" class="text-sm text-gray-700  dark:text-white ">Log in</a>
                         @endif
-                        @endauth
-                        <div class="ml-4 text-center text-sm text-gray-500 sm:text-right sm:ml-0">
+                        <div class=" text-center text-sm text-gray-500  ">
                             Laravel v {{ Illuminate\Foundation\Application::VERSION }} (PHP v {{ PHP_VERSION }})
                         </div>
+                        @endauth
+
                     </div>
                     @endrole
                 </div>

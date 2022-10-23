@@ -1,9 +1,9 @@
 <x-app-layout>
     <x-slot name="header">
         @if ($kelasmi)
-        @section('title',$kelasmi->nama_kelas )
+        @section('title'," - Kelas :". $kelasmi->nama_kelas )
         <h2 class="font-semibold text-xl  leading-tight">
-            {{ __('Report Per Peringkat') }}
+            Report Per Peringkat :{{$kelasmi->nama_kelas }}
         </h2>
         @endif
     </x-slot>
