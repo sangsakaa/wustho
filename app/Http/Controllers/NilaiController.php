@@ -38,6 +38,7 @@ class NilaiController extends Controller
             ->join('periode', 'periode.id', 'kelasmi.periode_id')
             ->join('semester', 'semester.id', 'periode.semester_id')
             ->select('kelasmi.id', 'kelasmi.nama_kelas', 'periode.periode', 'semester.ket_semester')
+            ->where('kelasmi.periode_id', session('periode_id'))
             ->orderBy('kelasmi.nama_kelas')
             ->get();
         $dataJumlahPeserta = Kelasmi::query()
@@ -60,6 +61,7 @@ class NilaiController extends Controller
                 }
             )
             ->selectRaw('nilaimapel.id, kelas.kelas, nama_kelas, semester.semester, semester.ket_semester, guru.nama_guru, mapel.mapel, kelasmi.periode_id, periode.periode, count(nilai.nilai_harian) as jumlah_nilai_harian, count(nilai.nilai_ujian) as jumlah_nilai_ujian, jumlah_peserta_kelas')
+            ->where('kelasmi.periode_id', session('periode_id'))
             ->groupBy(
                 'nilaimapel.id',
                 'kelas.kelas',
@@ -77,7 +79,7 @@ class NilaiController extends Controller
             $data->where('nama_kelas', 'like', '%' . request('cari') . '%')
                 ->orWhere('ket_semester', 'like', '%' . request('cari') . '%')
                 ->orWhere('nama_kelas', 'like', '%' . request('cari') . '%')
-            ->orWhere('nama_guru', 'like', '%' . request('cari') . '%')
+                ->orWhere('nama_guru', 'like', '%' . request('cari') . '%')
                 ->orWhere('mapel', 'like', '%' . request('cari') . '%');
         }
         // dd($data);
@@ -227,29 +229,29 @@ class NilaiController extends Controller
     {
         $siswa_id = Auth::user()->siswa_id;
         $user = Siswa::query()
-        ->join('nis', 'nis.siswa_id', '=', 'siswa.id')
-        ->where('siswa.id', $siswa_id)->first();
+            ->join('nis', 'nis.siswa_id', '=', 'siswa.id')
+            ->where('siswa.id', $siswa_id)->first();
         $kelasmiSiswa = Kelasmi::query()
             ->join('pesertakelas', 'pesertakelas.kelasmi_id', '=', 'kelasmi.id')
             ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
             ->join('semester', 'semester.id', 'periode.semester_id')
             ->where('pesertakelas.siswa_id', $siswa_id)
             ->select('kelasmi.id', 'kelasmi.nama_kelas', 'periode.periode', 'semester.ket_semester');
-        
-        
+
+
         $kelasmiTerpilih =
             Kelasmi::query()
             ->join('pesertakelas', 'pesertakelas.kelasmi_id', '=', 'kelasmi.id')
             ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
             ->join('semester', 'semester.id', 'periode.semester_id')
             ->where('pesertakelas.siswa_id', $siswa_id)
-        ->select('kelasmi.id', 'kelasmi.nama_kelas', 'semester.semester', 'periode.periode', 'semester.ket_semester', 'pesertakelas.id as pesertakelas_id')
+            ->select('kelasmi.id', 'kelasmi.nama_kelas', 'semester.semester', 'periode.periode', 'semester.ket_semester', 'pesertakelas.id as pesertakelas_id')
             ->when($request->kelasmi, function ($query, $kelasmi) {
                 $query->where('kelasmi.id', $kelasmi);
             }, function ($query) {
                 $query->latest('periode.created_at');
             })
-        ->first();
+            ->first();
         $dataNilai = Nilaimapel::query()
             ->join('nilai', function ($join) use ($kelasmiTerpilih) {
                 $join->on('nilai.nilaimapel_id', '=', 'nilaimapel.id')
@@ -266,7 +268,7 @@ class NilaiController extends Controller
             'dataNilai' => $dataNilai,
             'title' => $title,
             'user' => $user
-            
+
         ]);
     }
 }
