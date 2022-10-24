@@ -55,7 +55,7 @@
                                 <th class="border px-1 w-9" rowspan="2">Kls</th>
                                 <th class="border px-1 " colspan="{{ $periodeBulan->count() }}">Tanggal</th>
                             </tr>
-                            <tr  class="border text-xs sm:text-sm">
+                            <tr class="border text-xs sm:text-sm">
                                 @foreach ($periodeBulan as $hari)
                                 <th class="border {{ $hari->isThursday() ? "bg-gray-200" : "" }}">{{ $hari->day }}</th>
                                 @endforeach
@@ -63,9 +63,9 @@
                         </thead>
                         <tbody>
                             @foreach ($dataSiswa as $siswa)
-                            <tr class=" border hover:bg-gray-100  dark:hover:bg-purple-600 text-xs sm:text-sm ">
+                            <tr class=" border    text-xs sm:text-sm ">
                                 <td class="border text-center px-1">{{ $loop->iteration }}</td>
-                                <td class="border px-1">{{ $siswa->nama_siswa }}</td>
+                                <td class="border px-1 text-sm">{{ $siswa->nama_siswa }}</td>
                                 <td class="border text-center px-1">{{ $siswa->nama_kelas }}</td>
                                 @foreach ($periodeBulan as $hari)
                                 <td class="border {{ $hari->isThursday() ? "bg-gray-200" : "" }}"></td>
