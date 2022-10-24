@@ -26,6 +26,9 @@
                             <a href="/presensikelas" class=" py-1 px-2 bg-blue-600 rounded-md text-white hover:bg-purple-500">
                                 Presensi
                             </a>
+                            <a href="/absensikelas/blanko" class=" py-1 px-2 bg-blue-600 rounded-md text-white hover:bg-purple-500">
+                                Blanko Presensi
+                            </a>
                         </div>
 
                     </div>
