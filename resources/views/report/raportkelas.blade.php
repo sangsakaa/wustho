@@ -77,10 +77,7 @@
                             Tempat ,Tanggal Lahir
                         </div>
                         <div>
-                            : {{ $siswa->tempat_lahir }}, <?php
-                                                            $date = date_create($siswa->tanggal_lahir);
-                                                            echo date_format($date, 'd-M-Y');
-                                                            ?></p>
+                            : {{ $siswa->tempat_lahir }}, {{ Carbon\Carbon::parse($siswa->tanggal_lahir)->isoFormat('D MMMM YYYY') }}
                         </div>
                         <div>
                             Marhalah
@@ -248,10 +245,7 @@
                     <div class="  flex grid-cols-2 text-right">
                         <div class=" w-2/3"></div>
                         <div class="  text-left">
-                            Kedunglo, <?php
-                                        $date = date_create(now());
-                                        echo date_format($date, 'd-M-Y');
-                                        ?></p>
+                            Kedunglo, {{ now()->isoFormat('D MMMM YYYY') }}<br>
                             Al Mudir / Kepala <br><br><br><br>
                             <p class=" uppercase"> Muh. Bahrul Ulum, S.H</p>
                         </div>

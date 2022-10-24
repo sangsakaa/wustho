@@ -20,8 +20,8 @@
                             <div> : {{ $dataKelas->nama_kelas }} / {{ $dataKelas->semester }}</div>
                             <div>Periode</div>
                             <div> : {{ $dataKelas->periode }} {{ $dataKelas->ket_semester }}</div>
-                            <div>Presensi tanggal</div>
-                            <div> : {{ $sesikelas->tgl }}</div>
+                            <div>Presensi hari, tanggal</div>
+                            <div> : {{ Carbon\Carbon::parse($sesikelas->tgl)->isoFormat('dddd, D MMMM YYYY') }}</div>
                             <div>Disimpan pada</div>
                             <div> : {{ $diSimpanPada }}</div>
                         </div>
