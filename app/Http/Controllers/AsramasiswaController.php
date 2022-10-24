@@ -42,6 +42,7 @@ class AsramasiswaController extends Controller
                 }
             )
             ->selectRaw('asramasiswa.id,nama_asrama,ket_semester,periode,type_asrama,kuota,count(pesertaasrama.siswa_id) as jumlah_nilai_ujian, jumlah_peserta_asrama')
+            ->where('asramasiswa.periode_id', session('periode_id'))
             ->groupBy(
                 'asramasiswa.id',
                 'periode',
@@ -99,7 +100,7 @@ class AsramasiswaController extends Controller
         $asramasiswa = new Asramasiswa();
         $asramasiswa->asrama_id = $request->asrama_id;
         $asramasiswa->kuota = $request->kuota;
-        $asramasiswa->periode_id = $request->periode_id;
+        $asramasiswa->periode_id = session('periode_id');
         $asramasiswa->save();
         return redirect('asramasiswa')->with('update');
     }
@@ -165,14 +166,14 @@ class AsramasiswaController extends Controller
     public function editpeserta(Pesertaasrama $pesertaasrama, Asramasiswa $asramasiswa)
     {
 
-        
+
         return view(
             'asrama/editpeserta',
             [
                 'pesertaasrama' => $pesertaasrama,
                 'asramasiswa' => $asramasiswa
-                
-                
+
+
             ]
         );
     }

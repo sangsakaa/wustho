@@ -44,6 +44,7 @@ class KelasmiController extends Controller
                 }
             )
             ->selectRaw('kelasmi.id,nama_kelas,ket_semester,kelas,periode,kuota,count(pesertakelas.siswa_id) as jumlah_nilai_ujian, jumlah_peserta_asrama')
+            ->where('kelasmi.periode_id', session('periode_id'))
             ->groupBy(
                 'kelasmi.id',
                 'nama_kelas',
@@ -101,7 +102,7 @@ class KelasmiController extends Controller
         $kelas = new Kelasmi();
         $kelas->kelas_id = $request->kelas_id;
         $kelas->nama_kelas = $request->nama_kelas;
-        $kelas->periode_id = $request->periode_id;
+        $kelas->periode_id = session('periode_id');
         $kelas->kuota = $request->kuota;
         $kelas->save();
         return redirect('kelas_mi');

@@ -22,12 +22,12 @@
                                         <option value="{{$item->id}}"> {{$item->nama_asrama}}</option>
                                         @endforeach
                                     </select>
-                                    <select name="periode_id" id="" class="  py-1">
+                                    {{-- <select name="periode_id" id="" class="  py-1">
                                         <option value=""> -- Pilih Periode --</option>
                                         @foreach($periode as $item )
                                         <option value="{{$item->id}}"> {{$item->periode}} {{$item->ket_semester}}</option>
                                         @endforeach
-                                    </select>
+                                    </select> --}}
                                     <input type="text" name="kuota" class=" py-1 " placeholder=" Kuota : 40">
                                 </div>
                                 <div>
