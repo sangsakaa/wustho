@@ -120,11 +120,15 @@ class RaportController extends Controller
             ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
             ->join('semester', 'semester.id', '=', 'periode.semester_id')
             ->select('kelasmi.id', 'kelasmi.nama_kelas', 'periode.periode', 'semester.ket_semester')
+            ->where('kelasmi.periode_id', session('periode_id'))
             ->orderby('ket_semester')
             ->orderby('nama_kelas')
             ->get();
 
-        $kelasmi = Kelasmi::find($request->kelasmi_id);
+        $kelasmi = Kelasmi::query()
+            ->where('periode_id', session('periode_id'))
+            ->where('id', $request->kelasmi_id)
+            ->first();
 
         if ($kelasmi) {
             $dataraportkelas = Nilaimapel::query()
@@ -212,6 +216,7 @@ class RaportController extends Controller
             ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
             ->join('semester', 'semester.id', '=', 'periode.semester_id')
             ->select('kelasmi.id', 'kelasmi.nama_kelas', 'periode.periode', 'semester.ket_semester')
+            ->where('kelasmi.periode_id', session('periode_id'))
             ->orderby('ket_semester')
             ->orderby('nama_kelas')
             ->get();
@@ -220,6 +225,7 @@ class RaportController extends Controller
             ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
             ->join('semester', 'semester.id', '=', 'periode.semester_id')
             ->select('kelasmi.id', 'kelasmi.nama_kelas', 'periode.periode', 'semester.ket_semester')
+            ->where('kelasmi.periode_id', session('periode_id'))
             ->where('kelasmi.id', $request->kelasmi_id)
             ->first();
 
