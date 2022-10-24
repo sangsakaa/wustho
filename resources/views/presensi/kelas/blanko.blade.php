@@ -46,7 +46,7 @@
             <div class=" p-1 ">
                 <div class=" overflow-auto bg-white dark:bg-dark-bg  ">
                     <div class=" text-center text-green-900">
-                        <p class=" font-semibold text-2xl">
+                        <p class=" font-semibold text-3xl">
                             MADRASAH DINIYAH WUSTHA WAHIDIYAH
                         </p>
                         <p class=" font-semibold uppercase">
@@ -54,32 +54,38 @@
                         </p>
                     </div>
                     <hr class=" border-b-2 border-green-900">
-                    <div class=" text-green-900 font-semibold">
-                        Bulan : {{ $bulan->monthName }}
-                        Kelas : {{ $kelasmi->nama_kelas }}
+                    <div class=" grid grid-cols-2">
+                        <div class=" text-green-900 mt-1 text-2xl font-semibold">
+                            Bulan : {{ $bulan->monthName }}
+
+                        </div>
+                        <div class=" text-right text-4xl text-green-900 font-semibold">
+
+                            Kelas : {{ $kelasmi->nama_kelas }}
+                        </div>
                     </div>
                     <table class="table-fixed w-full text-green-900">
-                        <thead class="border border-b-2 border-green-700">
-                            <tr class="border  border-green-700 text-xs sm:text-sm">
-                                <th class="border border-green-700 px-1 w-8" rowspan="2">No</th>
-                                <th class="border border-green-700 px-1 w-1/5" rowspan="2">Nama Siswa</th>
-                                <th class="border border-green-700 px-1 w-9" rowspan="2">Kls</th>
-                                <th class="border border-green-700 px-1 " colspan="{{ $periodeBulan->count() }}">Tanggal</th>
+                        <thead class="border border-b-2 border-green-600">
+                            <tr class="border  border-green-600 text-xs sm:text-sm">
+                                <th class="border border-green-600 px-1 w-8" rowspan="2">No</th>
+                                <th class="border border-green-600 px-1 w-1/5" rowspan="2">Nama Siswa</th>
+                                <th class="border border-green-600 px-1 w-9" rowspan="2">Kls</th>
+                                <th class="border border-green-600 px-1 " colspan="{{ $periodeBulan->count() }}">Tanggal</th>
                             </tr>
-                            <tr class="border border-green-700 text-xs sm:text-sm">
+                            <tr class="border border-green-600 text-xs sm:text-sm">
                                 @foreach ($periodeBulan as $hari)
-                                <th class="border border-green-700 {{ $hari->isThursday() ? "bg-red-600 text-white" : "" }}">{{ $hari->day }}</th>
+                                <th class="border border-green-600 {{ $hari->isThursday() ? "bg-green-600 text-white" : "" }}">{{ $hari->day }}</th>
                                 @endforeach
                             </tr>
                         </thead>
                         <tbody class=" text-sm">
                             @foreach ($dataSiswa as $siswa)
-                            <tr class=" border border-green-700    text-xs sm:text-sm ">
-                                <td class="border border-green-700 text-center px-1">{{ $loop->iteration }}</td>
-                                <td class="border border-green-700 px-1 text-sm">{{ $siswa->nama_siswa }}</td>
-                                <td class="border border-green-700 text-center ">{{ $siswa->nama_kelas }}</td>
+                            <tr class=" border border-green-600    text-xs sm:text-sm ">
+                                <td class="border border-green-600 text-center px-1">{{ $loop->iteration }}</td>
+                                <td class="border border-green-600 px-1 text-sm">{{ $siswa->nama_siswa }}</td>
+                                <td class="border border-green-600 text-center ">{{ $siswa->nama_kelas }}</td>
                                 @foreach ($periodeBulan as $hari)
-                                <td class="border border-green-700 {{ $hari->isThursday() ? "bg-red-600" : "" }}"></td>
+                                <td class="border border-green-600 {{ $hari->isThursday() ? "bg-green-600" : "" }}"></td>
                                 @endforeach
                             </tr>
                             @endforeach
