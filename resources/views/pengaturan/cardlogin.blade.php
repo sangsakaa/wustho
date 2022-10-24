@@ -79,7 +79,7 @@
                                 <div class=" text-right text-sm">
                                     Nama pengguna : <br>
                                     <p class=" font-semibold">{{$user->nama_siswa}}</p>
-                                    <p>masa berlaku : status masih aktif</p>
+                                    <p class=" text-xs ">masa berlaku : status masih aktif</p>
                                 </div>
                             </div>
                             @endforeach
