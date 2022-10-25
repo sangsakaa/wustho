@@ -57,10 +57,10 @@
                                 <th class="border border-green-600 px-1 w-8">No</th>
                                 <th class="border border-green-600 px-1">Asrama</th>
                                 <th class="border border-green-600 px-1 w-9">Kls</th>
-                                <th class="border border-green-600 px-1">Total</th>
+                                <th class="border border-green-600 px-1 ">Total</th>
                                 <th class="border border-green-600 px-1">Tidak Hadir</th>
                                 <th class="border border-green-600 px-1">Hadir</th>
-                                <th class="border border-green-600 px-1 w-60">Yang tidak hadir</th>
+                                <th class="border border-green-600 px-1 w-1/3 ">Yang tidak hadir</th>
                                 <th class="border border-green-600 px-1">Keterangan</th>
                                 <th class="border border-green-600 px-1">Presentase</th>
                             </tr>
@@ -88,7 +88,7 @@
                                 <td class="border border-green-600 px-1">{{ $absensi->nama_siswa }}</td>
                                 <td class="border border-green-600 px-1">{{ $absensi->keterangan }}</td>
                                 @if ($loop->first)
-                                <td class="border border-green-600 text-center px-1" rowspan="{{ $jumlahAbsen }}">{{ number_format($dataKelas['persentase'], 1, ',') }}</td>
+                                <td class="border border-green-600 text-center px-1" rowspan="{{ $jumlahAbsen }}">{{ number_format($dataKelas['persentase'], 1, ',') }}%</td>
                                 @endif
                             </tr>
                             @endforeach
