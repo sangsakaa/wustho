@@ -83,10 +83,8 @@
 
                                     </tr>
                                     @endforeach
-
                                 </tbody>
                             </table>
-                        </form>
                         </form>
                     </div>
                 </div>

@@ -1,6 +1,8 @@
 <x-app-layout>
     <x-slot name="header">
+
         @section('title', ' | Raport')
+
         <h2 class="font-semibold text-xl  leading-tight">
             {{ __('Report Per Kelas') }}
         </h2>

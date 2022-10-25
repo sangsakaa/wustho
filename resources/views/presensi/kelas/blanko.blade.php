@@ -1,6 +1,8 @@
 <x-app-layout>
     <x-slot name="header">
-        @section('title', ' | Blanko Presensi Kelas')
+        @if($kelasmi)
+        @section('title', '| Blanko Presensi Kelas'. $kelasmi->nama_kelas)
+        @endif
         <h2 class="font-semibold text-xl leading-tight">
             {{ __('Blanko Presensi Kelas') }}
         </h2>
