@@ -169,6 +169,7 @@ Route::delete('sesikelas/{sesikelas}', [SesikelasController::class, 'destroy'])-
 Route::get('absensikelas/{sesikelas}', [AbsensikelasController::class, 'index'])->where('sesikelas', '[0-9]+')->middleware(['auth']);
 Route::post('absensikelas', [AbsensikelasController::class, 'store'])->middleware(['auth']);
 Route::get('absensikelas/blanko', [AbsensikelasController::class, 'blanko'])->middleware(['auth']);
+Route::get('absensikelas/rekap-per-hari', [AbsensikelasController::class, 'rekapPerHari'])->middleware(['auth']);
 
 // Route::get('/siswa', function () {
 //     return view('siswa.siswa');

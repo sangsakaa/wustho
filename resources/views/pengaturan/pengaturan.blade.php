@@ -29,6 +29,9 @@
                             <a href="/absensikelas/blanko" class=" py-1 px-2 bg-blue-600 rounded-md text-white hover:bg-purple-500">
                                 Blanko Presensi
                             </a>
+                            <a href="/absensikelas/rekap-per-hari" class=" py-1 px-2 bg-blue-600 rounded-md text-white hover:bg-purple-500">
+                                Rekap Absensi
+                            </a>
                         </div>
 
                     </div>

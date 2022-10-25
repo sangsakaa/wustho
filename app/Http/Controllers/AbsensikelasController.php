@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Absensikelas;
 use App\Models\Kelas;
 use App\Models\Kelasmi;
+use App\Models\Pesertaasrama;
 use App\Models\Pesertakelas;
 use App\Models\Sesikelas;
 use Carbon\Carbon;
@@ -137,6 +138,76 @@ class AbsensikelasController
             'dataSiswa' => $dataSiswa,
             'periodeBulan' => $periodeBulan,
             'bulan' => $bulan,
+        ]);
+    }
+
+    public function rekapPerHari(Request $request)
+    {
+        $datakelasmi = Kelasmi::query()
+            ->join('periode', 'periode.id', 'kelasmi.periode_id')
+            ->join('semester', 'semester.id', 'periode.semester_id')
+            ->select('kelasmi.id', 'kelasmi.nama_kelas', 'periode.periode', 'semester.ket_semester')
+            ->where('kelasmi.periode_id', session('periode_id'))
+            ->orderBy('kelasmi.nama_kelas')
+            ->get();
+
+        $tgl = $request->tgl ? Carbon::parse($request->tgl) : now();
+
+        $pesertaasrama = Pesertaasrama::query()
+            ->join('siswa', 'siswa.id', '=', 'pesertaasrama.siswa_id')
+            ->join('asramasiswa', 'asramasiswa.id', '=', 'pesertaasrama.asramasiswa_id')
+            ->join('asrama', 'asrama.id', '=', 'asramasiswa.asrama_id')
+            ->select('siswa.id as siswa_id', 'asrama.nama_asrama')
+            ->where('asramasiswa.periode_id', session('periode_id'));
+
+        $dataAbsensiKelas = Absensikelas::query()
+            ->join('sesikelas', 'sesikelas.id', '=', 'absensikelas.sesikelas_id')
+            ->join('pesertakelas', 'pesertakelas.id', '=', 'absensikelas.pesertakelas_id')
+            ->join('siswa', 'siswa.id', '=', 'pesertakelas.siswa_id')
+            ->join('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
+            ->joinSub($pesertaasrama, 'peserta_asrama', function ($join) {
+                $join->on('peserta_asrama.siswa_id', '=', 'siswa.id');
+            })
+            ->select('peserta_asrama.nama_asrama', 'kelasmi.nama_kelas', 'siswa.nama_siswa', 'absensikelas.keterangan')
+            ->where('sesikelas.tgl', $tgl->toDateString())
+            ->orderBy('peserta_asrama.nama_asrama')
+            ->orderBy('kelasmi.nama_kelas')
+            ->orderBy('absensikelas.keterangan')
+            ->orderBy('siswa.nama_siswa')
+            ->get();
+
+        $absensiGrup = $dataAbsensiKelas
+            ->where('keterangan', '!=', 'hadir')
+            ->groupBy('nama_asrama')
+            ->map(function ($item, $key) {
+                return $item
+                    ->groupBy('nama_kelas');
+            });
+
+        $rekapAbsensi = $dataAbsensiKelas
+            ->groupBy('nama_asrama')
+            ->map(function ($item, $nama_asrama) use ($absensiGrup) {
+                return $item
+                    ->groupBy('nama_kelas')
+                    ->map(function ($item, $nama_kelas) use ($absensiGrup, $nama_asrama) {
+                        $total = $item->count();
+                        $hadir = $item->where('keterangan', 'hadir')->count();
+                        return [
+                            'hadir' => $hadir,
+                            'tidakHadir' => $total - $hadir,
+                            'total' => $total,
+                            'persentase' => $hadir / $total * 100,
+                            'absensi' => $absensiGrup[$nama_asrama][$nama_kelas],
+                        ];
+                    });
+            });
+
+        // dd($rekapAbsensi);s
+
+        return view('presensi.kelas.rekapPerHari', [
+            'dataKelasMi' => $datakelasmi,
+            'rekapAbsensi' => $rekapAbsensi,
+            'tgl' => $tgl,
         ]);
     }
 }
