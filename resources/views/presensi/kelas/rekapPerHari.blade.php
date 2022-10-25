@@ -86,7 +86,7 @@
                                 <td class="border border-green-600 text-center px-1" rowspan="{{ $jumlahAbsen }}">{{ $dataKelas['hadir'] }}</td>
                                 @endif
                                 <td class="border border-green-600 px-1">{{ $absensi->nama_siswa }}</td>
-                                <td class="border border-green-600 px-1">{{ $absensi->keterangan }}</td>
+                                <td class="border border-green-600 px-1 capitalize">{{ $absensi->keterangan }}</td>
                                 @if ($loop->first)
                                 <td class="border border-green-600 text-center px-1" rowspan="{{ $jumlahAbsen }}">{{ number_format($dataKelas['persentase'], 1, ',') }}%</td>
                                 @endif
