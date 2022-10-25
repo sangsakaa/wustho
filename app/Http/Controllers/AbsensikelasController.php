@@ -192,17 +192,18 @@ class AbsensikelasController
                     ->map(function ($item, $nama_kelas) use ($absensiGrup, $nama_asrama) {
                         $total = $item->count();
                         $hadir = $item->where('keterangan', 'hadir')->count();
+                        $tidakHadir = $total - $hadir;
+                        if ($tidakHadir === 0) return;
                         return [
                             'hadir' => $hadir,
-                            'tidakHadir' => $total - $hadir,
+                            'tidakHadir' => $tidakHadir,
                             'total' => $total,
                             'persentase' => $hadir / $total * 100,
                             'absensi' => $absensiGrup[$nama_asrama][$nama_kelas],
                         ];
-                    });
+                    })
+                    ->filter();
             });
-
-        // dd($rekapAbsensi);s
 
         return view('presensi.kelas.rekapPerHari', [
             'dataKelasMi' => $datakelasmi,
