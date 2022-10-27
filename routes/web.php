@@ -128,6 +128,8 @@ Route::get('cardlogin', [PengaturanController::class, 'cardlogin'])->middleware(
 Route::get('periode', [PengaturanController::class, 'periode'])->middleware(['auth'])->name('periode');
 Route::post('periode', [PengaturanController::class, 'storeperiode'])->middleware(['auth']);
 Route::delete('periode/{periode}', [PengaturanController::class, 'deleteperiode'])->middleware(['auth']);
+Route::get('sap', [PengaturanController::class, 'sap'])->middleware(['auth']);
+Route::get('plotingkelas', [PengaturanController::class, 'plotingkelas'])->middleware(['auth']);
 
 // Controller Sesi Asrama
 

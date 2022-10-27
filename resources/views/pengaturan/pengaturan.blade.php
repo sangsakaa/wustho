@@ -32,6 +32,12 @@
                             <a href="/absensikelas/rekap-per-hari" class=" py-1 px-2 bg-blue-600 rounded-md text-white hover:bg-purple-500">
                                 Rekap Absensi
                             </a>
+                            <a href="/sap" class=" py-1 px-2 bg-blue-600 rounded-md text-white hover:bg-purple-500">
+                                Blanko SAP
+                            </a>
+                            <a href="/plotingkelas" class=" py-1 px-2 bg-blue-600 rounded-md text-white hover:bg-purple-500">
+                                Ploting Kelas
+                            </a>
                         </div>
 
                     </div>

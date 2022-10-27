@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Kelasmi;
 use App\Models\Nilai;
 use App\Models\Periode;
 use App\Models\Nilaimapel;
@@ -20,7 +21,7 @@ class PengaturanController extends Controller
             ->join('siswa', 'siswa.id', '=', 'pesertakelas.siswa_id')
             ->join('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
             ->join('kelas', 'kelas.id', '=', 'kelasmi.kelas_id')
-        ->select('pesertakelas.id', 'siswa.nama_siswa', 'kelas.kelas', 'kelasmi.nama_kelas');
+            ->select('pesertakelas.id', 'siswa.nama_siswa', 'kelas.kelas', 'kelasmi.nama_kelas');
         if (request('cari')) {
             $raport->where('nama_siswa', 'like', '%' . request('cari') . '%');
         }
@@ -97,5 +98,68 @@ class PengaturanController extends Controller
                 'peserta' => $peserta
             ]
         );
+    }
+
+    public function sap(Request $request)
+    {
+        $datakelasmi = Kelasmi::query()
+            ->join('periode', 'periode.id', 'kelasmi.periode_id')
+            ->join('semester', 'semester.id', 'periode.semester_id')
+            ->select('kelasmi.id', 'kelasmi.nama_kelas', 'periode.periode', 'semester.ket_semester')
+            ->where('kelasmi.periode_id', session('periode_id'))
+            ->orderBy('kelasmi.nama_kelas')
+            ->get();
+
+        $kelasmi = Kelasmi::query()
+            ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
+            ->join('semester', 'semester.id', '=', 'periode.semester_id')
+            ->select('kelasmi.id', 'kelasmi.nama_kelas', 'periode.periode', 'semester.ket_semester')
+            ->where('kelasmi.periode_id', session('periode_id'))
+            ->where('kelasmi.id', $request->kelasmi_id)
+            ->first();
+
+        if (!$kelasmi) {
+            return view('pengaturan.sap', [
+                'dataKelasMi' => $datakelasmi,
+                'kelasmi' => $kelasmi,
+                'dataSiswa' => collect(),
+                'dataMapel' => collect(),
+            ]);
+        }
+
+        $dataMapel = Nilaimapel::query()
+            ->join('guru', 'guru.id', '=', 'nilaimapel.guru_id')
+            ->join('mapel', 'mapel.id', '=', 'nilaimapel.mapel_id')
+            ->where('nilaimapel.kelasmi_id', $kelasmi->id)
+            ->get();
+
+        $dataSiswa = Pesertakelas::query()
+            ->join('siswa', 'siswa.id', '=', 'pesertakelas.siswa_id')
+            ->join('nis', 'siswa.id', '=', 'nis.siswa_id')
+            ->join('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
+            ->join('kelas', 'kelas.id', '=', 'kelasmi.kelas_id')
+            ->where('pesertakelas.kelasmi_id', $kelasmi->id)
+            ->select(
+                'pesertakelas.id',
+                'siswa.nama_siswa',
+                'nis.nis',
+                'kelas.kelas',
+                'kelasmi.nama_kelas',
+            )
+            ->orderby('siswa.nama_siswa')
+            ->get();
+
+        return view('pengaturan.sap', [
+            'dataKelasMi' => $datakelasmi,
+            'kelasmi' => $kelasmi,
+            'dataSiswa' => $dataSiswa,
+            'dataMapel' => $dataMapel,
+        ]);
+    }
+
+    public function plotingkelas(Request $request)
+    {
+
+        return view('pengaturan.plotingkelas');
     }
 }
