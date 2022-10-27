@@ -46,10 +46,14 @@
                         </p>
                     </div>
                     <hr class=" border-b-2 border-green-900">
+                    <div class="  text-2xl text-center uppercase font-semibold">
+                        Laporan Harian
+                    </div>
                     <div class=" grid grid-cols-2">
-                        <div class=" text-green-900 mt-1 text-2xl font-semibold">
+                        <div class=" text-green-900 mt-1 text-sm font-semibold">
                             Hari, tanggal : {{ $tgl->isoFormat('dddd, D MMMM YYYY') }}
                         </div>
+
                     </div>
                     <table class="table-fixed w-full text-green-900">
                         <thead class="border border-b-2 border-green-600">

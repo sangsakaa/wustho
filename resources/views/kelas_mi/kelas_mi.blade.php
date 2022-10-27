@@ -90,7 +90,7 @@
                                                     <span class=" text-xs bg-green-800 px-4 py-1 rounded-md capitalize text-white">still</span>
                                                     @endif
                                             </td>
-                                            <td class=" text-xs  text-center mt-2  flex gap-1 justify-center  align-middle   ">
+                                            <td class=" text-xs  text-center mt-1   flex gap-1 justify-center  align-middle   ">
                                                 <form action="/kelas_mi/{{$item->id}}" method="post">
                                                     @csrf
                                                     @method('delete')
