@@ -76,29 +76,28 @@
                             <tr class="border  border-green-600 text-xs sm:text-sm">
                                 <th class="border border-green-600 px-1 w-8" rowspan="2">NO</th>
                                 <th class="border border-green-600 px-1 w-1/5">TANGGAL KBM</th>
-                                @for ($i = 0; $i < 17; $i++)
-                                <th class="border border-green-600 px-1"></th>
-                                @endfor
-                                <th class="border border-green-600 px-1" colspan="2">NILAI TUGAS</th>
-                                <th class="border border-green-600 px-1" rowspan="2">KETERANGAN</th>
+                                @for ($i = 0; $i < 17; $i++) <th class="border border-green-600 px-1">
+                                    </th>
+                                    @endfor
+                                    <th class="border border-green-600 px-1 text-xs" colspan="2">NILAI TUGAS</th>
+                                    <th class="border border-green-600 px-1 text-xs" rowspan="2">KET</th>
                             </tr>
                             <tr class="border border-green-600 text-xs sm:text-sm">
                                 <th class="border border-green-600 px-1">NAMA</th>
-                                @for ($i = 1; $i <= 17; $i++)
-                                <th class="border border-green-600 px-1">PERT {{ $i }}</th>
-                                @endfor
-                                <th class="border border-green-600 px-1">1</th>
-                                <th class="border border-green-600 px-1">2</th>
+                                @for ($i = 1; $i <= 17; $i++) <th class="border border-green-600 px-1 text-xs">PERT {{ $i }}</th>
+                                    @endfor
+                                    <th class="border border-green-600 px-1">1</th>
+                                    <th class="border border-green-600 px-1">2</th>
                             </tr>
                         </thead>
                         <tbody class=" text-sm">
                             @foreach ($dataSiswa as $siswa)
                             <tr class=" border border-green-600 text-xs sm:text-sm ">
-                                <td class="border border-green-600 text-center px-1">{{ $loop->iteration }}</td>
+                                <td class="border border-green-600 text-center px-1 text-xs">{{ $loop->iteration }}</td>
                                 <td class="border border-green-600 px-1 text-sm">{{ $siswa->nama_siswa }}</td>
-                                @for ($i = 0; $i < 20; $i++)
-                                <td class="border border-green-600 px-1"></td>
-                                @endfor
+                                @for ($i = 0; $i < 20; $i++) <td class="border border-green-600 px-1">
+                                    </td>
+                                    @endfor
                             </tr>
                             @endforeach
                         </tbody>

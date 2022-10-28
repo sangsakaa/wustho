@@ -88,6 +88,9 @@
               @endforeach
             </tbody>
           </table>
+          <div class=" mt-1">
+            {{$users}}
+          </div>
         </div>
       </div>
     </div>
