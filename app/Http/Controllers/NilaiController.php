@@ -76,11 +76,13 @@ class NilaiController extends Controller
             )
             ->orderBy('nama_kelas');
         if (request('cari')) {
-            $data->where('nama_kelas', 'like', '%' . request('cari') . '%')
+            $data->where(function ($query) {
+                $query->where('nama_kelas', 'like', '%' . request('cari') . '%')
                 ->orWhere('ket_semester', 'like', '%' . request('cari') . '%')
                 ->orWhere('nama_kelas', 'like', '%' . request('cari') . '%')
                 ->orWhere('nama_guru', 'like', '%' . request('cari') . '%')
-                ->orWhere('mapel', 'like', '%' . request('cari') . '%');
+                ->orWhere('mapel', 'like', '%' . request('cari') . '%');});
+
         }
         // dd($data);
         return view(
