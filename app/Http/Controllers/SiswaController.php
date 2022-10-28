@@ -45,13 +45,15 @@ class SiswaController extends Controller
                     'siswa.jenis_kelamin',
                     
                 ]
-            );
+            )->orderBy(
+                'nis',
+                'asc'
+        );
             // ->latest()->orderBy('nama_siswa');
         if (request('cari')) {
             $data->where('nama_siswa', 'like', '%' . request('cari') . '%')
             ->orWhere('nis', 'like', '%' . request('cari') . '%')
-            ->orWhere('tanggal_masuk', 'like', '%' . request('cari') . '%')
-            ->orderBy('nis', 'asc');
+            ->orWhere('tanggal_masuk', 'like', '%' . request('cari') . '%');
         }
 
         return view('siswa/siswa', ['dataSiswa' => $data->paginate(10)]);
