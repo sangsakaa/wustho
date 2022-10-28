@@ -128,7 +128,7 @@ class AbsensikelasController
                 'kelas.kelas',
                 'kelasmi.nama_kelas',
             )
-            ->orderby('nis.nis')
+            // ->orderby('nis.nis')
             ->orderby('siswa.nama_siswa')
             ->get();
 
