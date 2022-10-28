@@ -135,11 +135,11 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        if ($request->siswa_id) {
-            $user->assignRole('siswa');
-        } else {
-            $user->assignRole('super admin');
-        }
+        // if ($request->siswa_id) {
+        //     $user->assignRole('siswa');
+        // } else {
+        //     $user->assignRole('super admin');
+        // }
 
         event(new Registered($user));
         // Auth::login($user);
