@@ -38,11 +38,18 @@
             line-height: 1.5
         }
 
+
         *,
         :after,
         :before {
             box-sizing: border-box;
             border: 0 solid #e2e8f0
+        }
+
+        #wrapper {
+            width: 100%;
+            background-color: gray;
+            border-radius: 30px;
         }
 
         a {
@@ -421,8 +428,8 @@
             </div>
             <hr class=" dark:border-white">
             <div class="mt-2 w-full  dark:bg-dark-bg overflow-hidden shadow  ">
-                <div class="grid grid-cols-1 md:grid-cols-1">
-                    <div class="py-1 text-center">
+                <div id="wrapper" class="grid grid-cols-1 md:grid-cols-1 rounded-md">
+                    <div class="py-1 text-center w-full ">
                         @if(Route::has('login'))
                         @auth
                         <div class=" bg-white p-2   ">
@@ -430,6 +437,12 @@
                         </div>
                         @else
                         <a href="{{ route('login') }}" class="text-sm text-gray-700  dark:text-white  p-4 ">Log in</a>
+                        <div class=" w-full dark:text-white">
+                            <p>P</p>
+                            <p>P</p>
+                            <p>P</p>
+
+                        </div>
                         @endif
                         @endauth
                     </div>
@@ -474,7 +487,6 @@
                             Laravel v {{ Illuminate\Foundation\Application::VERSION }} (PHP v {{ PHP_VERSION }})
                         </div>
                         @endauth
-
                     </div>
                     @endrole
                 </div>

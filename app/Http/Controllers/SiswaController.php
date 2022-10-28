@@ -36,14 +36,6 @@ class SiswaController extends Controller
         // }
         $data = Siswa::query()
             ->leftjoin('nis', 'nis.siswa_id', '=', 'siswa.id')
-            ->leftjoin('pesertaasrama', 'pesertaasrama.siswa_id', '=', 'siswa.id')
-            ->leftjoin('asramasiswa', 'asramasiswa.id', '=', 'pesertaasrama.asramasiswa_id')
-            ->leftjoin('asrama', 'asrama.id', '=', 'asramasiswa.asrama_id')
-            ->leftjoin('pesertakelas', 'pesertakelas.siswa_id', '=', 'siswa.id')
-            ->leftjoin('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
-            ->orderBy('nis')
-            ->orderBy('nama_siswa')
-            // ->orderBy('nama_siswa')
             ->select(
                 [
                     'nis.nis',
@@ -51,17 +43,12 @@ class SiswaController extends Controller
                     'siswa.id',
                     'siswa.nama_siswa',
                     'siswa.jenis_kelamin',
-                    'siswa.tempat_lahir',
-                    'siswa.tanggal_lahir',
-                    'kelasmi.nama_kelas',
-                    'asrama.nama_asrama'
+                    
                 ]
             );
             // ->latest()->orderBy('nama_siswa');
         if (request('cari')) {
             $data->where('nama_siswa', 'like', '%' . request('cari') . '%')
-                ->orWhere('Kota_asal', 'like', '%' . request('cari') . '%')
-            ->orWhere('nama_kelas', 'like', '%' . request('cari') . '%')
             ->orWhere('nis', 'like', '%' . request('cari') . '%')
             ->orWhere('tanggal_masuk', 'like', '%' . request('cari') . '%')
             ->orderBy('nis', 'asc');

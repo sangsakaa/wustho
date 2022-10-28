@@ -7,21 +7,21 @@
     </x-slot>
     <div class=" ">
         <div class=" mx-auto ">
-            <div class="bg-white dark:bg-dark-bg overflow-hidden shadow-sm sm:rounded-md">
+            <div class="bg-white dark:bg-dark-bg overflow-hidden shadow-sm ">
                 <div class="p-2">
                     <div class=" flex w-full gap-1">
                         <a href="/addkelas_mi">
-                            <button class=" flex bg-blue-500 text-white p-1 rounded-md">
+                            <button class=" flex bg-blue-500 text-white p-1 px-4 rounded-md">
                                 kelas mi
                             </button>
                         </a>
                         <a href="/addasramasiswa">
-                            <button class=" flex bg-blue-500 text-white p-1 rounded-md">
+                            <button class=" flex bg-blue-500 text-white p-1 px-4 rounded-md">
                                 asrama siswa
                             </button>
                         </a>
                         <a href="/sesiasrama">
-                            <button class=" flex bg-blue-500 text-white p-1 rounded-md">
+                            <button class=" flex bg-blue-500 text-white p-1 px-4 rounded-md">
                                 Presensi Asrama
                             </button>
                         </a>
@@ -30,9 +30,9 @@
             </div>
         </div>
     </div>
-    <div class="">
+    <div class=" mt-2">
         <div class=" mx-auto ">
-            <div class="bg-white dark:bg-dark-bg overflow-hidden shadow-sm sm:rounded-lg">
+            <div class="bg-white dark:bg-dark-bg overflow-hidden shadow-sm">
                 <div class="p-2 ">
                     <div class=" w-full ">
                         <div class=" overflow-auto">
