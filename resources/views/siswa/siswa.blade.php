@@ -81,7 +81,7 @@
                                 {{$peserta->nama_asrama}}
                             </td>
                             <td class=" text-sm  border text-center ">
-                                {{$peserta->kelasTerakhir->kelasMi}}
+                                {{$peserta->kelasTerakhir->kelasMi->nama_kelas}}
                             </td>
                             <td class=" text-sm  border text-center ">
                                 <?php
