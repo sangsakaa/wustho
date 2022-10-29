@@ -4,8 +4,6 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
-
     <title>SMEDI @yield('title')</title>
 
     <!-- Fonts -->
@@ -436,12 +434,8 @@
                             Selamat Anda Sudah Login
                         </div>
                         @else
-                        <a href="{{ route('login') }}" class="text-sm text-gray-700  dark:text-white  p-4 ">Log in</a>
+                        <a href="{{ route('login') }}" class="text-sm text-gray-700 dark:text-white  p-4 ">Log in</a>
                         <div class=" w-full dark:text-white">
-                            <p>P</p>
-                            <p>P</p>
-                            <p>P</p>
-
                         </div>
                         @endif
                         @endauth

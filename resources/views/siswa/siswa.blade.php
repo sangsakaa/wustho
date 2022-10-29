@@ -60,6 +60,7 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @if($dataSiswa->count() != null)
                         @foreach ( $dataSiswa as $peserta)
                         <tr class=" text-xs  border hover:bg-blue-100  sm:text-sm ">
                             <td class=" text-sm  border  text-center py-1 ">
@@ -70,7 +71,10 @@
                             </td>
                             <td class=" text-xs sm:text-sm  border px-2">
                                 <a href="/siswa/{{$peserta->id}}">
-                                    {{$peserta->nama_siswa}}
+                                    <!-- {{$peserta->nama_siswa}} -->
+                                    {{ucwords($peserta->nama_siswa)}}
+                                    {{$peserta->kelasTerakhir}}
+
                                 </a>
                             </td>
                             <td class=" text-sm  border text-center ">
@@ -114,6 +118,7 @@
 
                         </tr>
                         @endforeach
+                        @endif
 
                     </tbody>
                 </table>
