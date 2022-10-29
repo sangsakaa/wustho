@@ -47,7 +47,7 @@
                     </form>
                 </div>
                 <table class=" w-full  ">
-                    <thead class=" dark:bg-dark-bg bg-gray-100   ">
+                    <thead class=" dark:bg-dark-bg bg-gray-100 uppercase   ">
                         <tr class=" border-collapse  sm:text-sm text-xs">
                             <th class=" py-1 border text-center">No</th>
                             <th class=" px-1 border text-center uppercase">nis</th>
@@ -71,16 +71,12 @@
                             </td>
                             <td class=" text-xs sm:text-sm  border px-2">
                                 <a href="/siswa/{{$peserta->id}}">
-                                    <!-- {{$peserta->nama_siswa}} -->
-                                    {{ucwords($peserta->nama_siswa)}}
-
-
+                                    {{$peserta->nama_siswa}}
                                 </a>
                             </td>
                             <td class=" text-sm  border text-center ">
                                 {{$peserta->jenis_kelamin}}
                             </td>
-
                             <td class=" text-sm  border text-center ">
                                 {{$peserta->nama_asrama}}
                             </td>
@@ -115,11 +111,9 @@
                                     Detail
                                 </a>
                             </td>
-
                         </tr>
                         @endforeach
                         @endif
-
                     </tbody>
                 </table>
                 <div colspan="10" class=" px-1 dark:text-purple-600 dark:bg-dark-bg text-xs sm:text-sm mt-1">
