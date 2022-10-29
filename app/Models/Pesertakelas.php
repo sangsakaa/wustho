@@ -16,4 +16,8 @@ class Pesertakelas extends Model
     {
         return $this->belongsTo(Siswa::class, 'siswa_id', 'id');
     }
+    public function kelasMi()
+    {
+        return $this->belongsTo(Kelasmi::class, 'kelasmi_id', 'id');
+    }
 }

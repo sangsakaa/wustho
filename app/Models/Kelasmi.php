@@ -13,6 +13,12 @@ class Kelasmi extends Model
     protected $table = "kelasmi";
 
 
+    public function KelasMi()
+    {
+        return $this->hasMany(Pesertakelas::class, 'id', 'kelasmi');
+    }
+
+
     
 
     

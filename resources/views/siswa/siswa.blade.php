@@ -47,7 +47,7 @@
                     </form>
                 </div>
                 <table class=" w-full  ">
-                    <thead class=" dark:bg-dark-bg bg-gray-100 uppercase   ">
+                    <thead class=" dark:bg-dark-bg bg-gray-100 uppercase">
                         <tr class=" border-collapse  sm:text-sm text-xs">
                             <th class=" py-1 border text-center">No</th>
                             <th class=" px-1 border text-center uppercase">nis</th>
@@ -81,7 +81,7 @@
                                 {{$peserta->nama_asrama}}
                             </td>
                             <td class=" text-sm  border text-center ">
-                                {{$peserta->kelasTerakhir->kelasmi_id}}
+                                {{$peserta->kelasTerakhir->kelasMi}}
                             </td>
                             <td class=" text-sm  border text-center ">
                                 <?php
