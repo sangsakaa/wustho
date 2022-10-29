@@ -73,7 +73,7 @@
                                 <a href="/siswa/{{$peserta->id}}">
                                     <!-- {{$peserta->nama_siswa}} -->
                                     {{ucwords($peserta->nama_siswa)}}
-                                    {{$peserta->kelasTerakhir->nama_kelas}}
+                                    {{$peserta->kelasTerakhir->kelasmi_id}}
 
                                 </a>
                             </td>
