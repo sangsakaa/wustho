@@ -18,4 +18,8 @@ class Siswa extends Model
     {
         return $this->hasOne(Pesertakelas::class)->latestOfMany();
     }
+    public function asramaTerkhir()
+    {
+        return $this->hasOne(Pesertaasrama::class)->latestOfMany();
+    }
 }

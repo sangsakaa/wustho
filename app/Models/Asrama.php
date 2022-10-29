@@ -9,4 +9,8 @@ class Asrama extends Model
 {
     use HasFactory;
     protected $table = "asrama";
+    public function asramaSiswa()
+    {
+        return $this->hasMany(Asramasiswa::class, 'asrama_id', 'id');
+    }
 }

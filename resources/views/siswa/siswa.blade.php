@@ -78,7 +78,7 @@
                                 {{$peserta->jenis_kelamin}}
                             </td>
                             <td class=" text-sm  border text-center ">
-                                {{$peserta->nama_asrama}}
+                                {{$peserta->asramaTerkhir->asramaSiswa->asrama->nama_asrama}}
                             </td>
                             <td class=" text-sm  border text-center ">
                                 {{$peserta->kelasTerakhir->kelasMi->nama_kelas}}
