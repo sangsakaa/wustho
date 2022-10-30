@@ -66,7 +66,7 @@
                                 <th class="border border-green-600 px-1 w-11">Hadir</th>
                                 <th class="border border-green-600 px-1 w-1/3 ">Yang tidak hadir</th>
                                 <th class="border border-green-600 px-1">Ket</th>
-                                <th class="border border-green-600 px-1 w-1/6 ">Presentase</th>
+                                <th class="border border-green-600 px-1 w-30 ">Presentase Kehadiran</th>
                             </tr>
                         </thead>
                         <tbody class=" text-sm">
