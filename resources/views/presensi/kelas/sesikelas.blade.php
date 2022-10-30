@@ -50,7 +50,7 @@
                                     <th class=" border px-1 ">Tanggal</th>
                                     <th class=" border px-1 ">Kelas</th>
                                     <th class=" border px-1 ">Periode</th>
-                                    <th class=" border px-1 w-10 sm:w-10">Status</th>
+
                                     <th class=" border px-1">Aksi</th>
                                 </tr>
                             </thead>
@@ -71,9 +71,7 @@
                                             {{ $sesi->periode }} {{ $sesi->ket_semester }}
                                         </a>
                                     </th>
-                                    <th class=" border text-center px-1 py-2">
-                                        status
-                                    </th>
+
                                     <td class=" grid justify-items-center py-1 ">
                                         <form action="/sesikelas/{{ $sesi->id }}" method="post">
                                             @csrf

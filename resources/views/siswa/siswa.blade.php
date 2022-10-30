@@ -71,7 +71,7 @@
                             </td>
                             <td class=" text-xs sm:text-sm  border px-2">
                                 <a href="/siswa/{{$peserta->id}}">
-                                    {{$peserta->nama_siswa}}
+                                    {{ucwords($peserta->nama_siswa)}}
                                 </a>
                             </td>
                             <td class=" text-sm  border text-center ">
