@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         @if($kelasmi)
-        @section('title', '| Blanko Presensi Kelas'. $kelasmi->nama_kelas)
+        @section('title', '| Blanko Presensi Kelas : '. $kelasmi->nama_kelas)
         @endif
         <h2 class="font-semibold text-xl leading-tight">
             {{ __('Blanko Presensi Kelas') }}
@@ -84,7 +84,7 @@
                             @foreach ($dataSiswa as $siswa)
                             <tr class=" border border-green-600    text-xs sm:text-sm ">
                                 <td class="border border-green-600 text-center px-1">{{ $loop->iteration }}</td>
-                                <td class="border border-green-600 px-1 text-sm">{{ $siswa->nama_siswa }}</td>
+                                <td class="border border-green-600 px-1 text-xs uppercase ">{{ strtolower($siswa->nama_siswa) }}</td>
                                 <td class="border border-green-600 text-center ">{{ $siswa->nama_kelas }}</td>
                                 @foreach ($periodeBulan as $hari)
                                 <td class="border border-green-600 {{ $hari->isThursday() ? "bg-green-600" : "" }}"></td>

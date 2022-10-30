@@ -1,4 +1,4 @@
-<x-perfect-scrollbar as="nav" aria-label="main" class="flex flex-col flex-1 gap-2 px-3">
+<x-perfect-scrollbar as="nav" aria-label="main" class="flex flex-col flex-1 gap-1 px-2">
     @role('super admin')
     <x-sidebar.link title="Dashboard" href="/dashboard" :isActive="request()->routeIs('dashboard')">
         <x-slot name="icon">
@@ -61,7 +61,7 @@
             <x-icons.home class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
         </x-slot>
     </x-sidebar.link>
-    <x-sidebar.link title=" Persensi" href="/sesikelas" :isActive="request()->routeIs('sesikelas')">
+    <x-sidebar.link title=" Presensi" href="/sesikelas" :isActive="request()->routeIs('sesikelas')">
         <x-slot name="icon">
             <x-icons.books class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
         </x-slot>
@@ -81,6 +81,23 @@
             <x-icons.setting class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
         </x-slot>
     </x-sidebar.link>
+    <div x-transition x-show="isSidebarOpen || isSidebarHovered" class="text-sm text-gray-500">Menu Pendukung</div>
+    <x-sidebar.link title="Blangko SAP" href="/sap" :isActive="request()->routeIs('sap')">
+        <x-slot name="icon">
+            <x-icons.books class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
+        </x-slot>
+    </x-sidebar.link>
+    <x-sidebar.link title="Rekap Harian" href="/absensikelas/rekap-per-hari" :isActive="request()->routeIs('absensikelas/rekap-per-hari')">
+        <x-slot name="icon">
+            <x-icons.books class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
+        </x-slot>
+    </x-sidebar.link>
+    <x-sidebar.link title="Blangko Presensi" href="/absensikelas/blanko" :isActive="request()->routeIs('absensikelas/blanko')">
+        <x-slot name="icon">
+            <x-icons.books class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
+        </x-slot>
+    </x-sidebar.link>
+
     @endrole
     @role('pengurus')
     <x-sidebar.link title=" Data Siswa" href="/siswa" :isActive="request()->routeIs('siswa')">

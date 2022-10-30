@@ -55,51 +55,53 @@
                         </div>
 
                     </div>
-                    <table class="table-fixed w-full text-green-900">
-                        <thead class="border border-b-2 border-green-600">
-                            <tr class="border  border-green-600 text-xs sm:text-sm">
-                                <th class="border border-green-600 px-1 w-8">No</th>
-                                <th class="border border-green-600 px-1 w-1/6 ">Asrama</th>
-                                <th class="border border-green-600 px-1 w-9">Kls</th>
-                                <th class="border border-green-600 px-1 w-11 ">Total</th>
-                                <th class="border border-green-600 px-1 w-20">Tidak Hadir</th>
-                                <th class="border border-green-600 px-1 w-11">Hadir</th>
-                                <th class="border border-green-600 px-1 w-1/3 ">Yang tidak hadir</th>
-                                <th class="border border-green-600 px-1 w-20 ">Ket</th>
-                                <th class="border border-green-600 px-1 w-1/6 ">Presentase Kehadiran</th>
-                            </tr>
-                        </thead>
-                        <tbody class=" text-sm">
-                            @foreach ($rekapAbsensi as $nama_asrama => $dataAsrama)
-                            @foreach ($dataAsrama as $nama_kelas => $dataKelas)
-                            @php
-                            $jumlahAbsen = $dataKelas['absensi']->count();
-                            @endphp
-                            @foreach ($dataKelas['absensi'] as $absensi )
-                            <tr class=" border border-green-600 text-xs sm:text-sm ">
-                                @if ($loop->first)
-                                <td class="border border-green-600 text-center px-1" rowspan="{{ $jumlahAbsen }}">{{ $loop->parent->iteration }}</td>
-                                @endif
-                                @if ($loop->parent->first && $loop->first)
-                                <td class="border border-green-600 px-1 text-center text-sm" rowspan="{{ $dataAsrama->sum('tidakHadir') }}">{{ $nama_asrama }}</td>
-                                @endif
-                                @if ($loop->first)
-                                <td class="border border-green-600 text-center px-1" rowspan="{{ $jumlahAbsen }}">{{ $nama_kelas }}</td>
-                                <td class="border border-green-600 text-center px-1" rowspan="{{ $jumlahAbsen }}">{{ $dataKelas['total'] }}</td>
-                                <td class="border border-green-600 text-center px-1" rowspan="{{ $jumlahAbsen }}">{{ $dataKelas['tidakHadir'] }}</td>
-                                <td class="border border-green-600 text-center px-1" rowspan="{{ $jumlahAbsen }}">{{ $dataKelas['hadir'] }}</td>
-                                @endif
-                                <td class="border border-green-600 px-1">{{$loop->iteration}} . {{ $absensi->nama_siswa }}</td>
-                                <td class="border border-green-600 px-1 capitalize">{{ $absensi->keterangan }}</td>
-                                @if ($loop->first)
-                                <td class="border border-green-600 text-center px-1" rowspan="{{ $jumlahAbsen }}">{{ number_format($dataKelas['persentase'], 1, ',') }}%</td>
-                                @endif
-                            </tr>
-                            @endforeach
-                            @endforeach
-                            @endforeach
-                        </tbody>
-                    </table>
+                    <div class=" overflow-scroll">
+                        <table class="table-fixed w-full text-green-900">
+                            <thead class="border border-b-2 border-green-600">
+                                <tr class="border  border-green-600 text-xs sm:text-sm">
+                                    <th class="border border-green-600 px-1 w-8">No</th>
+                                    <th class="border border-green-600 px-1 w-1/6 ">Asrama</th>
+                                    <th class="border border-green-600 px-1 w-9">Kls</th>
+                                    <th class="border border-green-600 px-1 w-11 ">Total</th>
+                                    <th class="border border-green-600 px-1 w-20">Tidak Hadir</th>
+                                    <th class="border border-green-600 px-1 w-11">Hadir</th>
+                                    <th class="border border-green-600 px-1 w-1/3 sm:w-1/2 ">Yang tidak hadir</th>
+                                    <th class="border border-green-600 px-1 w-20 sm:w-20 ">Ket</th>
+                                    <th class="border border-green-600 px-1 w-1/6 ">Presentase Kehadiran</th>
+                                </tr>
+                            </thead>
+                            <tbody class=" text-sm">
+                                @foreach ($rekapAbsensi as $nama_asrama => $dataAsrama)
+                                @foreach ($dataAsrama as $nama_kelas => $dataKelas)
+                                @php
+                                $jumlahAbsen = $dataKelas['absensi']->count();
+                                @endphp
+                                @foreach ($dataKelas['absensi'] as $absensi )
+                                <tr class=" border border-green-600 text-xs sm:text-sm ">
+                                    @if ($loop->first)
+                                    <td class="border border-green-600 text-center px-1" rowspan="{{ $jumlahAbsen }}">{{ $loop->parent->iteration }}</td>
+                                    @endif
+                                    @if ($loop->parent->first && $loop->first)
+                                    <td class="border border-green-600 px-1 text-center text-sm" rowspan="{{ $dataAsrama->sum('tidakHadir') }}">{{ $nama_asrama }}</td>
+                                    @endif
+                                    @if ($loop->first)
+                                    <td class="border border-green-600 text-center px-1" rowspan="{{ $jumlahAbsen }}">{{ $nama_kelas }}</td>
+                                    <td class="border border-green-600 text-center px-1" rowspan="{{ $jumlahAbsen }}">{{ $dataKelas['total'] }}</td>
+                                    <td class="border border-green-600 text-center px-1" rowspan="{{ $jumlahAbsen }}">{{ $dataKelas['tidakHadir'] }}</td>
+                                    <td class="border border-green-600 text-center px-1" rowspan="{{ $jumlahAbsen }}">{{ $dataKelas['hadir'] }}</td>
+                                    @endif
+                                    <td class="border border-green-600 px-1 text-xs capitalize ">{{$loop->iteration}} . {{strtolower($absensi->nama_siswa) }}</td>
+                                    <td class="border border-green-600 px-1 capitalize">{{ $absensi->keterangan }}</td>
+                                    @if ($loop->first)
+                                    <td class="border border-green-600 text-center px-1" rowspan="{{ $jumlahAbsen }}">{{ number_format($dataKelas['persentase'], 1, ',') }}%</td>
+                                    @endif
+                                </tr>
+                                @endforeach
+                                @endforeach
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
