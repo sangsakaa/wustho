@@ -26,6 +26,7 @@ class SesikelasController
             ->join('semester', 'semester.id', 'periode.semester_id')
             ->select('sesikelas.*', 'kelasmi.nama_kelas', 'periode.periode', 'semester.ket_semester')
             ->orderByDesc('sesikelas.tgl')
+            ->orderBy('kelasmi.nama_kelas')
             ->where('kelasmi.periode_id', session('periode_id'));
 
         if (request('cari')) {
