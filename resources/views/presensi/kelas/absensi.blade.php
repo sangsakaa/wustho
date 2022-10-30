@@ -23,7 +23,9 @@
                             <div>Presensi hari, tanggal</div>
                             <div class=" text-sm"> : {{ Carbon\Carbon::parse($sesikelas->tgl)->isoFormat('dddd, D MMMM YYYY') }}</div>
                             <div>Disimpan pada</div>
-                            <div> : {{ $diSimpanPada }}</div>
+                            <div class=" text-sm"> :
+                                {{ Carbon\Carbon::parse($diSimpanPada)->isoFormat('dddd, D MMMM YYYY') }}
+                            </div>
                         </div>
                     </div>
                 </div>
