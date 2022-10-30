@@ -26,6 +26,14 @@
                             <div class=" text-sm"> :
                                 {{ Carbon\Carbon::parse($diSimpanPada)->isoFormat('dddd, D MMMM YYYY') }}
                             </div>
+                            <div>Jam Buat Presensi</div>
+                            <div class=" text-sm"> :
+                                {{ Carbon\Carbon::parse($sesikelas->created_at)->isoFormat('dddd, D MMMM YYYY,HH.m.ss') }}
+                            </div>
+                            <div>Jam Simpan</div>
+                            <div class=" text-sm"> :
+                                {{ Carbon\Carbon::parse($diSimpanPada)->isoFormat('dddd, D MMMM YYYY,HH.m.ss') }}
+                            </div>
                         </div>
                     </div>
                 </div>
