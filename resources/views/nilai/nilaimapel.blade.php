@@ -5,11 +5,11 @@
             {{ __('Nilai Mata Pelajaran') }}
         </h2>
     </x-slot>
-    <div class="my-1">
+    <div class="">
         <div class="">
-            <div class=" bg-white dark:bg-dark-bg overflow-hidden shadow-sm ">
-                <div class="mx-2 px-2  border-gray-200 grid grid-cols-1 w-full sm:grid-cols-1  gap-2">
-                    <span class=" text-blue-500">Form Tambah Nilai</span>
+            <div class=" bg-white dark:bg-dark-bg  shadow-sm ">
+                <div class=" px-2  border-gray-200 grid grid-cols-1 w-full sm:grid-cols-1  sm:gap-1">
+                    <span class=" text-blue-500 mt-2">Form Tambah Nilai</span>
                     <form action="/nilaimapel" method="post" class="   w-full">
                         @csrf
                         <select name="mapel_id" id="" class=" my-1 w-full sm:w-1/5 py-1  dark:bg-dark-bg" required>
@@ -39,7 +39,7 @@
     <div class="py-1">
         <div class="">
             <div class="bg-white dark:bg-dark-bg overflow-hidden shadow-sm ">
-                <div class="p-4 ">
+                <div class="sm:p-4 p-1 ">
                     <div class=" grid grid-cols-1 sm:grid-cols-1">
                         <div class=" flex grid-cols-1 justify-end">
                             <form action="/nilaimapel" method="get" class=" flex gap-1">
@@ -49,10 +49,10 @@
                             </form>
                         </div>
                     </div>
-                    <div class=" overflow-auto bg-white dark:bg-dark-bg mt-1 ">
+                    <div class=" overflow-auto bg-white dark:bg-dark-bg mt-1 mb-0 ">
                         <table class=" w-full">
                             <thead>
-                                <tr class="border bg-gray-200 dark:bg-purple-600 text-xs sm:text-sm">
+                                <tr class="border uppercase bg-gray-200 dark:bg-purple-600 text-xs sm:text-sm">
                                     <th class=" border px-1  py-1">No</th>
                                     <th class=" border px-1">Periode</th>
                                     <th class=" border px-1 w-5">Smt</th>
@@ -71,10 +71,10 @@
                                 @foreach ($data as $nilai)
                                 <tr class=" border hover:bg-gray-100  dark:hover:bg-purple-600 text-xs sm:text-sm ">
                                     <th class=" border px-1">{{$loop->iteration}}</th>
-                                    <th class=" border text-center px-1">{{$nilai->periode}} {{$nilai->ket_semester}} </td>
+                                    <th class=" border text-center px-1 sm:text-sm text-xs">{{$nilai->periode}} {{$nilai->ket_semester}} </td>
                                     <th class=" border text-center px-1">{{$nilai->semester}} </td>
                                     <th class=" border text-center px-1 py-2">
-                                        <a href="/nilai/{{$nilai->id}}" class=" text-white bg-blue-600 hover:bg-purple-700  px-4 py-1 rounded-md">
+                                        <a href="/nilai/{{$nilai->id}}" class=" text-white bg-blue-600 hover:bg-purple-700  sm:px-4 px-1 py-1 rounded-md">
                                             Nilai
                                         </a>
                                     </th>
@@ -109,11 +109,12 @@
                                 @endif
                             </tbody>
                         </table>
-                        <div class=" py-1">
-                            {{$data}}
-                        </div>
+
                     </div>
                 </div>
+            </div>
+            <div class=" bg-white  px-4">
+                {{$data}}
             </div>
         </div>
     </div>

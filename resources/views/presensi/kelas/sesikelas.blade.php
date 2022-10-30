@@ -5,15 +5,15 @@
             {{ __('Presensi Kelas') }}
         </h2>
     </x-slot>
-    <div class="my-1">
+    <div class="">
         <div class="">
-            <div class=" bg-white dark:bg-dark-bg overflow-hidden shadow-sm ">
-                <div class="mx-2 px-2  border-gray-200 grid grid-cols-1 w-full sm:grid-cols-1  gap-2">
-                    <span class=" text-blue-500">Tambah Sesi Kelas</span>
-                    <form action="/sesikelas" method="post" class="   w-full">
+            <div class=" bg-white dark:bg-dark-bg px-2 shadow-sm ">
+                <div class=" px-2  border-gray-200 grid grid-cols-1 w-full sm:grid-cols-1  gap-2">
+                    <span class=" text-blue-500 mt-2">Tambah Sesi Kelas</span>
+                    <form action="/sesikelas" method="post">
                         @csrf
-                        <input type="date" name="tgl" class=" py-1 dark:bg-dark-bg">
-                        <select name="kelasmi_id" id="" class=" my-1 w-full sm:w-1/5 py-1 dark:bg-dark-bg" required>
+                        <input type="date" name="tgl" class=" sm:w-1/3 w-full  py-1 dark:bg-dark-bg">
+                        <select name="kelasmi_id" id="" class=" my-1 w-full sm:w-1/3 py-1 dark:bg-dark-bg" required>
                             <option value="">-- Pilih Kelas --</option>
                             @foreach ($dataKelasMi as $kelasmi)
                             <option value="{{ $kelasmi->id }}">
@@ -38,7 +38,7 @@
                             <form action="/sesikelas" method="get" class=" flex gap-1">
                                 <input type="date" name="cari" value="{{ request('cari') }}" class=" border border-green-800 text-green-800 rounded-md py-1 dark:bg-dark-bg " placeholder=" Cari ..">
                                 <button type="submit" class=" px-2   bg-blue-500  rounded-md text-white">
-                                    Cari </button>
+                                    Cari By Tanggal </button>
                             </form>
                         </div>
                     </div>
