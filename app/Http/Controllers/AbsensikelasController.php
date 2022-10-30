@@ -44,7 +44,7 @@ class AbsensikelasController
                 'absensikelas.alasan',
                 'absensikelas.updated_at as tglsimpan'
             )
-            ->orderby('nis.nis')
+            
             ->orderby('siswa.nama_siswa')
             ->get();
 
