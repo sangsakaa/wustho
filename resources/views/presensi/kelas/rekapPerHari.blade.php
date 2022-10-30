@@ -62,11 +62,11 @@
                                 <th class="border border-green-600 px-1 w-1/6 ">Asrama</th>
                                 <th class="border border-green-600 px-1 w-9">Kls</th>
                                 <th class="border border-green-600 px-1 w-11 ">Total</th>
-                                <th class="border border-green-600 px-1">Tidak Hadir</th>
+                                <th class="border border-green-600 px-1 w-20">Tidak Hadir</th>
                                 <th class="border border-green-600 px-1 w-11">Hadir</th>
                                 <th class="border border-green-600 px-1 w-1/3 ">Yang tidak hadir</th>
-                                <th class="border border-green-600 px-1">Ket</th>
-                                <th class="border border-green-600 px-1 w-30 ">Presentase Kehadiran</th>
+                                <th class="border border-green-600 px-1 w-20 ">Ket</th>
+                                <th class="border border-green-600 px-1 w-1/6 ">Presentase Kehadiran</th>
                             </tr>
                         </thead>
                         <tbody class=" text-sm">
@@ -89,7 +89,7 @@
                                 <td class="border border-green-600 text-center px-1" rowspan="{{ $jumlahAbsen }}">{{ $dataKelas['tidakHadir'] }}</td>
                                 <td class="border border-green-600 text-center px-1" rowspan="{{ $jumlahAbsen }}">{{ $dataKelas['hadir'] }}</td>
                                 @endif
-                                <td class="border border-green-600 px-1">{{ $absensi->nama_siswa }}</td>
+                                <td class="border border-green-600 px-1">{{$loop->iteration}} . {{ $absensi->nama_siswa }}</td>
                                 <td class="border border-green-600 px-1 capitalize">{{ $absensi->keterangan }}</td>
                                 @if ($loop->first)
                                 <td class="border border-green-600 text-center px-1" rowspan="{{ $jumlahAbsen }}">{{ number_format($dataKelas['persentase'], 1, ',') }}%</td>
