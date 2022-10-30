@@ -21,7 +21,7 @@
                             <div>Periode</div>
                             <div> : {{ $dataKelas->periode }} {{ $dataKelas->ket_semester }}</div>
                             <div>Presensi hari, tanggal</div>
-                            <div> : {{ Carbon\Carbon::parse($sesikelas->tgl)->isoFormat('dddd, D MMMM YYYY') }}</div>
+                            <div class=" text-sm"> : {{ Carbon\Carbon::parse($sesikelas->tgl)->isoFormat('dddd, D MMMM YYYY') }}</div>
                             <div>Disimpan pada</div>
                             <div> : {{ $diSimpanPada }}</div>
                         </div>
@@ -42,11 +42,11 @@
                             </div>
                             @endif
                             @csrf
-                            <div class=" sm:overflow-auto overflow-auto ">
+                            <div class=" w-full sm:overflow-auto overflow-auto ">
                                 <table class=" mt-2 w-full sm:w-full text-xs sm:text-sm">
                                     <thead>
                                         <tr class="border">
-                                            <th class=" border px-1">No</th>
+                                            <th class=" border ">No</th>
 
                                             <th class=" border px-1 ">NAMA SISWA</th>
                                             <th class=" border px-1">KET</th>
@@ -56,17 +56,17 @@
                                     <tbody>
                                         @foreach ($dataSiswa as $item)
                                         <tr class=" border hover:bg-gray-100">
-                                            <td class=" px-2 border text-center">
+                                            <td class=" px-1 border text-center">
                                                 {{ $loop->iteration }}
                                                 <input type="hidden" name="pesertakelas[]" value="{{ $item->id }}">
                                                 <input type="hidden" name="sesikelas" value="{{ $sesikelas->id }}">
                                                 <input type="hidden" name="absensikelas[{{ $item->id }}]" value="{{ $item->absensikelas_id }}">
                                             </td>
 
-                                            <td class=" px-2 border text-xs ">
+                                            <td class=" px-2 border sm:text-sm text-xs w-1/3 ">
                                                 {{ $item->nama_siswa }}
                                             </td>
-                                            <td class=" justify-center text-center  w-1/3 ">
+                                            <td class=" justify-center text-center w-1/3 ">
                                                 <input type="radio" id="hadir[{{ $item->id }}]" value="hadir" name="keterangan[{{ $item->id }}]" {{ $item->keterangan === "hadir" || $item->keterangan === null ? "checked" : "" }}>
                                                 <label for="hadir[{{ $item->id }}]">H</label>
                                                 <input type="radio" id="izin[{{ $item->id }}]" value="izin" name="keterangan[{{ $item->id }}]" {{ $item->keterangan === "izin" ? "checked" : "" }}>
@@ -77,7 +77,7 @@
                                                 <label for="alfa[{{ $item->id }}]">A</label>
                                             </td>
                                             <td class="  border text-center  px-1">
-                                                <input value="{{ $item->alasan }}" class="py-1 w-full text-center border-blue-600" name="alasan[{{ $item->id }}]" placeholder=" isi sesui alasan">
+                                                <input value="{{ $item->alasan }}" class=" border py-1 w-full text-center border-blue-600" name="alasan[{{ $item->id }}]" placeholder=" isi alasan">
                                             </td>
 
                                         </tr>
