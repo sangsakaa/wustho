@@ -10,7 +10,7 @@
             <div class=" mx-auto ">
                 <div class="bg-white dark:bg-dark-bg overflow-hidden shadow-sm sm:rounded-lg">
                     <div class=" ">
-                        <div class=" text-xs overflow-auto p-2 sm:p-6 grid sm:flex grid-cols-2 text-center uppercase gap-1">
+                        <div class=" text-xs overflow-auto p-2 sm:p-2 grid sm:flex grid-cols-2 text-center uppercase gap-1">
                             <a href="/periode" class=" py-1 px-2 bg-blue-600 rounded-md text-white hover:bg-purple-500">
                                 periode
                             </a>
@@ -46,7 +46,7 @@
         </div>
         <div class="bg-white dark:bg-dark-bg overflow-hidden shadow-sm sm:rounded-lg">
             <div class=" ">
-                <div class=" p-2 sm:p-6 grid grid-cols-1">
+                <div class=" p-2 sm:p-2 grid grid-cols-1">
                     <span class=" text-center font-semibold ">LIST CETAK RAPORT</span>
                     <hr class=" py-2">
                     <form action="/pengaturan" method="get" class=" flex gap-1">
@@ -62,7 +62,7 @@
                                 <th class=" border px-2 py-1 ">No</th>
                                 <th class=" border px-2 text-center">Daftar Raport</th>
                                 <th class=" border px-2 text-center">KLS</th>
-                                <th class=" border px-2 text-center">NK</th>
+                                <th class=" border px-2 text-center">NAMA KELAS</th>
                                 <th class=" border px-2 text-center">Aksi</th>
                             </tr>
                         </thead>

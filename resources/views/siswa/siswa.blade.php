@@ -69,9 +69,9 @@
                             <td class=" text-sm  px-2 border  text-center ">
                                 {{$peserta->nis}}
                             </td>
-                            <td class=" text-xs sm:text-sm  border px-2">
+                            <td class=" text-xs sm:text-sm  border px-2 capitalize">
                                 <a href="/siswa/{{$peserta->id}}">
-                                    {{ucwords($peserta->nama_siswa)}}
+                                    {{strtolower($peserta->nama_siswa)}}
                                 </a>
                             </td>
                             <td class=" text-sm  border text-center ">
