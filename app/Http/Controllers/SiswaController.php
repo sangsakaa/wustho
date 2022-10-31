@@ -47,7 +47,7 @@ class SiswaController extends Controller
                 ]
             )->orderBy(
                 'nis',
-                'asc'
+            'desc'
         );
             // ->latest()->orderBy('nama_siswa');
         if (request('cari')) {

@@ -10,7 +10,7 @@
             <div class=" mx-auto ">
                 <div class="bg-white dark:bg-dark-bg overflow-hidden shadow-sm sm:rounded-lg">
                     <div class=" ">
-                        <div class=" overflow-auto p-2 sm:p-6 grid sm:flex grid-cols-2 text-center uppercase gap-1">
+                        <div class=" text-xs overflow-auto p-2 sm:p-6 grid sm:flex grid-cols-2 text-center uppercase gap-1">
                             <a href="/periode" class=" py-1 px-2 bg-blue-600 rounded-md text-white hover:bg-purple-500">
                                 periode
                             </a>

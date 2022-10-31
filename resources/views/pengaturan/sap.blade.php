@@ -94,7 +94,7 @@
                             @foreach ($dataSiswa as $siswa)
                             <tr class=" border border-green-600 text-xs sm:text-sm ">
                                 <td class="border border-green-600 text-center px-1 text-xs">{{ $loop->iteration }}</td>
-                                <td class="border border-green-600 px-1 text-sm">{{ $siswa->nama_siswa }}</td>
+                                <td class="border border-green-600 px-1 text-xs capitalize">{{ strtolower($siswa->nama_siswa) }}</td>
                                 @for ($i = 0; $i < 20; $i++) <td class="border border-green-600 px-1">
                                     </td>
                                     @endfor
