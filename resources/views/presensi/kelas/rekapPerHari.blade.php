@@ -71,6 +71,9 @@
                                 </tr>
                             </thead>
                             <tbody class=" text-sm">
+                                @php
+                                $nomor = 1;
+                                @endphp
                                 @foreach ($rekapAbsensi as $nama_asrama => $dataAsrama)
                                 @foreach ($dataAsrama as $nama_kelas => $dataKelas)
                                 @php
@@ -79,7 +82,7 @@
                                 @foreach ($dataKelas['absensi'] as $absensi )
                                 <tr class=" border border-green-600 text-xs sm:text-sm ">
                                     @if ($loop->first)
-                                    <td class="border border-green-600 text-center px-1" rowspan="{{ $jumlahAbsen }}">{{ $loop->parent->iteration }}</td>
+                                    <td class="border border-green-600 text-center px-1" rowspan="{{ $jumlahAbsen }}">{{ $nomor++ }}</td>
                                     @endif
                                     @if ($loop->parent->first && $loop->first)
                                     <td class="border border-green-600 px-1 text-center text-sm" rowspan="{{ $dataAsrama->sum('tidakHadir') }}">{{ $nama_asrama }}</td>
