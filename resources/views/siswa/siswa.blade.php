@@ -78,10 +78,10 @@
                                 {{$peserta->jenis_kelamin}}
                             </td>
                             <td class=" text-sm  border text-center ">
-                                {{$peserta->asramaTerkhir->asramaSiswa->asrama->nama_asrama}}
+                                {{$peserta->asramaTerkhir?->asramaSiswa->asrama->nama_asrama}}
                             </td>
                             <td class=" text-sm  border text-center ">
-                                {{$peserta->kelasTerakhir->kelasMi->nama_kelas}}
+                                {{$peserta->kelasTerakhir?->kelasMi->nama_kelas}}
                             </td>
                             <td class=" text-sm  border text-center ">
                                 <?php
