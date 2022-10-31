@@ -44,7 +44,7 @@ class AbsensikelasController
                 'absensikelas.alasan',
                 'absensikelas.updated_at as tglsimpan'
             )
-            
+
             ->orderby('siswa.nama_siswa')
             ->get();
 
@@ -190,20 +190,29 @@ class AbsensikelasController
                 return $item
                     ->groupBy('nama_kelas')
                     ->map(function ($item, $nama_kelas) use ($absensiGrup, $nama_asrama) {
+                        $nullAbsensi =  new Absensikelas([
+                            'nama_asrama' => $nama_asrama,
+                            'nama_kelas' => $nama_kelas,
+                            'nama_siswa' => '-',
+                            'keterangan' => '-'
+                        ]);
                         $total = $item->count();
                         $hadir = $item->where('keterangan', 'hadir')->count();
                         $tidakHadir = $total - $hadir;
-                        if ($tidakHadir === 0) return;
+                        $absensi = $tidakHadir === 0 ? collect([$nullAbsensi]) : $absensiGrup[$nama_asrama][$nama_kelas];
                         return [
                             'hadir' => $hadir,
                             'tidakHadir' => $tidakHadir,
                             'total' => $total,
                             'persentase' => $hadir / $total * 100,
-                            'absensi' => $absensiGrup[$nama_asrama][$nama_kelas],
+                            'absensi' => $absensi,
+                            'row' => $absensi->count(),
                         ];
                     })
                     ->filter();
             });
+
+        // dd($absensiGrup, $rekapAbsensi);
 
         return view('presensi.kelas.rekapPerHari', [
             'dataKelasMi' => $datakelasmi,

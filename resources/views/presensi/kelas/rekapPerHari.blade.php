@@ -76,27 +76,24 @@
                                 @endphp
                                 @foreach ($rekapAbsensi as $nama_asrama => $dataAsrama)
                                 @foreach ($dataAsrama as $nama_kelas => $dataKelas)
-                                @php
-                                $jumlahAbsen = $dataKelas['absensi']->count();
-                                @endphp
                                 @foreach ($dataKelas['absensi'] as $absensi )
                                 <tr class=" border border-green-600 text-xs sm:text-sm ">
                                     @if ($loop->first)
-                                    <td class="border border-green-600 text-center px-1" rowspan="{{ $jumlahAbsen }}">{{ $nomor++ }}</td>
+                                    <td class="border border-green-600 text-center px-1" rowspan="{{ $dataKelas['row'] }}">{{ $nomor++ }}</td>
                                     @endif
                                     @if ($loop->parent->first && $loop->first)
-                                    <td class="border border-green-600 px-1 text-center text-sm" rowspan="{{ $dataAsrama->sum('tidakHadir') }}">{{ $nama_asrama }}</td>
+                                    <td class="border border-green-600 px-1 text-center text-sm" rowspan="{{ $dataAsrama->sum('row') }}">{{ $nama_asrama }}</td>
                                     @endif
                                     @if ($loop->first)
-                                    <td class="border border-green-600 text-center px-1" rowspan="{{ $jumlahAbsen }}">{{ $nama_kelas }}</td>
-                                    <td class="border border-green-600 text-center px-1" rowspan="{{ $jumlahAbsen }}">{{ $dataKelas['total'] }}</td>
-                                    <td class="border border-green-600 text-center px-1" rowspan="{{ $jumlahAbsen }}">{{ $dataKelas['tidakHadir'] }}</td>
-                                    <td class="border border-green-600 text-center px-1" rowspan="{{ $jumlahAbsen }}">{{ $dataKelas['hadir'] }}</td>
+                                    <td class="border border-green-600 text-center px-1" rowspan="{{ $dataKelas['row'] }}">{{ $nama_kelas }}</td>
+                                    <td class="border border-green-600 text-center px-1" rowspan="{{ $dataKelas['row'] }}">{{ $dataKelas['total'] }}</td>
+                                    <td class="border border-green-600 text-center px-1" rowspan="{{ $dataKelas['row'] }}">{{ $dataKelas['tidakHadir'] }}</td>
+                                    <td class="border border-green-600 text-center px-1" rowspan="{{ $dataKelas['row'] }}">{{ $dataKelas['hadir'] }}</td>
                                     @endif
-                                    <td class="border border-green-600 px-1 text-xs capitalize ">{{$loop->iteration}} . {{strtolower($absensi->nama_siswa) }}</td>
+                                    <td class="border border-green-600 px-1 text-xs capitalize ">{{ $dataKelas['tidakHadir'] !== 0 ? $loop->iteration . '. ' : '' }}{{strtolower($absensi->nama_siswa) }}</td>
                                     <td class="border border-green-600 px-1 capitalize">{{ $absensi->keterangan }}</td>
                                     @if ($loop->first)
-                                    <td class="border border-green-600 text-center px-1" rowspan="{{ $jumlahAbsen }}">{{ number_format($dataKelas['persentase'], 1, ',') }}%</td>
+                                    <td class="border border-green-600 text-center px-1" rowspan="{{ $dataKelas['row'] }}">{{ number_format($dataKelas['persentase'], 1, ',') }}%</td>
                                     @endif
                                 </tr>
                                 @endforeach
