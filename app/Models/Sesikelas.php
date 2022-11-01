@@ -13,4 +13,9 @@ class Sesikelas extends Model
     protected $table = 'sesikelas';
 
     public $guarded = [];
+
+    public function absensi()
+    {
+        return $this->hasMany(Absensikelas::class, 'sesikelas_id', 'id');
+    }
 }

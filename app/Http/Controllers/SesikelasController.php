@@ -5,13 +5,21 @@ namespace App\Http\Controllers;
 use App\Models\Absensikelas;
 use App\Models\Kelasmi;
 use App\Models\Sesikelas;
+use Carbon\Carbon;
+use Carbon\Exceptions\InvalidFormatException;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
 class SesikelasController
 {
-    public function index()
+    public function index(Request $request)
     {
+        try {
+            $tgl = $request->tgl ? Carbon::parse($request->tgl) : now();
+        } catch (InvalidFormatException $ex) {
+            $tgl = now();
+        }
+
         $dataKelasMi = Kelasmi::query()
             ->join('periode', 'periode.id', 'kelasmi.periode_id')
             ->join('semester', 'semester.id', 'periode.semester_id')
@@ -25,17 +33,15 @@ class SesikelasController
             ->join('periode', 'periode.id', 'kelasmi.periode_id')
             ->join('semester', 'semester.id', 'periode.semester_id')
             ->select('sesikelas.*', 'kelasmi.nama_kelas', 'periode.periode', 'semester.ket_semester')
-            ->orderByDesc('sesikelas.tgl')
             ->orderBy('kelasmi.nama_kelas')
-            ->where('kelasmi.periode_id', session('periode_id'));
-
-        if (request('cari')) {
-            $sesikelas->where('tgl', 'like', '%' . request('cari') . '%');
-        }
+            ->where('kelasmi.periode_id', session('periode_id'))
+            ->where('sesikelas.tgl', $tgl->toDateString())
+            ->get();
 
         return view('presensi.kelas.sesikelas', [
             'dataKelasMi' => $dataKelasMi,
-            'sesikelas' => $sesikelas->paginate(15),
+            'sesikelas' => $sesikelas,
+            'tgl' => $tgl,
         ]);
     }
 
@@ -46,14 +52,31 @@ class SesikelasController
                 'required',
                 'date',
                 'before_or_equal:now',
-                Rule::unique('sesikelas')->where(fn ($query) => $query->where('kelasmi_id', $request->kelasmi_id))
             ],
-            'kelasmi_id' => 'required',
         ]);
-        $sesikelas = new Sesikelas();
-        $sesikelas->tgl = $request->tgl;
-        $sesikelas->kelasmi_id = $request->kelasmi_id;
-        $sesikelas->save();
+
+        $dataKelasMi = Kelasmi::query()
+            ->where('kelasmi.periode_id', session('periode_id'))
+            ->orderBy('kelasmi.nama_kelas')
+            ->get();
+
+        $sesikelas = Sesikelas::query()
+            ->join('kelasmi', 'kelasmi.id', '=', 'sesikelas.kelasmi_id')
+            ->select('sesikelas.*', 'kelasmi.nama_kelas')
+            ->orderBy('kelasmi.nama_kelas')
+            ->where('kelasmi.periode_id', session('periode_id'))
+            ->where('sesikelas.tgl', $request->tgl)
+            ->get();
+
+        foreach ($dataKelasMi as $kelasmi) {
+            if ($sesikelas->doesntContain('nama_kelas', $kelasmi->nama_kelas)) {
+                $sesi = new Sesikelas();
+                $sesi->tgl = $request->tgl;
+                $sesi->kelasmi_id = $kelasmi->id;
+                $sesi->save();
+            }
+        }
+
         return redirect()->back()->with('status', 'Sesi Berhasil ditambahkan');
     }
 
