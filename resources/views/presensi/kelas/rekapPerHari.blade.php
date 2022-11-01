@@ -2,7 +2,7 @@
     <x-slot name="header">
         @section('title', '|REKAP HARIAN : '. $tgl->isoFormat('dddd, D MMMM YYYY'))
         <h2 class="font-semibold text-xl leading-tight">
-            {{ __('Rekap Absensi Kelas') }}
+            Rekap Absensi Kelas : {{($tgl->isoFormat('dddd, D MMMM YYYY')) }}
         </h2>
     </x-slot>
     <div class="my-1">
