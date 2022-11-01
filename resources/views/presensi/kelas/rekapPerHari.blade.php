@@ -46,11 +46,11 @@
                         </p>
                     </div>
                     <hr class=" border-b-2 border-green-900">
-                    <div class="  text-2xl text-center uppercase font-semibold">
+                    <div class=" text-green-900  text-2xl text-center uppercase font-semibold">
                         Laporan Harian
                     </div>
                     <div class=" grid grid-cols-2">
-                        <div class=" text-green-900 mt-1 text-sm font-semibold">
+                        <div class=" text-green-900  text-sm font-semibold">
                             Hari, tanggal : {{ $tgl->isoFormat('dddd, D MMMM YYYY') }}
                         </div>
 
@@ -61,12 +61,12 @@
                                 <tr class="border  border-green-600 text-xs sm:text-sm">
                                     <th class="border border-green-600 px-1 w-8">No</th>
                                     <th class="border border-green-600 px-1 w-1/6 ">Asrama</th>
-                                    <th class="border border-green-600 px-1 w-9">Kls</th>
+                                    <th class="border border-green-600 px-1 w-10">Kls</th>
                                     <th class="border border-green-600 px-1 w-11 ">Total</th>
                                     <th class="border border-green-600 px-1 w-20">Tidak Hadir</th>
                                     <th class="border border-green-600 px-1 w-11">Hadir</th>
                                     <th class="border border-green-600 px-1 w-1/3 sm:w-1/2 ">Yang tidak hadir</th>
-                                    <th class="border border-green-600 px-1 w-20 sm:w-20 ">Ket</th>
+                                    <th class="border border-green-600 px-1 w-10 sm:w-10 ">Ket</th>
                                     <th class="border border-green-600 px-1 w-1/6 ">Presentase Kehadiran</th>
                                 </tr>
                             </thead>
@@ -91,7 +91,7 @@
                                     <td class="border border-green-600 text-center px-1" rowspan="{{ $dataKelas['row'] }}">{{ $dataKelas['hadir'] }}</td>
                                     @endif
                                     <td class="border border-green-600 px-1 text-xs capitalize ">{{ $dataKelas['tidakHadir'] !== 0 ? $loop->iteration . '. ' . strtolower($absensi->nama_siswa) : 'NIHIL' }}</td>
-                                    <td class="border border-green-600 px-1 capitalize">{{ $dataKelas['tidakHadir'] !== 0 ? $absensi->keterangan : 'NIHIL' }}</td>
+                                    <td class="border border-green-600 px-1 text-center capitalize">{{ $dataKelas['tidakHadir'] !== 0 ? $absensi->keterangan : 'NIHIL' }}</td>
                                     @if ($loop->first)
                                     <td class="border border-green-600 text-center px-1" rowspan="{{ $dataKelas['row'] }}">{{ number_format($dataKelas['persentase'], 1, ',') }}%</td>
                                     @endif
