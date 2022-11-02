@@ -73,7 +73,7 @@ class GuruController extends Controller
             ->leftjoin('kelas', 'kelas.id', '=', 'kelasmi.kelas_id')
             ->leftjoin('mapel', 'mapel.id', '=', 'nilaimapel.mapel_id')
             ->leftjoin('guru', 'guru.id', '=', 'nilaimapel.guru_id')
-            ->leftjoin('nilai', 'nilai.nilaimapel_id', '=', 'nilaimapel.id')
+            // ->leftjoin('nilai', 'nilai.nilaimapel_id', '=', 'nilaimapel.id')
             ->selectRaw('nilaimapel.id, kelas.kelas, nama_kelas, semester.semester, semester.ket_semester, guru.nama_guru, mapel.mapel,mapel.nama_kitab, kelasmi.periode_id, periode.periode,nilaimapel.guru_id')
             ->where('nilaimapel.guru_id', $guru->id, session('periode_id'))
             ->where('kelasmi.periode_id', session('periode_id'))
@@ -131,5 +131,5 @@ class GuruController extends Controller
         Guru::destroy($guru->id);
         return redirect()->back()->with('delete', 'data guru berhasil dihapus');
     }
-    
+
 }
