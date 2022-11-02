@@ -77,6 +77,7 @@ class GuruController extends Controller
             ->selectRaw('nilaimapel.id, kelas.kelas, nama_kelas, semester.semester, semester.ket_semester, guru.nama_guru, mapel.mapel,mapel.nama_kitab, kelasmi.periode_id, periode.periode,nilaimapel.guru_id')
             ->where('nilaimapel.guru_id', $guru->id, session('periode_id'))
             ->where('kelasmi.periode_id', session('periode_id'))
+            ->orderBy('nama_kelas')
             ->get();
         return view(
             'guru/detailGuru',
