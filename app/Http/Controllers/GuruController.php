@@ -74,7 +74,7 @@ class GuruController extends Controller
             ->leftjoin('mapel', 'mapel.id', '=', 'nilaimapel.mapel_id')
             ->leftjoin('guru', 'guru.id', '=', 'nilaimapel.guru_id')
             ->leftjoin('nilai', 'nilai.nilaimapel_id', '=', 'nilaimapel.id')
-            ->selectRaw('nilaimapel.id, kelas.kelas, nama_kelas, semester.semester, semester.ket_semester, guru.nama_guru, mapel.mapel, kelasmi.periode_id, periode.periode,nilaimapel.guru_id')
+            ->selectRaw('nilaimapel.id, kelas.kelas, nama_kelas, semester.semester, semester.ket_semester, guru.nama_guru, mapel.mapel,mapel.nama_kitab, kelasmi.periode_id, periode.periode,nilaimapel.guru_id')
             ->where('nilaimapel.guru_id', $guru->id, session('periode_id'))
             ->where('kelasmi.periode_id', session('periode_id'))
             ->get();
