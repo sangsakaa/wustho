@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Guru;
+use App\Models\Nilaimapel;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
@@ -65,7 +66,25 @@ class GuruController extends Controller
      */
     public function show(Guru $guru)
     {
-        return view('guru/detailGuru', ['guru' => $guru]);
+        $riwayat_mengajara = Nilaimapel::query()
+            ->leftjoin('kelasmi', 'kelasmi.id', '=', 'nilaimapel.kelasmi_id')
+            ->leftjoin('periode', 'periode.id', '=', 'kelasmi.periode_id')
+            ->leftjoin('semester', 'semester.id', '=', 'periode.semester_id')
+            ->leftjoin('kelas', 'kelas.id', '=', 'kelasmi.kelas_id')
+            ->leftjoin('mapel', 'mapel.id', '=', 'nilaimapel.mapel_id')
+            ->leftjoin('guru', 'guru.id', '=', 'nilaimapel.guru_id')
+            ->leftjoin('nilai', 'nilai.nilaimapel_id', '=', 'nilaimapel.id')
+            ->selectRaw('nilaimapel.id, kelas.kelas, nama_kelas, semester.semester, semester.ket_semester, guru.nama_guru, mapel.mapel, kelasmi.periode_id, periode.periode,nilaimapel.guru_id')
+            ->where('nilaimapel.guru_id', $guru->id, session('periode_id'))
+            ->where('kelasmi.periode_id', session('periode_id'))
+            ->get();
+        return view(
+            'guru/detailGuru',
+            [
+                'guru' => $guru,
+                'riwayatMengajar' => $riwayat_mengajara,
+            ]
+        );
     }
 
     /**
@@ -112,4 +131,5 @@ class GuruController extends Controller
         Guru::destroy($guru->id);
         return redirect()->back()->with('delete', 'data guru berhasil dihapus');
     }
+    
 }
