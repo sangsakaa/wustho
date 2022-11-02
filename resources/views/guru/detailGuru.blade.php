@@ -25,24 +25,24 @@
                         <span>Riwayat Mengajar</span>
                         <table class=" border w-full">
                             <thead>
-                                <tr class=" border">
-                                    <th>no</th>
-                                    <th class=" text-center">Periode Mengajar</th>
-                                    <th class=" text-left">Nama Pengajar</th>
-                                    <th>Kelas</th>
-                                    <th class=" text-left">Mata Pelajaran</th>
-                                    <th class=" text-left">Kitab</th>
+                                <tr class=" border ">
+                                    <th class=" px-1 text-center border">No</th>
+                                    <th class=" px-1 text-center border ">Periode Mengajar</th>
+                                    <th class=" px-1 text-center border ">Nama Pengajar</th>
+                                    <th class=" px-1 text-center border">Kelas</th>
+                                    <th class=" px-1 text-center border ">Mata Pelajaran</th>
+                                    <th class=" px-1 text-center border ">Kitab</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach($riwayatMengajar as $ngajar)
                                 <tr class=" border">
-                                    <th>{{$loop->iteration}}</th>
-                                    <td class=" text-center">{{$ngajar->periode}} {{$ngajar->ket_semester}}</td>
-                                    <td>{{$ngajar->nama_guru}}</td>
-                                    <td class=" text-center">{{$ngajar->nama_kelas}}</td>
-                                    <td class=" text-center">{{$ngajar->mapel}}</td>
-                                    <td class=" text-center">{{$ngajar->nama_kitab}}</td>
+                                    <th class=" border">{{$loop->iteration}}</th>
+                                    <td class=" border text-center">{{$ngajar->periode}} {{$ngajar->ket_semester}}</td>
+                                    <td class=" border text-center">{{$ngajar->nama_guru}}</td>
+                                    <td class=" border text-center">{{$ngajar->nama_kelas}}</td>
+                                    <td class=" border text-center">{{$ngajar->mapel}}</td>
+                                    <td class=" border text-center">{{$ngajar->nama_kitab}}</td>
                                 </tr>
                                 @endforeach
                             </tbody>
