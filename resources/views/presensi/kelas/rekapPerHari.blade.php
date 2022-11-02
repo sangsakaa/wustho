@@ -63,10 +63,10 @@
                                     <th class="border border-green-600 px-1 w-1/6 ">Asrama</th>
                                     <th class="border border-green-600 px-1 w-10">Kls</th>
                                     <th class="border border-green-600 px-1 w-11 ">Total</th>
-                                    <th class="border border-green-600 px-1 w-20">Tidak Hadir</th>
+                                    <th class="border border-green-600 px-1 w-11">Tidak Hadir</th>
                                     <th class="border border-green-600 px-1 w-11">Hadir</th>
                                     <th class="border border-green-600 px-1 w-1/3 sm:w-1/2 ">Yang tidak hadir</th>
-                                    <th class="border border-green-600 px-1 w-10 sm:w-10 ">Ket</th>
+                                    <th class="border border-green-600 px-1 w-10 sm:w-11 ">Ket</th>
                                     <th class="border border-green-600 px-1 w-1/6 ">Presentase Kehadiran</th>
                                 </tr>
                             </thead>
