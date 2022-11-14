@@ -64,7 +64,7 @@
                                             {{ $item->nis }}
                                         </td>
                                         <td class=" px-2 border text-sm ">
-                                            {{ $item->nama_siswa }}
+                                            {{ strtolower($item->nama_siswa) }}
                                         </td>
                                         <td class=" px-2 border text-center ">
                                             {{ $item->kelas }}
