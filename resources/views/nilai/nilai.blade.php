@@ -66,8 +66,8 @@
                                             <td class="sm:text-sm text-xs px-2 border text-center ">
                                                 {{$item->nis}}
                                             </td>
-                                            <td class="sm:text-sm  sm:h-full text-xs px-2 border ">
-                                                {{$item->nama_siswa}}
+                                            <td class="sm:text-sm  sm:h-full text-xs px-2 border capitalize ">
+                                                {{strtolower($item->nama_siswa)}}
                                             </td>
                                             <td class="sm:text-xs text-xs px-2 border text-center ">
                                                 {{$item->kelas}}
