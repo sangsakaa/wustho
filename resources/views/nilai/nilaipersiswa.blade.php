@@ -24,7 +24,7 @@
                         document.body.innerHTML = fullbody;
                     }
                 </script>
-                <div class="">
+                <div class=" w-full">
                     <form action="/nilai" method="get">
                         <select name="kelasmi" id="" class=" border border-green-800 text-green-800 rounded-md py-1" required>
                             <option value="">-- Pilih Kelas --</option>
@@ -34,8 +34,8 @@
                             </option>
                             @endforeach
                         </select>
-                        <button type="submit" class=" px-1 py-1   bg-blue-500  rounded-md text-white">
-                            Pilih Periode
+                        <button type="submit" class=" px-2  py-1   bg-blue-500  rounded-md text-white">
+                            Periode
                         </button>
                     </form>
                 </div>
