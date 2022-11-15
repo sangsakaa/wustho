@@ -47,7 +47,7 @@
         <div class="bg-white dark:bg-dark-bg overflow-hidden shadow-sm " id="blanko">
             <div class=" p-1 ">
                 <div class=" overflow-auto bg-white dark:bg-dark-bg  ">
-                    <div class=" text-center text-green-900">
+                    <div class=" text-center text-green-900 mt-5">
                         <p class=" font-semibold text-3xl">
                             MADRASAH DINIYAH WUSTHA WAHIDIYAH
                         </p>
@@ -66,7 +66,7 @@
                             Kelas : {{ $kelasmi->nama_kelas }}
                         </div>
                     </div>
-                    <table class="table-fixed w-full text-green-900">
+                    <table class="table-fixed w-full text-green-900 mb-5">
                         <thead class="border border-b-2 border-green-600">
                             <tr class="border  border-green-600 text-xs sm:text-sm">
                                 <th class="border border-green-600 px-1 w-8" rowspan="2">No</th>
