@@ -16,9 +16,9 @@
                         <div class=" grid grid-cols-1 py-6 px-4 sm:w-1/4">
                             @csrf
                             <label for="">Nama Lengkap <span class=" text-red-600">*</span></label>
-                            <input type="text" name="nama_guru" class=" w-full py-1 " placeholder=" Nama Lengkap : M. Izul Ula" required>
+                            <input type="text" name="nama_guru" class=" form-input w-full py-1 " placeholder=" Nama Lengkap : M. Izul Ula" required>
                             <label for="">Jenis Kelamin <span class=" text-red-600">*</span></label>
-                            <select name="jenis_kelamin" id="" class=" py-1" required>
+                            <select name="jenis_kelamin" id="" class=" form-multiselect py-1" required>
                                 <option value=""> -Pilih Jenis Kelamin</option>
                                 <option value="L"> -Laki Laki- </option>
                                 <option value="P"> -Perempuan- </option>
