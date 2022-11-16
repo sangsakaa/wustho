@@ -12,7 +12,7 @@ class ApiSiswaController
 
     {
         $siswa = Siswa::query()
-            ->leftjoin('nis', 'nis.siswa_id', '=', 'siswa.id')
+            ->join('nis', 'nis.siswa_id', '=', 'siswa.id')
             ->get();
         return response()->json(['siswa' => $siswa]);
     }
@@ -23,7 +23,9 @@ class ApiSiswaController
     }
     public function nis(Siswa $siswa, Nis $nis)
     {
-        $nis = Nis::find($siswa);
+        $nis = Nis::query()
+            ->join('siswa', 'siswa.id', '=', 'nis.siswa_id')
+            ->get();
         return response()->json(['nis' => $nis]);
         
     }
