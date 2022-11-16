@@ -25,3 +25,4 @@ Route::post('siswa', [ApiSiswaController::class, 'store']);
 Route::get('siswa/{siswa}/edit', [ApiSiswaController::class, 'edit']);
 Route::patch('siswa/{siswa}', [ApiSiswaController::class, 'update']);
 Route::delete('siswa/{siswa}', [ApiSiswaController::class, 'destroy']);
+Route::get('siswa/nis/{siswa}', [ApiSiswaController::class, 'nis']);
