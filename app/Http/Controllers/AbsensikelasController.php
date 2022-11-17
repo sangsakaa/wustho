@@ -285,12 +285,12 @@ class AbsensikelasController
                 foreach ($periodeBulan as $hari) {
                     $absensiPerBulan[] = [
                         'hari' => $hari,
-                        'data' => $dataAbsensiKelas[$key]->firstWhere('tgl', $hari->toDateString())
+                        'data' => $dataAbsensiKelas->count() ? $dataAbsensiKelas[$key]->firstWhere('tgl', $hari->toDateString()) : null
                     ];
                 }
-                $total = $dataAbsensiKelas[$key]->countBy(function ($absensiKelas) {
+                $total = $dataAbsensiKelas->count() ? $dataAbsensiKelas[$key]->countBy(function ($absensiKelas) {
                     return $absensiKelas->keterangan;
-                });
+                }) : collect();
                 return [
                     'siswa' => $siswa,
                     'absensiPerBulan' => $absensiPerBulan,
