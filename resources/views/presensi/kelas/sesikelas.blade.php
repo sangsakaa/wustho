@@ -8,7 +8,7 @@
     <div class="">
         <div class="">
             <div class=" bg-white dark:bg-dark-bg px-2 shadow-sm ">
-                <div class="flex px-2 sm:grid grid-cols-1 w-full border-gray-200">
+                <div class="px-2 sm:grid grid-cols-1 w-full border-gray-200">
                     <form action="/sesikelas" method="get" class="mr-auto">
                         <input type="date" name="tgl" class="py-1 dark:bg-dark-bg" value="{{ $tgl->toDateString() }}">
                         <button class=" bg-red-600 py-1 dark:bg-purple-600 mt-1 my-1 rounded-sm hover:bg-purple-600 text-white px-4 ">
@@ -18,6 +18,7 @@
                     <form action="/sesikelas" method="post">
                         @csrf
                         <input type="hidden" name="tgl" value="{{ $tgl->toDateString() }}">
+                        <a href="/sesikelas/rekap" class="inline-block bg-red-600 py-1 dark:bg-purple-600 mt-1 my-1 rounded-sm hover:bg-purple-600 text-white px-4">Rekap</a>
                         <button class=" bg-red-600 py-1 dark:bg-purple-600 mt-1 my-1 rounded-sm hover:bg-purple-600 text-white px-4 ">
                             Buat Sesi
                         </button>

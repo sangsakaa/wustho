@@ -15,6 +15,7 @@ class AbsensikelasController
 {
     public function index(Sesikelas $sesikelas)
     {
+        $prev_url = session('prev_url') ?? url()->previous();
         $dataKelas = Kelasmi::query()
             ->join('kelas', 'kelas.id', '=', 'kelasmi.kelas_id')
             ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
@@ -66,6 +67,7 @@ class AbsensikelasController
                 'sesikelas' => $sesikelas,
                 'jumlahAbsensi' => $jumlahAbsensi,
                 'diSimpanPada' => $diSimpanPada,
+                'prev_url' => $prev_url,
             ]
         );
     }
@@ -81,7 +83,10 @@ class AbsensikelasController
             $absensikelas->alasan = $request->alasan[$peserta];
             $absensikelas->save();
         }
-        return redirect()->back()->with('status', 'Presensi berhasil disimpan pada ' . now());
+        return redirect()->back()->with([
+            'status' => 'Presensi berhasil disimpan pada ' . now(),
+            'prev_url' => $request->prev_url,
+        ]);
     }
 
     public function blanko(Request $request)

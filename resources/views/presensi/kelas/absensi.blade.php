@@ -38,19 +38,19 @@
                     <div class="p-2 bg-white border-b border-gray-200">
                         <form action="/absensikelas" method="post">
                             <button class=" bg-red-600 py-1 rounded-md text-white px-4">simpan presensi</button>
-                            <a href="/sesikelas" class=" bg-red-600 py-1 rounded-md text-white px-4">Kembali</a>
+                            <a href="{{ $prev_url }}" class="inline-block bg-red-600 py-1 rounded-md text-white px-4">Kembali</a>
                             @if (session('status'))
                             <div class="alert alert-success w-full text-sm">
                                 {{ session('status') }}
                             </div>
                             @endif
                             @csrf
+                            <input type="hidden" name="prev_url" value="{{ $prev_url }}">
                             <div class=" w-full sm:overflow-auto overflow-auto ">
                                 <table class=" mt-2 w-full sm:w-full text-xs sm:text-sm">
                                     <thead>
                                         <tr class="border">
                                             <th class=" border ">No</th>
-
                                             <th class=" border px-1 ">NAMA SISWA</th>
                                             <th class=" border px-1">KET</th>
                                             <th class=" border px-1">ALASAN</th>
@@ -89,7 +89,6 @@
                                     </tbody>
                                 </table>
                             </div>
-                        </form>
                         </form>
                     </div>
                 </div>

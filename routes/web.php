@@ -165,7 +165,8 @@ Route::post('setperiode', [AuthenticatedSessionController::class, 'setPeriode'])
 // Controller Sesikelas
 Route::get('sesikelas', [SesikelasController::class, 'index'])->middleware(['auth'])->name('sesikelas');
 Route::post('sesikelas', [SesikelasController::class, 'store'])->middleware(['auth']);
-Route::delete('sesikelas/{sesikelas}', [SesikelasController::class, 'destroy'])->middleware(['auth']);
+Route::delete('sesikelas/{sesikelas}', [SesikelasController::class, 'destroy'])->where('sesikelas', '[0-9]+')->middleware(['auth']);
+Route::get('sesikelas/rekap', [SesikelasController::class, 'rekapSesi'])->middleware(['auth']);
 
 // Controller Absensikelas
 Route::get('absensikelas/{sesikelas}', [AbsensikelasController::class, 'index'])->where('sesikelas', '[0-9]+')->middleware(['auth']);
