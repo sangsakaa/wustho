@@ -96,7 +96,7 @@
                             $absensiPerBulan = $data['absensiPerBulan'];
                             $total = $data['total'];
                             @endphp
-                            <tr class=" border border-green-600    text-xs sm:text-sm ">
+                            <tr class=" border border-green-600    text-xs sm:text-sm even:bg-green-50 ">
                                 <td class="border border-green-600 text-center px-1">{{ $loop->iteration }}</td>
                                 <td class="border border-green-600 px-1 text-xs capitalize  ">{{
                                     strtolower($siswa->nama_siswa) }}</td>
