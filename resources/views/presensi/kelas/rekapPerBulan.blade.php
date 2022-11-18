@@ -12,8 +12,7 @@
             <div class=" bg-white dark:bg-dark-bg overflow-hidden shadow-sm ">
                 <div class="mx-2 px-2 border-gray-200 grid grid-cols-1 w-full sm:grid-cols-1  gap-2">
                     <form action="/absensikelas/rekap-per-bulan" method="get" class="w-full">
-                        <input type="month" name="bulan" class=" py-1 dark:bg-dark-bg"
-                            value="{{ $bulan->format('Y-m') }}">
+                        <input type="month" name="bulan" class=" py-1 dark:bg-dark-bg" value="{{ $bulan->format('Y-m') }}">
                         <select name="kelasmi_id" id="" class=" my-1 w-full sm:w-1/5 py-1 dark:bg-dark-bg" required>
                             <option value="">-- Pilih Kelas --</option>
                             @foreach ($dataKelasMi as $kelas)
@@ -22,14 +21,11 @@
                             </option>
                             @endforeach
                         </select>
-                        <button
-                            class=" bg-red-600 py-1 dark:bg-purple-600 mt-1 my-1 w-full sm:w-40 rounded-sm hover:bg-purple-600 text-white px-4 ">
+                        <button class=" bg-red-600 py-1 dark:bg-purple-600 mt-1 my-1 w-full sm:w-40 rounded-sm hover:bg-purple-600 text-white px-4 ">
                             Pilih Presensi
                         </button>
                     </form>
-                    <button
-                        class=" bg-red-600 py-1 dark:bg-purple-600 mt-1 my-1 w-full sm:w-40 rounded-sm hover:bg-purple-600 text-white px-4 "
-                        onclick="printContent('blanko')">
+                    <button class=" bg-red-600 py-1 dark:bg-purple-600 mt-1 my-1 w-full sm:w-40 rounded-sm hover:bg-purple-600 text-white px-4 " onclick="printContent('blanko')">
                         Cetak
                     </button>
                 </div>
@@ -96,39 +92,39 @@
                         <tbody class=" text-sm">
                             @foreach ($dataSiswa as $data)
                             @php
-                                $siswa = $data['siswa'];
-                                $absensiPerBulan = $data['absensiPerBulan'];
-                                $total = $data['total'];
+                            $siswa = $data['siswa'];
+                            $absensiPerBulan = $data['absensiPerBulan'];
+                            $total = $data['total'];
                             @endphp
                             <tr class=" border border-green-600    text-xs sm:text-sm ">
                                 <td class="border border-green-600 text-center px-1">{{ $loop->iteration }}</td>
-                                <td class="border border-green-600 px-1 text-xs uppercase ">{{
+                                <td class="border border-green-600 px-1 text-xs capitalize  ">{{
                                     strtolower($siswa->nama_siswa) }}</td>
                                 <td class="border border-green-600 text-center ">{{ $siswa->nama_kelas }}</td>
                                 @foreach ($absensiPerBulan as $absensi)
                                 @php
-                                    $textColorClass = '';
-                                    $keterangan = '';
-                                    if ($absensi['data']) {
-                                        switch ($absensi['data']->keterangan) {
-                                            case 'hadir':
-                                                $textColorClass = 'text-green-600';
-                                                $keterangan = '&#x2022;';
-                                                break;
-                                            case 'izin':
-                                                $textColorClass = 'text-black';
-                                                $keterangan = 'I';
-                                                break;
-                                            case 'sakit':
-                                                $textColorClass = 'text-yellow-600';
-                                                $keterangan = 'S';
-                                                break;
-                                            case 'alfa':
-                                                $textColorClass = 'text-red-600';
-                                                $keterangan = 'A';
-                                                break;
-                                        }
-                                    }
+                                $textColorClass = '';
+                                $keterangan = '';
+                                if ($absensi['data']) {
+                                switch ($absensi['data']->keterangan) {
+                                case 'hadir':
+                                $textColorClass = 'text-green-600';
+                                $keterangan = '&#x2022;';
+                                break;
+                                case 'izin':
+                                $textColorClass = 'text-black';
+                                $keterangan = 'I';
+                                break;
+                                case 'sakit':
+                                $textColorClass = 'text-yellow-600';
+                                $keterangan = 'S';
+                                break;
+                                case 'alfa':
+                                $textColorClass = 'text-red-600';
+                                $keterangan = 'A';
+                                break;
+                                }
+                                }
                                 @endphp
                                 <td class="border border-green-600 text-center font-bold {{ $textColorClass }} {{ $absensi['hari']->isThursday() ? " bg-green-600" : "" }}">
                                     {!! $keterangan !!}
