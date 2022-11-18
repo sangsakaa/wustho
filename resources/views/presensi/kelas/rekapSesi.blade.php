@@ -23,27 +23,27 @@
         <div class="bg-white dark:bg-dark-bg overflow-hidden shadow-sm " id="blanko">
             <div class=" p-1 ">
                 <div class=" overflow-auto bg-white dark:bg-dark-bg">
-                    <table class="table-fixed w-full border border-black">
+                    <table class="table-fixed w-full border border-green-800">
                         <thead>
-                            <tr class="border bg-green-800 text-white dark:bg-purple-600 text-xs sm:text-sm">
-                                <th class="border px-1 w-14" rowspan="2">Kelas</th>
-                                <th class="border px-1  uppercase text-white " colspan="{{ $periodeBulan->count() }}">
+                            <tr class="border bg-green-200  text-black dark:bg-purple-600 text-xs sm:text-sm">
+                                <th class="border border-green-800 px-1 w-14" rowspan="2">Kelas</th>
+                                <th class="border border-green-800 px-1  uppercase  text-black " colspan="{{ $periodeBulan->count() }}">
                                     {{$bulan->isoFormat('MMMM YYYY')}}
                                 </th>
                             </tr>
-                            <tr class="border border-black bg-green-800 text-white dark:bg-purple-600 text-xs sm:text-sm">
+                            <tr class="border border-green-800 bg-green-200  text-black dark:bg-purple-600 text-xs sm:text-sm">
                                 @foreach ($periodeBulan as $hari)
-                                <th class="border {{ $hari->isThursday() ? " bg-green-800 text-white "
+                                <th class="border border-green-800 {{ $hari->isThursday() ? " border-green-800 bg-green-200 text-black "
                                     : "" }}">{{ $hari->day }}</th>
                                 @endforeach
                             </tr>
                         </thead>
-                        <tbody class=" text-sm border">
+                        <tbody class=" text-sm border border-green-800">
                             @foreach ($dataRekapSesi as $rekapSesi)
-                            <tr class=" border border-black text-xs sm:text-sm even:bg-green-100">
-                                <th class="border border-black text-center ">{{ $rekapSesi['kelasmi']->nama_kelas }}</th>
+                            <tr class=" border border-green-800 text-xs sm:text-sm even:bg-green-100">
+                                <th class="border border-green-800 text-center ">{{ $rekapSesi['kelasmi']->nama_kelas }}</th>
                                 @foreach ($rekapSesi['sesiPerBulan'] as $sesi)
-                                <td class="border border-black {{ $sesi['hari']->isThursday() ? " bg-green-800 text-white" : "" }}">
+                                <td class="border border-green-800 {{ $sesi['hari']->isThursday() ? " bg-green-800 text-white" : "" }}">
                                     <div class="grid justify-items-center">
                                         @if (!$sesi['data'])
                                         @elseif ($sesi['data']->absensi->count())
