@@ -48,7 +48,7 @@
                                         @if (!$sesi['data'])
                                         @elseif ($sesi['data']->absensi->count())
                                         <a href="/absensikelas/{{ $sesi['data']->id }}">
-                                            <x-icons.check class="w-4 h-4 text-green-600" aria-hidden="true" />
+                                            <x-icons.check class=" font-semibold uppercase w-4 h-4 text-green-800" aria-hidden="true" />
                                         </a>
                                         @else
                                         <a href="/absensikelas/{{ $sesi['data']->id }}">
