@@ -2,7 +2,7 @@
     <x-slot name="header">
         @section('title', '| Rekap Sesi')
         <h2 class="font-semibold text-xl leading-tight">
-            {{ __('Presensi Kelas')}}
+            {{ __('Presensi Sesi PerKelas')}}
         </h2>
     </x-slot>
     <div class="my-1">
