@@ -105,16 +105,7 @@
 
     @endrole
     @role('pengurus')
-    <x-sidebar.link title=" Data Siswa" href="/siswa" :isActive="request()->routeIs('siswa')">
-        <x-slot name="icon">
-            <x-icons.usercircle class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
-        </x-slot>
-    </x-sidebar.link>
-    <x-sidebar.link title="Data Asrama" href="/asramasiswa" :isActive="request()->routeIs('asramasiswa')">
-        <x-slot name="icon">
-            <x-icons.home class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
-        </x-slot>
-    </x-sidebar.link>
+
     <x-sidebar.link title="Rekap Absen Harian" href="/absensikelas/rekap-per-hari" :isActive="request()->routeIs('rekap-per-hari')">
         <x-slot name="icon">
             <x-icons.home class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
