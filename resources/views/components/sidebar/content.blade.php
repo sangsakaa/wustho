@@ -1,4 +1,4 @@
-<x-perfect-scrollbar as="nav" aria-label="main" class="flex flex-col flex-1 gap-1 px-2">
+<x-perfect-scrollbar as="nav" aria-label="main" class="flex flex-col flex-1 gap-0 px-2">
     @role('super admin')
     <x-sidebar.link title="Dashboard" href="/dashboard" :isActive="request()->routeIs('dashboard')">
         <x-slot name="icon">
