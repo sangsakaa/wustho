@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        @section('title', '|REKAP HARIAN : '. $tgl->isoFormat('dddd, D MMMM YYYY'))
+        @section('title', '| REKAP HARIAN : '. $tgl->isoFormat('dddd, D MMMM YYYY'))
         <h2 class="font-semibold text-xl leading-tight">
             Rekap Absensi Kelas : {{($tgl->isoFormat('dddd, D MMMM YYYY')) }}
         </h2>

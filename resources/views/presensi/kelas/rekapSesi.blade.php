@@ -47,11 +47,11 @@
                                     <div class="grid justify-items-center">
                                         @if (!$sesi['data'])
                                         @elseif ($sesi['data']->absensi->count())
-                                        <a href="/absensikelas/{{ $sesi['data']->id }}">
+                                        <a target="_blank" href="/absensikelas/{{ $sesi['data']->id }}">
                                             <x-icons.check class=" font-semibold uppercase w-4 h-4 text-green-800" aria-hidden="true" />
                                         </a>
                                         @else
-                                        <a href="/absensikelas/{{ $sesi['data']->id }}">
+                                        <a target="_blank" href="/absensikelas/{{ $sesi['data']->id }}">
                                             <x-icons.x-mark class="w-4 h-4 text-red-600" aria-hidden="true" />
                                         </a>
                                         @endif

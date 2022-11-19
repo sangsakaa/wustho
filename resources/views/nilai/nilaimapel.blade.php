@@ -74,7 +74,7 @@
                                     <th class=" border text-center px-1 sm:text-sm text-xs">{{$nilai->periode}} {{$nilai->ket_semester}} </td>
                                     <th class=" border text-center px-1">{{$nilai->semester}} </td>
                                     <th class=" border text-center px-1 py-2">
-                                        <a href="/nilai/{{$nilai->id}}" class=" text-white bg-blue-600 hover:bg-purple-700  sm:px-4 px-1 py-1 rounded-md">
+                                        <a href="/nilai/{{$nilai->id}}" class=" text-white bg-blue-600 hover:bg-purple-700  sm:px-4 px-1 py-1 rounded-md" title="List Peserta Kelas">
                                             Nilai
                                         </a>
                                     </th>
@@ -89,14 +89,23 @@
                                     <th class=" border text-center px-1">{{$nilai->jumlah_peserta_kelas}} </td>
                                     <th class=" border text-center px-1">{{$nilai->jumlah_nilai_harian}} </td>
                                     <th class=" border text-center px-1">{{$nilai->jumlah_nilai_ujian}} </td>
-                                    <td class=" grid justify-items-center py-1 ">
+                                    <td class="  flex justify-items-center p-1   gap-1 ">
                                         <form action="/nilaimapel/{{$nilai->id}}" method="post">
                                             @csrf
                                             @method('delete')
-                                            <button class=" bg-red-500 text-white p-1 rounded-md" onclick=" return confirm ('apakah anda yakin menghapus data ini : {{$nilai->mapel}}')"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                            <button class=" bg-red-500 text-white p-1 rounded-md" onclick=" return confirm ('apakah anda yakin menghapus data ini : {{$nilai->mapel}}')" title="Mengahapus List Mapel"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                                     <path stroke-linecap="round" stroke-linejoin="round" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
                                                 </svg></button>
                                         </form>
+                                        <div class=" bg-yellow-400 p-1  rounded-md">
+                                            <a href="/nilaimapel/{{$nilai->id}}/edit" title="Tombol Merubah Mapel">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
+                                                </svg>
+
+
+                                            </a>
+                                        </div>
                                     </td>
                                 </tr>
                                 @endforeach
