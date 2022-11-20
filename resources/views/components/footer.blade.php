@@ -1,4 +1,4 @@
-<footer class="flex-shrink-0 px-6 py-4 ">
+<footer class="flex-shrink-0 px-6 py-4   ">
     <p class="flex items-center justify-center gap-1 text-sm text-gray-600 dark:text-gray-400">
         <span>Made with</span>
         <span>
@@ -6,7 +6,7 @@
         </span>
         <span>by</span>
         <a href="https://wustho.smedi.my.id/" target="_blank" class="text-blue-600 hover:underline">
-            MADIN WUSTHO WAHIDIYAH
+            MADIN WUSTHO WAHIDIYAH &copy 2022
         </a>
     </p>
 </footer>

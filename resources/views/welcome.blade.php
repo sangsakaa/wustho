@@ -417,24 +417,24 @@
 </head>
 
 <body class="antialiased">
-    <div class="relative grid w-full items-top justify-center min-h-screen bg-gray-100 dark:bg-gray-900 sm:items-center py-4  sm:pt-0">
+    <div class="relative grid w-full items-top justify-center min-h-screen dark:bg-gray-900 sm:items-center py-4  sm:pt-0">
         <div class="max-w-6xl mx-auto sm:px-2 lg:px-2">
             <div class=" text-center  sm:mt-12 mt-12">
                 <img src="asset/images/logo.png" alt="" width="200px"><br>
                 <span class=" dark:text-white text-2xl">S M E D I</span><br>
                 <span class=" dark:text-white capitalize text-lg">Sistem Manajemen Diniyah</span>
             </div>
-            <hr class=" dark:border-white">
-            <div class="mt-2 w-full  dark:bg-dark-bg overflow-hidden shadow  ">
-                <div id="wrapper" class="grid grid-cols-1 md:grid-cols-1 rounded-md">
+            <hr class="">
+            <div class="mt-2 w-full   overflow-hidden shadow  ">
+                <div id="wrapper" class="grid grid-cols-1 md:grid-cols-1 ">
                     <div class="py-1 text-center w-full ">
                         @if(Route::has('login'))
                         @auth
-                        <div class=" bg-white p-2   ">
+                        <div class="  p-2   ">
                             Selamat Anda Sudah Login
                         </div>
                         @else
-                        <a href="{{ route('login') }}" class="text-sm text-gray-700 dark:text-white  p-4 ">Log in</a>
+                        <a href="{{ route('login') }}" class="text-sm text-gray-700   p-4 ">Log in</a>
                         <div class=" w-full dark:text-white">
                         </div>
                         @endif
@@ -444,9 +444,9 @@
                     <div class=" py-1 mt-2 text-center">
                         @if(Route::has('login'))
                         @auth
-                        <a href="{{ url('/dashboard') }}" class="text-md text-gray-700 dark:text-gray-500 ">Dashboard</a>
+                        <a href="{{ url('/dashboard') }}" class="text-md text-gray-700">Dashboard</a>
                         @else
-                        <a href="{{ route('login') }}" class="text-sm text-gray-700  dark:text-white ">Log in</a>
+                        <a href="{{ route('login') }}" class="text-sm text-gray-700  ">Log in</a>
                         @endif
                         @endauth
                         <div class=" text-center text-sm text-gray-500 ">

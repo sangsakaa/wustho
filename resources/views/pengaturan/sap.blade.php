@@ -60,16 +60,32 @@
                         </p>
                     </div>
                     <hr class=" border-b-2 border-green-900">
-                    <div class=" grid grid-cols-1">
-                        <div class="text-green-900 mt-1 font-semibold">
-                            <span class="inline-block w-1/5">KELAS</span>: {{ $kelasmi->nama_kelas }}
+                    <div class=" grid grid-cols-4">
+                        <div class=" text-sm text-green-900 mt-1 font-semibold">
+                            KELAS
                         </div>
-                        <div class="text-green-900 font-semibold">
-                            <span class="inline-block w-1/5">MATA PELAJARAN</span>: {{ $mapel->mapel }}
+                        <div>
+                            : {{ $kelasmi->nama_kelas }}
                         </div>
-                        <div class="text-green-900 font-semibold">
-                            <span class="inline-block w-1/5">GURU MAPEL</span>: {{ $mapel->nama_guru }}
+                        <div class=" text-sm text-green-900 font-semibold">
+                            MATA PELAJARAN
                         </div>
+                        <div>
+                            : {{ $mapel->mapel }}
+                        </div>
+                        <div class=" text-sm text-green-900 font-semibold">
+                            GURU MAPEL
+                        </div>
+                        <div>
+                            : {{ $mapel->nama_guru }}
+                        </div>
+                        <div class=" text-sm text-green-900 font-semibold">
+                            HARI
+                        </div>
+                        <div>
+                            :
+                        </div>
+
                     </div>
                     <table class="table-fixed w-full text-green-900">
                         <thead class="border border-b-2 border-green-600">
@@ -92,7 +108,7 @@
                         </thead>
                         <tbody class=" text-sm">
                             @foreach ($dataSiswa as $siswa)
-                            <tr class=" border border-green-600 text-xs sm:text-sm ">
+                            <tr class=" border border-green-600 text-xs sm:text-sm even:bg-gray-100 ">
                                 <td class="border border-green-600 text-center px-1 text-xs">{{ $loop->iteration }}</td>
                                 <td class="border border-green-600 px-1 text-xs capitalize">{{ strtolower($siswa->nama_siswa) }}</td>
                                 @for ($i = 0; $i < 20; $i++) <td class="border border-green-600 px-1">
