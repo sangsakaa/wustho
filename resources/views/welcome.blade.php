@@ -19,6 +19,12 @@
             -webkit-text-size-adjust: 100%
         }
 
+        .gede {
+            font-size: large;
+            text-transform: uppercase;
+
+        }
+
         body {
             margin: 0
         }
@@ -422,69 +428,66 @@
             <div class=" text-center  sm:mt-12 mt-12">
                 <img src="asset/images/logo.png" alt="" width="200px"><br>
                 <span class=" dark:text-white text-2xl">S M E D I</span><br>
-                <span class=" dark:text-white capitalize text-lg">Sistem Manajemen Diniyah</span>
+                <span class=" dark:text-white capitalize text-lg gede">Sistem Manajemen Diniyah</span>
             </div>
             <hr class="">
-            <div class="mt-2 w-full   overflow-hidden shadow  ">
-                <div id="wrapper" class="grid grid-cols-1 md:grid-cols-1 ">
-                    <div class="py-1 text-center w-full ">
-                        @if(Route::has('login'))
-                        @auth
-                        <div class="  p-2   ">
-                            Selamat Anda Sudah Login
-                        </div>
-                        @else
-                        <a href="{{ route('login') }}" class="text-sm text-gray-700   p-4 ">Log in</a>
-                        <div class=" w-full dark:text-white">
-                        </div>
-                        @endif
-                        @endauth
-                    </div>
-                    @role('super admin')
-                    <div class=" py-1 mt-2 text-center">
-                        @if(Route::has('login'))
-                        @auth
-                        <a href="{{ url('/dashboard') }}" class="text-md text-gray-700">Dashboard</a>
-                        @else
-                        <a href="{{ route('login') }}" class="text-sm text-gray-700  ">Log in</a>
-                        @endif
-                        @endauth
-                        <div class=" text-center text-sm text-gray-500 ">
-                            Laravel v {{ Illuminate\Foundation\Application::VERSION }} (PHP v {{ PHP_VERSION }})
-                        </div>
-                    </div>
-                    @endrole
-                    @role('siswa')
-                    <div class="mt-4 px-4 text-center">
-                        @if(Route::has('login'))
-                        @auth
-                        <a href="{{ url('/userdashboard') }}" class="text-md text-gray-700 dark:text-gray-500 ">{{Auth::user()->name}}</a>
-                        @else
-                        <a href="{{ route('login') }}" class="text-sm text-gray-700  dark:text-white ">Log in</a>
-                        @endif
-                        <div class=" text-center text-sm text-gray-500  ">
-                            Laravel v {{ Illuminate\Foundation\Application::VERSION }} (PHP v {{ PHP_VERSION }})
-                        </div>
-                        @endauth
 
-                    </div>
-                    @endrole
-                    @role('pengurus')
-                    <div class=" text-center">
-                        @if(Route::has('login'))
-                        @auth
-                        <a href="{{ url('/asramasiswa') }}" class="text-md text-gray-700 dark:text-gray-500 ">Dashboard</a>
-                        @else
-                        <a href="{{ route('login') }}" class="text-sm text-gray-700  dark:text-white ">Log in</a>
-                        @endif
-                        <div class=" text-center text-sm text-gray-500  ">
-                            Laravel v {{ Illuminate\Foundation\Application::VERSION }} (PHP v {{ PHP_VERSION }})
-                        </div>
-                        @endauth
-                    </div>
-                    @endrole
+            <div class=" text-center ">
+                @if(Route::has('login'))
+                @auth
+                <div class=" dark:text-white   text-center gede   ">
+                    Selamat Anda Sudah Login sebagai : <br>
+                    {{'"'.Auth::user()->name .'"'}}
+                </div>
+                @else
+                <a href="{{ route('login') }}" class="text-sm dark:text-center text-gray-700 dark:text-white gede   p-4 ">Log in</a>
+                <div class=" w-full dark:text-white">
+                </div>
+                @endif
+                @endauth
+            </div>
+            @role('super admin')
+            <div class=" py-1 mt-2 text-center uppercase">
+                @if(Route::has('login'))
+                @auth
+                <a href="{{ url('/dashboard') }}" class="text-md dark:text-white text-gray-700 uppercase gede">Dashboard</a>
+                @else
+                <a href="{{ route('login') }}" class="  ">Log in</a>
+                @endif
+                @endauth
+                <div class=" text-center text-sm text-gray-500 ">
+                    Laravel v {{ Illuminate\Foundation\Application::VERSION }} (PHP v {{ PHP_VERSION }})
                 </div>
             </div>
+            @endrole
+            @role('siswa')
+            <div class="mt-4 px-4 text-center">
+                @if(Route::has('login'))
+                @auth
+                <a href="{{ url('/userdashboard') }}" class="text-md text-gray-700 dark:text-gray-500 ">{{Auth::user()->name}}</a>
+                @else
+                <a href="{{ route('login') }}" class="text-sm text-gray-700  dark:text-white ">Log in</a>
+                @endif
+                <div class=" text-center text-sm text-gray-500  ">
+                    Laravel v {{ Illuminate\Foundation\Application::VERSION }} (PHP v {{ PHP_VERSION }})
+                </div>
+                @endauth
+            </div>
+            @endrole
+            @role('pengurus')
+            <div class=" text-center">
+                @if(Route::has('login'))
+                @auth
+                <a href="{{ url('/asramasiswa') }}" class="text-md text-gray-700 dark:text-gray-500 ">Dashboardx</a>
+                @else
+                <a href="{{ route('login') }}" class="text-sm text-gray-700 ">Log in</a>
+                @endif
+                <div class=" text-center text-sm text-gray-500  ">
+                    Laravel v {{ Illuminate\Foundation\Application::VERSION }} (PHP v {{ PHP_VERSION }})
+                </div>
+                @endauth
+            </div>
+            @endrole
         </div>
 </body>
 
