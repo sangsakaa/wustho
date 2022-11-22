@@ -10,11 +10,11 @@
     <div class="my-1">
         <div class="">
             <div class=" bg-white dark:bg-dark-bg overflow-hidden shadow-sm ">
-                <div class="mx-2 px-2 border-gray-200 grid grid-cols-1 w-full sm:grid-cols-1  gap-2">
+                <div class="mx-2 px-2 border-gray-200 flex grid-cols-1 w-full sm:grid-cols-1  gap-2">
                     <form action="/absensikelas/blanko" method="get" class="w-full">
                         {{-- @csrf --}}
                         <input type="month" name="bulan" class=" py-1 dark:bg-dark-bg" value="{{ $bulan->format('Y-m') }}">
-                        <select name="kelasmi_id" id="" class=" my-1 w-full sm:w-1/5 py-1 dark:bg-dark-bg" required>
+                        <select name="kelasmi_id" id="" class=" my-1 w-full sm:w-1/4 py-1 dark:bg-dark-bg" required>
                             <option value="">-- Pilih Kelas --</option>
                             @foreach ($dataKelasMi as $kelas)
                             <option value="{{ $kelas->id }}" {{ $kelasmi?->id === $kelas->id ? "selected" : "" }}>
@@ -22,7 +22,7 @@
                             </option>
                             @endforeach
                         </select>
-                        <button class=" bg-red-600 py-1 dark:bg-purple-600 mt-1 my-1 w-full sm:w-40 rounded-sm hover:bg-purple-600 text-white px-4 ">
+                        <button class=" bg-red-600 py-1 dark:bg-purple-600  my-1 w-full sm:w-40 rounded-sm hover:bg-purple-600 text-white px-4 ">
                             Pilih Blanko
                         </button>
                     </form>
