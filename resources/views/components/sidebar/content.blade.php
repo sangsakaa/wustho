@@ -97,6 +97,11 @@
             <x-icons.books class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
         </x-slot>
     </x-sidebar.link>
+    <x-sidebar.link title="Rekap Semester" href="/absensikelas/rekap-semester" :isActive="request()->routeIs('absensikelas/rekap-semester')">
+        <x-slot name="icon">
+            <x-icons.books class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
+        </x-slot>
+    </x-sidebar.link>
     <x-sidebar.link title="Blangko Presensi" href="/absensikelas/blanko" :isActive="request()->routeIs('absensikelas/blanko')">
         <x-slot name="icon">
             <x-icons.books class="flex-shrink-0 w-6 h-6" aria-hidden="true" />

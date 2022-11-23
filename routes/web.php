@@ -174,6 +174,7 @@ Route::post('absensikelas', [AbsensikelasController::class, 'store'])->middlewar
 Route::get('absensikelas/blanko', [AbsensikelasController::class, 'blanko'])->middleware(['auth']);
 Route::get('absensikelas/rekap-per-hari', [AbsensikelasController::class, 'rekapPerHari'])->middleware(['auth']);
 Route::get('absensikelas/rekap-per-bulan', [AbsensikelasController::class, 'rekapPerBulan'])->middleware(['auth']);
+Route::get('absensikelas/rekap-semester', [AbsensikelasController::class, 'rekapSemester'])->middleware(['auth']);
 
 // Route::get('/siswa', function () {
 //     return view('siswa.siswa');
