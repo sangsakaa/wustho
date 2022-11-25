@@ -1,8 +1,8 @@
 <x-app-layout>
     <x-slot name="header">
-        @section('title', '| Rekap Semester')
+        @section('title', '| Rekap Semester : ' . $kelasmi?->nama_kelas)
         <h2 class="font-semibold text-xl leading-tight">
-            {{ __('Rekap Semester') }}
+            {{ __('Rekap Semester') }} : {{ $kelasmi?->nama_kelas }}
         </h2>
     </x-slot>
     <div class="my-1">
