@@ -186,22 +186,7 @@ class NilaiController extends Controller
      * @param  \App\Models\Nilai  $nilai
      * @return \Illuminate\Http\Response
      */
-    public function edit(Nilai $nilai)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Nilai  $nilai
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Nilai $nilai)
-    {
-        //
-    }
+    
 
     /**
      * Remove the specified resource from storage.

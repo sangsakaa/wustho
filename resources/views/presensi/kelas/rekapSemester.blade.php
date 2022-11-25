@@ -18,14 +18,11 @@
                             </option>
                             @endforeach
                         </select>
-                        <button
-                            class=" bg-red-600 py-1 dark:bg-purple-600 mt-1 my-1 w-full sm:w-40 rounded-sm hover:bg-purple-600 text-white px-4 ">
+                        <button class=" bg-red-600 py-1 dark:bg-purple-600 mt-1 my-1 w-full sm:w-40 rounded-sm hover:bg-purple-600 text-white px-4 ">
                             Tampilkan
                         </button>
                     </form>
-                    <button
-                        class=" bg-red-600 py-1 dark:bg-purple-600 mt-1 my-1 w-full sm:w-40 rounded-sm hover:bg-purple-600 text-white px-4 "
-                        onclick="printContent('blanko')">
+                    <button class=" bg-red-600 py-1 dark:bg-purple-600 mt-1 my-1 w-full sm:w-40 rounded-sm hover:bg-purple-600 text-white px-4 " onclick="printContent('blanko')">
                         Cetak
                     </button>
                 </div>
@@ -69,7 +66,7 @@
                                 <th class="border border-green-600 px-1">NAMA SISWA</th>
                                 <th class="border border-green-600 px-1 w-8">JK</th>
                                 <th class="border border-green-600 px-1 w-24">ASRAMA</th>
-                                <th class="border border-green-600 px-1 w-24">KELAS</th>
+                                <th class="border border-green-600 px-1 w-16">KELAS</th>
                                 <th class="border border-green-600 px-1 w-16">HADIR</th>
                                 <th class="border border-green-600 px-1 w-16">IZIN</th>
                                 <th class="border border-green-600 px-1 w-16">SAKIT</th>
@@ -78,7 +75,7 @@
                         </thead>
                         <tbody class=" text-sm">
                             @foreach ($dataAbsensi as $absensi)
-                            <tr class=" border border-green-600 odd:bg-blue-300 even:bg-gray-300 ">
+                            <tr class=" border border-green-600 odd:bg-white  even:bg-gray-200 ">
                                 <td class="border border-green-600 text-center px-1">{{ $loop->iteration }}</td>
                                 <td class="border border-green-600 px-1 capitalize">
                                     {{strtolower($absensi->nama_siswa) }}
