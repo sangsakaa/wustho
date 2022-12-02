@@ -5,8 +5,6 @@
             {{ __('Dashboard Daftar Guru') }}
         </h2>
     </x-slot>
-
-
     <div class="bg-white dark:bg-dark-bg overflow-hidden shadow-sm">
         <div class="p-2">
             @if (session('delete'))
@@ -40,7 +38,6 @@
                 </form>
                 <div class=" grid sm:grid-cols-2 grid-cols-2  gap-2  ">
                     <a href="/addGuru" class="   bg-blue-500 text-white p-1 rounded-md text-center">
-
                         Tambah Guru
                     </a>
                     <a href="/asramasiswa" class=" bg-blue-500 text-white py-1 px-2 rounded-md text-center d-inline-block">
