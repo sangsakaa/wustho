@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Asramasiswa;
-use App\Models\Kegiatan;
 use App\Models\Periode;
+use App\Models\Kegiatan;
+use App\Models\Sesiasrama;
+use App\Models\Asramasiswa;
+use Illuminate\Http\Request;
 use App\Models\Pesertaasrama;
 use App\Models\Presensiasrama;
-use App\Models\Sesiasrama;
-use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
+use Illuminate\Routing\Controller;
 
 class SesiasramaController extends Controller
 {
@@ -17,7 +19,7 @@ class SesiasramaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         $peserta = Presensiasrama::all();
         $update_terakhir = $peserta->max('updated_at');
@@ -34,6 +36,7 @@ class SesiasramaController extends Controller
             ->select('periode.id', 'periode.periode', 'semester.ket_semester')
         ->orderBy('id', 'desc')->get();
         $kegiatan = Kegiatan::all();
+        $tgl = $request->tgl ? Carbon::parse($request->tgl) : now();
         $sesiasrama = Sesiasrama::query()
             ->join('periode', 'periode.id', '=', 'sesiasrama.periode_id')
             ->join('semester', 'semester.id', '=', 'periode.semester_id')
@@ -63,6 +66,7 @@ class SesiasramaController extends Controller
                 'kegiatan' => $kegiatan,
                 'update_terakhir' => $update_terakhir,
                 'create_at' => $create_at,
+                'tgl' => $tgl,
                
             ]
         );
