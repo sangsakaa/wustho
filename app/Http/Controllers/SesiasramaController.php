@@ -43,7 +43,7 @@ class SesiasramaController extends Controller
             ->join('kegiatan', 'kegiatan.id', '=', 'sesiasrama.kegiatan_id')
             ->join('asramasiswa', 'asramasiswa.id', '=', 'sesiasrama.asramasiswa_id')
             ->join('asrama', 'asrama.id', '=', 'asramasiswa.asrama_id')
-            ->where('asramasiswa.periode_id', session('periode_id'))
+            ->where('sesiasrama.periode_id', session('periode_id'))
             ->select(
                 [
                     'sesiasrama.id',
@@ -72,22 +72,7 @@ class SesiasramaController extends Controller
         );
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    
     public function store(Request $request)
     {
         $sesiasrama = new Sesiasrama();
@@ -99,31 +84,17 @@ class SesiasramaController extends Controller
         return redirect('sesiasrama');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    
     public function show(Sesiasrama $sesiasrama)
     {
-        $presensi = $sesiasrama->query()
-            ->join('periode', 'periode.id', '=', 'sesiasrama.periode_id')
-            ->join('kegiatan', 'kegiatan.id', '=', 'sesiasrama.kegiatan_id')
-            ->join('asramasiswa', 'asramasiswa.id', '=', 'sesiasrama.asramasiswa_id')
-            ->crossjoin('semester')
-            ->join('asrama', 'asrama.id', '=', 'asramasiswa.asrama_id')
-            ->select(
-                [
 
-                    'periode.periode',
-                    // 'sesiasrama.id',
-                    'semester.ket_semester',
-                    'asrama.nama_asrama',
-                    'kegiatan.kegiatan'
-                ]
-            )
-            ->find($sesiasrama->id);
+        $presensi = Sesiasrama::query()
+            ->join('kegiatan', 'kegiatan.id', '=', 'sesiasrama.kegiatan_id')
+            ->join('periode', 'periode.id', '=', 'sesiasrama.periode_id')
+        ->join('semester', 'semester.id', '=', 'periode.semester_id')
+        ->join('asramasiswa', 'asramasiswa.id', 'sesiasrama.asramasiswa_id')
+        ->join('asrama', 'asrama.id', 'asramasiswa.asrama_id')
+        ->find($sesiasrama)->first();
         $peserta = Pesertaasrama::query()
             ->join('siswa', 'siswa.id', '=', 'pesertaasrama.siswa_id')
             ->join('asramasiswa', 'asramasiswa.id', '=', 'pesertaasrama.asramasiswa_id')
