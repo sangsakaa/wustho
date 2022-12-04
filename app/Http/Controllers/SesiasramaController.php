@@ -36,7 +36,7 @@ class SesiasramaController extends Controller
             ->select('periode.id', 'periode.periode', 'semester.ket_semester')
         ->orderBy('id', 'desc')->get();
         $kegiatan = Kegiatan::all();
-        $tgl = $request->tgl ? Carbon::parse($request->tgl) : now();
+        $tanggal = $request->tgl ? Carbon::parse($request->tgl) : now();
         $sesiasrama = Sesiasrama::query()
             ->join('periode', 'periode.id', '=', 'sesiasrama.periode_id')
             ->join('semester', 'semester.id', '=', 'periode.semester_id')
@@ -66,7 +66,7 @@ class SesiasramaController extends Controller
                 'kegiatan' => $kegiatan,
                 'update_terakhir' => $update_terakhir,
                 'create_at' => $create_at,
-                'tgl' => $tgl,
+                'tanggal' => $tanggal,
                
             ]
         );

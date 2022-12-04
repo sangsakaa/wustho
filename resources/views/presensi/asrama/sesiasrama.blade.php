@@ -13,7 +13,7 @@
           @csrf
           <div class=" p-4 grid grid-cols-1  sm:grid-cols-5 gap-2  ">
             <!-- <label for="" class=" py-2"> Tanggal</label> -->
-            <input type="date" name="tgl" class=" py-1 dark:bg-dark-bg" value="{{ $tgl->toDateString() }}">
+            <input type="date" name="tanggal" class=" py-1 dark:bg-dark-bg" value="{{ $tanggal->toDateString() }}">
             <!-- <label for="" class=" py-2"> Periode</label> -->
             <select name="periode_id" id="" class=" py-1 text-xs sm:text-sm">
               @foreach($periode as $peri)
