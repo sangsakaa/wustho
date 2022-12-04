@@ -21,6 +21,7 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\PelanggaranController;
 use App\Http\Controllers\PresensikelasController;
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\RekapAsamaController;
 use App\Http\Controllers\SesikelasController;
 
 // batas
@@ -176,12 +177,29 @@ Route::get('absensikelas/rekap-per-hari', [AbsensikelasController::class, 'rekap
 Route::get('absensikelas/rekap-per-bulan', [AbsensikelasController::class, 'rekapPerBulan'])->middleware(['auth']);
 Route::get('absensikelas/rekap-semester', [AbsensikelasController::class, 'rekapSemester'])->middleware(['auth']);
 
-// Route::get('/siswa', function () {
-//     return view('siswa.siswa');
-// })->middleware(['auth', 'verified'])->name('siswa');
 
-// useless routes
-// Just to demo sidebar dropdown links active states.
+Route::get('rekap-harian', [RekapAsamaController::class, 'RekapHarian']);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 Route::get('/buttons/text', function () {
     return view('buttons-showcase.text');
 })->middleware(['auth'])->name('buttons.text');

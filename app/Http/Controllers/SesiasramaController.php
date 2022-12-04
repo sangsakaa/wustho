@@ -19,7 +19,7 @@ class SesiasramaController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(Request $request, Sesiasrama $sesiasrama)
     {
         $peserta = Presensiasrama::all();
         $update_terakhir = $peserta->max('updated_at');
@@ -37,7 +37,7 @@ class SesiasramaController extends Controller
         ->orderBy('id', 'desc')->get();
         $kegiatan = Kegiatan::all();
         $tanggal = $request->tgl ? Carbon::parse($request->tgl) : now();
-        $sesiasrama = Sesiasrama::query()
+        $Datasesiasrama = Sesiasrama::query()
             ->join('periode', 'periode.id', '=', 'sesiasrama.periode_id')
             ->join('semester', 'semester.id', '=', 'periode.semester_id')
             ->join('kegiatan', 'kegiatan.id', '=', 'sesiasrama.kegiatan_id')
@@ -63,6 +63,7 @@ class SesiasramaController extends Controller
                 'periode' => $periode,
                 'asramasiswa' => $asramasiswa,
                 'sesiasrama' => $sesiasrama,
+                'Datasesiasrama' => $Datasesiasrama,
                 'kegiatan' => $kegiatan,
                 'update_terakhir' => $update_terakhir,
                 'create_at' => $create_at,

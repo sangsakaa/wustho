@@ -20,14 +20,12 @@
           <div>periode</div>
           <div>
             :
-
             {{$presensi->periode}} {{$presensi->ket_semester}}
           </div>
           <div>Nama Kegiatan</div>
           <div> : {{$presensi->kegiatan}}</div>
         </div>
       </div>
-
     </div>
   </div>
   <div class=" overflow-scroll  mt-2">

@@ -46,9 +46,17 @@
       <div class=" p-4 ">
         <div class=" flex gap-2">
           @role('super admin')
-          <a href="/asrama"><button class=" flex bg-blue-500 rounded-md py-1 px-2 text-white">Kembali Ke Asrama</button></a>
-          <a href="/kegiatan"><button class=" flex bg-blue-500 rounded-md py-1 px-2 text-white">Tambah Kegiatan</button></a>
+          <a href="/asrama"><button class=" flex bg-blue-500 rounded-md py-1 px-2 text-white">Back </button></a>
+          <a href="/kegiatan"><button class=" flex bg-blue-500 rounded-md py-1 px-2 text-white">
+              <span>
+                <x-icons.usercircle></x-icons.usercircle>
+              </span>
+              Kegiatan</button></a>
           @endrole
+          <a href="/rekap-harian"><button class=" flex bg-blue-500 rounded-md py-1 px-2 text-white hover:bg-purple-800"><span>
+                <x-icons.books></x-icons.books>
+              </span>
+              Harian</button></a>
         </div>
         <div class=" overflow-scroll w-full rounded-md">
           <table class=" w-full mt-2  ">
@@ -66,7 +74,7 @@
               </tr>
             </thead>
             <tbody>
-              @foreach ($sesiasrama as $item)
+              @foreach ($Datasesiasrama as $item)
               <tr class=" border  hover:bg-gray-100 text-sm">
                 <th class=" w-5">{{$loop->iteration}}</th>
                 <td class=" px-2 text-center py-1"><a href="/sesiasrama/{{$item->id}}"><button class=" bg-blue-500 py-1 px-2 rounded-md text-white hover:bg-purple-500">Presensi</button></a></td>
