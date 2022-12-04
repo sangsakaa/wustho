@@ -1,42 +1,109 @@
 <x-app-layout>
     <x-slot name="header">
-        <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-            <h2 class="text-xl font-semibold leading-tight">
-                {{ __('Dashboard') }}
-            </h2>
-            <x-button target="_blank" href="https://github.com/kamona-wd/kui-laravel-breeze" variant="black" class="justify-center max-w-xs gap-2">
-                <x-icons.usercircle class="w-6 h-6" aria-hidden="true" />
-                <span>Star on Github</span>
-            </x-button>
-        </div>
+        @section('title', '| REKAP HARIAN : '. $tgl->isoFormat('dddd, D MMMM YYYY'))
+        <h2 class="font-semibold text-xl leading-tight">
+            Rekap Absensi Kelas : {{($tgl->isoFormat('dddd, D MMMM YYYY')) }}
+        </h2>
     </x-slot>
-    <div class="px-6 py-2 overflow-hidden bg-white shadow-md dark:bg-dark-eval-1">
-        <table class=" w-full">
-            <thead>
-                <tr class=" border capitalize text-sm ">
-                    <th class=" text-center">no</th>
-                    <th class=" border px-1">nama Santri</th>
-                    <th class=" border px-1">kegiatan</th>
-                    <th class=" border px-1">keterangan</th>
-                    <th class=" border px-1">Alasan</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($DataPresensi as $user)
-                <tr class=" border even:bg-gray-100">
-                    <td class=" text-center border px-1 ">{{$loop->iteration}}</td>
-                    <td class="px-1 capitalize text-sm">{{strtolower($user->nama_siswa)}}</td>
-                    <td class="px-1 text-center border">{{$user->kegiatan}}</td>
-                    <td class=" capitalize text-center border">
-                        {{$user->keterangan}}
-                    </td>
-                    <td class=" capitalize text-center border">
-                        {{$user->alasan}}
-                    </td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
+    <div class="my-1">
+        <div class="">
+            <div class=" bg-white dark:bg-dark-bg overflow-hidden shadow-sm ">
+                <div class="mx-2 px-2 border-gray-200 grid grid-cols-1 w-full sm:grid-cols-1  gap-2">
+                    <form action="/rekap-harian/" method="get" class="w-full">
+                        {{-- @csrf --}}
+                        <input type="date" name="tgl" class=" py-1 dark:bg-dark-bg" value="{{ $tgl->toDateString() }}">
+                        <button class=" bg-red-600 py-1 dark:bg-purple-600 mt-1 my-1 w-full sm:w-40 rounded-sm hover:bg-purple-600 text-white px-4 ">
+                            Pilih
+                        </button>
+                    </form>
+                    <button class=" bg-red-600 py-1 dark:bg-purple-600 mt-1 my-1 w-full sm:w-40 rounded-sm hover:bg-purple-600 text-white px-4 " onclick="printContent('blanko')">
+                        Cetak
+                    </button>
+                </div>
+            </div>
+        </div>
     </div>
+    <script>
+        function printContent(el) {
+            var fullbody = document.body.innerHTML;
+            var printContent = document.getElementById(el).innerHTML;
+            document.body.innerHTML = printContent;
+            window.print();
+            document.body.innerHTML = fullbody;
+        }
+    </script>
+    @if($rekapAbsensi)
+    <div class="py-1">
+        <div class="bg-white dark:bg-dark-bg overflow-hidden shadow-sm " id="blanko">
+            <div class=" p-1 ">
+                <div class=" overflow-auto bg-white dark:bg-dark-bg  ">
+                    <div class=" text-center text-green-900">
+                        <p class=" font-semibold text-3xl">
+                            MADRASAH DINIYAH WUSTHA WAHIDIYAH
+                        </p>
+                        <p class=" font-semibold uppercase">
+                            {{-- TAHUN PELAJARAN {{$kelasmi->periode}} {{$kelasmi->ket_semester}} --}}
+                        </p>
+                    </div>
+                    <hr class=" border-b-2 border-green-900">
+                    <div class=" text-green-900  text-2xl text-center uppercase font-semibold">
+                        Laporan Harian
+                    </div>
+                    <div class=" grid grid-cols-2">
+                        <div class=" text-green-900  text-sm font-semibold">
+                            Hari, tanggal : {{ $tgl->isoFormat('dddd, D MMMM YYYY') }}
+                        </div>
 
+                    </div>
+                    <div class=" overflow-scroll">
+                        <table class="table-fixed w-full text-green-900">
+                            <thead class="border border-b-2 border-green-600">
+                                <tr class="border  border-green-600 text-xs sm:text-sm">
+                                    <th class="border border-green-600 px-1 w-8">No</th>
+                                    <th class="border border-green-600 px-1 w-1/6 ">Asrama</th>
+                                    <th class="border border-green-600 px-1 w-11 ">Total</th>
+                                    <th class="border border-green-600 px-1 w-11">Tidak Hadir</th>
+                                    <th class="border border-green-600 px-1 w-11">Hadir</th>
+                                    <th class="border border-green-600 px-1 w-1/3 sm:w-1/2 ">Yang tidak hadir</th>
+                                    <th class="border border-green-600 px-1 w-10 sm:w-11 ">Ket</th>
+                                    <th class="border border-green-600 px-1 w-1/6 ">Presentase Kehadiran</th>
+                                </tr>
+                            </thead>
+                            <tbody class=" text-sm">
+                                @php
+                                $nomor = 1;
+                                @endphp
+                                @foreach ($rekapAbsensi as $nama_asrama => $dataAsrama)
+                                @foreach($dataAsrama as $tittle_asrama => $Asrama)
+                                @foreach($Asrama['absensi'] as $absensi)
+                                <tr class=" border border-green-600 text-xs sm:text-sm ">
+
+                                    <td class="border border-green-600 text-center px-1" rowspan=""></td>
+
+                                    @if ($loop->parent->first && $loop->first)
+                                    <td class=" border border-green-600 px-1 text-center text-sm" rowspan="{{ $dataAsrama->sum('row') }}">{{ $nama_asrama }}</td>
+                                    @endif
+                                    <td class="border border-green-600 px-1 text-xs capitalize" rowspan="{{ $absensi->nama_siswa }}"></td>
+                                    <td class="border border-green-600 px-1 text-xs capitalize"></td>
+                                    <td class="border border-green-600 px-1 text-xs capitalize">
+                                    </td>
+                                    <td class="border border-green-600 px-1 text-xs capitalize">
+                                        {{ $Asrama['tidakHadir'] !== 0 ? $loop->iteration . '. ' . strtolower($absensi->nama_siswa) : 'NIHIL'  }}
+                                    </td>
+                                    <td class="border border-green-600 px-1 text-center capitalize">{{ $Asrama['tidakHadir'] !== 0 ? $absensi->keterangan : 'NIHIL' }}</td>
+                                    @if ($loop->first)
+                                    <td class="border border-green-600 text-center px-1" rowspan="{{ $Asrama['row'] }}">{{ number_format($Asrama['persentase'], 1, ',') }}%</td>
+                                    @endif
+                                    @endforeach
+                                    @endforeach
+                                    @endforeach
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @endif
 </x-app-layout>

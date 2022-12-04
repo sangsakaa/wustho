@@ -56,47 +56,12 @@ class KelasController extends Controller
         $kelas->save();
         return redirect()->back();
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show()
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    
     public function edit(Kelas $kelas)
     {
         return view('kelas/editkelas', ['kelas' => $kelas]);
     }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    
     public function destroy(Kelas $kelas)
     {
         Kelas::destroy($kelas->id);
@@ -110,13 +75,11 @@ class KelasController extends Controller
             ->join('kelas', 'kelas.id', '=', 'kelasmi.kelas_id')
             ->where('kelasmi.periode_id', $kelasmi->periode_id)
             ->select('kelasmi.id', 'nama_kelas', 'kelas.kelas', 'kelasmi.kuota', 'periode.periode', 'semester.ket_semester')
-            ->get();
-
+        ->get();
         $pesertaKelasPeriodeTerpilih = Pesertakelas::query()
             ->join('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
             ->where('kelasmi.periode_id', $kelasmi->periode_id)
             ->select('pesertakelas.siswa_id');
-
         $Datasiswa = Siswa::query()
             ->join('nis', 'siswa.id', '=', 'nis.siswa_id')
             ->join('pesertaasrama', 'siswa.id', '=', 'pesertaasrama.siswa_id')
