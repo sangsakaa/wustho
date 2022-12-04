@@ -70,7 +70,9 @@
               <tr class=" border  hover:bg-gray-100">
                 <th class=" w-5">{{$loop->iteration}}</th>
                 <td class=" px-2 text-center py-1"><a href="/sesiasrama/{{$item->id}}"><button class=" bg-blue-500 py-1 px-2 rounded-md text-white hover:bg-purple-500">Presensi</button></a></td>
-                <td class=" px-2 text-center">{{$item->tanggal}}</td>
+                <td class=" px-2 text-center">
+                  {{ \Carbon\Carbon::parse($item->tanggal)->isoFormat(' DD MMMM Y') }}
+                </td>
                 @role('super admin')
                 <td class=" px-2 text-center">{{$item->periode}} {{$item->ket_semester}}</td>
                 @endrole

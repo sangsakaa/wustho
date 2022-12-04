@@ -20,7 +20,7 @@
     </div>
   </div>
   <div class=" overflow-scroll  mt-2">
-    <div class=" bg-white overflow-hidden shadow-sm">
+    <div class=" bg-white dark:bg-dark-bg overflow-hidden shadow-sm">
       <div class=" p-2">
         <form action="/sesiasrama/presensi" method="post">
           @csrf
@@ -40,7 +40,7 @@
             <a href="/sesiasrama" class=" bg-red-500 px-2 py-1 rounded-md text-white">batal</a>
 
           </div>
-          <div class=" overflow-scroll">
+          <div class=" dark:bg-dark-bg ">
             <table class=" w-full mt-2">
               <thead>
                 <tr class=" border capitalize bg-gray-100">
@@ -53,13 +53,13 @@
               <tbody>
                 @foreach($peserta as $item)
                 <tr class=" hover:bg-gray-100">
-                  <th class=" border px-2 ">
+                  <th class=" border px-2 text-sm ">
                     {{$loop->iteration}}
                     <input type="hidden" name="pesertaasrama_id[]" value="{{ $item->id }}" />
                     <input type="hidden" name="presensiasrama_id[{{ $item->id }}]" value="{{ $item->presensiasrama_id }}">
                     <input type="hidden" name="sesiasrama_id" value="{{ $sesiasrama->id }}">
                   </th>
-                  <td class="border px-2  text-xs sm:text-sm w-1/2">{{$item->nama_siswa}}</td>
+                  <td class="border px-2  text-xs sm:text-sm w-1/2 capitalize">{{strtolower($item->nama_siswa)}}</td>
                   <!-- <td class="border px-2  text-center">{{$item->nama_asrama}}</td> -->
                   <td class="   text-right   px-1  border ">
                     <input class="text-xs sm:text-sm " type="radio" id="hadir[{{ $item->id }}]" name="keterangan[{{ $item->id }}]" value="hadir" class=" " {{ $item->keterangan === 'hadir' || $item->keterangan === null ? 'checked' : '' }}>
