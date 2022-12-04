@@ -27,11 +27,12 @@ class SesiasramaController extends Controller
             ->join('periode', 'periode.id', '=', 'asramasiswa.periode_id')
             ->join('semester', 'semester.id', '=', 'periode.semester_id')
             ->select('asramasiswa.id', 'asrama.nama_asrama', 'semester.ket_semester')
+            ->where('asramasiswa.periode_id', session('periode_id'))
             ->get();
         $periode = Periode::query()
             ->join('semester', 'periode.semester_id', '=', 'semester.id')
             ->select('periode.id', 'periode.periode', 'semester.ket_semester')
-            ->get();
+        ->orderBy('id', 'desc')->get();
         $kegiatan = Kegiatan::all();
         $sesiasrama = Sesiasrama::query()
             ->join('periode', 'periode.id', '=', 'sesiasrama.periode_id')
@@ -39,6 +40,7 @@ class SesiasramaController extends Controller
             ->join('kegiatan', 'kegiatan.id', '=', 'sesiasrama.kegiatan_id')
             ->join('asramasiswa', 'asramasiswa.id', '=', 'sesiasrama.asramasiswa_id')
             ->join('asrama', 'asrama.id', '=', 'asramasiswa.asrama_id')
+            ->where('asramasiswa.periode_id', session('periode_id'))
             ->select(
                 [
                     'sesiasrama.id',
