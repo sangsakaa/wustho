@@ -59,7 +59,7 @@
                             <thead class="border border-b-2 border-green-600">
                                 <tr class="border  border-green-600 text-xs sm:text-sm">
                                     <th class="border border-green-600 px-1 w-8">No</th>
-                                    <th class="border border-green-600 px-1 w-11">Kegiatan</th>
+                                    <th class="border border-green-600 px-1 w-20">Kegiatan</th>
                                     <th class="border border-green-600 px-1 w-1/6 ">Asrama</th>
                                     <th class="border border-green-600 px-1 w-11 ">Total</th>
                                     <th class="border border-green-600 px-1 w-11">Tidak Hadir</th>
@@ -81,10 +81,14 @@
                                     <td class="border border-green-600 text-center px-1 border-b-red-600 border-b-4" rowspan="{{ $dataAbsensi['row'] }}">{{$nomor++}}</td>
                                     @endif
                                     @if ($loop->parent->first && $loop->first)
-                                    <td class=" border border-green-600 px-1 text-center text-sm   border-b-red-600 border-b-4 font-semibold" rowspan="{{ $dataKegiatan->sum('row') }}">{{ $nama_kegiatan }}</td>
+                                    <td class=" border border-green-600 text-sm -rotate-90 whitespace-nowrap    border-b-red-600 border-b-4     " rowspan="{{ $dataKegiatan->sum('row') }}">
+
+                                        {{ $nama_kegiatan }}
+
+                                    </td>
                                     @endif
                                     @if($loop->first)
-                                    <td class="border border-green-600 px-1 text-xs capitalize text-center border-b-red-600 border-b-4 " rowspan="{{$dataAbsensi['row']}}">{{$nama_asrama}}</td>
+                                    <td class="border border-green-600 px-1 text-xs  capitalize text-center border-b-red-600 border-b-4 " rowspan="{{$dataAbsensi['row']}}">{{$nama_asrama}}</td>
                                     <td class="border border-green-600 px-1 text-xs capitalize text-center border-b-red-600 border-b-4 " rowspan="{{$dataAbsensi['row']}}">{{$dataAbsensi['total']}}</td>
                                     <td class="border border-green-600 px-1 text-xs capitalize text-center border-b-red-600 border-b-4 " rowspan="{{$dataAbsensi['row']}}">{{$dataAbsensi['tidakHadir']}}</td>
                                     <td class="border border-green-600 px-1 text-xs capitalize text-center border-b-red-600 border-b-4 " rowspan="{{$dataAbsensi['row']}}">{{$dataAbsensi['hadir']}}</td>
