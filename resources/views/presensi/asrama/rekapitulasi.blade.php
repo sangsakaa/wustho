@@ -59,13 +59,13 @@
                             <thead class="border border-b-2 border-green-600">
                                 <tr class="border  border-green-600 text-xs sm:text-sm">
                                     <th class="border border-green-600 px-1 w-8">No</th>
+                                    <th class="border border-green-600 px-1 w-11">Kegiatan</th>
                                     <th class="border border-green-600 px-1 w-1/6 ">Asrama</th>
                                     <th class="border border-green-600 px-1 w-11 ">Total</th>
                                     <th class="border border-green-600 px-1 w-11">Tidak Hadir</th>
                                     <th class="border border-green-600 px-1 w-11">Hadir</th>
                                     <th class="border border-green-600 px-1 w-1/3 sm:w-1/2 ">Yang tidak hadir</th>
                                     <th class="border border-green-600 px-1 w-10 sm:w-11 ">Ket</th>
-                                    <th class="border border-green-600 px-1 w-1/3  ">Ket</th>
                                     <th class="border border-green-600 px-1 w-1/6 ">Presentase Kehadiran</th>
                                 </tr>
                             </thead>
@@ -73,28 +73,28 @@
                                 @php
                                 $nomor = 1;
                                 @endphp
-                                @foreach ($rekapAbsensi as $nama_asrama => $dataAsrama)
-                                @foreach($dataAsrama as $tittle_asrama => $Asrama)
-                                @foreach($Asrama['absensi'] as $absensi)
+                                @foreach ($rekapAbsensi as $nama_kegiatan => $dataKegiatan)
+                                @foreach($dataKegiatan as $nama_asrama => $dataAbsensi)
+                                @foreach($dataAbsensi['absensi'] as $absensi)
                                 <tr class=" border border-green-600 text-xs sm:text-sm ">
                                     @if($loop->first)
-                                    <td class="border border-green-600 text-center px-1" rowspan="{{ $dataAsrama->sum('row') }}">{{$nomor++}}</td>
+                                    <td class="border border-green-600 text-center px-1 border-b-red-600 border-b-4" rowspan="{{ $dataAbsensi['row'] }}">{{$nomor++}}</td>
                                     @endif
                                     @if ($loop->parent->first && $loop->first)
-                                    <td class=" border border-green-600 px-1 text-center text-sm   border-b-red-600 border-b-4 font-semibold" rowspan="{{ $dataAsrama->sum('row') }}">{{ $nama_asrama }}</td>
+                                    <td class=" border border-green-600 px-1 text-center text-sm   border-b-red-600 border-b-4 font-semibold" rowspan="{{ $dataKegiatan->sum('row') }}">{{ $nama_kegiatan }}</td>
                                     @endif
                                     @if($loop->first)
-                                    <td class="border border-green-600 px-1 text-xs capitalize text-center border-b-red-600 border-b-4 " rowspan="{{$Asrama['tidakHadir']}}">{{$Asrama['total']}}</td>
-                                    <td class="border border-green-600 px-1 text-xs capitalize text-center border-b-red-600 border-b-4 " rowspan="{{$Asrama['tidakHadir']}}">{{$Asrama['tidakHadir']}}</td>
-                                    <td class="border border-green-600 px-1 text-xs capitalize text-center border-b-red-600 border-b-4 " rowspan="{{$Asrama['tidakHadir']}}">{{$Asrama['hadir']}}</td>
+                                    <td class="border border-green-600 px-1 text-xs capitalize text-center border-b-red-600 border-b-4 " rowspan="{{$dataAbsensi['row']}}">{{$nama_asrama}}</td>
+                                    <td class="border border-green-600 px-1 text-xs capitalize text-center border-b-red-600 border-b-4 " rowspan="{{$dataAbsensi['row']}}">{{$dataAbsensi['total']}}</td>
+                                    <td class="border border-green-600 px-1 text-xs capitalize text-center border-b-red-600 border-b-4 " rowspan="{{$dataAbsensi['row']}}">{{$dataAbsensi['tidakHadir']}}</td>
+                                    <td class="border border-green-600 px-1 text-xs capitalize text-center border-b-red-600 border-b-4 " rowspan="{{$dataAbsensi['row']}}">{{$dataAbsensi['hadir']}}</td>
                                     @endif
-                                    <td class="border border-green-600 px-1 text-xs capitalize ">
-                                        {{ $Asrama['tidakHadir'] !== 0 ? $loop->iteration . '. ' . strtolower($absensi->nama_siswa) : 'NIHIL'  }}
+                                    <td class="border border-green-600 px-1 text-xs capitalize {{$loop->last ? 'border-b-red-600 border-b-4' : ''}}">
+                                        {{ $dataAbsensi['tidakHadir'] !== 0 ? $loop->iteration . '. ' . strtolower($absensi->nama_siswa) : 'NIHIL'  }}
                                     </td>
-                                    <td class="border border-green-600 px-1 text-center capitalize ">{{ $Asrama['tidakHadir'] !== 0 ? $absensi->keterangan : 'NIHIL' }}</td>
-                                    <td class="border border-green-600 px-1 text-center capitalize  ">{{ $Asrama['tidakHadir'] !== 0 ? $absensi->kegiatan : 'NIHIL' }}</td>
+                                    <td class="border border-green-600 px-1 text-center capitalize {{$loop->last ? 'border-b-red-600 border-b-4' : ''}}">{{ $dataAbsensi['tidakHadir'] !== 0 ? $absensi->keterangan : 'NIHIL' }}</td>
                                     @if ($loop->first)
-                                    <td class="border border-green-600 text-center px-1 border-b-red-600 border-b-4" rowspan="{{ $Asrama['row'] }}">{{ number_format($Asrama['persentase'], 1, ',') }}%</td>
+                                    <td class="border border-green-600 text-center px-1 border-b-red-600 border-b-4" rowspan="{{ $dataAbsensi['row'] }}">{{ number_format($dataAbsensi['persentase'], 1, ',') }}%</td>
                                     @endif
                                     @endforeach
                                     @endforeach
