@@ -2,7 +2,7 @@
     <x-slot name="header">
         @section('title', '| REKAP HARIAN : '. $tgl->isoFormat('dddd, D MMMM YYYY'))
         <h2 class="font-semibold text-xl leading-tight">
-            Rekap Absensi Kelas : {{($tgl->isoFormat('dddd, D MMMM YYYY')) }}
+            Rekap Absensi Asrama : <br> {{($tgl->isoFormat('dddd, D MMMM YYYY')) }}
         </h2>
     </x-slot>
     <div class="my-1">
@@ -53,7 +53,6 @@
                         <div class=" text-green-900  text-sm font-semibold">
                             Hari, tanggal : {{ $tgl->isoFormat('dddd, D MMMM YYYY') }}
                         </div>
-
                     </div>
                     <div class=" overflow-scroll">
                         <table class="table-fixed w-full text-green-900">
@@ -77,11 +76,9 @@
                                 @foreach($dataAsrama as $tittle_asrama => $Asrama)
                                 @foreach($Asrama['absensi'] as $absensi)
                                 <tr class=" border border-green-600 text-xs sm:text-sm ">
-
                                     <td class="border border-green-600 text-center px-1" rowspan=""></td>
-
                                     @if ($loop->parent->first && $loop->first)
-                                    <td class=" border border-green-600 px-1 text-center text-sm" rowspan="{{ $dataAsrama->sum('row') }}">{{ $nama_asrama }}</td>
+                                    <td class=" border border-green-600 px-1 text-center text-sm   border-b-red-600 border-b-4" rowspan="{{ $dataAsrama->sum('row') }}">{{ $nama_asrama }}</td>
                                     @endif
                                     <td class="border border-green-600 px-1 text-xs capitalize" rowspan="{{ $absensi->nama_siswa }}"></td>
                                     <td class="border border-green-600 px-1 text-xs capitalize"></td>
@@ -91,6 +88,7 @@
                                         {{ $Asrama['tidakHadir'] !== 0 ? $loop->iteration . '. ' . strtolower($absensi->nama_siswa) : 'NIHIL'  }}
                                     </td>
                                     <td class="border border-green-600 px-1 text-center capitalize">{{ $Asrama['tidakHadir'] !== 0 ? $absensi->keterangan : 'NIHIL' }}</td>
+                                    <td class="border border-green-600 px-1 text-center capitalize">{{ $Asrama['tidakHadir'] !== 0 ? $absensi->kegiatan : 'NIHIL' }}</td>
                                     @if ($loop->first)
                                     <td class="border border-green-600 text-center px-1" rowspan="{{ $Asrama['row'] }}">{{ number_format($Asrama['persentase'], 1, ',') }}%</td>
                                     @endif
