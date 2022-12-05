@@ -77,8 +77,8 @@
                                 @foreach($dataAsrama as $tittle_asrama => $Asrama)
                                 @foreach($Asrama['absensi'] as $absensi)
                                 <tr class=" border border-green-600 text-xs sm:text-sm ">
-                                    <td class="border border-green-600 text-center px-1" rowspan=""></td>
                                     @if ($loop->parent->first && $loop->first)
+                                    <td class="border border-green-600 text-center px-1" rowspan="{{ $dataAsrama->sum('row') }}"></td>
                                     <td class=" border border-green-600 px-1 text-center text-sm   border-b-red-600 border-b-4 font-semibold" rowspan="{{ $dataAsrama->sum('row') }}">{{ $nama_asrama }}</td>
                                     @endif
                                     @if($loop->first)
