@@ -28,17 +28,17 @@ class RekapAsamaController
 
         $dataAbsensiKelas = Presensiasrama::query()
             ->join('sesiasrama', 'sesiasrama.id', '=', 'presensiasrama.sesiasrama_id')
-            // ->join('kegiatan', 'kegiatan.id', '=', 'sesiasrama.kegiatan_id')
+            ->join('kegiatan', 'kegiatan.id', '=', 'sesiasrama.kegiatan_id')
             ->join('pesertaasrama', 'pesertaasrama.id', '=', 'presensiasrama.pesertaasrama_id')
             ->join('siswa', 'siswa.id', '=', 'pesertaasrama.siswa_id')
             ->joinSub($pesertaasrama, 'peserta_asrama', function ($join) {
                 $join->on('peserta_asrama.siswa_id', '=', 'siswa.id');
             })
-            ->select('peserta_asrama.nama_asrama',  'siswa.nama_siswa', 'presensiasrama.keterangan')
+            ->select('peserta_asrama.nama_asrama',  'siswa.nama_siswa', 'presensiasrama.keterangan', 'kegiatan.kegiatan')
             ->where('sesiasrama.tanggal', $tgl->toDateString())
             ->orderBy('peserta_asrama.nama_asrama')
             ->orderBy('presensiasrama.keterangan')
-            // ->orderBy('sesiasrama.kegiatan')
+            
             ->orderBy('siswa.nama_siswa')
             ->get();
 

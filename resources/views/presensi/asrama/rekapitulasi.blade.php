@@ -65,6 +65,7 @@
                                     <th class="border border-green-600 px-1 w-11">Hadir</th>
                                     <th class="border border-green-600 px-1 w-1/3 sm:w-1/2 ">Yang tidak hadir</th>
                                     <th class="border border-green-600 px-1 w-10 sm:w-11 ">Ket</th>
+                                    <th class="border border-green-600 px-1 w-1/3  ">Ket</th>
                                     <th class="border border-green-600 px-1 w-1/6 ">Presentase Kehadiran</th>
                                 </tr>
                             </thead>
@@ -78,12 +79,13 @@
                                 <tr class=" border border-green-600 text-xs sm:text-sm ">
                                     <td class="border border-green-600 text-center px-1" rowspan=""></td>
                                     @if ($loop->parent->first && $loop->first)
-                                    <td class=" border border-green-600 px-1 text-center text-sm   border-b-red-600 border-b-4" rowspan="{{ $dataAsrama->sum('row') }}">{{ $nama_asrama }}</td>
+                                    <td class=" border border-green-600 px-1 text-center text-sm   border-b-red-600 border-b-4 font-semibold" rowspan="{{ $dataAsrama->sum('row') }}">{{ $nama_asrama }}</td>
                                     @endif
-                                    <td class="border border-green-600 px-1 text-xs capitalize" rowspan="{{ $absensi->nama_siswa }}"></td>
-                                    <td class="border border-green-600 px-1 text-xs capitalize"></td>
-                                    <td class="border border-green-600 px-1 text-xs capitalize">
-                                    </td>
+                                    @if($loop->first)
+                                    <td class="border border-green-600 px-1 text-xs capitalize text-center font-semibold" rowspan="{{$Asrama['hadir']}}">{{$Asrama['total']}}</td>
+                                    <td class="border border-green-600 px-1 text-xs capitalize text-center font-semibold" rowspan="{{$Asrama['hadir']}}">{{$Asrama['tidakHadir']}}</td>
+                                    <td class="border border-green-600 px-1 text-xs capitalize text-center font-semibold" rowspan="{{$Asrama['hadir']}}">{{$Asrama['hadir']}}</td>
+                                    @endif
                                     <td class="border border-green-600 px-1 text-xs capitalize">
                                         {{ $Asrama['tidakHadir'] !== 0 ? $loop->iteration . '. ' . strtolower($absensi->nama_siswa) : 'NIHIL'  }}
                                     </td>
