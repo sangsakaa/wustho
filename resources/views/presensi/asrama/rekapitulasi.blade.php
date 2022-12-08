@@ -39,7 +39,9 @@
                 <div class=" overflow-auto bg-white dark:bg-dark-bg  ">
                     <div class=" text-center text-green-900">
                         <p class=" font-semibold text-3xl">
-                            MADRASAH DINIYAH WUSTHA WAHIDIYAH
+                            PONDOK PESANTREN KEDUNGLO KEDIRI
+                            <br>
+                            <span class=" uppercase">Putra putri</span>
                         </p>
                         <p class=" font-semibold uppercase">
                             {{-- TAHUN PELAJARAN {{$kelasmi->periode}} {{$kelasmi->ket_semester}} --}}
@@ -47,7 +49,7 @@
                     </div>
                     <hr class=" border-b-2 border-green-900">
                     <div class=" text-green-900  text-2xl text-center uppercase font-semibold">
-                        Laporan Harian
+                        Laporan Kegiatan Harian
                     </div>
                     <div class=" grid grid-cols-2">
                         <div class=" text-green-900  text-sm font-semibold">
@@ -59,13 +61,14 @@
                             <thead class="border border-b-2 border-green-600">
                                 <tr class="border  border-green-600 text-xs sm:text-sm">
                                     <th class="border border-green-600 px-1 w-8">No</th>
-                                    <th class="border border-green-600 px-1 w-20">Kegiatan</th>
-                                    <th class="border border-green-600 px-1 w-1/6 ">Asrama</th>
+                                    <th class="border border-green-600 px-1 w-1/7">Kegiatan</th>
+                                    <th class="border border-green-600 px-1 w-1/8 ">Asrama</th>
                                     <th class="border border-green-600 px-1 w-11 ">Total</th>
                                     <th class="border border-green-600 px-1 w-11">Tidak Hadir</th>
                                     <th class="border border-green-600 px-1 w-11">Hadir</th>
                                     <th class="border border-green-600 px-1 w-1/3 sm:w-1/2 ">Yang tidak hadir</th>
                                     <th class="border border-green-600 px-1 w-10 sm:w-11 ">Ket</th>
+
                                     <th class="border border-green-600 px-1 w-1/8 ">Presentase <br> Kehadiran</th>
                                 </tr>
                             </thead>
@@ -81,28 +84,32 @@
                                     <td class="border border-green-600 text-center px-1 border-b-red-600 border-b-4 font-semibold" rowspan="{{ $dataAbsensi['row'] }}">{{$nomor++}}</td>
                                     @endif
                                     @if ($loop->parent->first && $loop->first)
-                                    <td class=" border border-green-600 text-sm -rotate-90 whitespace-nowrap font-semibold    border-b-red-600 border-b-4     " rowspan="{{ $dataKegiatan->sum('row') }}">
-
+                                    @if($dataKegiatan->sum('row') <= 4 ) <td class=" border border-green-600 text-sm  font-semibold    border-b-red-600 border-b-4  text-center " rowspan="{{ $dataKegiatan->sum('row') }}">
                                         {{ $nama_kegiatan }}
 
-                                    </td>
-                                    @endif
-                                    @if($loop->first)
-                                    <td class="border border-green-600 px-1 text-sm  font-semibold capitalize text-center border-b-red-600 border-b-4 " rowspan="{{$dataAbsensi['row']}}">{{$nama_asrama}}</td>
-                                    <td class="border border-green-600 px-1  font-semibold capitalize text-center text-md border-b-red-600 border-b-4 " rowspan="{{$dataAbsensi['row']}}">{{$dataAbsensi['total']}}</td>
-                                    <td class="border border-green-600 px-1  font-semibold capitalize text-center text-md border-b-red-600 border-b-4 " rowspan="{{$dataAbsensi['row']}}">{{$dataAbsensi['tidakHadir']}}</td>
-                                    <td class="border border-green-600 px-1  font-semibold capitalize text-center text-md border-b-red-600 border-b-4 " rowspan="{{$dataAbsensi['row']}}">{{$dataAbsensi['hadir']}}</td>
-                                    @endif
-                                    <td class="border border-green-600 px-1 text-xs capitalize {{$loop->last ? 'border-b-red-600 border-b-4' : ''}}">
-                                        {{ $dataAbsensi['tidakHadir'] !== 0 ? $loop->iteration . '. ' . strtolower($absensi->nama_siswa) : 'NIHIL'  }}
-                                    </td>
-                                    <td class="border border-green-600 px-1 text-center capitalize {{$loop->last ? 'border-b-red-600 border-b-4' : ''}}">{{ $dataAbsensi['tidakHadir'] !== 0 ? $absensi->keterangan : 'NIHIL' }}</td>
-                                    @if ($loop->first)
-                                    <td class="border border-green-600 text-center px-1 border-b-red-600 border-b-4 font-semibold text-lg" rowspan="{{ $dataAbsensi['row'] }}">{{ number_format($dataAbsensi['persentase'], 1, ',') }}%</td>
-                                    @endif
-                                    @endforeach
-                                    @endforeach
-                                    @endforeach
+                                        </td>
+                                        @else
+                                        <td class=" border border-green-600 text-sm -rotate-90 whitespace-nowrap font-semibold    border-b-red-600 border-b-4  text-center " rowspan="{{ $dataKegiatan->sum('row') }}">
+                                            {{ $nama_kegiatan }}
+
+                                            @endif
+                                            @endif
+                                            @if($loop->first)
+                                        <td class="border border-green-600 px-1 text-sm  font-semibold capitalize text-center border-b-red-600 border-b-4 " rowspan="{{$dataAbsensi['row']}}">{{$nama_asrama}}</td>
+                                        <td class="border border-green-600 px-1  font-semibold capitalize text-center text-md border-b-red-600 border-b-4 " rowspan="{{$dataAbsensi['row']}}">{{$dataAbsensi['total']}}</td>
+                                        <td class="border border-green-600 px-1  font-semibold capitalize text-center text-md border-b-red-600 border-b-4 " rowspan="{{$dataAbsensi['row']}}">{{$dataAbsensi['tidakHadir']}}</td>
+                                        <td class="border border-green-600 px-1  font-semibold capitalize text-center text-md border-b-red-600 border-b-4 " rowspan="{{$dataAbsensi['row']}}">{{$dataAbsensi['hadir']}}</td>
+                                        @endif
+                                        <td class="border border-green-600 px-1 text-xs capitalize {{$loop->last ? 'border-b-red-600 border-b-4' : ''}}">
+                                            {{ $dataAbsensi['tidakHadir'] !== 0 ? $loop->iteration . '. ' . strtolower($absensi->nama_siswa) : 'NIHIL'  }}
+                                        </td>
+                                        <td class="border border-green-600 px-1 text-center capitalize {{$loop->last ? 'border-b-red-600 border-b-4' : ''}}">{{ $dataAbsensi['tidakHadir'] !== 0 ? $absensi->keterangan : 'NIHIL' }}</td>
+                                        @if ($loop->first)
+                                        <td class="border border-green-600 text-center px-1 border-b-red-600 border-b-4 font-semibold text-lg" rowspan="{{ $dataAbsensi['row'] }}">{{ number_format($dataAbsensi['persentase'], 1, ',') }}%</td>
+                                        @endif
+                                        @endforeach
+                                        @endforeach
+                                        @endforeach
                                 </tr>
                             </tbody>
                         </table>

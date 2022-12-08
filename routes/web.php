@@ -179,9 +179,6 @@ Route::get('absensikelas/rekap-semester', [AbsensikelasController::class, 'rekap
 
 Route::get('rekap-harian', [RekapAsamaController::class, 'RekapHarian']);
 
-
-
-
 Route::get('download_file', [PengaturanController::class, 'download_file']);
 
 
