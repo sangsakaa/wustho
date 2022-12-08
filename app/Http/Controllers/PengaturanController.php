@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Guru;
+use Dompdf\Dompdf;
 use App\Models\Kelasmi;
-use App\Models\Nilai;
 use App\Models\Periode;
+use App\Models\Semester;
 use App\Models\Nilaimapel;
 use App\Models\Pesertakelas;
-use App\Models\Semester;
-use App\Models\Siswa;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
@@ -92,6 +92,7 @@ class PengaturanController extends Controller
             ->orderBy('kelasmi.nama_kelas')
             ->orderBy('siswa.nama_siswa')
             ->get();
+        
         return view(
             'pengaturan/cardlogin',
             [
@@ -99,7 +100,16 @@ class PengaturanController extends Controller
             ]
         );
     }
+    public function download_file()
+    {
 
+        $peserta = Guru::all();
+        $data = PDF::loadView($peserta);
+        return view(
+            'pengaturan/template',
+            ['data' => $data]
+        );
+    }
     public function sap(Request $request)
     {
         $datakelasmi = Kelasmi::query()

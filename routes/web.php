@@ -177,8 +177,13 @@ Route::get('absensikelas/rekap-per-hari', [AbsensikelasController::class, 'rekap
 Route::get('absensikelas/rekap-per-bulan', [AbsensikelasController::class, 'rekapPerBulan'])->middleware(['auth']);
 Route::get('absensikelas/rekap-semester', [AbsensikelasController::class, 'rekapSemester'])->middleware(['auth']);
 
-
 Route::get('rekap-harian', [RekapAsamaController::class, 'RekapHarian']);
+
+
+
+
+Route::get('download_file', [PengaturanController::class, 'download_file']);
+
 
 
 
