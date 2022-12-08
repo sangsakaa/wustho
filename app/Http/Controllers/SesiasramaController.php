@@ -55,7 +55,7 @@ class SesiasramaController extends Controller
                 
                 ]
         )
-            ->get();
+            ->orderBy('tanggal');
         
         return view(
             'presensi/asrama/sesiasrama',
