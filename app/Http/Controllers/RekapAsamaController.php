@@ -51,7 +51,7 @@ class RekapAsamaController
                         $tidakHadir = $absensi->count();
                         $total = $data->count();
                         $hadir = $total - $tidakHadir;
-                        $absensi = $tidakHadir === 0 ? collect() : $absensi;
+                        $absensi = $tidakHadir === 0 ? collect(new Presensiasrama()) : $absensi;
 
                         return [
                             'hadir' => $hadir,
