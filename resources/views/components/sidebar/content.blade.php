@@ -111,17 +111,18 @@
     @endrole
     @role('pengurus')
 
-    <x-sidebar.link title="Rekap Absen Harian" href="/absensikelas/rekap-per-hari" :isActive="request()->routeIs('rekap-per-hari')">
-        <x-slot name="icon">
-            <x-icons.home class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
-        </x-slot>
-    </x-sidebar.link>
+
     <x-sidebar.link title="Data Asrama" href="/asrama" :isActive="request()->routeIs('asrama')">
         <x-slot name="icon">
             <x-icons.home class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
         </x-slot>
     </x-sidebar.link>
     <div x-transition x-show="isSidebarOpen || isSidebarHovered" class="text-sm text-gray-500">Menu Pendukung</div>
+    <x-sidebar.link title="Rekap Absen Harian" href="/absensikelas/rekap-per-hari" :isActive="request()->routeIs('rekap-per-hari')">
+        <x-slot name="icon">
+            <x-icons.home class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
+        </x-slot>
+    </x-sidebar.link>
     <x-sidebar.link title="Rekap Absen Bulanan" href="/absensikelas/rekap-per-bulan" :isActive="request()->routeIs('rekap-per-bulan')">
         <x-slot name="icon">
             <x-icons.home class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
