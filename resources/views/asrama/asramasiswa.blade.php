@@ -27,6 +27,11 @@
                                 Presensi Asrama
                             </button>
                         </a>
+                        <a href="/asrama">
+                            <button class=" flex w-full    bg-blue-500 text-white p-2 rounded-md">
+                                Asrama
+                            </button>
+                        </a>
                     </div>
                 </div>
             </div>

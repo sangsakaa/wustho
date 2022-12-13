@@ -23,7 +23,7 @@ use App\Http\Controllers\PresensikelasController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\RekapAsamaController;
 use App\Http\Controllers\SesikelasController;
-use App\Models\Asramasiswa;
+
 
 // batas
 Route::get('/admin', [RegisteredUserController::class, 'index'])->middleware(['auth'])->name('admin');

@@ -8,17 +8,24 @@
     <div class="my-1">
         <div class="">
             <div class=" bg-white dark:bg-dark-bg overflow-hidden shadow-sm ">
-                <div class="mx-2 px-2 border-gray-200 grid grid-cols-1 w-full sm:grid-cols-1  gap-2">
-                    <form action="/rekap-harian/" method="get" class="w-full">
-                        {{-- @csrf --}}
-                        <input type="date" name="tgl" class=" py-1 dark:bg-dark-bg" value="{{ $tgl->toDateString() }}">
-                        <button class=" bg-red-600 py-1 dark:bg-purple-600 mt-1 my-1 w-full sm:w-40 rounded-sm hover:bg-purple-600 text-white px-4 ">
-                            Pilih
+                <div class="mx-2 px-2 border-gray-200  flex grid-cols-1 w-full sm:grid-cols-1  gap-2">
+                    <div>
+                        <form action="/rekap-harian/" method="get" class="w-full">
+                            {{-- @csrf --}}
+                            <input type="date" name="tgl" class=" py-1 dark:bg-dark-bg" value="{{ $tgl->toDateString() }}">
+                            <button class=" bg-red-600 py-1 dark:bg-purple-600 mt-1 my-1 w-full sm:w-40 rounded-sm hover:bg-purple-600 text-white px-4 ">
+                                Pilih
+                            </button>
+                        </form>
+                    </div>
+                    <div>
+                        <button class=" bg-red-600 py-1 dark:bg-purple-600 mt-1 my-1 w-full sm:w-40 rounded-sm hover:bg-purple-600 text-white px-4 " onclick="printContent('blanko')">
+                            Cetak
                         </button>
-                    </form>
-                    <button class=" bg-red-600 py-1 dark:bg-purple-600 mt-1 my-1 w-full sm:w-40 rounded-sm hover:bg-purple-600 text-white px-4 " onclick="printContent('blanko')">
-                        Cetak
-                    </button>
+                    </div>
+                    <div class=" py-1 px-4 my-1 justify-end">
+                        <a href="/sesiasrama" class=" text-white py-1  px-2 bg-red-600">Kembali</a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -33,10 +40,10 @@
         }
     </script>
     @if($rekapAbsensi)
-    <div class="py-1">
-        <div class="bg-white dark:bg-dark-bg overflow-hidden shadow-sm " id="blanko">
+    <div class="py-1" id="blanko">
+        <div class="bg-white dark:bg-dark-bg  shadow-sm ">
             <div class=" p-1 ">
-                <div class=" overflow-auto bg-white dark:bg-dark-bg  ">
+                <div class=" bg-white dark:bg-dark-bg  ">
                     <div class=" text-center text-green-900">
                         <p class=" font-semibold text-3xl">
                             PONDOK PESANTREN KEDUNGLO KEDIRI
@@ -56,13 +63,13 @@
                             Hari, tanggal : {{ $tgl->isoFormat('dddd, D MMMM YYYY') }}
                         </div>
                     </div>
-                    <div class=" overflow-auto ">
+                    <div class=" ">
                         <table class="table-fixed w-full text-green-900 my-2">
                             <thead class="border border-b-2 border-green-600">
                                 <tr class="border  border-green-600 text-xs sm:text-sm">
                                     <th class="border border-green-600 px-1 w-8">No</th>
-                                    <th class="border border-green-600 px-1 w-1/7">Kegiatan</th>
-                                    <th class="border border-green-600 px-1 w-1/8 ">Asrama</th>
+                                    <th class="border border-green-600 px-1 w-1/12">Kegiatan</th>
+                                    <th class="border border-green-600 px-1 w-1/12 ">Asrama</th>
                                     <th class="border border-green-600 px-1 w-11 ">Total</th>
                                     <th class="border border-green-600 px-1 w-11">Tidak Hadir</th>
                                     <th class="border border-green-600 px-1 w-11">Hadir</th>
@@ -70,7 +77,7 @@
                                     <th class="border border-green-600 px-1 w-10 sm:w-11 ">Ket</th>
                                     <th class="border border-green-600 px-1 w-1/7  ">Alasan</th>
 
-                                    <th class="border border-green-600 px-1 w-1/8 ">Presentase <br> Kehadiran</th>
+                                    <th class="border border-green-600 px-1  w-1/12 ">Presentase <br> Kehadiran</th>
                                 </tr>
                             </thead>
                             <tbody class=" text-sm">
@@ -106,7 +113,7 @@
                                         <td class="border border-green-600 px-1 text-center capitalize {{$loop->last ? 'border-b-red-600 border-b-4' : ''}}">{{ $dataAbsensi['tidakHadir'] !== 0 ? $absensi->alasan : 'NIHIL' }}</td>
 
                                         @if ($loop->first)
-                                        <td class="border border-green-600 text-center px-1 border-b-red-600 border-b-4 font-semibold text-lg" rowspan="{{ $dataAbsensi['row'] }}">{{ number_format($dataAbsensi['persentase'], 1, ',') }}%</td>
+                                        <td class="border border-green-600 text-center px-1 border-b-red-600 border-b-4 font-semibold text-2xl" rowspan="{{ $dataAbsensi['row'] }}">{{ number_format($dataAbsensi['persentase'], 1, ',') }}%</td>
                                         @endif
                                         @endforeach
                                         @endforeach

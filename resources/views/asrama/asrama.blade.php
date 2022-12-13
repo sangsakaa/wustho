@@ -46,9 +46,9 @@
                                     <th class=" py-1">#</th>
                                     <th class=" text-center">Asrama</th>
                                     <th class=" text-center">Type Asrama</th>
-                                    @role('admin')
+
                                     <th class=" text-center">Aksi</th>
-                                    @endrole
+
                                 </tr>
                             </thead>
                             <tbody>
@@ -88,9 +88,9 @@
                                     <th class=" py-1">#</th>
                                     <th class=" text-center">Asrama</th>
                                     <th class=" text-center">Type Asrama</th>
-                                    @role('admin')
+
                                     <th class=" text-center">Aksi</th>
-                                    @endrole
+
                                 </tr>
                             </thead>
                             <tbody>

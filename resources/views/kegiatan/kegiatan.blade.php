@@ -8,7 +8,6 @@
         <div class=" mx-auto ">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-2 bg-white border-b border-gray-200">
-
                     <div class=" flex gap-1">
                         <a href="/addkegiatan">
                             <button class=" flex  bg-blue-500 text-white p-1 px-1 rounded-md"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -25,6 +24,13 @@
                             </div>
                         </a>
                         @endcan
+                        <a href="/sesiasrama">
+                            <div class=" ">
+                                <button class=" bg-blue-500 text-white py-1 px-2 rounded-md d-inline-block">
+                                    Sesi Asrama
+                                </button>
+                            </div>
+                        </a>
                     </div>
 
                     <Table class=" w-full sm:w-full mt-1">

@@ -7,24 +7,22 @@
     <div class="p-4">
         <div class=" mx-auto ">
             <div class=" p-4 bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <form action="/pesertaasrama/{{{$pesertaasrama->id}}}" method="post">
+                <form action="/pesertaasrama/{{$pesertaasrama->id}}" method="post">
                     @csrf
                     @method('patch')
                     <div class=" grid grid-cols-1 w-1/2 gap-2">
                         <input type="hidden" name="siswa_id" class=" py-1  " value="{{$anggota->id}}" readonly>
-                        <input type="text" placeholder="{{$anggota->nama_siswa}}" readonly>
-                        <select name="asramasiswa_id" id="" class=" py-1 ">
+                        <input type="text" placeholder="{{$anggota->nama_siswa}}" class=" py-1" readonly>
+                        <select name="asramasiswa_id" id="" class=" py-1  uppercase">
                             @foreach( $dataasrama as $item)
-                            <option value="{{ $item->id }}">{{ $item->nama_asrama }} </option>
+                            <option value="{{ $item->id }}">Asrama - {{ $item->nama_asrama }} </option>
                             @endforeach
                         </select>
-
-                        <button class=" bg-blue-600 text-white rounded-md px-2 py-1"> Update</button>
+                        <div>
+                            <div><button class=" bg-blue-600 text-white rounded-md px-2 py-1"> Update Asrama</button></div>
+                        </div>
                     </div>
-
                 </form>
-                {{$dataasrama}}
-
             </div>
         </div>
     </div>

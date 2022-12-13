@@ -24,7 +24,7 @@
             <select name="asramasiswa_id" id="" class=" py-1 text-xs sm:text-sm">
               <option value="">-- Pilih Asrama --</option>
               @foreach($asramasiswa as $peri)
-              <option value="{{$peri->id}}">{{$peri->nama_asrama}} {{$peri->ket_semester}}</option>
+              <option value="{{$peri->id}}">{{$peri->nama_asrama}} </option>
               @endforeach
             </select>
             <!-- <label for="" class=" py-2"> Kegiatan</label> -->
@@ -53,10 +53,10 @@
               </span>
               Kegiatan</button></a>
           @endrole
-          <a href="/rekap-harian"><button class=" flex bg-blue-500 rounded-md py-1 px-2 text-white hover:bg-purple-800"><span>
+          <a href="/rekap-harian"><button class=" flex bg-blue-500 rounded-md py-1 px-2 sm:text-sm text-xs text-white hover:bg-purple-800"><span>
                 <x-icons.books></x-icons.books>
               </span>
-              Harian</button></a>
+              Laporan Harian</button></a>
         </div>
         <div class=" overflow-scroll w-full rounded-md">
           <table class=" w-full mt-2  ">
