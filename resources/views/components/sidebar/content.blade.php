@@ -112,6 +112,11 @@
     @role('pengurus')
 
 
+    <x-sidebar.link title="Data Santri" href="/siswa" :isActive="request()->routeIs('siswa')">
+        <x-slot name="icon">
+            <x-icons.home class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
+        </x-slot>
+    </x-sidebar.link>
     <x-sidebar.link title="Data Asrama" href="/asrama" :isActive="request()->routeIs('asrama')">
         <x-slot name="icon">
             <x-icons.home class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
