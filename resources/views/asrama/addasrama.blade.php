@@ -21,7 +21,7 @@
                                 <option value="Putri"> Asrama Putri</option>
                             </select>
                             <button class=" bg-blue-600 text-white rounded-md px-2 py-1"> simpan</button>
-                            <a href="/kelas" class=" bg-blue-600 text-white rounded-md px-2 py-1">Kembali</a>
+                            <a href="/asrama" class=" bg-blue-600 text-white rounded-md px-2 py-1">Kembali</a>
                         </form>
 
                     </div>

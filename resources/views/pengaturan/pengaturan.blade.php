@@ -76,10 +76,10 @@
                                     {{ $list->nama_siswa }}
                                 </td>
                                 <td class=" border text-sm px-2 text-center">
-                                    {{ $list->kelas }}
+                                    {{ $list->kelasTerakhir }}
                                 </td>
                                 <td class=" border text-sm px-2 text-center">
-                                    {{ $list->nama_kelas }}
+                                    {{ $list }}
                                 </td>
                                 <td class=" border text-sm px-1 text-center py-1 ">
                                     <a href="/report/{{ $list->id }}" class=" justify-center bg-sky-300 rounded-md p-1 text-black flex text-center hover:bg-purple-600 hover:text-white">

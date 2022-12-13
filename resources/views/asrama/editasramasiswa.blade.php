@@ -15,14 +15,12 @@
                                 </svg>
                             </button>
                         </a>
-
                         <form action="/asramasiswa/{{$asramasiswa->id}}" method="post">
                             @csrf
                             @method('patch')
                             <div class=" flex grid-cols-2   gap-2 ">
                                 <div>
                                     <input type="hidden" name="asrama_id" class=" py-1 " placeholder=" Kuota : 40" value="{{$asramasiswa->asrama_id}}" readonly>
-
                                 </div>
                                 <div>
                                     <input type="text" name="kuota" class=" py-1 " placeholder=" Kuota : 40" value="{{$asramasiswa->kuota}}">

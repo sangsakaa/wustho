@@ -14,8 +14,15 @@ class AsramaController extends Controller
      */
     public function index()
     {
-        $DataKelas = Asrama::all();
-        return view('asrama/asrama', ['DataKelas' => $DataKelas]);
+        $Pa = Asrama::where('type_asrama', 'Putra')->get();
+        $Pi = Asrama::where('type_asrama', 'Putri')->get();
+        return view(
+            'asrama/asrama',
+            [
+                'Putra' => $Pa,
+                'Putri' => $Pi
+            ]
+        );
     }
 
     /**

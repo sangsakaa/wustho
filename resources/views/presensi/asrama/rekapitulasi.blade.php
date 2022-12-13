@@ -66,8 +66,9 @@
                                     <th class="border border-green-600 px-1 w-11 ">Total</th>
                                     <th class="border border-green-600 px-1 w-11">Tidak Hadir</th>
                                     <th class="border border-green-600 px-1 w-11">Hadir</th>
-                                    <th class="border border-green-600 px-1 w-1/3 sm:w-1/2 ">Yang tidak hadir</th>
+                                    <th class="border border-green-600 px-1 w-1/4 sm:w-1/2 ">Yang tidak hadir</th>
                                     <th class="border border-green-600 px-1 w-10 sm:w-11 ">Ket</th>
+                                    <th class="border border-green-600 px-1 w-1/7  ">Alasan</th>
 
                                     <th class="border border-green-600 px-1 w-1/8 ">Presentase <br> Kehadiran</th>
                                 </tr>
@@ -86,12 +87,10 @@
                                     @if ($loop->parent->first && $loop->first)
                                     @if($dataKegiatan->sum('row') <= 4 ) <td class=" border border-green-600 text-sm  font-semibold    border-b-red-600 border-b-4  text-center " rowspan="{{ $dataKegiatan->sum('row') }}">
                                         {{ $nama_kegiatan }}
-
                                         </td>
                                         @else
                                         <td class=" border border-green-600 text-sm -rotate-90 whitespace-nowrap font-semibold    border-b-red-600 border-b-4  text-center " rowspan="{{ $dataKegiatan->sum('row') }}">
                                             {{ $nama_kegiatan }}
-
                                             @endif
                                             @endif
                                             @if($loop->first)
@@ -104,6 +103,8 @@
                                             {{ $dataAbsensi['tidakHadir'] !== 0 ? $loop->iteration . '. ' . strtolower($absensi->nama_siswa) : 'NIHIL'  }}
                                         </td>
                                         <td class="border border-green-600 px-1 text-center capitalize {{$loop->last ? 'border-b-red-600 border-b-4' : ''}}">{{ $dataAbsensi['tidakHadir'] !== 0 ? $absensi->keterangan : 'NIHIL' }}</td>
+                                        <td class="border border-green-600 px-1 text-center capitalize {{$loop->last ? 'border-b-red-600 border-b-4' : ''}}">{{ $dataAbsensi['tidakHadir'] !== 0 ? $absensi->alasan : 'NIHIL' }}</td>
+
                                         @if ($loop->first)
                                         <td class="border border-green-600 text-center px-1 border-b-red-600 border-b-4 font-semibold text-lg" rowspan="{{ $dataAbsensi['row'] }}">{{ number_format($dataAbsensi['persentase'], 1, ',') }}%</td>
                                         @endif

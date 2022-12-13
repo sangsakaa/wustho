@@ -19,9 +19,7 @@ class PengaturanController extends Controller
 
         $raport = Pesertakelas::query()
             ->join('siswa', 'siswa.id', '=', 'pesertakelas.siswa_id')
-            ->join('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
-            ->join('kelas', 'kelas.id', '=', 'kelasmi.kelas_id')
-            ->select('pesertakelas.id', 'siswa.nama_siswa', 'kelas.kelas', 'kelasmi.nama_kelas');
+        ->select('pesertakelas.id', 'siswa.nama_siswa');
         if (request('cari')) {
             $raport->where('nama_siswa', 'like', '%' . request('cari') . '%');
         }

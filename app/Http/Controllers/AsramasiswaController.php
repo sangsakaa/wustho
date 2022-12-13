@@ -162,19 +162,32 @@ class AsramasiswaController extends Controller
      */
     public function edit(Asramasiswa $asramasiswa)
     {
-        return view('asrama/editasramasiswa', ['asramasiswa' => $asramasiswa]);
+
+        return view(
+            'asrama/editasramasiswa',
+            [
+                'asramasiswa' => $asramasiswa,
+            ]
+        );
     }
     public function editpeserta(Pesertaasrama $pesertaasrama, Asramasiswa $asramasiswa)
     {
 
-
+        $anggota = Pesertaasrama::query()
+            ->join('siswa', 'siswa.id', '=', 'pesertaasrama.siswa_id')
+            ->where('pesertaasrama.id', $pesertaasrama->id)->first();
+        $dataasrama = Asramasiswa::query()
+            ->join('asrama', 'asrama.id', '=', 'asramasiswa.asrama_id')
+            ->select('nama_asrama', 'asramasiswa.id')
+            ->where('asramasiswa.periode_id', session('periode_id'))
+            ->get();
         return view(
             'asrama/editpeserta',
             [
+                'anggota' => $anggota,
                 'pesertaasrama' => $pesertaasrama,
-                'asramasiswa' => $asramasiswa
-
-
+                'asramasiswa' => $asramasiswa,
+                'dataasrama' => $dataasrama,
             ]
         );
     }

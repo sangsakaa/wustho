@@ -23,6 +23,7 @@ use App\Http\Controllers\PresensikelasController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\RekapAsamaController;
 use App\Http\Controllers\SesikelasController;
+use App\Models\Asramasiswa;
 
 // batas
 Route::get('/admin', [RegisteredUserController::class, 'index'])->middleware(['auth'])->name('admin');
@@ -180,6 +181,7 @@ Route::get('absensikelas/rekap-semester', [AbsensikelasController::class, 'rekap
 Route::get('rekap-harian', [RekapAsamaController::class, 'RekapHarian']);
 
 Route::get('download_file', [PengaturanController::class, 'download_file']);
+Route::patch('pesertaasrama/{pesertaasrama}', [AsramasiswaController::class, 'updatepeserta']);
 
 
 

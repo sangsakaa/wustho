@@ -33,7 +33,7 @@ class RekapAsamaController
             ->joinSub($pesertaAsramaPeriodeTerpilih, 't', function ($join) {
                 $join->on('t.pesertaasrama_id', '=', 'pesertaasrama.id');
             })
-            ->select('t.nama_asrama',  'siswa.nama_siswa', 'presensiasrama.keterangan', 'kegiatan.kegiatan')
+            ->select('t.nama_asrama',  'siswa.nama_siswa', 'presensiasrama.keterangan', 'kegiatan.kegiatan', 'alasan')
             ->where('sesiasrama.tanggal', $tgl->toDateString())
             ->orderBy('kegiatan.kegiatan')
             ->orderBy('t.nama_asrama')
