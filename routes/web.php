@@ -49,7 +49,7 @@ Route::post('statuspengamal/{siswa}', [SiswaController::class, 'storeSP']);
 Route::post('statusanak/{siswa}', [SiswaController::class, 'storeSA']);
 Route::delete('statuspengamal/{siswa}', [SiswaController::class, 'destroySP']);
 Route::get('statusanak/{siswa}', [SiswaController::class, 'statusanak']);
-Route::get('addsiswa', [SiswaController::class, 'create'])->middleware(['auth', 'role:super admin']);
+Route::get('addsiswa', [SiswaController::class, 'create'])->middleware(['auth']);
 Route::post('siswa', [SiswaController::class, 'store']);
 Route::post('nis/{siswa}', [SiswaController::class, 'storeNis']);
 Route::delete('siswa/{siswa}', [SiswaController::class, 'destroy']);
