@@ -48,7 +48,7 @@
             </div>
         </div>
     </div>
-    @role('super admin')
+
     <div class=" px-4">
         <div class="mx-auto">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
@@ -69,7 +69,7 @@
                             <div class=" border py-2 px-2">1. Nomor Induk Siswa</div>
 
                             <div class=" border py-1 px-2 ">: <span class="font-semibold text-2xl">
-                                    <!-- {{$biodata->nis}} -->
+                                    {{$biodata->nis}}
                                 </span>
                             </div>
                             <div class=" border py-2 px-2">2. Nama Lengkap</div>
@@ -122,7 +122,7 @@
             </div>
         </div>
     </div>
-    @endrole
+
 
 
 </x-app-layout>
