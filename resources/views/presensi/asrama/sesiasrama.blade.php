@@ -9,11 +9,11 @@
   <div class="px-4 mt-4">
     <div class=" mx-auto ">
       <div class="bg-white overflow-auto shadow-sm  ">
-        <form action="/sesiasrama" method="post">
+        <form action="/sesiasrama" method="post" class=" text-sm">
           @csrf
           <div class=" p-4 grid grid-cols-1  sm:grid-cols-5 gap-2  ">
             <!-- <label for="" class=" py-2"> Tanggal</label> -->
-            <input type="date" name="tanggal" class=" py-1 dark:bg-dark-bg" value="{{ $tanggal->toDateString() }}">
+            <input type="date" name="tanggal" class=" py-1 text-sm dark:bg-dark-bg" value="{{ $tanggal->toDateString() }}">
             <!-- <label for="" class=" py-2"> Periode</label> -->
             <select name="periode_id" id="" class=" py-1 text-xs sm:text-sm">
               @foreach($periode as $peri)
@@ -34,7 +34,7 @@
               <option value="{{$peri->id}}">{{$peri->kegiatan}}</option>
               @endforeach
             </select>
-            <button class=" bg-blue-700 mt-1 text-white py-1 px-2 rounded-md"> Create Sesi Asrama</button>
+            <button class=" bg-blue-700  text-white py-1 px-2 "> Create Sesi Asrama</button>
           </div>
         </form>
       </div>
