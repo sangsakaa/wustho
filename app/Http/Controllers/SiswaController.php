@@ -11,6 +11,7 @@ use App\Models\Siswa;
 use App\Models\Kelasmi;
 use App\Models\Periode;
 use App\Models\Nilaimapel;
+use App\Models\Pesertaasrama;
 use App\Models\Statusanak;
 use App\Models\Pesertakelas;
 use Illuminate\Http\Request;
@@ -20,11 +21,7 @@ use Illuminate\Support\Facades\Gate;
 
 class SiswaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
     // public function __construct()
     // {
     //     $this->middleware('can: create post');
@@ -138,11 +135,18 @@ class SiswaController extends Controller
             ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
             ->join('semester', 'semester.id', '=', 'periode.semester_id')
             ->where('pesertakelas.siswa_id', $siswa->id)->get();
+        $historiAsrama = Pesertaasrama::query()
+        ->join('asramasiswa', 'asramasiswa.id', '=', 'pesertaasrama.asramasiswa_id')
+        ->join('asrama', 'asrama.id', '=', 'asramasiswa.asrama_id')
+        ->join('periode', 'periode.id', '=', 'asramasiswa.periode_id')
+        ->join('semester', 'semester.id', '=', 'periode.semester_id')
+        ->where('siswa_id', $siswa->id)->get();
         return view(
             'siswa/detailSiswa',
             [
                 'siswa' => $siswa,
                 'pesertakelas' => $nilai,
+                'historiAsrama' => $historiAsrama,
                 
             ]
         );
