@@ -53,10 +53,7 @@
               </span>
               Kegiatan</button></a>
           @endrole
-          <a href="/rekap-harian" class=" flex d-inline bg-blue-500 rounded-md mt-1 py-1 px-2 sm:text-sm text-xs text-white hover:bg-purple-800"><span>
-              <x-icons.books></x-icons.books>
-            </span>
-            Laporan Harian</a>
+
         </div>
         <div class=" overflow-auto w-full rounded-md">
           <form action="/sesiasrama" method="get" class=" py-1">
