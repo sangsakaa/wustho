@@ -40,6 +40,7 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class=" grid grid-cols-2 p-2 bg-white border-b border-gray-200 gap-2 ">
                     <div>
+                        <span>Daftar Asrama Putra</span>
                         <Table class=" w-full ">
                             <thead class=" bg-gray-50">
                                 <tr class=" border ">
@@ -47,7 +48,9 @@
                                     <th class=" text-center">Asrama</th>
                                     <th class=" text-center">Type Asrama</th>
 
+                                    @role('super admin')
                                     <th class=" text-center">Aksi</th>
+                                    @endrole
 
                                 </tr>
                             </thead>
@@ -82,15 +85,16 @@
                         </Table>
                     </div>
                     <div>
+                        <span>Daftar Asrama Putri</span>
                         <Table class=" w-full ">
                             <thead class=" bg-gray-50">
                                 <tr class=" border ">
                                     <th class=" py-1">#</th>
                                     <th class=" text-center">Asrama</th>
                                     <th class=" text-center">Type Asrama</th>
-
+                                    @role('super admin')
                                     <th class=" text-center">Aksi</th>
-
+                                    @endrole
                                 </tr>
                             </thead>
                             <tbody>
@@ -124,6 +128,7 @@
                         </Table>
                     </div>
                 </div>
+
             </div>
         </div>
     </div>

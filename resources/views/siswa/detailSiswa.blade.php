@@ -17,14 +17,15 @@
                         <div>Jenis Kelamin </div>
                         <div>: {{$siswa->jenis_kelamin}}</div>
                         <div>Tempat Lahir </div>
-                        <div>: {{$siswa->tanggal_lahir}}</div>
+                        <div>: {{$siswa->tanggal_lahir}}
+
+                        </div>
 
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
     <div class=" px-4">
         <div class="mx-auto">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
@@ -125,9 +126,55 @@
                                 </tbody>
                             </table>
                         </div>
+                    </div>
+                    <div class=" grid  grid-cols-2">
+                        <div>
+                            <span class=" text-lg">Detail Riwayat Kegiatan Asrama</span>
+                            <table class=" w-full    ">
+                                <thead>
+                                    <tr class=" border bg-gray-100">
+                                        <th class=" border text-center py-1">No</th>
+                                        <th class=" border text-center"> Tanggal Presensi</th>
+                                        <th class=" border text-center"> Jenis Kegiatan</th>
+                                        <th class=" border text-center"> Keterangan</th>
+                                        <th class=" border text-center"> Alasan</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if($PresensiAsrama->count() != null)
+                                    @foreach($PresensiAsrama as $kelas)
+                                    <tr>
+                                        <td class=" border px-2 py-1 text-center ">
+                                            {{$loop->iteration}}
+                                        </td>
+                                        <td class=" border px-2 text-center ">
+                                            {{$kelas->tanggal}}
+                                        </td>
+                                        <td class=" border px-2 text-center ">
+                                            {{$kelas->kegiatan}}
+                                        </td>
+                                        <td class=" border px-2 text-center ">
+                                            {{$kelas->keterangan}}
+                                        </td>
+                                        <td class=" border px-2 text-center ">
+                                            {{$kelas->alasan}}
+                                        </td>
 
+                                    </tr>
+                                    @endforeach
+                                    @else
+                                    <tr>
+                                        <td colspan="5" class=" border  text-center text-red-600">
+                                            Data Kelas tidak ada
+                                        </td>
+                                    </tr>
+                                    @endif
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
+
             </div>
         </div>
     </div>
