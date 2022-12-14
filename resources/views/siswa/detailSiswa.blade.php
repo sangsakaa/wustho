@@ -36,7 +36,9 @@
                             <a href="/nis/{{$siswa->id}}" class=" bg-blue-500 px-2 py-1 hover:bg-purple-500 text-white">Nomor Induk siswa</a>
                         </div>
                         @endrole
-
+                        <div class=" grid grid-cols-1 justify-items-end">
+                            <a href="/biodata/{{$siswa->id}}" class=" bg-blue-500 px-2 py-1 hover:bg-purple-500 text-white">Biodata Lengkap</a>
+                        </div>
 
                         @role('super admin')
                         <div class=" grid grid-cols-1 justify-items-end">
