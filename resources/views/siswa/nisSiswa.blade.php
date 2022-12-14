@@ -29,7 +29,7 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-4 bg-white border-b border-gray-200">
                     <div class=" flex grid-cols-1 justify-items-end">
-                        <a href="/siswa" class=" bg-blue-500 px-2 py-1  hover:bg-purple-500 text-white">Kembali</a>
+                        <a href="/siswa/{{$siswa->id}}" class=" bg-blue-500 px-2 py-1  hover:bg-purple-500 text-white">Kembali</a>
                         @role('super admin')
                         <div class=" grid grid-cols-1 justify-items-end">
                             <a href="/nis/{{$siswa->id}}" class=" bg-blue-500 px-2 py-1 hover:bg-purple-500 text-white">Nomor Induk siswa</a>
@@ -48,12 +48,14 @@
                                 <input type="hidden" name="siswa_id" value="{{$siswa->id}}" class=" py-1" required>
                                 <input type="text" name="nis" class=" py-1" placeholder="NIS : 2023010001" autofocus>
                                 <select name="madrasah_diniyah" id="" class=" py-1">
+                                    <option value="Ula">--Ula--</option>
                                     <option value="Wustho">--Wustho--</option>
+                                    <option value="Ulya">--Ulya--</option>
                                 </select>
                                 <select name="nama_lembaga" id="" class=" py-1">
                                     <option value="Wahidiyah">--Wahidiyah--</option>
                                 </select>
-                                <input type="text" name="tanggal_masuk" id="" class=" py-1" value="2022-1-1" required>
+                                <input type="date" name="tanggal_masuk" id="" class=" py-1" required>
                                 <button class=" bg-blue-600 py-1 px-2 text-white rounded-sm">Create NIS</button>
                             </form>
                             @endrole
@@ -61,7 +63,7 @@
                     </div>
                     <div>
                         <span>Detail Nomor Induk Siswa</span>
-                        <table class=" w-1/2">
+                        <table class=" w-full">
                             <thead>
                                 <tr class=" border bg-gray-100">
                                     <th class=" py-1 border">No</th>
@@ -76,12 +78,12 @@
                                 @if($nis->count())
                                 @foreach($nis as $nomor)
                                 <tr class=" border">
-                                    <td class=" px-2 text-center border">{{$loop->iteration}}</td>
+                                    <td class=" px-2 py-1 text-center border">{{$loop->iteration}}</td>
                                     <td class=" px-2 text-center border">{{$nomor->nis}}</td>
                                     <td class=" px-2 text-center border">{{$nomor->nama_lembaga}}</td>
                                     <td class=" px-2 text-center border">{{$nomor->madrasah_diniyah}}</td>
                                     <td class=" px-2 text-center border">{{$nomor->tanggal_masuk}}</td>
-                                    <td class="flex justify-center  gap-1">
+                                    <td class="flex justify-center mt-1  gap-1">
                                         @role('super admin')
                                         <form action="/nis/{{$nomor->id}}" method="post">
                                             @csrf

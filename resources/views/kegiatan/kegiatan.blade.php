@@ -48,6 +48,7 @@
                                 <th class=" text-center">{{$loop->iteration}}</th>
                                 <td> {{$buah->kegiatan}}</td>
                                 <td class=" flex justify-center gap-1 py-1">
+                                    @role('super admin')
                                     <form action="/kegiatan/{{$buah->id}}" method="post">
                                         @csrf
                                         @method('delete')
@@ -55,6 +56,7 @@
                                                 <path stroke-linecap="round" stroke-linejoin="round" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
                                             </svg></button>
                                     </form>
+                                    @endrole
                                     <a href="kegiatan/{{$buah->id}}/edit">
                                         <button class=" bg-yellow-400 p-1 rounded-md">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">

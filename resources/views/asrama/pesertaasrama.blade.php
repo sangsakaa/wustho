@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            Dashboard Peserta Asrama {{$tittle->nama_asrama}}
+            Dashboard Peserta Asrama : {{$tittle->nama_asrama}}
         </h2>
     </x-slot>
     <script>

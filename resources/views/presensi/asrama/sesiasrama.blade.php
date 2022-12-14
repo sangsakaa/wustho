@@ -53,12 +53,18 @@
               </span>
               Kegiatan</button></a>
           @endrole
-          <a href="/rekap-harian"><button class=" flex bg-blue-500 rounded-md py-1 px-2 sm:text-sm text-xs text-white hover:bg-purple-800"><span>
-                <x-icons.books></x-icons.books>
-              </span>
-              Laporan Harian</button></a>
+          <a href="/rekap-harian" class=" flex d-inline bg-blue-500 rounded-md mt-1 py-1 px-2 sm:text-sm text-xs text-white hover:bg-purple-800"><span>
+              <x-icons.books></x-icons.books>
+            </span>
+            Laporan Harian</a>
         </div>
-        <div class=" overflow-scroll w-full rounded-md">
+        <div class=" overflow-auto w-full rounded-md">
+          <form action="/sesiasrama" method="get" class=" py-1">
+            <input type="date" name="tanggal" class=" py-1 dark:bg-dark-bg" value="{{ $tanggal->toDateString() }}">
+            <button class=" bg-blue-600 py-1 text-white px-2">
+              Cari By Tanggal
+            </button>
+          </form>
           <table class=" w-full mt-2  ">
             <thead>
               <tr class=" capitalize bg-gray-100 text-sm  ">

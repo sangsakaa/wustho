@@ -89,6 +89,7 @@ class KelasController extends Controller
                 $join->on('peserta_kelas_periode_terpilih.siswa_id', '=', 'siswa.id');
             })
             ->where('peserta_kelas_periode_terpilih.siswa_id', null)
+            ->where('asramasiswa.periode_id', session('periode_id'))
             ->orderBy('jenis_kelamin')
             ->select('siswa.*', 'nis.nis', 'nis.tanggal_masuk', 'asrama.nama_asrama')
             ->orderBy('nis');

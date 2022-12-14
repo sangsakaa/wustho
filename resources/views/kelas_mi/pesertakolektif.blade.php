@@ -20,7 +20,7 @@
                         <form action="/pesertakolektif/{{$kelasmi->id}}" method="get" class=" flex gap-1">
                             <input type="text" name="cari" value="{{ request('cari') }}" class=" border border-green-800 text-green-800 rounded-md py-1 " placeholder=" Cari ..">
                             <button type="submit" class=" px-2   bg-blue-500  rounded-md text-white">
-                                Cari by Nama </button>
+                                Cari by Asrama </button>
                         </form>
                     </div>
                     <form action="/pesertakolektif" method="post" enctype="multipart/form-data">
@@ -32,7 +32,7 @@
                                 <option value="{{$kelas->id}}" {{ $kelas->id == $kelasmi->id ? "selected" : "" }}>{{$kelas->nama_kelas}} {{$kelas->periode}} {{$kelas->ket_semester}}{{$kelas->ket_periode}}</option>
                                 @endforeach
                             </select>
-                            <button type="submit" class=" w-1/5 bg-blue-600 text-white rounded-sm px-2 py-1"> Kolektif</button>
+                            <button type="submit" class=" w-1/4 bg-blue-600 text-white rounded-sm px-4 py-1"> Kolektif</button>
                         </div>
                         <table class=" w-full">
                             <thead>
@@ -50,7 +50,7 @@
                             <tbody>
                                 @if($Datasiswa->count())
                                 @foreach ($Datasiswa as $item)
-                                <tr class=" border hover:bg-green-200">
+                                <tr class=" border hover:bg-green-200 even:bg-gray-100">
                                     <td class=" text-center">
                                         <input type="checkbox" name="siswa[]" value="{{$item->id}}" multiple>
                                     </td>
@@ -60,12 +60,13 @@
                                     <td class=" px-2 border text-center">
                                         <label for="">{{ $item->nis}}</label>
                                     </td>
-                                    <td class=" px-2 border text-left">
-                                        <label for="">{{ $item->nama_siswa }}</label>
+                                    <td class=" px-2 border text-left capitalize">
+                                        <label for="">{{ strtolower($item->nama_siswa) }}</label>
                                     </td>
 
                                     <td class=" px-2 border text-center">
                                         <label for="">{{ $item->jenis_kelamin}}</label>
+
                                     </td>
                                     <td class=" px-2 border text-left">
                                         <label for="">{{ $item->kota_asal}}</label>
