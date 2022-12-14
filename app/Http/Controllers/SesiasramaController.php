@@ -11,6 +11,7 @@ use App\Models\Pesertaasrama;
 use App\Models\Presensiasrama;
 use Illuminate\Support\Carbon;
 use Illuminate\Routing\Controller;
+use Carbon\Exceptions\InvalidFormatException;
 
 class SesiasramaController extends Controller
 {
@@ -21,6 +22,11 @@ class SesiasramaController extends Controller
      */
     public function index(Request $request, Sesiasrama $sesiasrama)
     {
+        try {
+            $tanggal = $request->tanggal ? Carbon::parse($request->tanggal) : now();
+        } catch (InvalidFormatException $ex) {
+            $tanggal = now();
+        }
         $peserta = Presensiasrama::all();
         $update_terakhir = $peserta->max('updated_at');
         $create_at = $peserta->max('create_at');
@@ -36,7 +42,7 @@ class SesiasramaController extends Controller
             ->select('periode.id', 'periode.periode', 'semester.ket_semester')
         ->orderBy('id', 'desc')->get();
         $kegiatan = Kegiatan::all();
-        $tanggal = $request->tgl ? Carbon::parse($request->tgl) : now();
+        // $tanggal = $request->tgl ? Carbon::parse($request->tgl) : now();
         $Datasesiasrama = Sesiasrama::query()
             ->join('periode', 'periode.id', '=', 'sesiasrama.periode_id')
             ->join('semester', 'semester.id', '=', 'periode.semester_id')
@@ -44,6 +50,7 @@ class SesiasramaController extends Controller
             ->join('asramasiswa', 'asramasiswa.id', '=', 'sesiasrama.asramasiswa_id')
             ->join('asrama', 'asrama.id', '=', 'asramasiswa.asrama_id')
             ->where('sesiasrama.periode_id', session('periode_id'))
+            ->where('sesiasrama.tanggal', $tanggal->toDateString())
             ->select(
                 [
                     'sesiasrama.id',
@@ -55,7 +62,10 @@ class SesiasramaController extends Controller
                 
                 ]
         )
-            ->orderBy('tanggal')->get();
+            ->orderBy('tanggal');
+        if (request('tanggal')) {
+            $Datasesiasrama->where('tanggal', 'like', '%' . request('cari') . '%');
+        }
         
         return view(
             'presensi/asrama/sesiasrama',
@@ -63,7 +73,7 @@ class SesiasramaController extends Controller
                 'periode' => $periode,
                 'asramasiswa' => $asramasiswa,
                 'sesiasrama' => $sesiasrama,
-                'Datasesiasrama' => $Datasesiasrama,
+                'Datasesiasrama' => $Datasesiasrama->get(),
                 'kegiatan' => $kegiatan,
                 'update_terakhir' => $update_terakhir,
                 'create_at' => $create_at,

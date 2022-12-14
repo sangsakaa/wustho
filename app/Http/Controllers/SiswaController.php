@@ -49,7 +49,7 @@ class SiswaController extends Controller
                 'nis',
             'desc'
         );
-            // ->latest()->orderBy('nama_siswa');
+        // ->latest()->orderBy('nama_siswa');
         if (request('cari')) {
             $data->where('nama_siswa', 'like', '%' . request('cari') . '%')
             ->orWhere('nis', 'like', '%' . request('cari') . '%')
