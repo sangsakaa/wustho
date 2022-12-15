@@ -146,7 +146,9 @@ class SiswaController extends Controller
         ->join('sesiasrama', 'sesiasrama.id', '=', 'presensiasrama.sesiasrama_id')
             ->join('kegiatan', 'kegiatan.id', '=', 'sesiasrama.kegiatan_id')
         ->where('siswa_id', $siswa->id)
-        ->orderBy('kegiatan')->get();
+        ->orderBy('tanggal')
+        ->orderBy('kegiatan')
+        ->get();
        
         return view(
             'siswa/detailSiswa',
