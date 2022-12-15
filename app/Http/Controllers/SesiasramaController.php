@@ -64,7 +64,8 @@ class SesiasramaController extends Controller
                 ]
         )
         ->orderBy('tanggal')
-        ->orderBy('kegiatan');
+        ->orderBy('kegiatan')
+        ->orderBy('nama_asrama');
         if (request('tanggal')) {
             $Datasesiasrama->where('tanggal', 'like', '%' . request('cari') . '%');
         }
