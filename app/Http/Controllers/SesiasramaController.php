@@ -58,6 +58,7 @@ class SesiasramaController extends Controller
                     'sesiasrama.tanggal',
                     'semester.ket_semester',
                     'asrama.nama_asrama',
+                'asrama.type_asrama',
                 'kegiatan.kegiatan',
                 
                 ]

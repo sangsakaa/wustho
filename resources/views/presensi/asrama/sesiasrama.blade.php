@@ -86,7 +86,15 @@
                 </td>
                 <td class=" px-2 text-center">{{$item->periode}} {{$item->ket_semester}}</td>
                 <td class=" px-2 text-center">{{$item->kegiatan}}</td>
-                <td class=" px-2 text-center">{{$item->nama_asrama}}</td>
+                <td class=" px-2 text-center">
+
+                  @if($item->type_asrama == "Putri" )
+                  <span class=" bg-pink-600 px-2 py-1 text-white font-semibold uppercase"> {{$item->nama_asrama}}</span>
+                  @else
+                  <span class=" bg-sky-600 px-2 py-1 text-white font-semibold uppercase"> {{$item->nama_asrama}}</span>
+                  @endif
+
+                </td>
                 <td class=" px-2 text-center">
                   @can('delete post')
                   <form action="/sesiasrama/{{$item->id}}" method="post">
