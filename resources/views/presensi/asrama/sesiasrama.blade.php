@@ -74,6 +74,7 @@
                 <th class=" px-2 border"> Rincian Kegiatan </th>
 
                 <th class=" px-2 border">Status <br> Kehadiran </th>
+                <th class=" px-2 w-10 text-center ">Status <br> Presensi </th>
                 @role('super admin')
                 <th class=" px-2 border">Aksi </th>
                 @endrole
@@ -81,7 +82,7 @@
             </thead>
             <tbody>
               @foreach ($Datasesiasrama as $item)
-              <tr class=" border  hover:bg-gray-100 text-sm">
+              <tr class=" border  hover:bg-gray-100 text-sm even:bg-gray-100">
                 <th class=" w-5">{{$loop->iteration}}</th>
                 <td class=" border px-2 text-center py-1"><a href="/sesiasrama/{{$item->id}}">
                     @if($item->type_asrama == "Putri" )
@@ -100,7 +101,17 @@
                 <td class=" border px-2 text-center capitalize">
                   <span class=" font-semibold">{{$item->SesiAsrama->count()}} </span>|
                   {{$item->SesiAsrama->countBy('keterangan')}}
-
+                </td>
+                <td class=" text-center py-1 grid justify-center">
+                  @if($item->SesiAsrama->count() == 0 )
+                  <span class=" text-red-600 items-center ">
+                    <x-icons.x-mark></x-icons.x-mark>
+                  </span>
+                  @else
+                  <span class=" text-green-600  ">
+                    <x-icons.check></x-icons.check>
+                  </span>
+                  @endif
                 </td>
                 @role('super admin')
                 <td class=" border px-2 text-center">
