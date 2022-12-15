@@ -72,7 +72,7 @@
                 <th class=" px-2 border"> periode </th>
                 @endrole
                 <th class=" px-2 border"> Rincian Kegiatan </th>
-                <th class=" px-2 border">asrama </th>
+
                 <th class=" px-2 border">Status <br> Kehadiran </th>
                 @role('super admin')
                 <th class=" px-2 border">Aksi </th>
@@ -83,29 +83,27 @@
               @foreach ($Datasesiasrama as $item)
               <tr class=" border  hover:bg-gray-100 text-sm">
                 <th class=" w-5">{{$loop->iteration}}</th>
-                <td class=" px-2 text-center py-1"><a href="/sesiasrama/{{$item->id}}"><button class=" bg-blue-500 py-1 px-2 rounded-md text-white hover:bg-purple-500">Presensi</button></a></td>
-                <td class=" px-2 text-center">
+                <td class=" border px-2 text-center py-1"><a href="/sesiasrama/{{$item->id}}">
+                    @if($item->type_asrama == "Putri" )
+                    <span class=" bg-pink-600 px-2 py-1 text-white font-semibold uppercase"> {{$item->nama_asrama}}</span>
+                    @else
+                    <span class=" bg-sky-600 px-2 py-1 text-white font-semibold uppercase"> {{$item->nama_asrama}}</span>
+                    @endif
+                <td class=" border px-2 text-center">
                   {{ \Carbon\Carbon::parse($item->tanggal)->isoFormat(' DD MMMM Y') }}
                 </td>
                 @role('super admin')
-                <td class=" px-2 text-center">{{$item->periode}} {{$item->ket_semester}}</td>
+                <td class=" border px-2 text-center">{{$item->periode}} {{$item->ket_semester}}</td>
                 @endrole
-                <td class=" px-2 text-center">{{$item->kegiatan}}</td>
-                <td class=" px-2 text-center">
+                <td class=" border px-2 text-center">{{$item->kegiatan}}</td>
 
-                  @if($item->type_asrama == "Putri" )
-                  <span class=" bg-pink-600 px-2 py-1 text-white font-semibold uppercase"> {{$item->nama_asrama}}</span>
-                  @else
-                  <span class=" bg-sky-600 px-2 py-1 text-white font-semibold uppercase"> {{$item->nama_asrama}}</span>
-                  @endif
-
-                </td>
-                <td class=" px-2 text-center">
+                <td class=" border px-2 text-center capitalize">
                   <span class=" font-semibold">{{$item->SesiAsrama->count()}} </span>|
                   {{$item->SesiAsrama->countBy('keterangan')}}
+
                 </td>
                 @role('super admin')
-                <td class=" px-2 text-center">
+                <td class=" border px-2 text-center">
                   <form action="/sesiasrama/{{$item->id}}" method="post">
                     @csrf
                     @method('delete')
