@@ -4,20 +4,14 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Models\Nis;
-use App\Models\Kelas;
-use App\Models\Mapel;
-use App\Models\Nilai;
 use App\Models\Siswa;
-use App\Models\Kelasmi;
-use App\Models\Periode;
-use App\Models\Nilaimapel;
 use App\Models\Pesertaasrama;
 use App\Models\Statusanak;
 use App\Models\Pesertakelas;
 use Illuminate\Http\Request;
 use App\Models\Statuspengamal;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\Gate;
+
 
 class SiswaController extends Controller
 {
@@ -44,7 +38,7 @@ class SiswaController extends Controller
                 ]
             )->orderBy(
                 'nis',
-            'desc'
+            'asc'
         );
         // ->latest()->orderBy('nama_siswa');
         if (request('cari')) {
