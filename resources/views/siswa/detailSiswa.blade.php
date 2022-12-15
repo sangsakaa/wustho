@@ -136,7 +136,7 @@
                             </table>
                         </div>
                     </div>
-                    <div class=" grid  grid-cols-2">
+                    <div class=" grid  grid-cols-2 gap-2">
                         <div>
                             <span class=" text-lg">Detail Riwayat Kegiatan Asrama</span>
                             <table class=" w-full    ">
@@ -162,6 +162,52 @@
                                         </td>
                                         <td class=" border px-2 text-center ">
                                             {{$kelas->kegiatan}}
+                                        </td>
+                                        <td class=" border px-2 text-center capitalize ">
+                                            {{$kelas->keterangan}}
+                                        </td>
+                                        <td class=" border px-2 text-center ">
+                                            {{$kelas->alasan}}
+                                        </td>
+
+                                    </tr>
+                                    @endforeach
+                                    @else
+                                    <tr>
+                                        <td colspan="5" class=" border  text-center capitalize text-red-600">
+                                            Data Kegiatan Asrama tidak ada
+                                        </td>
+                                    </tr>
+                                    @endif
+                                </tbody>
+                            </table>
+                        </div>
+                        <div>
+                            <span class=" text-lg">Detail Riwayat Presensi Madrasah </span>
+
+                            <table class=" w-full    ">
+                                <thead>
+                                    <tr class=" border bg-gray-100">
+                                        <th class=" border text-center py-1">No</th>
+                                        <th class=" border text-center"> Tanggal Presensi</th>
+                                        <th class=" border text-center"> Kelas</th>
+                                        <th class=" border text-center"> Ket</th>
+                                        <th class=" border text-center"> Alasan</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if($PresensiKelas->count() != null)
+                                    @foreach($PresensiKelas as $kelas)
+                                    <tr>
+                                        <td class=" border px-2 py-1 text-center ">
+                                            {{$loop->iteration}}
+                                        </td>
+                                        <td class=" border px-2 text-center ">
+
+                                            {{ \Carbon\Carbon::parse($kelas->tgl)->isoFormat(' DD MMMM Y') }}
+                                        </td>
+                                        <td class=" border px-2 text-center ">
+                                            {{$kelas->nama_kelas}}
                                         </td>
                                         <td class=" border px-2 text-center capitalize ">
                                             {{$kelas->keterangan}}

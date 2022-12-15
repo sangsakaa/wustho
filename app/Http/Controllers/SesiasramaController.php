@@ -36,6 +36,8 @@ class SesiasramaController extends Controller
             ->join('semester', 'semester.id', '=', 'periode.semester_id')
             ->select('asramasiswa.id', 'asrama.nama_asrama', 'semester.ket_semester')
             ->where('asramasiswa.periode_id', session('periode_id'))
+            ->orderby('type_asrama')
+            ->orderby('nama_asrama')
             ->get();
         $periode = Periode::query()
             ->join('semester', 'periode.semester_id', '=', 'semester.id')

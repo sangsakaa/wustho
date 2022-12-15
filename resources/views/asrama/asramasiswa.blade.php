@@ -2,7 +2,12 @@
     <x-slot name="header">
         @section('title', ' | Asrama Siswa' )
         <h2 class="font-semibold text-xl  leading-tight">
+            @role('pengurus')
+            {{ __('Dashboard Asrama Santri') }}
+            @endrole
+            @role('super admin')
             {{ __('Dashboard Asrama Siswa') }}
+            @endrole
         </h2>
     </x-slot>
     <div class="  overflow-auto ">
@@ -70,15 +75,18 @@
                                     @role('super admin')
                                     <th class=" text-center px-1 border ">periode</th>
                                     @endrole
-                                    <th class=" text-center px-1 border ">anggota</th>
+                                    <th class=" text-center px-1 border ">Daftar Asrama</th>
                                     <th class=" text-center px-1 border "> asrama</th>
-                                    <th class=" text-center px-1 border ">asrama </th>
-                                    @role('super admin')
+
+
                                     <th class=" text-center px-1 border "> kuota</th>
-                                    <th class=" text-center px-1 border "> jml</th>
-                                    <th class=" text-center px-1 border "> sisa</th>
-                                    @endrole
-                                    <th class=" text-center px-1 border "> Status</th>
+                                    <th class=" text-center px-1 border "> jml <br> anggota
+                                    </th>
+                                    <th class=" text-center px-1 border "> Status <br> Asrama</th>
+
+                                    <th class=" text-center px-1 border ">
+                                        keterangan
+                                    </th>
                                     <th class=" text-center px-1 border ">Aksi</th>
                                 </tr>
                             </thead>
@@ -97,33 +105,56 @@
                                         </a>
                                     </td>
                                     @endrole
-                                    <td class=" px-2 border text-center">
-                                        <a href="pesertaasrama/{{$item->id}}" class=" py-1 px-2 hover:bg-purple-600 bg-blue-600 rounded-md capitalize text-center text-white">peserta</a>
+                                    <td class=" px-2 border text-center font-semibold">
+                                        @if($item->type_asrama == "Putra")
+
+                                        <a href="pesertaasrama/{{$item->id}}" class=" py-1 px-2 hover:bg-purple-600 bg-blue-600 rounded-md capitalize text-center text-white">{{$item->nama_asrama}}</a>
+                                        @else
+                                        <a href="pesertaasrama/{{$item->id}}" class=" py-1 px-2 hover:bg-purple-600 bg-pink-600 rounded-md capitalize text-center text-white">{{$item->nama_asrama}}</a>
+                                        @endif
                                     </td>
-                                    <td class=" px-2 border text-center">
-                                        {{$item->nama_asrama}}
-                                    </td>
-                                    <td class=" px-2 border text-center">
+
+                                    <td class=" px-2 border text-center font-semibold">
                                         {{$item->type_asrama}}
                                     </td>
-                                    @role('super admin')
-                                    <td class=" px-2 border text-center">
-                                        {{$item->kuota}}
+
+                                    <td class=" px-2 border text-center font-semibold">
+                                        {{$item->kuota}} Org
                                     </td>
-                                    <td class=" px-2 border text-center ">
-                                        {{$item->jumlah_nilai_ujian}}
+                                    <td class=" px-2 border text-center font-semibold ">
+                                        {{$item->jumlah_nilai_ujian}} Org
                                     </td>
-                                    <td class=" px-2 border text-center ">
-                                        {{($item->kuota)-($item->jumlah_nilai_ujian)}}
+                                    <td class=" px-2 border text-center font-semibold ">
+                                        @if($item->kuota == $item->jumlah_nilai_ujian )
+                                        <span class=" bg-yellow-300 px-4 py-1 rounded-md capitalize text-black">Penuh</span>
+                                        @elseif ($item->kuota <= $item->jumlah_nilai_ujian)
+                                            <span class=" bg-red-600 px-4 py-1 rounded-md capitalize text-white ">
+
+                                                Over
+                                            </span>
+
+                                            @elseif ($item->kuota >= $item->jumlah_nilai_ujian)
+                                            <span class=" bg-green-800 px-4 py-1 rounded-md capitalize text-white ">
+                                                masih
+                                            </span>
+                                            @endif
                                     </td>
-                                    @endrole
+
                                     <td class=" px-2 border text-center ">
                                         @if($item->kuota == $item->jumlah_nilai_ujian )
-                                        <span class=" bg-yellow-300 px-4 py-1 rounded-md capitalize text-black">full</span>
+                                        <span class=" bg-yellow-300 px-4 py-1 rounded-md capitalize text-black">sesui Kuota
+                                            {{($item->kuota)}} org
+                                        </span>
                                         @elseif ($item->kuota <= $item->jumlah_nilai_ujian)
-                                            <span class=" bg-red-600 px-4 py-1 rounded-md capitalize text-white">over</span>
+                                            <span class=" bg-red-600 px-4 py-1 rounded-md capitalize text-white">
+                                                Melebihi Kuota -
+                                                {{($item->jumlah_nilai_ujian)-($item->kuota)}} org
+                                            </span>
+
                                             @elseif ($item->kuota >= $item->jumlah_nilai_ujian)
-                                            <span class=" bg-green-800 px-4 py-1 rounded-md capitalize text-white">still</span>
+                                            <span class=" bg-green-800 px-4 py-1 rounded-md capitalize text-white">
+                                                Masih - {{($item->kuota)-($item->jumlah_nilai_ujian)}} org
+                                            </span>
                                             @endif
                                     </td>
                                     <td class="  py-1 px-2 sm:flex  justify-center gap-2">

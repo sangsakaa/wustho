@@ -22,7 +22,7 @@
             </select>
             <!-- <label for="" class=" py-2"> Asrama</label> -->
             <select name="asramasiswa_id" id="" class=" py-1 text-xs sm:text-sm">
-              <option value="">-- Pilih Asrama --</option>
+              <option value="" class=" text-center">---- Pilih Asrama ----</option>
               @foreach($asramasiswa as $peri)
               <option value="{{$peri->id}}">{{$peri->nama_asrama}} </option>
               @endforeach
@@ -99,7 +99,7 @@
                 <td class=" border px-2 text-center">{{$item->kegiatan}}</td>
 
                 <td class=" border px-2 text-center capitalize">
-                  <span class=" font-semibold">{{$item->SesiAsrama->count()}} </span>|
+                  <span class=" font-semibold">{{$item->SesiAsrama->count()}} org </span>|
                   {{$item->SesiAsrama->countBy('keterangan')}}
                 </td>
                 <td class=" text-center py-1 grid justify-center">

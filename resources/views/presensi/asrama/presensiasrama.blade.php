@@ -77,7 +77,7 @@
                     <label for="sakit[{{ $item->id }}]" class=" ">S</label>
                     <input class="text-xs py-1 sm:text-sm " type="radio" id="alfa[{{ $item->id }}]" name="keterangan[{{ $item->id }}]" value="alfa" class=" " {{ $item->keterangan === 'alfa' ? 'checked' : '' }}>
                     <label for="alfa[{{ $item->id }}]" class=" ">A</label>
-                    <input class="text-xs py-1 sm:text-sm " type="text" name="alasan[{{ $item->id }}]" class="    px-2" placeholder="Keterangan ">
+                    <input class="text-xs py-1 sm:text-sm " type="text" name="alasan[{{ $item->id }}]" value="{{ $item->alasan }}" class="    px-2" placeholder="Keterangan ">
 
                   </td>
 

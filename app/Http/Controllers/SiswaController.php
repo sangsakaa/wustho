@@ -39,7 +39,7 @@ class SiswaController extends Controller
             )->orderBy(
                 'nis',
             'asc'
-        );
+        )->orderBy('tanggal_masuk', 'desc');
         // ->latest()->orderBy('nama_siswa');
         if (request('cari')) {
             $data->where('nama_siswa', 'like', '%' . request('cari') . '%')
@@ -143,7 +143,14 @@ class SiswaController extends Controller
         ->orderBy('tanggal')
         ->orderBy('kegiatan')
         ->get();
-       
+        $PresensiKelas = Pesertakelas::query()
+        ->join('absensikelas', 'pesertakelas.id', '=', 'absensikelas.pesertakelas_id')
+        ->join('sesikelas', 'sesikelas.id', '=', 'absensikelas.sesikelas_id')
+        ->join('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
+        ->join('kelas', 'kelas.id', '=', 'kelasmi.kelas_id')
+        ->where('kelasmi.periode_id', session('periode_id'))
+        ->where('siswa_id', $siswa->id)
+        ->get();
         return view(
             'siswa/detailSiswa',
             [
@@ -151,6 +158,7 @@ class SiswaController extends Controller
                 'pesertakelas' => $nilai,
                 'historiAsrama' => $historiAsrama,
                 'PresensiAsrama' => $PresensiAsrama,
+                'PresensiKelas' => $PresensiKelas,
                 
             ]
         );
