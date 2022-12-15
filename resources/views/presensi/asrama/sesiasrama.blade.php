@@ -73,7 +73,9 @@
 
                 <th class=" px-2 border"> Rincian Kegiatan </th>
                 <th class=" px-2 border">asrama </th>
+                @role('super admin')
                 <th class=" px-2 border">Aksi </th>
+                @endrole
               </tr>
             </thead>
             <tbody>
@@ -95,8 +97,8 @@
                   @endif
 
                 </td>
+                @role('super admin')
                 <td class=" px-2 text-center">
-                  @can('delete post')
                   <form action="/sesiasrama/{{$item->id}}" method="post">
                     @csrf
                     @method('delete')
@@ -104,8 +106,8 @@
                       <x-icons.hapus></x-icons.hapus>
                     </button>
                   </form>
-                  @endcan
                 </td>
+                @endrole
               </tr>
               @endforeach
             </tbody>
