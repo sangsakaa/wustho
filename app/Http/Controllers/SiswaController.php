@@ -144,10 +144,10 @@ class SiswaController extends Controller
         $PresensiAsrama = Pesertaasrama::query()
         ->join('presensiasrama', 'pesertaasrama.id', '=', 'presensiasrama.pesertaasrama_id')
         ->join('sesiasrama', 'sesiasrama.id', '=', 'presensiasrama.sesiasrama_id')
-        ->join('kegiatan', 'kegiatan.id', '=', 'sesiasrama.kegiatan_id')
-
+            ->join('kegiatan', 'kegiatan.id', '=', 'sesiasrama.kegiatan_id')
         ->where('siswa_id', $siswa->id)
-        ->get();
+        ->orderBy('kegiatan');
+       
         return view(
             'siswa/detailSiswa',
             [
