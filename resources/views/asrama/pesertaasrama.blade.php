@@ -21,14 +21,14 @@
             <div class="p-2 bg-white border-b border-gray-200">
 
                 <div class=" grid grid-cols-8">
+                    <div>Nama Asrama</div>
+                    <div class=" uppercase  font-semibold"> : {{$tittle->nama_asrama}} </div>
                     <div>Kuota Asrama</div>
-                    <div> : {{$tittle->nama_asrama}} </div>
-                    <div>Kuota Asrama</div>
-                    <div> : {{$tittle->kuota}} </div>
+                    <div> : {{$tittle->kuota}} org </div>
                     <div> Jml Peserta </div>
-                    <div> : {{count($datapeserta)}}</div>
+                    <div> : {{count($datapeserta)}} org</div>
                     <div> Sisa Kuota </div>
-                    <div> : {{($tittle->kuota)-count($datapeserta)}}</div>
+                    <div> : {{($tittle->kuota)-count($datapeserta)}} org</div>
                 </div>
             </div>
         </div>
@@ -64,7 +64,7 @@
                         </a>
                         <button class="flex text-white rounded-md  bg-green-800 px-2 py-1 " onclick="printContent('div1')">
                             <x-icons.print></x-icons.print>
-                            Anggota Asrama
+
                         </button>
                     </div>
 

@@ -122,6 +122,21 @@
             <x-icons.home class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
         </x-slot>
     </x-sidebar.link>
+    <x-sidebar.link title="Data Asrama Santri" href="/asramasiswa" :isActive="request()->routeIs('asramasiswa')">
+        <x-slot name="icon">
+            <x-icons.home class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
+        </x-slot>
+    </x-sidebar.link>
+    <x-sidebar.link title="Presensi Harian" href="/sesiasrama" :isActive="request()->routeIs('sesiasrama')">
+        <x-slot name="icon">
+            <x-icons.home class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
+        </x-slot>
+    </x-sidebar.link>
+    <x-sidebar.link title="Kegiatan" href="/kegiatan" :isActive="request()->routeIs('kegiatan')">
+        <x-slot name="icon">
+            <x-icons.home class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
+        </x-slot>
+    </x-sidebar.link>
     <div x-transition x-show="isSidebarOpen || isSidebarHovered" class="text-sm text-gray-500">Menu Pendukung</div>
     <x-sidebar.link title="Rekap Absen Harian" href="/absensikelas/rekap-per-hari" :isActive="request()->routeIs('rekap-per-hari')">
         <x-slot name="icon">
@@ -133,21 +148,13 @@
             <x-icons.home class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
         </x-slot>
     </x-sidebar.link>
-    <x-sidebar.link title="Presensi Harian" href="/sesiasrama" :isActive="request()->routeIs('sesiasrama')">
-        <x-slot name="icon">
-            <x-icons.home class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
-        </x-slot>
-    </x-sidebar.link>
+
     <x-sidebar.link title="Rekap Harian Jama'ah" href="/rekap-harian" :isActive="request()->routeIs('rekap-harian')">
         <x-slot name="icon">
             <x-icons.home class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
         </x-slot>
     </x-sidebar.link>
-    <x-sidebar.link title="Kegiatan" href="/kegiatan" :isActive="request()->routeIs('kegiatan')">
-        <x-slot name="icon">
-            <x-icons.home class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
-        </x-slot>
-    </x-sidebar.link>
+
     @endrole
     @role('siswa')
     <x-sidebar.link title="Profil" href="/user" :isActive="request()->routeIs('user')">
