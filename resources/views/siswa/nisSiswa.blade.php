@@ -9,21 +9,32 @@
         <div class="mx-auto">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-4 bg-white border-b border-gray-200">
-                    <div class=" grid sm:grid-cols-4 grid-cols-2">
-                        <div>Nama </div>
-                        <div class=" border-red-500 ">: {{$siswa->nama_siswa}}</div>
-                        <div>Tanggal Lahir </div>
-                        <div>: {{$siswa->tempat_lahir}}</div>
-                        <div>Jenis Kelamin </div>
-                        <div>: {{$siswa->jenis_kelamin}}</div>
-                        <div>Tempat Lahir </div>
-                        <div>: {{$siswa->tanggal_lahir}}</div>
+                    <div class=" grid  sm:grid-cols-2 grid-cols-2 ">
+                        <div class=" flex w-full">
+                            <div class="grid w-36  ">Nama </div>
+                            <div class=" px-4 grid uppercase font-semibold   text-sm ">: {{$siswa->nama_siswa}}</div>
+                        </div>
+                        <div class=" flex w-full">
+                            <div class="grid w-36 ">Tanggal Lahir </div>
+                            <div class=" px-4">: {{$siswa->tempat_lahir}} , {{ \Carbon\Carbon::parse($siswa->tanggal_lahir)->isoFormat(' DD MMMM Y') }}</div>
+                        </div>
+
+                        <div class=" flex w-full">
+                            <div class=" grid  w-36 ">Jenis Kelamin </div>
+                            <div class=" px-4"> : {{$siswa->jenis_kelamin}}</div>
+                        </div>
+                        <div class=" flex w-full">
+                            <div class="  grid w-36    ">Status Asrama </div>
+                            <div class=" px-4  grid  "> :
+                                {{$siswa->asramaTerkhir?->asramaSiswa->asrama->nama_asrama}}
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
         </div>
     </div>
-
     <div class=" px-4">
         <div class="mx-auto">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
@@ -34,7 +45,6 @@
                         <div class=" grid grid-cols-1 justify-items-end">
                             <a href="/nis/{{$siswa->id}}" class=" bg-blue-500 px-2 py-1 hover:bg-purple-500 text-white">Nomor Induk siswa</a>
                         </div>
-
                         <div class=" grid grid-cols-1 justify-items-end">
                             <a href="/biodata/{{$siswa->id}}" class=" bg-blue-500 px-2 py-1 hover:bg-purple-500 text-white">Biodata Lengkap</a>
                         </div>
@@ -42,7 +52,7 @@
                     </div>
                     <div class=" grid grid-cols-1 sm:grid-cols-1 gap-2">
                         <div class=" py-1">
-                            @role('super admin')
+
                             <form action="/nis/{{$siswa->id}}" method="post">
                                 @csrf
                                 <input type="hidden" name="siswa_id" value="{{$siswa->id}}" class=" py-1" required>
@@ -58,7 +68,7 @@
                                 <input type="date" name="tanggal_masuk" id="" class=" py-1" required>
                                 <button class=" bg-blue-600 py-1 px-2 text-white rounded-sm">Create NIS</button>
                             </form>
-                            @endrole
+
                         </div>
                     </div>
                     <div>

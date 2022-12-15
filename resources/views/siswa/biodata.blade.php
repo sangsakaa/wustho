@@ -2,7 +2,7 @@
     <x-slot name="header">
         @section('title','BIODATA : ' . $siswa->nama_siswa )
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard Biobiodata') }}
+            {{ __('Dashboard Biodata') }}
         </h2>
     </x-slot>
     <script>
@@ -18,31 +18,27 @@
         <div class="mx-auto">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-4 bg-white border-b border-gray-200">
-                    <div class=" grid sm:grid-cols-4 grid-cols-2">
-                        <div>Nama </div>
-                        <div>:
-                            @if($siswa != null)
-                            {{$siswa->nama_siswa}}
-                            @endif
+                    <div class=" grid  sm:grid-cols-2 grid-cols-2 ">
+                        <div class=" flex w-full">
+                            <div class="grid w-36  ">Nama </div>
+                            <div class=" px-4 grid uppercase font-semibold   text-sm ">: {{$siswa->nama_siswa}}</div>
                         </div>
-                        <div>Tanggal Lahir </div>
-                        <div>:
-                            @if($siswa != null)
-                            {{$siswa->tempat_lahir}}
-                            @endif
+                        <div class=" flex w-full">
+                            <div class="grid w-36 ">Tanggal Lahir </div>
+                            <div class=" px-4">: {{$siswa->tempat_lahir}} , {{ \Carbon\Carbon::parse($siswa->tanggal_lahir)->isoFormat(' DD MMMM Y') }}</div>
                         </div>
-                        <div>Jenis Kelamin </div>
-                        <div>:
-                            @if($siswa != null)
-                            {{$siswa->jenis_kelamin}}
-                            @endif
+
+                        <div class=" flex w-full">
+                            <div class=" grid  w-36 ">Jenis Kelamin </div>
+                            <div class=" px-4"> : {{$siswa->jenis_kelamin}}</div>
                         </div>
-                        <div>Tempat Lahir </div>
-                        <div>:
-                            @if($siswa != null)
-                            {{$siswa->tanggal_lahir}}
-                            @endif
+                        <div class=" flex w-full">
+                            <div class="  grid w-36    ">Status Asrama </div>
+                            <div class=" px-4  grid  "> :
+                                {{$siswa->asramaTerkhir?->asramaSiswa->asrama->nama_asrama}}
+                            </div>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -68,7 +64,11 @@
                             <div class=" border py-2 px-2">1. Nomor Induk Siswa</div>
 
                             <div class=" border py-1 px-2 ">: <span class="font-semibold text-2xl">
+                                    @if($biodata !== $biodata->nis)
                                     {{$biodata->nis}}
+                                    @else
+                                    Belum ada NIS
+                                    @endif
                                 </span>
                             </div>
                             <div class=" border py-2 px-2">2. Nama Lengkap</div>
@@ -104,18 +104,7 @@
                             <div class=" border py-2 px-2" class=" w-1/2">13. Daerah Asal </div>
                             <div class=" border py-2 px-2">: {{$biodata->kota_asal}}</div>
                         </div>
-                        <div class=" grid grid-cols-2">
-                            <div></div>
-                            <div>
-                                <p>
-                                    Kedunglo, <?php
-                                                $date = date_create(now());
-                                                echo date_format($date, "d-m-Y");
-                                                ?></p>
-                                <p>Al Mudir / Kepala Sekolah</p><br><br><br><br>
-                                <p>Muh. Bahrul Ulum,S.H</p>
-                            </div>
-                        </div>
+
                     </div>
                 </div>
             </div>

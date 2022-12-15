@@ -9,16 +9,25 @@
         <div class="mx-auto">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-4 bg-white border-b border-gray-200">
-                    <div class=" grid sm:grid-cols-4 grid-cols-2">
-                        <div>Nama </div>
-                        <div class=" border-red-500 text-sm ">: {{$siswa->nama_siswa}}</div>
-                        <div>Tanggal Lahir </div>
-                        <div>: {{$siswa->tempat_lahir}}</div>
-                        <div>Jenis Kelamin </div>
-                        <div>: {{$siswa->jenis_kelamin}}</div>
-                        <div>Tempat Lahir </div>
-                        <div>: {{$siswa->tanggal_lahir}}
+                    <div class=" grid  sm:grid-cols-2 grid-cols-2 ">
+                        <div class=" flex w-full">
+                            <div class="grid w-36  ">Nama </div>
+                            <div class=" px-4 grid uppercase font-semibold   text-sm ">: {{$siswa->nama_siswa}}</div>
+                        </div>
+                        <div class=" flex w-full">
+                            <div class="grid w-36 ">Tanggal Lahir </div>
+                            <div class=" px-4">: {{$siswa->tempat_lahir}} , {{ \Carbon\Carbon::parse($siswa->tanggal_lahir)->isoFormat(' DD MMMM Y') }}</div>
+                        </div>
 
+                        <div class=" flex w-full">
+                            <div class=" grid  w-36 ">Jenis Kelamin </div>
+                            <div class=" px-4"> : {{$siswa->jenis_kelamin}}</div>
+                        </div>
+                        <div class=" flex w-full">
+                            <div class="  grid w-36    ">Status Asrama </div>
+                            <div class=" px-4  grid  "> :
+                                {{$siswa->asramaTerkhir?->asramaSiswa->asrama->nama_asrama}}
+                            </div>
                         </div>
 
                     </div>
@@ -40,11 +49,10 @@
                         <div class=" grid grid-cols-1 justify-items-end">
                             <a href="/biodata/{{$siswa->id}}" class=" bg-blue-500 px-2 py-1 hover:bg-purple-500 text-white">Biodata Lengkap</a>
                         </div>
-
-                        @role('super admin')
                         <div class=" grid grid-cols-1 justify-items-end">
                             <a href="/nis/{{$siswa->id}}" class=" bg-blue-500 px-2 py-1 hover:bg-purple-500 text-white">Nomor Induk siswa</a>
                         </div>
+                        @role('super admin')
                         <div class=" grid grid-cols-1 justify-items-end">
                             <a href="/statuspengamal/{{$siswa->id}}" class=" bg-blue-500 px-2 py-1 hover:bg-purple-500 text-white">Status Pengamal</a>
                         </div>
@@ -136,7 +144,7 @@
                                         <th class=" border text-center py-1">No</th>
                                         <th class=" border text-center"> Tanggal Presensi</th>
                                         <th class=" border text-center"> Jenis Kegiatan</th>
-                                        <th class=" border text-center"> Keterangan</th>
+                                        <th class=" border text-center"> Ket</th>
                                         <th class=" border text-center"> Alasan</th>
                                     </tr>
                                 </thead>
@@ -148,12 +156,13 @@
                                             {{$loop->iteration}}
                                         </td>
                                         <td class=" border px-2 text-center ">
-                                            {{$kelas->tanggal}}
+
+                                            {{ \Carbon\Carbon::parse($kelas->tanggal)->isoFormat(' DD MMMM Y') }}
                                         </td>
                                         <td class=" border px-2 text-center ">
                                             {{$kelas->kegiatan}}
                                         </td>
-                                        <td class=" border px-2 text-center ">
+                                        <td class=" border px-2 text-center capitalize ">
                                             {{$kelas->keterangan}}
                                         </td>
                                         <td class=" border px-2 text-center ">
@@ -164,8 +173,8 @@
                                     @endforeach
                                     @else
                                     <tr>
-                                        <td colspan="5" class=" border  text-center text-red-600">
-                                            Data Kelas tidak ada
+                                        <td colspan="5" class=" border  text-center capitalize text-red-600">
+                                            Data Kegiatan Asrama tidak ada
                                         </td>
                                     </tr>
                                     @endif
