@@ -48,6 +48,7 @@ class SesiasramaController extends Controller
             ->join('semester', 'semester.id', '=', 'periode.semester_id')
             ->join('kegiatan', 'kegiatan.id', '=', 'sesiasrama.kegiatan_id')
             ->join('asramasiswa', 'asramasiswa.id', '=', 'sesiasrama.asramasiswa_id')
+            
             ->join('asrama', 'asrama.id', '=', 'asramasiswa.asrama_id')
             ->where('sesiasrama.periode_id', session('periode_id'))
             ->where('sesiasrama.tanggal', $tanggal->toDateString())
@@ -60,6 +61,7 @@ class SesiasramaController extends Controller
                     'asrama.nama_asrama',
                 'asrama.type_asrama',
                 'kegiatan.kegiatan',
+                
                 
                 ]
         )

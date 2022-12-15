@@ -73,6 +73,7 @@
                 @endrole
                 <th class=" px-2 border"> Rincian Kegiatan </th>
                 <th class=" px-2 border">asrama </th>
+                <th class=" px-2 border">Status <br> Kehadiran </th>
                 @role('super admin')
                 <th class=" px-2 border">Aksi </th>
                 @endrole
@@ -98,6 +99,10 @@
                   <span class=" bg-sky-600 px-2 py-1 text-white font-semibold uppercase"> {{$item->nama_asrama}}</span>
                   @endif
 
+                </td>
+                <td class=" px-2 text-center">
+                  <span class=" font-semibold">{{$item->SesiAsrama->count()}} </span>|
+                  {{$item->SesiAsrama->countBy('keterangan')}}
                 </td>
                 @role('super admin')
                 <td class=" px-2 text-center">
