@@ -68,9 +68,9 @@
                 <th class=" py-2 px-2 border">No</th>
                 <th class=" px-2 border"> presensi </th>
                 <th class=" px-2 border"> tanggal </th>
-
+                @role('super admin')
                 <th class=" px-2 border"> periode </th>
-
+                @endrole
                 <th class=" px-2 border"> Rincian Kegiatan </th>
                 <th class=" px-2 border">asrama </th>
                 @role('super admin')
@@ -86,7 +86,9 @@
                 <td class=" px-2 text-center">
                   {{ \Carbon\Carbon::parse($item->tanggal)->isoFormat(' DD MMMM Y') }}
                 </td>
+                @role('super admin')
                 <td class=" px-2 text-center">{{$item->periode}} {{$item->ket_semester}}</td>
+                @endrole
                 <td class=" px-2 text-center">{{$item->kegiatan}}</td>
                 <td class=" px-2 text-center">
 
