@@ -44,16 +44,7 @@
         <div class="bg-white dark:bg-dark-bg  shadow-sm ">
             <div class=" p-1 ">
                 <div class=" bg-white dark:bg-dark-bg  ">
-                    <div class=" text-center text-green-900">
-                        <p class=" font-semibold text-3xl">
-                            PONDOK PESANTREN KEDUNGLO KEDIRI
-                            <br>
-                            <span class=" uppercase">Putra putri</span>
-                        </p>
-                        <p class=" font-semibold uppercase">
-                            {{-- TAHUN PELAJARAN {{$kelasmi->periode}} {{$kelasmi->ket_semester}} --}}
-                        </p>
-                    </div>
+
                     <hr class=" border-b-2 border-green-900">
                     <div class=" text-green-900  text-2xl text-center uppercase font-semibold">
                         Laporan Kegiatan Harian
