@@ -4,11 +4,11 @@
             {{ __('Dashboard') }}
         </h2>
     </x-slot>
-    <div class="p-4">
+    <div class="p-2">
         <div class=" mx-auto ">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class=" bg-white border-b border-gray-200">
-                    <div class=" p-6 grid grid-cols-3">
+                    <div class=" px-4 py-4 grid grid-cols-3">
 
                         <form action="/siswa" method="post">
                             @role('super admin')
@@ -37,16 +37,17 @@
                                     <option value="Islam"> Islam </option>
                                 </select>
                                 <label for="">Tempat Lahir</label>
-                                <input name="tempat_lahir" type="text" class=" w-full py-1 rounded-md" placeholder=" masukan nama tempat Lahir" value="{{old('tempat_lahir')}}" required>
+                                <input name="tempat_lahir" type="text" class=" w-full py-1 rounded-md" placeholder=" masukan tempat Lahir" value="{{old('tempat_lahir')}}" required>
                                 <label for="">Tanggal Lahir</label>
                                 <input name="tanggal_lahir" type="date" class=" w-full py-1 rounded-md" placeholder=" masukan nama lengkap" required>
                                 <label for="">Asal Kota</label>
                                 <input name="kota_asal" type="text" class=" w-full py-1 rounded-md" placeholder=" masukan Asal Kota" required value="{{old('kota_asal')}}">
-
-                                <button type="submit" class=" px-2 py-1 bg-blue-600 text-white rounded-md mt-1">Simpan</button>
-                                <a href="/siswa" class=" px-2 py-1 bg-red-600 text-white rounded-md mt-1">
-                                    Batal
-                                </a>
+                                <div>
+                                    <button type="submit" class=" px-2 py-1 bg-blue-600 text-white rounded-md mt-1">Simpan</button>
+                                    <a href="/siswa" class=" px-2 py-1 bg-red-600 text-white rounded-md mt-1">
+                                        Batal
+                                    </a>
+                                </div>
                             </div>
                         </form>
                     </div>

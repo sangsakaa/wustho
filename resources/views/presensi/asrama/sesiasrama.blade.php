@@ -71,7 +71,7 @@
                 @role('super admin')
                 <th class=" px-2 border"> periode </th>
                 @endrole
-                <th class=" px-2 border"> Rincian Kegiatan </th>
+                <th class=" px-2 border"> Rincian <br> Kegiatan </th>
 
                 <th class=" px-2 border">Status <br> Kehadiran </th>
                 <th class=" px-2 w-10 text-center ">Status <br> Presensi </th>
