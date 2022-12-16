@@ -121,9 +121,11 @@ class SiswaController extends Controller
      * @param  \App\Models\Siswa  $siswa
      * @return \Illuminate\Http\Response
      */
-    public function show(Siswa $siswa)
+    public function show(Siswa $siswa, Request $request)
     {
-        
+
+        $bulan = $request->bulan ? Carbon::parse($request->bulan) : now();
+        $periodeBulan = $bulan->startOfMonth()->daysUntil($bulan->copy()->endOfMonth());
         $nilai = Pesertakelas::query()
             ->join('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
             ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
@@ -149,8 +151,12 @@ class SiswaController extends Controller
         ->join('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
         ->join('kelas', 'kelas.id', '=', 'kelasmi.kelas_id')
         ->where('kelasmi.periode_id', session('periode_id'))
-        ->where('siswa_id', $siswa->id)
-        ->get();
+        ->whereBetween('sesikelas.tgl', [$periodeBulan->first()->toDateString(), $periodeBulan->last()->toDateString()])
+        ->where('siswa_id', $siswa->id);
+        if (request('bulan')) {
+            $PresensiKelas->where('tgl', 'like', '%' . request('bulan') . '%');
+        }
+
         return view(
             'siswa/detailSiswa',
             [
@@ -158,7 +164,9 @@ class SiswaController extends Controller
                 'pesertakelas' => $nilai,
                 'historiAsrama' => $historiAsrama,
                 'PresensiAsrama' => $PresensiAsrama,
-                'PresensiKelas' => $PresensiKelas,
+                'PresensiKelas' => $PresensiKelas->get(),
+                'bulan' => $bulan,
+                'periodeBulan' => $periodeBulan,
                 
             ]
         );

@@ -184,7 +184,13 @@
                         </div>
                         <div>
                             <span class=" text-lg">Detail Riwayat Presensi Madrasah </span>
+                            <form action="/siswa/{{$siswa->id}}" method="get" class="w-full">
+                                <input type="month" name="bulan" class=" py-1 dark:bg-dark-bg" value="{{ $bulan->format('Y-m') }}">
 
+                                <button class=" bg-red-600 py-1 dark:bg-purple-600 mt-1 my-1 w-full sm:w-40 rounded-sm hover:bg-purple-600 text-white px-4 ">
+                                    Pilih Presensi
+                                </button>
+                            </form>
                             <table class=" w-full    ">
                                 <thead>
                                     <tr class=" border bg-gray-100">

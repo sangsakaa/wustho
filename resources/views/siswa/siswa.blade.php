@@ -66,7 +66,7 @@
                     <tbody>
                         @if($dataSiswa->count() != null)
                         @foreach ( $dataSiswa as $peserta)
-                        <tr class=" text-xs  border hover:bg-blue-100  sm:text-sm  even:bg-gray-100">
+                        <tr class=" text-xs  border hover:bg-blue-100  sm:text-xs  even:bg-gray-100 ">
                             <td class=" text-sm  border  text-center py-1 ">
                                 {{$loop->iteration}}
                             </td>
