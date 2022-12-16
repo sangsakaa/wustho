@@ -95,7 +95,7 @@ class SiswaController extends Controller
         $nis->madrasah_diniyah = $request->madrasah_diniyah;
         $nis->tanggal_masuk = $request->tanggal_masuk;
         $nis->save();
-        return redirect('siswa');
+        return redirect()->back();
     }
     public function storeSP(Request $request)
     {
