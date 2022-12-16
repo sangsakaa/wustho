@@ -141,10 +141,13 @@ class SiswaController extends Controller
         ->join('presensiasrama', 'pesertaasrama.id', '=', 'presensiasrama.pesertaasrama_id')
         ->join('sesiasrama', 'sesiasrama.id', '=', 'presensiasrama.sesiasrama_id')
             ->join('kegiatan', 'kegiatan.id', '=', 'sesiasrama.kegiatan_id')
+            ->whereBetween('sesiasrama.tanggal', [$periodeBulan->first()->toDateString(), $periodeBulan->last()->toDateString()])
         ->where('siswa_id', $siswa->id)
         ->orderBy('tanggal')
-        ->orderBy('kegiatan')
-        ->get();
+        ->orderBy('kegiatan');
+        if (request('bulan')) {
+            $PresensiAsrama->where('tanggal', 'like', '%' . request('bulan') . '%');
+        };
         $PresensiKelas = Pesertakelas::query()
         ->join('absensikelas', 'pesertakelas.id', '=', 'absensikelas.pesertakelas_id')
         ->join('sesikelas', 'sesikelas.id', '=', 'absensikelas.sesikelas_id')
@@ -163,7 +166,7 @@ class SiswaController extends Controller
                 'siswa' => $siswa,
                 'pesertakelas' => $nilai,
                 'historiAsrama' => $historiAsrama,
-                'PresensiAsrama' => $PresensiAsrama,
+                'PresensiAsrama' => $PresensiAsrama->get(),
                 'PresensiKelas' => $PresensiKelas->get(),
                 'bulan' => $bulan,
                 'periodeBulan' => $periodeBulan,
