@@ -2,7 +2,12 @@
     <x-slot name="header">
         @section('title', ' | Data Siswa' )
         <h2 class="font-semibold text-xl leading-tight">
+            @role('super admin')
             {{ __('Dashboard Daftar Data Siswa') }}
+            @endrole
+            @role('pengurus')
+            {{ __('Dashboard Daftar Data Santri') }}
+            @endrole
         </h2>
     </x-slot>
 
