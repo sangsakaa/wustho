@@ -172,7 +172,6 @@ class AsramasiswaController extends Controller
     }
     public function editpeserta(Pesertaasrama $pesertaasrama, Asramasiswa $asramasiswa)
     {
-
         $anggota = Pesertaasrama::query()
             ->join('siswa', 'siswa.id', '=', 'pesertaasrama.siswa_id')
             ->where('pesertaasrama.id', $pesertaasrama->id)->first();
@@ -180,6 +179,8 @@ class AsramasiswaController extends Controller
             ->join('asrama', 'asrama.id', '=', 'asramasiswa.asrama_id')
             ->select('nama_asrama', 'asramasiswa.id')
             ->where('asramasiswa.periode_id', session('periode_id'))
+            ->orderby('type_asrama')
+            ->orderby('nama_asrama')
             ->get();
         return view(
             'asrama/editpeserta',

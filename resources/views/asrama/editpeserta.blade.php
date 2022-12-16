@@ -14,12 +14,15 @@
                         <input type="hidden" name="siswa_id" class=" py-1  " value="{{$anggota->id}}" readonly>
                         <input type="text" placeholder="{{$anggota->nama_siswa}}" class=" py-1" readonly>
                         <select name="asramasiswa_id" id="" class=" py-1  uppercase">
-                            @foreach( $dataasrama as $item)
-                            <option value="{{ $item->id }}">Asrama - {{ $item->nama_asrama }} </option>
+
+                            @foreach($dataasrama as $asrama)
+                            <option value="{{$asrama->id}}" {{ $pesertaasrama->asramasiswa_id == $asrama->id ? "selected" : "" }}>{{$loop->iteration}} | {{$asrama->nama_asrama}} </option>
                             @endforeach
                         </select>
                         <div>
-                            <div><button class=" bg-blue-600 text-white rounded-md px-2 py-1"> Update Asrama</button></div>
+                            <div>
+                                <button class=" bg-blue-600 text-white rounded-md px-2 py-1"> Update Asrama</button>
+                            </div>
                         </div>
                     </div>
                 </form>

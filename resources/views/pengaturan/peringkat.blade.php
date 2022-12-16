@@ -88,7 +88,7 @@
                         <th class=" px-2 text-sm border border-green-800">{{ $loop->iteration }}</th>
                         <td class=" px-2 text-sm border text-center border-green-800">{{ $datasiswa->nis }}
                         </td>
-                        <td class=" px-2 text-sm border border-green-800"> {{ $datasiswa->nama_siswa }}</td>
+                        <td class=" px-2 text-sm border border-green-800 capitalize"> {{ strtolower($datasiswa->nama_siswa) }}</td>
                         <td class=" px-2 text-sm border border-green-800 text-center">
                             {{ $ringkasan['jmlharian'] }}
                         </td>

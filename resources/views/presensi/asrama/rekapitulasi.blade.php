@@ -44,11 +44,6 @@
         <div class="bg-white dark:bg-dark-bg  shadow-sm ">
             <div class=" p-1 ">
                 <div class=" bg-white dark:bg-dark-bg  ">
-
-                    <hr class=" border-b-2 border-green-900">
-                    <div class=" text-green-900  text-2xl text-center uppercase font-semibold">
-                        Laporan Kegiatan Harian
-                    </div>
                     <div class=" grid grid-cols-2">
                         <div class=" text-green-900  text-sm font-semibold">
                             Hari, tanggal : {{ $tgl->isoFormat('dddd, D MMMM YYYY') }}
