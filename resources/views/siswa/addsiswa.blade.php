@@ -11,7 +11,12 @@
                     <div class=" p-6 grid grid-cols-3">
 
                         <form action="/siswa" method="post">
+                            @role('super admin')
                             <span class=" capitalize text-2xl text-blue-300">biodata siswa</span>
+                            @endrole
+                            @role('pengurus')
+                            <span class=" capitalize text-2xl text-blue-300">biodata Santri</span>
+                            @endrole
                             <div class=" grid-cols-1">
                                 @csrf
                                 <label for="">Nama lengkap</label>
@@ -28,7 +33,7 @@
 
                                 <label for="">Agama</label>
                                 <select name="agama" id="" class=" w-full py-1 rounded-md" required>
-                                    <option value="">-- Pilih Jenis Kelamin --</option>
+                                    <option value="">-- Pilih Agama --</option>
                                     <option value="Islam"> Islam </option>
                                 </select>
                                 <label for="">Tempat Lahir</label>
@@ -36,7 +41,7 @@
                                 <label for="">Tanggal Lahir</label>
                                 <input name="tanggal_lahir" type="date" class=" w-full py-1 rounded-md" placeholder=" masukan nama lengkap" required>
                                 <label for="">Asal Kota</label>
-                                <input name="kota_asal" type="text" class=" w-full py-1 rounded-md" placeholder=" masukan nama tempat Lahir" required value="{{old('kota_asal')}}">
+                                <input name="kota_asal" type="text" class=" w-full py-1 rounded-md" placeholder=" masukan Asal Kota" required value="{{old('kota_asal')}}">
 
                                 <button type="submit" class=" px-2 py-1 bg-blue-600 text-white rounded-md mt-1">Simpan</button>
                                 <a href="/siswa" class=" px-2 py-1 bg-red-600 text-white rounded-md mt-1">
