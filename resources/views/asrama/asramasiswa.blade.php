@@ -42,7 +42,7 @@
             </div>
         </div>
     </div>
-    <div class=" my-2">
+    <div class=" my-2 text-sm">
         <div class=" mx-auto ">
             <div class="bg-white dark:bg-dark-bg overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-2 ">

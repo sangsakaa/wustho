@@ -41,7 +41,7 @@
     </div>
   </div>
   @endcan
-  <div class="px-4 mt-4">
+  <div class="px-4 mt-4 ">
     <div class=" bg-white overflow-hidden shadow-sm sm:rounded-lg">
       <div class=" p-4 ">
         <div class=" flex gap-2">
@@ -62,27 +62,28 @@
               Cari By Tanggal
             </button>
           </form>
-          <table class=" w-full mt-2  ">
-            <thead>
-              <tr class=" capitalize bg-gray-100 text-sm  ">
-                <th class=" py-2 px-2 border">No</th>
-                <th class=" px-2 border"> presensi </th>
-                <th class=" px-2 border"> tanggal </th>
-                @role('super admin')
-                <th class=" px-2 border"> periode </th>
-                @endrole
-                <th class=" px-2 border"> Rincian <br> Kegiatan </th>
+          <table class=" w-full mt-2   ">
+            <thead class=" ">
+              <tr class=" capitalize bg-gray-100   "></tr>
+              <th class=" py-2 px-2 border">No</th>
+              <th class=" px-2 border"> presensi </th>
+              <th class=" px-2 border"> tanggal </th>
+              @role('super admin')
+              <th class=" px-2 border"> periode </th>
+              @endrole
+              <th class=" px-2 border"> Rincian <br> Kegiatan </th>
 
-                <th class=" px-2 border">Status <br> Kehadiran </th>
-                <th class=" px-2 w-10 text-center ">Status <br> Presensi </th>
-                @role('super admin')
-                <th class=" px-2 border">Aksi </th>
-                @endrole
+              <th class=" px-2 border">Status <br> Kehadiran </th>
+              <th class=" px-2 w-10 text-center ">Status <br> Presensi </th>
+              @role('super admin')
+              <th class=" px-2 border">Aksi </th>
+              @endrole
               </tr>
             </thead>
             <tbody>
+              @if($Datasesiasrama->count() != null)
               @foreach ($Datasesiasrama as $item)
-              <tr class=" border  hover:bg-gray-100 text-sm even:bg-gray-100">
+              <tr class=" border  hover:bg-gray-100 text-xs even:bg-gray-100">
                 <th class=" w-5">{{$loop->iteration}}</th>
                 <td class=" border px-2 text-center py-1"><a href="/sesiasrama/{{$item->id}}">
                     @if($item->type_asrama == "Putri" )
@@ -126,6 +127,12 @@
                 @endrole
               </tr>
               @endforeach
+              @else
+              <tr>
+                <td colspan="6" class=" border text-red-600 font-semibold capitalize text-center">Sesi belum di buat</td>
+              </tr>
+              @endif
+
             </tbody>
           </table>
         </div>

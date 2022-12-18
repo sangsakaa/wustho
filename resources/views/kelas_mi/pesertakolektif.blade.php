@@ -27,7 +27,7 @@
                         @csrf
                         <div class=" py-1 w-3/5 grid grid-cols-2 gap-2 ">
                             <select name="kelasmi_id" id="" class=" py-1 w-full" required>
-                                <option value="">-- Pilih Kelas Sesuia Periode --</option>
+                                <option value="">-- Pilih Kelas Sesuai Periode --</option>
                                 @foreach($kelas as $kelas )
                                 <option value="{{$kelas->id}}" {{ $kelas->id == $kelasmi->id ? "selected" : "" }}>{{$kelas->nama_kelas}} {{$kelas->periode}} {{$kelas->ket_semester}}{{$kelas->ket_periode}}</option>
                                 @endforeach

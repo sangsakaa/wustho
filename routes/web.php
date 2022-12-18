@@ -76,6 +76,8 @@ Route::patch('kelas_mi/{kelasmi}', [KelasmiController::class, 'update'])->middle
 // peseta kelas
 Route::get('pesertakelas/{kelasmi}', [KelasmiController::class, 'show'])->middleware(['auth'])->name('pesertakelas');
 Route::delete('pesertakelas/{pesertakelas}', [KelasmiController::class, 'hapus'])->middleware(['auth'])->name('pesertakelas');
+Route::get('pesertakelas/{pesertakelas}/edit', [KelasmiController::class, 'pesertakelas']);
+Route::patch('pesertakelas/{pesertakelas}', [KelasmiController::class, 'storepesertakelas']);
 // Controller nilai
 Route::get('nilaimapel', [NilaiController::class, 'index'])->middleware(['auth'])->name('nilaimapel');
 Route::get('nilai/{nilaimapel}', [NilaiController::class, 'show'])->middleware(['auth']);

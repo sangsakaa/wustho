@@ -134,11 +134,12 @@ class AsramasiswaController extends Controller
                 ]
             )
             ->where('asramasiswa_id', $asramasiswa->id)
-            ->orderBy('nis.nis')
-            ->orderBy('siswa.nama_siswa');
+
+            ->orderBy('siswa.nama_siswa')
+            ->orderBy('nis.nis');
         if (request('cari')) {
             $data->where('nama_siswa', 'like', '%' . request('cari') . '%');
-            // ->orWhere('Kota_asal', 'like', '%' . request('cari') . '%')
+                // ->orWhere('nis', 'like', '%' . request('cari') . '%');
             // ->orWhere('nama_kelas', 'like', '%' . request('cari') . '%')
             // ->orWhere('nis', 'like', '%' . request('cari') . '%')
             // ->orWhere('tanggal_masuk', 'like', '%' . request('cari') . '%')
@@ -172,6 +173,7 @@ class AsramasiswaController extends Controller
     }
     public function editpeserta(Pesertaasrama $pesertaasrama, Asramasiswa $asramasiswa)
     {
+       
         $anggota = Pesertaasrama::query()
             ->join('siswa', 'siswa.id', '=', 'pesertaasrama.siswa_id')
             ->where('pesertaasrama.id', $pesertaasrama->id)->first();
@@ -210,7 +212,7 @@ class AsramasiswaController extends Controller
             ]);
         return redirect('/asramasiswa')->with('update', 'pembaharuan data berhasil');
     }
-    public function updatepeserta(Request $request, Pesertaasrama $pesertaasrama)
+    public function updatepeserta(Request $request, Pesertaasrama $pesertaasrama, Asramasiswa $asramasiswa)
     {
         Pesertaasrama::where('id', $pesertaasrama->id)
             ->update([
@@ -218,7 +220,8 @@ class AsramasiswaController extends Controller
                 'asramasiswa_id' => $request->asramasiswa_id,
 
             ]);
-        return redirect()->back()->with('update', 'pembaharuan data berhasil');
+
+        return redirect('/pesertaasrama/' . $pesertaasrama->asramasiswa_id);
     }
 
     /**

@@ -39,6 +39,7 @@ class PresensikelasController
                 'periode',
                 'jumlah_peserta_asrama'
             )
+            ->where('kelasmi.periode_id', session('periode_id'))
             ->orderBy('periode')
             ->orderBy('ket_semester')
             ->orderBy('nama_kelas')
@@ -87,6 +88,7 @@ class PresensikelasController
             ->join('semester', 'semester.id', '=', 'periode.semester_id')
             ->leftJoin('presensikelas', 'presensikelas.pesertakelas_id', '=', 'pesertakelas.id')
             ->where('pesertakelas.kelasmi_id', $kelasmi->id)
+            
             ->select(
                 'pesertakelas.id',
                 'siswa.nama_siswa',

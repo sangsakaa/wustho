@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Kelas;
+use App\Models\Siswa;
 use App\Models\Kelasmi;
 use App\Models\Periode;
 use App\Models\Pesertakelas;
@@ -117,7 +118,6 @@ class KelasmiController extends Controller
     public function show(Kelasmi $kelasmi)
 
     {
-        // dd($kelasmi);
         $anggota = Pesertakelas::where('kelasmi_id', $kelasmi->id)->count('kelasmi_id');
         $datakelasmi = Kelasmi::query()
             ->join('kelas', 'kelas.id', '=', 'kelasmi.kelas_id')
@@ -149,13 +149,27 @@ class KelasmiController extends Controller
             ]
         );
     }
+    public function pesertakelas(Pesertakelas $pesertakelas, Kelasmi $kelasmi)
+    {
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+        $DataKelas  = Kelasmi::query()
+            ->select('nama_kelas', 'periode_id')
+            ->where('kelasmi.periode_id', session('periode_id'))
+            ->get();
+        return view(
+            'kelas_mi.editpesertakelas',
+            [
+
+
+                'DataKelas' => $DataKelas,
+                'pesertakelas' => $pesertakelas,
+                'kelasmi' => $kelasmi,
+
+            ]
+        );
+    }
+
+    
     public function edit(Kelasmi $kelasmi)
     {
         return view(
