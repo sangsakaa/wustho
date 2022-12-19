@@ -80,9 +80,9 @@
 
 
                                     <th class=" text-center px-1 border "> kuota</th>
-                                    <th class=" text-center px-1 border "> jml <br> anggota
+                                    <th class=" text-center px-1 border "> Total
                                     </th>
-                                    <th class=" text-center px-1 border "> Status <br> Asrama</th>
+                                    <th class=" text-center px-1 border "> Status </th>
 
                                     <th class=" text-center px-1 border ">
                                         keterangan
