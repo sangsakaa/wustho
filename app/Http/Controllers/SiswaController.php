@@ -196,6 +196,39 @@ class SiswaController extends Controller
         $nisSiswa = Nis::where('siswa_id', $siswa->id)->get();
         return view('siswa/nisSiswa', ['siswa' => $siswa, 'nis' => $nisSiswa]);
     }
+    public function EditNis(Siswa $siswa, Nis $nis)
+    {
+        $nisSiswa = $nis->join(
+            'siswa',
+            'siswa.id',
+            '=',
+            'nis.siswa_id'
+        )
+        ->find($nis)->first();
+
+        return view(
+            'siswa.editnis',
+            [
+                'siswa' => $siswa,
+                'nis' => $nis,
+                'nisSiswa' => $nisSiswa
+            ]
+        );
+    }
+    public function UpdateNis(Nis $nis, Request $request)
+    {
+        Nis::where('id', $nis->id)
+            ->update([
+                'siswa_id' => $request->siswa_id,
+                'nis' => $request->nis,
+                'nama_lembaga' => $request->nama_lembaga,
+                'madrasah_diniyah' => $request->madrasah_diniyah,
+                'tanggal_masuk' => $request->tanggal_masuk,
+
+            ]);
+        return redirect('/nis/' . $nis->siswa_id);
+        
+    }
     public function statuspengamal(Siswa $siswa,)
     {
         $sp = Statuspengamal::query()
@@ -285,7 +318,7 @@ class SiswaController extends Controller
             ->update([
                 'nama_siswa' => $request->nama_siswa,
                 'jenis_kelamin' => $request->jenis_kelamin,
-                'agama' => $request->agama,
+            'nama_lembaga' => $request->agama,
                 'tempat_lahir' => $request->tempat_lahir,
                 'tanggal_lahir' => $request->tanggal_lahir,
                 'kota_asal' => $request->kota_asal,

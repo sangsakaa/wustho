@@ -44,6 +44,8 @@ Route::get('siswa/{siswa}', [SiswaController::class, 'show']);
 Route::get('biodata/{siswa}', [SiswaController::class, 'biodata']);
 Route::get('transkip/{siswa}', [SiswaController::class, 'transkip']);
 Route::get('nis/{siswa}', [SiswaController::class, 'nis']);
+Route::get('nis/{nis}/edit', [SiswaController::class, 'editNis']);
+Route::patch('nis/{nis}', [SiswaController::class, 'UpdateNis']);
 Route::get('statuspengamal/{siswa}', [SiswaController::class, 'statuspengamal']);
 Route::post('statuspengamal/{siswa}', [SiswaController::class, 'storeSP']);
 Route::post('statusanak/{siswa}', [SiswaController::class, 'storeSA']);

@@ -67,7 +67,7 @@
                         </div>
                     </div>
                     @endif
-                    <div class=" overflow-auto p-1">
+                    <div class=" overflow-auto p-1 md:overflow-auto">
                         <Table class=" sm:w-full  w-full">
                             <thead class=" bg-gray-100 dark:bg-purple-600">
                                 <tr class=" border capitalize ">
@@ -108,9 +108,9 @@
                                     <td class=" px-2 border text-center font-semibold">
                                         @if($item->type_asrama == "Putra")
 
-                                        <a href="pesertaasrama/{{$item->id}}" class=" py-1 px-2 hover:bg-purple-600 bg-blue-600 rounded-md capitalize text-center text-white">{{$item->nama_asrama}}</a>
+                                        <a href="pesertaasrama/{{$item->id}}" class=" py-1 px-2  text-blue-600 rounded-md capitalize text-center ">{{$item->nama_asrama}}</a>
                                         @else
-                                        <a href="pesertaasrama/{{$item->id}}" class=" py-1 px-2 hover:bg-purple-600 bg-pink-600 rounded-md capitalize text-center text-white">{{$item->nama_asrama}}</a>
+                                        <a href="pesertaasrama/{{$item->id}}" class=" py-1 px-2  text-pink-600 rounded-md capitalize text-center ">{{$item->nama_asrama}}</a>
                                         @endif
                                     </td>
 
@@ -126,33 +126,32 @@
                                     </td>
                                     <td class=" px-2 border text-center font-semibold ">
                                         @if($item->kuota == $item->jumlah_nilai_ujian )
-                                        <span class=" bg-yellow-300 px-4 py-1 rounded-md capitalize text-black">Penuh</span>
+                                        <span class=" text-yellow-300 px-4 py-1 rounded-md capitalize ">Penuh</span>
                                         @elseif ($item->kuota <= $item->jumlah_nilai_ujian)
-                                            <span class=" bg-red-600 px-4 py-1 rounded-md capitalize text-white ">
+                                            <span class=" text-red-600 px-4 py-1 rounded-md capitalize  ">
 
                                                 Over
                                             </span>
 
                                             @elseif ($item->kuota >= $item->jumlah_nilai_ujian)
-                                            <span class=" bg-green-800 px-4 py-1 rounded-md capitalize text-white ">
+                                            <span class=" text-green-800 px-4 py-1 rounded-md capitalize  ">
                                                 masih
                                             </span>
                                             @endif
                                     </td>
-
-                                    <td class=" px-2 border text-center ">
+                                    <td class=" px-2 border text-center w-1/4 sm:w-1/4 ">
                                         @if($item->kuota == $item->jumlah_nilai_ujian )
-                                        <span class=" bg-yellow-300 px-4 py-1 rounded-md capitalize text-black">sesui Kuota
+                                        <span class=" text-yellow-300 px-4 py-1 rounded-md capitalize ">sesui Kuota
                                             {{($item->kuota)}} org
                                         </span>
                                         @elseif ($item->kuota <= $item->jumlah_nilai_ujian)
-                                            <span class=" bg-red-600 px-4 py-1 rounded-md capitalize text-white">
-                                                Melebihi Kuota -
+                                            <span class=" text-red-600 px-4 py-1 rounded-md capitalize ">
+                                                Over -
                                                 {{($item->jumlah_nilai_ujian)-($item->kuota)}} org
                                             </span>
 
                                             @elseif ($item->kuota >= $item->jumlah_nilai_ujian)
-                                            <span class=" bg-green-800 px-4 py-1 rounded-md capitalize text-white">
+                                            <span class=" text-green-800 px-4 py-1 rounded-md capitalize ">
                                                 Masih - {{($item->kuota)-($item->jumlah_nilai_ujian)}} org
                                             </span>
                                             @endif
