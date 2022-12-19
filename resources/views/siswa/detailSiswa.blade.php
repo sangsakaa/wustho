@@ -12,7 +12,7 @@
                     <div class=" grid  sm:grid-cols-2 grid-cols-2 ">
                         <div class=" flex w-full">
                             <div class="grid w-36  ">Nama </div>
-                            <div class=" px-4 grid uppercase font-semibold   text-sm ">: {{$siswa->nama_siswa}}</div>
+                            <div class=" px-4 grid uppercase font-semibold   text-xs ">: {{$siswa->nama_siswa}}</div>
                         </div>
                         <div class=" flex w-full">
                             <div class="grid w-36 ">Tanggal Lahir </div>
