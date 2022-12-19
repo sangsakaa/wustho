@@ -155,6 +155,7 @@ class KelasmiController extends Controller
         $DataKelas  = Kelasmi::query()
             ->select('nama_kelas', 'periode_id')
             ->where('kelasmi.periode_id', session('periode_id'))
+            ->orderby('nama_kelas')
             ->get();
         return view(
             'kelas_mi.editpesertakelas',

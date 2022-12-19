@@ -23,6 +23,7 @@
                             <div>
                                 <button class=" bg-blue-600 text-white rounded-md px-2 py-1"> Update Kelas</button>
                             </div>
+                            <a href="/pesertakelas/{{$pesertakelas->kelasmi_id}}" class=" bg-red-600 text-white rounded-md px-2 py-1"> Batal</a>
                         </div>
                     </div>
                 </form>
