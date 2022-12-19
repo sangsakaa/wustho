@@ -71,7 +71,7 @@
                         <Table class=" sm:w-full  w-full">
                             <thead class=" bg-gray-100 dark:bg-purple-600">
                                 <tr class=" border capitalize ">
-                                    <th class=" text-center px-1 border py-1">#</th>
+                                    <th class=" text-center px-1 border py-1">no</th>
                                     @role('super admin')
                                     <th class=" text-center px-1 border ">periode</th>
                                     @endrole
@@ -108,9 +108,9 @@
                                     <td class=" px-2 border text-center font-semibold">
                                         @if($item->type_asrama == "Putra")
 
-                                        <a href="pesertaasrama/{{$item->id}}" class=" py-1 px-2  text-blue-600 rounded-md capitalize text-center ">{{$item->nama_asrama}}</a>
+                                        <a href="pesertaasrama/{{$item->id}}" class=" py-1 px-2  text-blue-600 rounded-md uppercase text-center ">{{$item->nama_asrama}}</a>
                                         @else
-                                        <a href="pesertaasrama/{{$item->id}}" class=" py-1 px-2  text-pink-600 rounded-md capitalize text-center ">{{$item->nama_asrama}}</a>
+                                        <a href="pesertaasrama/{{$item->id}}" class=" py-1 px-2  text-pink-600 rounded-md uppercase text-center ">{{$item->nama_asrama}}</a>
                                         @endif
                                     </td>
 
