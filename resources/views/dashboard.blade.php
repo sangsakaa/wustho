@@ -10,7 +10,7 @@
     <div class=" grid grid-cols-2 px-2 py-2">
         <div>
             <div class="shadow-lg rounded-lg overflow-hidden">
-                <div class="py-2 px-5 bg-gray-50">Line chart</div>
+                <div class="py-2 px-5 bg-purple-600 text-white font-semibold">Line chart Kehadiran</div>
                 <canvas class="p-10" id="chartLine"></canvas>
             </div>
 
@@ -23,8 +23,8 @@
                 const data = {
                     labels: labels,
                     datasets: [{
-                        label: "My First dataset",
-                        backgroundColor: "hsl(252, 82.9%, 67.8%)",
+                        label: "DATASET KEHADIRAN SISWA",
+                        backgroundColor: "hsl(252, 82.9%, 67.8%) ",
                         borderColor: "hsl(252, 82.9%, 67.8%)",
                         data: [0, 10, 5, 2, 20, 1, 45],
                     }, ],
