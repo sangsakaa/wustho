@@ -23,7 +23,7 @@ class DashboardController extends Controller
     {
         $pa = Asrama::where('type_asrama', 'putra')->count();
         $pi = Asrama::where('type_asrama', 'putri')->count();
-        $siswa = Nis::count('madrasah_diniyah', 'Wahidiyah');
+        $siswa = Nis::count('madrasah_diniyah', 'Wustho');
         $pr = Siswa::where('jenis_kelamin', 'p')->count();
         $lk = Siswa::where('jenis_kelamin', 'l')->count();
         $profil = Profile::first();
