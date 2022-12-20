@@ -11,7 +11,7 @@
         <div>
             <div class="shadow-lg rounded-lg overflow-hidden">
                 <div class="py-2 px-5 bg-purple-600 text-white font-semibold">Line chart Kehadiran</div>
-                <canvas class="p-10" id="chartLine"></canvas>
+                <canvas class="p-2" id="chartLine"></canvas>
             </div>
 
             <!-- Required chart.js -->
