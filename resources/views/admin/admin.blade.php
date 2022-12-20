@@ -26,39 +26,17 @@
   <div class=" grid grid-cols-1 sm:grid-cols-1 gap-2 my-2 ">
     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
       <div class=" bg-white border-b border-gray-200">
-        <div class=" px-4 mt-2 grid grid-cols-1">
-          <span>
-            User Role
-          </span>
-          <table class=" mt-2 w-full">
-            <thead>
-              <tr class=" border bg-gray-100 ">
-                <th class=" border py-2">No</th>
-                <th class=" border">Role User</th>
-                <th class=" border"> Permission</th>
-              </tr>
-            </thead>
-            <tbody>
-              @foreach($HasRole as $user)
-              <tr class=" border ">
-                <th class=" border">{{$loop->iteration}}</th>
-                <th class=" border">{{$user->Role}}</th>
-                <th class=" border">{{$user->Permission}}</th>
-              </tr>
-              @endforeach
-            </tbody>
-          </table>
-        </div>
+
         <div class=" py-4 px-4 grid grid-cols-1">
           <span> User Role</span>
           <form action="/admin" method="get" class="  gap-1">
-            <div class=" grid sm:grid-cols-2 grid-cols-1 gap-1 ">
+            <div class=" grid sm:grid-cols-2 grid-cols-1 gap-1 w-1/2 ">
               <input type="text" name="cari" value="{{ request('cari') }}" class=" border text-green-800 rounded-sm py-1  sm:w-full " placeholder=" Cari ...">
-              <button type="submit" class=" px-2 py-1     bg-blue-500  rounded-sm text-white">
+              <button type="submit" class=" px-2 py-1  w-1/4    bg-blue-500  rounded-sm text-white">
                 Cari </button>
             </div>
           </form>
-          <table class=" w-full ">
+          <table class=" w-full mt-2 ">
             <thead>
               <tr class=" border bg-gray-100 ">
                 <th class=" border py-2">No</th>
@@ -72,9 +50,9 @@
               @foreach($users as $user)
               <tr class=" border ">
                 <th class=" px-2 tex-xs sm:text-sm border">{{$loop->iteration}}</th>
-                <td class=" px-2 tex-xs sm:text-sm border">{{$user->name}}</td>
-                <td class=" px-2 tex-xs sm:text-sm border">{{$user->email}}</td>
-                <td class=" px-2 tex-xs sm:text-sm border">{{$user->nama_siswa}}</td>
+                <td class=" px-2 tex-xs sm:text-sm border uppercase">{{strtolower($user->name)}}</td>
+                <td class=" px-2 tex-xs sm:text-sm border text-center">{{$user->email}}</td>
+                <td class=" px-2 tex-xs sm:text-sm border capitalize">{{strtolower($user->nama_siswa)}}</td>
                 <td class=" text-sm flex justify-center py-1  gap-1">
                   <form action="/admin/{{$user->id}}" method="post">
                     @csrf

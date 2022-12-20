@@ -19,11 +19,11 @@
                             <option value="{{$asrama->id}}" {{ $pesertaasrama->asramasiswa_id == $asrama->id ? "selected" : "" }}>{{$loop->iteration}} | {{$asrama->nama_asrama}} </option>
                             @endforeach
                         </select>
-                        <div>
+                        <div class=" flex gap-2">
                             <div>
-                                <button class=" bg-blue-600 text-white rounded-md px-2 py-1"> Update Asrama</button>
+                                <button class=" bg-blue-600 text-white rounded-md px-4 py-1"> Update Asrama</button>
                             </div>
-                            <a href="//pesertaasrama/{{$pesertaasrama->id}}"></a>
+                            <a href="/pesertaasrama/{{$pesertaasrama->asramasiswa_id}}" class=" bg-red-600 text-white rounded-md px-4 py-1"> Batal</a>
                         </div>
                     </div>
                 </form>

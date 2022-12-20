@@ -149,25 +149,38 @@ class KelasmiController extends Controller
             ]
         );
     }
-    public function pesertakelas(Pesertakelas $pesertakelas, Kelasmi $kelasmi)
+    public function editpesertakelas(Pesertakelas $pesertakelas, Kelasmi $kelasmi, Siswa $siswa)
     {
 
+        $siswaKelas = $pesertakelas->join('siswa', 'siswa.id', '=', 'pesertakelas.siswa_id')
+        ->where('siswa.id', $pesertakelas->siswa_id)->first();
         $DataKelas  = Kelasmi::query()
-            ->select('nama_kelas', 'periode_id')
+            ->select('nama_kelas', 'periode_id', 'id')
             ->where('kelasmi.periode_id', session('periode_id'))
             ->orderby('nama_kelas')
             ->get();
         return view(
             'kelas_mi.editpesertakelas',
             [
-
-
                 'DataKelas' => $DataKelas,
                 'pesertakelas' => $pesertakelas,
                 'kelasmi' => $kelasmi,
+                'siswaKelas' => $siswaKelas,
 
             ]
         );
+    }
+    public function storepesertakelas(Request $request, Pesertakelas $pesertakelas)
+    {
+
+        Pesertakelas::where('id', $pesertakelas->id)
+            ->update([
+                'siswa_id' => $request->siswa_id,
+                'kelasmi_id' => $request->kelasmi_id,
+            ]);
+
+
+        return redirect('/pesertakelas/' . $pesertakelas->kelasmi_id);
     }
 
     
