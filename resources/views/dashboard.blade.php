@@ -10,7 +10,7 @@
     <div class=" grid grid-cols-2 px-2 py-2">
         <div>
             <div class="shadow-lg rounded-lg overflow-hidden">
-                <div class="py-2 px-5 bg-purple-600 text-white font-semibold">Line chart Kehadiran</div>
+                <div class="py-2 px-5 bg-purple-600 text-white font-semibold uppercase">Line chart Kehadiran</div>
                 <canvas class="p-2" id="chartLine"></canvas>
             </div>
 
