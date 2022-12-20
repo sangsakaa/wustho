@@ -7,12 +7,6 @@
 
         </div>
     </x-slot>
-    <div class="px-6 py-2 overflow-hidden bg-white shadow-md dark:bg-dark-eval-1">
-        {{ __("You're logged in!")  }} <br> <span class=" flex capitalize">
-            User Log : {{Auth::user()->name}}
-        </span>
-    </div>
-
     <div class=" grid grid-cols-2 px-2 py-2">
         <div>
             <div class="shadow-lg rounded-lg overflow-hidden">
