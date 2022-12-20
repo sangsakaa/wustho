@@ -21,48 +21,12 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        $pa = Asrama::where('type_asrama', 'putra')->count();
-        $pi = Asrama::where('type_asrama', 'putri')->count();
-        $siswa = Nis::count('madrasah_diniyah', 'Wustho');
-        $pr = Siswa::where('jenis_kelamin', 'p')->count();
-        $lk = Siswa::where('jenis_kelamin', 'l')->count();
-        $profil = Profile::first();
-        $dataJumlahPeserta = Asramasiswa::query()
-            ->select(['asramasiswa.id', DB::raw('count(pesertaasrama.id) as jumlah_peserta_asrama')])
-            ->join('pesertaasrama', 'pesertaasrama.asramasiswa_id', '=', 'asramasiswa.id')
-            ->groupBy('asramasiswa.id');
-        $asrama = Asrama::all();
-        $dataasrama = Asramasiswa::query()
-            ->leftjoin('asrama', 'asrama.id', '=', 'asramasiswa.asrama_id')
-            ->leftjoin('pesertaasrama', 'pesertaasrama.asramasiswa_id', '=', 'asramasiswa.id')
-            ->leftjoinSub(
-                $dataJumlahPeserta,
-                'datajumlahpeserta',
-                function ($join) {
-                    $join->on('asramasiswa.id', '=', 'datajumlahpeserta.id');
-                }
-            )
-            ->selectRaw('asramasiswa.id,nama_asrama,type_asrama,kuota,count(pesertaasrama.siswa_id) as jumlah_nilai_ujian, jumlah_peserta_asrama')
-            ->groupBy(
-                'asramasiswa.id',
-                'nama_asrama',
-                'type_asrama',
-                'kuota',
-                'jumlah_peserta_asrama'
-            )
-            ->get();
+        
         // dd($data);
         return view(
             'dashboard',
             [
-                'data' => $dataasrama,
-                'datasrama' => $asrama,
-                'profile' => $profil,
-                'siswa' => $siswa,
-                'pr' => $pr,
-                'lk' => $lk,
-                'pa' => $pa,
-                'pi' => $pi,
+                
             ]
         );
     }

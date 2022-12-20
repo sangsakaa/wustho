@@ -12,18 +12,11 @@
             User Log : {{Auth::user()->name}}
         </span>
     </div>
-    <div class=" grid grid-cols-1 gap-2 sm:grid-cols-6 p-4">
-        <div class="  bg-green-700 p-3 rounded-md text-center text-white">NIS : {{$siswa}}</div>
-        <div class=" bg-blue-700 p-3 rounded-md text-center text-white">USER : {{Auth::user()->count()}}</div>
-        <div class=" bg-blue-700 p-3 rounded-md text-center text-white">LK : {{$lk}}</div>
-        <div class=" bg-pink-600 p-3 rounded-md text-center text-white">PR : {{$pr}}</div>
-        <div class=" bg-blue-700 p-3 rounded-md text-center text-white">PA : {{$pa}}</div>
-        <div class=" bg-pink-600 p-3 rounded-md text-center text-white">PI : {{$pi}}</div>
-    </div>
-    <div class=" grid grid-cols-2 px-4">
+
+    <div class=" grid grid-cols-2 px-2 py-2">
         <div>
             <div class="shadow-lg rounded-lg overflow-hidden">
-                <div class="py-3 px-5 bg-gray-50">Line chart</div>
+                <div class="py-2 px-5 bg-gray-50">Line chart</div>
                 <canvas class="p-10" id="chartLine"></canvas>
             </div>
 
@@ -55,39 +48,6 @@
                 );
             </script>
         </div>
-        <div>
-            <div class="shadow-lg rounded-lg overflow-hidden">
-                <div class="py-3 px-5 bg-gray-50">Line chart</div>
-                <canvas class="p-10" id="chartLinex"></canvas>
-            </div>
-
-            <!-- Required chart.js -->
-            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-            <!-- Chart line -->
-            <script>
-                const labels = ["sJanuary", "February", "March", "April", "May", "June", "July"];
-                const contoh = {
-                    labels: labels,
-                    datasets: [{
-                        label: "My First dataset",
-                        backgroundColor: "hsl(252, 82.9%, 67.8%)",
-                        borderColor: "hsl(252, 82.9%, 67.8%)",
-                        contoh: [0, 10, 5, 2, 20, 1, 45],
-                    }, ],
-                };
-
-                const configLineChart = {
-                    type: "line",
-                    contoh,
-                    options: {},
-                };
-
-                var chartLinex = new Chart(
-                    document.getElementById("chartLinex"),
-                    configLineChart
-                );
-            </script>
-        </div>
+        <div></div>
     </div>
 </x-app-layout>
