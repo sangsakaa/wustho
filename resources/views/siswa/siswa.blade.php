@@ -71,7 +71,11 @@
                                 {{$loop->iteration}}
                             </td>
                             <td class=" text-sm  px-2 border  text-center ">
+                                @if($peserta->NisTerakhir != null)
                                 {{$peserta->NisTerakhir->nis}}
+                                @else
+                                <span class=" text-red-600 font-semibold capitalize"> belum ada nis </span>
+                                @endif
                             </td>
                             <td class=" text-xs sm:text-sm  border px-2 capitalize">
                                 <a href="/siswa/{{$peserta->id}}">
