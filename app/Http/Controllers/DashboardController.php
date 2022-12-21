@@ -6,6 +6,7 @@ use App\Models\Absensikelas;
 use App\Models\Asrama;
 use App\Models\Asramasiswa;
 use App\Models\Pesertaasrama;
+use App\Models\Sesikelas;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
@@ -20,6 +21,16 @@ class DashboardController extends Controller
      */
     public function index()
     {
+        $tglAwal = Sesikelas::query()
+            ->join('absensikelas', 'absensikelas.sesikelas_id', '=', 'sesikelas.id')
+            ->join('kelasmi', 'kelasmi.id', '=', 'sesikelas.kelasmi_id')
+            ->where('kelasmi.periode_id', session('periode_id'))
+            ->selectRaw('DISTINCT(tgl)')
+            ->orderByDesc('tgl')
+            ->take(15)
+            ->get()
+            ->last();
+
         $pesertaasrama = Pesertaasrama::query()
             ->join('siswa', 'siswa.id', '=', 'pesertaasrama.siswa_id')
             ->join('asramasiswa', 'asramasiswa.id', '=', 'pesertaasrama.asramasiswa_id')
@@ -36,13 +47,13 @@ class DashboardController extends Controller
                 $join->on('peserta_asrama.siswa_id', '=', 'siswa.id');
             })
             ->selectRaw(
-                "peserta_asrama.nama_asrama, sesikelas.tgl, COUNT(CASE WHEN keterangan = 'izin' OR keterangan = 'sakit' OR keterangan = 'alfa' THEN 1 END) AS tidak_hadir"
+                "peserta_asrama.nama_asrama, sesikelas.tgl, COUNT(CASE WHEN keterangan = 'izin' OR keterangan = 'sakit' OR keterangan = 'alfa' THEN 1 END) / COUNT(absensikelas.id) * 100 AS tidak_hadir"
             )
             ->groupBy('peserta_asrama.nama_asrama', 'sesikelas.tgl')
             ->orderBy('peserta_asrama.nama_asrama')
             ->orderBy('sesikelas.tgl')
             ->where('kelasmi.periode_id', session('periode_id'))
-            ->whereBetween('sesikelas.tgl', [now()->subDays(15)->toDateString(), now()->toDateString()])
+            ->whereBetween('sesikelas.tgl', [$tglAwal?->tgl ?? now()->toDateString(), now()->toDateString()])
             ->get();
         $dataAbsensi = $dataAbsensi->groupBy(function ($item) {
                 return $item->nama_asrama == null ? "1" : $item->nama_asrama;
