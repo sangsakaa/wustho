@@ -19,14 +19,12 @@
         <script>
             const datasets = <?php echo json_encode($datasetsAbsensi); ?>;
             const data = {
-                backgroundColor: "hsl(252, 82.9%, 67.8%)",
-                borderColor: "hsl(252, 82.9%, 67.8%)",
                 datasets,
 
             };
 
             const configLineChart = {
-                type: "bar",
+                type: "line",
                 data,
                 options: {
                     parsing: {
