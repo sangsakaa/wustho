@@ -87,7 +87,11 @@
                                 {{$peserta->jenis_kelamin}}
                             </td>
                             <td class=" text-sm  border text-center ">
+                                @if($peserta->asramaTerkhir != null )
                                 {{$peserta->asramaTerkhir?->asramaSiswa->asrama->nama_asrama}}
+                                @else
+                                <span class=" text-red-600 font-semibold capitalize"> belum memiliki asrama </span>
+                                @endif
                             </td>
                             <td class=" text-sm  border text-center ">
                                 {{$peserta->kelasTerakhir?->kelasMi->nama_kelas}}

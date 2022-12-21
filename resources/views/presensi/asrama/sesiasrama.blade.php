@@ -64,20 +64,14 @@
           </form>
           <table class=" w-full mt-2   ">
             <thead class=" capitalize text-xs ">
-              <tr class=" capitalize bg-gray-100   "></tr>
               <th class=" py-2 px-2 border">No</th>
               <th class=" px-2 border"> presensi </th>
               <th class=" px-2 border"> tanggal </th>
-              @role('super admin')
               <th class=" px-2 border"> periode </th>
-              @endrole
               <th class=" px-2 border"> Rincian <br> Kegiatan </th>
-
               <th class=" px-2 border">Status <br> Kehadiran </th>
-              <th class=" px-2 w-10 text-center ">Status <br> Presensi </th>
-              @role('super admin')
+              <th class=" px-2 w-10 text-center border ">Status <br> Presensi </th>
               <th class=" px-2 border">Aksi </th>
-              @endrole
               </tr>
             </thead>
             <tbody>
@@ -94,9 +88,9 @@
                 <td class=" border px-2 text-center">
                   {{ \Carbon\Carbon::parse($item->tanggal)->isoFormat(' DD MMMM Y') }}
                 </td>
-                @role('super admin')
+
                 <td class=" border px-2 text-center">{{$item->periode}} {{$item->ket_semester}}</td>
-                @endrole
+
                 <td class=" border px-2 text-center">{{$item->kegiatan}}</td>
 
                 <td class=" border px-2 text-center capitalize">
@@ -114,7 +108,7 @@
                   </span>
                   @endif
                 </td>
-                @role('super admin')
+
                 <td class=" border px-2 text-center">
                   <form action="/sesiasrama/{{$item->id}}" method="post">
                     @csrf
@@ -124,12 +118,12 @@
                     </button>
                   </form>
                 </td>
-                @endrole
+
               </tr>
               @endforeach
               @else
               <tr>
-                <td colspan="6" class=" border text-red-600 font-semibold capitalize text-center">Sesi belum di buat</td>
+                <td colspan="8" class=" border text-red-600 font-semibold capitalize text-center">Sesi belum di buat</td>
               </tr>
               @endif
 
