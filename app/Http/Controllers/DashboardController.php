@@ -40,10 +40,10 @@ class DashboardController extends Controller
             )
             ->groupBy('peserta_asrama.nama_asrama', 'sesikelas.tgl')
             ->orderBy('peserta_asrama.nama_asrama')
+            ->orderBy('sesikelas.tgl')
             ->where('kelasmi.periode_id', session('periode_id'))
-            ->whereBetween('sesikelas.tgl', [now()->subDays(150)->toDateString(), now()->toDateString()])
+            ->whereBetween('sesikelas.tgl', [now()->subDays(15)->toDateString(), now()->toDateString()])
             ->get();
-        $label = $dataAbsensi->unique('tgl')->pluck('tgl');
         $dataAbsensi = $dataAbsensi->groupBy(function ($item) {
                 return $item->nama_asrama == null ? "1" : $item->nama_asrama;
             });
@@ -54,8 +54,6 @@ class DashboardController extends Controller
                 'borderColor' => fake()->rgbCssColor(),
             ];
         })->values();
-        $data = Asramasiswa::query()
-            ->join('asrama', 'asrama.id', '=', 'asramasiswa.asrama_id')->get();
-        return view('dashboard', compact('datasetsAbsensi', 'label'));
+        return view('dashboard', compact('datasetsAbsensi'));
     }
 }
