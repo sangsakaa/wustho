@@ -59,6 +59,7 @@
                             <th class=" px-1 border text-center">JK</th>
                             <th class=" px-1 border text-center">Asrama</th>
                             <th class=" px-1 border text-center">Madin</th>
+                            <th class=" px-1 border text-center">Jenjang</th>
                             <th class=" px-1 border text-center">Angkatan</th>
                             <th class=" px-1 border text-center">Aksi</th>
                         </tr>
@@ -90,6 +91,13 @@
                             </td>
                             <td class=" text-sm  border text-center ">
                                 {{$peserta->kelasTerakhir?->kelasMi->nama_kelas}}
+                            </td>
+                            <td class=" text-sm  px-2 border  text-center ">
+                                @if($peserta->NisTerakhir != null)
+                                {{$peserta->NisTerakhir->madrasah_diniyah}}
+                                @else
+                                <span class=" text-red-600 font-semibold capitalize"> belum ada nis </span>
+                                @endif
                             </td>
                             <td class=" text-sm  border text-center ">
                                 <?php
