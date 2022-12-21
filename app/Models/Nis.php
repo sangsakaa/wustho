@@ -9,4 +9,9 @@ class Nis extends Model
 {
     use HasFactory;
     protected $table = "nis";
+
+    public function siswa()
+    {
+        return $this->belongsTo(Siswa::class, 'siswa_id', 'id');
+    }
 }

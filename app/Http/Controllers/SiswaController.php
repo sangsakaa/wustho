@@ -25,26 +25,10 @@ class SiswaController extends Controller
         // if (!Gate::allows('create post')) {
         //     abort(403, 'unauthorized');
         // }
-        $data = Siswa::query()
-            ->leftjoin('nis', 'nis.siswa_id', '=', 'siswa.id')
-            ->select(
-                [
-                    'nis.nis',
-                    'nis.tanggal_masuk',
-                    'siswa.id',
-                    'siswa.nama_siswa',
-                    'siswa.jenis_kelamin',
-                    
-                ]
-            )->orderBy(
-                'nis',
-            'asc'
-        )->orderBy('tanggal_masuk', 'desc');
+        $data = Siswa::latest();
         // ->latest()->orderBy('nama_siswa');
         if (request('cari')) {
-            $data->where('nama_siswa', 'like', '%' . request('cari') . '%')
-            ->orWhere('nis', 'like', '%' . request('cari') . '%')
-            ->orWhere('tanggal_masuk', 'like', '%' . request('cari') . '%');
+            $data->where('nama_siswa', 'like', '%' . request('cari') . '%');
         }
 
         return view('siswa/siswa', ['dataSiswa' => $data->paginate(10)]);

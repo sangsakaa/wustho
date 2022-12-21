@@ -66,12 +66,12 @@
                     <tbody>
                         @if($dataSiswa->count() != null)
                         @foreach ( $dataSiswa as $peserta)
-                        <tr class=" text-xs  border hover:bg-blue-100  sm:text-xs  even:bg-gray-100 ">
+                        <tr class=" text-xs  border hover:bg-blue-100  sm:text-sm  even:bg-gray-100 ">
                             <td class=" text-sm  border  text-center py-1 ">
                                 {{$loop->iteration}}
                             </td>
                             <td class=" text-sm  px-2 border  text-center ">
-                                {{$peserta->nis}}
+                                {{$peserta->NisTerakhir->nis}}
                             </td>
                             <td class=" text-xs sm:text-sm  border px-2 capitalize">
                                 <a href="/siswa/{{$peserta->id}}">
