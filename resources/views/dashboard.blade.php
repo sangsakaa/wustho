@@ -23,7 +23,7 @@
             };
 
             const configLineChart = {
-                type: "bar",
+                type: "line",
                 data,
                 options: {
                     parsing: {
