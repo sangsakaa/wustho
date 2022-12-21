@@ -63,7 +63,7 @@
             </button>
           </form>
           <table class=" w-full mt-2   ">
-            <thead class=" ">
+            <thead class=" capitalize text-xs ">
               <tr class=" capitalize bg-gray-100   "></tr>
               <th class=" py-2 px-2 border">No</th>
               <th class=" px-2 border"> presensi </th>
