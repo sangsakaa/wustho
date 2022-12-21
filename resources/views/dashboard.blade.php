@@ -17,21 +17,20 @@
 
         <!-- Chart line -->
         <script>
-            const labels = ["January", "February", "March", "April", "May", "June", "July"];
+            const datasets = <?php echo json_encode($datasetsAbsensi); ?>;
             const data = {
-                labels: labels,
-                datasets: [{
-                    label: "My First dataset",
-                    backgroundColor: "hsl(252, 82.9%, 67.8%)",
-                    borderColor: "hsl(252, 82.9%, 67.8%)",
-                    data: [0, 10, 5, 2, 20, 30, 45],
-                }, ],
+                datasets,
             };
 
             const configLineChart = {
                 type: "line",
                 data,
-                options: {},
+                options: {
+                    parsing: {
+                        xAxisKey: 'tgl',
+                        yAxisKey: 'tidak_hadir'
+                    }
+                },
             };
 
             var chartLine = new Chart(
