@@ -112,7 +112,7 @@
 
                                 @if($peserta->NisTerakhir != null)
 
-                                {{ \Carbon\Carbon::parse($peserta->NisTerakhir->tanggal_masuk)->isoFormat('  Y') }}
+                                {{ \Carbon\Carbon::parse($peserta->NisTerakhir->tanggal_masuk)->isoFormat('Y') }}
                                 @else
                                 <span class=" text-red-600 font-semibold capitalize"> belum ada nis </span>
                                 @endif
