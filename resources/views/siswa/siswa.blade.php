@@ -109,10 +109,13 @@
                                 @endif
                             </td>
                             <td class=" text-sm  border text-center ">
-                                <?php
-                                $date = date_create($peserta->tanggal_masuk);
-                                echo date_format($date, "Y");
-                                ?>
+
+                                @if($peserta->NisTerakhir != null)
+
+                                {{ \Carbon\Carbon::parse($peserta->NisTerakhir->tanggal_masuk)->isoFormat('  Y') }}
+                                @else
+                                <span class=" text-red-600 font-semibold capitalize"> belum ada nis </span>
+                                @endif
                             </td>
 
                             <td class=" text-sm flex justify-center py-1  gap-1">

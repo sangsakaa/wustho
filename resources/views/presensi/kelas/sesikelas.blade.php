@@ -57,7 +57,8 @@
                         @foreach ($sesikelas as $sesi)
                         <tr class=" border hover:bg-gray-100  dark:hover:bg-purple-600 text-xs sm:text-sm ">
                             <th class=" border px-1">{{ $loop->iteration }}</th>
-                            <th class=" border text-center px-1">{{ date_format(date_create($sesi->tgl),'d-m-Y') }}
+                            <th class=" border text-center px-1">
+                                {{ \Carbon\Carbon::parse($sesi->tgl)->isoFormat(' DD MMMM Y') }}
                             </th>
                             <th class=" border text-center px-1 w-11">
                                 <a href="/absensikelas/{{ $sesi->id }}" class=" bg-blue-600 rounded-md px-1 py-1 text-white dark:text-purple-600  dark:bg-dark-bg text-xs">
@@ -83,7 +84,7 @@
                                 <form action="/sesikelas/{{ $sesi->id }}" method="post">
                                     @csrf
                                     @method('delete')
-                                    <button class=" bg-red-500 text-white p-1 rounded-md" onclick=" return confirm ('apakah anda yakin menghapus sesi ini : {{ $sesi->nama_kelas }} tgl {{$sesi->tgl}}')"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <button class=" bg-red-500 text-white p-1 rounded-md" onclick=" return confirm ('apakah hapus yakin  sesi ini : {{ $sesi->nama_kelas }} Tanggal : {{ \Carbon\Carbon::parse($sesi->tgl)->isoFormat(' DD MMMM Y') }} ')"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                             <path stroke-linecap="round" stroke-linejoin="round" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
                                         </svg></button>
                                 </form>
