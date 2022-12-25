@@ -6,11 +6,8 @@ use App\Models\Absensikelas;
 use App\Models\Asrama;
 use App\Models\Asramasiswa;
 use App\Models\Pesertaasrama;
-<<<<<<< HEAD
 use App\Models\Sesikelas;
-=======
 use App\Models\Siswa;
->>>>>>> 5b04ca5 (ok)
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
@@ -25,7 +22,7 @@ class DashboardController extends Controller
      */
     public function index()
     {
-<<<<<<< HEAD
+
         $tglAwal = Sesikelas::query()
             ->join('absensikelas', 'absensikelas.sesikelas_id', '=', 'sesikelas.id')
             ->join('kelasmi', 'kelasmi.id', '=', 'sesikelas.kelasmi_id')
@@ -35,13 +32,6 @@ class DashboardController extends Controller
             ->take(15)
             ->get()
             ->last();
-=======
-        
-        
-        
-
->>>>>>> 5b04ca5 (ok)
-
         $pesertaasrama = Pesertaasrama::query()
             ->join('siswa', 'siswa.id', '=', 'pesertaasrama.siswa_id')
             ->join('asramasiswa', 'asramasiswa.id', '=', 'pesertaasrama.asramasiswa_id')
