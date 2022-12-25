@@ -16,6 +16,7 @@
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
         <!-- Chart line -->
+
         <script>
             const datasets = <?php echo json_encode($datasetsAbsensi); ?>;
 
@@ -42,7 +43,4 @@
         </script>
 
     </div>
-
-
-
 </x-app-layout>
