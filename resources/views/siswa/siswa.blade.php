@@ -88,15 +88,14 @@
                             </td>
                             <td class=" text-sm  border text-center ">
                                 @if($peserta->asramaTerkhir != null )
-                                {{$peserta->asramaTerkhir?->asramaSiswa->asrama->nama_asrama}}
+                                {{$peserta->asramaTerkhir->asramaSiswa->asrama->nama_asrama}}
                                 @else
                                 <span class=" text-red-600 font-semibold capitalize"> belum ada asrama </span>
                                 @endif
                             </td>
                             <td class=" text-sm  border text-center ">
-
-                                @if($peserta->kelasTerakhir != null)
-                                {{$peserta->kelasTerakhir?->kelasMi->nama_kelas}}
+                                @if($peserta->kelasTerakhir)
+                                {{$peserta->kelasTerakhir->KelasMi->nama_kelas}}
                                 @else
                                 <span class=" text-red-600 font-semibold capitalize"> belum ada kelas </span>
                                 @endif

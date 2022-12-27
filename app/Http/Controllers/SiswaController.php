@@ -26,7 +26,7 @@ class SiswaController extends Controller
         //     abort(403, 'unauthorized');
         // }
         $data = Siswa::latest();
-        // ->latest()->orderBy('nama_siswa');
+        
         if (request('cari')) {
             $data->where('nama_siswa', 'like', '%' . request('cari') . '%');
         }

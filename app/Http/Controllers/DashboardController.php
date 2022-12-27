@@ -66,6 +66,10 @@ class DashboardController extends Controller
                 'borderColor' => fake()->rgbCssColor(),
             ];
         })->values();
-        return view('dashboard', compact('datasetsAbsensi'));
+        $dataSiswa = DB::table('siswa')
+        ->select(DB::raw('count(*) as jumlah'), 'jenis_kelamin')
+        ->groupBy('jenis_kelamin')
+        ->get();
+        return view('dashboard', compact('datasetsAbsensi', 'dataSiswa'));
     }
 }
