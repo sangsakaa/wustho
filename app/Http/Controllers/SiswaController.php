@@ -29,6 +29,7 @@ class SiswaController extends Controller
         
         if (request('cari')) {
             $data->where('nama_siswa', 'like', '%' . request('cari') . '%');
+           
         }
 
         return view('siswa/siswa', ['dataSiswa' => $data->paginate(10)]);

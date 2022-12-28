@@ -59,7 +59,7 @@
                             <tr class="border bg-gray-100 dark:bg-purple-600">
                                 <th class=" border px-1  py-1">No</th>
                                 <th class=" border px-1">Pelajaran</th>
-
+                                <th class=" border px-1">Kitab</th>
                                 <th class=" border px-1">Nama Guru</th>
                                 <th class=" border px-1">NH</th>
                                 <th class=" border px-1">NU</th>
@@ -71,6 +71,7 @@
                             <tr class="border  even:bg-gray-50">
                                 <td class=" border text-center px-1">{{ $loop->iteration }}</td>
                                 <td class=" border text-center px-1 py-2">{{ $nilai->mapel }}</td>
+                                <td class=" border text-center px-1 py-2">{{ $nilai->nama_kitab }}</td>
                                 <td class=" border text-left px-1">{{ $nilai->nama_guru }}</td>
                                 <td class=" border text-center px-1">
                                     @if($nilai->nilai_harian == 0 )

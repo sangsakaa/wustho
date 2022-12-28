@@ -113,7 +113,7 @@
                   <form action="/sesiasrama/{{$item->id}}" method="post">
                     @csrf
                     @method('delete')
-                    <button class="py-1 px-2 bg-red-600 text-white rounded-md capitalize">
+                    <button class=" px-1 py-1 bg-red-600 text-white rounded-sm capitalize">
                       <x-icons.hapus></x-icons.hapus>
                     </button>
                   </form>
