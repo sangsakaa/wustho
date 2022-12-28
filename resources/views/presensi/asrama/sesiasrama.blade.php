@@ -109,7 +109,7 @@
                   @endif
                 </td>
 
-                <td class=" border px-2 text-center">
+                <td class=" border px-1 text-center">
                   <form action="/sesiasrama/{{$item->id}}" method="post">
                     @csrf
                     @method('delete')
