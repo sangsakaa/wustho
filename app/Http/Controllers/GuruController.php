@@ -17,7 +17,7 @@ class GuruController extends Controller
      */
     public function index()
     {
-        $data = Guru::latest();
+        $data = Guru::orderBy('nama_guru');
         if (request('cari')) {
             $data->where('nama_guru', 'like', '%' . request('cari') . '%')->orderby('nama_guru');
             // ->orWhere('Kota_asal', 'like', '%' . request('cari') . '%')
