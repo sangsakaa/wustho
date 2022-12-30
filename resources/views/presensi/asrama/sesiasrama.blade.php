@@ -77,7 +77,7 @@
             <tbody>
               @if($Datasesiasrama->count() != null)
               @foreach ($Datasesiasrama as $item)
-              <tr class=" border  hover:bg-sky-200 text-xs even:bg-gray-100">
+              <tr class=" border  hover:bg-sky-200  hover:font-semibold text-xs even:bg-gray-100">
                 <th class=" w-5">{{$loop->iteration}}</th>
                 <td class=" border px-2 text-center py-1"><a href="/sesiasrama/{{$item->id}}">
                     @if($item->type_asrama == "Putri" )

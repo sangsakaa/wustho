@@ -69,7 +69,8 @@ class DashboardController extends Controller
         $dataSiswa = DB::table('siswa')
         ->select(DB::raw('count(*) as jumlah'), 'jenis_kelamin')
         ->groupBy('jenis_kelamin')
-        ->get();
+        ->get()
+        ->toArray();
         return view('dashboard', compact('datasetsAbsensi', 'dataSiswa'));
     }
 }

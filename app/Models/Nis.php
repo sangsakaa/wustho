@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Siswa;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Nis extends Model
 {
@@ -13,5 +14,6 @@ class Nis extends Model
     public function siswa()
     {
         return $this->belongsTo(Siswa::class, 'siswa_id', 'id');
+       
     }
 }

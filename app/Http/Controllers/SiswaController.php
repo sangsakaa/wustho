@@ -11,20 +11,15 @@ use App\Models\Pesertakelas;
 use Illuminate\Http\Request;
 use App\Models\Statuspengamal;
 use Illuminate\Routing\Controller;
-
+use DataTables;
 
 class SiswaController extends Controller
 {
     
-    // public function __construct()
-    // {
-    //     $this->middleware('can: create post');
-    // }
+    
     public function index()
     {
-        // if (!Gate::allows('create post')) {
-        //     abort(403, 'unauthorized');
-        // }
+        
         $data = Siswa::latest();
         
         if (request('cari')) {

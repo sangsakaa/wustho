@@ -12,10 +12,6 @@
             <div class="py-3 px-5 bg-purple-600 text-white font-semibold uppercase">Line chart ketidak hadiran</div>
             <canvas class=" uppercase " id="chartLine"></canvas>
         </div>
-        <!-- Required chart.js -->
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-        <!-- Chart line -->
 
         <script>
             const datasets = <?php echo json_encode($datasetsAbsensi); ?>;
@@ -41,6 +37,11 @@
                 configLineChart
             );
         </script>
+    </div>
+    <div class="">
+
+
+
 
     </div>
 </x-app-layout>

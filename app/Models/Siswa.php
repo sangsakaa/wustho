@@ -3,7 +3,9 @@
 namespace App\Models;
 
 
+use App\Models\Nis;
 use App\Models\Pesertakelas;
+use App\Models\Pesertaasrama;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -20,6 +22,7 @@ class Siswa extends Model
     }
     public function NisTerakhir()
     {
+        
         return $this->hasOne(Nis::class)->latestOfMany();
     }
     public function asramaTerkhir()

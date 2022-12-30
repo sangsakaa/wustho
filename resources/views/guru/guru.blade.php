@@ -5,6 +5,7 @@
             {{ __('Dashboard Daftar Guru') }}
         </h2>
     </x-slot>
+
     <div class="bg-white dark:bg-dark-bg overflow-hidden shadow-sm">
         <div class="p-2">
             @if (session('delete'))
