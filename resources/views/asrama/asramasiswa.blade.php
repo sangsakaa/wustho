@@ -12,31 +12,33 @@
     </x-slot>
     <div class="  overflow-auto ">
         <div class=" mx-auto ">
-            <div class="bg-white  dark:bg-dark-bg overflow-hidden shadow-sm sm:rounded-md">
+            <div class="bg-white  dark:bg-dark-bg overflow-hidden shadow-sm ">
                 <div class="p-2 ">
                     <div class=" sm:flex  grid sm:w-full w-full text-center sm:text-center grid-cols-3 text-xs sm:grid-cols-3 gap-1">
                         @can('show post')
-                        <a href="/addasrama">
-                            <button class=" flex  w-full  bg-blue-500 text-white p-2 rounded-md">
-                                Tambah Asrama
-                            </button>
-                        </a>
-                        <a href="/addasramasiswa">
-                            <button class=" flex w-full  bg-blue-500 text-white p-2  rounded-md">
-                                Asrama Siswa
-                            </button>
-                        </a>
-                        @endcan
-                        <a href="/sesiasrama">
-                            <button class=" flex w-full    bg-blue-500 text-white p-2 rounded-md">
-                                Presensi Asrama
-                            </button>
-                        </a>
-                        <a href="/asrama">
-                            <button class=" flex w-full    bg-blue-500 text-white p-2 rounded-md">
-                                Asrama
-                            </button>
-                        </a>
+                        <div class="flex grid-cols-1 sm:grid-cols-1 gap-2 space-x-1 justify-center">
+
+                            <a href="/addasrama" type="button" class=" px-2 pt-1 pb-0 bg-blue-600 text-white font-medium text-xs leading-normal uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out flex align-center">
+                                <x-icons.add></x-icons.add>
+                                <span class="  px-1 pt-1 sm:px-1">
+                                    ASRAMA
+                                </span>
+                            </a>
+                            <a href="/asramasiswa" type="button" class=" pt-1 px-2 bg-blue-600 text-white font-medium text-xs leading-normal uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out flex align-center">
+                                <x-icons.add></x-icons.add>
+                                <span class="  px-1 pt-1 sm:px-1">
+                                    sesiasrama
+                                </span>
+                            </a>
+                            @endcan
+                            <a href="/sesiasrama" type="button" class=" pt-1 px-2 bg-blue-600 text-white font-medium text-xs leading-normal uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out flex align-center">
+                                <x-icons.home></x-icons.home>
+                                <span class="  px-1 pt-1 sm:px-1">
+                                    sesiasrama
+                                </span>
+                            </a>
+
+                        </div>
                     </div>
                 </div>
             </div>
@@ -44,7 +46,7 @@
     </div>
     <div class=" my-2 text-sm">
         <div class=" mx-auto ">
-            <div class="bg-white dark:bg-dark-bg overflow-hidden shadow-sm sm:rounded-lg">
+            <div class="bg-white dark:bg-dark-bg overflow-hidden shadow-sm ">
                 <div class="p-2 ">
                     @if (session('delete'))
                     <div class=" py-2">
@@ -70,7 +72,7 @@
                     <div class=" overflow-auto p-1 md:overflow-auto">
                         <Table class=" sm:w-full  w-full">
                             <thead class=" bg-gray-100 dark:bg-purple-600">
-                                <tr class=" border capitalize ">
+                                <tr class=" border  uppercase text-xs ">
                                     <th class=" text-center px-1 border py-1">no</th>
                                     @role('super admin')
                                     <th class=" text-center px-1 border ">periode</th>
@@ -93,7 +95,7 @@
                             <tbody>
                                 @if($data->count())
                                 @foreach ($data as $item)
-                                <tr class=" border hover:bg-purple-100 dark:hover:bg-purple-600 ">
+                                <tr class=" border hover:bg-purple- uppercase text-xs dark:hover:bg-purple-600 ">
                                     <td class=" px-2 border text-center">
                                         {{$loop->iteration}}
                                     </td>
@@ -126,7 +128,7 @@
                                     </td>
                                     <td class=" px-2 border text-center font-semibold ">
                                         @if($item->kuota == $item->jumlah_nilai_ujian )
-                                        <span class=" text-yellow-300 px-4 py-1 rounded-md capitalize ">Penuh</span>
+                                        <span class=" text-red-700 px-4 py-1 rounded-md capitalize ">Penuh</span>
                                         @elseif ($item->kuota <= $item->jumlah_nilai_ujian)
                                             <span class=" text-red-600 px-4 py-1 rounded-md capitalize  ">
 
@@ -141,7 +143,7 @@
                                     </td>
                                     <td class=" px-2 border text-center w-1/4 sm:w-1/4 ">
                                         @if($item->kuota == $item->jumlah_nilai_ujian )
-                                        <span class=" text-yellow-300 px-4 py-1 rounded-md capitalize ">sesui Kuota
+                                        <span class=" text-red-700 px-4 py-1 rounded-md capitalize ">sesui Kuota
                                             {{($item->kuota)}} org
                                         </span>
                                         @elseif ($item->kuota <= $item->jumlah_nilai_ujian)
@@ -201,7 +203,7 @@
     </div>
     <div class="my-2 overflow-auto ">
         <div class=" mx-auto ">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-md">
+            <div class="bg-white overflow-hidden shadow-sm ">
                 <div class="p-2 bg-blue-200 border-b border-gray-200">
                     <div class="flex justify-items-end grid-cols-1 gap-2  py-1">
                         <div class=" grid grid-cols-1">

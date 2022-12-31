@@ -44,24 +44,27 @@
   <div class="px-4 mt-4 ">
     <div class=" bg-white overflow-hidden shadow-sm sm:rounded-lg">
       <div class=" p-4 ">
-        <div class=" flex gap-2">
-          @role('super admin')
-          <a href="/asrama"><button class=" flex bg-blue-500 rounded-md py-1 px-2 text-white">Back </button></a>
-          <a href="/kegiatan"><button class=" flex bg-blue-500 rounded-md py-1 px-2 text-white">
-              <span>
-                <x-icons.usercircle></x-icons.usercircle>
-              </span>
-              Kegiatan</button></a>
-          @endrole
-
-        </div>
-        <div class=" overflow-auto w-full rounded-md">
-          <form action="/sesiasrama" method="get" class=" py-1">
-            <input type="date" name="tanggal" class=" py-1 dark:bg-dark-bg" value="{{ $tanggal->toDateString() }}">
-            <button class=" bg-blue-600 py-1 text-white px-2">
-              Cari By Tanggal
-            </button>
-          </form>
+        <div class=" overflow-auto w-full ">
+          <div class=" grid grid-cols-2">
+            <div>
+              <form action="/sesiasrama" method="get" class=" py-1">
+                <input type="date" name="tanggal" class=" py-1 dark:bg-dark-bg" value="{{ $tanggal->toDateString() }}">
+                <button class=" bg-blue-600 py-1 text-white px-2">
+                  Cari By Tanggal
+                </button>
+              </form>
+            </div>
+            <div class=" flex gap-2 justify-end">
+              @role('super admin')
+              <a href="/asrama"><button class=" flex bg-blue-500 hover:bg-purple-600  py-1 px-2 text-white">Back </button></a>
+              <a href="/kegiatan"><button class=" flex bg-blue-500 hover:bg-purple-600  py-1 px-2 text-white">
+                  <span>
+                    <x-icons.usercircle></x-icons.usercircle>
+                  </span>
+                  Kegiatan</button></a>
+              @endrole
+            </div>
+          </div>
           <table class=" w-full mt-2   ">
             <thead class=" capitalize text-xs ">
               <th class=" py-2 px-2 border">No</th>
@@ -126,13 +129,11 @@
                 <td colspan="8" class=" border text-red-600 font-semibold capitalize text-center">Sesi belum di buat</td>
               </tr>
               @endif
-
             </tbody>
           </table>
         </div>
       </div>
     </div>
-
   </div>
   <div class="px-4 mt-1">
     <div class=" mx-auto mt-1 ">

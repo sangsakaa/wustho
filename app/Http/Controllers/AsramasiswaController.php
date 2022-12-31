@@ -78,7 +78,8 @@ class AsramasiswaController extends Controller
             ->select('periode.id', 'ket_semester', 'periode.periode')
             ->get();
         $dataasrama = Asrama::query()
-
+            ->orderby('type_asrama')
+            ->orderby('nama_asrama')
             ->get();
         return view(
             'asrama/addasramasiswa',

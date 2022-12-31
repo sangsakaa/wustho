@@ -11,17 +11,17 @@
                 <div class="p-2">
                     <div class=" capitalize flex w-full gap-1">
                         <a href="/addkelas_mi">
-                            <button class=" flex capitalize bg-blue-500 text-white p-1 px-4 rounded-md">
+                            <button class=" flex  uppercase text-xs bg-blue-500 text-white p-1 px-4 hover:bg-purple-600 ">
                                 kelas mi
                             </button>
                         </a>
                         <a href="/addasramasiswa">
-                            <button class=" flex capitalize bg-blue-500 text-white p-1 px-4 rounded-md">
+                            <button class=" flex  uppercase text-xs bg-blue-500 text-white p-1 px-4 hover:bg-purple-600 ">
                                 asrama siswa
                             </button>
                         </a>
                         <a href="/sesiasrama">
-                            <button class=" flex capitalize bg-blue-500 text-white p-1 px-4 rounded-md">
+                            <button class=" flex  uppercase text-xs bg-blue-500 text-white p-1 px-4 hover:bg-purple-600 ">
                                 Presensi Asrama
                             </button>
                         </a>
@@ -60,15 +60,15 @@
                             <div class=" overflow-auto">
                                 <Table class=" w-full  border-collapse border border-slate-500 mt-2 ">
                                     <thead>
-                                        <tr class=" text-xs border dark:bg-purple-600  bg-gray-100 ">
-                                            <th class=" text-xs py-1">No</th>
-                                            <th>Periode</th>
-                                            <th>Kelas</th>
-                                            <th>Nama Kelas</th>
-                                            <th class=" text-xs text-center">Qty</th>
-                                            <th class=" text-xs text-center">Jml</th>
-                                            <th class=" text-xs text-center">Status</th>
-                                            <th class=" text-xs text-center">Aksi</th>
+                                        <tr class=" border dark:bg-purple-600 uppercase text-xs sm:text-xs bg-gray-50 ">
+                                            <th class=" border text-xs py-1">No</th>
+                                            <th class=" border ">Periode</th>
+                                            <th class=" border w-10 px-1">Kelas</th>
+                                            <th class=" border ">Nama Kelas</th>
+                                            <th class=" border w-10 text-xs text-center px-1">Kuota</th>
+                                            <th class=" border  w-10 text-xs text-center">Jml</th>
+                                            <th class=" border text-xs text-center">Status</th>
+                                            <th class=" border text-xs text-center">Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody class="">
@@ -78,7 +78,7 @@
                                             <th class=" text-xs text-center border">{{$loop->iteration}}</th>
                                             <td class=" text-xs text-center border"> {{$item->periode}} {{$item->ket_semester}}</td>
                                             <td class=" text-xs text-center border"><a href="/pesertakelas/{{$item->id}}"> {{$item->kelas}}</a></td>
-                                            <td class=" text-xs text-center py-2"><a href="/pesertakelas/{{$item->id}}" class=" text-xs bg-blue-600 text-white py-1 px-2 rounded-md hover:bg-purple-600 sm:xs">Kelas {{$item->nama_kelas}}</a></td>
+                                            <td class=" text-xs text-center py-2"><a href="/pesertakelas/{{$item->id}}" class=" text-xs  uppercase font-semibold py-1 px-2 rounded-md sm:xs">{{$item->nama_kelas}}</a></td>
                                             <td class=" text-xs text-center border"> {{$item->kuota}}</td>
                                             <td class=" text-xs text-center border"> {{$item->jumlah_nilai_ujian}}</td>
                                             <td class=" text-xs px-1 border text-center w-40">

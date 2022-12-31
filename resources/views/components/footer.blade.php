@@ -6,8 +6,8 @@
             <x-heroicon-s-heart class="w-6 h-6 text-red-500" />
         </span>
         <span>by</span>
-        <a href="https://wustho.smedi.my.id/" target="_blank" class="text-blue-600 hover:underline">
-            MADIN WUSTHO WAHIDIYAH &copy 2022 | <span class=" uppercase">User Login : {{Auth::user()->name}}</span>
+        <a href="https://wustho.smedi.my.id/" target="_blank" class="text-blue-600 hover:underline sm:text-xs text-xs">
+            MADIN WUSTHO WAHIDIYAH &copy 2022 | <span class=" uppercase text-xs">User Login : {{Auth::user()->name}}</span>
         </a>
     </p>
     @endrole
@@ -18,7 +18,7 @@
             <x-heroicon-s-heart class="w-6 h-6 text-red-500" />
         </span>
         <span>by</span>
-        <a href="https://wustho.smedi.my.id/" target="_blank" class="text-blue-600 hover:underline">
+        <a href="https://wustho.smedi.my.id/" target="_blank" class="text-blue-600 hover:underline sm:text-xs text-xs">
             PONDOK PESANTREN KEDUNGLO WAHIDIYAH &copy 2022 | <span class=" uppercase">User Login : {{Auth::user()->name}}</span>
         </a>
     </p>
@@ -30,7 +30,7 @@
             <x-heroicon-s-heart class="w-6 h-6 text-red-500" />
         </span>
         <span>by</span>
-        <a href="https://wustho.smedi.my.id/" target="_blank" class="text-blue-600 hover:underline">
+        <a href="https://wustho.smedi.my.id/" target="_blank" class="text-blue-600 hover:underline sm:text-xs text-xs">
             MADIN WUSTHO WAHIDIYAH &copy 2022 | <span class=" uppercase">User Login : {{Auth::user()->name}}</span>
         </a>
     </p>
