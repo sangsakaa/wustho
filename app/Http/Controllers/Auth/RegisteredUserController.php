@@ -51,7 +51,7 @@ class RegisteredUserController extends Controller
         return view(
             'admin/admin',
             [
-                'users' => $users->paginate(30),
+                'users' => $users->paginate(10),
                 'hasRole' => $hasRole,
                 'HasRole' => $RoleHas,
                 'permissions' => $permissions,
