@@ -21,8 +21,8 @@
                                 datasets: [{
                                     label: 'Berdasarkan Jenis Kelamin',
                                     data: [
-                                        <?php echo json_encode($countPerempuan); ?>,
-                                        <?php echo json_encode($countLakiLaki); ?>
+                                        <?php echo json_encode($countLakiLaki); ?>,
+                                        <?php echo json_encode($countPerempuan); ?>
                                     ],
                                     backgroundColor: [
                                         'rgba(54, 162, 235, 0.2)',

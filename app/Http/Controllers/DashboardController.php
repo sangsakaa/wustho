@@ -75,9 +75,9 @@ class DashboardController extends Controller
         $countLakiLaki = 0;
         $countPerempuan = 0;
         foreach ($data as $item) {
-            if ($item->jenis_kelamin == 'P') {
+            if ($item->jenis_kelamin == 'L') {
                 $countLakiLaki++;
-            } elseif ($item->jenis_kelamin == 'L') {
+            } elseif ($item->jenis_kelamin == 'P') {
                 $countPerempuan++;
             }
         }
