@@ -43,29 +43,39 @@
   @endcan
   <div class="px-4 mt-4 ">
     <div class=" bg-white overflow-hidden shadow-sm sm:rounded-lg">
-      <div class=" p-4 ">
+      <div class="p-2 ">
         <div class=" overflow-auto w-full ">
           <div class=" grid grid-cols-2">
             <div>
               <form action="/sesiasrama" method="get" class=" py-1">
                 <input type="date" name="tanggal" class=" py-1 dark:bg-dark-bg" value="{{ $tanggal->toDateString() }}">
-                <button class=" bg-blue-600 py-1 text-white px-2">
-                  Cari By Tanggal
+                <button class=" bg-blue-600 py-1 text-white px-2 sm:pt-1 pt-1">
+                  Cari
                 </button>
               </form>
             </div>
-            <div class=" flex gap-2 justify-end">
+            <div class=" flex   text-xs gap-2 justify-end   ">
               @role('super admin')
-              <a href="/asrama"><button class=" flex bg-blue-500 hover:bg-purple-600  py-1 px-2 text-white">Back </button></a>
-              <a href="/kegiatan"><button class=" flex bg-blue-500 hover:bg-purple-600  py-1 px-2 text-white">
-                  <span>
-                    <x-icons.usercircle></x-icons.usercircle>
+              <div>
+                <a href="/asrama" class=" flex   bg-blue-500 hover:bg-purple-600    px-1 text-white">
+                  <x-icons.back></x-icons.back>
+                  <span class=" py-1  uppercase">
+                    back
                   </span>
-                  Kegiatan</button></a>
+                </a>
+              </div>
+              <div>
+                <a href="/kegiatan" class=" flex   bg-blue-500 hover:bg-purple-600      px-1 text-white">
+                  <x-icons.usercircle></x-icons.usercircle>
+                  <span class=" py-1  uppercase">
+                    Kegiatan
+                  </span>
+                </a>
+              </div>
               @endrole
             </div>
           </div>
-          <table class=" w-full mt-2   ">
+          <table class=" w-full mt-1   ">
             <thead class=" capitalize text-xs ">
               <th class=" py-2 px-2 border">No</th>
               <th class=" px-2 border"> presensi </th>

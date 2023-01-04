@@ -71,6 +71,16 @@ class DashboardController extends Controller
         ->groupBy('jenis_kelamin')
         ->get()
         ->toArray();
-        return view('dashboard', compact('datasetsAbsensi', 'dataSiswa'));
+        $data = Siswa::all();
+        $countLakiLaki = 0;
+        $countPerempuan = 0;
+        foreach ($data as $item) {
+            if ($item->jenis_kelamin == 'L') {
+                $countLakiLaki++;
+            } elseif ($item->jenis_kelamin == 'P') {
+                $countPerempuan++;
+            }
+        }
+        return view('dashboard', compact('datasetsAbsensi', 'dataSiswa', 'countLakiLaki', 'countPerempuan'));
     }
 }
