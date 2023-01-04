@@ -19,7 +19,7 @@
                             data: {
                                 labels: ['Laki-laki', 'Perempuan'],
                                 datasets: [{
-                                    label: 'Bersarkan Jenis Kelamin',
+                                    label: 'Berdasarkan Jenis Kelamin',
                                     data: [
                                         <?php echo json_encode($countPerempuan); ?>,
                                         <?php echo json_encode($countLakiLaki); ?>
