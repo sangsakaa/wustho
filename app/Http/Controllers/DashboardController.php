@@ -37,8 +37,7 @@ class DashboardController extends Controller
             ->join('asramasiswa', 'asramasiswa.id', '=', 'pesertaasrama.asramasiswa_id')
             ->join('asrama', 'asrama.id', '=', 'asramasiswa.asrama_id')
             ->select('siswa.id as siswa_id', 'asrama.nama_asrama')
-            ->where('asramasiswa.periode_id', session('periode_id'));
-
+        ->where('asramasiswa.periode_id', session('periode_id'));
         $dataAbsensi = Absensikelas::query()
             ->join('sesikelas', 'sesikelas.id', '=', 'absensikelas.sesikelas_id')
             ->join('pesertakelas', 'pesertakelas.id', '=', 'absensikelas.pesertakelas_id')
@@ -71,7 +70,8 @@ class DashboardController extends Controller
         ->groupBy('jenis_kelamin')
         ->get()
         ->toArray();
-        $data = Siswa::all();
+        $data = Siswa::query()
+        ->join('nis', 'siswa.id', '=', 'nis.siswa_id')->get();
         $countLakiLaki = 0;
         $countPerempuan = 0;
         foreach ($data as $item) {
@@ -81,6 +81,15 @@ class DashboardController extends Controller
                 $countPerempuan++;
             }
         }
-        return view('dashboard', compact('datasetsAbsensi', 'dataSiswa', 'countLakiLaki', 'countPerempuan'));
+        $ula = 0;
+        $wustho = 0;
+        foreach ($data as $item) {
+            if ($item->madrasah_diniyah == 'Ula') {
+                $ula++;
+            } elseif ($item->madrasah_diniyah == 'Wustho') {
+                $wustho++;
+            }
+        }
+        return view('dashboard', compact('datasetsAbsensi', 'dataSiswa', 'countLakiLaki', 'countPerempuan', 'ula', 'wustho'));
     }
 }

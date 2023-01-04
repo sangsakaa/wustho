@@ -19,10 +19,54 @@
                             data: {
                                 labels: ['Laki-laki', 'Perempuan'],
                                 datasets: [{
-                                    label: 'Berdasarkan Jenis Kelamin',
+                                    label: 'BERDASARKAN JENIS KELAMIN',
                                     data: [
                                         <?php echo json_encode($countLakiLaki); ?>,
                                         <?php echo json_encode($countPerempuan); ?>
+                                    ],
+                                    backgroundColor: [
+                                        'rgba(54, 162, 235, 0.2)',
+                                        'rgba(255,99, 132, 0.2)'
+                                    ],
+                                    borderColor: [
+                                        'rgba(54, 162, 235, 1)',
+                                        'rgba(255, 99, 132, 1)'
+                                    ],
+                                    borderWidth: 1
+
+                                }]
+
+                            },
+                            options: {
+                                scales: {
+                                    yAxes: [{
+                                        ticks: {
+                                            beginAtZero: true
+                                        }
+                                    }]
+                                }
+                            }
+                        });
+                    </script>
+
+                </div>
+            </div>
+        </div>
+        <div class="">
+            <div class="p-4">
+                <div class=" px-2 font-semibold ">
+                    <canvas id="madin" class=" font-semibold"></canvas>
+                    <script>
+                        var ctx = document.getElementById('madin').getContext('2d');
+                        var studentsChart = new Chart(ctx, {
+                            type: 'bar',
+                            data: {
+                                labels: ['ULA', 'WUSTHO'],
+                                datasets: [{
+                                    label: 'BERDASARKAN JENJANG',
+                                    data: [
+                                        <?php echo json_encode($ula); ?>,
+                                        <?php echo json_encode($wustho); ?>
                                     ],
                                     backgroundColor: [
                                         'rgba(54, 162, 235, 0.2)',
