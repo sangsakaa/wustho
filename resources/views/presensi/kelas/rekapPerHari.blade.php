@@ -55,7 +55,7 @@
                         </div>
 
                     </div>
-                    <div class=" overflow-scroll">
+                    <div class=" overflow-auto ">
                         <table class="table-fixed w-full text-green-900">
                             <thead class="border border-b-2 border-green-600">
                                 <tr class="border  border-green-600 text-xs sm:text-sm">

@@ -450,7 +450,7 @@
             <div class=" py-1 mt-2 text-center uppercase">
                 @if(Route::has('login'))
                 @auth
-                <a href="{{ url('/dashboard') }}" class="text-md dark:text-white text-gray-700 uppercase gede">Dashboard</a>
+                <a href="{{ url('/dashboard') }}" class=" px-6 hover:bg-gray-200 dark:text-dark-bg text-gray-700 uppercase gede bg-gray-100 ">Dashboard</a>
                 @else
                 <a href="{{ route('login') }}" class="  ">Log in</a>
                 @endif

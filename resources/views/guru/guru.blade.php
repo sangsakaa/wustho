@@ -29,32 +29,36 @@
                 </div>
             </div>
             @endif
-            <div class=" grid gap-1 grid-cols-1 sm:grid-cols-2 w-full ">
-                <form action="/guru" method="get" class="  gap-1">
-                    <div class=" grid sm:grid-cols-2 grid-cols-1 gap-1 ">
-                        <input type="text" name="cari" value="{{ request('cari') }}" class=" dark:bg-dark-bg border text-green-800 rounded-sm py-1  sm:w-full " placeholder=" Cari ...">
-                        <button type="submit" class=" px-2 py-1     bg-blue-500  rounded-sm text-white">
-                            Cari </button>
-                    </div>
-                </form>
-                <div class=" grid sm:grid-cols-2 grid-cols-2  gap-2  ">
-                    <a href="/addGuru" class="   bg-blue-500 text-white p-1 rounded-md text-center">
-                        Tambah Guru
+            <div class=" grid gap-2  grid-cols-2   sm:grid-cols-2 w-full ">
+                <div class=" sm:w-20 w-20    ">
+                    <a href="/addGuru" class=" flex py-1 hover:bg-blue-600    bg-blue-500 text-white   text-center">
+                        <span class=" px-1 ">
+                            <x-icons.adduser></x-icons.adduser>
+                        </span>
+                        <span class=" ">
+                            Guru
+                        </span>
                     </a>
-                    <a href="/asramasiswa" class=" bg-blue-500 text-white py-1 px-2 rounded-md text-center d-inline-block">
-                        Asrama Siswa
-                    </a>
+                </div>
+                <div class=" flex grid-cols-1 justify-end">
+                    <form action="/guru" method="get" class="  gap-1">
+                        <div class=" flex gap-2  w-full  ">
+                            <input type="text" name="cari" value="{{ request('cari') }}" class=" dark:bg-dark-bg border text-green-800 rounded-sm py-1 w-full  sm:w-full " placeholder=" Cari ...">
+                            <button type="submit" class=" px-2 py-1 w-20     bg-blue-500  rounded-sm text-white">
+                                Cari </button>
+                        </div>
+                    </form>
                 </div>
             </div>
             <div class=" overflow-auto rounded-md">
                 <Table class=" sm:w-full w-full  mt-2">
                     <thead class=" bg-gray-50 dark:bg-purple-600">
                         <tr class=" border  ">
-                            <th class="px-2 border py-1">#</th>
-                            <th class="px-2 border text-left w-1/2 sm:w-1/4">Nama Guru</th>
-                            <th class="px-2 border text-left">JK</th>
-                            <th class="px-2 border text-left w-10">Agama</th>
-                            <th class="px-2 border text-left">Tempat Lahir</th>
+                            <th class="px-2 border py-1">No</th>
+                            <th class="px-2 border text-center w-1/2 sm:w-1/4">Nama Guru</th>
+                            <th class="px-2 border text-center">JK</th>
+                            <th class="px-2 border text-center w-10">Agama</th>
+                            <th class="px-2 border text-center">Tempat Lahir</th>
                             <th class="px-2 border text-center w-50">Tanggal Lahir</th>
                             <th class="px-2 border text-center">Tanggal Masuk</th>
                             <th class="px-2 border text-center">Angkatan</th>
@@ -72,15 +76,12 @@
                                     {{$item->nama_guru}}
                                 </a>
                             </td>
-                            <td class=" border px-2 w-20"> {{$item->jenis_kelamin}}</td>
-                            <td class=" border px-2"> {{$item->agama}}</td>
-                            <td class=" border px-2"> {{$item->tempat_lahir}}</td>
-                            <td class=" border px-2 text-center"> {{$item->tanggal_lahir}}</td>
-                            <td class=" border px-2 text-center"> {{($item->tanggal_masuk)}}</td>
-                            <td class=" border px-2 text-center"> <?php
-                                                                    $date = date_create($item->tanggal_masuk);
-                                                                    echo date_format($date, "Y")
-                                                                    ?></td>
+                            <td class=" border px-2 text-center w-10"> {{$item->jenis_kelamin}}</td>
+                            <td class=" border px-2 text-center"> {{$item->agama}}</td>
+                            <td class=" border px-2 text-center capitalize"> {{$item->tempat_lahir}}</td>
+                            <td class=" border px-2 text-center">{{ \Carbon\Carbon::parse($item->tanggal_lahir)->isoFormat('D MMM Y') }} </td>
+                            <td class=" border px-2 text-center">{{ \Carbon\Carbon::parse($item->tanggal_masuk)->isoFormat('D/M/Y') }} </td>
+                            <td class=" border px-2 text-center">{{ \Carbon\Carbon::parse($item->tanggal_masuk)->isoFormat('Y') }} </td>
                             <td class="  text-center flex justify-center gap-1 p-1">
                                 <form action="/guru/{{$item->id}}" method="post">
                                     @csrf
