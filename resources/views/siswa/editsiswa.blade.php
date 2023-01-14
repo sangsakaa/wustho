@@ -25,7 +25,6 @@
                                     Laki-Laki</option>
                                 <option {{old('jenis_kelamin',$siswa->jenis_kelamin)=="P"? 'selected':''}} value="P">
                                     Perempuan</option>
-
                             </select>
                             <label for="">Tempat Lahir</label>
                             <input value="{{$siswa->tempat_lahir}}" name="tempat_lahir" type="text" class=" w-full py-1 rounded-md @error('tempat_lahir') is-invalid @enderror" placeholder=" masukan nama lengkap">
