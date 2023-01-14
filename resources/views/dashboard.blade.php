@@ -91,6 +91,51 @@
 
             </div>
         </div>
+        <div class=" p-4">
+            <div class="bg-white rounded-lg shadow-md">
+                <canvas id="angkatan-chart" class="h-64"></canvas>
+            </div>
+            {{$dataAngkatan}}
+            <script>
+                var ctx = document.getElementById('angkatan-chart').getContext('2d');
+                var chart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: Object.keys($dataAngkatan),
+                        datasets: [{
+                            label: 'Angkatan',
+                            data: Object.values($dataAngkatan),
+                            backgroundColor: '#3490dc',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        },
+                        legend: {
+                            labels: {
+                                fontColor: 'black',
+                                fontSize: 14,
+                                fontFamily: 'sans-serif',
+                                fontStyle: 'bold'
+                            }
+                        },
+                        title: {
+                            display: true,
+                            text: 'Angkatan',
+                            fontColor: 'black',
+                            fontSize: 18,
+                            fontFamily: 'sans-serif',
+                            fontStyle: 'bold'
+                        }
+                    }
+                });
+            </script>
+
+        </div>
 
     </div>
 

@@ -5,13 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Absensikelas;
 use App\Models\Asrama;
 use App\Models\Asramasiswa;
+use App\Models\Nis;
 use App\Models\Pesertaasrama;
 use App\Models\Sesikelas;
 use App\Models\Siswa;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Support\Facades\Http;
 
 class DashboardController extends Controller
 {
@@ -22,6 +23,10 @@ class DashboardController extends Controller
      */
     public function index()
     {
+
+        $dataAngkatan = Nis::select('madrasah_diniyah', 'tanggal_masuk')->get()->groupBy('madrasah_diniyah')->map(function ($item) {
+            return $item->groupBy('tanggal_masuk')->count();
+        });
 
         $tglAwal = Sesikelas::query()
             ->join('absensikelas', 'absensikelas.sesikelas_id', '=', 'sesikelas.id')
@@ -90,6 +95,16 @@ class DashboardController extends Controller
                 $wustho++;
             }
         }
-        return view('dashboard', compact('datasetsAbsensi', 'dataSiswa', 'countLakiLaki', 'countPerempuan', 'ula', 'wustho'));
+        return view('dashboard', compact(
+            [
+                'datasetsAbsensi',
+                'dataSiswa',
+                'countLakiLaki',
+                'countPerempuan',
+                'ula', 'wustho',
+                'data',
+                'dataAngkatan'
+            ]
+        ));
     }
 }
