@@ -298,7 +298,7 @@ class SiswaController extends Controller
             ->update([
                 'nama_siswa' => $request->nama_siswa,
                 'jenis_kelamin' => $request->jenis_kelamin,
-            'agama' => $request->agama,
+            'nama_lembaga' => $request->agama,
                 'tempat_lahir' => $request->tempat_lahir,
                 'tanggal_lahir' => $request->tanggal_lahir,
                 'kota_asal' => $request->kota_asal,
