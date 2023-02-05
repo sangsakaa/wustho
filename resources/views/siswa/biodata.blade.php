@@ -78,9 +78,9 @@
                             <div class=" border py-2 px-2" class=" w-1/2">4. Agama</div>
                             <div class=" border py-2 px-2">: {{$biodata->agama}}</div>
                             <div class=" border py-2 px-2" class=" w-1/2">5. Tempat,Tanggal Lahir</div>
-                            <div class=" border py-2 px-2">: {{$biodata->tempat_lahir}}, {{$biodata->tanggal_lahir}}</div>
+                            <div class=" border py-2 px-2 capitalize">: {{$biodata->tempat_lahir}}, {{$biodata->tanggal_lahir}}</div>
                             <div class=" border py-2 px-2" class=" w-1/2">6. Status Pengamal</div>
-                            <div class=" border py-2 px-2">: {{$biodata->status_pengamal}}</div>
+                            <div class=" border py-2 px-2 capitalize">: {{$biodata->status_pengamal}}</div>
                             <div class=" border py-2 px-2" class=" w-1/2">7. Jumlah Saudara Kandung</div>
                             <div class=" border py-2 px-2">: {{$biodata->jumlah_saudara}} </div>
                             <div class=" border py-2 px-2" class=" w-1/2">8. Anak Ke</div>
@@ -102,7 +102,7 @@
                             <div class=" border py-2 px-6" class=" w-1/2">Nomor Hp </div>
                             <div class=" border py-2 px-2">: - </div>
                             <div class=" border py-2 px-2" class=" w-1/2">13. Daerah Asal </div>
-                            <div class=" border py-2 px-2">: {{$biodata->kota_asal}}</div>
+                            <div class=" border py-2 px-2 capitalize">: {{$biodata->kota_asal}}</div>
                         </div>
 
                     </div>

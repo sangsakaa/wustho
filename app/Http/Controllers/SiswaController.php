@@ -159,6 +159,7 @@ class SiswaController extends Controller
         $biodata = $siswa->query()
             ->leftjoin('nis', 'nis.siswa_id', '=', 'siswa.id')
             ->leftjoin('statusanak', 'statusanak.siswa_id', '=', 'siswa.id')
+            ->leftjoin('statuspengamal', 'statuspengamal.siswa_id', '=', 'siswa.id')
             ->where('nis.siswa_id', $siswa->id)
             ->first();
         return view(
@@ -212,14 +213,14 @@ class SiswaController extends Controller
     public function statuspengamal(Siswa $siswa,)
     {
         $sp = Statuspengamal::query()
-            // ->join('siswa', 'siswa.id', '=', 'statuspengamal.siswa_id')
-            // ->select(
-            //     [
-            //         'siswa.id',
-            //         'siswa.nama_siswa',
-            //         'statuspengamal.status_pengamal',
-            //     ]
-            // )
+            ->join('siswa', 'siswa.id', '=', 'statuspengamal.siswa_id')
+            ->select(
+                [
+                    'siswa.id',
+                    'siswa.nama_siswa',
+                    'statuspengamal.status_pengamal',
+                ]
+            )
             ->where('statuspengamal.siswa_id', $siswa->id)->get();
         $nisSiswa = Nis::where('siswa_id', $siswa->id)->get();
         return view(
