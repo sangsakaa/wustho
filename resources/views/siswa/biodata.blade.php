@@ -34,8 +34,12 @@
                         </div>
                         <div class=" flex w-full">
                             <div class="  grid w-36    ">Status Asrama </div>
-                            <div class=" px-4  grid  "> :
+                            <div class=" px-4     "> :
+                                @if($siswa->asramaTerkhir?->asramaSiswa->asrama->nama_asrama !== null)
                                 {{$siswa->asramaTerkhir?->asramaSiswa->asrama->nama_asrama}}
+                                @else
+                                <span class=" text-red-600 ">Belum Memiliki Asrama</span>
+                                @endif
                             </div>
                         </div>
 
