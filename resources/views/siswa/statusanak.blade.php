@@ -55,11 +55,11 @@
                             <input type="hidden" name="siswa_id" class=" py-1" placeholder="siswa" value="{{$siswa->id}}">
                             <input type="number" name="anak_ke" class=" py-1" placeholder="anak ke : 5">
                             <input type="number" name="jumlah_saudara" class=" py-1" placeholder="jumlah saudara ke : 5">
-                            <select name="status_anak" id="" class=" py-1">
-                                <option value="kandung">kandung</option>
+                            <select name="status_anak" id="" class=" py-1 capitalize">
+                                <option value="kandung" class=" capitalize">kandung</option>
                                 <option value="tiri">tiri</option>
                             </select>
-                            <button class=" bg-green-600 py-1 px-2 rounded-sm text-white capitalize">create status anak</button>
+                            <button class=" bg-green-600 py-1 px-2 rounded-sm text-white capitalize">Simpan</button>
                         </form>
                         <div>
                             <span>Detail Status Anak</span>
@@ -75,9 +75,9 @@
                                 <tbody>
                                     @foreach($sp as $org)
                                     <tr class=" border">
-                                        <td class=" px-2 border ">{{$org->status_anak}}</td>
-                                        <td class=" px-2 border ">{{$org->jumlah_saudara}}</td>
-                                        <td class=" px-2 border ">{{$org->anak_ke}}</td>
+                                        <td class=" px-2 border text-center ">{{$org->status_anak}}</td>
+                                        <td class=" px-2 border text-center ">{{$org->jumlah_saudara}}</td>
+                                        <td class=" px-2 border text-center ">{{$org->anak_ke}}</td>
                                         <td class=" text-sm flex justify-center py-1  gap-1">
                                             <form action="/statusanak/{{$org->id}}" method="post">
                                                 @csrf

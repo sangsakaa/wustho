@@ -33,7 +33,7 @@ class NilaiController extends Controller
         $datSmt = Semester::query()
             // ->join('periode', 'periode.id', '=', 'semester.periode_id')
             ->get();
-        $dataGuru = Guru::all();
+        $dataGuru = Guru::orderBy('nama_guru')->get();
         $dataKelas = Kelasmi::query()
             ->join('periode', 'periode.id', 'kelasmi.periode_id')
             ->join('semester', 'semester.id', 'periode.semester_id')

@@ -99,12 +99,13 @@
                             <div class=" border py-2 px-2">: - </div>
                             <div class=" border py-2 px-2" class=" w-1/2">11. Nama Ibu </div>
                             <div class=" border py-2 px-2">: - </div>
-                            <div class=" border py-2 px-2" class=" w-1/2">12. Nama Wali </div>
-                            <div class=" border py-2 px-2">: - </div>
                             <div class=" border py-2 px-6" class=" w-1/2">Pekerjaan </div>
                             <div class=" border py-2 px-2">: - </div>
                             <div class=" border py-2 px-6" class=" w-1/2">Nomor Hp </div>
                             <div class=" border py-2 px-2">: - </div>
+                            <div class=" border py-2 px-2" class=" w-1/2">12. Nama Wali </div>
+                            <div class=" border py-2 px-2">: - </div>
+
                             <div class=" border py-2 px-2" class=" w-1/2">13. Daerah Asal </div>
                             <div class=" border py-2 px-2 capitalize">: {{$biodata->kota_asal}}</div>
                         </div>

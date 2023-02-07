@@ -95,7 +95,6 @@
             <div class="bg-white rounded-lg shadow-md">
                 <canvas id="angkatan-chart" class="h-64"></canvas>
             </div>
-            {{$dataAngkatan}}
             <script>
                 var ctx = document.getElementById('angkatan-chart').getContext('2d');
                 var chart = new Chart(ctx, {

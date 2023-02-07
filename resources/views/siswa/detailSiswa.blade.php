@@ -16,7 +16,7 @@
                         </div>
                         <div class=" flex w-full">
                             <div class="grid w-36 ">Tanggal Lahir </div>
-                            <div class=" px-4">: {{$siswa->tempat_lahir}} , {{ \Carbon\Carbon::parse($siswa->tanggal_lahir)->isoFormat(' DD MMMM Y') }}</div>
+                            <div class=" px-4 capitalize">: {{$siswa->tempat_lahir}} , {{ \Carbon\Carbon::parse($siswa->tanggal_lahir)->isoFormat(' DD MMMM Y') }}</div>
                         </div>
 
                         <div class=" flex w-full">
@@ -25,11 +25,14 @@
                         </div>
                         <div class=" flex w-full">
                             <div class="  grid w-36    ">Status Asrama </div>
-                            <div class=" px-4  grid  "> :
+                            <div class=" px-4   "> :
+                                @if($siswa->asramaTerkhir?->asramaSiswa->asrama->nama_asrama !== null)
                                 {{$siswa->asramaTerkhir?->asramaSiswa->asrama->nama_asrama}}
+                                @else
+                                <span class=" text-red-600 ">Belum Memiliki Asrama</span>
+                                @endif
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
