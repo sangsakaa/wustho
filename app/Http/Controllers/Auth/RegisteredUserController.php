@@ -47,6 +47,8 @@ class RegisteredUserController extends Controller
             ->get();
         if (request('cari')) {
             $users->where('nama_siswa', 'like', '%' . request('cari') . '%');
+            $users->whereOr('email', 'like', '%' . request('cari') . '%');
+            
         }
         return view(
             'admin/admin',

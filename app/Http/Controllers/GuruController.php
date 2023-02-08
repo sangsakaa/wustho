@@ -20,11 +20,6 @@ class GuruController extends Controller
         $data = Guru::orderBy('nama_guru');
         if (request('cari')) {
             $data->where('nama_guru', 'like', '%' . request('cari') . '%')->orderby('nama_guru');
-            // ->orWhere('Kota_asal', 'like', '%' . request('cari') . '%')
-            // ->orWhere('nama_kelas', 'like', '%' . request('cari') . '%')
-            // ->orWhere('nis', 'like', '%' . request('cari') . '%')
-            // ->orWhere('tanggal_masuk', 'like', '%' . request('cari') . '%')
-            // ->orderBy('nis', 'asc');
         }
         return view('guru/guru', ['dataGuru' => $data->paginate(10)]);
     }
@@ -54,6 +49,7 @@ class GuruController extends Controller
         $guru->tempat_lahir = $request->tempat_lahir;
         $guru->tanggal_lahir = $request->tanggal_lahir;
         $guru->tanggal_masuk = $request->tanggal_masuk;
+        $guru->status = $request->status;
         $guru->save();
         return redirect('guru')->with('success', 'data berhasil ditambahkan');
     }
@@ -116,6 +112,7 @@ class GuruController extends Controller
                 'tempat_lahir' => $request->tempat_lahir,
                 'tanggal_lahir' => $request->tanggal_lahir,
                 'tanggal_masuk' => $request->tanggal_masuk,
+            'status' => $request->status,
 
             ]);
         return redirect('/guru')->with('update', 'pembaharuan data berhasil');

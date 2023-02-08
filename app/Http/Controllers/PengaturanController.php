@@ -18,15 +18,33 @@ class PengaturanController extends Controller
     {
 
         $raport = Pesertakelas::query()
+            ->leftjoin('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
+            ->leftJoin('kelas', 'kelas.id', '=', 'kelasmi.kelas_id')
+            ->leftjoin('periode', 'periode.id', '=', 'kelasmi.periode_id')
+            ->leftjoin('semester', 'semester.id', '=', 'periode.semester_id')
             ->join('siswa', 'siswa.id', '=', 'pesertakelas.siswa_id')
-        ->select('pesertakelas.id', 'siswa.nama_siswa');
+        ->where('kelasmi.periode_id', session('periode_id'))
+        ->select(
+            [
+                'pesertakelas.id',
+                'siswa.nama_siswa',
+                'kelasmi.nama_kelas',
+                'kelas.kelas',
+                'periode.periode',
+                'semester.semester',
+                'semester.ket_semester',
+            ]
+        )
+            ->orderby('kelas')
+            ->orderby('nama_kelas')
+            ->orderby('nama_siswa');
         if (request('cari')) {
             $raport->where('nama_siswa', 'like', '%' . request('cari') . '%');
         }
         return view(
             'pengaturan/pengaturan',
             [
-                'raport' => $raport->paginate(5)
+                'raport' => $raport->paginate(10)
             ]
         );
     }

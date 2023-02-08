@@ -9,15 +9,22 @@
         <div class="mx-auto">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-4 bg-white border-b border-gray-200">
-                    <div class=" grid sm:grid-cols-4 grid-cols-2">
+                    <div class=" grid sm:grid-cols-4 grid-cols-2 capitalize">
                         <div>Nama </div>
                         <div class=" border-red-500 text-sm ">: {{$siswa->nama_siswa}}</div>
                         <div>Tanggal Lahir </div>
-                        <div>: {{$siswa->tempat_lahir}}</div>
+                        <div class=" ">: {{$siswa->tempat_lahir}} , {{ \Carbon\Carbon::parse($siswa->tanggal_lahir)->isoFormat(' DD MMMM Y') }}</div>
                         <div>Jenis Kelamin </div>
                         <div>: {{$siswa->jenis_kelamin}}</div>
-                        <div>Tempat Lahir </div>
-                        <div>: {{$siswa->tanggal_lahir}}</div>
+                        <div class="  grid w-36    ">Status Asrama </div>
+                        <div class=" "> :
+                            @if($siswa->asramaTerkhir?->asramaSiswa->asrama->nama_asrama !== null)
+                            {{$siswa->asramaTerkhir?->asramaSiswa->asrama->nama_asrama}}
+                            @else
+                            <span class=" text-red-600 ">Belum Memiliki Asrama</span>
+                            @endif
+                        </div>
+
                     </div>
                 </div>
             </div>

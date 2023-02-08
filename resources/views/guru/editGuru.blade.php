@@ -11,7 +11,6 @@
                     <a href="/siswa">
                         <!-- <button class=" bg-blue-600 text-white rounded-sm px-2 py-1"> siswa</button> -->
                     </a>
-
                     <form action="/guru/{{$guru->id}}" method="post">
                         <div class=" grid grid-cols-1 py-6 px-4 w-1/4">
                             @csrf
@@ -39,8 +38,17 @@
 
                             <label for="">Tempat Masuk <span class=" text-red-600">*</span></label>
                             <input value="{{$guru->tanggal_masuk}}" type="date" name="tanggal_masuk" class=" w-full py-1 " placeholder=" Nama Lengkap : M. Izul Ula">
+                            <label for="">Status</label>
+                            <select name="status" id="" class=" w-full py-1 rounded-md" required>
+                                <option value="">-- Pilih Status --</option>
+                                <option {{old('status',$guru->status)=="Aktif"? 'selected':''}} value="Aktif">
+                                    Aktif</option>
+                                <option {{old('status',$guru->status)=="Non Aktif"? 'selected':''}} value="Non Aktif">
+                                    Non Aktif</option>
+                                <option {{old('status',$guru->status)=="Cuti"? 'selected':''}} value="Cuti">
+                                    Cuti</option>
+                            </select>
                             <div class=" flex grid-cols-2 gap-2 py-2">
-
                                 <div class=" flex grid-cols-2 gap-2 py-2">
                                     <button class=" bg-sky-600  text-white rounded-md px-2 py-1">Update</button>
                                     <a href="/guru" class=" bg-blue-600 text-white rounded-md px-2 py-1">Kembali</a>

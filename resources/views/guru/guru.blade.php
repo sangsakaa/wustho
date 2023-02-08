@@ -9,21 +9,21 @@
     <div class="bg-white dark:bg-dark-bg overflow-hidden shadow-sm">
         <div class="p-2">
             @if (session('delete'))
-            <div class=" py-2">
+            <div class=" py-2 capitalize">
                 <div class=" bg-red-500 px-2 py-1 text-white">
                     {{ session('delete') }}
                 </div>
             </div>
             @endif
             @if (session('success'))
-            <div class=" py-2">
+            <div class=" py-2 capitalize">
                 <div class=" bg-green-500 px-2 py-1 text-white">
                     {{ session('success') }}
                 </div>
             </div>
             @endif
             @if (session('update'))
-            <div class=" py-2">
+            <div class=" py-2 capitalize">
                 <div class=" bg-blue-500 px-2 py-1 text-white">
                     {{ session('update') }}
                 </div>
@@ -61,7 +61,7 @@
                             <th class="px-2 border text-center">Tempat Lahir</th>
                             <th class="px-2 border text-center w-50">Tanggal Lahir</th>
                             <th class="px-2 border text-center">Tanggal Masuk</th>
-                            <th class="px-2 border text-center">Angkatan</th>
+                            <th class="px-2 border text-center">Status</th>
                             <th class="px-2 border text-center">Aksi</th>
                         </tr>
                     </thead>
@@ -81,7 +81,7 @@
                             <td class=" border px-2 text-center capitalize"> {{$item->tempat_lahir}}</td>
                             <td class=" border px-2 text-center">{{ \Carbon\Carbon::parse($item->tanggal_lahir)->isoFormat('D MMM Y') }} </td>
                             <td class=" border px-2 text-center">{{ \Carbon\Carbon::parse($item->tanggal_masuk)->isoFormat('D/M/Y') }} </td>
-                            <td class=" border px-2 text-center">{{ \Carbon\Carbon::parse($item->tanggal_masuk)->isoFormat('Y') }} </td>
+                            <td class=" border px-2 text-center">{{ $item->status }} </td>
                             <td class="  text-center flex justify-center gap-1 p-1">
                                 <form action="/guru/{{$item->id}}" method="post">
                                     @csrf
