@@ -32,8 +32,34 @@ class UserController extends Controller
             ->join('kelasmi', 'kelasmi.id', 'pesertakelas.kelasmi_id')
             ->join('periode', 'periode.id', 'kelasmi.periode_id')
             ->join('semester', 'semester.id', 'periode.semester_id')
-            ->where('pesertakelas.siswa_id', $siswa_id)->get();
+        ->where('pesertakelas.siswa_id', $siswa_id)
+            ->get();
         return view('user/riwayatkelas', ['siswa' => $user]);
+    }
+    public function Riwayatkehadiran()
+    {
+
+        $siswa_id = Auth::user()->siswa_id;
+        $title = Siswa::query()
+            ->join('nis', 'nis.siswa_id', '=', 'siswa.id')
+            ->where('siswa.id', $siswa_id)->first();
+        $user = Pesertakelas::query()
+            ->join('kelasmi', 'kelasmi.id', 'pesertakelas.kelasmi_id')
+            ->join('absensikelas', 'absensikelas.pesertakelas_id', 'pesertakelas.id')
+            ->join('sesikelas', 'sesikelas.id', '=', 'absensikelas.sesikelas_id')
+            ->join('periode', 'periode.id', 'kelasmi.periode_id')
+            ->join('semester', 'semester.id', 'periode.semester_id')
+
+            ->where('pesertakelas.siswa_id', $siswa_id)
+            ->paginate(10);
+        return view(
+            'user/riwayatkehadiran',
+            [
+                'siswa' => $user,
+                'siswa_id' => $siswa_id,
+                'title' => $title
+            ]
+        );
     }
     public function DashboardUser()
     {

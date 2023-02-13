@@ -167,10 +167,14 @@
             <x-icons.books class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
         </x-slot>
     </x-sidebar.link>
-
     <x-sidebar.link title="Riwayat Kelas" href="/riwayatkelas" :isActive="request()->routeIs('riwayatkelas')">
         <x-slot name="icon">
             <x-icons.home class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
+        </x-slot>
+    </x-sidebar.link>
+    <x-sidebar.link title="Riwayat Kehadiran" href="/riwayatkehadiran" :isActive="request()->routeIs('riwayatkehadiran')">
+        <x-slot name="icon">
+            <x-icons.books class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
         </x-slot>
     </x-sidebar.link>
     @endrole

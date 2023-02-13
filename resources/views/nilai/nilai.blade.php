@@ -55,6 +55,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+
                                         @foreach($dataSiswa as $item)
                                         <tr class=" border hover:bg-gray-100 dark:hover:bg-purple-600">
                                             <td class=" px-2 border text-center w-10">
@@ -84,6 +85,7 @@
 
                                         </tr>
                                         @endforeach
+
 
                                     </tbody>
                                 </table>

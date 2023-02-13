@@ -37,6 +37,7 @@ Route::get('/buatakunsiswa', [RegisteredUserController::class, 'buatAkunSiswa'])
 // User
 Route::get('/user', [UserController::class, 'Personal'])->middleware(['auth'])->name('user');
 Route::get('/riwayatkelas', [UserController::class, 'Riwayatkelas'])->middleware(['auth'])->name('riwayatkelas');
+Route::get('/riwayatkehadiran', [UserController::class, 'Riwayatkehadiran'])->middleware(['auth'])->name('riwayatkehadiran');
 // role
 Route::get('dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 Route::get('siswa', [SiswaController::class, 'index'])->middleware(['auth',])->name('siswa');

@@ -22,10 +22,18 @@
                         document.body.innerHTML = fullbody;
                     }
                 </script>
+
+                <!-- In a Blade template -->
+
+                <?php
+                $object = ''; // retrieve the object from somewhere
+
+                $pesertakelas_id = (!empty($user) && isset($user->pesertakelas_id))
+                ?>
                 <div class=" w-full">
                     <form action="/nilai" method="get">
                         <select name="kelasmi" id="" class=" border border-green-800 text-green-800 rounded-md py-1" required>
-                            <option value="">-- Pilih Kelas --</option>
+                            <option value="">-- Pilih Periode --</option>
                             @foreach ($kelasmiSiswa as $kelas)
                             <option value="{{ $kelas->id }}" {{ $kelasmiTerpilih->id == $kelas->id ? 'selected' : '' }}>
                                 {{ $kelas->nama_kelas }} {{ $kelas->periode }} {{ $kelas->ket_semester }}
@@ -47,7 +55,9 @@
                         <div>Nomor Induk Siswa </div>
                         <div> : {{$user->nis}} </div>
                         <div>Kelas / Semester </div>
+
                         <div> : {{$title->nama_kelas}}/{{$title->semester}}</div>
+
                         <div>Nama Siswa </div>
                         <div class=" w-full text-xs"> : {{$user->nama_siswa}} </div>
                         <div>Periode </div>
@@ -89,9 +99,16 @@
                             </tr>
                             @endforeach
                             <tr>
-                                <td class=" text-center font-semibold text-sm border py-2" colspan="3">Total Nilai</td>
+                                <td class=" text-center font-semibold text-sm border py-2" colspan="4">Total Nilai</td>
                                 <td class=" text-center font-semibold text-sm border">{{$dataNilai->sum->nilai_harian}}</td>
                                 <td class=" text-center font-semibold text-sm border">{{$dataNilai->sum->nilai_ujian}}</td>
+
+                            </tr>
+                            <tr>
+                                <td class=" text-center font-semibold text-sm border py-2" colspan="4">Nilai Rata Rata </td>
+                                <td class=" text-center font-semibold text-sm border">{{ number_format($dataNilai->sum->nilai_harian / $dataNilai->count(),0,2) }}</td>
+                                <td class=" text-center font-semibold text-sm border">{{ number_format($dataNilai->sum->nilai_ujian / $dataNilai->count(),0,2) }}</td>
+
 
                             </tr>
                             @else

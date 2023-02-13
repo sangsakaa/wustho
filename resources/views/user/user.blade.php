@@ -17,11 +17,11 @@
             <div class=" px-1 ">Nama Lengkap </div>
             <div class=" px-1 text-xs sm:text-sm "> : {{$siswa->nama_siswa}}</div>
             <div class=" px-1 ">Tempat, Tanggal Lahir</div>
-            <div class=" px-1 "> : {{$siswa->tempat_lahir}},
+            <div class=" px-1 capitalize "> : {{$siswa->tempat_lahir}},
                 {{ \Carbon\Carbon::parse($siswa->tanggal_lahir)->isoFormat(' DD MMMM Y') }}
             </div>
             <div class=" px-1 ">Asal Kota</div>
-            <div class=" px-1 "> : {{$siswa->kota_asal}}</div>
+            <div class=" px-1 capitalize "> : {{$siswa->kota_asal}}</div>
 
         </div>
 

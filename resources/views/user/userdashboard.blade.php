@@ -9,17 +9,23 @@
         <div class=" dark:bg-dark-bg bg-white overflow-hidden shadow-sm sm:rounded-lg">
             <div class="p-1 ">
                 <div class=" grid grid-cols-1 text-center py-1">
-                    <span class=" text-sm">{{ $title->nama_siswa }}</span>
+                    <span class=" text-lg">{{ $title->nama_siswa }}</span>
                     <span class=" text-xs  font-semibold">NIS : {{$title->nis}}</span>
                 </div>
             </div>
         </div>
         <div class=" mt-2 dark:bg-dark-bg bg-white overflow-hidden shadow-sm sm:rounded-lg">
             <div class="p-4 ">
-                <div class=" grid sm:grid-cols-4 grid-cols-2 gap-2">
+                <div class=" overflow-auto grid sm:grid-cols-4 grid-cols-2 gap-2">
                     <div class=" bg-sky-400 dark:bg-purple-600 py-6 text-center text-white rounded-md">
                         <span class=" capitalize"> MP : </span>
                         <span>{{$jml}}</span>
+                    </div>
+                    <div class=" bg-sky-400 dark:bg-purple-600 p-6 text-center text-white rounded-md">
+                        <span>IPK : {{(number_format($b,2,','))}}</span>
+                    </div>
+                    <div class=" bg-sky-400 dark:bg-purple-600 p-6 text-center text-white rounded-md">
+                        <span>IPK : {{(number_format($b,2,','))}}</span>
                     </div>
                     <div class=" bg-sky-400 dark:bg-purple-600 p-6 text-center text-white rounded-md">
                         <span>IPK : {{(number_format($b,2,','))}}</span>
@@ -62,8 +68,9 @@
                                 @endforeach
                             </tbody>
                         </table>
+                    </div>
+                    <div>
                         <span class=" text-lg">Riwayat Kehadiran </span>
-
                         <table class=" w-full    ">
                             <thead>
                                 <tr class=" border bg-gray-100 dark:bg-purple-600">
@@ -104,6 +111,7 @@
                 </div>
             </div>
         </div>
+    </div>
     </div>
     <div class="py-2 px-2">
         <div class=" overflow-hidden shadow-sm sm:rounded-lg">

@@ -30,7 +30,7 @@
                             <option value="{{$kelas->id}}">{{$kelas->nama_kelas}} {{$kelas->periode}} {{$kelas->ket_semester}}</option>
                             @endforeach
                         </select>
-                        <button class=" bg-red-600 py-1 dark:bg-purple-600 mt-1 my-1 w-full sm:w-40 rounded-sm hover:bg-purple-600 text-white px-4 ">simpan kelas</button>
+                        <button class=" bg-red-600 py-1 dark:bg-purple-600 mt-1 my-1 w-full sm:w-40 rounded-sm hover:bg-purple-600 text-white px-4 capitalize ">simpan kelas</button>
                     </form>
                 </div>
             </div>
@@ -40,7 +40,10 @@
         <div class="">
             <div class="bg-white dark:bg-dark-bg overflow-hidden shadow-sm ">
                 <div class="sm:p-4 p-1 ">
-                    <div class=" grid grid-cols-1 sm:grid-cols-1">
+                    <div class=" grid grid-cols-1 sm:grid-cols-2">
+                        <div>
+                            <a href="/mapel" class=" mt-2 bg-red-600 px-2 py-1 text-white">Mata Pelajaran</a>
+                        </div>
                         <div class=" flex grid-cols-1 justify-end">
                             <form action="/nilaimapel" method="get" class=" flex gap-1">
                                 <input type="text" name="cari" value="{{ request('cari') }}" class=" border border-green-800 text-green-800 rounded-md py-1 dark:bg-dark-bg " placeholder=" Cari ..">
