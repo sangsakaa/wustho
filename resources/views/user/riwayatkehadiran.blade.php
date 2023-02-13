@@ -57,15 +57,14 @@
                                 </td>
                                 <td class=" border px-2 text-center capitalize ">
                                     {{$kelas->alasan}}
-
                                 </td>
 
                             </tr>
                             @endforeach
                             @else
                             <tr>
-                                <td colspan="3" class=" border  text-center text-red-600">
-                                    Data Kelas tidak ada
+                                <td colspan="6" class=" border  text-center text-red-600">
+                                    Presensis Kehadiran Tidak ada
                                 </td>
                             </tr>
                             @endif
