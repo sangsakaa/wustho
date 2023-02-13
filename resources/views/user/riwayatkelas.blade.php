@@ -15,7 +15,7 @@
 
     <div class="bg-white dark:bg-dark-bg overflow-hidden shadow-sm mt-2 ">
         <div class="p-4  border-b border-gray-200">
-            <div class=" grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <div class=" grid grid-cols-1 sm:grid-cols-1 gap-2">
                 <div>
                     <span class=" text-lg">Detail Riwayat Kelas</span>
 
