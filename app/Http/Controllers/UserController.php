@@ -53,6 +53,9 @@ class UserController extends Controller
             ->where('kelasmi.periode_id', session('periode_id'))
         ->get();
         $hadir = $user->where('keterangan', 'hadir')->count();
+        $izin = $user->where('keterangan', 'izin')->count();
+        $sakit = $user->where('keterangan', 'sakit')->count();
+        $alfa = $user->where('keterangan', 'alfa')->count();
         return view(
             'user/riwayatkehadiran',
             [
@@ -60,6 +63,8 @@ class UserController extends Controller
                 'siswa_id' => $siswa_id,
                 'title' => $title,
                 'hadir' => $hadir,
+                'izin' => $izin,
+                'alfa' => $alfa,
             ]
         );
     }

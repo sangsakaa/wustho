@@ -33,9 +33,10 @@
                         <tbody>
                             <tr>
                                 <td class=" border text-center">{{$hadir}}</td>
-                                <td class=" border text-center">2</td>
-                                <td class=" border text-center">1</td>
-                                <td class=" border text-center">1</td>
+                                <td class=" border text-center">{{$izin}}</td>
+                                <td class=" border text-center">{{$sakit}}</td>
+                                <td class=" border text-center">{{$alfa}}</td>
+
                             </tr>
                         </tbody>
                     </table>
