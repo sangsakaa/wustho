@@ -48,8 +48,11 @@ Route::get('nis/{siswa}', [SiswaController::class, 'nis']);
 Route::get('nis/{nis}/edit', [SiswaController::class, 'editNis']);
 Route::patch('nis/{nis}', [SiswaController::class, 'UpdateNis']);
 Route::get('statuspengamal/{siswa}', [SiswaController::class, 'statuspengamal']);
+
 Route::post('statuspengamal/{siswa}', [SiswaController::class, 'storeSP']);
+
 Route::post('statusanak/{siswa}', [SiswaController::class, 'storeSA']);
+Route::delete('statusanak/{statusanak}', [SiswaController::class, 'HapusStatusAnaka']);
 Route::delete('statuspengamal/{siswa}', [SiswaController::class, 'destroySP']);
 Route::get('statusanak/{siswa}', [SiswaController::class, 'statusanak']);
 Route::get('addsiswa', [SiswaController::class, 'create'])->middleware(['auth']);

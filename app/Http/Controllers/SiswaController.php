@@ -252,6 +252,11 @@ class SiswaController extends Controller
             ]
         );
     }
+    public function HapusStatusAnaka(Statusanak $statusanak)
+    {
+        Statusanak::destroy($statusanak->id);
+        return redirect()->back();
+    }
 
     public function transkip(Request $request, Siswa $siswa)
     {
