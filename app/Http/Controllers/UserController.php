@@ -52,12 +52,14 @@ class UserController extends Controller
             ->where('pesertakelas.siswa_id', $siswa_id)
             ->where('kelasmi.periode_id', session('periode_id'))
             ->paginate(10);
+        $hadir = $user->where('keterangan', 'hadir')->count();
         return view(
             'user/riwayatkehadiran',
             [
                 'siswa' => $user,
                 'siswa_id' => $siswa_id,
-                'title' => $title
+                'title' => $title,
+                'hadir' => $hadir,
             ]
         );
     }

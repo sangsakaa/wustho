@@ -32,7 +32,7 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td class=" border text-center">{{$siswa->countBy('hadir')}}</td>
+                                <td class=" border text-center">{{$hadir}}</td>
                                 <td class=" border text-center">2</td>
                                 <td class=" border text-center">1</td>
                                 <td class=" border text-center">1</td>
