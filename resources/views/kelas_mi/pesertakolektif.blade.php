@@ -85,7 +85,7 @@
                                 @endforeach
                                 @else
                                 <tr>
-                                    <td class=" px-2 border text-center" colspan="6">
+                                    <td class=" px-2 border text-center" colspan="8">
                                         Tidak ada data yang ditemukan
                                     </td>
                                 </tr>

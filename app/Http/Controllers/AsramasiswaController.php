@@ -268,10 +268,11 @@ class AsramasiswaController extends Controller
                     'siswa.nama_siswa',
                     'siswa.jenis_kelamin',
                     'nis.nis',
+                'nis.madrasah_diniyah',
                     'nis.tanggal_masuk'
                 ]
             )
-            // ->orderBy('nis.nis')
+            ->orderBy('nis.madrasah_diniyah')
             // ->orderBy('siswa.nama_siswa');
             ->orderBy('siswa.jenis_kelamin')
             ->orderBy('siswa.nama_siswa');

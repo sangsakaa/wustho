@@ -74,7 +74,7 @@
                                     <tbody class="">
                                         @if($kelasMI->count() != null)
                                         @foreach ($kelasMI as $item)
-                                        <tr class=" hover:bg-green-200 border dark:hover:bg-purple-600">
+                                        <tr class=" hover:bg-green-200 border dark:hover:bg-purple-600 even:bg-gray-100">
                                             <th class=" text-xs text-center border">{{$loop->iteration}}</th>
                                             <td class=" text-xs text-center border"> {{$item->periode}} {{$item->ket_semester}}</td>
                                             <td class=" text-xs text-center border"><a href="/pesertakelas/{{$item->id}}"> {{$item->kelas}}</a></td>

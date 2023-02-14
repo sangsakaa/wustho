@@ -38,6 +38,9 @@
                             <a href="/plotingkelas" class=" py-1 px-2 bg-blue-600 rounded-md text-white hover:bg-purple-500">
                                 Ploting Kelas
                             </a>
+                            <a href="/validasi-data" class=" py-1 px-2 bg-blue-600 rounded-md text-white hover:bg-purple-500">
+                                Validasi Data
+                            </a>
                         </div>
 
                     </div>

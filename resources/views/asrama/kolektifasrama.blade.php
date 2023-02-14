@@ -42,6 +42,7 @@
                                     <th class=" border px-2" class=" text-center"> Nomor Induk Siswa</th>
                                     <th class=" border px-2">Nama Siswa</th>
                                     <th class=" border px-2"> JK</th>
+                                    <th class=" border px-2 capitalize">madrasah <br> diniyah</th>
                                     <th class=" border px-2">Angkatan</th>
 
                                 </tr>
@@ -65,6 +66,9 @@
 
                                     <td class=" border px-2 text-center">
                                         <label for="">{{ $item->jenis_kelamin}}</label>
+                                    </td>
+                                    <td class=" border px-2 text-center">
+                                        <label for="">{{ $item->madrasah_diniyah}}</label>
                                     </td>
                                     <td class=" border px-2  text-center ">
                                         <?php
