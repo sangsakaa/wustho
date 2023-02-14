@@ -59,23 +59,37 @@
                     <div class=" grid grid-cols-1 sm:grid-cols-1 gap-2 py-1">
                         <form action="/statusanak/{{$siswa->id}}" method="post">
                             @csrf
-                            <input type="hidden" name="siswa_id" class=" py-1" placeholder="siswa" value="{{$siswa->id}}">
-                            <input type="number" name="anak_ke" class=" py-1" placeholder="anak ke : 5">
-                            <input type="number" name="jumlah_saudara" class=" py-1" placeholder="jumlah saudara ke : 5">
-                            <select name="status_anak" id="" class=" py-1 capitalize">
-                                <option value="kandung" class=" capitalize">kandung</option>
-                                <option value="tiri">tiri</option>
-                            </select>
-                            <button class=" bg-green-600 py-1 px-2 rounded-sm text-white capitalize">Simpan</button>
+                            <div class=" grid grid-cols-2 gap-2">
+                                <input type="hidden" name="siswa_id" class=" py-1" placeholder="siswa" value="{{$siswa->id}}">
+                                <input type="number" name="anak_ke" class=" py-1" placeholder="anak ke : 5">
+                                <input type="number" name="jumlah_saudara" class=" py-1" placeholder="jumlah saudara ke : 5">
+                                <select name="status_anak" id="" class=" py-1 capitalize">
+                                    <option value="kandung" class=" capitalize">kandung</option>
+                                    <option value="tiri">tiri</option>
+                                </select>
+                                <input type="text" name="nama_ibu" class=" py-1" placeholder="nama_ibu">
+                                <input type="text" name="nama_ayah" class=" py-1" placeholder="nama_ayah">
+                                <input type="text" name="nomor_hp_ibu" class=" py-1" placeholder="nomor_hp_ibu">
+                                <input type="text" name="nomor_hp_ayah" class=" py-1" placeholder="nomor_hp_ayah">
+                                <input type="text" name="pekerjaan_ibu" class=" py-1" placeholder="pekerjaan_ibu">
+                                <input type="text" name="pekerjaan_ayah" class=" py-1" placeholder="pekerjaan_ayah">
+                                <button class=" bg-green-600 py-1 px-2 rounded-sm text-white capitalize">Simpan</button>
+                            </div>
                         </form>
                         <div>
                             <span>Detail Status Anak</span>
-                            <table class=" w-1/2    ">
+                            <table class=" w-full    ">
                                 <thead>
                                     <tr class=" border-collapse">
                                         <th class=" border text-center">Status Anak</th>
                                         <th class=" border text-center"> jumlah saudara</th>
                                         <th class=" border text-center"> anak ke</th>
+                                        <th class=" border text-center"> Ayah</th>
+                                        <th class=" border text-center"> Perkerjaan</th>
+                                        <th class=" border text-center"> Nomor Hp</th>
+                                        <th class=" border text-center"> Ibu</th>
+                                        <th class=" border text-center"> Perkerjaan</th>
+                                        <th class=" border text-center"> Nomor Hp</th>
                                         <th class=" border text-center"> aksi</th>
                                     </tr>
                                 </thead>
@@ -85,6 +99,12 @@
                                         <td class=" px-2 border text-center ">{{$org->status_anak}}</td>
                                         <td class=" px-2 border text-center ">{{$org->jumlah_saudara}}</td>
                                         <td class=" px-2 border text-center ">{{$org->anak_ke}}</td>
+                                        <td class=" px-2 border text-center ">{{$org->nama_ayah}}</td>
+                                        <td class=" px-2 border text-center ">{{$org->pekerjaan_ayah}}</td>
+                                        <td class=" px-2 border text-center ">{{$org->nomor_hp_ayah}}</td>
+                                        <td class=" px-2 border text-center ">{{$org->nama_ibu}}</td>
+                                        <td class=" px-2 border text-center ">{{$org->pekerjaan_ibu}}</td>
+                                        <td class=" px-2 border text-center ">{{$org->nomor_hp_ibu}}</td>
                                         <td class=" text-sm flex justify-center py-1  gap-1">
                                             <form action="/statusanak/{{$org->id}}" method="post">
                                                 @csrf

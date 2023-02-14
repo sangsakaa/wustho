@@ -92,6 +92,12 @@ class SiswaController extends Controller
         $statusanak->status_anak = $request->status_anak;
         $statusanak->anak_ke = $request->anak_ke;
         $statusanak->jumlah_saudara = $request->jumlah_saudara;
+        $statusanak->nama_ayah = $request->nama_ayah;
+        $statusanak->nama_ibu = $request->nama_ibu;
+        $statusanak->pekerjaan_ayah = $request->pekerjaan_ayah;
+        $statusanak->pekerjaan_ibu = $request->pekerjaan_ibu;
+        $statusanak->nomor_hp_ayah = $request->nomor_hp_ayah;
+        $statusanak->nomor_hp_ibu = $request->nomor_hp_ibu;
         $statusanak->save();
         return redirect()->back();
     }
