@@ -92,19 +92,19 @@
                             <div class=" border py-2 px-2" class=" w-1/2">9. Status Anak </div>
                             <div class=" border py-2 px-2 capitalize">: {{$biodata->status_anak}}</div>
                             <div class=" border py-2 px-2 " class=" w-1/2">10. Nama Ayah </div>
-                            <div class=" border py-2 px-2">: -</div>
+                            <div class=" border py-2 px-2">: {{$biodata->nama_ayah}}</div>
                             <div class=" border py-2 px-6" class=" w-1/2">Pekerjaan </div>
-                            <div class=" border py-2 px-2">: -</div>
+                            <div class=" border py-2 px-2">: {{$biodata->pekerjaan_ayah}}</div>
                             <div class=" border py-2 px-6" class=" w-1/2">Nomor Hp </div>
-                            <div class=" border py-2 px-2">: - </div>
+                            <div class=" border py-2 px-2">: {{$biodata->nomor_hp_ayah}} </div>
                             <div class=" border py-2 px-2" class=" w-1/2">11. Nama Ibu </div>
-                            <div class=" border py-2 px-2">: - </div>
+                            <div class=" border py-2 px-2">: {{$biodata->nama_ibu}} </div>
                             <div class=" border py-2 px-6" class=" w-1/2">Pekerjaan </div>
-                            <div class=" border py-2 px-2">: - </div>
+                            <div class=" border py-2 px-2">: {{$biodata->pekerjaan_ibu}} </div>
                             <div class=" border py-2 px-6" class=" w-1/2">Nomor Hp </div>
-                            <div class=" border py-2 px-2">: - </div>
+                            <div class=" border py-2 px-2">: {{$biodata->nomor_hp_ibu}} </div>
                             <div class=" border py-2 px-2" class=" w-1/2">12. Nama Wali </div>
-                            <div class=" border py-2 px-2">: - </div>
+                            <div class=" border py-2 px-2">: {{$biodata->nama_ayah}} </div>
 
                             <div class=" border py-2 px-2" class=" w-1/2">13. Daerah Asal </div>
                             <div class=" border py-2 px-2 capitalize">: {{$biodata->kota_asal}}</div>
