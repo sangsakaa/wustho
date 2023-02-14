@@ -51,7 +51,7 @@ class UserController extends Controller
             ->join('semester', 'semester.id', 'periode.semester_id')
             ->where('pesertakelas.siswa_id', $siswa_id)
             ->where('kelasmi.periode_id', session('periode_id'))
-            ->paginate(10);
+        ->get();
         $hadir = $user->where('keterangan', 'hadir')->count();
         return view(
             'user/riwayatkehadiran',

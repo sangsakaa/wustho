@@ -91,7 +91,7 @@
                         </tbody>
                     </table>
                     <div class=" py-1 text-xs">
-                        {{$siswa}}
+
                     </div>
                 </div>
             </div>
