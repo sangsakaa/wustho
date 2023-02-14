@@ -12,9 +12,9 @@ return new class extends Migration
             $table->string('nama_ayah')->nullable();
             $table->string('pekerjaan_ayah')->nullable();
             $table->string('pekerjaan_ibu')->nullable();
-            $table->integer('nomor_hp_ayah')->nullable();
+            $table->string('nomor_hp_ayah')->nullable();
             $table->string('nama_ibu')->nullable();
-            $table->integer('nomor_hp_ibu')->nullable();
+            $table->string('nomor_hp_ibu')->nullable();
         });
     }
     public function down()
