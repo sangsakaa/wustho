@@ -21,6 +21,26 @@
         <div class="p-4  border-b border-gray-200">
             <div class=" grid grid-cols-1 text-xs sm:text-sm sm:grid-cols-1 gap-2">
                 <div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th class=" px-1 py-1 border ">HADIR</th>
+                                <th class=" px-1 py-1 border ">IZIN</th>
+                                <th class=" px-1 py-1 border ">SAKIT</th>
+                                <th class=" px-1 py-1 border ">ALFA</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class=" border text-center">{{$siswa->countBy('keterangan')}}</td>
+                                <td class=" border text-center">2</td>
+                                <td class=" border text-center">1</td>
+                                <td class=" border text-center">1</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div>
                     <span class=" text-lg">Detail Riwayat Kehadiran Kelas</span>
                     <table class=" w-full    ">
                         <thead>
