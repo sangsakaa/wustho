@@ -64,6 +64,7 @@ class UserController extends Controller
                 'title' => $title,
                 'hadir' => $hadir,
                 'izin' => $izin,
+                'sakit' => $sakit,
                 'alfa' => $alfa,
             ]
         );
