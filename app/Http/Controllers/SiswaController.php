@@ -11,7 +11,6 @@ use App\Models\Pesertakelas;
 use Illuminate\Http\Request;
 use App\Models\Statuspengamal;
 use Illuminate\Routing\Controller;
-use DataTables;
 
 class SiswaController extends Controller
 {
@@ -244,7 +243,7 @@ class SiswaController extends Controller
             ->where('statusanak.siswa_id', $siswa->id)->get();
 
         return view(
-            'siswa/statusanak',
+            'siswa/statusanak/index',
             [
                 'siswa' => $siswa,
                 
