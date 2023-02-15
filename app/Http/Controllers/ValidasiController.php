@@ -20,6 +20,7 @@ class ValidasiController
             ->join('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
             ->join('nis', 'siswa.id', '=', 'nis.siswa_id')
             ->leftjoin('statusanak', 'siswa.id', '=', 'statusanak.siswa_id')
+            ->leftjoin('statuspengamal', 'siswa.id', '=', 'statuspengamal.siswa_id')
             // ->select('kelasmi.id')
             ->where('kelasmi.periode_id', session('periode_id'))
             ->orderby('nama_kelas')

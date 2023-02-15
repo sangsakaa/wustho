@@ -71,16 +71,18 @@
                     <td class=" px-1 py-2 capitalize border border-black">{{strtolower($item->tempat_lahir)}}, {{ \Carbon\Carbon::parse($item->tanggal_lahir)->isoFormat(' DD MMMM Y') }}</td>
                     <td class=" px-1 py-2 capitalize border border-black text-center">{{$item->nama_kelas}}</td>
                     <td class=" px-1 py-2 capitalize border border-black">{{$item->nama_ayah}}</td>
-                    <td class=" px-1 py-2 capitalize border border-black"></td>
-                    <td class=" px-1 py-2 capitalize border border-black"></td>
-                    <td class=" px-1 py-2 capitalize border border-black"></td>
-                    <td class=" px-1 py-2 capitalize border border-black"></td>
-                    <td class=" px-1 py-2 capitalize border border-black"></td>
-                    <td class=" px-1 py-2 capitalize border border-black"></td>
-                    <td class=" px-1 py-2 capitalize border border-black"></td>
-                    <td class=" px-1 py-2 capitalize border border-black"></td>
-                    <td class=" px-1 py-2 capitalize border border-black"></td>
-                    <td class=" px-1 py-2 capitalize border border-black"></td>
+                    <td class=" px-1 py-2 capitalize border border-black">{{$item->nomor_hp_ayah}}</td>
+                    <td class=" px-1 py-2 capitalize border border-black">{{$item->perkerjaan_ayah}}</td>
+                    <td class=" px-1 py-2 capitalize border border-black">{{$item->nama_ibu}}</td>
+                    <td class=" px-1 py-2 capitalize border border-black">{{$item->nomor_hp_ibu}}</td>
+                    <td class=" px-1 py-2 capitalize border border-black">{{$item->perkerjaan_ibu}}</td>
+                    <td class=" px-1 py-2 capitalize border border-black">{{$item->status_anak}}</td>
+                    <td class=" px-1 py-2 capitalize border border-black">{{$item->jumlah_saudara}}</td>
+                    <td class=" px-1 py-2 capitalize border border-black">{{$item->anak_ke}}</td>
+                    <td class=" px-1 py-2 capitalize border border-black">{{$item->kota_asal}}</td>
+                    <td class=" px-1 py-2 capitalize border border-black">{{$item->status_pengamal}}</td>
+
+
                 </tr>
                 @endforeach
             </tbody>
