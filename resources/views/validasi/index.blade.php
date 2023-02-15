@@ -39,54 +39,55 @@
     <div id="div1" class="  bg-white grid  grid-cols-1 px-2 py-2 gap-2">
 
         <span class=" text-center uppercase font-semibold">Data Validasi</span>
+        <div class=" overflow-auto">
+            <table class=" w-full">
+                <thead>
+                    <tr class=" text-xs">
+                        <th class=" px-1 capitalize border border-black">No</th>
+                        <th class=" px-1 capitalize border border-black">Nama</th>
+                        <th class=" px-1 capitalize border border-black">JK</th>
+                        <th class=" px-1 capitalize border border-black">TTL</th>
+                        <th class=" px-1 capitalize border border-black">KLS</th>
+                        <th class=" px-1 capitalize border border-black">Nama Ayah</th>
+                        <th class=" px-1 capitalize border border-black">Pekerjaan Ayah</th>
+                        <th class=" px-1 capitalize border border-black">No Hp Ayah</th>
+                        <th class=" px-1 capitalize border border-black">Nama Ibu</th>
+                        <th class=" px-1 capitalize border border-black">Pekerjaan Ibu</th>
+                        <th class=" px-1 capitalize border border-black">No Hp ibu</th>
+                        <th class=" px-1 capitalize border border-black">Status anak</th>
+                        <th class=" px-1 capitalize border border-black">jml Sdr</th>
+                        <th class=" px-1 capitalize border border-black">anak ke</th>
+                        <th class=" px-1 capitalize border border-black">daerah asal</th>
+                        <th class=" px-1 capitalize border border-black">Status Pengamal</th>
 
-        <table class=" w-full">
-            <thead>
-                <tr class=" text-xs">
-                    <th class=" px-1 capitalize border border-black">No</th>
-                    <th class=" px-1 capitalize border border-black">Nama</th>
-                    <th class=" px-1 capitalize border border-black">JK</th>
-                    <th class=" px-1 capitalize border border-black">TTL</th>
-                    <th class=" px-1 capitalize border border-black">KLS</th>
-                    <th class=" px-1 capitalize border border-black">Nama Ayah</th>
-                    <th class=" px-1 capitalize border border-black">Pekerjaan Ayah</th>
-                    <th class=" px-1 capitalize border border-black">No Hp Ayah</th>
-                    <th class=" px-1 capitalize border border-black">Nama Ibu</th>
-                    <th class=" px-1 capitalize border border-black">Pekerjaan Ibu</th>
-                    <th class=" px-1 capitalize border border-black">No Hp ibu</th>
-                    <th class=" px-1 capitalize border border-black">Status anak</th>
-                    <th class=" px-1 capitalize border border-black">jml Sdr</th>
-                    <th class=" px-1 capitalize border border-black">anak ke</th>
-                    <th class=" px-1 capitalize border border-black">daerah asal</th>
-                    <th class=" px-1 capitalize border border-black">Status Pengamal</th>
-
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($data as $item)
-                <tr class=" text-xs  even:bg-gray-100">
-                    <th class=" px-1 py-2 capitalize border border-black">{{$loop->iteration}}</th>
-                    <td class=" px-1 py-2 capitalize border border-black">{{strtolower($item->nama_siswa)}}</td>
-                    <td class=" px-1 py-2 capitalize border border-black text-center">{{$item->jenis_kelamin}}</td>
-                    <td class=" px-1 py-2 capitalize border border-black">{{strtolower($item->tempat_lahir)}}, {{ \Carbon\Carbon::parse($item->tanggal_lahir)->isoFormat(' DD MMMM Y') }}</td>
-                    <td class=" px-1 py-2 capitalize border border-black text-center">{{$item->nama_kelas}}</td>
-                    <td class=" px-1 py-2 capitalize border border-black">{{$item->nama_ayah}}</td>
-                    <td class=" px-1 py-2 capitalize border border-black">{{$item->nomor_hp_ayah}}</td>
-                    <td class=" px-1 py-2 capitalize border border-black">{{$item->perkerjaan_ayah}}</td>
-                    <td class=" px-1 py-2 capitalize border border-black">{{$item->nama_ibu}}</td>
-                    <td class=" px-1 py-2 capitalize border border-black">{{$item->nomor_hp_ibu}}</td>
-                    <td class=" px-1 py-2 capitalize border border-black">{{$item->perkerjaan_ibu}}</td>
-                    <td class=" px-1 py-2 capitalize border border-black">{{$item->status_anak}}</td>
-                    <td class=" px-1 py-2 capitalize border border-black">{{$item->jumlah_saudara}}</td>
-                    <td class=" px-1 py-2 capitalize border border-black">{{$item->anak_ke}}</td>
-                    <td class=" px-1 py-2 capitalize border border-black">{{$item->kota_asal}}</td>
-                    <td class=" px-1 py-2 capitalize border border-black">{{$item->status_pengamal}}</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($data as $item)
+                    <tr class=" text-xs  even:bg-gray-100">
+                        <th class=" px-1 py-2 capitalize border border-black">{{$loop->iteration}}</th>
+                        <td class=" px-1 py-2 capitalize border border-black w-60">{{strtolower($item->nama_siswa)}}</td>
+                        <td class=" px-1 py-2 capitalize border border-black text-center ">{{$item->jenis_kelamin}}</td>
+                        <td class=" px-1 py-2 capitalize border border-black w-60">{{strtolower($item->tempat_lahir)}}, {{ \Carbon\Carbon::parse($item->tanggal_lahir)->isoFormat(' DD MMMM Y') }}</td>
+                        <td class=" px-1 py-2 capitalize border border-black text-center">{{$item->nama_kelas}}</td>
+                        <td class=" px-1 py-2 capitalize border border-black w-60">{{$item->nama_ayah}}</td>
+                        <td class=" px-1 py-2 capitalize border border-black">{{$item->nomor_hp_ayah}}</td>
+                        <td class=" px-1 py-2 capitalize border border-black">{{$item->perkerjaan_ayah}}</td>
+                        <td class=" px-1 py-2 capitalize border border-black w-60">{{$item->nama_ibu}}</td>
+                        <td class=" px-1 py-2 capitalize border border-black">{{$item->nomor_hp_ibu}}</td>
+                        <td class=" px-1 py-2 capitalize border border-black">{{$item->perkerjaan_ibu}}</td>
+                        <td class=" px-1 py-2 capitalize border border-black">{{$item->status_anak}}</td>
+                        <td class=" px-1 py-2 capitalize border border-black">{{$item->jumlah_saudara}}</td>
+                        <td class=" px-1 py-2 capitalize border border-black">{{$item->anak_ke}}</td>
+                        <td class=" px-1 py-2 capitalize border border-black w-60">{{$item->kota_asal}}</td>
+                        <td class=" px-1 py-2 capitalize border border-black">{{$item->status_pengamal}}</td>
 
 
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
     </div>
 
 </x-app-layout>
