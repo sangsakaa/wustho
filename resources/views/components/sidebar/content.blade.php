@@ -20,6 +20,13 @@
         </x-slot>
     </x-sidebar.link>
     @endrole
+    @role('guru')
+    <x-sidebar.link title="Nilai Akhir" href="/nilaiperguru" :isActive="request()->routeIs('guru')">
+        <x-slot name="icon">
+            <x-icons.usercircle class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
+        </x-slot>
+    </x-sidebar.link>
+    @endrole
     <!-- <x-sidebar.dropdown title="Buttons" :active="Str::startsWith(request()->route()->uri(), 'buttons')">
         <x-slot name="icon">
             <x-heroicon-o-view-grid class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
