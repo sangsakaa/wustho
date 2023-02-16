@@ -40,10 +40,10 @@
                                     <button class=" bg-red-600 py-1 sm:w-full rounded-md text-white px-4 text-center capitalize">simpan nilai</button>
                                     <a href="/nilaimapel" class=" sm:w-full bg-red-600 py-1 rounded-md text-white px-4 text-center capitalize">Kembali</a>
                                     @endrole
-                                    @can('show post')
+                                    @role('guru')
                                     <button class=" bg-red-600 py-1 sm:w-full rounded-md text-white px-4 text-center capitalize">simpan nilai</button>
                                     <a href="/nilaiperguru" class=" sm:w-full bg-red-600 py-1 rounded-md text-white px-4 text-center capitalize">Kembali</a>
-                                    @endcan
+                                    @endrole
                                 </div>
                             </div>
                             <div class=" overflow-auto">
