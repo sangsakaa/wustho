@@ -7,11 +7,11 @@
     <div class="">
         <div class="bg-white overflow-hidden shadow-sm ">
             <div class="p-2 bg-white border-b border-gray-200">
-                <div class=" p-4 grid grid-cols-4 gap-1">
-                    <div>Nama Lengkap</div>
-                    <div>: {{$guru->nama_guru}}</div>
-                    <div>Jenia Kelamin</div>
-                    <div>: {{$guru->jenis_kelamin}}</div>
+                <div class=" p-4 grid grid-cols-4 gap-1 ">
+                    <div class=" ">Nama Lengkap</div>
+                    <div class=" ">: {{$guru->nama_guru}}</div>
+                    <div class=" ">Jenia Kelamin</div>
+                    <div class=" ">: {{$guru->jenis_kelamin}}</div>
                 </div>
             </div>
 

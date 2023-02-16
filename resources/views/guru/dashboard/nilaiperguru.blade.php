@@ -8,14 +8,14 @@
     <div class="p-2">
         <div class=" dark:bg-dark-bg bg-white overflow-hidden shadow-sm sm:rounded-lg">
             <div class="p-1 ">
-                <div class=" grid grid-cols-1 text-center py-1">
+                <div class=" grid grid-cols-1 text-center py-1  ">
                     <div>
                         {{$title->nama_guru}} <br>
                     </div>
-                    <div class=" uppercase font-semibold">
+                    <div class=" uppercase font-semibold text-xs">
                         Nomor Induk Guru
                     </div>
-                    <div>
+                    <div class=" font-semibold">
                         {{$title->nig}}
                     </div>
 
