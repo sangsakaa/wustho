@@ -110,8 +110,6 @@
 
     @endrole
     @role('pengurus')
-
-
     <x-sidebar.link title="Data Santri" href="/siswa" :isActive="request()->routeIs('siswa')">
         <x-slot name="icon">
             <x-icons.usercircle class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
