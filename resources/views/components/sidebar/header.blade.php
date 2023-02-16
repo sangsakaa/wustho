@@ -18,6 +18,12 @@
         <span class="sr-only text-black">S M E D I</span>
     </a>
     @endrole
+    @role('guru')
+    <a href="{{ route('gurudashboard') }}" class="inline-flex items-center gap-2">
+        <x-application-logo aria-hidden="true" class="w-10 h-auto" />
+        <span class="sr-only text-black">S M E D I</span>
+    </a>
+    @endrole
     <!-- Toggle button -->
     <x-button type="button" iconOnly srText="Toggle sidebar" variant="secondary" x-show="isSidebarOpen || isSidebarHovered" @click="isSidebarOpen = !isSidebarOpen">
         <x-icons.menu-fold-right x-show="!isSidebarOpen" aria-hidden="true" class="hidden w-6 h-6 lg:block" />

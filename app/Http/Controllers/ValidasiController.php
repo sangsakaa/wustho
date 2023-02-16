@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Kelasmi;
 use App\Models\Pesertakelas;
-use App\Models\Siswa;
 use Illuminate\Http\Request;
 
 class ValidasiController
@@ -21,12 +20,13 @@ class ValidasiController
             ->join('nis', 'siswa.id', '=', 'nis.siswa_id')
             ->leftjoin('statusanak', 'siswa.id', '=', 'statusanak.siswa_id')
             ->leftjoin('statuspengamal', 'siswa.id', '=', 'statuspengamal.siswa_id')
-            // ->select('kelasmi.id')
+            // ->select('siswa.nama_siswa')
             ->where('kelasmi.periode_id', session('periode_id'))
             ->orderby('nama_kelas')
             ->orderby('nama_siswa');
         if (request('cari')) {
             $data->where('nama_kelas', 'like', '%' . request('cari') . '%');
+            
         }
         return view(
             'validasi.index',

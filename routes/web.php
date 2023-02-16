@@ -23,17 +23,27 @@ use App\Http\Controllers\PresensikelasController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\RekapAsamaController;
 use App\Http\Controllers\SesikelasController;
+use App\Http\Controllers\UserguruController;
 use App\Http\Controllers\ValidasiController;
 
 // batas
 Route::get('/admin', [RegisteredUserController::class, 'index'])->middleware(['auth'])->name('admin');
 Route::get('/userdashboard', [UserController::class, 'DashboardUser'])->middleware(['auth'])->name('userdashboard');
+
+
+// UserGuru Controller
+Route::get('/nilaiperguru', [UserguruController::class, 'UserGuru'])->middleware(['auth'])->name('gurudashboard');
+
+
+
+
 Route::get('manajemen', [RegisteredUserController::class, 'manajemen'])->middleware(['auth'])->name('manajemen');
 Route::get('register', [RegisteredUserController::class, 'create'])->middleware(['auth'])->name('register');
 Route::get('HasRole', [RegisteredUserController::class, 'HasRole'])->middleware(['auth'])->name('HasRole');
 Route::post('admin', [RegisteredUserController::class, 'role_has_permission'])->middleware(['auth']);
 Route::delete('admin/{user}', [RegisteredUserController::class, 'destroy']);
 Route::get('/buatakunsiswa', [RegisteredUserController::class, 'buatAkunSiswa'])->middleware(['auth']);
+Route::get('/buatakunguru', [RegisteredUserController::class, 'buatAkunGuru'])->middleware(['auth']);
 // User
 Route::get('/user', [UserController::class, 'Personal'])->middleware(['auth'])->name('user');
 Route::get('/riwayatkelas', [UserController::class, 'Riwayatkelas'])->middleware(['auth'])->name('riwayatkelas');
@@ -117,6 +127,9 @@ Route::post('guru', [GuruController::class, 'store'])->middleware(['auth']);
 Route::delete('guru/{guru}', [GuruController::class, 'destroy'])->middleware(['auth']);
 Route::patch('guru/{guru}', [GuruController::class, 'update'])->middleware(['auth']);
 Route::get('guru/{guru}/edit', [GuruController::class, 'edit'])->middleware(['auth']);
+// Nomor Induk Guru
+Route::get('nig/{guru}', [GuruController::class, 'NIS'])->middleware(['auth'])->name('nis');
+Route::post('nig/{guru}', [GuruController::class, 'nisGuru'])->middleware(['auth']);
 
 // Controller Raport
 Route::get('report/{pesertakelas}', [RaportController::class, 'show'])->middleware(['auth'])->name('report');

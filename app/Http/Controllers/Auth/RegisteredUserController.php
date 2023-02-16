@@ -8,6 +8,7 @@ use App\Models\Hasrole;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rules;
 use App\Http\Controllers\Controller;
+use App\Models\Guru;
 use App\Models\Permissions;
 use App\Models\Roles;
 use Illuminate\Support\Facades\Auth;
@@ -144,16 +145,13 @@ class RegisteredUserController extends Controller
         // }
 
         event(new Registered($user));
-        // Auth::login($user);
+        Auth::login($user);
         if (Auth::login($user)) {
             return redirect(RouteServiceProvider::USER);
         } else {
 
             return redirect(RouteServiceProvider::HOME);
         }
-        // return redirect(RouteServiceProvider::HOME);
-
-
     }
     public function destroy(User $user)
     {
@@ -184,5 +182,31 @@ class RegisteredUserController extends Controller
         }
 
         return redirect()->back()->with('status', $jumlahUser . ' user untuk siswa telah dibuat');
+    }
+    public function buatAkunGuru()
+    {
+        $dataGuru = Guru::query()
+            ->join('nig', 'nig.guru_id', '=', 'guru.id')
+            ->leftJoin('users', 'users.guru_id', '=', 'guru.id')
+            ->select('guru.id', 'guru.nama_guru', 'nig.nig')
+            ->where('users.guru_id', null)
+            ->get();
+        // dd($siswa->toSql());
+
+        $jumlahUserGuru = 0;
+        foreach ($dataGuru as $guru) {
+            $user = User::create([
+                'name' => $guru->nama_guru,
+                'email' => $guru->nig . '@smedi.my.id',
+                'password' => Hash::make($guru->nig),
+                'guru_id' => $guru->id
+
+            ]);
+            $user->assignRole('guru');
+            $user->givePermissionTo('show post');
+            $jumlahUserGuru++;
+        }
+
+        return redirect()->back()->with('status', $jumlahUserGuru . ' user untuk guru telah dibuat');
     }
 }

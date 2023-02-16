@@ -42,9 +42,12 @@ class AuthenticatedSessionController extends Controller
             return redirect()->intended(RouteServiceProvider::HOME);
         } elseif (Auth::user()->hasRole('pengurus')) {
             return redirect()->intended(RouteServiceProvider::PONDOK);
-        } else {
+        } elseif (Auth::user()->hasRole('siswa')) {
             return redirect()->intended(RouteServiceProvider::USER);
+        } else {
+            return redirect()->intended(RouteServiceProvider::GURU);
         }
+
     }
 
     /**

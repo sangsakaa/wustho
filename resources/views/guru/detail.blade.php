@@ -14,11 +14,15 @@
                     <div>: {{$guru->jenis_kelamin}}</div>
                 </div>
             </div>
+
         </div>
         <div class="mt-2">
             <div class="bg-white overflow-hidden shadow-sm">
                 <div class="p-2 bg-white border-b border-gray-200">
                     <div class=" ">
+                        <div>
+                            <a href="/nig/{{$guru->id}}" class=" text-white px-1 py-1 bg-sky-400"> Nomor Induk Guru</a>
+                        </div>
                         <span>Riwayat Mengajar</span>
                         <table class=" border w-full">
                             <thead>

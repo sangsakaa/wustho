@@ -14,7 +14,6 @@
                             <span class=" sm:text-2xl text-sm   px-2 text-blue-400">Input Nilai</span>
                         </div>
                         <hr>
-
                         <div class=" grid sm:grid-cols-4 grid-cols-2  sm:px-4 px-2 py-2">
                             <div class=" sm:text-sm text-xs">Kelas / Semester</div>
                             <div class=" sm:text-sm text-xs"> : {{$titlenilai->nama_kelas}} / {{$titlenilai->semester}}</div>
@@ -37,8 +36,14 @@
                             @csrf
                             <div class=" flex  justify-items-end  ">
                                 <div class=" grid grid-cols-2 gap-2  ">
+                                    @role('super admin')
                                     <button class=" bg-red-600 py-1 sm:w-full rounded-md text-white px-4 text-center capitalize">simpan nilai</button>
                                     <a href="/nilaimapel" class=" sm:w-full bg-red-600 py-1 rounded-md text-white px-4 text-center capitalize">Kembali</a>
+                                    @endrole
+                                    @role('guru')
+                                    <button class=" bg-red-600 py-1 sm:w-full rounded-md text-white px-4 text-center capitalize">simpan nilai</button>
+                                    <a href="/nilaiperguru" class=" sm:w-full bg-red-600 py-1 rounded-md text-white px-4 text-center capitalize">Kembali</a>
+                                    @endrole
                                 </div>
                             </div>
                             <div class=" overflow-auto">

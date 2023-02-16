@@ -22,7 +22,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'siswa_id'
+        'siswa_id',
+        'guru_id',
     ];
 
     /**

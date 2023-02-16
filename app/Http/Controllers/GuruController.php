@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Guru;
+use App\Models\Nig;
 use App\Models\Nilaimapel;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -10,11 +11,7 @@ use Illuminate\Routing\Controller;
 
 class GuruController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
     public function index()
     {
         $data = Guru::orderBy('nama_guru');
@@ -24,22 +21,13 @@ class GuruController extends Controller
         return view('guru/guru', ['dataGuru' => $data->paginate(10)]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    
     public function create()
     {
         return view('guru/addGuru');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    
     public function store(Request $request)
     {
         $guru = new Guru();
@@ -54,12 +42,7 @@ class GuruController extends Controller
         return redirect('guru')->with('success', 'data berhasil ditambahkan');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+    
     public function show(Guru $guru)
     {
         $riwayat_mengajara = Nilaimapel::query()
@@ -76,7 +59,7 @@ class GuruController extends Controller
             ->orderBy('nama_kelas')
             ->get();
         return view(
-            'guru/detailGuru',
+            'guru/detail',
             [
                 'guru' => $guru,
                 'riwayatMengajar' => $riwayat_mengajara,
@@ -84,15 +67,10 @@ class GuruController extends Controller
         );
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+   
     public function edit(Guru $guru)
     {
-        return view('guru/editGuru', ['guru' => $guru]);
+        return view('guru/edit', ['guru' => $guru]);
     }
 
     /**
@@ -117,17 +95,34 @@ class GuruController extends Controller
             ]);
         return redirect('/guru')->with('update', 'pembaharuan data berhasil');
     }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Guru $guru)
     {
         Guru::destroy($guru->id);
         return redirect()->back()->with('delete', 'data guru berhasil dihapus');
+    }
+    // Nis
+    public function NIS(Guru $guru)
+    {
+        $dataGuru = Guru::find($guru->id)->first();
+        $NIG = Nig::where('guru_id', $guru->id)->get();
+        return view(
+            'guru.nig.index',
+            [
+                'guru' => $guru,
+                'dataGuru' => $dataGuru,
+                'dataNIG' => $NIG,
+            ]
+        );
+    }
+    public function nisGuru(Request $request)
+    {
+        $nig = new Nig();
+        $nig->nig = $request->nig;
+        $nig->guru_id = $request->guru_id;
+        $nig->jenjang_id = $request->jenjang_id;
+
+        $nig->save();
+        return redirect()->back();
     }
 
 }

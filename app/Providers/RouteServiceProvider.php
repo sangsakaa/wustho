@@ -20,6 +20,7 @@ class RouteServiceProvider extends ServiceProvider
     public const HOME = '/dashboard';
     public const USER = '/userdashboard';
     public const PONDOK = '/dashboard';
+    public const GURU = '/nilaiperguru';
 
 
     /**

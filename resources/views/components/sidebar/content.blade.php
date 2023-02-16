@@ -178,4 +178,11 @@
         </x-slot>
     </x-sidebar.link>
     @endrole
+    @role('guru')
+    <x-sidebar.link title="Nilai Akhir" href="/nilaiperguru" :isActive="request()->routeIs('guru')">
+        <x-slot name="icon">
+            <x-icons.usercircle class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
+        </x-slot>
+    </x-sidebar.link>
+    @endrole
 </x-perfect-scrollbar>
