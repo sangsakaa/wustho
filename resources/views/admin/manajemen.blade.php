@@ -12,7 +12,6 @@
           <span class=" text-sky-500"> User Management Role</span>
           <div class=" flex grid-cols-1 gap-1">
             <a href="/admin" class=" bg-sky-400 py-1 px-4 rounded-md text-white hover:bg-purple-500">ListUsers</a>
-
             <a href="/HasRole" class=" bg-sky-400 py-1 px-4 rounded-md text-white hover:bg-purple-500">Has Role</a>
           </div>
         </div>
@@ -23,42 +22,23 @@
     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
       <div class=" bg-white border-b border-gray-200">
         <div class=" p-4 grid grid-cols-1">
-          <span> Permission</span>
+          <span>Data User Akun Guru</span>
           <table class=" w-full">
             <thead>
               <tr class=" border bg-gray-100">
-                <th class=" border py-1 ">No</th>
-                <th class=" border">Permissions</th>
-                <th class=" border">Role</th>
+                <th class=" border uppercase py-1 ">No</th>
+                <th class=" border uppercase">Name Akun</th>
+                <th class=" border uppercase">email</th>
+                <th class=" border uppercase">password</th>
               </tr>
             </thead>
             <tbody>
-              @foreach($hasRole as $user)
+              @foreach($UserGuru as $user)
               <tr class=" border ">
-                <th class=" border">{{$loop->iteration}}</th>
-                <th class=" border">{{$user->name}}</th>
-                <th class=" border">{{$user->guard_name}}</th>
-
-              </tr>
-              @endforeach
-            </tbody>
-          </table>
-          <span> Roles User</span>
-          <table class=" w-full">
-            <thead>
-              <tr class=" border bg-gray-100">
-                <th class=" border py-1">No</th>
-                <th class=" border">Roles Users</th>
-                <th class=" border">Role</th>
-              </tr>
-            </thead>
-            <tbody>
-              @foreach($roles as $user)
-              <tr class=" border ">
-                <th class=" border">{{$loop->iteration}}</th>
-                <th class=" border">{{$user->name}}</th>
-                <th class=" border">{{$user->guard_name}}</th>
-
+                <td class=" border text-center">{{$loop->iteration}}</td>
+                <td class=" border text-center">{{$user->name}}</td>
+                <td class=" border text-center">{{$user->email}}</td>
+                <td class=" border text-center">{{$user->nig}}</td>
               </tr>
               @endforeach
             </tbody>

@@ -35,9 +35,6 @@ Route::get('/userdashboard', [UserController::class, 'DashboardUser'])->middlewa
 Route::get('/nilaiperguru', [UserguruController::class, 'UserGuru'])->middleware(['auth'])->name('nilaiperguru');
 Route::get('/gurudashboard', [UserguruController::class, 'DashboardGuru'])->middleware(['auth'])->name('gurudashboard');
 
-
-
-
 Route::get('manajemen', [RegisteredUserController::class, 'manajemen'])->middleware(['auth'])->name('manajemen');
 Route::get('register', [RegisteredUserController::class, 'create'])->middleware(['auth'])->name('register');
 Route::get('HasRole', [RegisteredUserController::class, 'HasRole'])->middleware(['auth'])->name('HasRole');

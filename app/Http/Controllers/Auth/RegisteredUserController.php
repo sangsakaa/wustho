@@ -25,7 +25,7 @@ class RegisteredUserController extends Controller
      * @return \Illuminate\View\View
      */
 
-    public function index()
+    public function index(Guru $guru)
     {
         $permissions = Permissions::all();
         $hasrole = Roles::all();
@@ -59,20 +59,23 @@ class RegisteredUserController extends Controller
                 'hasRole' => $hasRole,
                 'HasRole' => $RoleHas,
                 'permissions' => $permissions,
-                'hasrole' => $hasrole
+                'hasrole' => $hasrole,
+                'guru' => $guru
             ]
         );
     }
     public function manajemen()
     {
-        $roles = Roles::all();
-        $permissions = Permission::query()
-            ->get();
+
+        $UserGuru = Guru::query()
+            ->join('nig', 'nig.guru_id', '=', 'guru.id')
+            ->join('users', 'users.guru_id', '=', 'guru.id')->get();
+            
         return view(
             'admin/manajemen',
             [
-                'hasRole' => $permissions,
-                'roles' => $roles
+                'UserGuru' => $UserGuru,
+                
             ]
         );
     }
