@@ -55,6 +55,7 @@
                     <thead class=" bg-gray-50 dark:bg-purple-600">
                         <tr class=" border  ">
                             <th class="px-2 border py-1">No</th>
+                            <th class="px-2 border text-center ">NIG</th>
                             <th class="px-2 border text-center w-1/2 sm:w-1/4">Nama Guru</th>
                             <th class="px-2 border text-center">JK</th>
                             <th class="px-2 border text-center w-10">Agama</th>
@@ -71,6 +72,15 @@
                         <tr class=" border hover:bg-green-100">
                             <th class=" text-center border">{{$loop->iteration}}</th>
 
+                            <td class=" px-2 border text-center capitalize">
+                                <a href="guru/{{$item->id}}">
+                                    @if($item->NigTerakhir != null)
+                                    {{$item->NigTerakhir->nig}}
+                                    @else
+                                    <span class=" text-xs text-red-600 ">belum ada nig</span>
+                                    @endif
+                                </a>
+                            </td>
                             <td class=" px-2">
                                 <a href="guru/{{$item->id}}">
                                     {{$item->nama_guru}}
@@ -109,7 +119,7 @@
                         </tr>
                         @endif
                         <tr>
-                            <td colspan="9">
+                            <td colspan="10">
                                 {{$dataGuru->links()}}
                             </td>
                         </tr>
@@ -124,9 +134,9 @@
                 <div class=" grid grid-cols-1">
                     <span class=" text-bold">Keterangan :</span>
                     <div class=" px-2">
-                        <p>1. Siswa yang berstatus <b>Aktif</b> adalah siswa masih dalam pondok dan mengikuti pembelajaran</p>
-                        <p>2. Siswa yang berstatus <b>Lulus</b> adalah siswa sudah dinytakan Selesai dalam mengikuti pembelajaran</p>
-                        <p>3. Siswa yang berstatus <b>Boyong</b> adalah siswa yang sudah tidak didalam pondok dan tidak mengikuti pembelajaran</p>
+                        <p>1. guru yang berstatus <b>Aktif</b> adalah guru masih melaksakan pembelajaran</p>
+
+
 
                     </div>
                 </div>

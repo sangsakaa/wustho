@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Guru;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Nig extends Model
 {
@@ -12,4 +13,9 @@ class Nig extends Model
 
     public $guarded = [];
     protected $table = "nig";
+
+    public function guru()
+    {
+        return $this->belongsTo(Guru::class, 'guru_id', 'id');
+    }
 }
