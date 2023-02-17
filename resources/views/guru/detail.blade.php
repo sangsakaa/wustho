@@ -21,6 +21,7 @@
                 <div class="p-2 bg-white border-b border-gray-200">
                     <div class=" ">
                         <div>
+                            <a href="/guru" class=" text-white px-1 py-1 bg-sky-400"> Kembali</a>
                             <a href="/nig/{{$guru->id}}" class=" text-white px-1 py-1 bg-sky-400"> Nomor Induk Guru</a>
                         </div>
                         <span>Riwayat Mengajar</span>
