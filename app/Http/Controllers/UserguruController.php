@@ -8,6 +8,10 @@ use Illuminate\Support\Facades\Auth;
 
 class UserguruController
 {
+    public function DashboardGuru()
+    {
+        return view('guru.dashboard.gurudashboard');
+    }
     public function UserGuru()
     {
         $guru_id = Auth::user()->guru_id;

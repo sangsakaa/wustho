@@ -135,9 +135,6 @@
                     <span class=" text-bold">Keterangan :</span>
                     <div class=" px-2">
                         <p>1. guru yang berstatus <b>Aktif</b> adalah guru masih melaksakan pembelajaran</p>
-
-
-
                     </div>
                 </div>
             </div>

@@ -31,6 +31,7 @@ class RegisteredUserController extends Controller
         $hasrole = Roles::all();
         $users = User::query()
             ->leftjoin('siswa', 'users.siswa_id', '=', 'siswa.id')
+            ->leftjoin('guru', 'users.guru_id', '=', 'guru.id')
             ->select(
                 [
                     'users.id',
@@ -47,8 +48,8 @@ class RegisteredUserController extends Controller
             ->orderBy('roles.name', 'desc')
             ->get();
         if (request('cari')) {
-            $users->where('nama_siswa', 'like', '%' . request('cari') . '%');
-            $users->whereOr('email', 'like', '%' . request('cari') . '%');
+            $users->where('name', 'like', '%' . request('cari') . '%');
+            
             
         }
         return view(

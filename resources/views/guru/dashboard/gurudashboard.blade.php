@@ -25,7 +25,6 @@
         <div class="bg-white dark:bg-dark-bg overflow-hidden shadow-sm sm:rounded-lg">
             <div class="p-4">
 
-                {{$dataguru}}
             </div>
         </div>
     </div>
