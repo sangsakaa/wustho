@@ -32,7 +32,7 @@ Route::get('/userdashboard', [UserController::class, 'DashboardUser'])->middlewa
 
 
 // UserGuru Controller
-Route::get('/nilaiperguru', [UserguruController::class, 'UserGuru'])->middleware(['auth'])->name('gurudashboard');
+Route::get('/nilaiperguru', [UserguruController::class, 'UserGuru'])->middleware(['auth'])->name('nilaiperguru');
 Route::get('/gurudashboard', [UserguruController::class, 'DashboardGuru'])->middleware(['auth'])->name('gurudashboard');
 
 
