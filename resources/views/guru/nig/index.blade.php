@@ -34,24 +34,32 @@
                     </div>
                     <div>
                         <span class=" py-1">Daftar Nomor Induk Guru</span>
-                        <table>
+                        <table class=" w-1/2">
                             <thead>
                                 <tr>
                                     <th class=" px-1 border py-1">No</th>
                                     <th class=" px-1 border py-1">Nomor Induk Guru</th>
+                                    <th class=" px-1 border py-1">Act</th>
                                 </tr>
                             </thead>
                             <tbody>
+                                @foreach($dataNIG as $nig)
                                 <tr>
-                                    @foreach($dataNIG as $nig)
                                     <th class=" px-1 py-1 border text-center">
                                         {{$loop->iteration}}
                                     </th>
                                     <td class=" px-1 py-1 border text-center">
                                         {{$nig->nig}}
                                     </td>
-                                    @endforeach
+                                    <td class=" px-1 py-1 border text-center">
+                                        <form action="/nig/{{$nig->id}}" method="post">
+                                            @method('delete')
+                                            @csrf
+                                            <button class=" py-1 px-2 bg-red-500 text-white">Delete</button>
+                                        </form>
+                                    </td>
                                 </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>

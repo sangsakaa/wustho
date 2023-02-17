@@ -130,6 +130,7 @@ Route::get('guru/{guru}/edit', [GuruController::class, 'edit'])->middleware(['au
 // Nomor Induk Guru
 Route::get('nig/{guru}', [GuruController::class, 'NIS'])->middleware(['auth'])->name('nis');
 Route::post('nig/{guru}', [GuruController::class, 'nisGuru'])->middleware(['auth']);
+Route::delete('nig/{nig}', [GuruController::class, 'destroyNig'])->middleware(['auth']);
 
 // Controller Raport
 Route::get('report/{pesertakelas}', [RaportController::class, 'show'])->middleware(['auth'])->name('report');

@@ -124,5 +124,10 @@ class GuruController extends Controller
         $nig->save();
         return redirect()->back();
     }
+    public function destroyNig(Nig $nig)
+    {
+        Nig::destroy($nig->id);
+        return redirect()->back();
+    }
 
 }
