@@ -28,7 +28,7 @@
               <tr class=" border bg-gray-100">
                 <th class=" border uppercase py-1 ">No</th>
                 <th class=" border uppercase">Name Akun</th>
-                <th class=" border uppercase">email</th>
+                <th class=" border uppercase">username/email</th>
                 <th class=" border uppercase">password</th>
               </tr>
             </thead>
