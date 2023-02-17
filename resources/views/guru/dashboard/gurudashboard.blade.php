@@ -1,15 +1,15 @@
 <x-app-layout>
     <x-slot name="header">
-        @section('title', ' | Detail Data Siswa' )
+        @section('title', ' | Detail Data ' )
         <h2 class="font-semibold    leading-tight">
-            <span class=" uppercase">{{ __('Dashboard Detail Siswa ') }} </span><br>
+            <span class=" uppercase">{{ __('Dashboard Guru ') }} </span><br>
         </h2>
     </x-slot>
     <div class="p-2">
         <div class=" dark:bg-dark-bg bg-white overflow-hidden shadow-sm sm:rounded-lg">
             <div class="p-1 ">
                 <div class=" grid grid-cols-1 text-center py-1">
-
+                    mohon saran dan masukan
                 </div>
             </div>
         </div>

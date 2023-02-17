@@ -13,6 +13,8 @@ module.exports = {
         extend: {
             fontFamily: {
                 sans: ["Inter", ...defaultTheme.fontFamily.sans],
+                arabic: ['"Scheherazade", serif'],
+                riqah: ["Khat Riqah", "sans-serif"],
             },
             colors: {
                 dark: {

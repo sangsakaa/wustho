@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Kelasmi;
 use App\Models\Pesertakelas;
+use App\Models\Siswa;
 use Illuminate\Http\Request;
 
 class ValidasiController
@@ -34,6 +35,17 @@ class ValidasiController
                 'data' => $data->get(),
                 'dataKelas' => $dataKelas,
                 'kelasmi' => $kelasmi
+
+            ]
+        );
+    }
+    public function blangkoijazah(Siswa $siswa)
+    {
+
+        return view(
+            'validasi.blangkoijazah',
+            [
+                'siswa' => $siswa   
 
             ]
         );

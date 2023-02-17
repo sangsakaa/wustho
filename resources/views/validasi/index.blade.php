@@ -16,28 +16,30 @@
             document.body.innerHTML = fullbody;
         }
     </script>
-    <div class=" flex gap-1 px-4 py-1">
-        <button class=" flex text-white rounded-md  bg-green-800 px-2 py-1 " onclick="printContent('div1')">
-            <x-icons.print></x-icons.print>
-            Validasi
-        </button>
-    </div>
-    <div class=" bg-white px-1 py-1">
-        <form action="/validasi-data" method="get" class="  text-sm gap-1 flex">
-            <input type="text" name="cari" value="{{ request('cari') }}" class=" dark:bg-dark-bg border border-green-800 text-green-800 rounded-md py-1 " placeholder=" Cari .." autofocus>
-            <!-- <select name="cari" id="">
+
+    <div class=" flex grid-cols-2 bg-white px-1 py-1">
+        <div>
+            <form action="/validasi-data" method="get" class="  text-sm gap-1 flex">
+                <input type="text" name="cari" value="{{ request('cari') }}" class=" dark:bg-dark-bg border border-green-800 text-green-800 rounded-md py-1 " placeholder=" Cari .." autofocus>
+                <!-- <select name="cari" id="">
                 @foreach($dataKelas as $item)
                 <option value="{{ $item->id }}" {{ $kelasmi?->id == $item->id ? 'selected' : '' }}>
                     {{ $item->nama_kelas }}{{$item->id}} - {{ $item->periode }} {{ $item->ket_semester }}
                 </option>
                 @endforeach
             </select> -->
-            <button type="submit" class=" px-2    bg-blue-500  rounded-md text-white">
-                Cari By Nama </button>
-        </form>
+                <button type="submit" class=" px-2    bg-blue-500  rounded-md text-white">
+                    Cari By Nama </button>
+            </form>
+        </div>
+        <div class=" grid justify-end px-2">
+            <button class=" flex text-white rounded-md  bg-green-800 px-2 py-1 " onclick="printContent('div1')">
+                <x-icons.print></x-icons.print>
+                Validasi
+            </button>
+        </div>
     </div>
     <div id="div1" class="  bg-white grid  grid-cols-1 px-2 py-2 gap-2">
-
         <span class=" text-center uppercase font-semibold">Data Validasi</span>
         <div class=" overflow-auto">
             <table class=" w-full">

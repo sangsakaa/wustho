@@ -20,9 +20,7 @@
                             <a href="/raportkelas" class=" py-1 px-2 bg-blue-600 rounded-md text-white hover:bg-purple-500">
                                 raport
                             </a>
-                            <a href="/addpelanggaran" class=" py-1 px-2 bg-blue-600 rounded-md text-white hover:bg-purple-500">
-                                pelanggaran
-                            </a>
+
                             <a href="/presensikelas" class=" py-1 px-2 bg-blue-600 rounded-md text-white hover:bg-purple-500">
                                 Presensi
                             </a>
@@ -40,6 +38,9 @@
                             </a>
                             <a href="/validasi-data" class=" py-1 px-2 bg-blue-600 rounded-md text-white hover:bg-purple-500">
                                 Validasi Data
+                            </a>
+                            <a href="/blangko-ijazah" class=" py-1 px-2 bg-blue-600 rounded-md text-white hover:bg-purple-500">
+                                blangko-ijazah
                             </a>
                         </div>
 
