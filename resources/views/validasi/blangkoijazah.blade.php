@@ -39,7 +39,7 @@
             <p class=" text-justify ">Dalam mengikuti <span class=" font-semibold">Ujian Akhir Madrasah Diniyah Wustho Wahidiyah</span> yang diselenggarakan pada tanggal................ s.d...................Dengan nilai sebagaimana tercantum pada daftar nilai dibalik ini.</p>
 
             <p class=" text-justify mt-4">
-                Pemegang ijazah ini, terakhir tercatat sebagai siswa madrasah Diniyah wustho wahidiyah pondok pesantren kedunglo Kediri dengan <span class=" font-semibold">Nomor Induk Siswa</span> : {{$ijazah->nis}}
+                Pemegang ijazah ini, terakhir tercatat sebagai <span class=" capitalize">siswa madrasah Diniyah wustho wahidiyah pondok pesantren kedunglo Kediri</span> dengan <span class=" font-semibold">Nomor Induk Siswa</span> : {{$ijazah->nis}}
             </p>
 
         </div>
