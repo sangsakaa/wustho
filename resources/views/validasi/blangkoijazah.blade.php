@@ -5,9 +5,7 @@
             {{ __('Dashboard blangko ijazah') }}
         </h2>
     </x-slot>
-    <style>
 
-    </style>
     <script>
         function printContent(el) {
             var fullbody = document.body.innerHTML;
@@ -20,8 +18,13 @@
     <div class=" p-2">
         <button class=" text-white rounded-md  bg-green-800 px-2 py-1 " onclick="printContent('div1')">Cetak Ijazah</button>
     </div>
-    @foreach($data as $ijazah)
-    <div id="div1" class=" px-4  max-w-1414  ">
+    <div id="div1" class=" px-4  ">
+        <style>
+            .page-break {
+                page-break-after: always;
+            }
+        </style>
+        @foreach($data as $ijazah)
         <div class=" max-[1414]: px-4 text-center  bg-white   rounded dark:bg-purple-600 ">
             <div class=" grid justify-end">
                 <span class=" pr-10 mt-4"> Nomor : .......................................</span>
@@ -29,7 +32,8 @@
             <center>
                 <img src={{ asset("asset/images/logo.png") }} alt="" width="200" class="  p-2">
                 <p class=" font-serif text-5xl  mt-10 font-semibold ">IJAZAH</p>
-                <p class=" capitalize  text-4xl  font-riqah py-2">المدرسه الدينيه وسطى واحيديه</p>
+                <p class=" capitalize  text-4xl  font-riqah py-2">ألمدرسة الدينية الوسطى الواحدية
+                </p>
                 <p class="  font-serif text-lg uppercase">pondok pesantren kedunglo al munadhdhoroh</p>
                 <p class="  uppercase font-serif text-2xl font-semibold ">madrasah diniyah wustho
                     Wahidiyah</p>
@@ -67,8 +71,8 @@
                 </div>
             </div>
         </div>
-
+        <div class="page-break"></div>
+        @endforeach
     </div>
-    @endforeach
 
 </x-app-layout>
