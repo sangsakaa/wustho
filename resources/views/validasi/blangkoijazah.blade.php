@@ -15,7 +15,7 @@
                 <img src={{ asset("asset/images/logo.png") }} alt="" width="200" class=" grayscale p-2">
                 <p class=" font-serif text-5xl  mt-10 font-semibold ">IJAZAH</p>
                 <p class=" capitalize  text-4xl  font-riqah py-2">المدرسه الدينيه وسطى واحيديه</p>
-                <p class=" capitalize font-serif text-2xl">pondok pesantren kedunglo al munadhdhoroh</p>
+                <p class="  font-serif text-lg uppercase">pondok pesantren kedunglo al munadhdhoroh</p>
                 <p class="  uppercase font-serif text-2xl font-semibold ">madrasah diniyah wustho
                     Wahidiyah</p>
                 <p class=" capitalize font-serif text-2xl">kota kediri jawa timur indonesia</p>
@@ -36,7 +36,7 @@
                 </div>
             </div>
             <p class=" text-4xl uppercase bold  font-serif text-center mt-4 ">lulus</p>
-            <p class=" text-justify ">dalam mengikuti Evaluasi Belajar Tahap Akhir Madrasah Diniyah Wustho Wahidiyah yang diselenggarakan pada tanggal................ s.d...................Dengan nilai dengan nilai sebagaimana tercantum pada daftar nilai dibalik ini.</p>
+            <p class=" text-justify ">Dalam mengikuti <span class=" font-semibold">Ujian Akhir Madrasah Diniyah Wustho Wahidiyah</span> yang diselenggarakan pada tanggal................ s.d...................Dengan nilai sebagaimana tercantum pada daftar nilai dibalik ini.</p>
 
             <p class=" text-justify mt-4">
                 Pemegang ijazah ini, terakhir tercatat sebagai siswa madrasah Diniyah wustho wahidiyah pondok pesantren kedunglo Kediri dengan <span class=" font-semibold">Nomor Induk Siswa</span> : {{$ijazah->nis}}
