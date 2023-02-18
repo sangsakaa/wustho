@@ -43,6 +43,14 @@
             </p>
 
         </div>
+        <div class="  flex grid-cols-2 text-right">
+            <div class=" w-2/3"></div>
+            <div class="  text-left">
+                Kedunglo, {{ now()->isoFormat('D MMMM YYYY') }}<br>
+                Al Mudir / Kepala <br><br><br><br>
+                <p class=" uppercase"> Muh. Bahrul Ulum, S.H</p>
+            </div>
+        </div>
         @endforeach
     </div>
 
