@@ -11,7 +11,7 @@
         <div class=" p-4 grid grid-cols-1">
           <span class=" text-sky-500"> User Management Role</span>
           <div class=" flex grid-cols-1 gap-1">
-            <a href="/admin" class=" bg-sky-400 py-1 px-4 rounded-md text-white hover:bg-purple-500">ListUsers</a>
+            <a href="/manajemen-user" class=" bg-sky-400 py-1 px-4 rounded-md text-white hover:bg-purple-500">ListUsers</a>
             <a href="/manajemen" class=" bg-sky-400 py-1 px-4 rounded-md text-white hover:bg-purple-500">Manajemen Role User</a>
 
           </div>

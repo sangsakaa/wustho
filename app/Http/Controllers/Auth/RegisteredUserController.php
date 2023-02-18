@@ -53,7 +53,7 @@ class RegisteredUserController extends Controller
             
         }
         return view(
-            'admin/admin',
+            'admin/manajemen-user',
             [
                 'users' => $users->paginate(10),
                 'hasRole' => $hasRole,

@@ -27,7 +27,7 @@ use App\Http\Controllers\UserguruController;
 use App\Http\Controllers\ValidasiController;
 
 // batas
-Route::get('/admin', [RegisteredUserController::class, 'index'])->middleware(['auth'])->name('admin');
+Route::get('/manajemen-user', [RegisteredUserController::class, 'index'])->middleware(['auth'])->name('admin');
 Route::get('/userdashboard', [UserController::class, 'DashboardUser'])->middleware(['auth'])->name('userdashboard');
 
 

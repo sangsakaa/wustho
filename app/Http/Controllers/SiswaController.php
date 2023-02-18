@@ -314,8 +314,8 @@ class SiswaController extends Controller
                 'tanggal_lahir' => $request->tanggal_lahir,
                 'kota_asal' => $request->kota_asal,
             ]);
-        
-        return redirect('/siswa')->with('update', 'pembaharuan data berhasil');
+
+        return redirect()->back()->with('update', 'pembaharuan data berhasil');
     }
 
     /**

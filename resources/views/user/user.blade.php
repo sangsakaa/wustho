@@ -11,17 +11,25 @@
                 <img src={{ asset("asset/images/logo.png") }} alt="" width="200" class=" p-2">
             </center>
         </div>
-        <div class=" p-1  grid  grid-cols-2 text-xs sm:text-sm sm:p-5   sm:grid-cols-2 w-full dark:bg-purple-600     bg-white ">
-            <div class=" px-1 ">Nomor Induk siswa</div>
-            <div class=" px-1 ">: {{$siswa->nis}}</div>
-            <div class=" px-1 ">Nama Lengkap </div>
-            <div class=" px-1 text-xs sm:text-sm "> : {{$siswa->nama_siswa}}</div>
-            <div class=" px-1 ">Tempat, Tanggal Lahir</div>
-            <div class=" px-1 capitalize "> : {{strtolower($siswa->tempat_lahir)}},
-                {{ \Carbon\Carbon::parse($siswa->tanggal_lahir)->isoFormat(' DD MMMM Y') }}
+        <div class=" gap-4 bg-white w-full  ">
+            <div class=" w-full grid grid-cols-2 px-2 py-1  ">
+                <div class=" px-1 text-xs sm:text-lg ">Nomor Induk siswa</div>
+                <div class=" px-1 text-xs sm:text-lg ">: {{$siswa->nis}}</div>
+                <div class=" px-1 text-xs sm:text-lg ">Nama Lengkap </div>
+                <div class=" px-1 text-xs sm:text-lg "> : {{$siswa->nama_siswa}}</div>
+                <div class=" px-1 text-xs sm:text-lg ">Agama </div>
+                <div class=" px-1 text-xs sm:text-lg "> : {{$siswa->agama}}</div>
+                <div class=" px-1 text-xs sm:text-lg ">Tempat, Tanggal Lahir</div>
+                <div class=" px-1 capitalize text-xs sm:text-lg"> : {{strtolower($siswa->tempat_lahir)}},
+                    {{ \Carbon\Carbon::parse($siswa->tanggal_lahir)->isoFormat(' DD MMMM Y') }}
+                </div>
+                <div class=" px-1 text-xs sm:text-lg ">Asal Kota</div>
+                <div class=" px-1 text-xs sm:text-lg capitalize "> : {{$siswa->kota_asal}}</div>
+                <div class=" w-10 sm:w-10 flex  align-bottom ">
+                    <a href="/siswa/{{$siswa->id}}/edit" class=" uppercase font-semibold bg-yellow-500 rounded px-2 ">
+                        Edit</a>
+                </div>
             </div>
-            <div class=" px-1 ">Asal Kota</div>
-            <div class=" px-1 capitalize "> : {{$siswa->kota_asal}}</div>
 
         </div>
 

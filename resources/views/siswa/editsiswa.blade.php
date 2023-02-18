@@ -12,7 +12,7 @@
                         <form action="/siswa/{{$siswa->id}}" method="post">
                             @csrf
                             @method('patch')
-                            <label for="">Nama lengkap</label>
+                            <label for="">Nama Lengkap</label>
                             <input value="{{$siswa->nama_siswa}}" name="nama_siswa" type="text" class=" w-full py-1 rounded-md @error('nama') is-invalid @enderror" placeholder=" masukan nama lengkap">
                             @error('nama')
                             <div class="alert alert-danger">{{ $message }}</div>
@@ -39,9 +39,16 @@
                             <label for="">Kota Asal</label>
                             <input value="{{$siswa->kota_asal}}" name="kota_asal" type="text" class=" w-full py-1 rounded-md @error('kota_asal') is-invalid @enderror" placeholder=" masukan nama lengkap">
                             <button type="submit" class=" px-2 py-1 bg-sky-600 text-white rounded-md mt-1">Update</button>
+                            @role('super admin')
                             <a href="/siswa" class=" px-2 py-1 bg-red-600 text-white rounded-md mt-1">
                                 Batal
                             </a>
+                            @endrole
+                            @role('siswa')
+                            <a href="/user" class=" px-2 py-1 bg-red-600 text-white rounded-md mt-1">
+                                Batal
+                            </a>
+                            @endrole
                         </form>
 
                     </div>

@@ -47,7 +47,7 @@
     <x-sidebar.link title="Dummy link {{ $index + 1 }}" href="#" />
     @endforeach -->
     @role('super admin')
-    <x-sidebar.link title=" Manajemen User" href="/admin" :isActive="request()->routeIs('admin')">
+    <x-sidebar.link title=" Manajemen User" href="/manajemen-user" :isActive="request()->routeIs('admin')">
         <x-slot name="icon">
             <x-icons.usercircle class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
         </x-slot>
