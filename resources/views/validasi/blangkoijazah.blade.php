@@ -5,11 +5,26 @@
             {{ __('Dashboard blangko ijazah') }}
         </h2>
     </x-slot>
-    <div class="  px-36 py-10 bg-white  ">
-        @foreach($data as $ijazah)
-        <div class=" text-center    rounded dark:bg-purple-600 ">
+    <style>
+
+    </style>
+    <script>
+        function printContent(el) {
+            var fullbody = document.body.innerHTML;
+            var printContent = document.getElementById(el).innerHTML;
+            document.body.innerHTML = printContent;
+            window.print();
+            document.body.innerHTML = fullbody;
+        }
+    </script>
+    <div class=" p-2">
+        <button class=" text-white rounded-md  bg-green-800 px-2 py-1 " onclick="printContent('div1')">Cetak Ijazah</button>
+    </div>
+    @foreach($data as $ijazah)
+    <div id="div1" class=" px-4  max-w-1414  ">
+        <div class=" max-[1414]: px-4 text-center  bg-white   rounded dark:bg-purple-600 ">
             <div class=" grid justify-end">
-                <span class=" pr-10 mt-4"> Nomor : ...........................</span>
+                <span class=" pr-10 mt-4"> Nomor : .......................................</span>
             </div>
             <center>
                 <img src={{ asset("asset/images/logo.png") }} alt="" width="200" class="  p-2">
@@ -21,7 +36,7 @@
                 <p class=" capitalize font-serif text-2xl">kota kediri jawa timur indonesia</p>
             </center>
             <div>
-                <p class="  text-left mt-5"> Yang bertanda tangan dibawah ini Kepala Madrasah Diniyah Wustho Wahidiyah Kedunglo Kediri menerangkan bahwa :</p>
+                <p class=" text-justify   mt-5"> Yang bertanda tangan dibawah ini Kepala Madrasah Diniyah Wustho Wahidiyah Kedunglo Kediri menerangkan bahwa :</p>
                 <p class=" text-3xl uppercase bold  font-serif text-center mt-15 underline">{{$ijazah->nama_siswa}}</p>
                 <p class=" text-lg uppercase font-semibold   font-sans text-center ">nomor induk siswa : {{$ijazah->nis}}</p>
             </div>
@@ -36,24 +51,24 @@
                 </div>
             </div>
             <p class=" text-4xl uppercase bold  font-serif text-center mt-4 ">lulus</p>
-            <p class=" text-justify ">Dalam mengikuti <span class=" font-semibold">Ujian Akhir Madrasah Diniyah Wustho Wahidiyah</span> yang diselenggarakan pada tanggal................ s.d...................Dengan nilai sebagaimana tercantum pada daftar nilai dibalik ini.</p>
+            <p class=" text-justify ">Dalam mengikuti <span class=" font-semibold">Ujian Akhir Madrasah Diniyah Wustho Wahidiyah</span> yang diselenggarakan
+                pada tanggal................ s.d................... dengan nilai sebagaimana tercantum pada daftar nilai dibalik ini.</p>
 
             <p class=" text-justify mt-4">
                 Pemegang ijazah ini, terakhir tercatat sebagai <span class=" capitalize">siswa madrasah Diniyah wustho wahidiyah pondok pesantren kedunglo Kediri</span> dengan <span class=" font-semibold">Nomor Induk Siswa</span> : {{$ijazah->nis}}
             </p>
 
-        </div>
-        <div class="  flex grid-cols-2 text-right">
-            <div class=" w-2/3"></div>
-            <div class="  text-left">
-                Kedunglo, {{ now()->isoFormat('D MMMM YYYY') }}<br>
-                Al Mudir / Kepala <br><br><br><br>
-                <p class=" uppercase"> Muh. Bahrul Ulum, S.H</p>
+            <div class="  flex grid-cols-2 text-right mt-4">
+                <div class=" w-2/3"></div>
+                <div class="  text-left">
+                    Kedunglo, {{ now()->isoFormat('D MMMM YYYY') }}<br>
+                    Al Mudir / Kepala <br><br><br><br>
+                    <p class=" uppercase"> Muh. Bahrul Ulum, S.H</p>
+                </div>
             </div>
         </div>
-        @endforeach
+
     </div>
-
-
+    @endforeach
 
 </x-app-layout>
