@@ -12,7 +12,7 @@
                 <span class=" pr-10 mt-4"> Nomor : ...........................</span>
             </div>
             <center>
-                <img src={{ asset("asset/images/logo.png") }} alt="" width="200" class=" grayscale p-2">
+                <img src={{ asset("asset/images/logo.png") }} alt="" width="200" class="  p-2">
                 <p class=" font-serif text-5xl  mt-10 font-semibold ">IJAZAH</p>
                 <p class=" capitalize  text-4xl  font-riqah py-2">المدرسه الدينيه وسطى واحيديه</p>
                 <p class="  font-serif text-lg uppercase">pondok pesantren kedunglo al munadhdhoroh</p>
