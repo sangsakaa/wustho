@@ -5,19 +5,25 @@
             {{ __('Dashboard Status Anak ') }}
         </h2>
     </x-slot>
-    <div class="py-2 px-4">
-        <div class="mx-auto">
+    <div class="py-4">
+        <div class=" mx-auto">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-4 bg-white border-b border-gray-200">
-                    <div class=" grid sm:grid-cols-4 grid-cols-2 capitalize">
-                        <div>Nama </div>
-                        <div class=" border-red-500 text-sm ">: {{$siswa->nama_siswa}}</div>
-                        <div>Tanggal Lahir </div>
-                        <div class=" ">: {{$siswa->tempat_lahir}} , {{ \Carbon\Carbon::parse($siswa->tanggal_lahir)->isoFormat(' DD MMMM Y') }}</div>
-                        <div>Jenis Kelamin </div>
-                        <div>: {{$siswa->jenis_kelamin}}</div>
-                        <div class="  grid w-36    ">Status Asrama </div>
-                        <div class=" "> :
+                <div class=" bg-white border-b border-gray-200">
+                    <div class=" w-full grid grid-cols-2 px-2 py-1  ">
+                        <div class=" px-1 text-xs sm:text-lg ">Nomor Induk siswa</div>
+                        <div class=" px-1 text-xs sm:text-lg ">: {{$siswa->nis}}</div>
+                        <div class=" px-1 text-xs sm:text-lg ">Nama Lengkap </div>
+                        <div class=" px-1 text-xs sm:text-lg capitalize "> : {{strtolower($siswa->nama_siswa)}}</div>
+                        <div class=" px-1 text-xs sm:text-lg ">Agama </div>
+                        <div class=" px-1 text-xs sm:text-lg "> : {{$siswa->agama}}</div>
+                        <div class=" px-1 text-xs sm:text-lg ">Tempat, Tanggal Lahir</div>
+                        <div class=" px-1 capitalize text-xs sm:text-lg"> : {{strtolower($siswa->tempat_lahir)}},
+                            {{ \Carbon\Carbon::parse($siswa->tanggal_lahir)->isoFormat(' DD MMMM Y') }}
+                        </div>
+                        <div class=" px-1 text-xs sm:text-lg ">Asal Kota</div>
+                        <div class=" px-1 text-xs sm:text-lg capitalize "> : {{$siswa->kota_asal}}</div>
+                        <div class="text-xs sm:text-sm">Status Asrama </div>
+                        <div class="text-xs sm:text-sm"> :
                             @if($siswa->asramaTerkhir?->asramaSiswa->asrama->nama_asrama !== null)
                             {{$siswa->asramaTerkhir?->asramaSiswa->asrama->nama_asrama}}
                             @else
@@ -59,29 +65,44 @@
                     <div class=" grid grid-cols-1 sm:grid-cols-1 gap-2 py-1">
                         <form action="/statusanak/{{$siswa->id}}" method="post">
                             @csrf
-                            <div class=" grid grid-cols-2 gap-2">
+                            <div class=" grid grid-cols-1 sm:grid-cols-2 gap-2">
                                 @if($sp->count() == 1 )
                                 <span>data sudah sesuia</span>
                                 @elseif($sp->count() == 0)
-                                <input type="hidden" name="siswa_id" class=" py-1" placeholder="siswa" value="{{$siswa->id}}">
-                                <input type="number" name="anak_ke" class=" py-1" placeholder="anak ke : 5">
-                                <input type="number" name="jumlah_saudara" class=" py-1" placeholder="jumlah saudara ke : 5">
-                                <select name="status_anak" id="" class=" py-1 capitalize">
-                                    <option value="kandung" class=" capitalize">kandung</option>
+                                <input type="hidden" name="siswa_id" class=" uppercase py-1" placeholder="siswa" value="{{$siswa->id}}">
+                                <input type="number" name="anak_ke" class=" uppercase py-1" placeholder="anak ke : 5">
+                                <input type="number" name="jumlah_saudara" class=" uppercase py-1" placeholder="jumlah saudara ke : 5">
+                                <select name="status_anak" id="" class=" uppercase py-1 ">
+                                    <option value="kandung" class=" uppercase ">kandung</option>
                                     <option value="tiri">tiri</option>
                                 </select>
-                                <input type="text" name="nama_ibu" class=" py-1" placeholder="nama_ibu">
-                                <input type="text" name="nama_ayah" class=" py-1" placeholder="nama_ayah">
-                                <input type="text" name="nomor_hp_ibu" class=" py-1" placeholder="nomor_hp_ibu">
-                                <input type="text" name="nomor_hp_ayah" class=" py-1" placeholder="nomor_hp_ayah">
-                                <input type="text" name="pekerjaan_ibu" class=" py-1" placeholder="pekerjaan_ibu">
-                                <input type="text" name="pekerjaan_ayah" class=" py-1" placeholder="pekerjaan_ayah">
+                                <input type="text" name="nama_ibu" class=" py-1 uppercase" placeholder="nama_ibu">
+                                <input type="text" name="nama_ayah" class=" py-1 uppercase" placeholder="nama_ayah">
+                                <input type="text" name="nomor_hp_ibu" class=" py-1 uppercase" placeholder="nomor_hp_ibu">
+                                <input type="text" name="nomor_hp_ayah" class=" py-1 uppercase" placeholder="nomor_hp_ayah">
+                                <select name="pekerjaan_ibu" id="" class=" py-1  uppercase">
+                                    <option value=""> ---- perkerjaan ibu ---</option>
+                                    <option value="irt">irt</option>
+                                    <option value="pns">pns</option>
+                                    <option value="wirausaha">wirausaha</option>
+                                    <option value="petani">petani</option>
+                                    <option value="guru">guru</option>
+                                </select>
+                                <select name="pekerjaan_ayah" id="" class=" py-1  uppercase">
+                                    <option value=""> ---- perkerjaan ayah ---</option>
+                                    <option value="pns">pns</option>
+                                    <option value="wirausaha">wirausaha</option>
+                                    <option value="petani">petani</option>
+                                    <option value="guru">guru</option>
+                                </select>
 
                                 <button class=" bg-green-600 py-1 px-2 rounded-sm text-white capitalize">Simpan</button>
                                 @endif
                             </div>
                         </form>
+                        @role('super admin')
                         <div>
+
                             <span>Detail Status Anak</span>
                             <table class=" w-full    ">
                                 <thead>
@@ -132,6 +153,7 @@
 
                             </table>
                         </div>
+                        @endrole
                     </div>
                 </div>
             </div>

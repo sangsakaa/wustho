@@ -28,12 +28,10 @@
                 <div class="  grid-cols-2  align-bottom gap-1 grid ">
                     <a href="/siswa/{{$siswa->id}}/edit" class=" uppercase font-semibold bg-yellow-500 rounded px-2 ">
                         Edit</a>
-
                     <a href="/statusanak/{{$siswa->id}}" class=" bg-blue-500 px-2 py-1 hover:bg-purple-500 text-white">Update</a>
 
                 </div>
             </div>
-
         </div>
 
     </div>
