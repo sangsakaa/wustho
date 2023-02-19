@@ -26,54 +26,56 @@
             }
         </style>
         @foreach($data as $ijazah)
-        <div class=" px-28 py-20 text-center  bg-white   rounded dark:bg-purple-600 ">
-            <div class=" grid justify-end">
-                <span class=" pr-10 mt-4"> Nomor : .......................................</span>
-            </div>
-            <center>
-                <img src={{ asset("asset/images/logo.png") }} alt="" width="200" class="  p-2">
-                <p class=" font-serif text-5xl  mt-10 font-semibold ">IJAZAH</p>
-                <p class=" capitalize  text-4xl  font-riqah py-2">ألمدرسة الدينية الوسطى الواحدية
+        <div class=" border">
+            <div class=" px-28 py-20 text-center  bg-white   rounded   ">
+                <div class=" grid text-right justify-end w-full">
+                    <span class=" pr-10 mt-4 text-right"> Nomor : .......................................</span>
+                </div>
+                <center>
+                    <img src={{ asset("asset/images/logo.png") }} alt="" width="180" class=" mt-10  p-2">
+                    <p class=" font-serif text-5xl  mt-10 font-semibold ">IJAZAH</p>
+                    <p class=" capitalize  text-4xl  font-riqah py-2">ألمدرسة الدينية الوسطى الواحدية
+                    </p>
+                    <p class="  font-serif text-sm uppercase">pondok pesantren kedunglo al munadhdhoroh</p>
+                    <p class="  uppercase font-serif text-lg font-semibold ">madrasah diniyah wustho
+                        Wahidiyah</p>
+                    <p class=" capitalize font-serif text-2xl">kota kediri jawa timur indonesia</p>
+                </center>
+                <div>
+                    <p class=" text-justify   mt-5 text-sm"> Yang bertanda tangan dibawah ini Kepala Madrasah Diniyah Wustho Wahidiyah Kedunglo Kediri menerangkan bahwa :</p>
+                    <p class=" text-2xl uppercase bold  font-serif text-center  mt-8 underline ">{{$ijazah->nama_siswa}}</p>
+                    <p class=" text-sm uppercase font-semibold   font-sans text-center ">nomor induk siswa : {{$ijazah->nis}}</p>
+                </div>
+
+                <div class=" text-left grid grid-cols-2 mt-5">
+                    <div class=" px-1 ">Tempat, Tanggal Lahir</div>
+                    <div class=" px-1 capitalize "> : {{strtolower($ijazah->tempat_lahir)}},
+                        {{ \Carbon\Carbon::parse($ijazah->tanggal_lahir)->isoFormat(' DD MMMM Y') }}
+                    </div>
+                    <div class=" px-1 ">Nama Orang Tua / Wali </div>
+                    <div class=" px-1 capitalize "> : {{$ijazah->nama_ayah}}
+                    </div>
+                </div>
+                <p class=" text-4xl uppercase bold  font-serif text-center mt-8 ">lulus</p>
+                <p class=" text-justify mt-8 ">Dalam mengikuti <span class=" font-semibold text-sm">Ujian Akhir Madrasah Diniyah Wustho Wahidiyah</span> yang diselenggarakan
+                    pada tanggal................ s.d................... dengan nilai sebagaimana tercantum pada daftar nilai dibalik ini.</p>
+
+                <p class=" text-justify mt-4 text-sm">
+                    Pemegang ijazah ini, terakhir tercatat sebagai <span class=" capitalize">siswa madrasah Diniyah wustho wahidiyah pondok pesantren kedunglo Kediri</span> dengan <span class=" font-semibold">Nomor Induk Siswa</span> : {{$ijazah->nis}}
                 </p>
-                <p class="  font-serif text-sm uppercase">pondok pesantren kedunglo al munadhdhoroh</p>
-                <p class="  uppercase font-serif text-lg font-semibold ">madrasah diniyah wustho
-                    Wahidiyah</p>
-                <p class=" capitalize font-serif text-2xl">kota kediri jawa timur indonesia</p>
-            </center>
-            <div>
-                <p class=" text-justify   mt-5 text-sm"> Yang bertanda tangan dibawah ini Kepala Madrasah Diniyah Wustho Wahidiyah Kedunglo Kediri menerangkan bahwa :</p>
-                <p class=" text-2xl uppercase bold  font-serif text-center  mt-8 underline ">{{$ijazah->nama_siswa}}</p>
-                <p class=" text-sm uppercase font-semibold   font-sans text-center ">nomor induk siswa : {{$ijazah->nis}}</p>
-            </div>
 
-            <div class=" text-left grid grid-cols-2 mt-5">
-                <div class=" px-1 ">Tempat, Tanggal Lahir</div>
-                <div class=" px-1 capitalize "> : {{strtolower($ijazah->tempat_lahir)}},
-                    {{ \Carbon\Carbon::parse($ijazah->tanggal_lahir)->isoFormat(' DD MMMM Y') }}
-                </div>
-                <div class=" px-1 ">Nama Orang Tua / Wali </div>
-                <div class=" px-1 capitalize "> : {{$ijazah->nama_ayah}}
+                <div class="  flex grid-cols-2 text-right mt-4 text-sm">
+                    <div class=" w-2/3"></div>
+                    <div class="  text-left">
+                        Kedunglo, {{ now()->isoFormat('D MMMM YYYY') }}<br>
+                        Kepala Madrasah<br><br><br><br>
+                        <p class=" uppercase"> Muh. Bahrul Ulum, S.H</p>
+                    </div>
                 </div>
             </div>
-            <p class=" text-4xl uppercase bold  font-serif text-center mt-8 ">lulus</p>
-            <p class=" text-justify mt-8 ">Dalam mengikuti <span class=" font-semibold text-sm">Ujian Akhir Madrasah Diniyah Wustho Wahidiyah</span> yang diselenggarakan
-                pada tanggal................ s.d................... dengan nilai sebagaimana tercantum pada daftar nilai dibalik ini.</p>
-
-            <p class=" text-justify mt-4 text-sm">
-                Pemegang ijazah ini, terakhir tercatat sebagai <span class=" capitalize">siswa madrasah Diniyah wustho wahidiyah pondok pesantren kedunglo Kediri</span> dengan <span class=" font-semibold">Nomor Induk Siswa</span> : {{$ijazah->nis}}
-            </p>
-
-            <div class="  flex grid-cols-2 text-right mt-4 text-sm">
-                <div class=" w-2/3"></div>
-                <div class="  text-left">
-                    Kedunglo, {{ now()->isoFormat('D MMMM YYYY') }}<br>
-                    Kepala Madrasah<br><br><br><br>
-                    <p class=" uppercase"> Muh. Bahrul Ulum, S.H</p>
-                </div>
-            </div>
+            @endforeach
+            <div class="page-break"></div>
         </div>
-        <div class="page-break"></div>
-        @endforeach
     </div>
 
 </x-app-layout>
