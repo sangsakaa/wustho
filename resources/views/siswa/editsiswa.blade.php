@@ -8,7 +8,7 @@
         <div class=" mx-auto ">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class=" bg-white border-b border-gray-200">
-                    <div class=" p-6 grid grid-cols-3">
+                    <div class=" p-6 grid grid-cols-1">
                         <form action="/siswa/{{$siswa->id}}" method="post">
                             @csrf
                             @method('patch')
