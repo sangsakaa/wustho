@@ -61,6 +61,8 @@
                             @csrf
                             <div class=" grid grid-cols-2 gap-2">
                                 @if($sp->count() == 1 )
+                                <span>data sudah sesuia</span>
+                                @elseif($sp->count() == 0)
                                 <input type="hidden" name="siswa_id" class=" py-1" placeholder="siswa" value="{{$siswa->id}}">
                                 <input type="number" name="anak_ke" class=" py-1" placeholder="anak ke : 5">
                                 <input type="number" name="jumlah_saudara" class=" py-1" placeholder="jumlah saudara ke : 5">
