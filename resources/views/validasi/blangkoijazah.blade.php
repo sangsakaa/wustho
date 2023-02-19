@@ -29,10 +29,10 @@
             }
         </style>
         <div class=" px-16  py-14 text-center  bg-white   rounded gap-4   ">
-            <div class="  w-full bg-green-100 justify-end grid">
+            <div class="  w-full justify-end grid">
                 <span class="  mt-4 "> Nomor : ..........................................................</span>
             </div>
-            <div class=" bg-green-100 w-full">
+            <div class="  w-full">
                 <center>
                     <img src={{ asset("asset/images/logo.png") }} alt="" width="180" class="  mt-5  p-2">
                     <p class=" font-serif text-5xl  mt-10 font-semibold ">IJAZAH</p>
@@ -44,7 +44,7 @@
                     <p class=" capitalize font-serif text-2xl">kota kediri jawa timur indonesia</p>
                 </center>
             </div>
-            <div class=" w-full bg-red-100">
+            <div class=" w-full ">
                 <p class=" text-justify   mt-5 text-sm">
                     Yang bertanda tangan dibawah ini Kepala Madrasah Diniyah Wustho Wahidiyah Kedunglo Kediri menerangkan bahwa :
                 </p>
