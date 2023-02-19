@@ -10,20 +10,18 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class=" bg-white border-b border-gray-200">
                     <div class=" w-full grid grid-cols-2 px-2 py-1  ">
-                        <div class=" px-1 text-xs sm:text-lg ">Nomor Induk siswa</div>
-                        <div class=" px-1 text-xs sm:text-lg ">: {{$siswa->nis}}</div>
-                        <div class=" px-1 text-xs sm:text-lg ">Nama Lengkap </div>
-                        <div class=" px-1 text-xs sm:text-lg capitalize "> : {{strtolower($siswa->nama_siswa)}}</div>
-                        <div class=" px-1 text-xs sm:text-lg ">Agama </div>
-                        <div class=" px-1 text-xs sm:text-lg "> : {{$siswa->agama}}</div>
-                        <div class=" px-1 text-xs sm:text-lg ">Tempat, Tanggal Lahir</div>
-                        <div class=" px-1 capitalize text-xs sm:text-lg"> : {{strtolower($siswa->tempat_lahir)}},
+                        <div class=" px-1 text-xs sm:text-sm ">Nama Lengkap </div>
+                        <div class=" px-1 text-xs sm:text-sm capitalize "> : {{strtolower($siswa->nama_siswa)}}</div>
+                        <div class=" px-1 text-xs sm:text-sm ">Agama </div>
+                        <div class=" px-1 text-xs sm:text-sm "> : {{$siswa->agama}}</div>
+                        <div class=" px-1 text-xs sm:text-sm ">Tempat, Tanggal Lahir</div>
+                        <div class=" px-1 capitalize text-xs sm:text-sm"> : {{strtolower($siswa->tempat_lahir)}},
                             {{ \Carbon\Carbon::parse($siswa->tanggal_lahir)->isoFormat(' DD MMMM Y') }}
                         </div>
-                        <div class=" px-1 text-xs sm:text-lg ">Asal Kota</div>
-                        <div class=" px-1 text-xs sm:text-lg capitalize "> : {{$siswa->kota_asal}}</div>
-                        <div class="text-xs sm:text-sm">Status Asrama </div>
-                        <div class="text-xs sm:text-sm"> :
+                        <div class=" px-1 text-xs sm:text-sm ">Asal Kota</div>
+                        <div class=" px-1 text-xs sm:text-sm capitalize "> : {{$siswa->kota_asal}}</div>
+                        <div class=" px-1 text-xs sm:text-sm">Status Asrama </div>
+                        <div class=" px-1 text-xs sm:text-sm"> :
                             @if($siswa->asramaTerkhir?->asramaSiswa->asrama->nama_asrama !== null)
                             {{$siswa->asramaTerkhir?->asramaSiswa->asrama->nama_asrama}}
                             @else
