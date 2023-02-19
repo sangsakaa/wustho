@@ -25,9 +25,12 @@
                 </div>
                 <div class=" px-1 text-xs sm:text-lg ">Asal Kota</div>
                 <div class=" px-1 text-xs sm:text-lg capitalize "> : {{$siswa->kota_asal}}</div>
-                <div class=" w-10 sm:w-10 flex  align-bottom ">
+                <div class="  grid-cols-2  align-bottom gap-1 grid ">
                     <a href="/siswa/{{$siswa->id}}/edit" class=" uppercase font-semibold bg-yellow-500 rounded px-2 ">
                         Edit</a>
+
+                    <a href="/statusanak/{{$siswa->id}}" class=" bg-blue-500 px-2 py-1 hover:bg-purple-500 text-white">Update</a>
+
                 </div>
             </div>
 

@@ -30,19 +30,19 @@
             </div>
         </div>
     </div>
-
     <div class=" px-4">
         <div class="mx-auto">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-4 bg-white border-b border-gray-200">
                     <div class=" flex grid-cols-1 justify-items-end gap-1">
-                        <a href="/siswa/{{$siswa->id}}" class=" bg-blue-500 px-2 py-1  hover:bg-purple-500 text-white">Kembali</a>
                         @role('siswa')
+                        <a href="/user" class=" bg-blue-500 px-2 py-1  hover:bg-purple-500 text-white">Kembali</a>
+                        @endrole
+                        @role('super admin')
+                        <a href="/siswa/{{$siswa->id}}" class=" bg-blue-500 px-2 py-1  hover:bg-purple-500 text-white">Kembali</a>
                         <div class=" grid grid-cols-1 justify-items-end">
                             <a href="/nis/{{$siswa->id}}" class=" bg-blue-500 px-2 py-1 hover:bg-purple-500 text-white">Nomor Induk siswa</a>
                         </div>
-                        @endrole
-                        @role('super admin')
                         <div class=" grid grid-cols-1 justify-items-end">
                             <a href="/biodata/{{$siswa->id}}" class=" bg-blue-500 px-2 py-1 hover:bg-purple-500 text-white">Biodata Lengkap</a>
                         </div>
@@ -60,6 +60,7 @@
                         <form action="/statusanak/{{$siswa->id}}" method="post">
                             @csrf
                             <div class=" grid grid-cols-2 gap-2">
+                                @if($sp->count() == 1 )
                                 <input type="hidden" name="siswa_id" class=" py-1" placeholder="siswa" value="{{$siswa->id}}">
                                 <input type="number" name="anak_ke" class=" py-1" placeholder="anak ke : 5">
                                 <input type="number" name="jumlah_saudara" class=" py-1" placeholder="jumlah saudara ke : 5">
@@ -73,7 +74,9 @@
                                 <input type="text" name="nomor_hp_ayah" class=" py-1" placeholder="nomor_hp_ayah">
                                 <input type="text" name="pekerjaan_ibu" class=" py-1" placeholder="pekerjaan_ibu">
                                 <input type="text" name="pekerjaan_ayah" class=" py-1" placeholder="pekerjaan_ayah">
+
                                 <button class=" bg-green-600 py-1 px-2 rounded-sm text-white capitalize">Simpan</button>
+                                @endif
                             </div>
                         </form>
                         <div>
