@@ -11,7 +11,7 @@
                 <img src={{ asset("asset/images/logo.png") }} alt="" width="200" class=" p-2">
             </center>
         </div>
-        <div class=" gap-4 bg-white w-full  ">
+        <div class=" gap-4 bg-white w-full flex grid-cols-2  ">
             <div class=" w-full grid grid-cols-2 px-2 py-1  ">
                 <div class=" px-1 text-xs sm:text-lg ">Nomor Induk siswa</div>
                 <div class=" px-1 text-xs sm:text-lg ">: {{$siswa->nis}}</div>
@@ -25,16 +25,23 @@
                 </div>
                 <div class=" px-1 text-xs sm:text-lg ">Asal Kota</div>
                 <div class=" px-1 text-xs sm:text-lg capitalize "> : {{$siswa->kota_asal}}</div>
-                <div class="  grid-cols-2  align-bottom gap-1 grid ">
-                    <a href="/siswa/{{$siswa->id}}/edit" class=" uppercase font-semibold bg-yellow-500 rounded px-2 ">
-                        Edit</a>
-                    <a href="/statusanak/{{$siswa->id}}" class=" bg-blue-500 px-2 py-1 hover:bg-purple-500 text-white">Update</a>
 
-                </div>
             </div>
+
         </div>
 
+        <a href="/siswa/{{$siswa->id}}/edit" class="   uppercase font-semibold bg-yellow-500  px-2 py-1  text-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+            </svg></a>
+        <a href="/statusanak/{{$siswa->id}}" class=" bg-blue-500 px-2 py-1 hover:bg-purple-500 text-white">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+            </svg>
+        </a>
+
     </div>
+
 
 
 </x-app-layout>
