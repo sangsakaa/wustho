@@ -89,7 +89,9 @@
                             <td class=" border px-2 text-center w-10"> {{$item->jenis_kelamin}}</td>
                             <td class=" border px-2 text-center"> {{$item->agama}}</td>
                             <td class=" border px-2 text-center capitalize"> {{$item->tempat_lahir}}</td>
-                            <td class=" border px-2 text-center">{{ \Carbon\Carbon::parse($item->tanggal_lahir)->isoFormat('D MMM Y') }} </td>
+                            <td class=" border px-2 text-center">
+                                {{ \Carbon\Carbon::parse($item->tanggal_lahir)->isoFormat('D MMM Y') }}
+                            </td>
                             <td class=" border px-2 text-center">{{ \Carbon\Carbon::parse($item->tanggal_masuk)->isoFormat('D/M/Y') }} </td>
                             <td class=" border px-2 text-center">{{ $item->status }} </td>
                             <td class="  text-center flex justify-center gap-1 p-1">

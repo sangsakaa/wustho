@@ -50,17 +50,6 @@ class PelanggaranController
         return redirect()->back()->with('success', 'berhasil ditambah');
     }
 
-    public function show(int $id)
-    {
-    }
-
-    public function edit(int $id)
-    {
-    }
-
-    public function update(Request $request, int $id)
-    {
-    }
 
     public function destroy(Pelanggaran $pelanggaran)
     {

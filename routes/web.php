@@ -21,6 +21,7 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\PelanggaranController;
 use App\Http\Controllers\PresensikelasController;
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\LulusanCotroller;
 use App\Http\Controllers\RekapAsamaController;
 use App\Http\Controllers\SesikelasController;
 use App\Http\Controllers\UserguruController;
@@ -209,6 +210,16 @@ Route::get('validasi-data', [ValidasiController::class, 'index'])->middleware(['
 Route::get('blangko-ijazah', [ValidasiController::class, 'blangkoijazah'])->middleware(['auth']);
 Route::get('blangko-transkip', [ValidasiController::class, 'blangkoTranskip'])->middleware(['auth']);
 
+
+// LULUSAN
+// CONTROLLER LULUSAN
+Route::get('lulusan', [LulusanCotroller::class, 'index'])->middleware(['auth'])->name('lulusan');
+Route::get('daftar-lulusan/{lulusan}', [LulusanCotroller::class, 'daftarLulusan'])->middleware(['auth']);
+Route::get('kolektif-lulusan/{lulusan}', [LulusanCotroller::class, 'kolektifLulusan'])->middleware(['auth']);
+Route::post('kolektif-lulusan/{lulusan}', [LulusanCotroller::class, 'storeLulusan'])->middleware(['auth']);
+Route::delete('daftar-lulusan/{daftar_lulusan}', [LulusanCotroller::class, 'DeletePeserta'])->middleware(['auth']);
+Route::get('reservasi-ijazah/{daftar_lulusan}', [LulusanCotroller::class, 'edit'])->middleware(['auth']);
+Route::patch('daftar-lulusan/{daftar_lulusan}', [LulusanCotroller::class, 'update'])->middleware(['auth']);
 
 
 

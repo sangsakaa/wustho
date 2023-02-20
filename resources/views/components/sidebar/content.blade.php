@@ -83,6 +83,12 @@
             <x-icons.books class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
         </x-slot>
     </x-sidebar.link>
+    <x-sidebar.link title="Data Lulusan" href="/lulusan" :isActive="request()->routeIs('lulusan')">
+        <x-slot name="icon">
+            <x-icons.academi class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
+        </x-slot>
+    </x-sidebar.link>
+
     <x-sidebar.link title="Pengaturan" href="/pengaturan" :isActive="request()->routeIs('pengaturan')">
         <x-slot name="icon">
             <x-icons.setting class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
