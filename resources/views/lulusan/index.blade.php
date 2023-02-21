@@ -92,7 +92,6 @@
                                                     <x-icons.hapus class="flex-shrink-0 w-4 h-4" aria-hidden="true" />
                                                 </button>
                                             </form>
-
                                         </td>
                                     </tr>
                                     @endforeach
