@@ -22,7 +22,7 @@
         <a href="/pengaturan" class=" text-white rounded-md  bg-green-800 px-2 py-1 ">Kembali</a>
     </div>
     <div id="div1" class=" w-full   ">
-        {{$data}}
+
         @foreach($data as $ijazah)
         <style>
             .page-break {
