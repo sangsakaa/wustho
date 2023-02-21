@@ -63,7 +63,7 @@
                     <div class=" px-1 capitalize "> : {{$ijazah->nama_ayah}}
                     </div>
                 </div>
-                <p class=" text-text-sm uppercase bold  font-serif text-center mt-4 ">lulus</p>
+                <p class="  text-3xl uppercase bold  font-serif text-center mt-4 ">lulus</p>
                 <p class=" text-justify mt-4 ">Dalam mengikuti <span class=" font-semibold text-sm">Ujian Akhir Madrasah Diniyah Wustho Wahidiyah</span> yang diselenggarakan pada tanggal
                     {{ \Carbon\Carbon::parse($ijazah->mulai)->isoFormat(' DD MMMM ') }}
                     s.d
