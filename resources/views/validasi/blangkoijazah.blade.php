@@ -21,17 +21,16 @@
         <a href="/blangko-transkip" class=" text-white rounded-md  bg-green-800 px-2 py-1 ">Transkip</a>
         <a href="/pengaturan" class=" text-white rounded-md  bg-green-800 px-2 py-1 ">Kembali</a>
     </div>
-    <div id="div1" class=" w-full   ">
-
+    <div id="div1" class="   w-full   ">
         @foreach($data as $ijazah)
         <style>
             .page-break {
                 page-break-after: always;
             }
         </style>
-        <div class=" px-16  py-14 text-center  bg-white   rounded gap-4   ">
+        <div class=" bg-white  px-16  mt-16 text-center     rounded gap-4   ">
             <div class="  w-full justify-end grid">
-                <span class="  mt-4 "> Nomor : {{$ijazah->nomor_ijazah}}</span>
+                <span class=""> Nomor : {{$ijazah->nomor_ijazah}}</span>
             </div>
             <div class="  w-full">
                 <center>
@@ -64,19 +63,19 @@
                     <div class=" px-1 capitalize "> : {{$ijazah->nama_ayah}}
                     </div>
                 </div>
-                <p class=" text-4xl uppercase bold  font-serif text-center mt-8 ">lulus</p>
-                <p class=" text-justify mt-8 ">Dalam mengikuti <span class=" font-semibold text-sm">Ujian Akhir Madrasah Diniyah Wustho Wahidiyah</span> yang diselenggarakan pada tanggal
-                    {{ \Carbon\Carbon::parse($ijazah->mulai)->isoFormat(' DD MMMM Y') }}
+                <p class=" text-text-sm uppercase bold  font-serif text-center mt-4 ">lulus</p>
+                <p class=" text-justify mt-4 ">Dalam mengikuti <span class=" font-semibold text-sm">Ujian Akhir Madrasah Diniyah Wustho Wahidiyah</span> yang diselenggarakan pada tanggal
+                    {{ \Carbon\Carbon::parse($ijazah->mulai)->isoFormat(' DD MMMM ') }}
                     s.d
                     {{ \Carbon\Carbon::parse($ijazah->selesai)->isoFormat(' DD MMMM Y') }}
                     dengan nilai sebagaimana tercantum pada daftar nilai di balik ini.
                 </p>
 
                 <p class=" text-justify mt-4 text-sm">
-                    Pemegang ijazah ini, terakhir tercatat sebagai <span class=" capitalize">siswa madrasah Diniyah wustho wahidiyah pondok pesantren kedunglo Kediri</span> dengan <span class=" font-semibold">Nomor Induk Siswa</span> : {{$ijazah->nis}}
+                    Pemegang ijazah ini, terakhir tercatat sebagai <span class=" capitalize">siswa madrasah Diniyah wustho wahidiyah pondok pesantren kedunglo Kediri</span> dengan <span class=" font-semibold">Nomor Induk Siswa : {{$ijazah->nis}}</span>
                 </p>
             </div>
-            <div class="  flex grid-cols-2 text-right mt-4 text-sm">
+            <div class="  flex grid-cols-2 text-right  text-sm">
                 <div class=" w-2/3"></div>
                 <div class="  text-left">
                     Kedunglo, {{ \Carbon\Carbon::parse($ijazah->tanggal_kelulusan)->isoFormat(' DD MMMM Y') }}<br>
