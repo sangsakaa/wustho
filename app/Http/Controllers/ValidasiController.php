@@ -57,6 +57,7 @@ class ValidasiController
                     'lulusan.tanggal_mulai',
                     'lulusan.tanggal_selesai',
                     'lulusan.tanggal_kelulusan',
+                'daftar_lulusan.nomor_ijazah',
 
 
                 ]
