@@ -41,7 +41,7 @@
                     <p class="  font-serif text-lg uppercase">pondok pesantren kedunglo al munadhdhoroh</p>
                     <p class="  uppercase font-serif text-2xl font-semibold ">madrasah diniyah wustho
                         Wahidiyah</p>
-                    <p class=" capitalize font-serif text-2xl">kota kediri jawa timur indonesia</p>
+                    <p class=" capitalize font-serif text-lg">kota kediri jawa timur indonesia</p>
                 </center>
             </div>
             <div class=" w-full ">
