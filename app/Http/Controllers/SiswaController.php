@@ -18,11 +18,13 @@ class SiswaController extends Controller
     
     public function index()
     {
-        
-        $data = Siswa::latest();
-        
+
+        $data = Siswa::query()
+            ->join('nis', 'siswa.id', '=', 'nis.siswa_id')
+            ->orderBy('nis');
         if (request('cari')) {
             $data->where('nama_siswa', 'like', '%' . request('cari') . '%');
+            $data->Orwhere('nis', 'like', '%' . request('cari') . '%');
            
         }
 
