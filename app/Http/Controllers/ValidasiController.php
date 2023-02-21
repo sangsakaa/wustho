@@ -50,6 +50,7 @@ class ValidasiController
             ->leftjoin('nis', 'nis.siswa_id', '=', 'nis.id')
             ->select(
                 [
+                'lulusan.id',
                     'lulusan.tanggal_mulai',
                     'lulusan.tanggal_selesai',
                     'lulusan.tanggal_kelulusan',
