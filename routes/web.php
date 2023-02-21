@@ -214,10 +214,12 @@ Route::get('blangko-transkip', [ValidasiController::class, 'blangkoTranskip'])->
 // LULUSAN
 // CONTROLLER LULUSAN
 Route::get('lulusan', [LulusanCotroller::class, 'index'])->middleware(['auth'])->name('lulusan');
+Route::post('lulusan', [LulusanCotroller::class, 'store'])->middleware(['auth'])->name('lulusan');
 Route::get('daftar-lulusan/{lulusan}', [LulusanCotroller::class, 'daftarLulusan'])->middleware(['auth']);
 Route::get('kolektif-lulusan/{lulusan}', [LulusanCotroller::class, 'kolektifLulusan'])->middleware(['auth']);
 Route::post('kolektif-lulusan/{lulusan}', [LulusanCotroller::class, 'storeLulusan'])->middleware(['auth']);
 Route::delete('daftar-lulusan/{daftar_lulusan}', [LulusanCotroller::class, 'DeletePeserta'])->middleware(['auth']);
+Route::delete('lulusan/{lulusan}', [LulusanCotroller::class, 'Destroy'])->middleware(['auth']);
 Route::get('reservasi-ijazah/{daftar_lulusan}', [LulusanCotroller::class, 'edit'])->middleware(['auth']);
 Route::patch('daftar-lulusan/{daftar_lulusan}', [LulusanCotroller::class, 'update'])->middleware(['auth']);
 
