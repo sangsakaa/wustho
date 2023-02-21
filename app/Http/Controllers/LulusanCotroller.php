@@ -56,11 +56,13 @@ class LulusanCotroller
             ->leftjoin('pesertakelas', 'pesertakelas.id', '=', 'daftar_lulusan.pesertakelas_id')
             ->leftjoin('lulusan', 'lulusan.id', '=', 'daftar_lulusan.lulusan_id')
             ->leftjoin('siswa', 'siswa.id', '=', 'pesertakelas.siswa_id')
+            ->leftjoin('nis', 'siswa.id', '=', 'nis.siswa_id')
             ->select(
                 [
                     'daftar_lulusan.id',
                     'daftar_lulusan.nomor_ijazah',
                 'siswa.nama_siswa',
+                'nis.nis',
                 ]
             )
             ->where('daftar_lulusan.lulusan_id', $lulusan->id)
@@ -84,7 +86,7 @@ class LulusanCotroller
             ->leftjoin('kelas', 'kelas.id', '=', 'kelasmi.kelas_id')
             ->select(
                 [
-                    'pesertakelas.id',
+                'pesertakelas.id',
                     'nama_siswa',
                     'nama_kelas'
 

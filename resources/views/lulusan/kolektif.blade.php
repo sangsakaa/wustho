@@ -12,7 +12,6 @@
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class=" bg-white border-b border-gray-200">
                         <div class=" p-6 grid grid-cols-1">
-
                             <form action="/kolektif-lulusan/{{$lulusan->id}}" method="post">
                                 @csrf
                                 <button class=" bg-red-600 px-1 py-1 text-white capitalize">Tambah kolektif</button>
@@ -34,8 +33,10 @@
                                         <tr>
                                             <th class=" border px-2 py-1 text-center w-5">
                                                 <input type="checkbox" name="pesertakelas[]" value="{{$item->id}}" multiple>
+
                                             </th>
                                             <td class=" border px-2 py-1 text-left capitalize ">
+                                                {{$item->id}}
                                                 {{strtolower($item->nama_siswa)}}
                                             </td>
                                             <td class=" border px-2 py-1 text-center ">
@@ -43,8 +44,6 @@
                                             </td>
                                         </tr>
                                         @endforeach
-
-
                                     </tbody>
                                 </table>
                             </form>

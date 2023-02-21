@@ -44,23 +44,23 @@ class ValidasiController
     public function blangkoijazah(Siswa $siswa)
     {
         $daftarLulusan = Daftar_lulusan::query()
-            // ->leftjoin('pesertakelas', 'pesertakelas.id', '=', 'daftar_lulusan.pesertakelas_id')
-            // ->leftjoin('lulusan', 'lulusan.id', '=', 'daftar_lulusan.lulusan_id')
-            // ->leftjoin('siswa', 'siswa.id', '=', 'pesertakelas.siswa_id')
-            // ->leftjoin('nis', 'nis.siswa_id', '=', 'nis.id')
-            // ->select(
-            //     [
-            //     'lulusan.id',
-            //         'lulusan.tanggal_mulai',
-            //         'lulusan.tanggal_selesai',
-            //         'lulusan.tanggal_kelulusan',
-            //     'daftar_lulusan.nomor_ijazah',
-            //         'siswa.nama_siswa',
-            //         'siswa.tempat_lahir',
-            //         'siswa.tanggal_lahir',
-            //         'nis.nis'
-            //     ]
-            // )
+            ->join('lulusan', 'lulusan.id', '=', 'daftar_lulusan.lulusan_id')
+            ->join('pesertakelas', 'pesertakelas.id', '=', 'daftar_lulusan.pesertakelas_id')
+            ->join('siswa', 'siswa.id', '=', 'pesertakelas.siswa_id')
+            ->join('nis', 'siswa.id', '=', 'nis.siswa_id')
+            ->select(
+                [
+                    'nis.nis',
+                    'siswa.nama_siswa',
+                    'siswa.tempat_lahir',
+                    'siswa.tanggal_lahir',
+                    'lulusan.tanggal_mulai',
+                    'lulusan.tanggal_selesai',
+                    'lulusan.tanggal_kelulusan',
+
+
+                ]
+            )
             ->get();
             
         return view(

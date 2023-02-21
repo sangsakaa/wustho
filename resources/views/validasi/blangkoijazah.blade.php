@@ -65,7 +65,12 @@
                     </div>
                 </div>
                 <p class=" text-4xl uppercase bold  font-serif text-center mt-8 ">lulus</p>
-                <p class=" text-justify mt-8 ">Dalam mengikuti <span class=" font-semibold text-sm">Ujian Akhir Madrasah Diniyah Wustho Wahidiyah</span> yang diselenggarakan pada tanggal {{$ijazah->tanggal_mulai}} s.d {{$ijazah->tanggal_selesai}} dengan nilai sebagaimana tercantum pada daftar nilai di balik ini.</p>
+                <p class=" text-justify mt-8 ">Dalam mengikuti <span class=" font-semibold text-sm">Ujian Akhir Madrasah Diniyah Wustho Wahidiyah</span> yang diselenggarakan pada tanggal
+                    {{ \Carbon\Carbon::parse($ijazah->mulai)->isoFormat(' DD MMMM Y') }}
+                    s.d
+                    {{ \Carbon\Carbon::parse($ijazah->selesai)->isoFormat(' DD MMMM Y') }}
+                    dengan nilai sebagaimana tercantum pada daftar nilai di balik ini.
+                </p>
 
                 <p class=" text-justify mt-4 text-sm">
                     Pemegang ijazah ini, terakhir tercatat sebagai <span class=" capitalize">siswa madrasah Diniyah wustho wahidiyah pondok pesantren kedunglo Kediri</span> dengan <span class=" font-semibold">Nomor Induk Siswa</span> : {{$ijazah->nis}}
@@ -74,7 +79,7 @@
             <div class="  flex grid-cols-2 text-right mt-4 text-sm">
                 <div class=" w-2/3"></div>
                 <div class="  text-left">
-                    Kedunglo, {{$ijazah->tanggal_kelulusan}}<br>
+                    Kedunglo, {{ \Carbon\Carbon::parse($ijazah->tanggal_kelulusan)->isoFormat(' DD MMMM Y') }}<br>
                     Kepala Madrasah<br><br><br><br>
                     <p class=" uppercase"> Muh. Bahrul Ulum, S.H</p>
                 </div>
