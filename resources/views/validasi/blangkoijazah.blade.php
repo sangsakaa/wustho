@@ -71,7 +71,7 @@
                     dengan nilai sebagaimana tercantum pada daftar nilai di balik ini.
                 </p>
 
-                <p class=" text-justify mt-4 text-sm">
+                <p class=" text-justify mt-4 ">
                     Pemegang ijazah ini, terakhir tercatat sebagai <span class=" capitalize">siswa madrasah Diniyah wustho wahidiyah pondok pesantren kedunglo Kediri</span> dengan <span class=" font-semibold">Nomor Induk Siswa : {{$ijazah->nis}}</span>
                 </p>
             </div>
