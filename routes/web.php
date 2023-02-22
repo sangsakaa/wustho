@@ -24,6 +24,7 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\LulusanCotroller;
 use App\Http\Controllers\RekapAsamaController;
 use App\Http\Controllers\SesikelasController;
+use App\Http\Controllers\TranskipController;
 use App\Http\Controllers\UserguruController;
 use App\Http\Controllers\ValidasiController;
 
@@ -224,6 +225,12 @@ Route::get('reservasi-ijazah/{daftar_lulusan}', [LulusanCotroller::class, 'edit'
 Route::patch('daftar-lulusan/{daftar_lulusan}', [LulusanCotroller::class, 'update'])->middleware(['auth']);
 
 
+// LULUSAN
+// CONTROLLER Transkip
+Route::get('daftar-transkip', [TranskipController::class, 'index'])->middleware(['auth'])->name('daftar-transkip');
+Route::post('daftar-transkip', [TranskipController::class, 'store'])->middleware(['auth'])->name('daftar-transkip');
+Route::get('nilai_transkip/{transkip}', [TranskipController::class, 'daftarTranskip'])->middleware(['auth'])->name('nilai_transkip');
+Route::post('nilai_transkip/{transkip}', [TranskipController::class, 'NilaiTranskip'])->middleware(['auth'])->name('nilai_transkip');
 
 
 

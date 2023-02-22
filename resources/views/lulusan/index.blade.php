@@ -14,8 +14,8 @@
                             <a href="/periode" class=" py-1 px-2 bg-blue-600 rounded-md text-white hover:bg-purple-500">
                                 periode
                             </a>
-                            <a href="/pengaturan" class=" py-1 px-2 bg-blue-600 rounded-md text-white hover:bg-purple-500">
-                                pengaturan
+                            <a href="/daftar-transkip" class=" capitalize py-1 px-2 bg-blue-600 rounded-md text-white hover:bg-purple-500">
+                                daftar transkip
                             </a>
                         </div>
                     </div>

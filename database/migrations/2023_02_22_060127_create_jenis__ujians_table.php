@@ -8,12 +8,14 @@ return new class extends Migration
 {
     public function up()
     {
-        Schema::create('daftar_lulusan', function (Blueprint $table) {
+        Schema::create('jenis_ujian', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('lulusan_id');
-            $table->unsignedBigInteger('pesertakelas_id');
-            $table->string('nomor_ijazah')->nullable();
+            $table->string('nama_ujian');
             $table->timestamps();
         });
+    }
+    public function down()
+    {
+        Schema::dropIfExists('jenis_ujian');
     }
 };
