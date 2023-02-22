@@ -48,11 +48,13 @@ class ValidasiController
             ->join('pesertakelas', 'pesertakelas.id', '=', 'daftar_lulusan.pesertakelas_id')
             ->join('siswa', 'siswa.id', '=', 'pesertakelas.siswa_id')
             ->join('nis', 'siswa.id', '=', 'nis.siswa_id')
+            ->join('statusanak', 'siswa.id', '=', 'statusanak.siswa_id')
             ->select(
                 [
                     'nis.nis',
                     'siswa.nama_siswa',
                     'siswa.tempat_lahir',
+                    'statusanak.nama_ayah',
                     'siswa.tanggal_lahir',
                     'lulusan.tanggal_mulai',
                     'lulusan.tanggal_selesai',

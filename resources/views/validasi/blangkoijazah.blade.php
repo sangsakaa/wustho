@@ -48,7 +48,7 @@
                 <p class=" text-justify   mt-5 text-sm">
                     Yang bertanda tangan dibawah ini Kepala Madrasah Diniyah Wustho Wahidiyah Kedunglo Kediri menerangkan bahwa :
                 </p>
-                <p class=" text-2xl uppercase bold  font-serif text-center  mt-8 underline ">
+                <p class=" text-2xl uppercase bold  font-serif text-center   mt-4 underline ">
                     {{$ijazah->nama_siswa}}
                 </p>
                 <p class=" text-sm uppercase font-semibold   font-sans text-center ">
@@ -71,13 +71,13 @@
                     dengan nilai sebagaimana tercantum pada daftar nilai di balik ini.
                 </p>
 
-                <p class=" text-justify mt-4 ">
+                <p class=" text-sm text-justify mt-4 ">
                     Pemegang ijazah ini, terakhir tercatat sebagai <span class=" capitalize">siswa madrasah Diniyah wustho wahidiyah pondok pesantren kedunglo Kediri</span> dengan <span class=" font-semibold">Nomor Induk Siswa : {{$ijazah->nis}}</span>
                 </p>
             </div>
             <div class="  flex grid-cols-2 text-right  text-sm">
                 <div class=" w-2/3"></div>
-                <div class="  text-left">
+                <div class=" text-sm  mt-4 text-left">
                     Kedunglo, {{ \Carbon\Carbon::parse($ijazah->tanggal_kelulusan)->isoFormat(' DD MMMM Y') }}<br>
                     Kepala Madrasah<br><br><br><br>
                     <p class=" uppercase"> Muh. Bahrul Ulum, S.H</p>
