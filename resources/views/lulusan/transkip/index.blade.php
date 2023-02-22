@@ -15,7 +15,7 @@
                                 periode
                             </a>
                             <a href="/lulusan" class=" py-1 px-2 bg-blue-600 rounded-md text-white hover:bg-purple-500">
-                               Data Lulusan
+                                Data Lulusan
                             </a>
                         </div>
                     </div>
@@ -71,19 +71,18 @@
                                         <th class=" border px-2 py-1 text-center">Periode</th>
                                         <th class=" border px-2 py-1 text-center">Jenis Ujian</th>
                                         <th class=" border px-2 py-1 text-center">Mata Pelajaran</th>
-                                        <th class=" border px-2 py-1 text-center">Tanggal Kelulusan</th>
+
                                         <th class=" border px-2 py-1 text-center">Act</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach($dataTranskip as $item)
                                     <tr>
-                                    <th class=" border px-2 py-1 text-center">{{$loop->iteration}}</th>
-                                    <td class=" border px-2 py-1 text-center"><a href="/nilai_transkip/{{$item->id}}">{{$item->periode}} {{$item->ket_semester}}</a></td>
-                                    <td class=" border px-2 py-1 text-center">Ujian - {{$item->nama_ujian}}</td>
-                                    <td class=" border px-2 py-1 text-center"> Kelas {{$item->kelas}} - {{$item->mapel}}</td>
-                                    <td class=" border px-2 py-1 text-center">ACT</td>
-                                    
+                                        <th class=" border px-2 py-1 text-center">{{$loop->iteration}}</th>
+                                        <td class=" border px-2 py-1 text-center"><a href="/nilai_transkip/{{$item->id}}">{{$item->periode}} {{$item->ket_semester}}</a></td>
+                                        <td class=" border px-2 py-1 text-center">Ujian - {{$item->nama_ujian}}</td>
+                                        <td class=" border px-2 py-1 text-center"> Kelas {{$item->kelas}} - {{$item->mapel}}</td>
+                                        <td class=" border px-2 py-1 text-center">ACT</td>
                                     </tr>
                                     @endforeach
                                 </tbody>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Daftar_lulusan;
 use App\Models\Kelasmi;
 use App\Models\Lulusan;
+use App\Models\Nilai_Transkip;
 use App\Models\Pesertakelas;
 use App\Models\Siswa;
 use Illuminate\Http\Request;
@@ -29,7 +30,6 @@ class ValidasiController
             ->orderby('nama_siswa');
         if (request('cari')) {
             $data->where('nama_kelas', 'like', '%' . request('cari') . '%');
-            
         }
         return view(
             'validasi.index',
@@ -57,13 +57,13 @@ class ValidasiController
                     'lulusan.tanggal_mulai',
                     'lulusan.tanggal_selesai',
                     'lulusan.tanggal_kelulusan',
-                'daftar_lulusan.nomor_ijazah',
+                    'daftar_lulusan.nomor_ijazah',
 
 
                 ]
             )
             ->get();
-            
+
         return view(
             'validasi.blangkoijazah',
             [
@@ -73,21 +73,19 @@ class ValidasiController
             ]
         );
     }
-    public function blangkoTranskip(Siswa $siswa)
+    public function blangkoTranskip()
     {
-        $data = Pesertakelas::query()
-            ->join('siswa', 'siswa.id', '=', 'pesertakelas.siswa_id')
-            ->join('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
-            ->join('nis', 'siswa.id', '=', 'nis.siswa_id')
-            ->leftjoin('statusanak', 'siswa.id', '=', 'statusanak.siswa_id')
-            ->leftjoin('statuspengamal', 'siswa.id', '=', 'statuspengamal.siswa_id')
-            ->where('kelasmi.periode_id', session('periode_id'))
+
+        $dataNiiaTranskip = Nilai_Transkip::query()
             ->get();
+
+
         return view(
             'validasi.blangko-transkip',
             [
-                'siswa' => $siswa,
-                'data' => $data,
+
+                'dataNiiaTranskip' => $dataNiiaTranskip,
+
 
             ]
         );

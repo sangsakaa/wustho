@@ -53,17 +53,24 @@ class TranskipController
         $transkip->save();
         return redirect()->back();
     }
-    public function daftarTranskip( Transkip $transkip)
+    public function daftarTranskip(Transkip $transkip)
     {
+        $dataTranskip = Transkip::query()
+            ->leftJoin('mapel', 'mapel.id', '=', 'transkip.mapel_id')
+            ->leftJoin('jenis_ujian', 'jenis_ujian.id', '=', 'transkip.jenis_ujian_id')
+
+            ->find($transkip->id);
+
+
         $dataNilaiTranskip = Nilai_Transkip::query()
             ->where('transkip_id', $transkip->id);
-        
+
         $daftarLulusan = Daftar_lulusan::query()
             ->leftjoin('pesertakelas', 'pesertakelas.id', '=', 'daftar_lulusan.pesertakelas_id')
             ->leftjoin('lulusan', 'lulusan.id', '=', 'daftar_lulusan.lulusan_id')
             ->leftjoin('siswa', 'siswa.id', '=', 'pesertakelas.siswa_id')
             ->leftjoin('nis', 'siswa.id', '=', 'nis.siswa_id')
-            ->leftjoinSub($dataNilaiTranskip, 'data_nilai',function ($join) {
+            ->leftjoinSub($dataNilaiTranskip, 'data_nilai', function ($join) {
                 $join->on('data_nilai.daftar_lulusan_id', '=', 'daftar_lulusan.id');
             })
             ->select(
@@ -84,23 +91,25 @@ class TranskipController
             [
                 'dataLulusan' => $daftarLulusan,
                 'transkip' => $transkip,
+                'dataTranskip' => $dataTranskip
+
             ]
         );
     }
-    public function NilaiTranskip(Request $request ,Transkip $transkip )
-    {   
+    public function NilaiTranskip(Request $request, Transkip $transkip)
+    {
         foreach ($request->daftar_lulusan_id as $daftar_lulusan_id) {
-    $peserta = Nilai_Transkip::firstOrNew(
-        [
-            'id' => $request->nilai_transkip_id[$daftar_lulusan_id],
-           
-            ]
-    );
-    $peserta->transkip_id = $request->transkip_id;
-    $peserta->daftar_lulusan_id = $daftar_lulusan_id;
-    $peserta->nilai_akhir = $request->nilai_akhir[$daftar_lulusan_id] ?? 0;
-    $peserta->save();
-}
+            $peserta = Nilai_Transkip::firstOrNew(
+                [
+                    'id' => $request->nilai_transkip_id[$daftar_lulusan_id],
+
+                ]
+            );
+            $peserta->transkip_id = $request->transkip_id;
+            $peserta->daftar_lulusan_id = $daftar_lulusan_id;
+            $peserta->nilai_akhir = $request->nilai_akhir[$daftar_lulusan_id] ?? 0;
+            $peserta->save();
+        }
         return redirect()->back()->with('message', 'Data telah berhasil disimpan!');
     }
 }

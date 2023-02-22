@@ -199,6 +199,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\ViewServiceProvider::class,
         Yajra\DataTables\DataTablesServiceProvider::class,
+        Riskihajar\Terbilang\TerbilangServiceProvider::class
     ],
 
     /*
@@ -215,6 +216,7 @@ return [
     'aliases' => Facade::defaultAliases()->merge([
         // 'ExampleClass' => App\Example\ExampleClass::class,
         'DataTables' => Yajra\DataTables\Facades\DataTables::class,
+        'Terbilang' => Riskihajar\Terbilang\Facades\Terbilang::class
     ])->toArray(),
 
 ];
