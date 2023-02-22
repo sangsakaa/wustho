@@ -83,7 +83,7 @@
                                     <td class=" border px-2 py-1 text-center">Ujian - {{$item->nama_ujian}}</td>
                                     <td class=" border px-2 py-1 text-center"> Kelas {{$item->kelas}} - {{$item->mapel}}</td>
                                     <td class=" border px-2 py-1 text-center">ACT</td>
-                                    <td class=" border px-2 py-1 text-center">ACT</td>
+                                    
                                     </tr>
                                     @endforeach
                                 </tbody>
