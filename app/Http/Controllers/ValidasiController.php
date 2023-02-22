@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Daftar_lulusan;
 use App\Models\Kelasmi;
-use App\Models\Lulusan;
+use App\Models\Transkip;
 use App\Models\Nilai_Transkip;
 use App\Models\Pesertakelas;
 use App\Models\Siswa;
@@ -73,18 +73,19 @@ class ValidasiController
             ]
         );
     }
-    public function blangkoTranskip()
+    public function blangkoTranskip(Transkip $transkip)
     {
-
-        $dataNiiaTranskip = Nilai_Transkip::query()
+        $dataNilaiiaTranskip = Nilai_Transkip::query()
             ->get();
+
+
 
 
         return view(
             'validasi.blangko-transkip',
             [
-
-                'dataNiiaTranskip' => $dataNiiaTranskip,
+                'dataNilaiiaTranskip' => $dataNilaiiaTranskip,
+                'transkip' => $transkip,
 
 
             ]

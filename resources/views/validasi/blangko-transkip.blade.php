@@ -27,7 +27,7 @@
             }
         </style>
         <div class=" p-2 bg-white">
-            @foreach($dataNiiaTranskip as $list)
+            @foreach($dataNilaiiaTranskip as $list)
             <center>
 
                 <p class=" font-serif text-lg  mt-10 font-semibold uppercase ">daftar nilai</p>
@@ -57,21 +57,27 @@
                 </thead>
 
                 <tbody class=" border border-black">
+
                     <tr class=" ">
                         <th class=" border-l border-black text-center">{{$loop->iteration}}</th>
                         <td class=" px-2 border-l border-black text-left"> Jenis Ujian {{$list->nama_ujian}}
                             <br>
                             <span class=" px-4">{{$list->mapel}}</span>
                         </td>
+                        <td class=" px-2 border-l border-black text-center">
+                            {{$list->nilai_akhir}}
+                        </td>
+                        <td class=" px-2 border-l border-black text-center">
+                            {{$list->nilai_akhir}}
+                        </td>
 
                     </tr>
 
                     <tr class=" border border-black">
-                        <td colspan="3" class=" text-center border border-black font-semibold">Jumlah Rata Rata</td>
-                        <td class=" text-center">120</td>
+                        <td colspan="2" class=" text-center border border-black font-semibold">Jumlah Rata Rata</td>
+                        <td class=" text-center">{{$list->sum('nilai_akhir')}}</td>
                     </tr>
                 </tbody>
-
             </table>
             <div class="  flex grid-cols-2 text-right mt-4 text-sm">
                 <div class=" w-2/3"></div>
@@ -82,8 +88,9 @@
                 </div>
             </div>
         </div>
-        <div class="page-break"></div>
         @endforeach
+        <div class="page-break"></div>
+
     </div>
 
 

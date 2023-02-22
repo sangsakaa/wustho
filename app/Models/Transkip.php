@@ -12,4 +12,8 @@ class Transkip extends Model
 
     public $guarded = [];
     protected $table = "transkip";
+    public function NilatTranskip()
+    {
+        return $this->hasMany(Nilai_Transkip::class, 'transkip_id', 'id');
+    }
 }

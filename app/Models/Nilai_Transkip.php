@@ -12,4 +12,8 @@ class Nilai_Transkip extends Model
 
     public $guarded = [];
     protected $table = "nilai_transkip";
+    public function Transkip()
+    {
+        return $this->belongsTo(Transkip::class, 'transkip_id', 'id');
+    }
 }

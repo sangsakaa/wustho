@@ -70,7 +70,9 @@
                                         <th class=" border px-2 py-1">No</th>
                                         <th class=" border px-2 py-1 text-center">Periode</th>
                                         <th class=" border px-2 py-1 text-center">Jenis Ujian</th>
-                                        <th class=" border px-2 py-1 text-center">Mata Pelajaran</th>
+                                        <th class=" border px-2 py-1 text-center">Mata Pelajaran
+                                        <th class=" border px-2 py-1 text-center">Jumlah <br>
+                                            Peserta</th>
 
                                         <th class=" border px-2 py-1 text-center">Act</th>
                                     </tr>
@@ -82,7 +84,14 @@
                                         <td class=" border px-2 py-1 text-center"><a href="/nilai_transkip/{{$item->id}}">{{$item->periode}} {{$item->ket_semester}}</a></td>
                                         <td class=" border px-2 py-1 text-center">Ujian - {{$item->nama_ujian}}</td>
                                         <td class=" border px-2 py-1 text-center"> Kelas {{$item->kelas}} - {{$item->mapel}}</td>
-                                        <td class=" border px-2 py-1 text-center">ACT</td>
+                                        <td class=" border px-2 py-1 text-center">{{$item->NilatTranskip->count()}}</td>
+                                        <td class=" border px-2 py-1 text-center">
+
+                                            <button class=" bg-red-600 py-1 px-1 text-white">
+                                                <x-icons.hapus></x-icons.hapus>
+                                            </button>
+
+                                        </td>
                                     </tr>
                                     @endforeach
                                 </tbody>
