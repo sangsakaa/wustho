@@ -29,22 +29,26 @@
         </style>
         <div class="px-16 p-2 bg-white dark:bg-dark-bg  ">
             <center>
-                <p class="  font-serif text-lg   mt-24 font-semibold uppercase  ">daftar nilai</p>
-                <p class=" font-serif text-md font-semibold uppercase ">Ujian Akhir Madrasah Diniyah Wustho Wahidiyah</p>
+                <p class="  font-serif text-2xl   mt-24  uppercase  ">daftar nilai</p>
+                <p class=" font-serif text-md  uppercase text-2xl ">Ujian Akhir Madrasah Diniyah </p>
 
                 <p class="  uppercase font-serif text-2xl font-semibold ">madrasah diniyah wustho
                     Wahidiyah</p>
                 <p class="  font-serif text-lg uppercase">pondok pesantren kedunglo al munadhdhoroh</p>
                 <p class=" capitalize font-serif text-lg">kota kediri jawa timur indonesia</p>
             </center>
-            <div class=" mt-4 uppercase grid grid-cols-4 font-semibold">
-                <div>Nama siswa</div>
-                <div> : {{$data_lulusan['lulusan']->nama_siswa}}</div>
-                <div>Nomor Induk Siswa</div>
-                <div> : {{$data_lulusan['lulusan']->nis}}</div>
+            <div class=" mt-4 uppercase grid grid-cols-2 font-semibold text-sm">
+                <div class="justify-start flex grid-cols-2 ">
+                    <div class=" w-1/4">Nama siswa</div>
+                    <div> : {{$data_lulusan['lulusan']->nama_siswa}}</div>
+                </div>
+                <div class=" justify-end flex grid-cols-2">
+                    <div>Nomor Induk Siswa</div>
+                    <div class=" pl-2"> : {{$data_lulusan['lulusan']->nis}}</div>
+                </div>
             </div>
             <hr class=" border-black">
-            <span> 1. Nilai Ujian Tulis</span>
+            <span class=" font-semibold"> 1. Nilai Ujian Tulis</span>
             <hr class=" border-black">
             <table class=" w-full mt-0.5">
                 <thead>
@@ -57,25 +61,36 @@
                 </thead>
                 <tbody class=" border border-black">
                     @foreach($data_lulusan['nilai_tulis'] as $nilai_tulis)
-                    <tr>
-                        <td class=" border-l border-black p-1 text-center w-1.5">
+                    <tr class="">
+                        <td class=" border-l border-black p-1 text-center w-1">
                             {{$loop->iteration}}
                         </td>
-                        <td class=" border-l border-black p-1 w-1/4">
+                        <td class=" border-l border-black p-1 w-1/2 ">
                             {{$nilai_tulis->mapel}}
                         </td>
                         <td class=" border-l text-center w-20 border-black p-1">
                             {{$nilai_tulis->nilai_akhir}}
                         </td>
-                        <td class=" border-l border-black p-1 capitalize">
+                        <td class=" border-l  border-black p-1 capitalize">
                             {{Terbilang::make($nilai_tulis->nilai_akhir); }}
                         </td>
                     </tr>
                     @endforeach
+                    <tr>
+                        <td colspan="3" class=" border text-center w-20 border-black p-1">
+                            <span>Jumlah</span><br>
+                            <span>Rat Rata</span>
+                        </td>
+                        <td class=" border text-center w-20 border-black p-1">
+                            {{$data_lulusan['nilai_tulis']->sum('nilai_akhir')}} <br>
+                            {{number_format($data_lulusan['nilai_tulis']->sum('nilai_akhir')/$data_lulusan['nilai_tulis']->count('nilai_akhir'),2,',','.')}}
+
+                        </td>
+                    </tr>
 
                 </tbody>
             </table>
-            <span>2. Nilai Praktek</span>
+            <span class=" font-semibold">2. Nilai Praktek</span>
             <table class=" w-full mt-0.5">
                 <thead>
                     <tr class=" uppercase text-sm border border-t-2 border-black">
@@ -86,23 +101,33 @@
                     </tr>
                 </thead>
                 <tbody class=" border border-black">
-                    @foreach($data_lulusan['nilai_praktek'] as $nilai_tulis)
+                    @foreach($data_lulusan['nilai_praktek'] as $nilai_praktek)
                     <tr>
-                        <td class=" border-l border-black p-1 w-1.5">
+                        <td class=" border-l border-black text-center p-1 w-1.5">
                             {{$loop->iteration}}
                         </td>
-                        <td class=" border-l border-black w-1/4 p-1">
-                            {{$nilai_tulis->mapel}}
+                        <td class=" border-l border-black w-1/2 p-1">
+                            {{$nilai_praktek->mapel}}
                         </td>
                         <td class=" border-l text-center w-20 border-black p-1">
-                            {{$nilai_tulis->nilai_akhir}}
+                            {{$nilai_praktek->nilai_akhir}}
                         </td>
                         <td class=" border-l border-black p-1 capitalize">
-                            {{Terbilang::make($nilai_tulis->nilai_akhir); }}
+                            {{Terbilang::make($nilai_praktek->nilai_akhir); }}
                         </td>
                     </tr>
                     @endforeach
+                    <tr>
+                        <td colspan="3" class=" border text-center w-20 border-black p-1">
+                            <span>Jumlah</span><br>
+                            <span>Rat Rata</span>
+                        </td>
+                        <td class=" border text-center w-20 border-black p-1">
+                            {{$data_lulusan['nilai_praktek']->sum('nilai_akhir')}} <br>
+                            {{number_format($data_lulusan['nilai_praktek']->sum('nilai_akhir')/$data_lulusan['nilai_praktek']->count('nilai_akhir'),2,',','.')}}
 
+                        </td>
+                    </tr>
                 </tbody>
             </table>
 
