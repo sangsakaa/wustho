@@ -8,7 +8,7 @@ use App\Models\Transkip;
 use App\Models\Nilai_Transkip;
 use App\Models\Pesertakelas;
 use App\Models\Siswa;
-use Illuminate\Http\Request;
+use NumberFormatter;
 
 class ValidasiController
 {
@@ -75,19 +75,51 @@ class ValidasiController
             ]
         );
     }
-    public function blangkoTranskip(Transkip $transkip)
+    public function blangkoTranskip()
     {
-        $dataNilaiiaTranskip = Nilai_Transkip::query()
+
+        $data_lulusan = Daftar_lulusan::query()
+            ->join('pesertakelas', 'pesertakelas.id', '=', 'daftar_lulusan.pesertakelas_id')
+            ->join('nilai_transkip', 'nilai_transkip.daftar_lulusan_id', '=', 'daftar_lulusan.id')
+            ->join('transkip', 'transkip.id', '=', 'nilai_transkip.transkip_id')
+            ->join('siswa', 'siswa.id', '=', 'pesertakelas.siswa_id')
+            ->join('nis', 'siswa.id', '=', 'nis.siswa_id')
+            ->select('daftar_lulusan.id', 'nama_siswa', 'nis',)
             ->get();
+        $data_nilai_tulis = Nilai_Transkip::query()
+            ->join('transkip', 'transkip.id', '=', 'nilai_transkip.transkip_id')
+            ->join('mapel', 'mapel.id', '=', 'transkip.mapel_id')
+            ->join('jenis_ujian', 'jenis_ujian.id', '=', 'transkip.jenis_ujian_id')
+            ->select('nilai_transkip.daftar_lulusan_id', 'nama_ujian', 'nilai_transkip.nilai_akhir', 'mapel')
+            ->where('jenis_ujian.nama_ujian', 'tulis')
+            ->get();
+        $data_nilai_praktek = Nilai_Transkip::query()
+            ->join('transkip', 'transkip.id', '=', 'nilai_transkip.transkip_id')
+            ->join('mapel', 'mapel.id', '=', 'transkip.mapel_id')
+            ->join('jenis_ujian', 'jenis_ujian.id', '=', 'transkip.jenis_ujian_id')
+            ->select('nilai_transkip.daftar_lulusan_id', 'nama_ujian', 'nilai_akhir', 'mapel')
+            ->where('jenis_ujian.nama_ujian', 'praktek')
+            ->get();
+        $data = [];
+        // dd($data_lulusan);
+        foreach ($data_lulusan as $lulusan) {
+            $data[$lulusan->id] =
+                [
+                    'lulusan' => $lulusan,
+                    'nilai_tulis' => $data_nilai_tulis->where('daftar_lulusan_id', $lulusan->id),
+                    'nilai_praktek' => $data_nilai_praktek->where('daftar_lulusan_id', $lulusan->id),
 
+                ];
+        }
 
-
-
+        
         return view(
             'validasi.blangko-transkip',
             [
-                'dataNilaiiaTranskip' => $dataNilaiiaTranskip,
-                'transkip' => $transkip,
+
+                'data' => $data
+
+
 
 
             ]
