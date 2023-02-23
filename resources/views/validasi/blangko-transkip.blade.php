@@ -20,17 +20,16 @@
         <a href="/blangko-ijazah" class=" text-white rounded-md  bg-green-800 px-2 py-1 ">Ijazah</a>
         <a href="/pengaturan" class=" text-white rounded-md  bg-green-800 px-2 py-1 ">Kembali</a>
     </div>
-    <div id="div1" class=" px-4  ">
+    <div id="div1" class="  bg-white   ">
         @foreach($data as $data_lulusan)
         <style>
             .page-break {
                 page-break-after: always;
             }
         </style>
-
-        <div class=" p-2 bg-white dark:bg-dark-bg">
+        <div class="px-16 p-2 bg-white dark:bg-dark-bg  ">
             <center>
-                <p class="  font-serif text-lg  mt-10 font-semibold uppercase ">daftar nilai</p>
+                <p class="  font-serif text-lg   mt-24 font-semibold uppercase  ">daftar nilai</p>
                 <p class=" font-serif text-md font-semibold uppercase ">Ujian Akhir Madrasah Diniyah Wustho Wahidiyah</p>
 
                 <p class="  uppercase font-serif text-2xl font-semibold ">madrasah diniyah wustho
@@ -109,7 +108,7 @@
 
             <div class="  flex grid-cols-2 text-right  text-sm">
                 <div class=" w-2/3"></div>
-                <div class="  text-left">
+                <div class="  text-left  mt-10">
                     Kedunglo, {{ now()->isoFormat('D MMMM YYYY') }}<br>
                     Kepala Madrasah<br><br><br><br>
                     <p class=" uppercase"> Muh. Bahrul Ulum, S.H</p>
@@ -117,8 +116,8 @@
 
             </div>
         </div>
-        @endforeach
         <div class="page-break"></div>
+        @endforeach
 
     </div>
 
