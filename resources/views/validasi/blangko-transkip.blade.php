@@ -37,13 +37,13 @@
                 <p class="  font-serif text-lg uppercase">pondok pesantren kedunglo al munadhdhoroh</p>
                 <p class=" capitalize font-serif text-lg">kota kediri jawa timur indonesia</p>
             </center>
-            <div class=" mt-4 uppercase grid grid-cols-2 font-semibold text-sm">
+            <div class=" mt-4 uppercase grid grid-cols-2 font-semibold text-sm sm:text-sm">
                 <div class="justify-start flex grid-cols-2 ">
-                    <div class=" w-1/4">Nama siswa</div>
+                    <div class="  ">Nama siswa</div>
                     <div> : {{$data_lulusan['lulusan']->nama_siswa}}</div>
                 </div>
                 <div class=" justify-end flex grid-cols-2">
-                    <div>Nomor Induk Siswa</div>
+                    <div class=" ">Nomor Induk Siswa</div>
                     <div class=" pl-2"> : {{$data_lulusan['lulusan']->nis}}</div>
                 </div>
             </div>
