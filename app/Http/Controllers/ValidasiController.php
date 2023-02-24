@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Daftar_lulusan;
+
+use App\Models\Siswa;
 use App\Models\Kelasmi;
 use App\Models\Transkip;
-use App\Models\Nilai_Transkip;
 use App\Models\Pesertakelas;
-use App\Models\Siswa;
-use NumberFormatter;
+use App\Models\Daftar_lulusan;
+use App\Models\Nilai_Transkip;
+use Riskihajar\Terbilang\Facades\Terbilang;
+
 
 class ValidasiController
 {
@@ -107,17 +109,21 @@ class ValidasiController
                 [
                     'lulusan' => $lulusan,
                     'nilai_tulis' => $data_nilai_tulis->where('daftar_lulusan_id', $lulusan->id),
-                    'nilai_praktek' => $data_nilai_praktek->where('daftar_lulusan_id', $lulusan->id),
-
+                'nilai_praktek' => $data_nilai_praktek->where('daftar_lulusan_id', $lulusan->id),
                 ];
         }
+        
+
+        
 
         
         return view(
             'validasi.blangko-transkip',
             [
 
-                'data' => $data
+                'data' => $data,
+                
+                
 
 
 
