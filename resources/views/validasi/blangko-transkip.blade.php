@@ -48,7 +48,9 @@
                 </div>
             </div>
             <hr class=" border-black">
-            <span class=" font-semibold"> 1. Nilai Ujian Tulis</span>
+            <div class=" mt-2">
+                <span class=" font-semibold"> 1. Nilai Ujian Tulis</span>
+            </div>
             <hr class=" border-black">
             <table class=" w-full mt-0.5">
                 <thead>
@@ -90,8 +92,10 @@
 
                 </tbody>
             </table>
-            <span class=" font-semibold">2. Nilai Praktek</span>
-            <table class=" w-full mt-0.5">
+            <div class=" mt-2">
+                <span class=" font-semibold mt-2">2. Nilai Praktek</span>
+            </div>
+            <table class=" w-full ">
                 <thead>
                     <tr class=" uppercase text-sm border border-t-2 border-black">
                         <th class=" border border-black px-1 py-1">No</th>
