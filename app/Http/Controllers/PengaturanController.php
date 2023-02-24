@@ -89,11 +89,14 @@ class PengaturanController extends Controller
             ->select('siswa.nama_siswa', 'kelasmi.nama_kelas', 'nis.nis')
             ->orderBy('kelasmi.nama_kelas')
             ->orderBy('siswa.nama_siswa')
-            ->get();
+        ->where('kelasmi.periode_id', session('periode_id'));
+        if (request('cari')) {
+            $peserta->where('nama_kelas', 'like', '%' . request('cari') . '%');
+        }
         return view(
             'pengaturan/semester',
             [
-                'peserta' => $peserta
+                'peserta' => $peserta->get()
             ]
         );
     }
