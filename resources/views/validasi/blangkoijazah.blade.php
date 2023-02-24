@@ -52,7 +52,7 @@
                     {{$ijazah->nama_siswa}}
                 </p>
                 <p class=" text-sm uppercase font-semibold   font-sans text-center ">
-                    nomor induk siswa : {{$ijazah->nis}}
+                    nomor induk murid : {{$ijazah->nis}}
                 </p>
                 <div class=" text-left grid grid-cols-2 mt-5">
                     <div class=" px-1 ">Tempat, Tanggal Lahir</div>
@@ -72,7 +72,7 @@
                 </p>
 
                 <p class=" text-sm text-justify mt-4 ">
-                    Pemegang ijazah ini, terakhir tercatat sebagai <span class=" capitalize">siswa madrasah Diniyah wustho wahidiyah pondok pesantren kedunglo Kediri</span> dengan <span class=" font-semibold">Nomor Induk Siswa : {{$ijazah->nis}}</span>
+                    Pemegang ijazah ini, terakhir tercatat sebagai <span class=" capitalize">siswa madrasah Diniyah wustho wahidiyah pondok pesantren kedunglo Kediri</span> dengan <span class=" font-semibold">Nomor Induk Murid : {{$ijazah->nis}}</span>
                 </p>
             </div>
             <div class="  flex grid-cols-2 text-right  text-sm">
