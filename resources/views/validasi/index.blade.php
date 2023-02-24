@@ -2,7 +2,7 @@
     <x-slot name="header">
         <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <h2 class="text-xl font-semibold leading-tight">
-                {{ __('Dashboard') }}
+                {{ __('Dashboard Validasi Data') }}
             </h2>
 
         </div>
@@ -29,13 +29,14 @@
                 @endforeach
             </select> -->
                 <button type="submit" class=" px-2    bg-blue-500  rounded-md text-white">
-                    Cari By Nama </button>
+                    <x-icons.cari></x-icons.cari>
+                </button>
             </form>
         </div>
         <div class=" grid justify-end px-2">
             <button class=" flex text-white rounded-md  bg-green-800 px-2 py-1 " onclick="printContent('div1')">
                 <x-icons.print></x-icons.print>
-                Validasi
+
             </button>
         </div>
     </div>

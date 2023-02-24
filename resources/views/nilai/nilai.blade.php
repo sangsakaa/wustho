@@ -18,7 +18,11 @@
                             <div class=" sm:text-sm text-xs">Kelas / Semester</div>
                             <div class=" sm:text-sm text-xs"> : {{$titlenilai->nama_kelas}} / {{$titlenilai->semester}}</div>
                             <div class=" sm:text-sm text-xs">Mata Pelajaran</div>
-                            <div class=" sm:text-sm text-xs"> : {{$titlenilai->mapel}}/{{$titlenilai->nama_kitab}}</div>
+                            <div class=" sm:text-sm text-xs">
+                                : {{$titlenilai->mapel}}
+                                @role('super admin')/{{$titlenilai->nama_kitab}}
+                                @endrole
+                            </div>
                             <div class=" sm:text-sm text-xs">Guru</div>
                             <div class=" sm:text-sm text-xs"> : {{$titlenilai->nama_guru}}</div>
                             <div class=" sm:text-sm text-xs">Periode</div>
@@ -35,7 +39,7 @@
                         <form action="/nilai" method="post">
                             @csrf
                             <div class=" flex  justify-items-end  ">
-                                <div class=" grid grid-cols-2 gap-2  ">
+                                <div class=" grid grid-cols-2 gap-2   ">
                                     @role('super admin')
                                     <button class=" bg-red-600 py-1 sm:w-full rounded-md text-white px-4 text-center capitalize">simpan nilai</button>
                                     <a href="/nilaimapel" class=" sm:w-full bg-red-600 py-1 rounded-md text-white px-4 text-center capitalize">Kembali</a>
@@ -51,10 +55,14 @@
                                     <thead>
                                         <tr class="border capitalize">
                                             <th class="sm:text-sm text-xs border px-1">NO</th>
+                                            @role('super admin')
                                             <th class="sm:text-sm text-xs border px-1 w-1/7 ">NIS</th>
+                                            @endrole
                                             <th class="sm:text-sm text-xs border px-1 ">NAMA</th>
+                                            @role('super admin')
                                             <th class="sm:text-sm text-xs border px-1">KLS</th>
-                                            <th class="sm:text-sm text-xs border px-1">NK</th>
+                                            @endrole
+                                            <th class="sm:text-sm text-xs border px-1">KLS</th>
                                             <th class="sm:text-sm text-xs border px-1 ">NH</th>
                                             <th class="sm:text-sm text-xs border px-1">NU</th>
                                         </tr>
@@ -69,29 +77,30 @@
                                                 <input type="hidden" name="nilai_id[{{$item->id}}]" value="{{$item->nilai_id}}">
                                                 <input type="hidden" name="semester_id" value="{{$item->id}}">
                                             </td>
+                                            @role('super admin')
                                             <td class="sm:text-sm text-xs px-2 border text-center ">
                                                 {{$item->nis}}
                                             </td>
+                                            @endrole
                                             <td class="sm:text-sm  sm:h-full text-xs px-2 border capitalize ">
                                                 {{strtolower($item->nama_siswa)}}
                                             </td>
+                                            @role('super admin')
                                             <td class="sm:text-xs text-xs px-2 border text-center ">
                                                 {{$item->kelas}}
                                             </td>
+                                            @endrole
                                             <td class="sm:text-sm text-xs px-2 border text-center ">
                                                 {{$item->nama_kelas}}
                                             </td>
                                             <td class="sm:text-sm text-xs  border text-center w-50">
-                                                <input value="{{$item->nilai_harian}}" class="sm:text-sm text-xs py-1 w-full text-center" type="number" name="nilai_harian[{{$item->id}}]" default="0" placeholder="min: 50 max:100">
+                                                <input value="{{$item->nilai_harian}}" class="sm:text-sm text-xs px-1 py-1 w-full text-center" type="text" name="nilai_harian[{{$item->id}}]" default="0" placeholder="min: 50 max:100">
                                             </td>
                                             <td class="sm:text-sm text-xs  border text-center w-50">
-                                                <input value="{{$item->nilai_ujian}}" class="sm:text-sm text-xs py-1 w-full text-center" type="number" name="nilai_ujian[{{$item->id}}]" placeholder="min: 50 max:100">
+                                                <input value="{{$item->nilai_ujian}}" class="sm:text-sm text-xs py-1 w-full text-center" type="text" name="nilai_ujian[{{$item->id}}]" placeholder="min: 50 max:100">
                                             </td>
-
                                         </tr>
                                         @endforeach
-
-
                                     </tbody>
                                 </table>
                             </div>

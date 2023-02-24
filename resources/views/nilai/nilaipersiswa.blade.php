@@ -30,9 +30,9 @@
 
                 $pesertakelas_id = (!empty($user) && isset($user->pesertakelas_id))
                 ?>
-                <div class=" w-full">
+                <div class=" w-full mt-1">
                     <form action="/nilai" method="get">
-                        <select name="kelasmi" id="" class=" border border-green-800 text-green-800 rounded-md py-1" required>
+                        <select name="kelasmi" id="" class=" sm:text-sm  border border-green-800 text-green-800 rounded-md  py-1" required>
                             <option value="">-- Pilih Periode --</option>
                             @foreach ($kelasmiSiswa as $kelas)
                             <option value="{{ $kelas->id }}" {{ $kelasmiTerpilih->id == $kelas->id ? 'selected' : '' }}>
@@ -40,91 +40,94 @@
                             </option>
                             @endforeach
                         </select>
-                        <button type="submit" class=" px-2  py-1   bg-blue-500  rounded-md text-white">
-                            Periode
+                        <button type="submit" class=" px-2     bg-blue-500  rounded-md text-white">
+                            <span class=" text-sm sm:text-xs">
+                                cari
+                            </span>
                         </button>
                     </form>
                 </div>
             </div>
-            <div id="div1">
-                <div class="  rounded-md ">
-                    <div class=" text-center  text-2xl capitalize py-2">
-                        <span class=" font-semibold uppercase underline"> kartu hasil tadris</span>
-                    </div>
-                    <div class=" font-semibold text-xs sm:text-sm grid grid-cols-2 sm:grid-cols-4 gap-1">
-                        <div>Nomor Induk Siswa </div>
-                        <div> : {{$user->nis}} </div>
-                        <div>Kelas / Semester </div>
 
-                        <div> : {{$title->nama_kelas}}/{{$title->semester}}</div>
-
-                        <div>Nama Siswa </div>
-                        <div class=" w-full text-xs"> : {{$user->nama_siswa}} </div>
-                        <div>Periode </div>
-                        <div> : {{$title->periode}} {{$title->ket_semester}}</div>
-                    </div>
-                    <hr class=" py-1">
-                    <div class=" overflow-auto">
-                        <table class=" overflow-auto text-xs sm:text-sm w-full ">
-                            <thead>
-                                <tr class="border bg-gray-100 dark:bg-purple-600">
-                                    <th class=" border px-1  py-1">No</th>
-                                    <th class=" border px-1">Pelajaran</th>
-                                    <th class=" border px-1">Kitab</th>
-                                    <th class=" border px-1">Nama Guru</th>
-                                    <th class=" border px-1">NH</th>
-                                    <th class=" border px-1">NU</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @if ($dataNilai->count())
-                                @foreach ($dataNilai as $nilai)
-                                <tr class="border  even:bg-gray-50">
-                                    <td class=" border text-center px-1">{{ $loop->iteration }}</td>
-                                    <td class=" border text-center px-1 py-2">{{ $nilai->mapel }}</td>
-                                    <td class=" border text-center px-1 py-2">{{ $nilai->nama_kitab }}</td>
-                                    <td class=" border text-left px-1">{{ $nilai->nama_guru }}</td>
-                                    <td class=" border text-center px-1">
-                                        @if($nilai->nilai_harian == 0 )
-                                        <span class=" text-red-600 font-semibold text-xs"> Nan </span>
-                                        @else
-                                        {{ $nilai->nilai_harian }}
-                                        @endif
-                                    </td>
-                                    <td class=" border text-center px-1"> @if($nilai->nilai_ujian == 0 )
-                                        <span class=" text-red-600 font-semibold text-xs"> Nan </span>
-                                        @else
-                                        {{ $nilai->nilai_ujian }}
-                                        @endif
-                                    </td>
-                                </tr>
-                                @endforeach
-                                <tr>
-                                    <td class=" text-center font-semibold text-sm border py-2" colspan="4">Total Nilai</td>
-                                    <td class=" text-center font-semibold text-sm border">{{$dataNilai->sum->nilai_harian}}</td>
-                                    <td class=" text-center font-semibold text-sm border">{{$dataNilai->sum->nilai_ujian}}</td>
-
-                                </tr>
-                                <tr>
-                                    <td class=" text-center font-semibold text-sm border py-2" colspan="4">Nilai Rata Rata </td>
-                                    <td class=" text-center font-semibold text-sm border">{{ number_format($dataNilai->sum->nilai_harian / $dataNilai->count(),0,2) }}</td>
-                                    <td class=" text-center font-semibold text-sm border">{{ number_format($dataNilai->sum->nilai_ujian / $dataNilai->count(),0,2) }}</td>
-
-
-                                </tr>
-                                @else
-                                <tr class="border">
-                                    <td colspan="11" class="text-sm border text-center py-1">
-                                        <span class=" text-red-600 font-semibold text-center">Tidak ada nilai yang di masukan</span>
-                                    </td>
-                                </tr>
-                                @endif
-                            </tbody>
-                        </table>
-                    </div>
-
-                </div>
+        </div>
+    </div>
+    <div id="div1" class=" px-4 py-1 mt-2 bg-white">
+        <div class="  rounded-md ">
+            <div class=" text-center  text-sm sm:text-2xl capitalize py-2">
+                <span class=" font-semibold uppercase underline"> kartu hasil tadris</span>
             </div>
+            <div class=" font-semibold text-xs sm:text-sm grid grid-cols-2 sm:grid-cols-4 gap-1">
+                <div>Nomor Induk Siswa </div>
+                <div> : {{$user->nis}} </div>
+                <div>Kelas / Semester </div>
+
+                <div> : {{$title->nama_kelas}}/{{$title->semester}}</div>
+
+                <div>Nama Siswa </div>
+                <div class=" w-full text-xs"> : {{$user->nama_siswa}} </div>
+                <div>Periode </div>
+                <div> : {{$title->periode}} {{$title->ket_semester}}</div>
+            </div>
+            <hr class=" py-1">
+            <div class=" overflow-auto">
+                <table class=" overflow-auto text-xs sm:text-sm w-full ">
+                    <thead>
+                        <tr class="border bg-gray-100 dark:bg-purple-600">
+                            <th class=" border px-1  py-1">No</th>
+                            <th class=" border px-1">Pelajaran</th>
+                            <th class=" border px-1">Kitab</th>
+                            <th class=" border px-1">Nama Guru</th>
+                            <th class=" border px-1">NH</th>
+                            <th class=" border px-1">NU</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if ($dataNilai->count())
+                        @foreach ($dataNilai as $nilai)
+                        <tr class="border  even:bg-gray-50">
+                            <td class=" border text-center px-1">{{ $loop->iteration }}</td>
+                            <td class=" border text-center px-1 py-2">{{ $nilai->mapel }}</td>
+                            <td class=" border text-center px-1 py-2">{{ $nilai->nama_kitab }}</td>
+                            <td class=" border text-left px-1">{{ $nilai->nama_guru }}</td>
+                            <td class=" border text-center px-1">
+                                @if($nilai->nilai_harian == 0 )
+                                <span class=" text-red-600 font-semibold text-xs"> Nan </span>
+                                @else
+                                {{ $nilai->nilai_harian }}
+                                @endif
+                            </td>
+                            <td class=" border text-center px-1"> @if($nilai->nilai_ujian == 0 )
+                                <span class=" text-red-600 font-semibold text-xs"> Nan </span>
+                                @else
+                                {{ $nilai->nilai_ujian }}
+                                @endif
+                            </td>
+                        </tr>
+                        @endforeach
+                        <tr>
+                            <td class=" text-center font-semibold text-sm border py-2" colspan="4">Total Nilai</td>
+                            <td class=" text-center font-semibold text-sm border">{{$dataNilai->sum->nilai_harian}}</td>
+                            <td class=" text-center font-semibold text-sm border">{{$dataNilai->sum->nilai_ujian}}</td>
+
+                        </tr>
+                        <tr>
+                            <td class=" text-center font-semibold text-sm border py-2" colspan="4">Nilai Rata Rata </td>
+                            <td class=" text-center font-semibold text-sm border">{{ number_format($dataNilai->sum->nilai_harian / $dataNilai->count(),0,2) }}</td>
+                            <td class=" text-center font-semibold text-sm border">{{ number_format($dataNilai->sum->nilai_ujian / $dataNilai->count(),0,2) }}</td>
+
+
+                        </tr>
+                        @else
+                        <tr class="border">
+                            <td colspan="11" class="text-sm border text-center py-1">
+                                <span class=" text-red-600 font-semibold text-center">Tidak ada nilai yang di masukan</span>
+                            </td>
+                        </tr>
+                        @endif
+                    </tbody>
+                </table>
+            </div>
+
         </div>
     </div>
     <div class="py-2">
