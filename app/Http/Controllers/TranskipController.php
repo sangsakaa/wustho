@@ -18,7 +18,8 @@ class TranskipController
         $dataPeriode = Periode::query()
             ->join('semester', 'semester.id', '=', 'periode.semester_id')
             ->select('periode.periode', 'ket_semester', 'periode.id')
-            ->get();
+            ->orderby('ket_semester', 'desc')
+        ->get();
         $dataMapel = Mapel::query()
             ->join('kelas', 'kelas.id', '=', 'mapel.kelas_id')
             ->select('kelas.kelas', 'mapel.mapel', 'mapel.id')
@@ -32,6 +33,7 @@ class TranskipController
             ->join('mapel', 'mapel.id', '=', 'transkip.mapel_id')
             ->join('kelas', 'kelas.id', '=', 'mapel.kelas_id')
             ->select('periode.periode', 'ket_semester', 'nama_ujian', 'mapel', 'kelas', 'transkip.id')
+            ->orderby('nama_ujian')
             ->get();
         return view(
             'lulusan.transkip.index',
