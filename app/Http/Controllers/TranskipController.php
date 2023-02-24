@@ -112,4 +112,10 @@ class TranskipController
         }
         return redirect()->back()->with('message', 'Data telah berhasil disimpan!');
     }
+    public function DeleteTraskip(Transkip $transkip)
+    {
+        Transkip::destroy($transkip->id);
+        Nilai_Transkip::where('transkip_id', $transkip->id)->delete();
+        return redirect()->back();
+    }
 }

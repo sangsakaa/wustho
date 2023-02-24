@@ -87,9 +87,14 @@
                                         <td class=" border px-2 py-1 text-center">{{$item->NilatTranskip->count()}}</td>
                                         <td class=" border px-2 py-1 text-center">
 
-                                            <button class=" bg-red-600 py-1 px-1 text-white">
-                                                <x-icons.hapus></x-icons.hapus>
-                                            </button>
+
+                                            <form action="/daftar-transkip/{{$item->id}}" method="post">
+                                                @csrf
+                                                @method('delete')
+                                                <button class=" px-1 py-1 bg-red-600 text-white">
+                                                    <x-icons.hapus class="flex-shrink-0 w-4 h-4" aria-hidden="true" />
+                                                </button>
+                                            </form>
 
                                         </td>
                                     </tr>

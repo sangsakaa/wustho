@@ -231,6 +231,7 @@ Route::get('daftar-transkip', [TranskipController::class, 'index'])->middleware(
 Route::post('daftar-transkip', [TranskipController::class, 'store'])->middleware(['auth'])->name('daftar-transkip');
 Route::get('nilai_transkip/{transkip}', [TranskipController::class, 'daftarTranskip'])->middleware(['auth'])->name('nilai_transkip');
 Route::post('nilai_transkip/{transkip}', [TranskipController::class, 'NilaiTranskip'])->middleware(['auth'])->name('nilai_transkip');
+Route::delete('daftar-transkip/{transkip}', [TranskipController::class, 'DeleteTraskip'])->middleware(['auth']);
 
 
 

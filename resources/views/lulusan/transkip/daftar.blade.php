@@ -43,7 +43,7 @@
                     <div class=" bg-white border-b border-gray-200">
                         <div class=" p-6 grid grid-cols-1">
 
-                            <form action="/nilai_transkip/1" method="post">
+                            <form action="/nilai_transkip/{{$transkip->id}}" method="post">
                                 @csrf
                                 <button class=" bg-red-600 px-1 py-1 text-white w-20"> Simpan</button>
                                 <a href="/daftar-transkip" class=" py-1 px-2 bg-blue-600  text-white hover:bg-purple-500">
