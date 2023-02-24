@@ -81,7 +81,7 @@
                     <tr>
                         <td colspan="3" class=" border text-center w-20 border-black p-1">
                             <span>Jumlah</span><br>
-                            <span>Rat Rata</span>
+                            <span>Rata Rata</span>
                         </td>
                         <td class=" border text-center w-20 border-black p-1">
                             {{$data_lulusan['nilai_tulis']->sum('nilai_akhir')}} <br>
@@ -124,7 +124,7 @@
                     <tr>
                         <td colspan="3" class=" border text-center w-20 border-black p-1">
                             <span>Jumlah</span><br>
-                            <span>Rat Rata</span>
+                            <span>Rata Rata</span>
                         </td>
                         <td class=" border text-center w-20 border-black p-1">
                             {{$data_lulusan['nilai_praktek']->sum('nilai_akhir')}} <br>
