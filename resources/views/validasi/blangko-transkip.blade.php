@@ -71,7 +71,7 @@
                         <td class=" border-l text-center w-20 border-black p-1">
                             {{$nilai_tulis->nilai_akhir}}
                         </td>
-                        <td class=" border-l  border-black p-1 capitalize">
+                        <td class=" border-l  border-black p-1 capitalize text-center">
                             {{Terbilang::make($nilai_tulis->nilai_akhir); }}
                         </td>
                     </tr>
@@ -112,7 +112,7 @@
                         <td class=" border-l text-center w-20 border-black p-1">
                             {{$nilai_praktek->nilai_akhir}}
                         </td>
-                        <td class=" border-l border-black p-1 capitalize">
+                        <td class=" border-l border-black p-1 capitalize text-center">
                             {{Terbilang::make($nilai_praktek->nilai_akhir); }}
                         </td>
                     </tr>
