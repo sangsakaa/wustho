@@ -48,7 +48,7 @@
                 </div>
             </div>
             <hr class=" border-black">
-            <div class=" mt-2">
+            <div class=" mt-4">
                 <span class=" font-semibold"> 1. Nilai Ujian Tulis</span>
             </div>
             <hr class=" border-black">
@@ -56,7 +56,7 @@
                 <thead>
                     <tr class=" uppercase text-sm border border-t-2 border-black">
                         <th class=" border border-black px-1 py-1">No</th>
-                        <th class=" border border-black px-1 py-1">Bidang studi</th>
+                        <th class=" border border-black px-1 py-1">Mata Pelajaran</th>
                         <th class=" border border-black px-1 py-1">Angka</th>
                         <th class=" border border-black px-1 py-1">Huruf</th>
                     </tr>
@@ -92,14 +92,14 @@
 
                 </tbody>
             </table>
-            <div class=" mt-2">
-                <span class=" font-semibold mt-2">2. Nilai Praktek</span>
+            <div class=" mt-8">
+                <span class=" font-semibold mt-4">2. Nilai Praktek</span>
             </div>
             <table class=" w-full ">
                 <thead>
                     <tr class=" uppercase text-sm border border-t-2 border-black">
                         <th class=" border border-black px-1 py-1">No</th>
-                        <th class=" border border-black px-1 py-1">Bidang studi</th>
+                        <th class=" border border-black px-1 py-1">Mata Pelajaran</th>
                         <th class=" border border-black px-1 py-1">Angka</th>
                         <th class=" border border-black px-1 py-1">Huruf</th>
                     </tr>
