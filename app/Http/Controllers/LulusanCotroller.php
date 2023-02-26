@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Lulusan;
 use App\Models\Periode;
 use App\Models\Pesertakelas;
@@ -107,22 +108,31 @@ class LulusanCotroller
     }
     public function storeLulusan(Request $request)
     {
-        $year = 1444;
+        // Mendapatkan tanggal saat ini dalam format Hijriyah
 
-        // mendapatkan nomor urut terakhir dari database
+        // Mendapatkan tahun Hijriyah dari tanggal saat ini
+        $hijri = 1444;
+
+        // Mendapatkan nomor urut terakhir dari database
         $lastNumber = DB::table('daftar_lulusan')->max('id');
 
-        // mengambil 4 digit terakhir dari nomor urut terakhir
+        // Mengkonversi tipe data variabel $lastNumber menjadi integer
+        $lastNumber = (int) $lastNumber;
+
+        // Mengambil 4 digit terakhir dari nomor urut terakhir
         $lastNumber = substr($lastNumber, -4);
 
-        // menambahkan 1 pada nomor urut terakhir
-        $newNumber = (int) $lastNumber + 1;
+        // Menambahkan 1 pada nomor urut terakhir
+        $newNumber = $lastNumber + 1;
+        $hijriYear = $hijri;
 
-        // menambahkan leading zero pada nomor urut baru jika kurang dari 4 digit
+        // Menambahkan leading zero pada nomor urut baru jika kurang dari 4 digit
         $newNumber = str_pad($newNumber, 4, '0', STR_PAD_LEFT);
 
-        // menggabungkan komponen kode menjadi satu string
-        $code = 'MD-02-I-' . $year . '-' . $newNumber;
+        // Menggabungkan komponen kode menjadi satu string
+        $code = 'MD-02-II-' . $hijriYear . '-' . $newNumber;
+
+        // return $code;
         if ($request->pesertakelas) {
             foreach ($request->pesertakelas as $list) {
                 $peserta = new Daftar_lulusan();
