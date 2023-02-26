@@ -130,7 +130,7 @@ class LulusanCotroller
         $newNumber = str_pad($newNumber, 4, '0', STR_PAD_LEFT);
 
         // Menggabungkan komponen kode menjadi satu string
-        $code = 'MD-02-II-' . $hijriYear . '-' . $newNumber;
+        $code = 'MD-01-II-' . $hijriYear . '-' . $newNumber;
 
         // return $code;
         if ($request->pesertakelas) {
