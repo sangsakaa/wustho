@@ -73,15 +73,15 @@
                     </p>
                 </div>
 
-                <p class=" text-sm text-justify mt-4 ">
+                <p class="  text-justify mt-4 ">
                     Pemegang ijazah ini, terakhir tercatat sebagai <span class=" capitalize">murid madrasah Diniyah wustho wahidiyah pondok pesantren kedunglo Kediri</span> dengan <span class=" font-semibold">Nomor Induk Murid : {{$ijazah->nis}}</span>
                 </p>
             </div>
-            <div class="  flex grid-cols-2 text-right  ">
-                <div class=" w-2/3"></div>
-                <div class="   mt-4 text-left">
-                    Kedunglo, {{ \Carbon\Carbon::parse($ijazah->tanggal_kelulusan)->isoFormat(' DD MMMM Y') }}<br>
-                    Kepala Madrasah<br><br><br><br>
+            <div class="  grid grid-cols-2 text-right   ">
+                <div class="  w-2/2 "></div>
+                <div class="  px-14  mt-4 text-left ">
+                    <p class=" ">Kedunglo, {{ \Carbon\Carbon::parse($ijazah->tanggal_kelulusan)->isoFormat(' DD MMMM Y') }}</p>
+                    <p>Kepala Madrasah</p><br><br><br><br>
                     <p class=" uppercase"> Muh. Bahrul Ulum, S.H</p>
                 </div>
             </div>
