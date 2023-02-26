@@ -2,13 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Daftar_lulusan;
 use App\Models\Lulusan;
 use App\Models\Periode;
 use App\Models\Pesertakelas;
 use Illuminate\Http\Request;
-
-use function Ramsey\Uuid\v1;
+use App\Models\Daftar_lulusan;
+use Illuminate\Support\Facades\DB;
 
 class LulusanCotroller
 {
@@ -108,11 +107,28 @@ class LulusanCotroller
     }
     public function storeLulusan(Request $request)
     {
+        $year = 1444;
+
+        // mendapatkan nomor urut terakhir dari database
+        $lastNumber = DB::table('daftar_lulusan')->max('id');
+
+        // mengambil 4 digit terakhir dari nomor urut terakhir
+        $lastNumber = substr($lastNumber, -4);
+
+        // menambahkan 1 pada nomor urut terakhir
+        $newNumber = (int) $lastNumber + 1;
+
+        // menambahkan leading zero pada nomor urut baru jika kurang dari 4 digit
+        $newNumber = str_pad($newNumber, 4, '0', STR_PAD_LEFT);
+
+        // menggabungkan komponen kode menjadi satu string
+        $code = 'MD-02-I-' . $year . '-' . $newNumber;
         if ($request->pesertakelas) {
             foreach ($request->pesertakelas as $list) {
                 $peserta = new Daftar_lulusan();
                 $peserta->pesertakelas_id = $list;
                 $peserta->lulusan_id = $request->lulusan_id;
+                $peserta->nomor_ijazah = $code;
                 $peserta->save();
             }
         } else {
@@ -132,7 +148,7 @@ class LulusanCotroller
         return redirect()->back();
     }
 
-    public function edit(Daftar_lulusan $daftar_lulusan, Pesertakelas $pesertakelas, Lulusan $lulusan)
+    public function edit(Daftar_lulusan $daftar_lulusan, Pesertakelas $pesertakelas,)
     {
         return view('lulusan.edit', [
             'daftar_lulusan' => $daftar_lulusan,
@@ -140,7 +156,7 @@ class LulusanCotroller
         ]);
     }
 
-    public function update(Request $request, Daftar_lulusan $daftar_lulusan, Lulusan $lulusan)
+    public function update(Request $request, Daftar_lulusan $daftar_lulusan,)
     {
         Daftar_lulusan::where('id', $daftar_lulusan->id)
             ->update([
