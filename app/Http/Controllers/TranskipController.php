@@ -24,6 +24,7 @@ class TranskipController
             ->join('kelas', 'kelas.id', '=', 'mapel.kelas_id')
             ->select('kelas.kelas', 'mapel.mapel', 'mapel.id')
             ->where('kelas.kelas', 3)
+            ->orderby('mapel.mapel')
             ->get();
         $dataJenisUjian = Jenis_Ujian::all();
         $dataTranskip = Transkip::query()
