@@ -96,6 +96,7 @@ class LulusanCotroller
             ->where('daftar_lulusan.pesertakelas_id', '=', null)
             ->where('kelas.kelas', 3)
             ->orderby('nama_kelas')
+            ->orderby('nama_siswa')
             ->get();
 
         return view(

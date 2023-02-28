@@ -69,6 +69,7 @@ class TranskipController
 
         $daftarLulusan = Daftar_lulusan::query()
             ->leftjoin('pesertakelas', 'pesertakelas.id', '=', 'daftar_lulusan.pesertakelas_id')
+            ->leftjoin('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
             ->leftjoin('lulusan', 'lulusan.id', '=', 'daftar_lulusan.lulusan_id')
             ->leftjoin('siswa', 'siswa.id', '=', 'pesertakelas.siswa_id')
             ->leftjoin('nis', 'siswa.id', '=', 'nis.siswa_id')
@@ -81,11 +82,12 @@ class TranskipController
                     'data_nilai.id AS nilai_transkip_id',
                     'daftar_lulusan.nomor_ijazah',
                     'siswa.nama_siswa',
+                'kelasmi.nama_kelas',
                     'nis.nis',
                     'data_nilai.nilai_akhir'
                 ]
             )
-
+            ->orderby('nama_kelas')
             ->orderby('nama_siswa')
             ->get();
         return view(

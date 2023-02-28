@@ -55,6 +55,7 @@
                                         <tr class="  uppercase text-sm bg-gray-100">
                                             <th class=" border px-2 py-1">No</th>
                                             <th class=" border px-2 py-1 text-center">Nama Peserta Lulusan</th>
+                                            <th class=" border px-2 py-1 text-center">KLS</th>
                                             <th class=" border px-2 py-1 text-center">Nilai Akhir</th>
 
                                         </tr>
@@ -68,6 +69,7 @@
                                                 <input type="hidden" name="nilai_transkip_id[{{ $item->id }}]" value="{{ $item->nilai_transkip_id }}">
                                                 {{strtolower($item->nama_siswa)}}
                                             </td>
+                                            <td class=" border px-2 py-1 text-left capitalize w-4">{{$item->nama_kelas}}</td>
                                             <td class=" border px-2 py-1 text-center capitalize">
                                                 <input value="{{ $item->nilai_akhir}}" class=" py-1 w-full text-center capitalize" type="number" name="nilai_akhir[{{ $item->id }}]" default="0" placeholder="MIN : 65 MAX : 100">
                                             </td>
