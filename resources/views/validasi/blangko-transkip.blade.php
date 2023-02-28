@@ -93,7 +93,7 @@
                 </tbody>
             </table>
             <div class=" mt-8">
-                <span class=" font-semibold mt-4">2. Nilai Praktek</span>
+                <span class=" font-semibold mt-4">2. Nilai Ujian Praktek</span>
             </div>
             <table class=" w-full ">
                 <thead>

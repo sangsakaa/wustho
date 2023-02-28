@@ -30,12 +30,12 @@
         </style>
         <div class=" bg-white  px-16  mt-16 text-center     rounded gap-4   ">
             <div class="  w-full justify-end grid">
-                <span class=""> Nomor : {{$ijazah->nomor_ijazah}}</span>
+                <span class=" mt-4"> Nomor : {{$ijazah->nomor_ijazah}}</span>
             </div>
             <div class="  w-full">
                 <center>
                     <img src={{ asset("asset/images/logo.png") }} alt="" width="180" class="  mt-5  p-2">
-                    <p class=" font-serif text-5xl  mt-10 font-semibold ">IJAZAH</p>
+                    <p class=" font-serif text-5xl  mt-8 font-semibold ">IJAZAH</p>
                     <p class=" capitalize  text-4xl  font-riqah py-2">ألمدرسة الدينية الوسطى الواحدية
                     </p>
                     <p class="  font-serif text-lg uppercase">pondok pesantren kedunglo al munadhdhoroh</p>
