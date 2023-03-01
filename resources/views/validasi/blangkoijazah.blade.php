@@ -34,8 +34,8 @@
             </div>
             <div class="  w-full">
                 <center>
-                    <img src={{ asset("asset/images/logo.png") }} alt="" width="180" class="  mt-5  p-2">
-                    <p class=" font-serif text-5xl  mt-8 font-semibold ">IJAZAH</p>
+                    <img src={{ asset("asset/images/logo.png") }} alt="" width="180" class="  mt-3  p-2">
+                    <p class=" font-serif text-5xl   mt-6 font-semibold ">IJAZAH</p>
                     <p class=" capitalize  text-4xl  font-riqah py-2">ألمدرسة الدينية الوسطى الواحدية
                     </p>
                     <p class="  font-serif text-lg uppercase">pondok pesantren kedunglo al munadhdhoroh</p>
@@ -78,7 +78,13 @@
                 </p>
             </div>
             <div class="  grid grid-cols-2 text-right   ">
-                <div class="  w-2/2 "></div>
+                <div class="  w-2/2  flex    px-32 pt-4 ">
+                    <div class="  border-black  border-2   w-36 h-40   text-justify ">
+                        <span class=" grid justify-between   p-14 font-semibold ">
+                            Foto 3x4
+                        </span>
+                    </div>
+                </div>
                 <div class="  px-12  mt-4 text-left ">
                     <p class=" ">Kedunglo, {{ \Carbon\Carbon::parse($ijazah->tanggal_kelulusan)->isoFormat(' DD MMMM Y') }}</p>
                     <p>Kepala Madrasah</p><br><br><br><br>
