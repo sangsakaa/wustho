@@ -134,7 +134,6 @@
                     </tr>
                 </tbody>
             </table>
-            {{$data_lulusan['lulusan']->tanggal_kelulusan}}
             <div class="  flex grid-cols-2 text-right  text-sm">
                 <div class=" w-2/3"></div>
                 <div class="  text-left  mt-10">

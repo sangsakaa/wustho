@@ -73,16 +73,13 @@
                                         <th>{{$loop->iteration}}</th>
                                         <td class=" border text-center capitalize"><a href="/daftar-lulusan/{{$list->id}}">{{$list->periode}} {{$list->ket_semester}}</a></td>
                                         <td class=" border text-center capitalize">
-
                                             {{ \Carbon\Carbon::parse($list->tanggal_mulai)->isoFormat('D MMM Y') }}
                                         </td>
                                         <td class=" border text-center capitalize">
-
-                                            {{date( 'd-m-Y',strtotime($list->tanggal_selesai))}}
+                                            {{ \Carbon\Carbon::parse($list->tanggal_selesai)->isoFormat('D MMM Y') }}
                                         </td>
                                         <td class=" border text-center capitalize">
-
-                                            {{date( 'd-m-Y',strtotime($list->tanggal_kelulusan))}}
+                                            {{ \Carbon\Carbon::parse($list->tanggal_kelulusan)->isoFormat('D MMM Y') }}
                                         </td>
                                         <td class=" border text-center capitalize">
                                             <form action="/lulusan/{{$list->id}}" method="post">
