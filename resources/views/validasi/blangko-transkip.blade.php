@@ -55,10 +55,10 @@
             <table class=" w-full mt-0.5">
                 <thead>
                     <tr class=" uppercase text-sm border border-t-2 border-black">
-                        <th class=" border border-black px-1 py-1">No</th>
+                        <th class=" border border-black px-1 py-1 ">No</th>
                         <th class=" border border-black px-1 py-1">Mata Pelajaran</th>
-                        <th class=" border border-black px-1 py-1">Angka</th>
-                        <th class=" border border-black px-1 py-1">Huruf</th>
+                        <th class=" border border-black px-1 py-1 ">Angka</th>
+                        <th class=" border border-black px-1 py-1 w-1/2">Huruf</th>
                     </tr>
                 </thead>
                 <tbody class=" border border-black">
@@ -98,10 +98,10 @@
             <table class=" w-full ">
                 <thead>
                     <tr class=" uppercase text-sm border border-t-2 border-black">
-                        <th class=" border border-black px-1 py-1">No</th>
+                        <th class=" border border-black px-1 py-1 w-2">No</th>
                         <th class=" border border-black px-1 py-1">Mata Pelajaran</th>
-                        <th class=" border border-black px-1 py-1">Angka</th>
-                        <th class=" border border-black px-1 py-1">Huruf</th>
+                        <th class=" border border-black px-1 py-1 ">Angka</th>
+                        <th class=" border border-black px-1 py-1 w-1/2">Huruf</th>
                     </tr>
                 </thead>
                 <tbody class=" border border-black">
