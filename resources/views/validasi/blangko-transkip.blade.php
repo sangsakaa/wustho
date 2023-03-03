@@ -134,11 +134,12 @@
                     </tr>
                 </tbody>
             </table>
-
+            {{$data_lulusan['lulusan']->tanggal_kelulusan}}
             <div class="  flex grid-cols-2 text-right  text-sm">
                 <div class=" w-2/3"></div>
                 <div class="  text-left  mt-10">
-                    Kedunglo, {{ now()->isoFormat('D MMMM YYYY') }}<br>
+                    Kedunglo, {{ \Carbon\Carbon::parse($data_lulusan['lulusan']->tanggal_kelulusan)->isoFormat(' DD MMMM Y ') }}<br>
+
                     Kepala Madrasah<br><br><br><br>
                     <p class=" uppercase"> Muh. Bahrul Ulum, S.H</p>
                 </div>

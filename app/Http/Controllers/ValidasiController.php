@@ -81,12 +81,13 @@ class ValidasiController
     {
 
         $data_lulusan = Daftar_lulusan::query()
+            ->join('lulusan', 'lulusan.id', '=', 'daftar_lulusan.lulusan_id')
             ->join('pesertakelas', 'pesertakelas.id', '=', 'daftar_lulusan.pesertakelas_id')
             ->join('nilai_transkip', 'nilai_transkip.daftar_lulusan_id', '=', 'daftar_lulusan.id')
             ->join('transkip', 'transkip.id', '=', 'nilai_transkip.transkip_id')
             ->join('siswa', 'siswa.id', '=', 'pesertakelas.siswa_id')
             ->join('nis', 'siswa.id', '=', 'nis.siswa_id')
-            ->select('daftar_lulusan.id', 'nama_siswa', 'nis',)
+            ->select('daftar_lulusan.id', 'nama_siswa', 'nis', 'tanggal_kelulusan')
             ->get();
         $data_nilai_tulis = Nilai_Transkip::query()
             ->join('transkip', 'transkip.id', '=', 'nilai_transkip.transkip_id')
