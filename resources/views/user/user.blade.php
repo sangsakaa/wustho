@@ -37,7 +37,7 @@
         </div>
         <div>
             <a href="/statusanak/{{$siswa->id}}" class=" bg-blue-500 px-2 py-1 hover:bg-purple-500 text-white">
-                edi
+                edit
             </a>
         </div>
     </div>
