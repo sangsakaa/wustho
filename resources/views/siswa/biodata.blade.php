@@ -92,22 +92,40 @@
                             <div class=" border py-2 px-2" class=" w-1/2">9. Status Anak </div>
                             <div class=" border py-2 px-2 capitalize">: {{$biodata->status_anak}}</div>
                             <div class=" border py-2 px-2 " class=" w-1/2">10. Nama Ayah </div>
-                            <div class=" border py-2 px-2">: {{$biodata->nama_ayah}}</div>
-                            <div class=" border py-2 px-6" class=" w-1/2">Pekerjaan </div>
-                            <div class=" border py-2 px-2">: {{$biodata->pekerjaan_ayah}}</div>
-                            <div class=" border py-2 px-6" class=" w-1/2">Nomor Hp </div>
-                            <div class=" border py-2 px-2">: {{$biodata->nomor_hp_ayah}} </div>
-                            <div class=" border py-2 px-2" class=" w-1/2">11. Nama Ibu </div>
-                            <div class=" border py-2 px-2">: {{$biodata->nama_ibu}} </div>
-                            <div class=" border py-2 px-6" class=" w-1/2">Pekerjaan </div>
-                            <div class=" border py-2 px-2">: {{$biodata->pekerjaan_ibu}} </div>
-                            <div class=" border py-2 px-6" class=" w-1/2">Nomor Hp </div>
-                            <div class=" border py-2 px-2">: {{$biodata->nomor_hp_ibu}} </div>
-                            <div class=" border py-2 px-2" class=" w-1/2">12. Nama Wali </div>
-                            <div class=" border py-2 px-2">: {{$biodata->nama_ayah}} </div>
+                            <div class=" border py-2 px-2 capitalize">: {{$biodata->nama_ayah}}</div>
+                            <div class=" border py-2 px-6 capitalize" class=" w-1/2">Pekerjaan </div>
+                            <div class=" border py-2 px-2 capitalize">: {{$biodata->pekerjaan_ayah}}</div>
+                            <div class=" border py-2 px-6 capitalize" class=" w-1/2">Nomor Hp </div>
+                            <div class=" border py-2 px-2 capitalize">: {{$biodata->nomor_hp_ayah}} </div>
+                            <div class=" border py-2 px-2 capitalize" class=" w-1/2">11. Nama Ibu </div>
+                            <div class=" border py-2 px-2 capitalize">: {{$biodata->nama_ibu}} </div>
+                            <div class=" border py-2 px-6 capitalize" class=" w-1/2">Pekerjaan </div>
+                            <div class=" border py-2 px-2 capitalize">: {{$biodata->pekerjaan_ibu}} </div>
+                            <div class=" border py-2 px-6 capitalize" class=" w-1/2">Nomor Hp </div>
+                            <div class=" border py-2 px-2 capitalize">: {{$biodata->nomor_hp_ibu}} </div>
+                            <div class=" border py-2 px-2 capitalize" class=" w-1/2">12. Nama Wali </div>
+                            <div class=" border py-2 px-2 capitalize">: {{$biodata->nama_ayah}} </div>
 
-                            <div class=" border py-2 px-2" class=" w-1/2">13. Daerah Asal </div>
-                            <div class=" border py-2 px-2 capitalize">: {{$biodata->kota_asal}}</div>
+                            <div class=" border py-2 px-2 capitalize" class=" w-1/2">13. Daerah Asal </div>
+                            <div class=" border py-2 px-2 capitalize ">: {{$biodata->kota_asal}}</div>
+                        </div>
+                        <div class="  grid grid-cols-2 text-right   ">
+                            <div class="  w-2/2  flex    px-32 pt-4 ">
+                                <div class="  border-black  border    w-32  h-40   text-justify ">
+                                    <span class=" grid justify-between   p-12 font-semibold ">
+                                        Foto 3x4
+                                    </span>
+                                </div>
+                            </div>
+                            <div class=" text-sm   mt-4 text-left ">
+                                <p class=" ">Kedunglo, {{ \Carbon\Carbon::parse($biodata->tanggal_lahir)->isoFormat(' DD MMMM Y') }}</p>
+                                <p>Kepala Madrasah</p>
+
+
+
+                                <br><br><br><br>
+                                <p class=" uppercase font-semibold"> M. Bahrul Ulum,S.H</p>
+                            </div>
                         </div>
 
                     </div>
