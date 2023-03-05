@@ -63,9 +63,9 @@
                     </div>
 
                     <div id="div1" class=" grid grid-cols-1">
-                        <div class=" text-center font-semibold border py-2 text-md mt-2 text-2xl bg-gray-100">BIODATA SISWA</div>
+                        <div class=" text-center font-semibold border py-2 text-md mt-2 text-2xl bg-gray-100">BIODATA MURID</div>
                         <div class=" grid grid-cols-2 py-2">
-                            <div class=" border py-2 px-2">1. Nomor Induk Siswa</div>
+                            <div class=" border py-2 px-2">1. Nomor Induk Murid</div>
 
                             <div class=" border py-1 px-2 ">: <span class="font-semibold text-2xl">
                                     @if($biodata !== $biodata->nis)
@@ -124,7 +124,7 @@
 
 
                                 <br><br><br><br>
-                                <p class=" uppercase font-semibold"> M. Bahrul Ulum,S.H</p>
+                                <p class=" uppercase font-semibold"> Muh. Bahrul Ulum,S.H</p>
                             </div>
                         </div>
 
