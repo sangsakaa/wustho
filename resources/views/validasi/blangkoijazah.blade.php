@@ -92,7 +92,7 @@
 
 
                     <br><br><br><br>
-                    <p class=" uppercase"> Kanjeng Kyai Abdul Majid Ali Fikri,R.A</p>
+                    <p class=" uppercase font-semibold"> Kanjeng Kyai Abdul Majid Ali Fikri R.A</p>
                 </div>
             </div>
         </div>
