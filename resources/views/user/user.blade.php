@@ -21,6 +21,7 @@
                 <div class=" px-1 text-xs sm:text-lg "> : {{$siswa->agama}}</div>
                 <div class=" px-1 text-xs sm:text-lg ">Tempat, Tanggal Lahir</div>
                 <div class=" px-1 capitalize text-xs sm:text-lg"> : {{strtolower($siswa->tempat_lahir)}},
+
                     {{ \Carbon\Carbon::parse($siswa->tanggal_lahir)->isoFormat(' DD MMMM Y') }}
                 </div>
                 <div class=" px-1 text-xs sm:text-lg ">Asal Kota</div>

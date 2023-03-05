@@ -17,7 +17,7 @@ class UserController extends Controller
         $siswa_id = Auth::user()->siswa_id;
         $user = Siswa::query()
             ->join('nis', 'nis.siswa_id', '=', 'siswa.id')
-            ->select('siswa.id', 'nama_siswa', 'nis', 'tempat_lahir', 'kota_asal', 'agama')
+            ->select('siswa.id', 'nama_siswa', 'nis', 'tempat_lahir', 'tanggal_lahir', 'kota_asal', 'agama')
             ->where('siswa.id', $siswa_id)->first();
         return view(
             'user/user',
