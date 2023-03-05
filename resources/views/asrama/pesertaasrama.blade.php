@@ -80,7 +80,7 @@
                                     <th class=" border text-center px-2"> Asrama</th>
                                     <th class=" border text-center">Kota Asal</th>
                                     @role('super admin')
-                                    <th class=" border text-center">Aksi</th>
+                                    <th class=" border text-center ">Aksi</th>
                                     @endrole
                                 </tr>
                             </thead>
@@ -112,7 +112,7 @@
                                         {{$siswa->kota_asal}}
                                     </td>
                                     @role('super admin')
-                                    <td class=" text-sm flex justify-center py-1  gap-1 border">
+                                    <td class=" text-sm sm:flex justify-center py-1  gap-1 border hidden   ">
                                         <form action="/pesertaasrama/{{$siswa->id}}" method="post">
                                             @csrf
                                             @method('delete')

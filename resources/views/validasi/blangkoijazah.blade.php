@@ -16,12 +16,12 @@
         }
     </script>
 
-    <div class=" p-2">
-        <button class=" text-white rounded-md  bg-green-800 px-2 py-1 " onclick="printContent('div1')">Cetak Ijazah</button>
-        <a href="/blangko-transkip" class=" text-white rounded-md  bg-green-800 px-2 py-1 ">Transkip</a>
-        <a href="/pengaturan" class=" text-white rounded-md  bg-green-800 px-2 py-1 ">Kembali</a>
+    <div class=" p-2 bg-white">
+        <button class=" text-white   bg-green-800 px-2 py-1 " onclick="printContent('div1')">Cetak Ijazah</button>
+        <a href="/blangko-transkip" class=" text-white   bg-green-800 px-2 py-1 ">Transkip</a>
+        <a href="/pengaturan" class=" text-white   bg-green-800 px-2 py-1 ">Kembali</a>
     </div>
-    <div id="div1" class="   w-full   ">
+    <div id="div1" class=" bg-white   w-full   ">
         @foreach($data as $ijazah)
         <style>
             .page-break {
@@ -87,8 +87,12 @@
                 </div>
                 <div class=" text-sm  px-12  mt-4 text-left ">
                     <p class=" ">Kedunglo, {{ \Carbon\Carbon::parse($ijazah->tanggal_kelulusan)->isoFormat(' DD MMMM Y') }}</p>
-                    <p>Kepala Madrasah</p><br><br><br><br>
-                    <p class=" uppercase"> Muh. Bahrul Ulum, S.H</p>
+                    <p>Pengasuh Perjuangan Wahidiyah</p>
+                    <p>Dan Pondok Pesantren Kedunglo </p>
+
+
+                    <br><br><br><br>
+                    <p class=" uppercase"> Kanjeng Kyai Abdul Majid Ali Fikri,R.A</p>
                 </div>
             </div>
         </div>
