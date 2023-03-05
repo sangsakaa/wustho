@@ -85,7 +85,7 @@
                         </span>
                     </div>
                 </div>
-                <div class=" text-sm  px-12  mt-4 text-left ">
+                <div class=" text-sm   mt-4 text-left ">
                     <p class=" ">Kedunglo, {{ \Carbon\Carbon::parse($ijazah->tanggal_kelulusan)->isoFormat(' DD MMMM Y') }}</p>
                     <p>Pengasuh Perjuangan Wahidiyah</p>
                     <p>Dan Pondok Pesantren Kedunglo </p>
