@@ -94,7 +94,7 @@
                         <!-- {{ \Carbon\Carbon::parse($ijazah->tanggal_kelulusan)->isoFormat(' DD MMMM Y') }}</p> -->
                     <p class=" underline"> Kedunglo, 27 Sya'ban 1444 H </p>
 
-                    <!-- <p class="  px-20 ml-1">19 Maret 2023 M</p> -->
+                    <p class="  px-20 ml-1">19 Maret 2023 M</p>
                     <!-- <p class="">Mengetahui,</p> -->
                     <p>Pengasuh Pondok</p>
                     <!-- <p>Pengasuh/ Al Mudir</p> -->
