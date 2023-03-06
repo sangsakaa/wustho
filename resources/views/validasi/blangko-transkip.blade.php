@@ -134,16 +134,27 @@
                     </tr>
                 </tbody>
             </table>
-            <div class="  flex grid-cols-2 text-right  text-sm">
-                <div class=" w-2/3"></div>
-                <div class="  text-left  mt-10">
+            <div class="  grid grid-cols-2 text-right   ">
+                <div class="  w-2/2  flex    px-32 pt-4 ">
+                    <div class="  border-black      w-32  h-40   text-justify ">
+                        <span class=" grid justify-between   p-12 font-semibold ">
 
-                    <p class=" underline"> Kedunglo, 27 Sya'ban 1444 H </p>
-                    <p class="  px-20 ">19 Maret 2023 M</p>
-                    Kepala Madrasah<br><br><br><br>
-                    <p class=" uppercase font-semibold"> Muh. Bahrul Ulum, S.H</p>
+                        </span>
+                    </div>
                 </div>
+                <div class=" text-sm   mt-4 text-left ">
+                    <p class=" ">
 
+                    <p class=" underline px-20"> Kedunglo, 27 Sya'ban 1444 H </p>
+
+                    <p class="  px-20 ml-20">19 Maret 2023 M</p>
+                    <p class=" px-20">Kepala Madrasah</p>
+
+
+
+                    <br><br><br><br><br>
+                    <p class=" uppercase font-semibold px-20"> MUH. BAHRUL ULUM,S.H</p>
+                </div>
             </div>
         </div>
         <div class="page-break"></div>
