@@ -36,7 +36,10 @@
                 <center>
                     <img src={{ asset("asset/images/logo.png") }} alt="" width="180" class="  mt-3  p-2">
                     <p class=" font-serif text-5xl   mt-6 font-semibold ">IJAZAH</p>
-                    <p class=" capitalize  text-4xl  font-riqah py-2">ألمدرسة الدينية الوسطى الواحدية
+                    <p class=" capitalize  text-4xl  font-riqah py-2">
+                        المدرسة الدينية الوسطى الواحدية
+                    </p>
+
                     </p>
                     <p class="  font-serif text-lg uppercase">pondok pesantren kedunglo al munadhdhoroh</p>
                     <p class="  uppercase font-serif text-2xl font-semibold ">madrasah diniyah wustho
