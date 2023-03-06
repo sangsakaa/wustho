@@ -97,9 +97,9 @@
                     <p class="  px-20 ml-1">19 Maret 2023 M</p>
                     <!-- <p class="">Mengetahui,</p> -->
                     <!-- <p>Pengasuh Pondok</p> -->
-                    <!-- <p>Pengasuh/ Al Mudir</p> -->
-                    <p>Pengasuh Perjuangan Wahidiyah</p>
-                    <p>Dan Pondok Pesantren Kedunglo </p>
+                    <p>Pengasuh/ Al Mudir</p>
+                    <!-- <p>Pengasuh Perjuangan Wahidiyah</p>
+                    <p>Dan Pondok Pesantren Kedunglo </p> -->
 
 
                     <br><br><br><br><br>
