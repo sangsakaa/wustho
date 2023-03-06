@@ -48,7 +48,7 @@
                 </center>
             </div>
             <div class=" w-full ">
-                <p class=" text-justify  text-sm  mt-5 ">
+                <p class=" text-justify  text-sm  mt-5  ">
                     Yang bertanda tangan di bawah ini Pengasuh Pondok Pesantren Kedunglo Al Munadhdhoroh menerangkan bahwa :
                 </p>
                 <p class=" text-2xl uppercase bold  font-serif text-center   mt-4 underline ">
