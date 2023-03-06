@@ -66,9 +66,9 @@
                 <div>
                     <p class="  text-3xl uppercase bold  font-serif text-center mt-4 ">lulus</p>
                     <p class=" text-sm text-justify mt-4 ">Dalam mengikuti <span class=" font-semibold ">Ujian Akhir Madrasah Diniyah Wustho Wahidiyah</span> yang diselenggarakan pada tanggal
-                        {{ \Carbon\Carbon::parse($ijazah->mulai)->isoFormat(' DD MMMM ') }}
+                        {{ \Carbon\Carbon::parse($ijazah->tanggal_mulai)->isoFormat(' DD MMMM ') }}
                         s.d
-                        {{ \Carbon\Carbon::parse($ijazah->selesai)->isoFormat(' DD MMMM Y') }}
+                        {{ \Carbon\Carbon::parse($ijazah->tangga_selesai)->isoFormat(' DD MMMM Y') }}
                         dengan nilai sebagaimana tercantum pada daftar nilai di balik ini.
                     </p>
                 </div>
@@ -86,7 +86,10 @@
                     </div>
                 </div>
                 <div class=" text-sm   mt-4 text-left ">
-                    <p class=" ">Kedunglo, {{ \Carbon\Carbon::parse($ijazah->tanggal_kelulusan)->isoFormat(' DD MMMM Y') }}</p>
+                    <p class=" ">Kedunglo,
+                        <!-- {{ \Carbon\Carbon::parse($ijazah->tanggal_kelulusan)->isoFormat(' DD MMMM Y') }}</p> -->
+                        27 Sya'ban 1444 H / 19 Maret 2023 M
+                    <p>Mengetahui,</p>
                     <p>Pengasuh Perjuangan Wahidiyah</p>
                     <p>Dan Pondok Pesantren Kedunglo </p>
 
