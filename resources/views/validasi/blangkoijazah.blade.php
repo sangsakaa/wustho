@@ -68,7 +68,8 @@
                     <p class=" text-sm text-justify mt-4 ">Dalam mengikuti <span class=" font-semibold ">Ujian Akhir Madrasah Diniyah Wustho Wahidiyah</span> yang diselenggarakan pada tanggal
                         {{ \Carbon\Carbon::parse($ijazah->tanggal_mulai)->isoFormat(' DD MMMM ') }}
                         s.d
-                        {{ \Carbon\Carbon::parse($ijazah->tangga_selesai)->isoFormat(' DD MMMM Y') }}
+                        {{ \Carbon\Carbon::parse($ijazah->tanggal_selesai)->isoFormat(' DD MMMM Y') }}
+
                         dengan nilai sebagaimana tercantum pada daftar nilai di balik ini.
                     </p>
                 </div>
