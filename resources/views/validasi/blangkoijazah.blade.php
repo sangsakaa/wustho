@@ -87,15 +87,17 @@
                     </div>
                 </div>
                 <div class=" text-sm   mt-4 text-left ">
-                    <p class=" ">Kedunglo,
+                    <p class=" ">
                         <!-- {{ \Carbon\Carbon::parse($ijazah->tanggal_kelulusan)->isoFormat(' DD MMMM Y') }}</p> -->
-                        27 Sya'ban 1444 H / 19 Maret 2023 M
-                    <p>Mengetahui,</p>
+                    <p class=" underline"> Kedunglo, 27 Sya'ban 1444 H </p>
+
+                    <p class="  px-20">19 Maret 2023 M</p>
+                    <p class="">Mengetahui,</p>
                     <p>Pengasuh Perjuangan Wahidiyah</p>
                     <p>Dan Pondok Pesantren Kedunglo </p>
 
 
-                    <br><br><br><br>
+                    <br><br><br><br><br>
                     <p class=" uppercase font-semibold"> Kanjeng Kyai Abdul Majid Ali Fikri R.A</p>
                 </div>
             </div>
