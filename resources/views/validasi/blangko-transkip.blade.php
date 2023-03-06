@@ -145,15 +145,15 @@
                 <div class=" text-sm   mt-4 text-left ">
                     <p class=" ">
 
-                    <p class=" underline px-14"> Kedunglo, 27 Sya'ban 1444 H </p>
+                    <p class=" underline"> Kedunglo, 27 Sya'ban 1444 H </p>
 
-                    <p class="  px-14 ml-20">19 Maret 2023 M</p>
-                    <p class=" px-14">Kepala Madrasah</p>
+                    <p class="  px-20 ml-1">19 Maret 2023 M</p>
+                    <p class="">Kepala Madrasah,</p>
 
 
 
                     <br><br><br><br><br>
-                    <p class=" uppercase font-semibold px-14"> MUH. BAHRUL ULUM,S.H</p>
+                    <p class=" uppercase font-semibold"> MUH. BAHRUL ULUM,S.H</p>
                 </div>
             </div>
         </div>
