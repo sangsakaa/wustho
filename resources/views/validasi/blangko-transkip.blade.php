@@ -139,9 +139,7 @@
                 <div class="  text-left  mt-10">
 
                     <p class=" underline"> Kedunglo, 27 Sya'ban 1444 H </p>
-
-                    <p class="  px-20 ml-1">19 Maret 2023 M</p>
-
+                    <p class="  px-20 ">19 Maret 2023 M</p>
                     Kepala Madrasah<br><br><br><br>
                     <p class=" uppercase font-semibold"> Muh. Bahrul Ulum, S.H</p>
                 </div>
