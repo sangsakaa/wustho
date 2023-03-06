@@ -137,10 +137,13 @@
             <div class="  flex grid-cols-2 text-right  text-sm">
                 <div class=" w-2/3"></div>
                 <div class="  text-left  mt-10">
-                    Kedunglo, {{ \Carbon\Carbon::parse($data_lulusan['lulusan']->tanggal_kelulusan)->isoFormat(' DD MMMM Y ') }}<br>
+
+                    <p class=" underline"> Kedunglo, 27 Sya'ban 1444 H </p>
+
+                    <p class="  px-20 ml-1">19 Maret 2023 M</p>
 
                     Kepala Madrasah<br><br><br><br>
-                    <p class=" uppercase"> Muh. Bahrul Ulum, S.H</p>
+                    <p class=" uppercase font-semibold"> Muh. Bahrul Ulum, S.H</p>
                 </div>
 
             </div>
