@@ -156,8 +156,10 @@
         }
 
         .mt-2 {
-            margin-top: .5rem
+            margin-top: .8rem
         }
+
+
 
         .mr-2 {
             margin-right: .5rem
@@ -424,10 +426,10 @@
 
 <body class="antialiased">
     <div class="relative grid w-full items-top justify-center min-h-screen dark:bg-gray-900 sm:items-center py-4  sm:pt-0">
-        <div class="max-w-6xl mx-auto sm:px-2 lg:px-2">
-            <div class=" text-center  sm:mt-12 mt-12">
+        <div class="max-w-6xl mx-auto  sm:px-2 lg:px-2">
+            <div class=" text-center   sm:mt-12 ">
                 <img src="asset/images/logo.png" alt="" width="200px"><br>
-                <span class=" dark:text-white text-2xl">S M E D I</span><br>
+                <span class=" dark:text-white font-semibold text-2xl">S M E D I</span><br>
                 <span class=" dark:text-white capitalize text-lg gede">Sistem Manajemen Diniyah</span>
             </div>
             <hr class="">
