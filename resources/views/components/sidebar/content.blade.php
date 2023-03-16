@@ -95,31 +95,26 @@
         </x-slot>
     </x-sidebar.link>
     <div x-transition x-show="isSidebarOpen || isSidebarHovered" class="text-sm text-gray-500">Menu Pendukung</div>
-    <x-sidebar.link title="Blangko SAP" href="/sap" :isActive="request()->routeIs('sap')">
+    <x-sidebar.dropdown title="BLANGKO" :active="Str::startsWith(request()->route()->uri(), 'buttons')">
         <x-slot name="icon">
-            <x-icons.books class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
+            <x-heroicon-o-view-grid class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
         </x-slot>
-    </x-sidebar.link>
-    <x-sidebar.link title="Rekap Harian" href="/absensikelas/rekap-per-hari" :isActive="request()->routeIs('absensikelas/rekap-per-hari')">
+        <x-sidebar.sublink title=" BLANGKO SAP" href="{{ route('sap') }}" :active="request()->routeIs('sap')" />
+        <x-sidebar.sublink title="BLANGKO PRESENSI" href="{{ route('absensikelas/blanko') }}" :active="request()->routeIs('absensikelas/blanko')" />
+
+    </x-sidebar.dropdown>
+    <x-sidebar.dropdown title="LAPORAN" :active="Str::startsWith(request()->route()->uri(), 'buttons')">
         <x-slot name="icon">
-            <x-icons.books class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
+            <x-heroicon-o-view-grid class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
         </x-slot>
-    </x-sidebar.link>
-    <x-sidebar.link title="Rekap Bulanan" href="/absensikelas/rekap-per-bulan" :isActive="request()->routeIs('absensikelas/rekap-per-bulan')">
-        <x-slot name="icon">
-            <x-icons.books class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
-        </x-slot>
-    </x-sidebar.link>
-    <x-sidebar.link title="Rekap Semester" href="/absensikelas/rekap-semester" :isActive="request()->routeIs('absensikelas/rekap-semester')">
-        <x-slot name="icon">
-            <x-icons.books class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
-        </x-slot>
-    </x-sidebar.link>
-    <x-sidebar.link title="Blangko Presensi" href="/absensikelas/blanko" :isActive="request()->routeIs('absensikelas/blanko')">
-        <x-slot name="icon">
-            <x-icons.books class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
-        </x-slot>
-    </x-sidebar.link>
+        <x-sidebar.sublink title=" Laporan Harian" href="{{ route('absensikelas/rekap-per-hari') }}" :active="request()->routeIs('absensikelas/rekap-per-hari')" />
+        <x-sidebar.sublink title="Laporan Bulanan" href="{{ route('absensikelas/rekap-per-bulan') }}" :active="request()->routeIs('absensikelas/rekap-per-bulan')" />
+        <x-sidebar.sublink title="Laporan Semester" href="{{ route('absensikelas/rekap-semester') }}" :active="request()->routeIs('absensikelas/rekap-semester')" />
+    </x-sidebar.dropdown>
+
+
+
+
 
     @endrole
     @role('pengurus')

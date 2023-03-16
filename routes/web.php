@@ -152,7 +152,7 @@ Route::get('cardlogin', [PengaturanController::class, 'cardlogin'])->middleware(
 Route::get('periode', [PengaturanController::class, 'periode'])->middleware(['auth'])->name('periode');
 Route::post('periode', [PengaturanController::class, 'storeperiode'])->middleware(['auth']);
 Route::delete('periode/{periode}', [PengaturanController::class, 'deleteperiode'])->middleware(['auth']);
-Route::get('sap', [PengaturanController::class, 'sap'])->middleware(['auth']);
+Route::get('sap', [PengaturanController::class, 'sap'])->middleware(['auth'])->name('sap');
 Route::get('plotingkelas', [PengaturanController::class, 'plotingkelas'])->middleware(['auth']);
 
 // Controller Sesi Asrama
@@ -195,10 +195,10 @@ Route::get('sesikelas/rekap', [SesikelasController::class, 'rekapSesi'])->middle
 // Controller Absensikelas
 Route::get('absensikelas/{sesikelas}', [AbsensikelasController::class, 'index'])->where('sesikelas', '[0-9]+')->middleware(['auth']);
 Route::post('absensikelas', [AbsensikelasController::class, 'store'])->middleware(['auth']);
-Route::get('absensikelas/blanko', [AbsensikelasController::class, 'blanko'])->middleware(['auth']);
-Route::get('absensikelas/rekap-per-hari', [AbsensikelasController::class, 'rekapPerHari'])->middleware(['auth']);
-Route::get('absensikelas/rekap-per-bulan', [AbsensikelasController::class, 'rekapPerBulan'])->middleware(['auth']);
-Route::get('absensikelas/rekap-semester', [AbsensikelasController::class, 'rekapSemester'])->middleware(['auth']);
+Route::get('absensikelas/blanko', [AbsensikelasController::class, 'blanko'])->middleware(['auth'])->name('absensikelas/blanko');
+Route::get('absensikelas/rekap-per-hari', [AbsensikelasController::class, 'rekapPerHari'])->middleware(['auth'])->name('absensikelas/rekap-per-hari');
+Route::get('absensikelas/rekap-per-bulan', [AbsensikelasController::class, 'rekapPerBulan'])->middleware(['auth'])->name('absensikelas/rekap-per-bulan');
+Route::get('absensikelas/rekap-semester', [AbsensikelasController::class, 'rekapSemester'])->middleware(['auth'])->name('absensikelas/rekap-semester');
 
 Route::get('rekap-harian', [RekapAsamaController::class, 'RekapHarian']);
 
