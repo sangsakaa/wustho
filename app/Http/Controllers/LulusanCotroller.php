@@ -109,9 +109,7 @@ class LulusanCotroller
     }
     public function storeLulusan(Request $request)
     {
-        // Mendapatkan tanggal saat ini dalam format Hijriyah
-
-        // Mendapatkan tahun Hijriyah dari tanggal saat ini
+        
         $hijri = 1444;
 
         // Mendapatkan nomor urut terakhir dari database
@@ -133,19 +131,31 @@ class LulusanCotroller
         // Menggabungkan komponen kode menjadi satu string
         $code = 'MD-01-II-' . $hijriYear . '-' . $newNumber;
 
-        // return $code;
-        if ($request->pesertakelas) {
-            foreach ($request->pesertakelas as $list) {
-                $peserta = new Daftar_lulusan();
-                $peserta->pesertakelas_id = $list;
-                $peserta->lulusan_id = $request->lulusan_id;
-                $peserta->nomor_ijazah = $code;
-                $peserta->save();
+        $pesertaKelas = $request->input('pesertakelas', []);
+
+        if (count($pesertaKelas) > 0) {
+            $daftarLulusan = [];
+
+            foreach ($pesertaKelas as $pesertaKelasId) {
+                $daftarLulusan[] = [
+                    'pesertakelas_id' => $pesertaKelasId,
+                    'lulusan_id' => $request->lulusan_id,
+                    'nomor_ijazah' => $code
+                ];
+
+                // increment nomor urut untuk setiap peserta kelas
+                $newNumber++;
+                $code = 'MD-01-II-' . $hijriYear . '-' . str_pad($newNumber, 4, '0', STR_PAD_LEFT);
             }
+
+            // insert multiple data ke database
+            Daftar_lulusan::insert($daftarLulusan);
         } else {
-            "tidak ada inputan";
+            return "Tidak ada inputan";
         }
+
         return redirect()->back();
+
     }
     public function Destroy(Lulusan $lulusan)
     {
