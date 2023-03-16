@@ -29,6 +29,7 @@
                                         <th class=" border px-2 py-1">No</th>
                                         <th class=" border px-2 py-1 text-center">Nomor ijazah</th>
                                         <th class=" border px-2 py-1 text-center">Peserta Lulusan</th>
+                                        <th class=" border px-2 py-1 text-center">Kelas</th>
                                         <th class=" border px-2 py-1 text-center">act</th>
 
                                     </tr>
@@ -39,6 +40,7 @@
                                         <th class=" border px-1 text-center capitalize">{{$loop->iteration}}</th>
                                         <td class=" border px-1 text-center capitalize">{{$item->nomor_ijazah}}</td>
                                         <td class=" border px-1 text-left capitalize">{{strtolower($item->nama_siswa)}}</td>
+                                        <td class=" border px-1 text-center  uppercase ">{{$item->nama_kelas}}</td>
                                         <td class=" border px-1 text-center capitalize">
                                             <div class=" flex grid-cols-1 gap-2 justify-center">
                                                 <form action="/daftar-lulusan/{{$item->id}}" method="post">
