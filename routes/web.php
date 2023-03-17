@@ -23,6 +23,7 @@ use App\Http\Controllers\PresensikelasController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\LulusanCotroller;
 use App\Http\Controllers\RekapAsamaController;
+use App\Http\Controllers\SeleksiController;
 use App\Http\Controllers\SesikelasController;
 use App\Http\Controllers\TranskipController;
 use App\Http\Controllers\UserguruController;
@@ -233,7 +234,13 @@ Route::get('nilai_transkip/{transkip}', [TranskipController::class, 'daftarTrans
 Route::post('nilai_transkip/{transkip}', [TranskipController::class, 'NilaiTranskip'])->middleware(['auth'])->name('nilai_transkip');
 Route::delete('daftar-transkip/{transkip}', [TranskipController::class, 'DeleteTraskip'])->middleware(['auth']);
 
+// Seleksi Controller
 
+Route::get('daftar-seleksi', [SeleksiController::class, 'index'])->middleware(['auth'])->name('daftar-seleksi');
+Route::post('daftar-seleksi', [SeleksiController::class, 'store'])->middleware(['auth'])->name('daftar-seleksi');
+Route::get('daftar-nominasi/{nominasi}', [SeleksiController::class, 'daftarNominasi'])->middleware(['auth'])->name('daftar-nominasi');
+Route::get('kolektif-daftar-nominasi/{nominasi}', [SeleksiController::class, 'daftarNominasiKelektif'])->middleware(['auth']);
+Route::post('daftar-nominasi/{nominasi}', [SeleksiController::class, 'StoreNominasi'])->middleware(['auth'])->name('daftar-nominasi');
 
 
 

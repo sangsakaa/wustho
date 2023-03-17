@@ -78,7 +78,13 @@
         </x-slot>
     </x-sidebar.link>
 
+
     <x-sidebar.link title="Data Nilai" href="/nilaimapel" :isActive="request()->routeIs('nilaimapel')">
+        <x-slot name="icon">
+            <x-icons.books class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
+        </x-slot>
+    </x-sidebar.link>
+    <x-sidebar.link title=" Daftar-Seleksi" href="/daftar-seleksi" :isActive="request()->routeIs('daftar-seleksi')">
         <x-slot name="icon">
             <x-icons.books class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
         </x-slot>
