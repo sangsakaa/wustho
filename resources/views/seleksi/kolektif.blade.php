@@ -23,8 +23,8 @@
     <div class=" bg-white mt-2   px-2 py-2 gap-2">
         <form action="/daftar-nominasi/{{$title->id}}" method="post">
             <div>
-                <button class=" bg-red-600 px-1 py-1 text-white">Simpan</button>
-                <a href="/daftar-nominasi/{{$title->id}}" class=" bg-red-600 px-1 py-1 text-white">Kembali</a>
+                <button class=" bg-red-600 px-1 py-0  text-white">Simpan</button>
+                <a href="/daftar-nominasi/{{$title->id}}" class=" bg-red-600 px-1  py-1 text-white">Kembali</a>
             </div>
             @csrf
             <table class=" w-full mt-1">

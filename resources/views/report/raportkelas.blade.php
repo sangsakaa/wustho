@@ -64,7 +64,7 @@
                     <div class=" text-1xl py-2 grid  grid-cols-2 w-full">
 
                         <div>
-                            Nomor Induk Siswa
+                            Nomor Induk Murid
                         </div>
                         <div>
                             : <span class=" font-semibold">{{ $siswa->nis }}</span>

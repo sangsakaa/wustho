@@ -15,13 +15,19 @@
             <div>Periode Seleksi</div>
             <div> : {{$title->periode}} {{$title->ket_semester}}</div>
         </div>
-        <div>
-            <a href="/kolektif-daftar-nominasi/{{$title->id}}">Kolektif</a>
-        </div>
+
 
     </div>
-    <div class=" bg-white mt-2   px-2 py-2 gap-2">
-        <table class=" w-full">
+    <div class=" bg-white mt-2    px-2 py-2 gap-2">
+        <div class="flex grid-cols-2 gap-2">
+            <a href="/kolektif-daftar-nominasi/{{$title->id}}" class=" py-1 px-2 bg-red-600  text-white hover:bg-purple-500">
+                kolektif
+            </a>
+            <a href="/daftar-seleksi" class=" py-1 px-2 bg-red-600  text-white hover:bg-purple-500">
+                Daftar Nominasi
+            </a>
+        </div>
+        <table class=" mt-2 w-full">
             <thead>
                 <tr>
                     <th class=" border text-center px-1 ">No</th>

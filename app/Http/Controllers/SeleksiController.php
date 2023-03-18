@@ -54,8 +54,10 @@ class SeleksiController
             ->find($nominasi->id);
         $daftarNominasi = Daftar_Nominasi::query()
             ->leftjoin('pesertakelas', 'pesertakelas.id', '=', 'daftar_nominasi.pesertakelas_id')
+            ->join('nominasi', 'nominasi.id', '=', 'daftar_nominasi.nominasi_id')
             ->join('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
             ->join('siswa', 'siswa.id', '=', 'pesertakelas.siswa_id')
+            ->where('Daftar_Nominasi.nominasi_id', $nominasi->id)
             ->get();
         return view(
             'seleksi.list',
@@ -119,29 +121,40 @@ class SeleksiController
         // Mengkonversi tipe data variabel $lastNumber menjadi integer
         $lastNumber = (int) $lastNumber;
 
-        // Menambahkan 1 pada nomor urut terakhir
-        $newNumber = $lastNumber + 1;
-
         $hijriYear = $hijri;
 
-        // Menambahkan leading zero pada nomor urut baru jika kurang dari 4 digit
-        $newNumber = str_pad($newNumber, 4, '0', STR_PAD_LEFT);
-
         // Menggabungkan komponen kode menjadi satu string
-        $code =   $hijriYear . '-' . 'II' . '-' . $newNumber;
+        $codePrefix = $hijriYear . '-' . 'II' . '-';
+        $newNumber = $lastNumber + 1;
+
+        // Menambahkan leading zero pada nomor urut baru jika kurang dari 4 digit
+        $newNumberStr = str_pad($newNumber, 4, '0', STR_PAD_LEFT);
+
+        // Gabungkan prefix dengan nomor urut baru
+        $code = $codePrefix . $newNumberStr;
 
         $pesertakelas = $request->input('pesertakelas', []);
-        foreach ($request->pesertakelas as $peserta) {
-            $pesertakelas = new Daftar_Nominasi();
-            $pesertakelas->pesertakelas_id = $peserta;
-            $pesertakelas->nominasi_id = $request->nominasi_id;
-            $pesertakelas->nomor_ujian = $code;
-            $pesertakelas->save();
+        foreach ($pesertakelas as $peserta) {
+            $existingNomination = Daftar_Nominasi::where('nomor_ujian', $code)->first();
+            if ($existingNomination) {
+                // Jika nomor ujian sudah ada, buat nomor ujian baru dengan nomor urut berikutnya
+                $newNumber += 1;
+                $newNumberStr = str_pad($newNumber, 4, '0', STR_PAD_LEFT);
+                $code = $codePrefix . $newNumberStr;
+            }
+
+            $nominasi = new Daftar_Nominasi();
+            $nominasi->pesertakelas_id = $peserta;
+            $nominasi->nominasi_id = $request->nominasi_id;
+            $nominasi->nomor_ujian = $code;
+            $nominasi->save();
         }
 
-
-
+        // Menambahkan 1 pada nomor urut terakhir
+        DB::table('daftar_nominasi')->increment('id');
 
         return redirect()->back();
+
+
     }
 }
