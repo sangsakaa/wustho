@@ -43,6 +43,7 @@
                     <div class=" grid grid-cols-1 sm:grid-cols-2">
                         <div>
                             <a href="/mapel" class=" mt-2 bg-red-600 px-2 py-1 text-white">Mata Pelajaran</a>
+                            <a href="/juara-pararel" class=" mt-2 bg-red-600 px-2 py-1 text-white">Juara Pararel</a>
                         </div>
                         <div class=" flex grid-cols-1 justify-end">
                             <form action="/nilaimapel" method="get" class=" flex gap-1">

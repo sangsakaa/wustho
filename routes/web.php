@@ -22,6 +22,7 @@ use App\Http\Controllers\PelanggaranController;
 use App\Http\Controllers\PresensikelasController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\LulusanCotroller;
+use App\Http\Controllers\PararelController;
 use App\Http\Controllers\RekapAsamaController;
 use App\Http\Controllers\SeleksiController;
 use App\Http\Controllers\SesikelasController;
@@ -243,7 +244,8 @@ Route::get('kolektif-daftar-nominasi/{nominasi}', [SeleksiController::class, 'da
 Route::post('daftar-nominasi/{nominasi}', [SeleksiController::class, 'StoreNominasi'])->middleware(['auth'])->name('daftar-nominasi');
 
 
-
+// Controller Pararel
+Route::get('juara-pararel', [PararelController::class, 'index'])->middleware(['auth']);
 
 
 
