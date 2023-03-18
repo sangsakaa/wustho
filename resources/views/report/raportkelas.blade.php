@@ -78,8 +78,8 @@
                         <div>
                             Tempat ,Tanggal Lahir
                         </div>
-                        <div>
-                            : {{ $siswa->tempat_lahir }}, {{ Carbon\Carbon::parse($siswa->tanggal_lahir)->isoFormat('D MMMM YYYY') }}
+                        <div class=" capitalize">
+                            : {{ strtolower($siswa->tempat_lahir) }}, {{ Carbon\Carbon::parse($siswa->tanggal_lahir)->isoFormat('D MMMM YYYY') }}
                         </div>
                         <div>
                             Marhalah
@@ -244,12 +244,26 @@
                             </tr>
                         </tbody>
                     </table>
-                    <div class="  flex grid-cols-2 text-right">
-                        <div class=" w-2/3"></div>
-                        <div class="  text-left">
-                            Kedunglo, {{ now()->isoFormat('D MMMM YYYY') }}<br>
-                            Al Mudir / Kepala <br><br><br><br>
-                            <p class=" uppercase"> Muh. Bahrul Ulum, S.H</p>
+                    <div class="  grid grid-cols-2 text-right   ">
+                        <div class="  w-2/2  flex    px-32 pt-4 ">
+                            <div class="  border-black      w-32  h-40   text-justify ">
+                                <span class=" grid justify-between   p-12 font-semibold ">
+
+                                </span>
+                            </div>
+                        </div>
+                        <div class=" text-sm   mt-4 text-left ">
+                            <p class=" ">
+
+                            <p class=" underline"> Kedunglo, 27 Sya'ban 1444 H </p>
+
+                            <p class="  px-20 ml-1">19 Maret 2023 M</p>
+                            <p class="">Kepala Madrasah,</p>
+
+
+
+                            <br><br><br><br><br>
+                            <p class=" uppercase font-semibold"> MUH. BAHRUL ULUM,S.H</p>
                         </div>
                     </div>
                 </div>

@@ -90,7 +90,10 @@
                         </td>
                         <td class=" px-2 text-sm border border-green-800 capitalize"> {{ strtolower($datasiswa->nama_siswa) }}</td>
                         <td class=" px-2 text-sm border border-green-800 text-center">
-                            {{ $ringkasan['jmlharian'] }}
+                            @if($ringkasan['jmlharian'] <= 400) <span class=" text-red-600">{{$ringkasan['jmlharian']}}</span>
+                                @else
+                                <span class=" s font-semibold ">{{$ringkasan['jmlharian']}}</span>
+                                @endif
                         </td>
                         <td class=" px-2 text-sm border border-green-800 text-center">
                             {{ $ringkasan['jmlujian'] }}
