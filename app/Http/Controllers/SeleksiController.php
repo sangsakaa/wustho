@@ -57,7 +57,7 @@ class SeleksiController
             ->join('nominasi', 'nominasi.id', '=', 'daftar_nominasi.nominasi_id')
             ->join('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
             ->join('siswa', 'siswa.id', '=', 'pesertakelas.siswa_id')
-            ->where('Daftar_Nominasi.nominasi_id', $nominasi->id)
+            ->where('daftar_nominasi.nominasi_id', $nominasi->id)
             ->get();
         return view(
             'seleksi.list',
