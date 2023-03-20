@@ -260,9 +260,9 @@
                             <p class="  px-20 ml-1">19 Maret 2023 M</p>
                             <p class="">Kepala Madrasah,</p>
 
+                            <img src="{{asset('asset/images/ttd.png')}}" width="150" alt="">
 
 
-                            <br><br><br><br><br>
                             <p class=" uppercase font-semibold"> MUH. BAHRUL ULUM,S.H</p>
                         </div>
                     </div>
