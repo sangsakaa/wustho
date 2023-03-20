@@ -150,8 +150,7 @@ class SeleksiController
             $nominasi->save();
         }
 
-        // Menambahkan 1 pada nomor urut terakhir
-        DB::table('daftar_nominasi')->increment('id');
+        
 
         return redirect()->back();
 
