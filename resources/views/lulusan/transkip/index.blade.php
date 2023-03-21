@@ -55,6 +55,16 @@
                                         </select>
                                     </div>
                                     <div class=" w-full ">
+                                        <label for="">Kelas</label>
+
+                                        <select name="kelasmi_id" id="" class=" w-full  py-1 px-1">
+                                            @foreach($kelasMi as $item)
+
+                                            <option value="{{$item->id}}">{{$item->id}} - {{$item->nama_kelas}} {{$item->periode}} {{$item->ket_semester}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class=" w-full ">
                                         <label for="" class=" text-red-500 text-xs">Wajib di isi bagian KURIKULUM</label>
                                         <div>
                                             <button class=" py-1 px-2 bg-blue-600 rounded-sm text-white hover:bg-purple-500">Simpan</button>
@@ -69,6 +79,7 @@
                                     <tr class="  uppercase text-sm bg-gray-100">
                                         <th class=" border px-2 py-1">No</th>
                                         <th class=" border px-2 py-1 text-center">Periode</th>
+                                        <th class=" border px-2 py-1 text-center">Kelas</th>
                                         <th class=" border px-2 py-1 text-center">Jenis Ujian</th>
                                         <th class=" border px-2 py-1 text-center">Mata Pelajaran
                                         <th class=" border px-2 py-1 text-center">Jumlah <br>
@@ -82,6 +93,7 @@
                                     <tr>
                                         <th class=" border px-2 py-1 text-center">{{$loop->iteration}}</th>
                                         <td class=" border px-2 py-1 text-center"><a href="/nilai_transkip/{{$item->id}}">{{$item->periode}} {{$item->ket_semester}}</a></td>
+                                        <td class=" border px-2 py-1 text-center"> {{$item->nama_kelas}}</td>
                                         <td class=" border px-2 py-1 text-center">Ujian - {{$item->nama_ujian}}</td>
                                         <td class=" border px-2 py-1 text-center"> Kelas {{$item->kelas}} - {{$item->mapel}}</td>
                                         <td class=" border px-2 py-1 text-center">{{$item->NilatTranskip->count()}}</td>

@@ -8,21 +8,34 @@ use App\Models\Periode;
 use App\Models\Pesertakelas;
 use Illuminate\Http\Request;
 use App\Models\Daftar_lulusan;
+use App\Models\Kelasmi;
 use Illuminate\Support\Facades\DB;
 
 class LulusanCotroller
 {
     public function index()
     {
+        $kelasMi = Kelasmi::query()
+            ->join('kelas', 'kelas.id', '=', 'kelasmi.kelas_id')
+            ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
+            ->join('semester', 'semester.id', '=', 'periode.semester_id')
+            ->where('kelasmi.periode_id', session('periode_id'))
+            ->select('kelasmi.id', 'kelas', 'nama_kelas', 'ket_semester', 'periode')
+            ->where('kelas.kelas', 3)
+
+            ->orderby('nama_kelas')->get();
         $dataPeriode = Periode::query()
             ->join('semester', 'semester.id', '=', 'periode.semester_id')
             ->select('periode.id', 'periode.periode', 'semester.ket_semester')
+            ->orderby('ket_semester', 'desc')
             ->get();
         $dataLulusan = Lulusan::query()
             ->join('periode', 'periode.id', '=', 'lulusan.periode_id')
+            ->join('kelasmi', 'kelasmi.id', '=', 'lulusan.kelasmi_id')
             ->join('semester', 'semester.id', '=', 'periode.semester_id')
             ->select(
                 [
+                'kelasmi.nama_kelas',
                     'lulusan.id',
                     'periode',
                     'ket_semester',
@@ -36,7 +49,8 @@ class LulusanCotroller
             'lulusan.index',
             [
                 'dataLulusan' => $dataLulusan,
-                'dataPeriode' => $dataPeriode
+                'dataPeriode' => $dataPeriode,
+                'kelasMi' => $kelasMi,
             ]
         );
     }
@@ -44,6 +58,7 @@ class LulusanCotroller
     {
         $lulusan = new Lulusan();
         $lulusan->periode_id = $request->periode_id;
+        $lulusan->kelasmi_id = $request->kelasmi_id;
         $lulusan->tanggal_mulai = $request->tanggal_mulai;
         $lulusan->tanggal_selesai = $request->tanggal_selesai;
         $lulusan->tanggal_kelulusan = $request->tanggal_kelulusan;
@@ -80,7 +95,7 @@ class LulusanCotroller
             ]
         );
     }
-    public function kolektifLulusan(Lulusan $lulusan)
+    public function kolektifLulusan(Lulusan $lulusan,)
     {
         $daftarLulusan = Pesertakelas::query()
             ->leftjoin('daftar_lulusan', 'pesertakelas.id', '=', 'daftar_lulusan.pesertakelas_id')
@@ -98,6 +113,7 @@ class LulusanCotroller
             ->where('kelasmi.periode_id', session('periode_id'))
             ->where('daftar_lulusan.pesertakelas_id', '=', null)
             ->where('kelas.kelas', 3)
+            ->where('pesertakelas.kelasmi_id', $lulusan->kelasmi_id)
             ->orderby('nama_kelas')
             ->orderby('nama_siswa')
             ->get();

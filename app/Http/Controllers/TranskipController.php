@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Mapel;
+use App\Models\Kelasmi;
 use App\Models\Lulusan;
 use App\Models\Periode;
 use App\Models\Transkip;
@@ -15,6 +16,15 @@ class TranskipController
 {
     public function index()
     {
+        $kelasMi = Kelasmi::query()
+            ->join('kelas', 'kelas.id', '=', 'kelasmi.kelas_id')
+            ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
+            ->join('semester', 'semester.id', '=', 'periode.semester_id')
+            ->where('kelasmi.periode_id', session('periode_id'))
+            ->select('kelasmi.id', 'kelas', 'nama_kelas', 'ket_semester', 'periode')
+            ->where('kelas.kelas', 3)
+
+            ->orderby('nama_kelas')->get();
         $dataPeriode = Periode::query()
             ->join('semester', 'semester.id', '=', 'periode.semester_id')
             ->select('periode.periode', 'ket_semester', 'periode.id')
@@ -32,8 +42,9 @@ class TranskipController
             ->join('semester', 'semester.id', '=', 'periode.semester_id')
             ->join('jenis_ujian', 'jenis_ujian.id', '=', 'transkip.jenis_ujian_id')
             ->join('mapel', 'mapel.id', '=', 'transkip.mapel_id')
+            ->leftjoin('kelasmi', 'kelasmi.id', '=', 'transkip.kelasmi_id')
             ->join('kelas', 'kelas.id', '=', 'mapel.kelas_id')
-            ->select('periode.periode', 'ket_semester', 'nama_ujian', 'mapel', 'kelas', 'transkip.id')
+            ->select('periode.periode', 'ket_semester', 'nama_ujian', 'mapel', 'kelas', 'transkip.id', 'kelasmi.nama_kelas')
             ->orderby('nama_ujian')
             ->get();
         return view(
@@ -43,6 +54,7 @@ class TranskipController
                 'dataMapel' => $dataMapel,
                 'dataJenisUjian' => $dataJenisUjian,
                 'dataTranskip' => $dataTranskip,
+                'kelasMi' => $kelasMi,
 
             ]
         );
@@ -52,6 +64,7 @@ class TranskipController
         $transkip = new Transkip();
         $transkip->periode_id = $request->periode_id;
         $transkip->mapel_id = $request->mapel_id;
+        $transkip->kelasmi_id = $request->kelasmi_id;
         $transkip->jenis_ujian_id = $request->jenis_ujian_id;
         $transkip->save();
         return redirect()->back();
@@ -61,10 +74,7 @@ class TranskipController
         $dataTranskip = Transkip::query()
             ->leftJoin('mapel', 'mapel.id', '=', 'transkip.mapel_id')
             ->leftJoin('jenis_ujian', 'jenis_ujian.id', '=', 'transkip.jenis_ujian_id')
-
-            ->find($transkip->id);
-
-
+        ->find($transkip->id);
         $dataNilaiTranskip = Nilai_Transkip::query()
             ->where('transkip_id', $transkip->id);
 
@@ -88,6 +98,7 @@ class TranskipController
                     'data_nilai.nilai_akhir'
                 ]
             )
+            ->where('pesertakelas.kelasmi_id', $transkip->kelasmi_id)
             ->orderby('nama_kelas')
             ->orderby('nama_siswa')
             ->get();

@@ -34,6 +34,7 @@
                     <th class=" border text-center px-1 ">Nomor Ujian</th>
                     <th class=" border text-center px-1 ">Nama Peserta Ujian</th>
                     <th class=" border text-center px-1 ">Kelas</th>
+                    <th class=" border text-center px-1 ">Act</th>
                 </tr>
             </thead>
             <tbody>
@@ -43,6 +44,16 @@
                     <td class=" border px-1 text-center">{{$item->nomor_ujian}}</td>
                     <td class=" border px-1 text-left capitalize">{{strtolower($item->nama_siswa)}}</td>
                     <td class=" border px-1 text-center uppercase">{{strtolower($item->nama_kelas)}}</td>
+                    <td class=" border text-center">
+
+                        <form action="/daftar-nominasi/{{$item->id}}" method="post" class=" text-red-600">
+                            @csrf
+                            @method('delete')
+                            <button>
+                                <x-icons.hapus></x-icons>
+                            </button>
+                        </form>
+                    </td>
                 </tr>
                 @endforeach
             </tbody>

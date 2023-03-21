@@ -38,28 +38,51 @@
                                             @endforeach
                                         </select>
                                     </div>
-                                    <div class=" w-full ">
-                                        <label for="">Tanggal Mulai</label>
-                                        <input type="date" class="py-1 px-1 w-full" name="tanggal_mulai">
+                                    <div class=" grid grid-cols-2 gap-2">
+                                        <div class=" w-full ">
+                                            <label for="">Tanggal Mulai</label>
+                                            <input type="date" class="py-1 px-1 w-full" name="tanggal_mulai">
+                                        </div>
+                                        <div class=" w-full ">
+                                            <label for="">Tanggal Selesai</label>
+                                            <input type="date" class="py-1 px-1 w-full" name="tanggal_selesai">
+                                        </div>
+                                    </div>
+                                    <div class=" grid grid-cols-2 gap-2">
+                                        <div class=" w-full ">
+                                            <label for="">Tanggal Kelulusan</label>
+                                            <input type="date" class="py-1 px-1 w-full" name="tanggal_kelulusan">
+                                        </div>
+                                        <div class=" w-full ">
+                                            <label for="">Kelas</label>
+
+                                            <select name="kelasmi_id" id="" class=" w-full  py-1 px-1">
+                                                @foreach($kelasMi as $item)
+
+                                                <option value="{{$item->id}}">{{$item->id}} - {{$item->nama_kelas}} {{$item->periode}} {{$item->ket_semester}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
                                     </div>
                                     <div class=" w-full ">
-                                        <label for="">Tanggal Selesai</label>
-                                        <input type="date" class="py-1 px-1 w-full" name="tanggal_selesai">
-                                    </div>
-                                    <div class=" w-full ">
-                                        <label for="">Tanggal Kelulusan</label>
-                                        <input type="date" class="py-1 px-1 w-full" name="tanggal_kelulusan">
-                                    </div>
-                                    <div class=" w-full ">
-                                        <button class=" py-1 px-2 bg-blue-600 rounded-sm text-white hover:bg-purple-500">Simpan</button>
+                                        <label for="">
+                                            <span class=" text-red-600">
+                                                data ini dari bagian Kurikulum
+                                            </span>
+                                        </label>
+                                        <div>
+                                            <button class=" py-1 px-2 bg-blue-600 rounded-sm text-white hover:bg-purple-500">Simpan</button>
+                                        </div>
                                     </div>
                                 </div>
                             </form>
+
                             <table class=" w-full mt-1 border">
                                 <thead class=" border">
                                     <tr class="  uppercase text-sm bg-gray-100">
                                         <th class=" border px-2 py-1">No</th>
                                         <th class=" border px-2 py-1 text-center">Periode</th>
+                                        <th class=" border px-2 py-1 text-center">Kelas</th>
                                         <th class=" border px-2 py-1 text-center">Tanggal Mulai</th>
                                         <th class=" border px-2 py-1 text-center">Tanggal Selesai</th>
                                         <th class=" border px-2 py-1 text-center">Tanggal Kelulusan</th>
@@ -72,6 +95,7 @@
                                     <tr>
                                         <th>{{$loop->iteration}}</th>
                                         <td class=" border text-center capitalize"><a href="/daftar-lulusan/{{$list->id}}">{{$list->periode}} {{$list->ket_semester}}</a></td>
+                                        <td class=" border text-center capitalize"><a href="/daftar-lulusan/{{$list->id}}">{{$list->nama_kelas}}</a></td>
                                         <td class=" border text-center capitalize">
                                             {{ \Carbon\Carbon::parse($list->tanggal_mulai)->isoFormat('D MMM Y') }}
                                         </td>

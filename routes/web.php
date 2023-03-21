@@ -243,6 +243,7 @@ Route::get('daftar-nominasi/{nominasi}', [SeleksiController::class, 'daftarNomin
 Route::get('kolektif-daftar-nominasi/{nominasi}', [SeleksiController::class, 'daftarNominasiKelektif'])->middleware(['auth']);
 Route::post('daftar-nominasi/{nominasi}', [SeleksiController::class, 'StoreNominasi'])->middleware(['auth'])->name('daftar-nominasi');
 Route::delete('daftar-seleksi/{nominasi}', [SeleksiController::class, 'destroy']);
+Route::delete('daftar-nominasi/{daftar_Nominasi}', [SeleksiController::class, 'destroyNominasi']);
 
 
 

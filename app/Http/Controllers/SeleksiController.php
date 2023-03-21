@@ -57,6 +57,7 @@ class SeleksiController
             ->join('nominasi', 'nominasi.id', '=', 'daftar_nominasi.nominasi_id')
             ->join('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
             ->join('siswa', 'siswa.id', '=', 'pesertakelas.siswa_id')
+            ->select('daftar_nominasi.id', 'nomor_ujian', 'nama_siswa', 'nama_kelas')
             ->where('daftar_nominasi.nominasi_id', $nominasi->id)
             ->get();
         return view(
@@ -156,7 +157,10 @@ class SeleksiController
         Nominasi::destroy('id', $nominasi->id);
         Daftar_Nominasi::where('nominasi_id', $nominasi->id)->delete();
         return redirect()->back();
-        
-        
+    }
+    public function destroyNominasi(Daftar_Nominasi $daftar_Nominasi)
+    {
+        Daftar_Nominasi::destroy('id', $daftar_Nominasi->id);
+        return redirect()->back();
     }
 }
