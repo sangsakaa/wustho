@@ -149,11 +149,14 @@ class SeleksiController
             $nominasi->nomor_ujian = $code;
             $nominasi->save();
         }
-
-        
-
         return redirect()->back();
-
-
+    }
+    public function destroy(Nominasi $nominasi)
+    {
+        Nominasi::destroy('id', $nominasi->id);
+        Daftar_Nominasi::where('nominasi_id', $nominasi->id)->delete();
+        return redirect()->back();
+        
+        
     }
 }

@@ -71,7 +71,7 @@
                                             </td>
                                             <td class=" border px-2 py-1 text-left capitalize w-4">{{$item->nama_kelas}}</td>
                                             <td class=" border px-2 py-1 text-center capitalize">
-                                                <input value="{{ $item->nilai_akhir}}" class=" py-1 w-full text-center capitalize" type="number" name="nilai_akhir[{{ $item->id }}]" default="0" placeholder="MIN : 65 MAX : 100">
+                                                <input value="{{ $item->nilai_akhir}}" class=" py-1 w-full text-center capitalize" type="number" name="nilai_akhir[{{ $item->id }}]" placeholder="MIN : 65 MAX : 100">
                                             </td>
                                         </tr>
                                         @endforeach

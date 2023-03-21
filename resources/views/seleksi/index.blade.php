@@ -3,7 +3,7 @@
         @section('title','| NOMINASI : ' )
         <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <h2 class="text-xl font-semibold leading-tight">
-                {{ __('Dashboard') }}
+                {{ __('Dashboard Nominasi') }}
             </h2>
 
         </div>
@@ -58,7 +58,7 @@
                     <th class=" border text-center px-1 ">Periode</th>
                     <th class=" border text-center px-1 ">Tanggal Mulai</th>
                     <th class=" border text-center px-1 ">Tanggal Selesai</th>
-                    <th class=" border text-center px-1 ">act</th>
+                    <th class=" border text-center px-1 capitalize ">act</th>
                 </tr>
             </thead>
             <tbody>
@@ -81,7 +81,7 @@
                         {{ \Carbon\Carbon::parse($item->tanggal_selesai)->isoFormat(' DD MMMM Y') }}
                     </td>
                     <td class=" border text-center">
-                        <form action="" method="post" class=" text-red-600">
+                        <form action="daftar-seleksi/{{$item->id}}" method="post" class=" text-red-600">
                             @csrf
                             @method('delete')
                             <button>

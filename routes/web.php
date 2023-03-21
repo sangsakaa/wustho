@@ -242,6 +242,9 @@ Route::post('daftar-seleksi', [SeleksiController::class, 'store'])->middleware([
 Route::get('daftar-nominasi/{nominasi}', [SeleksiController::class, 'daftarNominasi'])->middleware(['auth'])->name('daftar-nominasi');
 Route::get('kolektif-daftar-nominasi/{nominasi}', [SeleksiController::class, 'daftarNominasiKelektif'])->middleware(['auth']);
 Route::post('daftar-nominasi/{nominasi}', [SeleksiController::class, 'StoreNominasi'])->middleware(['auth'])->name('daftar-nominasi');
+Route::delete('daftar-seleksi/{nominasi}', [SeleksiController::class, 'destroy']);
+
+
 
 
 // Controller Pararel
