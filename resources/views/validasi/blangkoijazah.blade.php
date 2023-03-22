@@ -59,13 +59,21 @@
                 </p>
                 <div class=" text-sm text-left  grid grid-cols-2 mt-5">
                     <div class=" px-1 ">Tempat, Tanggal Lahir</div>
-                    <div class=" px-1 capitalize "> : {{strtolower($ijazah->tempat_lahir)}},
+                    <div class=" px-1 capitalize ">
+                        : {{strtolower($ijazah->tempat_lahir)}},
                         {{ \Carbon\Carbon::parse($ijazah->tanggal_lahir)->isoFormat(' DD MMMM Y') }}
                     </div>
                     <div class=" px-1 ">Nama Orang Tua / Wali </div>
-                    <div class=" px-1 capitalize "> : {{$ijazah->nama_ayah}}
+                    <div class=" px-1 capitalize ">
+                        : {{$ijazah->nama_ayah}}
                     </div>
+                    <div class=" px-1 ">Nomor Ujian</div>
+                    <div class=" px-1 capitalize ">
+                        : {{$ijazah->nomor_ujian}}
+                    </div>
+
                 </div>
+
                 <div>
                     <p class="  text-3xl uppercase bold  font-serif text-center mt-4 ">lulus</p>
                     <p class=" text-sm text-justify mt-4 ">Dalam mengikuti <span class=" font-semibold ">Ujian Akhir Madrasah Diniyah Wustho Wahidiyah</span> yang diselenggarakan pada tanggal
