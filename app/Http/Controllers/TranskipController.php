@@ -44,9 +44,18 @@ class TranskipController
             ->join('mapel', 'mapel.id', '=', 'transkip.mapel_id')
             ->leftjoin('kelasmi', 'kelasmi.id', '=', 'transkip.kelasmi_id')
             ->join('kelas', 'kelas.id', '=', 'mapel.kelas_id')
-            ->select('periode.periode', 'ket_semester', 'nama_ujian', 'mapel', 'kelas', 'transkip.id', 'kelasmi.nama_kelas')
+            ->select(
+                [
+                    'periode.periode',
+                    'ket_semester',
+                    'nama_ujian',
+                    'mapel', 'kelas',
+                    'transkip.id',
+                    'kelasmi.nama_kelas',
+                ]
+            )
             ->orderby('nama_ujian')
-            ->get();
+        ->paginate(8);
         return view(
             'lulusan.transkip.index',
             [
@@ -77,7 +86,6 @@ class TranskipController
         ->find($transkip->id);
         $dataNilaiTranskip = Nilai_Transkip::query()
             ->where('transkip_id', $transkip->id);
-
         $daftarLulusan = Daftar_lulusan::query()
             ->leftjoin('pesertakelas', 'pesertakelas.id', '=', 'daftar_lulusan.pesertakelas_id')
             ->leftjoin('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
@@ -112,7 +120,7 @@ class TranskipController
             ]
         );
     }
-    public function NilaiTranskip(Request $request, Transkip $transkip)
+    public function NilaiTranskip(Request $request)
     {
         foreach ($request->daftar_lulusan_id as $daftar_lulusan_id) {
             $peserta = Nilai_Transkip::firstOrNew(

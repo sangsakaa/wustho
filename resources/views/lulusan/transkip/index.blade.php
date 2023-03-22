@@ -54,22 +54,25 @@
                                             @endforeach
                                         </select>
                                     </div>
-                                    <div class=" w-full ">
-                                        <label for="">Kelas</label>
+                                    <div class=" grid grid-cols-2 gap-2">
+                                        <div class=" w-full ">
+                                            <label for="">Kelas</label>
 
-                                        <select name="kelasmi_id" id="" class=" w-full  py-1 px-1">
-                                            @foreach($kelasMi as $item)
+                                            <select name="kelasmi_id" id="" class=" w-full  py-1 px-1">
+                                                @foreach($kelasMi as $item)
 
-                                            <option value="{{$item->id}}">{{$item->id}} - {{$item->nama_kelas}} {{$item->periode}} {{$item->ket_semester}}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    <div class=" w-full ">
-                                        <label for="" class=" text-red-500 text-xs">Wajib di isi bagian KURIKULUM</label>
-                                        <div>
-                                            <button class=" py-1 px-2 bg-blue-600 rounded-sm text-white hover:bg-purple-500">Simpan</button>
+                                                <option value="{{$item->id}}">{{$item->id}} - {{$item->nama_kelas}} {{$item->periode}} {{$item->ket_semester}}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                        <div class=" w-full ">
+                                            <label for="" class=" uppercase text-red-500 text-xs">Wajib di isi bagian KURIKULUM</label>
+                                            <div>
+                                                <button class=" py-1 px-2 bg-blue-600 rounded-sm text-white hover:bg-purple-500">Simpan</button>
+                                            </div>
                                         </div>
                                     </div>
+
 
                                 </div>
 
@@ -98,8 +101,6 @@
                                         <td class=" border px-2 py-1 text-center"> Kelas {{$item->kelas}} - {{$item->mapel}}</td>
                                         <td class=" border px-2 py-1 text-center">{{$item->NilatTranskip->count()}}</td>
                                         <td class=" border px-2 py-1 text-center">
-
-
                                             <form action="/daftar-transkip/{{$item->id}}" method="post">
                                                 @csrf
                                                 @method('delete')
@@ -113,6 +114,9 @@
                                     @endforeach
                                 </tbody>
                             </table>
+                            <div class=" py-1">
+                                {{$dataTranskip}}
+                            </div>
                         </div>
                     </div>
                 </div>
