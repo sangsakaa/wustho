@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Daftar_lulusan;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Daftar_Nominasi extends Model
 {
@@ -12,4 +13,8 @@ class Daftar_Nominasi extends Model
 
     public $guarded = [];
     protected $table = "daftar_nominasi";
+    public function NomorUjian()
+    {
+        return $this->hasMany(Daftar_lulusan::class, 'id');
+    }
 }

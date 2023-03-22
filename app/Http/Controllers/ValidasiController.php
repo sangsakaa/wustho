@@ -48,7 +48,7 @@ class ValidasiController
         $daftarLulusan = Daftar_lulusan::query()
             ->join('lulusan', 'lulusan.id', '=', 'daftar_lulusan.lulusan_id')
             ->join('pesertakelas', 'pesertakelas.id', '=', 'daftar_lulusan.pesertakelas_id')
-            ->crossjoin('daftar_nominasi')
+            ->join('daftar_nominasi', 'daftar_nominasi.pesertakelas_id', '=', 'daftar_lulusan.pesertakelas_id')
             ->join('siswa', 'siswa.id', '=', 'pesertakelas.siswa_id')
             ->join('nis', 'siswa.id', '=', 'nis.siswa_id')
             ->join('statusanak', 'siswa.id', '=', 'statusanak.siswa_id')
