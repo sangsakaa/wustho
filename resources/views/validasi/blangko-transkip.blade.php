@@ -85,7 +85,7 @@
                         </td>
                         <td class=" border text-center w-20 border-black p-1">
                             {{$data_lulusan['nilai_tulis']->sum('nilai_akhir')}} <br> {{
-                                $data_lulusan['nilai_tulis']->sum('nilai_akhir')}}
+                                $data_lulusan['nilai_tulis']->sum('nilai_akhir')/$data_lulusan['praktik']}}
 
                         </td>
                     </tr>
@@ -128,12 +128,16 @@
                         </td>
                         <td class=" border text-center w-20 border-black p-1">
                             {{$data_lulusan['nilai_praktek']->sum('nilai_akhir')}} <br>
-                            {{$data_lulusan['nilai_praktek']->sum('nilai_akhir')}}
+                            {{$data_lulusan['nilai_praktek']->sum('nilai_akhir')/$data_lulusan['tulis']}}
+
+
+
 
                         </td>
                     </tr>
                 </tbody>
             </table>
+
             <div class="  grid grid-cols-2 text-right   ">
                 <div class="  w-2/2  flex    px-32 pt-4 ">
                     <div class="  border-black      w-32  h-40   text-justify ">

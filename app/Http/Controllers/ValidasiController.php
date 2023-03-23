@@ -105,6 +105,7 @@ class ValidasiController
             ->select('nilai_transkip.daftar_lulusan_id', 'nama_ujian', 'nilai_akhir', 'mapel')
             ->where('jenis_ujian.nama_ujian', 'praktek')
             ->get();
+        
         $data = [];
         // dd($data_lulusan);
         foreach ($data_lulusan as $lulusan) {
@@ -113,8 +114,14 @@ class ValidasiController
                     'lulusan' => $lulusan,
                     'nilai_tulis' => $data_nilai_tulis->where('daftar_lulusan_id', $lulusan->id),
                 'nilai_praktek' => $data_nilai_praktek->where('daftar_lulusan_id', $lulusan->id),
+                'tulis' => $data_nilai_tulis->where('daftar_lulusan_id', $lulusan->id)->count('nilai_akhir'),
+                'praktik' => $data_nilai_praktek->where('daftar_lulusan_id', $lulusan->id)->count('nilai_akhir'),
                 ];
+            
         }
+        
+        
+        
         
 
         
@@ -125,6 +132,8 @@ class ValidasiController
             [
 
                 'data' => $data,
+                
+                
                 
                 
 
