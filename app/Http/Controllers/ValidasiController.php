@@ -39,6 +39,7 @@ class ValidasiController
             [
                 'data' => $data->get(),
                 'dataKelas' => $dataKelas,
+                'kelasmi' => $kelasmi,
                
 
             ]
