@@ -16,11 +16,36 @@
         }
     </script>
 
+
     <div class=" p-2 bg-white">
         <button class=" text-white   bg-green-800 px-2 py-1 " onclick="printContent('div1')">Cetak Ijazah</button>
         <a href="/blangko-transkip" class=" text-white   bg-green-800 px-2 py-1 ">Transkip</a>
         <a href="/pengaturan" class=" text-white   bg-green-800 px-2 py-1 ">Kembali</a>
     </div>
+    <div class=" p-2 bg-white mt-2">
+        <form action="/blangko-ijazah" method="get" class="  text-sm gap-1 flex">
+            <!-- <input type="text" name="cari" value="{{ request('cari') }}" class=" dark:bg-dark-bg border border-green-800 text-green-800 rounded-md py-1 " placeholder=" Cari .." autofocus> -->
+            <select name="cari" id="" class=" py-1 w-1/4">
+                <option value="">Pilih Kelas</option>
+                @foreach($dataKelas as $item)
+                <option value="{{ $item->id }}" {{ $kelasmi?->id == $item->id ? 'selected' : '' }}>
+                    {{ $item->nama_kelas }} {{ $item->periode }} {{ $item->ket_semester }}
+                </option>
+                @endforeach
+            </select>
+            <button type="submit" class=" px-2    bg-blue-500  rounded-md text-white">
+                <x-icons.cari></x-icons.cari>
+            </button>
+        </form>
+    </div>
+    @if($data === null)
+    x
+    @else
+    <div class=" p-2 m-2 rounded-md bg-yellow-200">
+        {{$data->count()}}
+    </div>
+    @endif
+
     <div id="div1" class=" bg-white   w-full   ">
         @foreach($data as $ijazah)
         <style>

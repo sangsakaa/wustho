@@ -43,11 +43,22 @@ class ValidasiController
             ]
         );
     }
-    public function blangkoijazah(Siswa $siswa)
+    public function blangkoijazah(Siswa $siswa, Kelasmi $kelasmi)
     {
+
+
+        $dataKelas = Kelasmi::query()
+            ->join('kelas', 'kelas.id', '=', 'kelasmi.kelas_id')
+            ->where('kelasmi.periode_id', session('periode_id'))
+            ->where('kelas.kelas', 3)
+            ->select('kelasmi.id', 'nama_kelas')
+            ->orderby('nama_kelas')
+            ->get();
         $daftarLulusan = Daftar_lulusan::query()
             ->join('lulusan', 'lulusan.id', '=', 'daftar_lulusan.lulusan_id')
             ->join('pesertakelas', 'pesertakelas.id', '=', 'daftar_lulusan.pesertakelas_id')
+            ->join('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
+            ->join('kelas', 'kelas.id', '=', 'kelasmi.kelas_id')
             ->join('daftar_nominasi', 'daftar_nominasi.pesertakelas_id', '=', 'daftar_lulusan.pesertakelas_id')
             ->join('siswa', 'siswa.id', '=', 'pesertakelas.siswa_id')
             ->join('nis', 'siswa.id', '=', 'nis.siswa_id')
@@ -55,6 +66,9 @@ class ValidasiController
             ->select(
                 [
                     'nis.nis',
+                'kelas.kelas',
+                'kelasmi.id',
+                'kelasmi.nama_kelas',
                     'siswa.nama_siswa',
                     'siswa.tempat_lahir',
                     'statusanak.nama_ayah',
@@ -67,14 +81,19 @@ class ValidasiController
 
 
                 ]
-            )
-            ->get();
+        );
+        if (request('cari')) {
+            $daftarLulusan->where('kelasmi.id', 'like', '%' . request('cari') . '%');
+        }
+        
 
         return view(
             'validasi.blangkoijazah',
             [
                 'siswa' => $siswa,
-                'data' => $daftarLulusan,
+                'data' => $daftarLulusan->get(),
+                'dataKelas' => $dataKelas,
+                'kelasmi' => $kelasmi
 
             ]
         );
