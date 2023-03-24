@@ -8,6 +8,7 @@ use App\Models\Kelasmi;
 use App\Models\Transkip;
 use App\Models\Pesertakelas;
 use App\Models\Daftar_lulusan;
+use App\Models\Lulusan;
 use App\Models\Nilai_Transkip;
 use Riskihajar\Terbilang\Facades\Terbilang;
 
@@ -38,15 +39,18 @@ class ValidasiController
             [
                 'data' => $data->get(),
                 'dataKelas' => $dataKelas,
-                'kelasmi' => $kelasmi
+               
 
             ]
         );
     }
-    public function blangkoijazah(Siswa $siswa, Kelasmi $kelasmi)
+    public function blangkoijazah(Siswa $siswa, Lulusan $lulusan)
     {
 
 
+        $DataIjaza = $lulusan::query()
+            ->join('kelasmi', 'kelasmi.id', '=', 'lulusan.kelasmi_id')
+            ->first();
         $dataKelas = Kelasmi::query()
             ->join('kelas', 'kelas.id', '=', 'kelasmi.kelas_id')
             ->where('kelasmi.periode_id', session('periode_id'))
@@ -93,7 +97,9 @@ class ValidasiController
                 'siswa' => $siswa,
                 'data' => $daftarLulusan->get(),
                 'dataKelas' => $dataKelas,
-                'kelasmi' => $kelasmi
+                'kelasmi' => $lulusan,
+                'DataIjaza' => $DataIjaza
+                
 
             ]
         );

@@ -19,7 +19,7 @@
                                 <a href="/lulusan" class=" text-center py-1 px-2 w-20 bg-blue-600 rounded-md text-white hover:bg-purple-500">
                                     Batal
                                 </a>
-                                <a href="/blangko-ijazah" class=" text-center py-1 px-2 w-30 bg-blue-600 rounded-md text-white hover:bg-purple-500">
+                                <a href="/blangko-ijazah/{{$lulusan->id}}" class=" text-center py-1 px-2 w-30 bg-blue-600 rounded-md text-white hover:bg-purple-500">
                                     Cetak Ijazah
                                 </a>
                             </div>
