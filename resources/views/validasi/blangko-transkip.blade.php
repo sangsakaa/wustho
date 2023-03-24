@@ -85,9 +85,12 @@
                             <span>Rata Rata</span>
                         </td>
                         <td class=" border text-center w-20 border-black p-1">
-                            {{$data_lulusan['nilai_tulis']->sum('nilai_akhir')}} <br> {{
-                                $data_lulusan['nilai_tulis']->sum('nilai_akhir')/$data_lulusan['tulis']}}
-
+                            {{$data_lulusan['nilai_tulis']->sum('nilai_akhir')}} <br>
+                            @if($data_lulusan['tulis'] != 0)
+                            {{$data_lulusan['nilai_tulis']->sum('nilai_akhir')/$data_lulusan['tulis']}}
+                            @else
+                            0
+                            @endif
                         </td>
                     </tr>
 
@@ -129,11 +132,11 @@
                         </td>
                         <td class=" border text-center w-20 border-black p-1">
                             {{$data_lulusan['nilai_praktek']->sum('nilai_akhir')}} <br>
+                            @if($data_lulusan['praktik'] != 0)
                             {{$data_lulusan['nilai_praktek']->sum('nilai_akhir')/$data_lulusan['praktik']}}
-
-
-
-
+                            @else
+                            0
+                            @endif
                         </td>
                     </tr>
                 </tbody>
