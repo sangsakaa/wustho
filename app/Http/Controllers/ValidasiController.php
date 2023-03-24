@@ -50,7 +50,8 @@ class ValidasiController
 
         $DataIjaza = $lulusan::query()
             ->join('kelasmi', 'kelasmi.id', '=', 'lulusan.kelasmi_id')
-            ->first();
+        ->select('kelasmi.nama_kelas')
+        ->where('kelasmi.id', $lulusan->kelasmi_id)->first();
         $dataKelas = Kelasmi::query()
             ->join('kelas', 'kelas.id', '=', 'kelasmi.kelas_id')
             ->where('kelasmi.periode_id', session('periode_id'))
@@ -67,6 +68,8 @@ class ValidasiController
             ->join('siswa', 'siswa.id', '=', 'pesertakelas.siswa_id')
             ->join('nis', 'siswa.id', '=', 'nis.siswa_id')
             ->join('statusanak', 'siswa.id', '=', 'statusanak.siswa_id')
+            ->where('lulusan.kelasmi_id', $lulusan->kelasmi_id)
+            
             ->select(
                 [
                     'nis.nis',

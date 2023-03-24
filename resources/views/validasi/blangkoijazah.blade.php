@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        @section('title', ' | IJAZAH'.' ' .$DataIjaza->nama_kelas )
+        @section('title', ' | IJAZAH'.' ' )
         <h2 class="font-semibold text-xl leading-tight">
             {{ __('Dashboard blangko ijazah') }}
         </h2>
@@ -20,11 +20,11 @@
     <div class=" p-2 bg-white">
         <button class=" text-white   bg-green-800 px-2 py-1 " onclick="printContent('div1')">Cetak Ijazah</button>
         <a href="/blangko-transkip" class=" text-white   bg-green-800 px-2 py-1 ">Transkip</a>
-        <a href="/pengaturan" class=" text-white   bg-green-800 px-2 py-1 ">Kembali</a>
+        <a href="/lulusan" class=" text-white   bg-green-800 px-2 py-1 ">Kembali</a>
     </div>
     <div class=" bg-white p-2 my-2 grid grid-cols-4 uppercase">
         <div>Kelas </div>
-        <div> : {{$DataIjaza->nama_kelas}}</div>
+        <div>: {{$DataIjaza->nama_kelas}}</div>
         <div>Total Ijazah </div>
         <div> : {{$data->count()}}</div>
     </div>
