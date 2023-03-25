@@ -17,11 +17,19 @@
     </script>
     <div class=" p-2">
         <button class=" text-white rounded-md  bg-green-800 px-2 py-1 " onclick="printContent('div1')">Cetak Transkip</button>
-        <a href="/blangko-ijazah/" class=" text-white rounded-md  bg-green-800 px-2 py-1 ">Ijazah</a>
+        <a href="/blangko-ijazah/{{$dataLulusan->id}}" class=" text-white rounded-md  bg-green-800 px-2 py-1 ">Ijazah</a>
         <a href="/pengaturan" class=" text-white rounded-md  bg-green-800 px-2 py-1 ">Kembali</a>
-        {{$data_lulusan->count()}}
-    </div>
 
+    </div>
+    <div class=" bg-white m-2 p-2">
+
+        <div class=" grid grid-cols-4">
+            <div>Kelas</div>
+            <div> : {{$dataLulusan->nama_kelas}}</div>
+            <div>Jumlah Transkip Nilai</div>
+            <div> : {{$data_lulusan->count()}}</div>
+        </div>
+    </div>
     <div id="div1" class="  bg-white   ">
         @foreach($data as $data_lulusan)
         <style>

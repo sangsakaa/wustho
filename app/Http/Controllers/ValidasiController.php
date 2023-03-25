@@ -111,6 +111,12 @@ class ValidasiController
     public function blangkoTranskip(Lulusan $lulusan)
     {
 
+
+        $dataLulusan = Lulusan::query()
+            ->join('kelasmi', 'kelasmi.id', '=', 'lulusan.kelasmi_id')
+            ->select('lulusan.id', 'nama_kelas')
+
+            ->where('lulusan.id', $lulusan->id)->first();
         
         $data_lulusan = Daftar_lulusan::query()
             ->join('lulusan', 'lulusan.id', '=', 'daftar_lulusan.lulusan_id')
@@ -125,7 +131,7 @@ class ValidasiController
                 'daftar_lulusan.lulusan_id',
                     'nama_siswa',
                     'nis',
-                 
+                
                     'tanggal_kelulusan',
                     'tanggal_selesai',
                     'tanggal_mulai'
@@ -177,13 +183,8 @@ class ValidasiController
                 'data' => $data,
                 'lulusan' => $lulusan,
                 'data_lulusan' => $data_lulusan,
-                
-                
-                
-                
-
-
-
+                'dataLulusan' => $dataLulusan,
+               
 
             ]
         );
