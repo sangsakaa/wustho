@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Mapel;
 use App\Models\Nilai;
+use App\Models\Pesertakelas;
 use App\Models\Siswa;
 use Illuminate\Http\Request;
 
@@ -14,15 +15,17 @@ class PararelController
         $nilaiPerPesertaKelas = Nilai::query()
             ->join('pesertakelas', 'pesertakelas.id', '=', 'nilai.pesertakelas_id')
             ->join('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
+            ->join('kelas', 'kelas.id', '=', 'kelasmi.kelas_id')
             ->join('siswa', 'siswa.id', '=', 'pesertakelas.siswa_id')
             ->join('nilaimapel', 'nilaimapel.id', '=', 'nilai.nilaimapel_id')
             ->join('mapel', 'mapel.id', '=', 'nilaimapel.mapel_id')
-            ->select('siswa.nama_siswa', 'mapel.mapel', 'nilai.nilai_harian', 'nilai.nilai_ujian', 'nilai.pesertakelas_id')
+            ->select('siswa.nama_siswa', 'kelas.kelas', 'mapel.mapel', 'nilai.nilai_harian', 'nilai.nilai_ujian', 'nilai.pesertakelas_id')
             ->where('kelasmi.periode_id', session('periode_id'))
+            ->where('kelas.kelas', 3)
             ->get()
-            ->groupBy('pesertakelas_id');
-
+        ->groupBy('pesertakelas_id');
         $nilaiPesertaKelasMap = collect();
+        
         $nilaiPerPesertaKelas->each(function ($items, $pesertaKelasId) use ($nilaiPesertaKelasMap) {
             $nilaiPesertaKelas = ['pesertakelas_id' => $pesertaKelasId];
             $items->each(function ($item) use (&$nilaiPesertaKelas) {
@@ -36,18 +39,31 @@ class PararelController
                 if (!isset($nilaiPesertaKelas[$namaSiswa][$mapel])) {
                     $nilaiPesertaKelas[$namaSiswa][$mapel] = [];
                 }
-                $nilaiPesertaKelas[$namaSiswa][$mapel] = compact('nilaiHarian', 'nilaiUjian');
+                $nilaiPesertaKelas[$namaSiswa][$mapel]['nilaiHarian'] = $nilaiHarian;
+                $nilaiPesertaKelas[$namaSiswa][$mapel]['nilaiUjian'] = $nilaiUjian;
             });
             $nilaiPesertaKelasMap->push($nilaiPesertaKelas);
+            
         });
 
-        $siswa = Siswa::select('id', 'nama_siswa')->get();
-        $mapel = Mapel::select('id', 'mapel')->get();
-
+        $siswa = Pesertakelas::query()
+        ->join('siswa', 'siswa.id', '=', 'pesertakelas.siswa_id')
+        ->join('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
+        ->where('kelasmi.periode_id', session('periode_id'))
+        ->select('pesertakelas.id', 'nama_siswa')
+        ->orderby('kelasmi.nama_kelas')
+        ->orderby('siswa.nama_siswa')
+        ->get();
+        $mapel = Mapel::query()
+        ->join('kelas', 'kelas.id', '=', 'mapel.kelas_id')
+        ->select('mapel.id', 'mapel', 'kelas')
+        ->orderbY('kelas.kelas')
+        ->get();
         return view('seleksi.nominasi.index', [
             'nilaiPesertaKelasMap' => $nilaiPesertaKelasMap,
             'siswa' => $siswa,
             'mapel' => $mapel,
         ]);
+
     }
 }

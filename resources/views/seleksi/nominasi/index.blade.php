@@ -9,24 +9,29 @@
         </div>
     </x-slot>
     <div class=" bg-white   px-2 py-2 gap-2">
-
         <table>
             <thead>
-                <tr>
-                    <th>Nama Siswa</th>
+                <tr class=" border">
+                    <th class=" border   h-32">No</th>
+                    <th class=" border   h-32">Siswa</th>
                     @foreach ($mapel as $m)
-                    <th>{{ $m->mapel }}</th>
+                    <th class=" border -rotate-90 " width="5px">{{ $m->mapel }}</th>
                     @endforeach
                 </tr>
             </thead>
             <tbody>
                 @foreach ($siswa as $s)
-                <tr>
-                    <td>{{ $s->nama_siswa }}</td>
+                <tr class=" border">
+                    <td class=" text-center ">{{ $loop->iteration }}</td>
+                    <td class=" border w-1/4 capitalize px-1">{{ strtolower($s->nama_siswa) }}</td>
                     @foreach ($mapel as $m)
-                    <td>
-                        @if (isset($nilaiPesertaKelasMap[0][$s->nama_siswa][$m->mapel]))
-                        {{ $nilaiPesertaKelasMap[0][$s->nama_siswa][$m->mapel]['nilaiHarian'] }}
+                    <td class=" border text-center" width="5px">
+                        @if (isset($nilaiPesertaKelasMap->where('pesertakelas_id', $s->id)->first()[$s->nama_siswa][$m->mapel]))
+                        {{ $nilaiPesertaKelasMap->where('pesertakelas_id', $s->id)->first()[$s->nama_siswa][$m->mapel]['nilaiHarian'] }}
+                        /
+                        {{ $nilaiPesertaKelasMap->where('pesertakelas_id', $s->id)->first()[$s->nama_siswa][$m->mapel]['nilaiUjian'] }}
+                        @else
+                        <span class=" text-center  text-red-600">X</span>
                         @endif
                     </td>
                     @endforeach
@@ -34,7 +39,6 @@
                 @endforeach
             </tbody>
         </table>
-
 
 
 
