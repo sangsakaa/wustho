@@ -19,7 +19,7 @@
 
     <div class=" p-2 bg-white">
         <button class=" text-white   bg-green-800 px-2 py-1 " onclick="printContent('div1')">Cetak Ijazah</button>
-        <a href="/blangko-transkip" class=" text-white   bg-green-800 px-2 py-1 ">Transkip</a>
+        <a href="/blangko-transkip/{{$kelasmi->id}}" class=" text-white   bg-green-800 px-2 py-1 ">Transkip</a>
         <a href="/lulusan" class=" text-white   bg-green-800 px-2 py-1 ">Kembali</a>
     </div>
     <div class=" bg-white p-2 my-2 grid grid-cols-4 uppercase">

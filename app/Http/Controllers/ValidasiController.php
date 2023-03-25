@@ -108,9 +108,10 @@ class ValidasiController
             ]
         );
     }
-    public function blangkoTranskip()
+    public function blangkoTranskip(Lulusan $lulusan)
     {
 
+        
         $data_lulusan = Daftar_lulusan::query()
             ->join('lulusan', 'lulusan.id', '=', 'daftar_lulusan.lulusan_id')
             ->join('pesertakelas', 'pesertakelas.id', '=', 'daftar_lulusan.pesertakelas_id')
@@ -118,7 +119,18 @@ class ValidasiController
             ->join('transkip', 'transkip.id', '=', 'nilai_transkip.transkip_id')
             ->join('siswa', 'siswa.id', '=', 'pesertakelas.siswa_id')
             ->join('nis', 'siswa.id', '=', 'nis.siswa_id')
-            ->select('daftar_lulusan.id', 'nama_siswa', 'nis', 'tanggal_kelulusan', 'tanggal_selesai', 'tanggal_mulai')
+            ->select(
+                [
+                    'daftar_lulusan.id',
+                    'nama_siswa',
+                    'nis',
+                    'transkip.kelasmi_id',
+                    'tanggal_kelulusan',
+                    'tanggal_selesai',
+                    'tanggal_mulai'
+                ]
+            )
+            ->where('daftar_lulusan.lulusan_id', $lulusan->id)
             ->get();
         $data_nilai_tulis = Nilai_Transkip::query()
             ->join('transkip', 'transkip.id', '=', 'nilai_transkip.transkip_id')
@@ -136,7 +148,7 @@ class ValidasiController
             ->get();
         
         $data = [];
-        // dd($data_lulusan);
+        
         foreach ($data_lulusan as $lulusan) {
             $data[$lulusan->id] =
                 [
@@ -161,6 +173,7 @@ class ValidasiController
             [
 
                 'data' => $data,
+                'lulusan' => $lulusan,
                 
                 
                 

@@ -211,7 +211,7 @@ Route::patch('pesertaasrama/{pesertaasrama}', [AsramasiswaController::class, 'up
 // Data Validasi
 Route::get('validasi-data', [ValidasiController::class, 'index'])->middleware(['auth']);
 Route::get('blangko-ijazah/{lulusan}', [ValidasiController::class, 'blangkoijazah'])->middleware(['auth']);
-Route::get('blangko-transkip', [ValidasiController::class, 'blangkoTranskip'])->middleware(['auth']);
+Route::get('blangko-transkip/{lulusan}', [ValidasiController::class, 'blangkoTranskip'])->middleware(['auth']);
 
 
 // LULUSAN

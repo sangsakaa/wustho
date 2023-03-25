@@ -17,8 +17,9 @@
     </script>
     <div class=" p-2">
         <button class=" text-white rounded-md  bg-green-800 px-2 py-1 " onclick="printContent('div1')">Cetak Transkip</button>
-        <a href="/blangko-ijazah" class=" text-white rounded-md  bg-green-800 px-2 py-1 ">Ijazah</a>
+        <a href="/blangko-ijazah/" class=" text-white rounded-md  bg-green-800 px-2 py-1 ">Ijazah</a>
         <a href="/pengaturan" class=" text-white rounded-md  bg-green-800 px-2 py-1 ">Kembali</a>
+
     </div>
 
     <div id="div1" class="  bg-white   ">
