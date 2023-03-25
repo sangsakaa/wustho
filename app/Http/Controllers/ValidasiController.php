@@ -122,9 +122,10 @@ class ValidasiController
             ->select(
                 [
                     'daftar_lulusan.id',
+                'daftar_lulusan.lulusan_id',
                     'nama_siswa',
                     'nis',
-                    'transkip.kelasmi_id',
+                 
                     'tanggal_kelulusan',
                     'tanggal_selesai',
                     'tanggal_mulai'
@@ -132,6 +133,7 @@ class ValidasiController
             )
             ->where('daftar_lulusan.lulusan_id', $lulusan->id)
             ->get();
+        // dd($lulusan->id);
         $data_nilai_tulis = Nilai_Transkip::query()
             ->join('transkip', 'transkip.id', '=', 'nilai_transkip.transkip_id')
             ->join('mapel', 'mapel.id', '=', 'transkip.mapel_id')
@@ -174,6 +176,7 @@ class ValidasiController
 
                 'data' => $data,
                 'lulusan' => $lulusan,
+                'data_lulusan' => $data_lulusan,
                 
                 
                 
