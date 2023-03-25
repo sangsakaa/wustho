@@ -49,14 +49,17 @@ class PararelController
         $siswa = Pesertakelas::query()
         ->join('siswa', 'siswa.id', '=', 'pesertakelas.siswa_id')
         ->join('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
+            ->join('kelas', 'kelas.id', '=', 'kelasmi.kelas_id')
         ->where('kelasmi.periode_id', session('periode_id'))
-        ->select('pesertakelas.id', 'nama_siswa')
+            ->select('pesertakelas.id', 'nama_siswa', 'kelas', 'nama_kelas')
         ->orderby('kelasmi.nama_kelas')
         ->orderby('siswa.nama_siswa')
+            ->where('kelas', 3)
         ->get();
         $mapel = Mapel::query()
         ->join('kelas', 'kelas.id', '=', 'mapel.kelas_id')
         ->select('mapel.id', 'mapel', 'kelas')
+            ->where('kelas', 3)
         ->orderbY('kelas.kelas')
         ->get();
         return view('seleksi.nominasi.index', [
