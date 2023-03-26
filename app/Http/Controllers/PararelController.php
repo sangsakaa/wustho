@@ -122,6 +122,7 @@ class PararelController
             ->where('kelas', 3)
         ->select('mapel.id', 'mapel', 'kelas')
             ->orderBy('kelas.kelas')
+            ->orderBy('mapel.id')
         ->get();
 
         return view('seleksi.nominasi.index', [
