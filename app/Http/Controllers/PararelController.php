@@ -96,7 +96,7 @@ class PararelController
 
         return view('seleksi.nominasi.index', [
             'nilaiPesertaKelasMap' => $nilaiPesertaKelasMap,
-            'siswa' => $siswa->get(),
+            'siswa' => $siswa->paginate(40),
             'mapel' => $mapel,
             'dataKelasMi' => $dataKelasMi,
             'kelasmi' => $kelasmi
