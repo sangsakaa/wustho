@@ -69,8 +69,7 @@
                             @if($totalNilai < 800) <span class=" text-red-600"> {{ $totalNilai }}</span> @else {{ $totalNilai }} @endif </td>
                         <td class="   text-center border ">
                             @if($totalNilai < 800) <span class=" text-red-600"> Tidak Lulus</span> @else Lulus @endif </td>
-                        <td>
-                        </td>
+
 
                     </tr>
                     @endforeach
