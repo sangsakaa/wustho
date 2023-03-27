@@ -54,7 +54,7 @@
                     }
                 </script>
                 @foreach ($siswa as $siswa)
-                <div class="grid  p-2 bg-white border border-black-b  border-black-gray-200">
+                <div class="grid  p-2 bg-white   ">
                     <div class=" grid grid-cols-1 justify-items-center">
                         <span class=" font-semibold "> DAFTAR NILAI HASIL TADRIS</span>
                         <span class=" font-semibold"> MADRASAH DINIYAH WUSTHO WAHIDIYAH</span>
