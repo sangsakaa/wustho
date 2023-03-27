@@ -89,10 +89,12 @@ class PararelController
         $mapel = Mapel::query()
         ->join('kelas', 'kelas.id', '=', 'mapel.kelas_id')
             ->where('kelas', 3)
+            ->whereNotIn('mapel', ['Qiroa\'tul Kutub', 'Mengajar'])
         ->select('mapel.id', 'mapel', 'kelas')
             ->orderBy('kelas.kelas')
             ->orderBy('mapel.id')
         ->get();
+
         $kelasmi = Kelasmi::query()
         ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
         ->join(
