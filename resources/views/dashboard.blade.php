@@ -92,50 +92,70 @@
             </div>
         </div>
         <div class=" p-4">
-            <div class="bg-white rounded-lg shadow-md">
-                <canvas id="angkatan-chart" class="h-64"></canvas>
+            <div class=" grid grid-cols-2">
+                <div>Total Siswa Per Periode</div>
+                <div> : {{$dataSiswaPeriode->total_siswa}}
+                    {{$dataSiswaPeriode->periode}}
+                    {{$dataSiswaPeriode->ket_semester}}
+                </div>
             </div>
-            <script>
-                var ctx = document.getElementById('angkatan-chart').getContext('2d');
-                var chart = new Chart(ctx, {
-                    type: 'bar',
-                    data: {
-                        labels: Object.keys($dataAngkatan),
-                        datasets: [{
-                            label: 'Angkatan',
-                            data: Object.values($dataAngkatan),
-                            backgroundColor: '#3490dc',
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        scales: {
-                            y: {
-                                beginAtZero: true
-                            }
-                        },
-                        legend: {
-                            labels: {
-                                fontColor: 'black',
-                                fontSize: 14,
-                                fontFamily: 'sans-serif',
-                                fontStyle: 'bold'
-                            }
-                        },
-                        title: {
-                            display: true,
-                            text: 'Angkatan',
-                            fontColor: 'black',
-                            fontSize: 18,
-                            fontFamily: 'sans-serif',
-                            fontStyle: 'bold'
-                        }
-                    }
-                });
-            </script>
 
         </div>
 
+        <div class=" bg-white">
+            @php
+            $labels = [];
+            $dataSiswa = [];
+            $colors = [];
+
+            // Array warna yang akan digunakan
+            $colorArray = ["#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0", "#9966FF"];
+
+            foreach($dataSiswaPerKelas as $index => $data) {
+            $labels[] = $data->kelas;
+            $dataSiswa[] = $data->total_siswa;
+            // Mengambil warna dari array warna sesuai dengan indeks data
+            $colors[] = $colorArray[$index];
+            }
+            @endphp
+
+            <div class="bg-neutral-50 py-3 px-5 dark:bg-neutral-700 dark:text-neutral-200">
+                Total Murid : {{$dataSiswaPeriode->total_siswa}}
+                {{$dataSiswaPeriode->periode}}
+                {{$dataSiswaPeriode->ket_semester}}
+            </div>
+
+            <canvas class="p-10" id="chartBar"></canvas>
+
+            <!-- Required chart.js -->
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+            <!-- Chart bar -->
+            <script>
+                const labelsBarChart = <?php echo json_encode($labels); ?>;
+                const dataBarChart = {
+                    labels: labelsBarChart,
+                    datasets: [{
+                        label: 'Data Murid',
+                        backgroundColor: <?php echo json_encode($colors); ?>,
+                        borderColor: "hsl(217, 57%, 51%)",
+                        data: <?php echo json_encode($dataSiswa); ?>,
+                    }]
+                };
+
+                const configBarChart = {
+                    type: "bar",
+                    data: dataBarChart,
+                    options: {}
+                };
+
+                var chartBar = new Chart(
+                    document.getElementById("chartBar"),
+                    configBarChart
+                );
+            </script>
+
+        </div>
     </div>
 
 </x-app-layout>

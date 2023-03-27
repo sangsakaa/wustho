@@ -3,16 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Absensikelas;
-use App\Models\Asrama;
-use App\Models\Asramasiswa;
 use App\Models\Nis;
 use App\Models\Pesertaasrama;
+use App\Models\Pesertakelas;
 use App\Models\Sesikelas;
 use App\Models\Siswa;
-use Illuminate\Http\Request;
+
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Http;
 
 class DashboardController extends Controller
 {
@@ -95,6 +93,33 @@ class DashboardController extends Controller
                 $wustho++;
             }
         }
+        $dataSiswaPeriode = Pesertakelas::query()
+        ->join('siswa', 'siswa.id', '=', 'pesertakelas.siswa_id')
+        ->join('nis', 'siswa.id', '=', 'nis.siswa_id')
+        ->join('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
+        ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
+        ->join('semester', 'semester.id', '=', 'periode.semester_id')
+        ->where('nis.madrasah_diniyah', 'wustho')
+        ->where('kelasmi.periode_id', session('periode_id'))
+        ->groupBy('kelasmi.periode_id', 'semester.semester', 'periode.periode', 'semester.ket_semester')
+        ->selectRaw('kelasmi.periode_id, semester.semester,semester.ket_semester,periode.periode, count(*) as total_siswa')
+        ->first();
+        $dataSiswaPerKelas = Pesertakelas::query()
+        ->join('siswa', 'siswa.id', '=', 'pesertakelas.siswa_id')
+        ->join('nis', 'siswa.id', '=', 'nis.siswa_id')
+        ->join('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
+        ->join('kelas', 'kelas.id', '=', 'kelasmi.kelas_id')
+        ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
+        ->join('semester', 'semester.id', '=', 'periode.semester_id')
+        ->where('nis.madrasah_diniyah', 'wustho')
+        ->where('kelasmi.periode_id', session('periode_id'))
+        ->groupBy('kelasmi.kelas_id', 'kelas.kelas', 'semester.semester', 'periode.periode', 'semester.ket_semester')
+        ->selectRaw('kelasmi.kelas_id,kelas.kelas,semester.semester,semester.ket_semester,periode.periode, count(*) as total_siswa')
+        ->get();
+
+
+
+
         return view('dashboard', compact(
             [
                 'datasetsAbsensi',
@@ -103,7 +128,9 @@ class DashboardController extends Controller
                 'countPerempuan',
                 'ula', 'wustho',
                 'data',
-                'dataAngkatan'
+                'dataAngkatan',
+                'dataSiswaPeriode',
+                'dataSiswaPerKelas'
             ]
         ));
     }
