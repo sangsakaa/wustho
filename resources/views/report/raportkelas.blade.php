@@ -246,7 +246,7 @@
                     </table>
                     <div class="  grid grid-cols-2 text-right   ">
                         <div class="  w-2/2  flex    px-32 pt-4 ">
-                            <div class="  border border-black-black      w-32  h-40   text-justify ">
+                            <div class="       w-32  h-40   text-justify ">
                                 <span class=" grid justify-between   p-12 font-semibold ">
 
                                 </span>
