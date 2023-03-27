@@ -1,7 +1,12 @@
 <x-app-layout>
     <x-slot name="header">
 
-        @section('title', ' | Raport')
+        @if($kelasmi !== null)
+        @section('title', ' | Raport : ' . $kelasmi->nama_kelas)
+        @else
+
+        @section('title','Tidak ada Kelas' )
+        @endif
 
         <h2 class="font-semibold text-xl  leading-tight">
             {{ __('Report Per Kelas') }}
