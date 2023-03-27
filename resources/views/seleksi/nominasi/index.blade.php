@@ -83,11 +83,10 @@
                             $nilaiUjian = $n[$s->nama_siswa][$m->mapel]['nilaiUjian'];
                             $totalNilai += $nilaiHarian + $nilaiUjian;
                             @endphp
-                            <span class="{{ ($nilaiHarian < 65 || $nilaiUjian < 65) ? 'text-red-500' : '' }}">
-                                {{ $nilaiHarian }} / {{ $nilaiUjian }}
-                            </span>
-                            @endif
-                            @endforeach
+                            <span>
+                                @if($nilaiHarian < 65) <span class=" text-red-600">{{$nilaiHarian}}</span> @else {{$nilaiHarian}} @endif / @if($nilaiUjian < 65) <span class=" text-red-600">{{$nilaiUjian}}</span> @else {{$nilaiUjian}} @endif</span>
+                                @endif
+                                @endforeach
                         </td>
                         @endforeach
                         <td class="   text-center border text-sm  ">
