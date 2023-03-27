@@ -1,5 +1,5 @@
 <x-app-layout>
-    @section('title', $kelasmi->nama_kelas )
+    @section('title', )
     <x-slot name="header">
         <div class="flex bg-white dark:bg-dark-eval-0 flex-col gap-2 py-2 justify-between px-4 md:flex-row md:items-center md:justify-between">
 
