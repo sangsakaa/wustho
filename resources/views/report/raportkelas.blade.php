@@ -2,7 +2,7 @@
     <x-slot name="header">
 
         @if($kelasmi !== null)
-        @section('title', ' | Raport : ' . $kelasmi->nama_kelas)
+        @section('title', ' | Raport : Kelas ' . $kelasmi->nama_kelas)
         @else
 
         @section('title','Tidak ada Kelas' )
