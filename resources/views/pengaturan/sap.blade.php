@@ -11,8 +11,9 @@
         <div class="">
             <div class=" bg-white dark:bg-dark-bg overflow-hidden shadow-sm ">
                 <div class="mx-2 px-2 border-gray-200 grid grid-cols-1 w-full sm:grid-cols-1  gap-2">
+
                     <form action="/sap" method="get" class="w-full">
-                        <select name="kelasmi_id" id="" class=" my-1 w-full sm:w-1/5 py-1 dark:bg-dark-bg" required>
+                        <select name="cari" id="" class=" my-1 w-full sm:w-1/5 py-1 dark:bg-dark-bg" required>
                             <option value="">-- Pilih Kelas --</option>
                             @foreach ($dataKelasMi as $kelas)
                             <option value="{{ $kelas->id }}" {{ $kelasmi?->id === $kelas->id ? "selected" : "" }}>
