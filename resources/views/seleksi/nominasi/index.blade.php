@@ -1,5 +1,10 @@
 <x-app-layout>
-    @section('title', )
+    @if($kelasmi !== null)
+    @section('title', $kelasmi->nama_kelas )
+    @else
+
+    @section('title','Tidak ada Kelas' )
+    @endif
     <x-slot name="header">
         <div class="flex bg-white dark:bg-dark-eval-0 flex-col gap-2 py-2 justify-between px-4 md:flex-row md:items-center md:justify-between">
 

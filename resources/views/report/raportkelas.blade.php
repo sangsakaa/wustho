@@ -54,7 +54,7 @@
                     }
                 </script>
                 @foreach ($siswa as $siswa)
-                <div class="grid  p-2 bg-white border-b border-gray-200">
+                <div class="grid  p-2 bg-white border border-black-b  border-black-gray-200">
                     <div class=" grid grid-cols-1 justify-items-center">
                         <span class=" font-semibold "> DAFTAR NILAI HASIL TADRIS</span>
                         <span class=" font-semibold"> MADRASAH DINIYAH WUSTHO WAHIDIYAH</span>
@@ -102,24 +102,24 @@
                     <table class=" w-full">
                         <thead class=" bg-green-800  border font-semibold ">
                             <tr class=" text-white">
-                                <th class=" border px-2" rowspan="2">NO </th>
-                                <th class=" border px-2" rowspan="2">MATA PELAJARAN</th>
-                                <th class=" border px-2" rowspan="2">USTADZ / USTADZAH</th>
-                                <td colspan="2" class=" border text-center"> NILAI </td>
+                                <th class=" border border-black px-2" rowspan="2">NO </th>
+                                <th class=" border border-black px-2" rowspan="2">MATA PELAJARAN</th>
+                                <th class=" border border-black px-2" rowspan="2">USTADZ / USTADZAH</th>
+                                <td colspan="2" class=" border border-black text-center"> NILAI </td>
                             </tr>
-                            <tr class=" text-white">
-                                <td class=" PX-2 text-center">YAUMIYAH</td>
-                                <td class=" PX-2 text-center">IMTIHANIYAH</td>
+                            <tr class=" text-white border border-black">
+                                <td class=" PX-2 border-black text-center">YAUMIYAH</td>
+                                <td class=" PX-2 border-black text-center">IMTIHANIYAH</td>
                             </tr>
                         </thead>
                         @foreach ($data[$siswa->peserta_id] as $item)
                         <tbody class=" text-md">
                             <tr>
-                                <th class=" px-2 border">{{ $loop->iteration }}</th>
-                                <td class=" px-2 border">{{ $item->mapel }}</td>
-                                <td class=" px-2 border text-center"> {{ $item->nama_guru }}</td>
-                                <td class=" px-2 border text-center">{{ $item->nilai_harian }}</td>
-                                <td class=" px-2 border text-center">{{ $item->nilai_ujian }}</td>
+                                <th class=" px-2 border border-black">{{ $loop->iteration }}</th>
+                                <td class=" px-2 border border-black">{{ $item->mapel }}</td>
+                                <td class=" px-2 border border-black text-center"> {{ $item->nama_guru }}</td>
+                                <td class=" px-2 border border-black text-center">{{ $item->nilai_harian }}</td>
+                                <td class=" px-2 border border-black text-center">{{ $item->nilai_ujian }}</td>
                             </tr>
                         </tbody>
                         @endforeach
@@ -127,48 +127,48 @@
                         $ringkasan = $ringkasanraportkelas[$siswa->peserta_id];
                         @endphp
                         <tr>
-                            <td class=" px-2 border text-right font-semibold" colspan="3">Jumlah</td>
-                            <td class=" px-2 border text-center">{{ $ringkasan['jmlharian'] }}</td>
-                            <td class=" px-2 border text-center">{{ $ringkasan['jmlujian'] }}</td>
+                            <td class=" px-2 border border-black text-right font-semibold" colspan="3">Jumlah</td>
+                            <td class=" px-2 border border-black text-center">{{ $ringkasan['jmlharian'] }}</td>
+                            <td class=" px-2 border border-black text-center">{{ $ringkasan['jmlujian'] }}</td>
                         </tr>
                         <tr>
-                            <td class=" px-2 border text-right font-semibold" colspan="3">Rata Rata</td>
-                            <td class=" px-2 border text-center">
+                            <td class=" px-2 border border-black text-right font-semibold" colspan="3">Rata Rata</td>
+                            <td class=" px-2 border border-black text-center">
                                 {{ number_format($ringkasan['rata2harian'], 2, ',', '') }}
                             </td>
-                            <td class=" px-2 border text-center">
+                            <td class=" px-2 border border-black text-center">
                                 {{ number_format($ringkasan['rata2ujian'], 2, ',', '') }}
                             </td>
                         </tr>
                         <tr>
-                            <td class=" px-2 border text-right font-semibold" colspan="3">Darojah</td>
-                            <td class=" px-2 border text-center">{{ $ringkasan['peringkat'] }}</td>
-                            <td class=" px-2 border text-center">{{ $ringkasan['peringkat'] }} dari
+                            <td class=" px-2 border border-black text-right font-semibold" colspan="3">Darojah</td>
+                            <td class=" px-2 border border-black text-center">{{ $ringkasan['peringkat'] }}</td>
+                            <td class=" px-2 border border-black text-center">{{ $ringkasan['peringkat'] }} dari
                                 {{ $jumlahsiswa }}
                             </td>
                         </tr>
                         <tr>
-                            <td class=" px-2 border text-right font-semibold" colspan="3">Al Bayan</td>
-                            <td class=" px-2 border text-center">Naik / Tidak Naik</td>
-                            <td class=" px-2 border text-center">-</td>
+                            <td class=" px-2 border border-black text-right font-semibold" colspan="3">Al Bayan</td>
+                            <td class=" px-2 border border-black text-center">Naik / Tidak Naik</td>
+                            <td class=" px-2 border border-black text-center">-</td>
                         </tr>
                     </table>
                     <span class=" font-semibold">B. Natijah Amaliyah Yaumiyyah</span>
                     <table class=" w-full">
-                        <thead class=" bg-green-800  border text-sm text-white uppercase ">
-                            <tr class=" px-2" class=" border text-sm   ">
-                                <th class="border px-2 py-2">no</th>
-                                <th class="border px-2 w-50"> Al Amaliyyah</th>
-                                <th class="border px-2 w-50 text-sm">Attaqdir Al Muktasab</th>
-                                <th class="border px-2">Al Bayan</th>
+                        <thead class=" bg-green-800  border border-black text-sm text-white uppercase ">
+                            <tr class=" px-2" class=" border border-black text-sm   ">
+                                <th class="border border-black px-2 py-2">no</th>
+                                <th class="border border-black px-2 w-50"> Al Amaliyyah</th>
+                                <th class="border border-black px-2 w-50 text-sm">Attaqdir Al Muktasab</th>
+                                <th class="border border-black px-2">Al Bayan</th>
                             </tr>
                         </thead>
                         <tbody class=" text-md">
-                            <tr class=" border ">
-                                <th class=" px-2 border ">1</th>
-                                <td class=" px-2 border ">Jama'ah Al Maktubah</td>
-                                <td class=" px-2 border text-center ">Jayyid</td>
-                                <td class=" px-2 border " rowspan="8">
+                            <tr class=" border border-black ">
+                                <th class=" px-2 border border-black ">1</th>
+                                <td class=" px-2 border border-black ">Jama'ah Al Maktubah</td>
+                                <td class=" px-2 border border-black text-center ">Jayyid</td>
+                                <td class=" px-2 border border-black " rowspan="8">
                                     <p>Al Bayan</p>
                                     <div class=" grid grid-cols-2">
                                         <div>1. Rodi'</div>
@@ -183,70 +183,70 @@
                                     </div>
                                 </td>
                             </tr>
-                            <tr class=" border">
-                                <th class=" px-2 border ">2</th>
-                                <td class=" px-2 border ">Al Mujahadah</td>
-                                <td class=" px-2 border text-center ">Jayyid</td>
+                            <tr class=" border border-black">
+                                <th class=" px-2 border border-black ">2</th>
+                                <td class=" px-2 border border-black ">Al Mujahadah</td>
+                                <td class=" px-2 border border-black text-center ">Jayyid</td>
                             </tr>
-                            <tr class=" border">
-                                <th class=" px-2 border ">3</th>
-                                <td class=" px-2 border ">Al Muhadhloroh</td>
-                                <td class=" px-2 border text-center ">Jayyid</td>
+                            <tr class=" border border-black">
+                                <th class=" px-2 border border-black ">3</th>
+                                <td class=" px-2 border border-black ">Al Muhadhloroh</td>
+                                <td class=" px-2 border border-black text-center ">Jayyid</td>
                             </tr>
-                            <tr class=" border">
-                                <th class=" px-2 border ">4</th>
-                                <td class=" px-2 border ">An Nadzhofah</td>
-                                <td class=" px-2 border text-center ">Jayyid</td>
+                            <tr class=" border border-black">
+                                <th class=" px-2 border border-black ">4</th>
+                                <td class=" px-2 border border-black ">An Nadzhofah</td>
+                                <td class=" px-2 border border-black text-center ">Jayyid</td>
                             </tr>
-                            <tr class=" border">
-                                <th class=" px-2 border ">5</th>
-                                <td class=" px-2 border ">Al Muwadhobah</td>
-                                <td class=" px-2 border text-center ">Jayyid</td>
+                            <tr class=" border border-black">
+                                <th class=" px-2 border border-black ">5</th>
+                                <td class=" px-2 border border-black ">Al Muwadhobah</td>
+                                <td class=" px-2 border border-black text-center ">Jayyid</td>
                             </tr>
-                            <tr class=" border">
-                                <th class=" px-2 border ">6</th>
-                                <td class=" px-2 border ">As Suluk</td>
-                                <td class=" px-2 border text-center ">Jayyid</td>
+                            <tr class=" border border-black">
+                                <th class=" px-2 border border-black ">6</th>
+                                <td class=" px-2 border border-black ">As Suluk</td>
+                                <td class=" px-2 border border-black text-center ">Jayyid</td>
                             </tr>
-                            <tr class=" border">
-                                <th class=" px-2 border ">7</th>
-                                <td class=" px-2 border ">At Tasliim</td>
-                                <td class=" px-2 border text-center ">Jayyid</td>
+                            <tr class=" border border-black">
+                                <th class=" px-2 border border-black ">7</th>
+                                <td class=" px-2 border border-black ">At Tasliim</td>
+                                <td class=" px-2 border border-black text-center ">Jayyid</td>
                             </tr>
                         </tbody>
                     </table>
                     <span class=" font-semibold">C. Kehadiran</span>
 
                     <table class=" w-1/3 ">
-                        <thead class=" text-white bg-green-800  border">
-                            <tr class=" px-2" class=" border">
-                                <th class="border px-2 w-5 py-2">NO</th>
-                                <th class="border px-2">KETERANGAN</th>
-                                <th class="border px-2 w-5">JML</th>
+                        <thead class=" text-white bg-green-800  border border-black">
+                            <tr class=" px-2" class=" border border-black">
+                                <th class="border border-black px-2 w-5 py-2">NO</th>
+                                <th class="border border-black px-2">KETERANGAN</th>
+                                <th class="border border-black px-2 w-5">JML</th>
                             </tr>
                         </thead>
                         <tbody class=" text-sm">
-                            <tr class=" border">
-                                <td class=" px-2 border ">1</td>
-                                <td class=" px-2 border ">IZIN</td>
-                                <td class=" px-2 border text-center ">{{ $siswa->izin === 0 || !$siswa->izin ? '-' : $siswa->izin }}</td>
+                            <tr class=" border border-black">
+                                <td class=" px-2 border border-black ">1</td>
+                                <td class=" px-2 border border-black ">IZIN</td>
+                                <td class=" px-2 border border-black text-center ">{{ $siswa->izin === 0 || !$siswa->izin ? '-' : $siswa->izin }}</td>
                             </tr>
-                            <tr class=" border">
-                                <td class=" px-2 border ">2</td>
-                                <td class=" px-2 border ">SAKIT</td>
-                                <td class=" px-2 border text-center ">{{ $siswa->sakit === 0 || !$siswa->sakit ? '-' : $siswa->sakit }}</td>
+                            <tr class=" border border-black">
+                                <td class=" px-2 border border-black ">2</td>
+                                <td class=" px-2 border border-black ">SAKIT</td>
+                                <td class=" px-2 border border-black text-center ">{{ $siswa->sakit === 0 || !$siswa->sakit ? '-' : $siswa->sakit }}</td>
 
                             </tr>
-                            <tr class=" border">
-                                <td class=" px-2 border ">3</td>
-                                <td class=" px-2 border ">ALFA</td>
-                                <td class=" px-2 border text-center ">{{ $siswa->alfa === 0 || !$siswa->alfa ? '-' : $siswa->alfa }}</td>
+                            <tr class=" border border-black">
+                                <td class=" px-2 border border-black ">3</td>
+                                <td class=" px-2 border border-black ">ALFA</td>
+                                <td class=" px-2 border border-black text-center ">{{ $siswa->alfa === 0 || !$siswa->alfa ? '-' : $siswa->alfa }}</td>
                             </tr>
                         </tbody>
                     </table>
                     <div class="  grid grid-cols-2 text-right   ">
                         <div class="  w-2/2  flex    px-32 pt-4 ">
-                            <div class="  border-black      w-32  h-40   text-justify ">
+                            <div class="  border border-black-black      w-32  h-40   text-justify ">
                                 <span class=" grid justify-between   p-12 font-semibold ">
 
                                 </span>
@@ -267,7 +267,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="page-break"></div>
+                <div class="page-break "></div>
                 @endforeach
             </div>
         </div>
