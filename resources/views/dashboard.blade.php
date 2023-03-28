@@ -8,7 +8,7 @@
         </div>
     </x-slot>
     <div class=" bg-white grid sm:grid-cols-2 grid-cols-1 px-2 py-2 gap-2">
-        <div class="p-4 ">
+        <div class="p-0 ">
             <div class=" px-2 font-semibold ">
                 <canvas id="jenis_kelamin" class=" font-semibold"></canvas>
                 <script>
@@ -49,7 +49,7 @@
                 </script>
             </div>
         </div>
-        <div class="p-4">
+        <div class="p-0">
             <div class=" px-2 font-semibold ">
                 <canvas id="madin" class=" font-semibold"></canvas>
                 <script>
@@ -92,16 +92,30 @@
             </div>
         </div>
         <div class=" p-4">
-            <div class=" grid grid-cols-2">
-                <div>Total Siswa Per Periode</div>
-                <div> : {{$dataSiswaPeriode->total_siswa}}
-                    {{$dataSiswaPeriode->periode}}
-                    {{$dataSiswaPeriode->ket_semester}}
-                </div>
+            <div class="">
+                <center class=" text-center">{{$dataSiswaPeriode->periode}} {{$dataSiswaPeriode->ket_semester}}</center>
+                <table class="  w-full text-sm">
+                    <thead>
+                        <tr>
+                            <th class=" border text-center">No</th>
+                            <th class=" border text-center">Kelas</th>
+                            <th class=" border text-center">Nama Kelas</th>
+                            <th class=" border text-center">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($TitleKelas as $kelas)
+                        <tr>
+                            <th class=" border text-center">{{$loop->iteration}}</th>
+                            <td class=" border text-center">{{$kelas->kelas}}</td>
+                            <td class=" border text-center">{{$kelas->nama_kelas}}</td>
+                            <td class=" border text-center">{{$kelas->total_siswa}}</td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
-
         </div>
-
         <div class=" bg-white">
             @php
             $labels = [];
@@ -121,11 +135,10 @@
 
             <div class="bg-neutral-50 py-3 px-5 dark:bg-neutral-700 dark:text-neutral-200">
                 Total Murid : {{$dataSiswaPeriode->total_siswa}}
-                {{$dataSiswaPeriode->periode}}
-                {{$dataSiswaPeriode->ket_semester}}
+
             </div>
 
-            <canvas class="p-10" id="chartBar"></canvas>
+            <canvas class="p-0" id="chartBar"></canvas>
 
             <!-- Required chart.js -->
             <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -156,6 +169,8 @@
             </script>
 
         </div>
+    </div>
+
     </div>
 
 </x-app-layout>

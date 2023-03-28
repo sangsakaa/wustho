@@ -101,8 +101,8 @@ class DashboardController extends Controller
         ->join('semester', 'semester.id', '=', 'periode.semester_id')
         ->where('nis.madrasah_diniyah', 'wustho')
         ->where('kelasmi.periode_id', session('periode_id'))
-        ->groupBy('kelasmi.periode_id', 'semester.semester', 'periode.periode', 'semester.ket_semester')
-        ->selectRaw('kelasmi.periode_id, semester.semester,semester.ket_semester,periode.periode, count(*) as total_siswa')
+            ->groupBy('kelasmi.periode_id', 'semester.semester', 'periode.periode', 'semester.ket_semester')
+            ->selectRaw('kelasmi.periode_id, semester.semester, semester.ket_semester,periode.periode, count(*) as total_siswa')
         ->first();
         $dataSiswaPerKelas = Pesertakelas::query()
         ->join('siswa', 'siswa.id', '=', 'pesertakelas.siswa_id')
@@ -115,6 +115,18 @@ class DashboardController extends Controller
         ->where('kelasmi.periode_id', session('periode_id'))
         ->groupBy('kelasmi.kelas_id', 'kelas.kelas', 'semester.semester', 'periode.periode', 'semester.ket_semester')
         ->selectRaw('kelasmi.kelas_id,kelas.kelas,semester.semester,semester.ket_semester,periode.periode, count(*) as total_siswa')
+        ->get();
+        $TitleKelas = Pesertakelas::query()
+        ->join('siswa', 'siswa.id', '=', 'pesertakelas.siswa_id')
+        ->join('nis', 'siswa.id', '=', 'nis.siswa_id')
+        ->join('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
+        ->join('kelas', 'kelas.id', '=', 'kelasmi.kelas_id')
+        ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
+        ->join('semester', 'semester.id', '=', 'periode.semester_id')
+        ->where('nis.madrasah_diniyah', 'wustho')
+        ->where('kelasmi.periode_id', session('periode_id'))
+        ->groupBy('kelasmi.kelas_id', 'kelas.kelas', 'semester.semester', 'kelasmi.nama_kelas', 'periode.periode', 'semester.ket_semester')
+        ->selectRaw('kelasmi.kelas_id,kelas.kelas,semester.semester,kelasmi.nama_kelas,semester.ket_semester,periode.periode, count(*) as total_siswa')
         ->get();
 
 
@@ -130,7 +142,8 @@ class DashboardController extends Controller
                 'data',
                 'dataAngkatan',
                 'dataSiswaPeriode',
-                'dataSiswaPerKelas'
+                'dataSiswaPerKelas',
+                'TitleKelas'
             ]
         ));
     }
