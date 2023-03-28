@@ -249,8 +249,11 @@ Route::delete('daftar-nominasi/{daftar_Nominasi}', [SeleksiController::class, 'd
 
 
 // Controller Pararel
+// 3
 Route::get('juara-pararel', [PararelController::class, 'index'])->middleware(['auth']);
+// 1
 Route::get('Rekapitulasi-Nilai', [PararelController::class, 'indexSiswa'])->middleware(['auth']);
+// 2
 Route::get('Rekapitulasi-Nilai-Siswa', [PararelController::class, 'RekapNilaiSiswa'])->middleware(['auth']);
 
 
