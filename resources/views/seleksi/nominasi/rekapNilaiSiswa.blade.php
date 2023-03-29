@@ -1,9 +1,10 @@
 <x-app-layout>
     @if($kelasmi !== null)
-    @section('title', $kelasmi->nama_kelas )
+
+    @section('title','| Rekap Nilai : '.$kelasmi->nama_kelas )
     @else
 
-    @section('title','2' )
+    @section('title','Kelas 2' )
     @endif
     <x-slot name="header">
         <div class="flex bg-white dark:bg-dark-eval-0 flex-col gap-2 py-2 justify-between px-4 md:flex-row md:items-center md:justify-between">
