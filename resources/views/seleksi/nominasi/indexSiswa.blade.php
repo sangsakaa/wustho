@@ -44,11 +44,16 @@
 
         <div id="div1" class=" ">
             <center>
+                <div class=" text-center text-green-900 mt-5">
+                    <p class=" font-semibold text-3xl">
+                        MADRASAH DINIYAH WUSTHO WAHIDIYAH
+                    </p>
+                    <p class=" font-semibold uppercase">
+                        TAHUN PELAJARAN {{$kelasmi->periode}} {{$kelasmi->ket_semester}}
+                    </p>
+                </div>
                 <p class="  uppercase font-semibold">
-                    daftar Nilai Kelas {{$kelasmi->nama_kelas}} {{$kelasmi->periode}} {{$kelasmi->ket_semester}}</p>
-
-
-
+                    daftar Nilai Kelas {{$kelasmi->nama_kelas}} </p>
             </center>
             <table class=" w-full">
                 <thead>
