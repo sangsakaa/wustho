@@ -1,6 +1,7 @@
 <x-app-layout>
     @if($kelasmi !== null)
-    @section('title', $kelasmi->nama_kelas )
+
+    @section('title','| Rekap Nilai : '.$kelasmi->nama_kelas )
     @else
 
     @section('title','Kelas 1' )
