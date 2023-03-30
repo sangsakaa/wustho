@@ -56,35 +56,36 @@
             @foreach ($dataMapel as $mapel)
             <div class=" p-1 ">
                 <div class=" overflow-auto bg-white dark:bg-dark-bg  ">
-                    <div class=" text-center text-green-900">
-                        <p class=" font-semibold text-3xl">
-                            MADRASAH DINIYAH WUSTHA WAHIDIYAH
+                    <div class=" text-center text-green-800">
+                        <p class=" font-semibold text-1xl">
+                            MADRASAH DINIYAH WUSTHO WAHIDIYAH
                         </p>
+                        <p class=" text-2xl uppercase font-semibold">Satuan Acara Pembelajaran</p>
                         <p class=" font-semibold uppercase">
                             TAHUN PELAJARAN {{$kelasmi->periode}} {{$kelasmi->ket_semester}}
                         </p>
                     </div>
-                    <hr class=" border-b-2 border-green-900">
+                    <hr class=" border-b-2 border-green-800">
                     <div class=" grid grid-cols-4">
-                        <div class=" text-sm text-green-900 mt-1 font-semibold">
+                        <div class=" text-sm text-green-800 mt-1 font-semibold">
                             KELAS
                         </div>
                         <div>
                             : {{ $kelasmi->nama_kelas }}
                         </div>
-                        <div class=" text-sm text-green-900 font-semibold">
+                        <div class=" text-sm text-green-800 font-semibold">
                             MATA PELAJARAN
                         </div>
                         <div>
                             : {{ $mapel->mapel }}
                         </div>
-                        <div class=" text-sm text-green-900 font-semibold">
+                        <div class=" text-sm text-green-800 font-semibold">
                             GURU MAPEL
                         </div>
                         <div>
                             : {{ $mapel->nama_guru }}
                         </div>
-                        <div class=" text-sm text-green-900 font-semibold">
+                        <div class=" text-sm text-green-800 font-semibold">
                             HARI
                         </div>
                         <div>
@@ -92,7 +93,7 @@
                         </div>
 
                     </div>
-                    <table class="table-fixed w-full text-green-900">
+                    <table class="table-fixed w-full text-green-800">
                         <thead class="border border-b-2 border-green-600">
                             <tr class="border  border-green-600 text-xs sm:text-sm">
                                 <th class="border border-green-600 px-1 w-8" rowspan="2">NO</th>
@@ -126,35 +127,36 @@
                         </tbody>
                     </table>
                     <div>
-                        <div class=" text-center text-green-900">
-                            <p class=" font-semibold text-3xl">
-                                MADRASAH DINIYAH WUSTHA WAHIDIYAH
+                        <div class=" text-center text-green-800">
+                            <p class=" font-semibold text-1xl">
+                                MADRASAH DINIYAH WUSTHO WAHIDIYAH
                             </p>
+                            <p class=" text-2xl uppercase font-semibold">Satuan Acara Pembelajaran</p>
                             <p class=" font-semibold uppercase">
                                 TAHUN PELAJARAN {{$kelasmi->periode}} {{$kelasmi->ket_semester}}
                             </p>
                         </div>
-                        <hr class=" border-b-2 border-green-900">
+                        <hr class=" border-b-2 border-green-800">
                         <div class=" grid grid-cols-4">
-                            <div class=" text-sm text-green-900 mt-1 font-semibold">
+                            <div class=" text-sm text-green-800 mt-1 font-semibold">
                                 KELAS
                             </div>
                             <div>
                                 : {{ $kelasmi->nama_kelas }}
                             </div>
-                            <div class=" text-sm text-green-900 font-semibold">
+                            <div class=" text-sm text-green-800 font-semibold">
                                 MATA PELAJARAN
                             </div>
                             <div>
                                 : {{ $mapel->mapel }}
                             </div>
-                            <div class=" text-sm text-green-900 font-semibold">
+                            <div class=" text-sm text-green-800 font-semibold">
                                 GURU MAPEL
                             </div>
                             <div>
                                 : {{ $mapel->nama_guru }}
                             </div>
-                            <div class=" text-sm text-green-900 font-semibold">
+                            <div class=" text-sm text-green-800 font-semibold">
                                 HARI
                             </div>
                             <div>
