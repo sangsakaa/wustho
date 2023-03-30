@@ -70,19 +70,19 @@
                         <div class=" text-sm text-green-800 mt-1 font-semibold">
                             KELAS
                         </div>
-                        <div>
+                        <div class=" font-semibold">
                             : {{ $kelasmi->nama_kelas }}
                         </div>
                         <div class=" text-sm text-green-800 font-semibold">
                             MATA PELAJARAN
                         </div>
-                        <div>
+                        <div class=" font-semibold">
                             : {{ $mapel->mapel }}
                         </div>
                         <div class=" text-sm text-green-800 font-semibold">
                             GURU MAPEL
                         </div>
-                        <div>
+                        <div class=" font-semibold">
                             : {{ $mapel->nama_guru }}
                         </div>
                         <div class=" text-sm text-green-800 font-semibold">
@@ -99,7 +99,7 @@
                                 <th class="border border-green-600 px-1 w-8" rowspan="2">NO</th>
                                 <th class="border border-green-600 px-1 w-1/5">TANGGAL KBM</th>
                                 <th class="border border-green-600 px-1 text-xs" colspan="2">NILAI TUGAS</th>
-                                <th class="border border-green-600 px-1 text-xs" rowspan="2">KET</th>
+
                                 @for ($i = 0; $i < 17; $i++) <th class="border border-green-600 px-1">
                                     </th>
                                     @endfor
@@ -111,7 +111,6 @@
                                 <th class="border border-green-600 px-1">2</th>
                                 @for ($i = 1; $i <= 17; $i++) <th class="border border-green-600 px-1 text-xs">PERT {{ $i }}</th>
                                     @endfor
-
                             </tr>
                         </thead>
                         <tbody class=" text-sm">
@@ -119,7 +118,7 @@
                             <tr class=" border border-green-600 text-xs sm:text-sm even:bg-gray-100 ">
                                 <td class="border border-green-600 text-center px-1 text-xs">{{ $loop->iteration }}</td>
                                 <td class="border border-green-600 px-1 py-1 text-xs capitalize">{{ strtolower($siswa->nama_siswa) }}</td>
-                                @for ($i = 0; $i < 20; $i++) <td class="border border-green-600 px-1">
+                                @for ($i = 0; $i < 19; $i++) <td class="border border-green-600 px-1">
                                     </td>
                                     @endfor
                             </tr>
@@ -141,19 +140,19 @@
                             <div class=" text-sm text-green-800 mt-1 font-semibold">
                                 KELAS
                             </div>
-                            <div>
+                            <div class=" font-semibold">
                                 : {{ $kelasmi->nama_kelas }}
                             </div>
                             <div class=" text-sm text-green-800 font-semibold">
                                 MATA PELAJARAN
                             </div>
-                            <div>
+                            <div class=" font-semibold">
                                 : {{ $mapel->mapel }}
                             </div>
                             <div class=" text-sm text-green-800 font-semibold">
                                 GURU MAPEL
                             </div>
-                            <div>
+                            <div class=" font-semibold">
                                 : {{ $mapel->nama_guru }}
                             </div>
                             <div class=" text-sm text-green-800 font-semibold">
@@ -165,9 +164,9 @@
 
                         </div>
                     </div>
-                    <table class=" mt-2 w-full border">
+                    <table class=" mt-2 w-full border text-sm">
                         <thead>
-                            <tr>
+                            <tr class=" text-green-800">
                                 <th class=" border border-green-600 w-5  text-center">No</th>
                                 <th class=" border border-green-600">Hari / Tangggal</th>
                                 <th class=" border border-green-600">Materi</th>
