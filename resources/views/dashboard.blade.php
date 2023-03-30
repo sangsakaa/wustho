@@ -7,7 +7,9 @@
 
         </div>
     </x-slot>
+
     <div class=" bg-white grid sm:grid-cols-2 grid-cols-1 px-2 py-2 gap-2">
+
         <div class="p-0 ">
             <div class=" px-2 font-semibold ">
                 <canvas id="jenis_kelamin" class=" font-semibold"></canvas>
@@ -91,14 +93,14 @@
 
             </div>
         </div>
-        <div class=" p-4">
-            <div class="">
+        <div class=" text-xs p-0">
+            <div class=" ">
                 <center class=" text-center">{{$dataSiswaPeriode->periode}} {{$dataSiswaPeriode->ket_semester}}</center>
-                <table class="  w-full text-sm">
+                <table class="  w-full text-xs">
                     <thead>
                         <tr>
                             <th class=" border text-center">No</th>
-                            <th class=" border text-center">Kelas</th>
+
                             <th class=" border text-center">Nama Kelas</th>
                             <th class=" border text-center">Total</th>
                         </tr>
@@ -107,7 +109,7 @@
                         @foreach($TitleKelas as $kelas)
                         <tr>
                             <th class=" border text-center">{{$loop->iteration}}</th>
-                            <td class=" border text-center">{{$kelas->kelas}}</td>
+
                             <td class=" border text-center">{{$kelas->nama_kelas}}</td>
                             <td class=" border text-center">{{$kelas->total_siswa}}</td>
                         </tr>
@@ -133,44 +135,42 @@
             }
             @endphp
 
-            <div class="bg-neutral-50 py-3 px-5 dark:bg-neutral-700 dark:text-neutral-200">
+            <div class=" bg-white  px-5">
                 Total Murid : {{$dataSiswaPeriode->total_siswa}}
+                <canvas class="p-0" id="chartBar"></canvas>
 
+                <!-- Required chart.js -->
+                <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+                <!-- Chart bar -->
+                <script>
+                    const labelsBarChart = <?php echo json_encode($labels); ?>;
+                    const dataBarChart = {
+                        labels: labelsBarChart,
+                        datasets: [{
+                            label: 'Data Murid',
+                            backgroundColor: <?php echo json_encode($colors); ?>,
+                            borderColor: "hsl(217, 57%, 51%)",
+                            data: <?php echo json_encode($dataSiswa); ?>,
+                        }]
+                    };
+
+                    const configBarChart = {
+                        type: "bar",
+                        data: dataBarChart,
+                        options: {}
+                    };
+
+                    var chartBar = new Chart(
+                        document.getElementById("chartBar"),
+                        configBarChart
+                    );
+                </script>
             </div>
 
-            <canvas class="p-0" id="chartBar"></canvas>
-
-            <!-- Required chart.js -->
-            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-            <!-- Chart bar -->
-            <script>
-                const labelsBarChart = <?php echo json_encode($labels); ?>;
-                const dataBarChart = {
-                    labels: labelsBarChart,
-                    datasets: [{
-                        label: 'Data Murid',
-                        backgroundColor: <?php echo json_encode($colors); ?>,
-                        borderColor: "hsl(217, 57%, 51%)",
-                        data: <?php echo json_encode($dataSiswa); ?>,
-                    }]
-                };
-
-                const configBarChart = {
-                    type: "bar",
-                    data: dataBarChart,
-                    options: {}
-                };
-
-                var chartBar = new Chart(
-                    document.getElementById("chartBar"),
-                    configBarChart
-                );
-            </script>
-
         </div>
-    </div>
 
     </div>
+
 
 </x-app-layout>

@@ -126,7 +126,7 @@ class DashboardController extends Controller
         ->where('nis.madrasah_diniyah', 'wustho')
         ->where('kelasmi.periode_id', session('periode_id'))
         ->groupBy('kelasmi.kelas_id', 'kelas.kelas', 'semester.semester', 'kelasmi.nama_kelas', 'periode.periode', 'semester.ket_semester')
-        ->selectRaw('kelasmi.kelas_id,kelas.kelas,semester.semester,kelasmi.nama_kelas,semester.ket_semester,periode.periode, count(*) as total_siswa')
+            ->selectRaw('kelasmi.kelas_id,semester.semester,kelasmi.nama_kelas,semester.ket_semester,periode.periode, count(*) as total_siswa')
         ->get();
 
 

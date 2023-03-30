@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         @if($kelasmi)
-        @section('title', '| SAP KELAS : '. $kelasmi->nama_kelas)
+        @section('title', '| Satuan Acara Pembelajaran'. $kelasmi->nama_kelas)
         @endif
         <h2 class="font-semibold text-xl leading-tight">
             {{ __('Satuan Acara Pembelajaran') }}
@@ -13,7 +13,7 @@
             <div class=" bg-white dark:bg-dark-bg overflow-hidden shadow-sm ">
                 <div class="mx-2 px-2 border-gray-200 grid grid-cols-1 w-full sm:grid-cols-1  gap-2">
                     <form action="/sap" method="get" class="w-full">
-                        <select name="kelasmi_id" id="" class=" my-1 w-full sm:w-1/5 py-1 dark:bg-dark-bg" required>
+                        <select name="cari" id="" class=" my-1 w-full sm:w-1/5 py-1 dark:bg-dark-bg" required>
                             <option value="">-- Pilih Kelas --</option>
                             @foreach ($dataKelasMi as $kelas)
                             <option value="{{ $kelas->id }}" {{ $kelasmi?->id === $kelas->id ? "selected" : "" }}>
@@ -97,89 +97,30 @@
                             <tr class="border  border-green-600 text-xs sm:text-sm">
                                 <th class="border border-green-600 px-1 w-8" rowspan="2">NO</th>
                                 <th class="border border-green-600 px-1 w-1/5">TANGGAL KBM</th>
-                                <th class="border border-green-600 px-1 text-xs" colspan="2">NILAI TUGAS</th>
-                                <th class="border border-green-600 px-1 text-xs" rowspan="2">KET</th>
                                 @for ($i = 0; $i < 17; $i++) <th class="border border-green-600 px-1">
                                     </th>
                                     @endfor
-
+                                    <th class="border border-green-600 px-1 text-xs" colspan="2">NILAI TUGAS</th>
+                                    <th class="border border-green-600 px-1 text-xs" rowspan="2">KET</th>
                             </tr>
                             <tr class="border border-green-600 text-xs sm:text-sm">
                                 <th class="border border-green-600 px-1">NAMA</th>
-                                <th class="border border-green-600 px-1">1</th>
-                                <th class="border border-green-600 px-1">2</th>
                                 @for ($i = 1; $i <= 17; $i++) <th class="border border-green-600 px-1 text-xs">PERT {{ $i }}</th>
                                     @endfor
-
+                                    <th class="border border-green-600 px-1">1</th>
+                                    <th class="border border-green-600 px-1">2</th>
                             </tr>
                         </thead>
                         <tbody class=" text-sm">
                             @foreach ($dataSiswa as $siswa)
                             <tr class=" border border-green-600 text-xs sm:text-sm even:bg-gray-100 ">
                                 <td class="border border-green-600 text-center px-1 text-xs">{{ $loop->iteration }}</td>
-                                <td class="border border-green-600 px-1 py-1 text-xs capitalize">{{ strtolower($siswa->nama_siswa) }}</td>
+                                <td class="border border-green-600 px-1 text-xs capitalize">{{ strtolower($siswa->nama_siswa) }}</td>
                                 @for ($i = 0; $i < 20; $i++) <td class="border border-green-600 px-1">
                                     </td>
                                     @endfor
                             </tr>
                             @endforeach
-                        </tbody>
-                    </table>
-                    <div>
-                        <div class=" text-center text-green-900">
-                            <p class=" font-semibold text-3xl">
-                                MADRASAH DINIYAH WUSTHA WAHIDIYAH
-                            </p>
-                            <p class=" font-semibold uppercase">
-                                TAHUN PELAJARAN {{$kelasmi->periode}} {{$kelasmi->ket_semester}}
-                            </p>
-                        </div>
-                        <hr class=" border-b-2 border-green-900">
-                        <div class=" grid grid-cols-4">
-                            <div class=" text-sm text-green-900 mt-1 font-semibold">
-                                KELAS
-                            </div>
-                            <div>
-                                : {{ $kelasmi->nama_kelas }}
-                            </div>
-                            <div class=" text-sm text-green-900 font-semibold">
-                                MATA PELAJARAN
-                            </div>
-                            <div>
-                                : {{ $mapel->mapel }}
-                            </div>
-                            <div class=" text-sm text-green-900 font-semibold">
-                                GURU MAPEL
-                            </div>
-                            <div>
-                                : {{ $mapel->nama_guru }}
-                            </div>
-                            <div class=" text-sm text-green-900 font-semibold">
-                                HARI
-                            </div>
-                            <div>
-                                :
-                            </div>
-
-                        </div>
-                    </div>
-                    <table class=" mt-2 w-full border">
-                        <thead>
-                            <tr>
-                                <th class=" border border-green-600 w-5  text-center">No</th>
-                                <th class=" border border-green-600">Hari / Tangggal</th>
-                                <th class=" border border-green-600">Materi</th>
-                                <th class=" border border-green-600">Rincian</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @for ($i = 1; $i < 18; $i++) <tr>
-                                <td class="border border-green-600 py-3 text-center">{{$i}}</td>
-                                <td class="border border-green-600 py-3 w-1/4"></td>
-                                <td class="border border-green-600 py-3 w-1/4"></td>
-                                <td class="border border-green-600 py-4"></td>
-                                </tr>
-                                @endfor
                         </tbody>
                     </table>
                 </div>
@@ -188,6 +129,9 @@
             @endforeach
         </div>
     </div>
-
+    @else
+    <div>
+        {{$kelasmi}}
+    </div>
     @endif
 </x-app-layout>

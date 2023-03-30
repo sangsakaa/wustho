@@ -120,7 +120,6 @@ class GuruController extends Controller
         $nig->nig = $request->nig;
         $nig->guru_id = $request->guru_id;
         $nig->jenjang_id = $request->jenjang_id;
-
         $nig->save();
         return redirect()->back();
     }

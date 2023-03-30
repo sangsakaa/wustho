@@ -122,23 +122,10 @@ class PengaturanController extends Controller
     public function download_file()
     {
 
-        $peserta = Guru::all();
-        $data = PDF::loadView($peserta);
-        return view(
-            'pengaturan/template',
-            ['data' => $data]
-        );
+    //    
     }
     public function sap(Request $request)
     {
-        $datakelasmi = Kelasmi::query()
-            ->join('periode', 'periode.id', 'kelasmi.periode_id')
-            ->join('semester', 'semester.id', 'periode.semester_id')
-            ->select('kelasmi.id', 'kelasmi.nama_kelas', 'periode.periode', 'semester.ket_semester')
-            ->where('kelasmi.periode_id', session('periode_id'))
-            ->orderBy('kelasmi.nama_kelas')
-            ->get();
-
         $kelasmi = Kelasmi::query()
             ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
             ->join('semester', 'semester.id', '=', 'periode.semester_id')
@@ -146,6 +133,13 @@ class PengaturanController extends Controller
             ->where('kelasmi.periode_id', session('periode_id'))
             ->where('kelasmi.id', $request->kelasmi_id)
             ->first();
+        $datakelasmi = Kelasmi::query()
+            ->join('periode', 'periode.id', 'kelasmi.periode_id')
+            ->join('semester', 'semester.id', 'periode.semester_id')
+            ->select('kelasmi.id', 'kelasmi.nama_kelas', 'periode.periode', 'semester.ket_semester')
+            ->where('kelasmi.periode_id', session('periode_id'))
+            ->orderBy('kelasmi.nama_kelas')
+            ->get();
 
         if (!$kelasmi) {
             return view('pengaturan.sap', [
@@ -155,13 +149,14 @@ class PengaturanController extends Controller
                 'dataMapel' => collect(),
             ]);
         }
-
         $dataMapel = Nilaimapel::query()
             ->join('guru', 'guru.id', '=', 'nilaimapel.guru_id')
+            ->join('kelasmi', 'kelasmi.id', '=', 'nilaimapel.kelasmi_id')
             ->join('mapel', 'mapel.id', '=', 'nilaimapel.mapel_id')
-            ->where('nilaimapel.kelasmi_id', $kelasmi->id)
-            ->get();
-
+        ->select('nilaimapel.id', 'nama_guru', 'mapel')
+        ->where('nilaimapel.kelasmi_id', $kelasmi->id);
+        
+        
         $dataSiswa = Pesertakelas::query()
             ->join('siswa', 'siswa.id', '=', 'pesertakelas.siswa_id')
             ->join('nis', 'siswa.id', '=', 'nis.siswa_id')
@@ -177,12 +172,14 @@ class PengaturanController extends Controller
             )
             ->orderby('siswa.nama_siswa')
             ->get();
-
+        if (request('cari')) {
+            $dataMapel->where('nama_siswa', 'like', '%' . request('cari') . '%');
+        }
         return view('pengaturan.sap', [
             'dataKelasMi' => $datakelasmi,
             'kelasmi' => $kelasmi,
             'dataSiswa' => $dataSiswa,
-            'dataMapel' => $dataMapel,
+            'dataMapel' => $dataMapel->get(),
         ]);
     }
 
