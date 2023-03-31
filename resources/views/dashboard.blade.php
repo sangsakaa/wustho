@@ -94,29 +94,33 @@
             </div>
         </div>
         <div class=" text-xs p-0">
-            <div class=" ">
-                <center class=" text-center">{{$dataSiswaPeriode->periode}} {{$dataSiswaPeriode->ket_semester}}</center>
-                <table class="  w-full text-xs">
-                    <thead>
-                        <tr>
-                            <th class=" border text-center">No</th>
+            <canvas id="chart"></canvas>
 
-                            <th class=" border text-center">Nama Kelas</th>
-                            <th class=" border text-center">Total</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($TitleKelas as $kelas)
-                        <tr>
-                            <th class=" border text-center">{{$loop->iteration}}</th>
-
-                            <td class=" border text-center">{{$kelas->nama_kelas}}</td>
-                            <td class=" border text-center">{{$kelas->total_siswa}}</td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
+            <script>
+                var ctx = document.getElementById('chart').getContext('2d');
+                var myChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: <?php echo json_encode($TitleKelas->pluck('nama_kelas')); ?>,
+                        datasets: [{
+                            label: 'Total Siswa',
+                            data: <?php echo json_encode($TitleKelas->pluck('total_siswa')); ?>,
+                            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }]
+                        }
+                    }
+                });
+            </script>
         </div>
         <div class=" bg-white">
             @php
@@ -171,6 +175,13 @@
         </div>
 
     </div>
+    <div>
 
+
+
+
+
+
+    </div>
 
 </x-app-layout>
