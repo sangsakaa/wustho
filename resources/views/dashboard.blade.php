@@ -152,7 +152,7 @@
                     const dataBarChart = {
                         labels: labelsBarChart,
                         datasets: [{
-                            label: 'Data Murid',
+                            label: 'Data Murid Bedasarkan Kelas',
                             backgroundColor: <?php echo json_encode($colors); ?>,
                             borderColor: "hsl(217, 57%, 51%)",
                             data: <?php echo json_encode($dataSiswa); ?>,
@@ -215,10 +215,41 @@
                 });
             </script>
         </div>
+        <div class=" bg-white">
 
+            <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+            <canvas id="tahunMasukChart"></canvas>
+
+            <script>
+                var tahunMasukData = @json($tahunMasuk);
+
+                var tahunMasukChart = new Chart(document.getElementById('tahunMasukChart'), {
+                    type: 'bar',
+                    data: {
+                        labels: tahunMasukData.map(data => data.tahun_masuk),
+                        datasets: [{
+                            label: 'Tahun Angkatan',
+                            data: tahunMasukData.map(data => data.total_siswa),
+                            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }]
+                        }
+                    }
+                });
+            </script>
+
+
+        </div>
     </div>
 
-
-    </div>
 
 </x-app-layout>
