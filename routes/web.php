@@ -24,6 +24,7 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\LulusanCotroller;
 use App\Http\Controllers\PararelController;
 use App\Http\Controllers\RekapAsamaController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SeleksiController;
 use App\Http\Controllers\SesikelasController;
 use App\Http\Controllers\TranskipController;
@@ -255,6 +256,26 @@ Route::get('juara-pararel', [PararelController::class, 'index'])->middleware(['a
 Route::get('Rekapitulasi-Nilai', [PararelController::class, 'indexSiswa'])->middleware(['auth']);
 // 2
 Route::get('Rekapitulasi-Nilai-Siswa', [PararelController::class, 'RekapNilaiSiswa'])->middleware(['auth']);
+
+
+// Laporan Siswa Kelas
+Route::get('Laporan-Kehadiran', [ReportController::class, 'LapKehadiran'])->middleware(['auth']);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
