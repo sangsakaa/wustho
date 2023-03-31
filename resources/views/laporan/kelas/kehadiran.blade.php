@@ -8,9 +8,7 @@
 
         </div>
     </x-slot>
-    <div>
-        {{$lapKehadiran}}
-    </div>
+
     <div class=" bg-white grid sm:grid-cols-2 grid-cols-1 px-2 py-2 gap-2">
 
         <canvas id="chart"></canvas>
