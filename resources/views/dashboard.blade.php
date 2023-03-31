@@ -175,11 +175,48 @@
         </div>
 
     </div>
-    <div>
+    <div class=" grid grid-cols-2">
 
 
+        <div class="bg-white">
+            <canvas id="chartx"></canvas>
 
+            <script>
+                var ctx = document.getElementById('chartx').getContext('2d');
+                var myChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: <?php echo json_encode($jenisKelamin->unique('kelas')->pluck('kelas')); ?>,
+                        datasets: [{
+                                label: 'Laki-Laki',
+                                data: <?php echo json_encode($jenisKelamin->where('jenis_kelamin', 'L')->pluck('total_siswa')); ?>,
+                                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                                borderColor: 'rgba(54, 162, 235, 1)',
+                                borderWidth: 1
+                            },
+                            {
+                                label: 'Perempuan',
+                                data: <?php echo json_encode($jenisKelamin->where('jenis_kelamin', 'P')->pluck('total_siswa')); ?>,
+                                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                                borderColor: 'rgba(255, 99, 132, 1)',
+                                borderWidth: 1
+                            }
+                        ]
+                    },
+                    options: {
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }]
+                        }
+                    }
+                });
+            </script>
+        </div>
 
+    </div>
 
 
     </div>

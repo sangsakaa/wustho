@@ -128,6 +128,18 @@ class DashboardController extends Controller
         ->groupBy('kelasmi.kelas_id', 'kelas.kelas', 'semester.semester', 'kelasmi.nama_kelas', 'periode.periode', 'semester.ket_semester')
             ->selectRaw('kelasmi.kelas_id,semester.semester,kelasmi.nama_kelas,semester.ket_semester,periode.periode, count(*) as total_siswa')
         ->get();
+        $jenisKelamin = Pesertakelas::query()
+        ->join('siswa', 'siswa.id', '=', 'pesertakelas.siswa_id')
+        ->join('nis', 'siswa.id', '=', 'nis.siswa_id')
+        ->join('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
+        ->join('kelas', 'kelas.id', '=', 'kelasmi.kelas_id')
+        ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
+        ->join('semester', 'semester.id', '=', 'periode.semester_id')
+        ->where('nis.madrasah_diniyah', 'wustho')
+        ->where('kelasmi.periode_id', session('periode_id'))
+        ->groupBy('kelasmi.kelas_id', 'kelas.kelas', 'semester.semester', 'siswa.jenis_kelamin', 'periode.periode', 'semester.ket_semester')
+        ->selectRaw('kelasmi.kelas_id,semester.semester,kelas.kelas,siswa.jenis_kelamin,semester.ket_semester,periode.periode, count(*) as total_siswa')
+        ->get();
 
 
 
@@ -143,7 +155,8 @@ class DashboardController extends Controller
                 'dataAngkatan',
                 'dataSiswaPeriode',
                 'dataSiswaPerKelas',
-                'TitleKelas'
+                'TitleKelas',
+                'jenisKelamin'
             ]
         ));
     }
