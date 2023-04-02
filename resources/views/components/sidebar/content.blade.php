@@ -116,6 +116,7 @@
         <x-sidebar.sublink title=" Laporan Harian" href="{{ route('absensikelas/rekap-per-hari') }}" :active="request()->routeIs('absensikelas/rekap-per-hari')" />
         <x-sidebar.sublink title="Laporan Bulanan" href="{{ route('absensikelas/rekap-per-bulan') }}" :active="request()->routeIs('absensikelas/rekap-per-bulan')" />
         <x-sidebar.sublink title="Laporan Semester" href="{{ route('absensikelas/rekap-semester') }}" :active="request()->routeIs('absensikelas/rekap-semester')" />
+        <x-sidebar.sublink title="Laporan Kehadiran" href="{{ route('Laporan-Kehadiran') }}" :active="request()->routeIs('Laporan-Kehadiran')" />
     </x-sidebar.dropdown>
 
 

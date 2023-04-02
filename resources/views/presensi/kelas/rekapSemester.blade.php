@@ -71,9 +71,10 @@
                                 <th class="border border-green-600 px-1 w-16">IZIN</th>
                                 <th class="border border-green-600 px-1 w-16">SAKIT</th>
                                 <th class="border border-green-600 px-1 w-16">ALFA</th>
+                                <th class="border border-green-600 px-1 ">Status</th>
                             </tr>
                         </thead>
-                        <tbody class=" text-sm">
+                        <tbody class=" text-xs sm:text-sm">
                             @foreach ($dataAbsensi as $absensi)
                             <tr class=" border border-green-600 odd:bg-white  even:bg-gray-200 ">
                                 <td class="border border-green-600 text-center px-1">{{ $loop->iteration }}</td>
@@ -87,8 +88,26 @@
                                 <td class="border border-green-600 text-center px-1">{{ $absensi->izin !== 0 ? $absensi->izin : '-' }}</td>
                                 <td class="border border-green-600 text-center px-1">{{ $absensi->sakit !== 0 ? $absensi->sakit : '-' }}</td>
                                 <td class="border border-green-600 text-center px-1">{{ $absensi->alfa !== 0 ? $absensi->alfa : '-' }}</td>
+                                <td class=" text-center">
+                                    <?php
+                                    $total_absensi = $absensi->hadir + $absensi->sakit + $absensi->alfa + $absensi->izin;
+                                    $persentase_absensi = $absensi->hadir / $total_absensi * 100;
+                                    echo  number_format($persentase_absensi, 0) . "%";
+                                    ?>
+                                    @if($persentase_absensi >= 79)
+                                    <span class="  font-semibold "> Naik Kelas</span>
+                                    @else
+                                    <span class="  font-semibold  text-red-600"> Tidak Naik</span>
+                                    @endif
+
+
+
+
+                                </td>
                             </tr>
+
                             @endforeach
+
                         </tbody>
                     </table>
                 </div>

@@ -259,7 +259,8 @@ Route::get('Rekapitulasi-Nilai-Siswa', [PararelController::class, 'RekapNilaiSis
 
 
 // Laporan Siswa Kelas
-Route::get('Laporan-Kehadiran', [ReportController::class, 'LapKehadiran'])->middleware(['auth']);
+Route::get('Laporan-Kehadiran', [ReportController::class, 'LapKehadiran'])->middleware(['auth'])->name('Laporan-Kehadiran');
+
 
 
 
