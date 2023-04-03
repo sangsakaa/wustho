@@ -64,7 +64,7 @@
                                 @if ($key > 0)
                             <tr class=" border text-sm border-green-800 capitalize text-center even:bg-gray-100">
                                 @endif
-                                <td class=" border text-sm border-green-800 capitalize text-center py-2">{{ $loop->iteration }}</td>
+                                <td class=" border text-sm border-green-800 capitalize text-center py-1">{{ $loop->iteration }}</td>
                                 <td class=" border text-sm border-green-800 capitalize text-center">{{ $jadwal->nama_kelas }}</td>
                                 <td class=" border text-sm border-green-800 capitalize text-center">{{ $jadwal->kelas }}</td>
                                 <td class=" border text-sm border-green-800 capitalize text-center">{{ $jadwal->mapel }}</td>
