@@ -375,9 +375,11 @@ class JadwalController
             ->leftJoin('mapel', 'mapel.id', '=', 'daftar_jadwal.mapel_id')
             ->leftJoin('guru', 'guru.id', '=', 'daftar_jadwal.guru_id')
             ->where('kelasmi.periode_id', session('periode_id'))
-            ->select('guru.nama_guru', 'periode.periode', DB::raw('count(distinct mapel.id) as jumlah_mapel'))
-            ->groupBy('guru.nama_guru', 'periode.periode')
+            ->select('guru.nama_guru', 'periode.periode', 'semester.ket_semester', DB::raw('count(distinct mapel.id) as jumlah_mapel'), DB::raw('count(distinct kelasmi.id) as jumlah_kelas'))
+            ->groupBy('guru.id', 'periode.periode', 'guru.nama_guru', 'periode.id', 'semester.ket_semester')
             ->get();
+
+
 
         return view(
             'jadwal.laporan',

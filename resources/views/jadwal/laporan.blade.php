@@ -46,23 +46,29 @@
                     <hr class=" border-b-2   border-b-green-700">
 
 
-                    <table class=" w-full">
+                    <table class=" w-full ">
                         <thead>
-                            <tr class=" border border-black">
-                                <th class=" border border-black">Nama Guru</th>
-                                <th class=" border border-black">Periode</th>
-                                <th class=" border border-black">Jumlah Mapel</th>
+                            <tr class=" border font-semibold border-green-800">
+                                <th class=" border font-semibold border-green-800">Nama Guru</th>
+                                <th class=" border font-semibold border-green-800">Periode</th>
+                                <th class=" border font-semibold border-green-800">Semester</th>
+                                <th class=" border font-semibold border-green-800">Jumlah Mapel</th>
+                                <th class=" border font-semibold border-green-800">HR</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($laporan as $data)
-                            <tr class=" border border-black">
-                                <td class=" border border-black">{{ $data->nama_guru }}</td>
-                                <td class=" border border-black">{{ $data->periode }}</td>
-                                <td class=" border border-black">{{ $data->jumlah_mapel }}</td>
+                            @foreach($laporan as $data)
+                            <tr class=" border border-green-800 text-center">
+                                <td class=" border border-green-800 text-center">{{ $data->nama_guru }}</td>
+                                <td class=" border border-green-800 text-center">{{ $data->periode }}</td>
+                                <td class=" border border-green-800 text-center">{{ $data->ket_semester }}</td>
+                                <td class=" border border-green-800 text-center">{{ $data->jumlah_kelas }}</td>
+                                <td class=" border border-green-800 text-center">{{ 'Rp.'.number_format($data->jumlah_kelas *10000 )}}</td>
                             </tr>
                             @endforeach
                         </tbody>
+                    </table>
+
                     </table>
 
                 </div>
