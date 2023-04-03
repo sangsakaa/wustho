@@ -61,16 +61,16 @@
                     </div>
                     <table class="table-fixed w-full text-green-900">
                         <thead class="border border-b-2 border-green-600">
-                            <tr class="border  border-green-600">
+                            <tr class="border  border-green-600 text-xs sm:text-sm">
                                 <th class="border border-green-600 px-1 w-8">NO</th>
                                 <th class="border border-green-600 px-1">NAMA SISWA</th>
                                 <th class="border border-green-600 px-1 w-8">JK</th>
                                 <th class="border border-green-600 px-1 w-24">ASRAMA</th>
                                 <th class="border border-green-600 px-1 w-16">KELAS</th>
-                                <th class="border border-green-600 px-1 w-16">HADIR</th>
-                                <th class="border border-green-600 px-1 w-16">IZIN</th>
-                                <th class="border border-green-600 px-1 w-16">SAKIT</th>
-                                <th class="border border-green-600 px-1 w-16">ALFA</th>
+                                <th class="border border-green-600 px-1 w-14 sm:w-14">HADIR</th>
+                                <th class="border border-green-600 px-1 w-14 sm:w-14">IZIN</th>
+                                <th class="border border-green-600 px-1 w-14 sm:w-14">SAKIT</th>
+                                <th class="border border-green-600 px-1 w-14 sm:w-14">ALFA</th>
                                 <th class="border border-green-600 px-1 ">Status</th>
                             </tr>
                         </thead>

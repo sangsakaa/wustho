@@ -21,6 +21,7 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\PelanggaranController;
 use App\Http\Controllers\PresensikelasController;
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\JadwalController;
 use App\Http\Controllers\LulusanCotroller;
 use App\Http\Controllers\PararelController;
 use App\Http\Controllers\RekapAsamaController;
@@ -267,7 +268,16 @@ Route::get('Laporan-Kehadiran', [ReportController::class, 'LapKehadiran'])->midd
 
 
 
+// Jadwal Pelajaran
 
+Route::get('Daftar-Jadwal', [JadwalController::class, 'Jadwal'])->middleware(['auth'])->name('Daftar-Jadwal');
+Route::post('Daftar-Jadwal', [JadwalController::class, 'StoreJadwal'])->middleware(['auth']);
+Route::get('jadwal-guru/{jadwal}', [JadwalController::class, 'DaftarJadwal'])->middleware(['auth']);
+Route::post('jadwal-guru/{jadwal}', [JadwalController::class, 'StoreDaftarJadwal'])->middleware(['auth']);
+Route::get('/cetak-jadwal-kolektif', [JadwalController::class, 'JadwalKolektif'])->name('cetak-jadwal-kolektif');
+Route::get('cetak-jadwal-1', [JadwalController::class, 'CetakJadwal1'])->middleware(['auth']);
+Route::get('cetak-jadwal-2', [JadwalController::class, 'CetakJadwal2'])->middleware(['auth']);
+Route::get('cetak-jadwal-3', [JadwalController::class, 'CetakJadwal3'])->middleware(['auth']);
 
 
 

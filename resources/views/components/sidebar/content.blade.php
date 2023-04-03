@@ -72,6 +72,11 @@
             <x-icons.academi class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
         </x-slot>
     </x-sidebar.link>
+    <x-sidebar.link title=" Ploting Guru" href="/Daftar-Jadwal" :isActive="request()->routeIs('Daftar-Jadwal')">
+        <x-slot name="icon">
+            <x-icons.academi class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
+        </x-slot>
+    </x-sidebar.link>
     <x-sidebar.link title=" Presensi" href="/sesikelas" :isActive="request()->routeIs('sesikelas')">
         <x-slot name="icon">
             <x-icons.books class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
