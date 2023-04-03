@@ -326,7 +326,8 @@ class JadwalController
         $daftarPeriode = Periode::query()
             ->join('semester', 'semester.id', '=', 'periode.semester_id')
             ->select('periode.id', 'periode.periode', 'semester.semester', 'semester.ket_semester')
-            ->orderBy('periode.id', 'desc')
+            ->select('periode.id')
+            ->where('periode.id', session('periode_id'))
             ->first();
         // dd($daftarPeriode);
 
@@ -349,18 +350,39 @@ class JadwalController
             $nama_kelas = $kelasmi->nama_kelas;
             $hari_array = ['sabtu', 'ahad', 'Senin', 'Selasa', 'Rabu', 'kamis'];
             foreach ($hari_array as $hari) {
-                if (!$jadwal->contains(function ($jadwal) use ($nama_kelas, $hari) {
-                    return $jadwal->nama_kelas == $nama_kelas && $jadwal->hari == $hari;
+                if (!$jadwal->contains(function ($jadwal) use ($nama_kelas, $hari, $daftarPeriode) {
+                    return $jadwal->nama_kelas == $nama_kelas && $jadwal->hari == $hari && $jadwal->periode_id == $daftarPeriode->id;
                 })) {
                     $sesi = new Jadwal();
                     $sesi->periode_id = $daftarPeriode->id;
-
                     $sesi->kelasmi_id = $kelasmi->id;
                     $sesi->hari = $hari;
                     $sesi->save();
                 }
             }
         }
+
         return redirect()->back();
+    }
+    public function LaporanPloting()
+    {
+        $laporan = Jadwal::query()
+            ->leftJoin('kelasmi', 'kelasmi.id', '=', 'jadwal.kelasmi_id')
+            ->leftJoin('kelas', 'kelas.id', '=', 'kelasmi.kelas_id')
+            ->join('periode', 'periode.id', '=', 'jadwal.periode_id')
+            ->join('semester', 'semester.id', '=', 'periode.semester_id')
+            ->leftJoin('daftar_jadwal', 'daftar_jadwal.jadwal_id', '=', 'jadwal.id')
+            ->leftJoin('mapel', 'mapel.id', '=', 'daftar_jadwal.mapel_id')
+            ->leftJoin('guru', 'guru.id', '=', 'daftar_jadwal.guru_id')
+            ->where('kelasmi.periode_id', session('periode_id'))
+            ->select('guru.nama_guru', 'periode.periode', DB::raw('count(distinct mapel.id) as jumlah_mapel'))
+            ->groupBy('guru.nama_guru', 'periode.periode')
+            ->get();
+
+        return view(
+            'jadwal.laporan',
+            ['laporan' => $laporan]
+        );
+        
     }
 }

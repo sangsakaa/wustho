@@ -33,13 +33,13 @@
                     <option value="{{$kelas->id}}">{{$kelas->nama_kelas}} {{$kelas->periode}} {{$kelas->ket_semester}}</option>
                     @endforeach
                 </select>
-                <div></div>
-                <div class=" flex justify-end  gap-2">
+                <div class=" w-full   flex   grid-cols-6   gap-2">
                     <button class=" bg-red-600 px-2 py-1 text-white">Simpan</button>
                     <a href="/cetak-jadwal-1" class=" bg-red-600 px-2 py-1 text-white"> 1</a>
                     <a href="/cetak-jadwal-2" class=" bg-red-600 px-2 py-1 text-white"> 2</a>
                     <a href="/cetak-jadwal-3" class=" bg-red-600 px-2 py-1 text-white"> 3</a>
                     <a href="/cetak-jadwal-kolektif" class=" bg-red-600 px-2 py-1 text-white">Kolektif</a>
+                    <a href="/laporan-poling-guru" class=" bg-red-600 px-2 py-1 text-white">Laporan</a>
                 </div>
             </div>
         </form>

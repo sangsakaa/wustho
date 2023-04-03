@@ -44,7 +44,6 @@
                         </p>
                     </center>
                     <hr class=" border-b-2   border-b-green-700">
-
                     <span class="   font-semibold ">Kelas : 3</span>
                     <table class=" mb-4  w-full">
                         <thead>

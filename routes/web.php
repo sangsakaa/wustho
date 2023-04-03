@@ -278,6 +278,7 @@ Route::get('/cetak-jadwal-kolektif', [JadwalController::class, 'JadwalKolektif']
 Route::get('cetak-jadwal-1', [JadwalController::class, 'CetakJadwal1'])->middleware(['auth']);
 Route::get('cetak-jadwal-2', [JadwalController::class, 'CetakJadwal2'])->middleware(['auth']);
 Route::get('cetak-jadwal-3', [JadwalController::class, 'CetakJadwal3'])->middleware(['auth']);
+Route::get('laporan-poling-guru', [JadwalController::class, 'LaporanPloting'])->middleware(['auth']);
 
 
 
