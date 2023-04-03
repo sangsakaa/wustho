@@ -67,7 +67,7 @@
                     <th class=" border text-center py-4">{{$loop->iteration}}</th>
                     <td class=" border text-center capitalize">{{$jadwal->hari}}</td>
                     <td class=" border text-center"> {{$jadwal->periode}} {{$jadwal->ket_semester}}</td>
-                    <td class=" border text-center"><a href="/jadwal-guru/{{$jadwal->id}}"> {{$jadwal->nama_kelas}}</a> </td>
+                    <td class=" border text-center"><a href="/jadwal-guru/{{$jadwal->id}}" target="_blank"> {{$jadwal->nama_kelas}}</a> </td>
                     <td class=" border text-center w-1/2">
                         @if($jadwal->nama_guru !== null)
                         {{$jadwal->nama_guru}}

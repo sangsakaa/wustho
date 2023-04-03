@@ -379,8 +379,6 @@ class JadwalController
             ->groupBy('guru.id', 'periode.periode', 'guru.nama_guru', 'periode.id', 'semester.ket_semester')
             ->get();
 
-
-
         return view(
             'jadwal.laporan',
             ['laporan' => $laporan]

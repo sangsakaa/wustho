@@ -49,16 +49,18 @@
                     <table class=" w-full ">
                         <thead>
                             <tr class=" border font-semibold border-green-800">
+                                <th class=" border font-semibold border-green-800">No</th>
                                 <th class=" border font-semibold border-green-800">Nama Guru</th>
                                 <th class=" border font-semibold border-green-800">Periode</th>
                                 <th class=" border font-semibold border-green-800">Semester</th>
                                 <th class=" border font-semibold border-green-800">Jumlah Mapel</th>
-                                <th class=" border font-semibold border-green-800">HR</th>
+                                <th class=" border font-semibold border-green-800">ESTIMASI HR</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach($laporan as $data)
                             <tr class=" border border-green-800 text-center">
+                                <td class=" border border-green-800 text-center">{{ $loop->iteration }}</td>
                                 <td class=" border border-green-800 text-center">{{ $data->nama_guru }}</td>
                                 <td class=" border border-green-800 text-center">{{ $data->periode }}</td>
                                 <td class=" border border-green-800 text-center">{{ $data->ket_semester }}</td>
