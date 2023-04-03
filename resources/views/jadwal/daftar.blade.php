@@ -64,7 +64,7 @@
             <tbody>
                 @foreach($daftarJadwal as $jadwal)
                 <tr class=" even:bg-gray-100">
-                    <th class=" border text-center py-4">{{$loop->iteration}}</th>
+                    <th class=" border text-center py-1">{{$loop->iteration}}</th>
                     <td class=" border text-center capitalize">{{$jadwal->hari}}</td>
                     <td class=" border text-center"> {{$jadwal->periode}} {{$jadwal->ket_semester}}</td>
                     <td class=" border text-center"><a href="/jadwal-guru/{{$jadwal->id}}" target="_blank"> {{$jadwal->nama_kelas}}</a> </td>
