@@ -364,9 +364,10 @@ class JadwalController
             ->leftJoin('guru', 'guru.id', '=', 'daftar_jadwal.guru_id')
             ->where('kelasmi.periode_id', session('periode_id'))
             ->whereNotNull('guru.nama_guru')
-            ->select('guru.nama_guru', 'mapel', 'periode.periode', 'semester.ket_semester', DB::raw('count(distinct mapel.id) as jumlah_mapel'), DB::raw('count(distinct kelasmi.id) as jumlah_kelas'))
-            ->groupBy('periode.periode', 'mapel', 'guru.nama_guru', 'semester.ket_semester')
+            ->select('guru.nama_guru', 'periode.periode', 'semester.ket_semester', DB::raw('count(distinct mapel.id) as jumlah_mapel'), DB::raw('count(distinct kelasmi.id) as jumlah_kelas'))
+            ->groupBy('guru.id', 'periode.periode', 'guru.nama_guru', 'semester.ket_semester')
             ->get();
+
 
 
         return view(
