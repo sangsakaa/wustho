@@ -47,6 +47,7 @@
                     <th class=" border text-center">Hari</th>
                     <th class=" border text-center">Daftar Pendidik</th>
                     <th class=" border text-center">Nama Kitab</th>
+                    <th class=" border text-center">ACT</th>
 
                 </tr>
             </thead>
@@ -57,6 +58,17 @@
                     <td class=" border text-center">{{$list->mapel}}</td>
                     <td class=" border text-center">{{$list->nama_guru}}</td>
                     <td class=" border text-center">{{$list->nama_kitab}}</td>
+                    <td class=" border text-center">
+                        {{$list->id}}
+                        <form action="/jadwal-guru/{{$list->id}}" method="post">
+                            @csrf
+                            @method('delete')
+                            <button class=" bg-red-600 px-1 py-1 text-white">
+                                Delete
+                            </button>
+                        </form>
+                    </td>
+
                 </tr>
                 @endforeach
 

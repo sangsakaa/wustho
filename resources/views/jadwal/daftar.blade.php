@@ -76,6 +76,8 @@
                         @else
                         <span class=" text-red-600">Belum terjadwal</span>
                         @endif
+                    </td>
+                    <td>
 
                     </td>
 

@@ -80,6 +80,7 @@ class JadwalController
         $daftarJadwal = Daftar_Jadwal::query()
             ->join('mapel', 'mapel.id', '=', 'daftar_jadwal.mapel_id')
             ->join('guru', 'guru.id', '=', 'daftar_jadwal.guru_id')
+            ->select('daftar_jadwal.id', 'nama_guru', 'mapel', 'nama_kitab')
             ->where('daftar_jadwal.jadwal_id', $jadwal->id)
             ->get();
         return view('jadwal.jadwal_guru', compact(
@@ -173,27 +174,14 @@ class JadwalController
             ->where('kelasmi.periode_id', session('periode_id'))
             ->orderBy('kelasmi.nama_kelas')
             ->orderBy('jadwal.id')
-            ->groupBy('hari', 'jadwal.id', 'kelasmi.nama_kelas', 'jadwal.periode_id', 'kelas.kelas', 'mapel.mapel', 'guru.nama_guru');
-
-
-
-
-
-
-
+        ->groupBy('hari', 'jadwal.id', 'kelasmi.nama_kelas', 'jadwal.periode_id', 'kelas.kelas', 'mapel.mapel', 'guru.nama_guru');
         return view(
             'jadwal.jadwal1',
             [
                 'jadwalByDayMap' => $jadwalByDayMap,
-
                 'kelasmi' => $kelasmi,
                 'datakelasmi' => $datakelasmi,
                 'title' => $title,
-
-
-
-
-
             ]
         );
     }
@@ -383,6 +371,12 @@ class JadwalController
             'jadwal.laporan',
             ['laporan' => $laporan]
         );
+    }
+    public function destroyGuru(Daftar_Jadwal $daftar_Jadwal)
+    {
+
+        Daftar_Jadwal::destroy('id', $daftar_Jadwal->id);
+        return redirect()->back();
         
     }
 }
