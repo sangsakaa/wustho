@@ -54,7 +54,8 @@
                                 <th class=" border font-semibold border-green-800">Periode</th>
                                 <th class=" border font-semibold border-green-800">Semester</th>
                                 <th class=" border font-semibold border-green-800">Jumlah Mapel</th>
-                                <th class=" border font-semibold border-green-800">ESTIMASI HR</th>
+                                <th class=" border font-semibold border-green-800">Jumlah Soal</th>
+                                <th class=" border font-semibold border-green-800">HR</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -65,9 +66,15 @@
                                 <td class=" border border-green-800 text-center">{{ $data->periode }}</td>
                                 <td class=" border border-green-800 text-center">{{ $data->ket_semester }}</td>
                                 <td class=" border border-green-800 text-center">{{ $data->jumlah_kelas }}</td>
-                                <td class=" border border-green-800 text-center">{{ 'Rp.'.number_format($data->jumlah_kelas *10000 )}}</td>
+                                <td class=" border border-green-800 text-center">{{$data->jumlah_mapel}}</td>
+                                <td class=" border border-green-800 text-center">{{'Rp.'.number_format($data->jumlah_kelas *10000)}}</td>
                             </tr>
+
                             @endforeach
+                            <tr>
+                                <td colspan="6" class=" border border-green-800 text-center">Total HR</td>
+                                <td class=" border border-green-800 text-center">{{'Rp.'.number_format($laporan->sum('jumlah_kelas')*10000)}}</td>
+                            </tr>
                         </tbody>
                     </table>
 
