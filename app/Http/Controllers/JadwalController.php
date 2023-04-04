@@ -76,10 +76,18 @@ class JadwalController
             ->join('kelas', 'kelas.id', '=', 'mapel.kelas_id')
             ->join('kelasmi', 'kelasmi.kelas_id', '=', 'kelas.id')
             ->select('mapel.id', 'kelas.kelas', 'mapel', 'nama_kitab')
-            ->orderby('kelas.kelas')
             ->where('kelasmi.id', $jadwal->kelasmi_id)
-            ->orderby('mapel')
+            ->whereNotExists(function ($query) use ($jadwal) {
+                $query->select(DB::raw(1))
+                    ->from('daftar_jadwal')
+                    ->join('jadwal', 'jadwal.id', '=', 'daftar_jadwal.jadwal_id')
+                    ->whereColumn('daftar_jadwal.mapel_id', '=', 'mapel.id')
+                    ->where('jadwal.kelasmi_id', $jadwal->kelasmi_id);
+            })
+            ->orderBy('kelas.kelas')
+            ->orderBy('mapel')
             ->get();
+
         $daftarJadwal = Daftar_Jadwal::query()
             ->join('mapel', 'mapel.id', '=', 'daftar_jadwal.mapel_id')
             ->join('guru', 'guru.id', '=', 'daftar_jadwal.guru_id')

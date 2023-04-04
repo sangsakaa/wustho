@@ -39,6 +39,10 @@
             {{ session('error') }}
         </div>
         @endif
+        <div class=" grid grid-cols-2">
+            <div>Hari</div>
+            <div class=" capitalize"> : {{$jadwal->hari}}</div>
+        </div>
 
         <table class=" w-full">
             <thead>
@@ -59,7 +63,7 @@
                     <td class=" border text-center">{{$list->nama_guru}}</td>
                     <td class=" border text-center">{{$list->nama_kitab}}</td>
                     <td class=" border text-center">
-                        {{$list->id}}
+
                         <form action="/jadwal-guru/{{$list->id}}" method="post">
                             @csrf
                             @method('delete')
