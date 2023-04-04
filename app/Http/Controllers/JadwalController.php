@@ -69,12 +69,15 @@ class JadwalController
     // Daftar_jadwal
     public function DaftarJadwal(Jadwal $jadwal)
     {
+        // dd($jadwal);
         $jadwal = Jadwal::find($jadwal->id);
         $daftarGuru = Guru::orderby('nama_guru')->get();
         $daftarMapel = Mapel::query()
             ->join('kelas', 'kelas.id', '=', 'mapel.kelas_id')
+            ->join('kelasmi', 'kelasmi.kelas_id', '=', 'kelas.id')
             ->select('mapel.id', 'kelas.kelas', 'mapel', 'nama_kitab')
             ->orderby('kelas.kelas')
+            ->where('kelasmi.id', $jadwal->kelasmi_id)
             ->orderby('mapel')
             ->get();
         $daftarJadwal = Daftar_Jadwal::query()
