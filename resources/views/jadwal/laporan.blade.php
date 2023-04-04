@@ -73,7 +73,7 @@
                             @endforeach
                             <tr>
                                 <td colspan="6" class=" border border-green-800 text-center">Total HR</td>
-                                <td class=" border border-green-800 text-center">{{'Rp.'.number_format($laporan->sum('jumlah_kelas')*10000)}}</td>
+                                <td class=" border border-green-800 text-center">{{'Rp.'.number_format($laporan->sum('jumlah_kelas')*15000)}}</td>
                             </tr>
                         </tbody>
                     </table>
