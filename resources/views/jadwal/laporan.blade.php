@@ -67,7 +67,7 @@
                                 <td class=" px-1 border border-green-800 text-center">{{ $data->ket_semester }}</td>
                                 <td class=" px-1 border border-green-800 text-center">{{ $data->jumlah_kelas }}</td>
                                 <td class=" px-1 border border-green-800 text-center">{{$data->jumlah_mapel}}</td>
-                                <td class=" px-1 border border-green-800 text-center">{{'Rp.'.number_format($data->jumlah_kelas *10000)}}</td>
+                                <td class=" px-1 border border-green-800 text-center">{{'Rp.'.number_format($data->jumlah_kelas *15000)}}</td>
                             </tr>
 
                             @endforeach
