@@ -61,13 +61,13 @@
                         <tbody>
                             @foreach($laporan as $data)
                             <tr class=" border border-green-800 text-center">
-                                <td class=" border border-green-800 text-center">{{ $loop->iteration }}</td>
-                                <td class=" border border-green-800 text-center">{{ $data->nama_guru }}</td>
-                                <td class=" border border-green-800 text-center">{{ $data->periode }}</td>
-                                <td class=" border border-green-800 text-center">{{ $data->ket_semester }}</td>
-                                <td class=" border border-green-800 text-center">{{ $data->jumlah_kelas }}</td>
-                                <td class=" border border-green-800 text-center">{{$data->jumlah_mapel}}</td>
-                                <td class=" border border-green-800 text-center">{{'Rp.'.number_format($data->jumlah_kelas *10000)}}</td>
+                                <td class=" px-1 border border-green-800 text-center">{{ $loop->iteration }}</td>
+                                <td class=" px-1 border border-green-800 text-left">{{ $data->nama_guru }}</td>
+                                <td class=" px-1 border border-green-800 text-center">{{ $data->periode }}</td>
+                                <td class=" px-1 border border-green-800 text-center">{{ $data->ket_semester }}</td>
+                                <td class=" px-1 border border-green-800 text-center">{{ $data->jumlah_kelas }}</td>
+                                <td class=" px-1 border border-green-800 text-center">{{$data->jumlah_mapel}}</td>
+                                <td class=" px-1 border border-green-800 text-center">{{'Rp.'.number_format($data->jumlah_kelas *10000)}}</td>
                             </tr>
 
                             @endforeach
