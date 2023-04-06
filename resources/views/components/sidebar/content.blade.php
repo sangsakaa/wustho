@@ -82,6 +82,11 @@
             <x-icons.books class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
         </x-slot>
     </x-sidebar.link>
+    <x-sidebar.link title=" Presensi Guru" href="/sesi-presensi-guru" :isActive="request()->routeIs('sesi-presensi-guru')">
+        <x-slot name="icon">
+            <x-icons.books class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
+        </x-slot>
+    </x-sidebar.link>
 
 
     <x-sidebar.link title="Data Nilai" href="/nilaimapel" :isActive="request()->routeIs('nilaimapel')">

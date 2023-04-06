@@ -24,6 +24,7 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\JadwalController;
 use App\Http\Controllers\LulusanCotroller;
 use App\Http\Controllers\PararelController;
+use App\Http\Controllers\PresensiGuruController;
 use App\Http\Controllers\RekapAsamaController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SeleksiController;
@@ -135,6 +136,21 @@ Route::get('guru/{guru}/edit', [GuruController::class, 'edit'])->middleware(['au
 Route::get('nig/{guru}', [GuruController::class, 'NIS'])->middleware(['auth'])->name('nis');
 Route::post('nig/{guru}', [GuruController::class, 'nisGuru'])->middleware(['auth']);
 Route::delete('nig/{nig}', [GuruController::class, 'destroyNig'])->middleware(['auth']);
+
+// sesi Presensi Guru
+Route::get('sesi-presensi-guru', [PresensiGuruController::class, 'index'])->middleware(['auth'])->name('sesi-presensi-guru');
+Route::post('sesi-presensi-guru', [PresensiGuruController::class, 'store'])->middleware(['auth']);
+Route::get('sesi-presensi-guru/{sesi_Kelas_Guru}', [PresensiGuruController::class, 'DaftarGuru'])->middleware(['auth']);
+Route::post('sesi-presensi-guru/{sesi_Kelas_Guru}', [PresensiGuruController::class, 'AbsenGuru'])->middleware(['auth']);
+Route::get('laporan-harian-guru', [PresensiGuruController::class, 'LaporanHarian'])->middleware(['auth']);
+
+
+
+
+
+
+
+
 
 // Controller Raport
 Route::get('report/{pesertakelas}', [RaportController::class, 'show'])->middleware(['auth'])->name('report');
@@ -281,6 +297,21 @@ Route::get('cetak-jadwal-3', [JadwalController::class, 'CetakJadwal3'])->middlew
 Route::get('laporan-poling-guru', [JadwalController::class, 'LaporanPloting'])->middleware(['auth']);
 
 Route::delete('jadwal-guru/{daftar_Jadwal}', [JadwalController::class, 'destroyGuru'])->middleware(['auth']);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
