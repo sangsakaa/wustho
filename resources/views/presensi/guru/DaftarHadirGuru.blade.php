@@ -16,7 +16,21 @@
                         </div>
                         <hr>
                         <div class=" grid sm:grid-cols-4 grid-cols-2  px-4 py-2">
-                            {{$sesi_Kelas_Guru}}
+
+                            <div>
+                                Hari / Tanggal
+                            </div>
+                            <div>
+                                :{{ \Carbon\Carbon::parse($title->tanggal)->translatedFormat('l, j F Y') }}
+
+
+                            </div>
+                            <div>
+                                Kelas
+                            </div>
+                            <div>
+                                : {{$title->nama_kelas}}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -51,7 +65,6 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($dataGuru as $item)
-
 
                                     <tr class=" border hover:bg-gray-100">
                                         <td class=" px-1 border text-center">

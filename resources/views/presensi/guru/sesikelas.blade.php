@@ -30,6 +30,12 @@
                         <a href="/laporan-harian-guru" class=" bg-red-600 py-1 dark:bg-purple-600 mt-2 my-1 rounded-sm hover:bg-purple-600 text-white px-4 ">
                             Laporan Harian
                         </a>
+
+                    </div>
+                    <div class=" py-2">
+                        <a href="/laporan-semester-guru" class=" bg-red-600 py-1 dark:bg-purple-600 mt-2 my-1 rounded-sm hover:bg-purple-600 text-white px-4 ">
+                            Laporan Semester
+                        </a>
                     </div>
 
                 </div>

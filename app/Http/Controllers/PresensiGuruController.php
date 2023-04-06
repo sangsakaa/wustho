@@ -84,6 +84,7 @@ class PresensiGuruController
     }
     public function DaftarGuru(Sesi_Kelas_Guru $sesi_Kelas_Guru, Request $request)
     {
+        $title = $sesi_Kelas_Guru->join('kelasmi', 'kelasmi.id', '=', 'sesi_kelas_guru.kelasmi_id')->find($sesi_Kelas_Guru->id);
         $datetime = DateTime::createFromFormat('Y-m-d', $sesi_Kelas_Guru->tanggal);
         if ($datetime !== false) {
             $formatter = new IntlDateFormatter('id_ID', IntlDateFormatter::FULL, IntlDateFormatter::NONE);
@@ -104,7 +105,8 @@ class PresensiGuruController
                     'hari',
                     'jadwal.kelasmi_id',
                     'daftar_jadwal.id',
-                    'absensiguru.alasan'
+                'absensiguru.alasan',
+                'absensiguru.keterangan'
                 ]
             )
             ->where('hari', $hari)
@@ -116,6 +118,7 @@ class PresensiGuruController
                 [
                     'dataGuru',
                     'sesi_Kelas_Guru',
+                    'title'
 
                 ]
             )
@@ -140,22 +143,7 @@ class PresensiGuruController
     }
     public function LaporanHarian(Request $request)
     {
-        try {
-            $tanggal = $request->tanggal ? Carbon::parse($request->tanggal) : now();
-        } catch (InvalidFormatException $ex) {
-            $tanggal = now();
-        }
-        $laporan = Absensiguru::query()
-            ->leftJoin('sesi_kelas_guru', 'absensiguru.sesi_kelas_guru_id', 'sesi_kelas_guru.id')
-            ->select(
-                'sesi_kelas_guru.tanggal',
-                DB::raw('COUNT(CASE WHEN absensiguru.keterangan = "hadir" THEN 1 END) as hadir'),
-                DB::raw('COUNT(CASE WHEN absensiguru.keterangan = "izin" THEN 1 END) as izin'),
-                DB::raw('COUNT(CASE WHEN absensiguru.keterangan = "sakit" THEN 1 END) as sakit'),
-                DB::raw('COUNT(CASE WHEN absensiguru.keterangan = "alfa" THEN 1 END) as alfa')
-            )
-            ->groupBy('sesi_kelas_guru.tanggal')
-            ->get();
+        
         try {
             $tanggal = $request->tanggal ? Carbon::parse($request->tanggal) : now();
         } catch (InvalidFormatException $ex) {
@@ -172,10 +160,75 @@ class PresensiGuruController
             ->orderby('nama_kelas')
             ->get();
         return view('presensi.guru.laporan.laporan', compact(
-            'laporan',
             'laporanGuru',
             'tanggal'
 
         ));
     }
+    public function laporanSemester(Request $request)
+    {
+
+        $laporan = Absensiguru::query()
+            ->leftJoin('sesi_kelas_guru', 'absensiguru.sesi_kelas_guru_id', 'sesi_kelas_guru.id')
+            ->leftJoin('daftar_jadwal', 'daftar_jadwal.id', 'absensiguru.daftar_jadwal_id')
+            ->leftJoin('guru', 'guru.id', 'daftar_jadwal.guru_id')
+            ->select(DB::raw("DATE_FORMAT(sesi_kelas_guru.tanggal,'%M') as bulan"), 'guru.nama_guru', DB::raw('count(*) as total'), 'absensiguru.keterangan')
+            ->groupBy(DB::raw("DATE_FORMAT(sesi_kelas_guru.tanggal,'%M')"), 'absensiguru.keterangan', 'guru.nama_guru')
+            ->orderby('nama_guru')
+            ->get();
+
+        $laporan_per_bulan = [];
+
+        foreach ($laporan as $data) {
+            if (isset($data->bulan) && isset($data->nama_guru)) {
+                $bulan = $data->bulan;
+                $nama_guru = $data->nama_guru;
+
+                if (!isset($laporan_per_bulan[$bulan][$nama_guru])) {
+                    $laporan_per_bulan[$bulan][$nama_guru] = [
+                        'hadir' => 0,
+                        'izin' => 0,
+                        'sakit' => 0,
+                        'alfa' => 0,
+                    ];
+                }
+
+                switch ($data->keterangan) {
+                    case 'hadir':
+                        $laporan_per_bulan[$bulan][$nama_guru]['hadir'] += $data->total;
+                        break;
+                    case 'izin':
+                        $laporan_per_bulan[$bulan][$nama_guru]['izin'] += $data->total;
+                        break;
+                    case 'sakit':
+                        $laporan_per_bulan[$bulan][$nama_guru]['sakit'] += $data->total;
+                        break;
+                    case 'alfa':
+                        $laporan_per_bulan[$bulan][$nama_guru]['alfa'] += $data->total;
+                        break;
+                }
+            }
+        }
+
+
+        try {
+            $tanggal = $request->tanggal ? Carbon::parse($request->tanggal) : Carbon::now();
+            $tanggal = $tanggal->format('F'); // format menjadi bulan tahun, contoh: April 2023
+        } catch (InvalidFormatException $ex) {
+            $tanggal = Carbon::now()->format('F'); // default menjadi bulan tahun saat ini jika terjadi kesalahan
+        }
+
+        // dd($tanggal);
+
+        return view(
+            'presensi.guru.laporan.laporansemester',
+            [
+                'laporan' => $laporan,
+                'tanggal' => $tanggal,
+                'laporan_per_bulan' => $laporan_per_bulan,
+
+            ]
+        );
+    }
+
 }

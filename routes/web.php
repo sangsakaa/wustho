@@ -142,7 +142,8 @@ Route::get('sesi-presensi-guru', [PresensiGuruController::class, 'index'])->midd
 Route::post('sesi-presensi-guru', [PresensiGuruController::class, 'store'])->middleware(['auth']);
 Route::get('sesi-presensi-guru/{sesi_Kelas_Guru}', [PresensiGuruController::class, 'DaftarGuru'])->middleware(['auth']);
 Route::post('sesi-presensi-guru/{sesi_Kelas_Guru}', [PresensiGuruController::class, 'AbsenGuru'])->middleware(['auth']);
-Route::get('laporan-harian-guru', [PresensiGuruController::class, 'LaporanHarian'])->middleware(['auth']);
+Route::get('laporan-harian-guru', [PresensiGuruController::class, 'LaporanHarian'])->middleware(['auth'])->name('laporan-harian-guru');
+Route::get('laporan-semester-guru', [PresensiGuruController::class, 'laporanSemester'])->middleware(['auth'])->name('laporan-semester-guru');
 
 
 
