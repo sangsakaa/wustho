@@ -221,7 +221,7 @@ class PresensiGuruController
         // dd($tanggal);
 
         return view(
-            'presensi.guru.laporan.laporansemester',
+            'presensi.guru.laporan.laporanSemester',
             [
                 'laporan' => $laporan,
                 'tanggal' => $tanggal,
