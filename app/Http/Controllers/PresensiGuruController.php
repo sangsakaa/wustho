@@ -144,6 +144,7 @@ class PresensiGuruController
     public function LaporanHarian(Request $request)
     {
         
+        
         try {
             $tanggal = $request->tanggal ? Carbon::parse($request->tanggal) : now();
         } catch (InvalidFormatException $ex) {
@@ -201,13 +202,20 @@ class PresensiGuruController
     }
     public function laporanSemester(Request $request)
     {
+        $startOfMonth = now()->startOfMonth()->toDateString();
+        $endOfMonth = now()->endOfMonth()->toDateString();
 
+        $bulan = $request->bulan ? Carbon::parse($request->bulan) : now();
+        
+        
         $laporan = Absensiguru::query()
             ->leftJoin('sesi_kelas_guru', 'absensiguru.sesi_kelas_guru_id', 'sesi_kelas_guru.id')
             ->leftJoin('daftar_jadwal', 'daftar_jadwal.id', 'absensiguru.daftar_jadwal_id')
             ->leftJoin('guru', 'guru.id', 'daftar_jadwal.guru_id')
             ->select(DB::raw("DATE_FORMAT(sesi_kelas_guru.tanggal,'%M') as bulan"), 'guru.nama_guru', DB::raw('count(*) as total'), 'absensiguru.keterangan')
             ->groupBy(DB::raw("DATE_FORMAT(sesi_kelas_guru.tanggal,'%M')"), 'absensiguru.keterangan', 'guru.nama_guru')
+            ->whereBetween('sesi_kelas_guru.tanggal', [$startOfMonth, $endOfMonth])
+
             ->orderby('nama_guru')
             ->get();
 
@@ -246,18 +254,21 @@ class PresensiGuruController
 
 
         try {
-            $tanggal = $request->tanggal ? Carbon::parse($request->tanggal) : Carbon::now();
-            $tanggal = $tanggal->format('F'); // format menjadi bulan tahun, contoh: April 2023
+            $tanggal = $request->tanggal ? Carbon::parse($request->tanggal) : now();
+            $tanggal = $tanggal->format('Y-m');
         } catch (InvalidFormatException $ex) {
-            $tanggal = Carbon::now()->format('F'); // default menjadi bulan tahun saat ini jika terjadi kesalahan
+            $tanggal = now()->format('Y-m');
         }
 
-        // dd($tanggal);
+
+        
 
         return view(
             'presensi.guru.laporan.laporanSemester',
             [
                 'laporan' => $laporan,
+                'bulan' => $bulan,
+            
                 'tanggal' => $tanggal,
                 'laporan_per_bulan' => $laporan_per_bulan,
 

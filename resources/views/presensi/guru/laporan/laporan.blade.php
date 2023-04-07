@@ -7,10 +7,12 @@
         </h2>
     </x-slot>
     <div class="pb-1 pt-2">
+
         <div class="">
             <div class="bg-white dark:bg-dark-bg overflow-hidden shadow-sm ">
                 <div class=" overflow-auto bg-white dark:bg-dark-bg mt-1 ">
                     <div class=" px-2 grid grid-cols-2">
+
                         <div>
                             <form action="/laporan-harian-guru" method="get" class="mr-auto">
                                 <input type="date" name="tanggal" class="py-1 dark:bg-dark-bg" value="{{ $tanggal->toDateString() }}">
