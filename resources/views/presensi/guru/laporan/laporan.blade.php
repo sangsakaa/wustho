@@ -30,7 +30,49 @@
 
                         </div>
                     </div>
-                    <table class=" px-2 w-full">
+                    <div class=" grid grid-cols-1  justify-items-end">
+
+                        <table class=" w-1/2">
+                            <thead>
+                                <tr class=" border border-green-800 px-1 text-center">
+                                    <th class=" border border-green-800 px-1 text-center" colspan="5">Keterangan</th>
+
+                                </tr>
+                                <tr class=" border border-green-800 px-1 text-center">
+                                    <th class=" border border-green-800 px-1 text-center">Hadir</th>
+                                    <th class=" border border-green-800 px-1 text-center">Sakit</th>
+                                    <th class=" border border-green-800 px-1 text-center">Izin</th>
+                                    <th class=" border border-green-800 px-1 text-center">Alfa</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class=" border border-green-800 text-center">
+                                    <td class=" border border-green-800 text-center">{{ $Hadir}}</td>
+                                    <td class=" border border-green-800 text-center">{{ $Sakit}}</td>
+                                    <td class=" border border-green-800 text-center">{{ $Izin}}</td>
+                                    <td class=" border border-green-800 text-center">{{ $Alfa}}</td>
+                                </tr>
+                                <tr class=" border border-green-800 px-1 text-center">
+                                    <th class=" border border-green-800 px-1 text-center">Hadir</th>
+                                    <th class=" border border-green-800 px-1 text-center">Sakit</th>
+                                    <th class=" border border-green-800 px-1 text-center">Izin</th>
+                                    <th class=" border border-green-800 px-1 text-center">Alfa</th>
+                                </tr>
+                                <tr class=" border border-green-800 px-1 text-center">
+                                    <td class=" border border-green-800 px-1 text-center">{{ number_format($presentasiHadir, 2) }}%</td>
+                                    <td class=" border border-green-800 px-1 text-center">{{ number_format($presentasiSakit, 2) }}%</td>
+                                    <td class=" border border-green-800 px-1 text-center">{{ number_format($presentasiIzin, 2) }}%</td>
+                                    <td class=" border border-green-800 px-1 text-center">{{ number_format($presentasiAlfa, 2) }}%</td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+
+
+
+                    </div>
+                    <table class=" mt-2 px-2 w-full">
                         <thead>
                             <tr class="border bg-gray-200 dark:bg-purple-600 text-xs sm:text-sm">
                                 <th class=" border px-1  py-1">No</th>

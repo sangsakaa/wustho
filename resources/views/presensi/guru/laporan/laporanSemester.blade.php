@@ -32,6 +32,7 @@
                         </div>
                     </div>
                     <div>
+
                         <table class=" w-full">
                             <thead>
                                 <tr class=" border border-green-800">

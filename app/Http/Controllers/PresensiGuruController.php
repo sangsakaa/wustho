@@ -159,9 +159,43 @@ class PresensiGuruController
             ->where('sesi_kelas_guru.tanggal', $tanggal->toDateString())
             ->orderby('nama_kelas')
             ->get();
+
+        $laporanGuru->collect(); // Isi dengan data laporan guru Anda
+
+        // Menghitung jumlah laporan guru dengan keterangan tertentu
+        $jmlKet = $laporanGuru->groupBy('keterangan')->map(function ($item) {
+                return $item->count();
+            });
+        // dd($jmlKet);
+
+        // Menambahkan presentasi dalam keterangan
+        $totalLaporan = $jmlKet->sum();
+        $Sakit = $jmlKet->get('sakit', 0);
+        $Hadir = $jmlKet->get('hadir', 0);
+        $Izin = $jmlKet->get('izin', 0);
+        $Alfa = $jmlKet->get('alfa', 0);
+        $presentasiSakit = $totalLaporan > 0 ? $Sakit / $totalLaporan * 100 : 0;
+        $presentasiHadir = $totalLaporan > 0 ? $Hadir / $totalLaporan * 100 : 0;
+        $presentasiIzin = $totalLaporan > 0 ? $Izin / $totalLaporan * 100 : 0;
+        $presentasiAlfa = $totalLaporan > 0 ? $Alfa / $totalLaporan * 100 : 0;
+
+
+        // Menampilkan hasil
+
         return view('presensi.guru.laporan.laporan', compact(
             'laporanGuru',
-            'tanggal'
+            'tanggal',
+            'presentasiSakit',
+            'presentasiHadir',
+            'presentasiIzin',
+            'presentasiAlfa',
+            'Sakit',
+            'Hadir',
+            'Izin',
+            'Alfa'
+            
+            
+
 
         ));
     }
