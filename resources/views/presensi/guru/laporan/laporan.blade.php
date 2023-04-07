@@ -77,7 +77,7 @@
                             <tr class="border bg-gray-200 dark:bg-purple-600 text-xs sm:text-sm">
                                 <th class=" border px-1  py-1">No</th>
                                 <th class=" border px-1 ">Tanggal</th>
-                                <th class=" border px-1 ">Dafta Guru Yang Terjadwal</th>
+                                <th class=" border px-1 ">Daftar Guru Yang Terjadwal</th>
                                 <th class=" border px-1 ">Kelas</th>
                                 <th class=" border px-1 ">Keterangan</th>
                                 <th class=" border px-1 ">Alasan</th>
