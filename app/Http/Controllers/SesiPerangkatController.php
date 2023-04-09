@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\AbsensiPerangkat;
-use App\Models\Perangkat;
 use App\Models\Periode;
-use App\Models\SesiPerangkat;
+use App\Models\Perangkat;
 use Illuminate\Http\Request;
+use App\Models\SesiPerangkat;
+use Illuminate\Support\Carbon;
+use App\Models\AbsensiPerangkat;
+use Carbon\Exceptions\InvalidFormatException;
 
 class SesiPerangkatController
 {
@@ -64,12 +66,14 @@ class SesiPerangkatController
                 $join->on('absensi_perangkat.perangkat_id', '=', 'perangkat.id')
                     ->where('absensi_perangkat.sesi_perangkat_id', '=', $sesiPerangkat->id);
             })
+            
             ->select('perangkat.id', 'nama_perangkat', 'keterangan', 'alasan')
             ->get();
         return view('perangkat.absensi.daftarsesi', compact('dataPerangkat', 'sesiPerangkat'));
     }
     public function StoredaftarSesi(Request $request)
     {
+        
         foreach ($request->perangkat_id as $item) {
             $presensiasrama = AbsensiPerangkat::updateOrCreate(
                 ['perangkat_id' => $item, 'sesi_perangkat_id' => $request->sesi_perangkat_id],
@@ -78,15 +82,21 @@ class SesiPerangkatController
         }
         return redirect()->back();
     }
-    public function LaporanHarian()
+    public function LaporanHarian(Request $request)
     {
+        try {
+            $tanggal = $request->tanggal ? Carbon::parse($request->tanggal) : now();
+        } catch (InvalidFormatException $ex) {
+            $tanggal = now();
+        }
         $laporanHarian = AbsensiPerangkat::query()
             ->leftjoin('perangkat', 'absensi_perangkat.perangkat_id', '=', 'perangkat.id')
             ->leftjoin('sesi_perangkat', 'absensi_perangkat.sesi_perangkat_id', '=', 'sesi_perangkat.id')
             ->select('sesi_perangkat.tanggal', 'nama_perangkat', 'keterangan', 'alasan')
             ->groupBy('sesi_perangkat.tanggal', 'nama_perangkat', 'keterangan', 'alasan')
+            ->where('sesi_perangkat.tanggal', $tanggal->toDateString())
             ->get();
 
-        return view('perangkat.absensi.laporanHarian', compact('laporanHarian'));
+        return view('perangkat.absensi.laporanHarian', compact('laporanHarian', 'tanggal'));
     }
 }

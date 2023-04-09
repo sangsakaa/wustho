@@ -14,6 +14,13 @@
     </div>
     <div class=" mt-2 bg-white p-2 sm:p-2  ">
         <div>
+            <form action="/laporan-harian-perangkat" method="get" class="w-full">
+                {{-- @csrf --}}
+                <input type="date" name="tanggal" class=" py-1 dark:bg-dark-bg" value="{{ $tanggal->toDateString() }}">
+                <button class=" bg-red-600 py-1 dark:bg-purple-600 mt-1 my-1 w-full sm:w-40 rounded-sm hover:bg-purple-600 text-white px-4 ">
+                    Pilih
+                </button>
+            </form>
         </div>
         <table class=" w-full">
             <thead>
