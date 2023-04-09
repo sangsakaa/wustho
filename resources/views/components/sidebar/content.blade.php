@@ -52,6 +52,11 @@
             <x-icons.usercircle class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
         </x-slot>
     </x-sidebar.link>
+    <x-sidebar.link title=" Data Perangkat" href="/data-perangkat" :isActive="request()->routeIs('data-perangkat')">
+        <x-slot name="icon">
+            <x-icons.usercircle class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
+        </x-slot>
+    </x-sidebar.link>
     <x-sidebar.link title=" Data Siswa" href="/siswa" :isActive="request()->routeIs('siswa')">
         <x-slot name="icon">
             <x-icons.usercircle class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
@@ -72,12 +77,12 @@
             <x-icons.academi class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
         </x-slot>
     </x-sidebar.link>
-    <x-sidebar.link title=" Ploting Guru" href="/Daftar-Jadwal" :isActive="request()->routeIs('Daftar-Jadwal')">
+    <x-sidebar.link title=" Presensi" href="/sesikelas" :isActive="request()->routeIs('sesikelas')">
         <x-slot name="icon">
-            <x-icons.academi class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
+            <x-icons.books class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
         </x-slot>
     </x-sidebar.link>
-    <x-sidebar.link title=" Presensi" href="/sesikelas" :isActive="request()->routeIs('sesikelas')">
+    <x-sidebar.link title=" Presensi Perangkat" href="/sesi-perangkat" :isActive="request()->routeIs('sesi-perangkat')">
         <x-slot name="icon">
             <x-icons.books class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
         </x-slot>
@@ -88,23 +93,15 @@
         </x-slot>
     </x-sidebar.link>
 
-
-    <x-sidebar.link title="Data Nilai" href="/nilaimapel" :isActive="request()->routeIs('nilaimapel')">
+    <x-sidebar.dropdown title="KURIKULUM" :active="Str::startsWith(request()->route()->uri(), 'buttons')">
         <x-slot name="icon">
-            <x-icons.books class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
+            <x-heroicon-o-view-grid class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
         </x-slot>
-    </x-sidebar.link>
-    <x-sidebar.link title=" Daftar-Seleksi" href="/daftar-seleksi" :isActive="request()->routeIs('daftar-seleksi')">
-        <x-slot name="icon">
-            <x-icons.books class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
-        </x-slot>
-    </x-sidebar.link>
-    <x-sidebar.link title="Data Lulusan" href="/lulusan" :isActive="request()->routeIs('lulusan')">
-        <x-slot name="icon">
-            <x-icons.academi class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
-        </x-slot>
-    </x-sidebar.link>
-
+        <x-sidebar.sublink title=" Ploting Guru" href="{{ route('Daftar-Jadwal') }}" :active="request()->routeIs('Daftar-Jadwal')" />
+        <x-sidebar.sublink title=" Lulusan" href="{{ route('lulusan') }}" :active="request()->routeIs('lulusan')" />
+        <x-sidebar.sublink title="Daftar Seleksi" href="{{ route('daftar-seleksi') }}" :active="request()->routeIs('daftar-seleksi')" />
+        <x-sidebar.sublink title="Data Nilai" href="{{ route('nilaimapel') }}" :active="request()->routeIs('nilaimapel')" />
+    </x-sidebar.dropdown>
     <x-sidebar.link title="Pengaturan" href="/pengaturan" :isActive="request()->routeIs('pengaturan')">
         <x-slot name="icon">
             <x-icons.setting class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
@@ -117,7 +114,6 @@
         </x-slot>
         <x-sidebar.sublink title=" BLANGKO SAP" href="{{ route('sap') }}" :active="request()->routeIs('sap')" />
         <x-sidebar.sublink title="BLANGKO PRESENSI" href="{{ route('absensikelas/blanko') }}" :active="request()->routeIs('absensikelas/blanko')" />
-
     </x-sidebar.dropdown>
     <x-sidebar.dropdown title="LAPORAN" :active="Str::startsWith(request()->route()->uri(), 'buttons')">
         <x-slot name="icon">

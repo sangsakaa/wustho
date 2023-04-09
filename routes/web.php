@@ -24,11 +24,13 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\JadwalController;
 use App\Http\Controllers\LulusanCotroller;
 use App\Http\Controllers\PararelController;
+use App\Http\Controllers\PerangkatController;
 use App\Http\Controllers\PresensiGuruController;
 use App\Http\Controllers\RekapAsamaController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SeleksiController;
 use App\Http\Controllers\SesikelasController;
+use App\Http\Controllers\SesiPerangkatController;
 use App\Http\Controllers\TranskipController;
 use App\Http\Controllers\UserguruController;
 use App\Http\Controllers\ValidasiController;
@@ -279,8 +281,17 @@ Route::get('Rekapitulasi-Nilai-Siswa', [PararelController::class, 'RekapNilaiSis
 // Laporan Siswa Kelas
 Route::get('Laporan-Kehadiran', [ReportController::class, 'LapKehadiran'])->middleware(['auth'])->name('Laporan-Kehadiran');
 
+// Perangkat
+Route::get('data-perangkat', [PerangkatController::class, 'index'])->middleware(['auth'])->name('data-perangkat');
+Route::get('form-perangkat', [PerangkatController::class, 'create'])->middleware(['auth'])->name('form-perangkat');
+Route::post('data-perangkat', [PerangkatController::class, 'store'])->middleware(['auth'])->name('form-perangkat');
+// sesiPerangkat
+Route::get('sesi-perangkat', [SesiPerangkatController::class, 'sesiPerangkat'])->name('sesi-perangkat');
+Route::post('sesi-perangkat', [SesiPerangkatController::class, 'buatSesi']);
+Route::get('/daftar-sesi-perangkat/{sesiPerangkat}', [SesiPerangkatController::class, 'daftarSesi']);
+Route::post('/daftar-sesi-perangkat/{sesiPerangkat}', [SesiPerangkatController::class, 'StoredaftarSesi']);
 
-
+Route::get('laporan-harian-perangkat', [SesiPerangkatController::class, 'LaporanHarian']);
 
 
 
