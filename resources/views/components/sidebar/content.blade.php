@@ -57,50 +57,34 @@
             <x-icons.usercircle class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
         </x-slot>
     </x-sidebar.link>
-    <x-sidebar.link title=" Data Siswa" href="/siswa" :isActive="request()->routeIs('siswa')">
+
+    <x-sidebar.dropdown title="KESISWAAN" :active="Str::startsWith(request()->route()->uri(), 'buttons')">
         <x-slot name="icon">
-            <x-icons.usercircle class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
+            <x-heroicon-o-view-grid class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
         </x-slot>
-    </x-sidebar.link>
-    <x-sidebar.link title="Data Asrama" href="/asramasiswa" :isActive="request()->routeIs('asramasiswa')">
-        <x-slot name="icon">
-            <x-icons.home class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
-        </x-slot>
-    </x-sidebar.link>
-    <x-sidebar.link title=" Data Kelas" href="/kelas_mi" :isActive="request()->routeIs('kelas_mi')">
-        <x-slot name="icon">
-            <x-icons.home class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
-        </x-slot>
-    </x-sidebar.link>
-    <x-sidebar.link title=" Data Guru" href="/guru" :isActive="request()->routeIs('guru')">
-        <x-slot name="icon">
-            <x-icons.academi class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
-        </x-slot>
-    </x-sidebar.link>
-    <x-sidebar.link title=" Presensi" href="/sesikelas" :isActive="request()->routeIs('sesikelas')">
-        <x-slot name="icon">
-            <x-icons.books class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
-        </x-slot>
-    </x-sidebar.link>
-    <x-sidebar.link title=" Presensi Perangkat" href="/sesi-perangkat" :isActive="request()->routeIs('sesi-perangkat')">
-        <x-slot name="icon">
-            <x-icons.books class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
-        </x-slot>
-    </x-sidebar.link>
-    <x-sidebar.link title=" Presensi Guru" href="/sesi-presensi-guru" :isActive="request()->routeIs('sesi-presensi-guru')">
-        <x-slot name="icon">
-            <x-icons.books class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
-        </x-slot>
-    </x-sidebar.link>
+        <x-sidebar.sublink title=" Data Siswa" href="{{ route('siswa') }}" :active="request()->routeIs('siswa')" />
+        <x-sidebar.sublink title=" Data Kelas" href="{{ route('kelas_mi') }}" :active="request()->routeIs('kelas_mi')" />
+        <x-sidebar.sublink title="Daftar Asrama" href="{{ route('asramasiswa') }}" :active="request()->routeIs('asramasiswa')" />
+        <x-sidebar.sublink title="Data Nilai" href="{{ route('nilaimapel') }}" :active="request()->routeIs('nilaimapel')" />
+    </x-sidebar.dropdown>
 
     <x-sidebar.dropdown title="KURIKULUM" :active="Str::startsWith(request()->route()->uri(), 'buttons')">
         <x-slot name="icon">
             <x-heroicon-o-view-grid class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
         </x-slot>
+        <x-sidebar.sublink title=" Data Guru" href="{{ route('guru') }}" :active="request()->routeIs('guru')" />
         <x-sidebar.sublink title=" Ploting Guru" href="{{ route('Daftar-Jadwal') }}" :active="request()->routeIs('Daftar-Jadwal')" />
         <x-sidebar.sublink title=" Lulusan" href="{{ route('lulusan') }}" :active="request()->routeIs('lulusan')" />
         <x-sidebar.sublink title="Daftar Seleksi" href="{{ route('daftar-seleksi') }}" :active="request()->routeIs('daftar-seleksi')" />
         <x-sidebar.sublink title="Data Nilai" href="{{ route('nilaimapel') }}" :active="request()->routeIs('nilaimapel')" />
+    </x-sidebar.dropdown>
+    <x-sidebar.dropdown title="PRESENSI" :active="Str::startsWith(request()->route()->uri(), 'buttons')">
+        <x-slot name="icon">
+            <x-heroicon-o-view-grid class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
+        </x-slot>
+        <x-sidebar.sublink title=" Perangkat" href="{{ route('sesi-perangkat') }}" :active="request()->routeIs('sesi-perangkat')" />
+        <x-sidebar.sublink title=" Guru" href="{{ route('sesi-presensi-guru') }}" :active="request()->routeIs('sesi-presensi-guru')" />
+        <x-sidebar.sublink title=" SIswa" href="{{ route('sesikelas') }}" :active="request()->routeIs('sesikelas')" />
     </x-sidebar.dropdown>
     <x-sidebar.link title="Pengaturan" href="/pengaturan" :isActive="request()->routeIs('pengaturan')">
         <x-slot name="icon">

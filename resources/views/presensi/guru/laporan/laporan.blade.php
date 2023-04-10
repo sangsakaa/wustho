@@ -76,33 +76,40 @@
                     </div>
                     <table class=" mt-2 px-2 w-full">
                         <thead>
-                            <tr class="border bg-gray-200 dark:bg-purple-600 text-xs sm:text-sm">
-                                <th class=" border px-1  py-1">No</th>
-                                <th class=" border px-1 ">Tanggal</th>
-                                <th class=" border px-1 ">Daftar Guru Yang Terjadwal</th>
-                                <th class=" border px-1 ">Kelas</th>
-                                <th class=" border px-1 ">Keterangan</th>
-                                <th class=" border px-1 ">Alasan</th>
+                            <tr class="border border-black bg-gray-200 dark:bg-purple-600 text-xs sm:text-sm">
+                                <th class=" border border-black px-1  py-1">No</th>
+                                <th class=" border border-black px-1 ">Tanggal</th>
+                                <th class=" border border-black px-1 ">Daftar Guru Yang Terjadwal</th>
+                                <th class=" border border-black px-1 ">Kelas</th>
+                                <th class=" border border-black px-1 ">Keterangan</th>
+                                <th class=" border border-black px-1 ">Alasan</th>
 
                             </tr>
                         </thead>
                         <tbody>
                             @foreach($laporanGuru as $list)
-                            <tr class=" even:bg-gray-100">
-                                <th class=" border px-1 text-center">{{$loop->iteration}}</th>
-                                <td class=" border px-1 text-center">
-                                    {{ $list->tanggal}}
+                            <tr class=" border border-black even:bg-gray-100">
+                                <th class=" border border-black px-1 text-center">{{$loop->iteration}}</th>
+                                <td class=" text-center {{ $list->keterangan == 'alfa' ? 'bg-red-600 text-white' : ($list->keterangan == 'sakit' ? 'bg-orange-500 text-white' : ($list->keterangan == 'izin' ? 'bg-yellow-400' : ($list->keterangan == 'hadir' ? 'bg-green-500' : ''))) }} px-1 border border-black text-left">
+
+
+                                    {{ \Carbon\Carbon::parse($list->tanggal)->isoFormat(' dddd ,DD MMMM Y') }}
                                 </td>
-                                <td class=" border px-1 text-left">
+                                <td class="{{ $list->keterangan == 'alfa' ? 'bg-red-600 text-white' : ($list->keterangan == 'sakit' ? 'bg-orange-500 text-white' : ($list->keterangan == 'izin' ? 'bg-yellow-400' : ($list->keterangan == 'hadir' ? 'bg-green-500' : ''))) }} px-1 border border-black text-left">
+
+
                                     {{ $list->nama_guru}}
                                 </td>
-                                <td class=" border px-1 text-center">
+                                <td class=" text-center {{ $list->keterangan == 'alfa' ? 'bg-red-600 text-white' : ($list->keterangan == 'sakit' ? 'bg-orange-500 text-white' : ($list->keterangan == 'izin' ? 'bg-yellow-400' : ($list->keterangan == 'hadir' ? 'bg-green-500' : ''))) }} px-1 border border-black text-left">
+
                                     {{ $list->nama_kelas}}
                                 </td>
-                                <td class="  capitalize border px-1 text-center">
+                                <td class=" text-center {{ $list->keterangan == 'alfa' ? 'bg-red-600 text-white' : ($list->keterangan == 'sakit' ? 'bg-orange-500 text-white' : ($list->keterangan == 'izin' ? 'bg-yellow-400' : ($list->keterangan == 'hadir' ? 'bg-green-500' : ''))) }} px-1 border border-black text-left">
+
                                     {{ $list->keterangan}}
                                 </td>
-                                <td class=" capitalize border px-1 text-center">
+                                <td class=" text-center {{ $list->keterangan == 'alfa' ? 'bg-red-600 text-white' : ($list->keterangan == 'sakit' ? 'bg-orange-500 text-white' : ($list->keterangan == 'izin' ? 'bg-yellow-400' : ($list->keterangan == 'hadir' ? 'bg-green-500' : ''))) }} px-1 border border-black text-left">
+
                                     {{ $list->alasan}}
                                 </td>
 
