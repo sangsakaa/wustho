@@ -46,7 +46,7 @@
       <p class=" font-semibold text-1xl">
         MADRASAH DINIYAH WUSTHO WAHIDIYAH
       </p>
-      <p class=" text-2xl uppercase font-semibold">Daftar Ploting Ke</p>
+      <p class=" text-2xl uppercase font-semibold">Daftar Ploting Kelas</p>
       <p class=" font-semibold uppercase">
         TAHUN PELAJARAN
       </p>

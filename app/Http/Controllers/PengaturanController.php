@@ -235,7 +235,7 @@ class PengaturanController extends Controller
             ->where('kelasmi.periode_id', session('periode_id'))
             ->where('kelas.kelas', '<>', 3)
             ->groupBy('nama_siswa', 'kelasmi.id', 'kelas', 'jenis_kelamin', 'nama_kelas')
-            ->havingRaw('(SUM(nilai_harian) + SUM(nilai_ujian)) <= 600');
+        ->havingRaw('(SUM(nilai_harian) + SUM(nilai_ujian)) <= 600');
 
         if (request('cari')) {
             $dataPlotting->where('kelas', 'like', '%' . request('cari') . '%');
