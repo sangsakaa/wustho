@@ -22,5 +22,4 @@
   <div class=" p-4 bg-white ">
     {{$data}}
   </div>
-
 </x-app-layout>

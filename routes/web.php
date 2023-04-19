@@ -176,7 +176,11 @@ Route::get('periode', [PengaturanController::class, 'periode'])->middleware(['au
 Route::post('periode', [PengaturanController::class, 'storeperiode'])->middleware(['auth']);
 Route::delete('periode/{periode}', [PengaturanController::class, 'deleteperiode'])->middleware(['auth']);
 Route::get('sap', [PengaturanController::class, 'sap'])->middleware(['auth'])->name('sap');
+
+// Ploting Kelas
 Route::get('plotingkelas', [PengaturanController::class, 'plotingkelas'])->middleware(['auth']);
+Route::get('ploting-kelas-jenis-kelamin', [PengaturanController::class, 'plotingJk'])->middleware(['auth']);
+
 
 // Controller Sesi Asrama
 

@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Guru;
-use Dompdf\Dompdf;
+use App\Models\Kelas;
+use App\Models\Nilai;
 use App\Models\Kelasmi;
 use App\Models\Periode;
 use App\Models\Semester;
@@ -11,6 +11,7 @@ use App\Models\Nilaimapel;
 use App\Models\Pesertakelas;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\DB;
 
 class PengaturanController extends Controller
 {
@@ -185,7 +186,71 @@ class PengaturanController extends Controller
 
     public function plotingkelas(Request $request)
     {
+        $dataKelas = Kelas::where('kelas', '<>', 3)->get();
 
-        return view('pengaturan.plotingkelas');
+        $dataPlotting = Nilai::query()
+            ->join('nilaimapel', 'nilaimapel.id', '=', 'nilai.nilaimapel_id')
+            ->join('pesertakelas', 'pesertakelas.id', '=', 'nilai.pesertakelas_id')
+            ->join('siswa', 'siswa.id', '=', 'pesertakelas.siswa_id')
+            ->join('kelasmi', 'kelasmi.id', '=', 'nilaimapel.kelasmi_id')
+            ->join('kelas', 'kelas.id', '=', 'kelasmi.kelas_id')
+            ->select('kelasmi.id', 'kelas', 'nama_siswa', 'nama_kelas', DB::raw('SUM(nilai_harian) as total_harian'), DB::raw('SUM(nilai_ujian) as total_ujian'))
+            ->where('kelasmi.periode_id', session('periode_id'))
+            ->where('kelas.kelas', '<>', 3)
+            ->groupBy('nama_siswa', 'nama_kelas', 'kelasmi.id', 'kelas')
+            ->havingRaw('(SUM(nilai_harian) + SUM(nilai_ujian)) <= 600')
+            ->orderby('nama_siswa')
+            ->orderby('nama_kelas');
+        if (request('cari')) {
+            $dataPlotting->where('kelas', 'like', '%' . request('cari') . '%');
+        }
+        $min = 30;
+        $max = 35;
+        $data = $dataPlotting->count();
+        return view(
+            'pengaturan.plotingkelas',
+            [
+                'dataPlotting' => $dataPlotting->orderby('nama_siswa')->get(),
+                'datakelas' => $dataKelas,
+                'data' => $data,
+                'min' => $min,
+                'max' => $max
+
+
+
+            ]
+        );
     }
+    public function plotingJk(Request $request)
+    {
+        $dataKelas = Kelas::where('kelas', '<>', 3)->get();
+
+        $dataPlotting = Nilai::query()
+            ->join('nilaimapel', 'nilaimapel.id', '=', 'nilai.nilaimapel_id')
+            ->join('pesertakelas', 'pesertakelas.id', '=', 'nilai.pesertakelas_id')
+            ->join('siswa', 'siswa.id', '=', 'pesertakelas.siswa_id')
+            ->join('kelasmi', 'kelasmi.id', '=', 'nilaimapel.kelasmi_id')
+            ->join('kelas', 'kelas.id', '=', 'kelasmi.kelas_id')
+            ->select('kelasmi.id', 'kelas', 'nama_siswa', 'jenis_kelamin', 'nama_kelas', DB::raw('SUM(nilai_harian) as total_harian'), DB::raw('SUM(nilai_ujian) as total_ujian'))
+            ->where('kelasmi.periode_id', session('periode_id'))
+            ->where('kelas.kelas', '<>', 3)
+            ->groupBy('nama_siswa', 'kelasmi.id', 'kelas', 'jenis_kelamin', 'nama_kelas')
+            ->havingRaw('(SUM(nilai_harian) + SUM(nilai_ujian)) <= 600');
+
+        if (request('cari')) {
+            $dataPlotting->where('kelas', 'like', '%' . request('cari') . '%');
+        }
+
+        $dataPlotting = $dataPlotting->get();
+
+        return view(
+            'pengaturan.plotingkelasJK',
+            [
+                'datakelas' => $dataKelas,
+                'dataPlotting' => $dataPlotting,
+
+            ]
+        );
+    }
+    
 }
