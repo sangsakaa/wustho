@@ -243,12 +243,16 @@ class PengaturanController extends Controller
 
         $dataPlotting = $dataPlotting->get();
 
+
+        
+
+
         return view(
             'pengaturan.plotingkelasJK',
             [
                 'datakelas' => $dataKelas,
                 'dataPlotting' => $dataPlotting,
-
+                
             ]
         );
     }

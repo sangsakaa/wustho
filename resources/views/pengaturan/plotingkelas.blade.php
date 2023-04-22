@@ -23,7 +23,7 @@
     <div class=" flex  grid-cols-1">
       <div class=" w-full">
         <form action="/plotingkelas" method="get" class=" flex gap-1">
-          <select name="cari" id="" class=" uppercase py-1 px-2 w-1/4">
+          <select name="cari" id="" class=" uppercase py-1 px-2 w-1/2">
             @foreach($datakelas as $item)
             <option value="{{ $item->kelas }}" {{ $item->kelas == request('cari') ? 'selected' : '' }}>Kelas {{ $item->kelas }}</option>
             @endforeach

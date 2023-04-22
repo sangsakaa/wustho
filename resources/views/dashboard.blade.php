@@ -141,7 +141,7 @@
             @endphp
 
             <div class=" bg-white  px-5">
-                Total Murid : {{$dataSiswaPeriode->total_siswa}}
+
                 <canvas class="p-0" id="chartBar"></canvas>
 
                 <!-- Required chart.js -->
