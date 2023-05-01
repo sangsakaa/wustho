@@ -33,8 +33,7 @@
                     <p class=" text-2xl">MADRASAH DINIYAH WUSTHO WAHIDIYAH</p>
                     <p class=" text-3xl">Laporan Kehadiran</p>
                     <p>
-                        {{$titlePeriode->periode}}
-                        {{$titlePeriode->ket_semester}}
+
 
                     </p>
                 </div>

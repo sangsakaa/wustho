@@ -22,11 +22,14 @@
                                 <option value="">-- Pilih Periode --</option>
                                 @foreach ($dataPeriode as $item)
                                 <option value="{{$item->id}}">{{$item->periode}} {{$item->ket_semester}}</option>
-                                @endforeach
+                            @endforeach
                             </select> --}}
                             <input type="text" name="nama_kelas" class=" py-1  " placeholder=" Nama Kelas : 1A">
                             <input type="text" name="kuota" class=" py-1  " placeholder=" Kuota Kelas : 40">
-                            <button class=" bg-blue-600 text-white rounded-sm px-2 py-1   "> simpan</button>
+                            <div class=" grid grid-cols-2 gap-2 capitalize text-center">
+                                <button class=" bg-blue-600 text-white rounded-sm px-2 py-1   "> simpan</button>
+                                <a href="/kelas_mi" class=" bg-blue-600 text-white rounded-sm px-2 py-1   "> Kembali</a>
+                            </div>
                         </div>
                     </form>
                 </div>

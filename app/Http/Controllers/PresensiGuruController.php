@@ -110,6 +110,7 @@ class PresensiGuruController
                 ]
             )
             ->where('hari', $hari)
+            // ->Where('hari', 'Ahad')
             ->where('jadwal.kelasmi_id', $sesi_Kelas_Guru->kelasmi_id)
             ->get();
         return view(

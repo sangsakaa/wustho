@@ -135,9 +135,9 @@ class AsramasiswaController extends Controller
                 ]
             )
             ->where('asramasiswa_id', $asramasiswa->id)
-
             ->orderBy('siswa.nama_siswa')
             ->orderBy('nis.nis');
+        
         if (request('cari')) {
             $data->where('nama_siswa', 'like', '%' . request('cari') . '%');
                 // ->orWhere('nis', 'like', '%' . request('cari') . '%');

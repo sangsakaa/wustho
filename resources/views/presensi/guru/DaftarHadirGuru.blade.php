@@ -72,6 +72,7 @@
                                         </td>
                                         <td class=" px-2 border sm:text-sm text-xs w-1/3 capitalize ">
                                             {{ strtolower($item->nama_guru) }}
+
                                             <input type="hidden" name="daftar_jadwal_id" value="{{ $item->id }}">
                                         </td>
                                         <td class=" justify-center text-center w-1/3 ">

@@ -47,12 +47,12 @@
     <x-sidebar.link title="Dummy link {{ $index + 1 }}" href="#" />
     @endforeach -->
     @role('super admin')
-    <x-sidebar.link title=" Manajemen User" href="/manajemen-user" :isActive="request()->routeIs('admin')">
+    <x-sidebar.link title=" Manajemen User" class=" uppercase" href="/manajemen-user" :isActive="request()->routeIs('admin')">
         <x-slot name="icon">
             <x-icons.usercircle class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
         </x-slot>
     </x-sidebar.link>
-    <x-sidebar.link title=" Data Perangkat" href="/data-perangkat" :isActive="request()->routeIs('data-perangkat')">
+    <x-sidebar.link title=" Data Perangkat" class=" uppercase" href="/data-perangkat" :isActive="request()->routeIs('data-perangkat')">
         <x-slot name="icon">
             <x-icons.usercircle class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
         </x-slot>
@@ -65,7 +65,7 @@
         <x-sidebar.sublink title=" Data Siswa" href="{{ route('siswa') }}" :active="request()->routeIs('siswa')" />
         <x-sidebar.sublink title=" Data Kelas" href="{{ route('kelas_mi') }}" :active="request()->routeIs('kelas_mi')" />
         <x-sidebar.sublink title="Daftar Asrama" href="{{ route('asramasiswa') }}" :active="request()->routeIs('asramasiswa')" />
-        <x-sidebar.sublink title="Data Nilai" href="{{ route('nilaimapel') }}" :active="request()->routeIs('nilaimapel')" />
+
     </x-sidebar.dropdown>
 
     <x-sidebar.dropdown title="KURIKULUM" :active="Str::startsWith(request()->route()->uri(), 'buttons')">
@@ -86,7 +86,7 @@
         <x-sidebar.sublink title=" Guru" href="{{ route('sesi-presensi-guru') }}" :active="request()->routeIs('sesi-presensi-guru')" />
         <x-sidebar.sublink title=" SIswa" href="{{ route('sesikelas') }}" :active="request()->routeIs('sesikelas')" />
     </x-sidebar.dropdown>
-    <x-sidebar.link title="Pengaturan" href="/pengaturan" :isActive="request()->routeIs('pengaturan')">
+    <x-sidebar.link class=" uppercase" title="Pengaturan" href="/pengaturan" :isActive="request()->routeIs('pengaturan')">
         <x-slot name="icon">
             <x-icons.setting class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
         </x-slot>

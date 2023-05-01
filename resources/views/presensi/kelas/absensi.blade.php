@@ -68,6 +68,7 @@
 
                                             <td class=" px-2 border sm:text-sm text-xs w-1/3 capitalize ">
                                                 {{ strtolower($item->nama_siswa) }}
+                                                {{ strtolower($item->nama_asrama) }}
                                             </td>
                                             <td class=" justify-center text-center w-1/3 ">
                                                 <input type="radio" id="hadir[{{ $item->id }}]" value="hadir" name="keterangan[{{ $item->id }}]" {{ $item->keterangan === "hadir" || $item->keterangan === null ? "checked" : "" }}>

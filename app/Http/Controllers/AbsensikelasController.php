@@ -30,6 +30,8 @@ class AbsensikelasController
             ->join('kelas', 'kelas.id', '=', 'kelasmi.kelas_id')
             ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
             ->join('semester', 'semester.id', '=', 'periode.semester_id')
+            ->leftjoin('asramasiswa', 'asramasiswa.id', '=', 'pesertakelas.siswa_id')
+            ->leftjoin('asrama', 'asrama.id', '=', 'asramasiswa.asrama_id')
             ->leftJoin('absensikelas', function ($join) use ($sesikelas) {
                 $join->on('absensikelas.pesertakelas_id', '=', 'pesertakelas.id')
                     ->where('absensikelas.sesikelas_id', '=', $sesikelas->id);
@@ -44,12 +46,13 @@ class AbsensikelasController
                 'absensikelas.id as absensikelas_id',
                 'absensikelas.keterangan',
                 'absensikelas.alasan',
+            'asrama.nama_asrama',
                 'absensikelas.updated_at as tglsimpan'
             )
-
-            ->orderby('siswa.nama_siswa')
+            ->orderBy('siswa.nama_siswa')
             ->get();
-
+        // $a = json_decode($dataSiswa);
+        // dd($a);
         $jumlahAbsensi = $dataSiswa->countBy('keterangan');
         if (!$jumlahAbsensi->has('hadir')) $jumlahAbsensi->put('hadir', 0);
         if (!$jumlahAbsensi->has('izin')) $jumlahAbsensi->put('izin', 0);
@@ -75,6 +78,7 @@ class AbsensikelasController
 
     public function store(Request $request)
     {
+        
         foreach ($request->pesertakelas as $peserta) {
             $absensikelas_id = $request->absensikelas[$peserta];
             $absensikelas = $absensikelas_id ? Absensikelas::find($absensikelas_id) : new Absensikelas();

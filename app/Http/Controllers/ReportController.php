@@ -26,15 +26,17 @@ class ReportController
             ->join('semester', 'semester.id', '=', 'periode.semester_id')
             ->where('kelasmi.periode_id', session('periode_id'))
             ->select(
-                'asrama.nama_asrama',
+            'asrama.nama_asrama',
+            
                 DB::raw('COUNT(CASE WHEN absensikelas.keterangan = "hadir" THEN 1 END) as hadir_count'),
                 DB::raw('COUNT(CASE WHEN absensikelas.keterangan = "alfa" THEN 1 END) as alfa_count'),
                 DB::raw('COUNT(CASE WHEN absensikelas.keterangan = "izin" THEN 1 END) as izin_count'),
                 DB::raw('COUNT(CASE WHEN absensikelas.keterangan = "sakit" THEN 1 END) as sakit_count'),
                 DB::raw('COUNT(absensikelas.id) as total_count')
             )
-            ->groupBy('asrama.nama_asrama')
+            ->groupBy('asrama.nama_asrama',)
             ->get();
+        // dd($lapKehadiranAsrama);
         $titlePeriode =
         Absensikelas::query()
             ->join('pesertakelas', 'pesertakelas.id', '=', 'absensikelas.pesertakelas_id')
@@ -47,9 +49,7 @@ class ReportController
             ->join('semester', 'semester.id', '=', 'periode.semester_id')
             ->where('kelasmi.periode_id', session('periode_id'))
             ->select('periode.periode', 'semester.ket_semester')
-            ->first();
-
-
+        ->first();
         $laporan = [];
         foreach ($lapKehadiranAsrama as $data) {
             $laporan[] = [
