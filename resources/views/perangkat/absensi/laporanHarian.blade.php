@@ -28,7 +28,7 @@
                     <th class=" border border-black">Tanggal</th>
                     <th class=" border border-black">No</th>
                     <th class=" border border-black">Nama Perangkat</th>
-                    <th class=" border border-black">Keterangan</th>
+                    <th class=" border border-black w-5">Ket</th>
                     <th class=" border border-black">Alasan</th>
                 </tr>
             </thead>
@@ -44,9 +44,14 @@
                     </td>
                     @endif
                     <td class="{{ $data->keterangan == 'alfa' ? 'bg-red-600 text-white' : '' }} px-1 border border-black text-center">{{ $loop->iteration }}</td>
-                    <td class="{{ $data->keterangan == 'alfa' ? 'bg-red-600 text-white' : '' }} px-1 border border-black">{{ $data->nama_perangkat }}</td>
-                    <td class="{{ $data->keterangan == 'alfa' ? 'bg-red-600 text-white' : '' }} px-1 border border-black text-center capitalize">{{ $data->keterangan }}</td>
-                    <td class="{{ $data->keterangan == 'alfa' ? 'bg-red-600 text-white' : '' }} px-1 border border-black text-center">{{ $data->alasan }}</td>
+
+                    <td class=" text-left {{ $data->keterangan == 'alfa' ? 'bg-red-600 text-white' : ($data->keterangan == 'sakit' ? 'bg-orange-500 text-white' : ($data->keterangan == 'izin' ? 'bg-yellow-400' : ($data->keterangan == 'hadir' ? 'bg-green-500 ' : ''))) }} px-1 border border-black text-left">{{$data->nama_perangkat}}
+                    </td>
+                    <td class=" text-left {{ $data->keterangan == 'alfa' ? 'bg-red-600 text-white' : ($data->keterangan == 'sakit' ? 'bg-orange-500 text-white' : ($data->keterangan == 'izin' ? 'bg-yellow-400' : ($data->keterangan == 'hadir' ? 'bg-green-500 ' : ''))) }} px-1 border border-black text-left  capitalize">{{$data->keterangan}}
+                    </td>
+                    <td class=" text-left {{ $data->keterangan == 'alfa' ? 'bg-red-600 text-white' : ($data->keterangan == 'sakit' ? 'bg-orange-500 text-white' : ($data->keterangan == 'izin' ? 'bg-yellow-400' : ($data->keterangan == 'hadir' ? 'bg-green-500 ' : ''))) }} px-1 border border-black text-left">{{$data->alasan}}
+                    </td>
+
                 </tr>
                 @endforeach
             </tbody>

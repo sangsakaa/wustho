@@ -109,8 +109,8 @@ class PresensiGuruController
                 'absensiguru.keterangan'
                 ]
             )
-            ->where('hari', $hari)
-            // ->Where('hari', 'Ahad')
+            ->where('hari', $hari ?: 'minggu')
+
             ->where('jadwal.kelasmi_id', $sesi_Kelas_Guru->kelasmi_id)
             ->get();
         return view(
