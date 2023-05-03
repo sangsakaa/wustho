@@ -10,45 +10,43 @@
             @endrole
         </h2>
     </x-slot>
-    <div class="  overflow-auto ">
-        <div class=" mx-auto ">
-            <div class="bg-white  dark:bg-dark-bg overflow-hidden shadow-sm ">
-                <div class="p-2 ">
-                    <div class=" sm:flex   grid sm:w-full w-full text-center sm:text-center grid-cols-3 text-xs sm:grid-cols-3 gap-1">
-                        @can('show post')
-                        <div class="flex  gap-2 justify-center">
-                            <div>
-                                <a href="/addasramasiswa" type="button" class=" px-6 py-1 bg-blue-600 text-white font-medium text-xs leading-normal uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out flex align-center">
 
-                                    <span class="  px-1 pt-1 sm:px-1">
-                                        sesiasrama
-                                    </span>
-                                </a>
-                            </div>
-                            <div>
-                                <a href="/asrama" type="button" class=" px-6 py-1 bg-blue-600 text-white font-medium text-xs leading-normal uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out flex align-center">
 
-                                    <span class="  px-1 pt-1 sm:px-1">
-                                        asrama
-                                    </span>
-                                </a>
-                            </div>
-                            @endcan
-                            <div>
-                                <a href="/sesiasrama" type="button" class=" px-6 py-1 bg-blue-600 text-white font-medium text-xs leading-normal uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out flex align-center">
+    <div class="bg-white  dark:bg-dark-bg overflow-hidden shadow-sm ">
+        <div class="py-1 ">
+            @can('show post')
+            <div class="grid  sm:flex grid-cols-3 sm:grid-cols-1  gap-2 justify-center sm:justify-start px-1">
+                <div>
+                    <a href="/addasramasiswa" type="button" class=" px-6 py-1 bg-blue-600 text-white font-medium text-xs leading-normal uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out flex align-center">
 
-                                    <span class="  px-1 pt-1 sm:px-1">
-                                        sesiasrama
-                                    </span>
-                                </a>
-                            </div>
+                        <span class="  px-1 pt-1 sm:px-1">
+                            sesiasrama
+                        </span>
+                    </a>
+                </div>
+                <div>
+                    <a href="/asrama" type="button" class=" px-6 py-1 bg-blue-600 text-white font-medium text-xs leading-normal uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out flex align-center">
 
-                        </div>
-                    </div>
+                        <span class="  px-1 pt-1 sm:px-1">
+                            asrama
+                        </span>
+                    </a>
+                </div>
+                @endcan
+                <div>
+                    <a href="/sesiasrama" type="button" class=" px-6 py-1 bg-blue-600 text-white font-medium text-xs leading-normal uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out flex align-center">
+
+                        <span class="  px-1 pt-1 sm:px-1">
+                            sesiasrama
+                        </span>
+                    </a>
                 </div>
             </div>
         </div>
+
     </div>
+
+
     <div class=" my-2 text-sm">
         <div class=" mx-auto ">
             <div class="bg-white dark:bg-dark-bg overflow-hidden shadow-sm ">
@@ -80,7 +78,7 @@
                                 <tr class=" border  uppercase text-xs ">
                                     <th class=" text-center px-1 border py-1">no</th>
                                     @role('super admin')
-                                    <th class=" text-center px-1 border ">periode</th>
+                                    <th class=" text-center px-1 border  hidden sm:block ">periode</th>
                                     @endrole
                                     <th class=" text-center px-1 border ">Daftar Asrama</th>
                                     <th class=" text-center px-1 border "> asrama</th>
@@ -105,14 +103,14 @@
                                         {{$loop->iteration}}
                                     </td>
                                     @role('super admin')
-                                    <td class=" px-2 border text-center">
+                                    <td class=" -rotate-90 hidden    border text-center">
                                         <a href="pesertaasrama/{{$item->id}}">
                                             {{$item->periode}}
                                             {{$item->ket_semester}}
                                         </a>
                                     </td>
                                     @endrole
-                                    <td class=" px-2 border text-center font-semibold">
+                                    <td class=" px-2 border text-center font-semibold ">
                                         @if($item->type_asrama == "Putra")
 
                                         <a href="pesertaasrama/{{$item->id}}" class=" py-1 px-2  text-blue-600 rounded-md uppercase text-center ">{{$item->nama_asrama}}</a>
