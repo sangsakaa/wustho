@@ -52,7 +52,7 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-md">
                 <div class="p-2 bg-blue-200 border-b border-gray-200">
                     <div class="flex justify-items-end grid-cols-1 gap-2  py-1">
-                        <div class=" grid grid-cols-1">
+                        <div class=" grid grid-cols-1 text-xs sm:text-sm">
                             <span class=" text-bold">Keterangan :</span>
                             <div class=" px-2">
                                 <p class=" capitalize">1. Untuk penambahan <b>anggota asrama </b> <u>wajib</u> memiliki <b><u>NIS (nomor induk siswa)</u></b> </p>
