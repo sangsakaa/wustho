@@ -2,7 +2,7 @@
     <x-slot name="header">
         @section('title', ' | Daftar Jadwal' )
         <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-            <h2 class="text-xl font-semibold leading-tight">
+            <h2 class="sm:text-xl font-semibold leading-tight text-sm">
                 {{ __('Dashboard Ploting Jadwal Guru') }}
             </h2>
 
@@ -47,32 +47,39 @@
         </div>
         @endif
         <div class=" flex gap-2">
-            <a href="/cetak-jadwal-1" class=" bg-red-600 px-2 py-1 text-white"> JADWAL KELAS 1</a>
-            <a href="/cetak-jadwal-2" class=" bg-red-600 px-2 py-1 text-white"> JADWAL KELAS 2</a>
-            <a href="/cetak-jadwal-3" class=" bg-red-600 px-2 py-1 text-white"> JADWAL KELAS 3</a>
-            <a href="/laporan-poling-guru" class=" bg-red-600 px-2 py-1 text-white">LAPORAN</a>
-            <a href="/cetak-jadwal-kolektif" class=" bg-red-600 px-2 py-1 text-white">Kolektif</a>
+            <a href="/cetak-jadwal-1" class=" bg-red-600 px-2 py-1 text-white text-xs sm:text-sm"> KELAS 1</a>
+            <a href="/cetak-jadwal-2" class=" bg-red-600 px-2 py-1 text-white text-xs sm:text-sm"> KELAS 2</a>
+            <a href="/cetak-jadwal-3" class=" bg-red-600 px-2 py-1 text-white text-xs sm:text-sm"> KELAS 3</a>
+            <a href="/laporan-poling-guru" class=" bg-red-600 px-2 py-1 text-white text-xs sm:text-sm">LAPORAN</a>
+            <a href="/cetak-jadwal-kolektif" class=" bg-red-600 px-2 py-1 text-white text-xs sm:text-sm uppercase">Kolektif</a>
         </div>
         <table class=" w-full">
-            <thead>
+            <thead class=" fixed-top">
                 <tr class=" bg-green-800 text-white">
-                    <th class=" border text-center py-1">No</th>
-                    <th class=" border text-center">Hari</th>
-                    <th class=" border text-center">Periode</th>
-                    <th class=" border text-center">Kelas</th>
-                    <th class=" border text-center">Daftar Pendidik</th>
+                    <th class=" border text-center text-xs sm:text-sm py-1">No</th>
+                    <th class=" border text-center text-xs sm:text-sm">Hari</th>
+                    <th class=" border text-center text-xs sm:text-sm">Periode</th>
+                    <th class=" border text-center text-xs sm:text-sm">Kelas</th>
+                    <th class=" border text-center text-xs sm:text-sm">Daftar Pendidik</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class=" overflow-auto">
                 @foreach($daftarJadwal as $jadwal)
                 <tr class=" even:bg-gray-100">
-                    <th class=" border text-center py-1">{{$loop->iteration}}</th>
-                    <td class=" border text-center capitalize">{{$jadwal->hari}}</td>
-                    <td class=" border text-center"> {{$jadwal->periode}} {{$jadwal->ket_semester}}</td>
-                    <td class=" border text-center"><a href="/jadwal-guru/{{$jadwal->id}}" target="_blank"> {{$jadwal->nama_kelas}}</a> </td>
-                    <td class=" border text-center w-1/2">
+                    <th class=" px-1 border text-xs sm:text-sm text-center py-1">{{$loop->iteration}}</th>
+                    <td class=" px-1 border text-xs sm:text-sm text-center capitalize">{{$jadwal->hari}}</td>
+                    <td class=" px-1 border text-xs sm:text-sm text-center"> {{$jadwal->periode}} {{$jadwal->ket_semester}}</td>
+                    <td class=" px-1 border text-xs sm:text-sm text-center"><a href="/jadwal-guru/{{$jadwal->id}}" target="_blank"> {{$jadwal->nama_kelas}}</a> </td>
+                    <td class=" px-1 border text-xs sm:text-sm text-left w-1/2">
                         @if($jadwal->nama_guru !== null)
+                        @if($jadwal->jenis_kelamin == 'L')
+                        Bapak
+                        @else
+                        Ibu
+                        @endif
+
                         {{$jadwal->nama_guru}}
+
                         @else
                         <span class=" text-red-600">Belum terjadwal</span>
                         @endif

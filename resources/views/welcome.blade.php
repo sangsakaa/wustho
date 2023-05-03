@@ -429,7 +429,7 @@
 </head>
 
 <body class="antialiased">
-    <div class=" mt-  relative grid w-full items-top justify-center min-h-screen dark:bg-gray-900 sm:items-center py-4  sm:pt-0">
+    <div class="   relative grid w-full items-top justify-center min-h-screen dark:bg-gray-900 sm:items-center py-2  sm:pt-0">
         <div class="max-w-6xl mx-auto  sm:px-2 lg:px-2 mt-2">
             <div class=" text-center   sm:mt-12 ">
                 <img src="asset/images/logo.png" alt="" width="200px"><br>

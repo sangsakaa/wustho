@@ -33,7 +33,7 @@ class JadwalController
             ->join('semester', 'semester.id', '=', 'periode.semester_id')
             ->leftjoin('daftar_jadwal', 'daftar_jadwal.jadwal_id', '=', 'jadwal.id')
             ->leftjoin('guru', 'guru.id', '=', 'daftar_jadwal.guru_id')
-            ->select('jadwal.id', 'hari', 'kelasmi.nama_kelas', 'periode.periode', 'kelasmi.periode_id', 'semester.semester', 'semester.ket_semester', 'guru.nama_guru')
+            ->select('jadwal.id', 'hari', 'kelasmi.nama_kelas', 'periode.periode', 'kelasmi.periode_id', 'semester.semester', 'semester.ket_semester', 'guru.nama_guru', 'guru.jenis_kelamin')
             ->where('kelasmi.periode_id', session('periode_id'))
             ->orderby('kelasmi.nama_kelas')
             ->orderby('kelasmi.nama_kelas')

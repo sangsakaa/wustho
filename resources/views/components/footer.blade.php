@@ -7,7 +7,7 @@
         </span>
         <span>by</span>
         <a href="https://wustho.smedi.my.id/" target="_blank" class="text-blue-600 hover:underline sm:text-xs text-xs">
-            MADIN WUSTHO WAHIDIYAH &copy 2022 | <span class=" uppercase text-xs">User Login : {{Auth::user()->name}}</span>
+            MADIN WUSTHO WAHIDIYAH &copy 2022 <span class=" uppercase text-xs"></span>
         </a>
     </p>
     @endrole
