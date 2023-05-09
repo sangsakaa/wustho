@@ -68,10 +68,11 @@
 
     </x-sidebar.dropdown>
 
-    <x-sidebar.dropdown title="KURIKULUM" :active="Str::startsWith(request()->route()->uri(), 'buttons')">
+    <x-sidebar.dropdown class=" sm:uppercase capitalize" title="KURIKULUM" :active="Str::startsWith(request()->route()->uri(), 'buttons')">
         <x-slot name="icon">
             <x-heroicon-o-view-grid class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
         </x-slot>
+        <x-sidebar.sublink title=" Data Mata Pelajaran" href="{{ route('mapel') }}" :active="request()->routeIs('mapel')" />
         <x-sidebar.sublink title=" Data Guru" href="{{ route('guru') }}" :active="request()->routeIs('guru')" />
         <x-sidebar.sublink title=" Ploting Guru" href="{{ route('Daftar-Jadwal') }}" :active="request()->routeIs('Daftar-Jadwal')" />
         <x-sidebar.sublink title=" Lulusan" href="{{ route('lulusan') }}" :active="request()->routeIs('lulusan')" />

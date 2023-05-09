@@ -1,28 +1,31 @@
 <x-app-layout>
     <x-slot name="header">
         @section('title', ' | Detail Data Siswa' )
-        <h2 class="font-semibold text-xl leading-tight">
-            {{ __('Dashboard Riwayat Kehadiran ') }}
+        <h2 class="font-semibold text-xl leading-tight uppercase sm:text-xl">
+            {{ __('Riwayat Kehadiran ') }}
         </h2>
     </x-slot>
     <div class="bg-white dark:bg-dark-bg overflow-hidden shadow-sm ">
-        <div class="p-4  border-b border-gray-200">
-            <div class=" grid sm:grid-cols-2 grid-cols-2 text-xs">
+        <div class="p-2  border-b border-gray-200">
+            <div class=" grid sm:grid-cols-1 grid-cols-1 text-sm text-center sm:text-xl uppercase">
                 <div>
-                    Nama Siswa : {{$title->nama_siswa}}
+                    <span class="text-lg">{{ substr($title->nama_siswa, 0, 25) }}{{ strlen($title->nama_siswa) > 20 ? '...' : '' }}</span>
                 </div>
                 <div>
-                    Nomor Induk Siswa : {{$title->nis}}
+                    {{$title->nis}}
                 </div>
             </div>
         </div>
     </div>
     <div class="bg-white dark:bg-dark-bg overflow-hidden shadow-sm mt-2 ">
         <div class="p-4  border-b border-gray-200">
-            <div class=" grid grid-cols-1 text-xs sm:text-sm sm:grid-cols-1 gap-2">
+            <div class=" grid grid-cols-1  text-xs sm:text-sm sm:grid-cols-1 gap-2">
                 <div>
-                    <table>
+                    <table class=" w-full sm:w-1/4">
                         <thead>
+                            <tr>
+                                <td class=" px-1 py-1 border text-center font-semibold " colspan="4">KETERANGAN</td>
+                            </tr>
                             <tr>
                                 <th class=" px-1 py-1 border ">HADIR</th>
                                 <th class=" px-1 py-1 border ">IZIN</th>

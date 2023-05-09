@@ -91,7 +91,6 @@ class GuruController extends Controller
                 'tanggal_lahir' => $request->tanggal_lahir,
                 'tanggal_masuk' => $request->tanggal_masuk,
             'status' => $request->status,
-
             ]);
         return redirect('/guru')->with('update', 'pembaharuan data berhasil');
     }

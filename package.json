@@ -19,7 +19,7 @@
         "vite": "^2.9.11"
     },
     "dependencies": {
-        "chart.js": "^4.2.1",
+        "chart.js": "^4.3.0",
         "sweetalert2": "^11.4.36",
         "tw-elements": "^1.0.0-alpha13"
     }

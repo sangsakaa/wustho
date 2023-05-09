@@ -30,9 +30,9 @@
 
                 $pesertakelas_id = (!empty($user) && isset($user->pesertakelas_id))
                 ?>
-                <div class=" w-full mt-1">
+                <div class=" w-full justify-end grid ">
                     <form action="/nilai" method="get">
-                        <select name="kelasmi" id="" class=" sm:text-sm  border border-green-800 text-green-800 rounded-md  py-1" required>
+                        <select name="kelasmi" id="" class=" text-md sm:text-md   border border-green-800 text-green-800 rounded-md  py-1" required>
                             <option value="">-- Pilih Periode --</option>
                             @foreach ($kelasmiSiswa as $kelas)
                             <option value="{{ $kelas->id }}" {{ $kelasmiTerpilih->id == $kelas->id ? 'selected' : '' }}>
@@ -40,10 +40,8 @@
                             </option>
                             @endforeach
                         </select>
-                        <button type="submit" class=" px-2     bg-blue-500  rounded-md text-white">
-                            <span class=" text-sm sm:text-xs">
-                                cari
-                            </span>
+                        <button type="submit" class=" px-2 py-1     bg-blue-500  rounded-md text-white">
+                            cari
                         </button>
                     </form>
                 </div>
@@ -52,6 +50,7 @@
         </div>
     </div>
     <div id="div1" class=" px-4 py-1 mt-2 bg-white">
+
         <div class="  rounded-md ">
             <div class=" text-center  text-sm sm:text-2xl capitalize py-2">
                 <span class=" font-semibold uppercase underline"> kartu hasil tadris</span>
@@ -61,10 +60,10 @@
                 <div> : {{$user->nis}} </div>
                 <div>Kelas / Semester </div>
 
-                <div> : {{$title->nama_kelas}}/{{$title->semester}}</div>
+                <div> : {{$title->nama_kelas}} / {{$title->semester}}</div>
 
                 <div>Nama Siswa </div>
-                <div class=" w-full text-xs"> : {{$user->nama_siswa}} </div>
+                <div class=" w-full text-xs"> : {{ substr($user->nama_siswa, 0, 25) }}{{ strlen($user->nama_siswa) > 20 ? '...' : '' }} </div>
                 <div>Periode </div>
                 <div> : {{$title->periode}} {{$title->ket_semester}}</div>
             </div>
@@ -85,18 +84,18 @@
                         @if ($dataNilai->count())
                         @foreach ($dataNilai as $nilai)
                         <tr class="border  even:bg-gray-50">
-                            <td class=" border text-center px-1">{{ $loop->iteration }}</td>
-                            <td class=" border text-center px-1 py-2">{{ $nilai->mapel }}</td>
-                            <td class=" border text-center px-1 py-2">{{ $nilai->nama_kitab }}</td>
-                            <td class=" border text-left px-1">{{ $nilai->nama_guru }}</td>
-                            <td class=" border text-center px-1">
+                            <td class=" border text-xs sm:text-sm text-center px-1">{{ $loop->iteration }}</td>
+                            <td class=" border text-xs sm:text-sm text-center px-1 py-2">{{ $nilai->mapel }}</td>
+                            <td class=" border text-xs sm:text-sm text-center px-1 py-2">{{ $nilai->nama_kitab }}</td>
+                            <td class=" border text-xs sm:text-sm text-left px-1">{{ $nilai->nama_guru }}</td>
+                            <td class=" border text-xs sm:text-sm text-center px-1">
                                 @if($nilai->nilai_harian == 0 )
                                 <span class=" text-red-600 font-semibold text-xs"> Nan </span>
                                 @else
                                 {{ $nilai->nilai_harian }}
                                 @endif
                             </td>
-                            <td class=" border text-center px-1"> @if($nilai->nilai_ujian == 0 )
+                            <td class=" border text-xs sm:text-sm text-center px-1"> @if($nilai->nilai_ujian == 0 )
                                 <span class=" text-red-600 font-semibold text-xs"> Nan </span>
                                 @else
                                 {{ $nilai->nilai_ujian }}
@@ -105,17 +104,14 @@
                         </tr>
                         @endforeach
                         <tr>
-                            <td class=" text-center font-semibold text-sm border py-2" colspan="4">Total Nilai</td>
-                            <td class=" text-center font-semibold text-sm border">{{$dataNilai->sum->nilai_harian}}</td>
-                            <td class=" text-center font-semibold text-sm border">{{$dataNilai->sum->nilai_ujian}}</td>
-
+                            <td class=" text-center font-semibold  text-xs sm:text-sm border py-2" colspan="4">Total Nilai</td>
+                            <td class=" text-center font-semibold  text-xs sm:text-sm border">{{$dataNilai->sum->nilai_harian}}</td>
+                            <td class=" text-center font-semibold  text-xs sm:text-sm border">{{$dataNilai->sum->nilai_ujian}}</td>
                         </tr>
                         <tr>
-                            <td class=" text-center font-semibold text-sm border py-2" colspan="4">Nilai Rata Rata </td>
-                            <td class=" text-center font-semibold text-sm border">{{ number_format($dataNilai->sum->nilai_harian / $dataNilai->count(),0,2) }}</td>
-                            <td class=" text-center font-semibold text-sm border">{{ number_format($dataNilai->sum->nilai_ujian / $dataNilai->count(),0,2) }}</td>
-
-
+                            <td class=" text-center font-semibold  text-xs sm:text-sm border py-2" colspan="4">Nilai Rata Rata </td>
+                            <td class=" text-center font-semibold  text-xs sm:text-sm border">{{ number_format($dataNilai->sum->nilai_harian / $dataNilai->count(),0,2) }}</td>
+                            <td class=" text-center font-semibold  text-xs sm:text-sm border">{{ number_format($dataNilai->sum->nilai_ujian / $dataNilai->count(),0,2) }}</td>
                         </tr>
                         @else
                         <tr class="border">
@@ -133,7 +129,7 @@
     <div class="py-2">
         <div class=" p-4 bg-sky-200">
             <div class="px-2"><span class=" underline">Catatan :</span></div>
-            <div class=" px-4">
+            <div class=" px-4 text-xs sm:text-sm">
                 <p>1. Nan : Tidak memiliki nilai atau belum tuntas</p>
             </div>
         </div>

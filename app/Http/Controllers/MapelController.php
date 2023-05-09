@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Kelas;
 use App\Models\Mapel;
+use App\Models\Periode;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
@@ -18,9 +19,12 @@ class MapelController extends Controller
     public function index()
     {
         $datakelas = Kelas::all();
+        
         $Pelajara = Mapel::query()
             ->leftjoin('kelas', 'kelas.id', '=', 'mapel.kelas_id')
-            ->select('mapel.*', 'kelas.kelas')
+            ->leftjoin('periode', 'periode.id', '=', 'mapel.periode_id')
+            ->leftjoin('semester', 'semester.id', '=', 'periode.semester_id')
+            ->select('mapel.*', 'kelas.kelas', 'periode', 'ket_semester')
             ->OrderBy('kelas')
             ->OrderBy('mapel')
             ->get();
@@ -28,7 +32,8 @@ class MapelController extends Controller
             'mapel/mapel',
             [
                 'listmapel' => $Pelajara,
-                'datakelas' => $datakelas
+                'datakelas' => $datakelas,
+               
             ]
         );
     }
@@ -40,8 +45,16 @@ class MapelController extends Controller
      */
     public function create()
     {
+        $dataPeriode = Periode::query()
+            ->join('semester', 'semester.id', '=', 'periode.semester_id')
+            ->select('periode.id', 'periode.periode', 'semester.ket_semester')
+            ->orderby('ket_semester', 'desc')
+            ->get();
         $datakelas = Kelas::all();
-        return view('mapel/addmapel', ['datakelas' => $datakelas]);
+        return view('mapel/addmapel', [
+            'datakelas' => $datakelas,
+            'dataPeriode' => $dataPeriode
+        ]);
     }
 
     /**
@@ -56,6 +69,7 @@ class MapelController extends Controller
         $mapel->mapel = $request->mapel;
         $mapel->nama_kitab = $request->nama_kitab;
         $mapel->kelas_id = $request->kelas_id;
+        $mapel->periode_id = $request->periode_id;
         $mapel->save();
         return redirect()->back()->with('success', 'berhasil menambahkan data ini');
     }
@@ -77,9 +91,16 @@ class MapelController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Mapel $mapel)
     {
-        //
+        $datakelas = Kelas::all();
+        $dataPeriode = Periode::query()
+            ->join('semester', 'semester.id', '=', 'periode.semester_id')
+            ->select('periode.id', 'periode.periode', 'semester.ket_semester')
+            ->orderby('ket_semester', 'desc')
+            ->where('periode.id', session('periode_id'))
+            ->get();
+        return view('mapel.editmapel', compact('datakelas', 'mapel', 'dataPeriode'));
     }
 
     /**
@@ -89,9 +110,16 @@ class MapelController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Mapel $mapel)
     {
-        //
+        Mapel::where('id', $mapel->id)
+            ->update([
+                'mapel' => $request->mapel,
+                'nama_kitab' => $request->nama_kitab,
+                'kelas_id' => $request->kelas_id,
+                'periode_id' => $request->periode_id,
+            ]);
+        return redirect('/mapel')->with('update', 'berhasil diperbaharui data ini');
     }
 
     /**

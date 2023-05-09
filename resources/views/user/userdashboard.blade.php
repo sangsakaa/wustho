@@ -5,11 +5,13 @@
             <span class=" uppercase">{{ __('Dashboard Detail Siswa ') }} </span><br>
         </h2>
     </x-slot>
-    <div class="p-2">
+    <div class="p-2 uppercase">
         <div class=" dark:bg-dark-bg bg-white overflow-hidden shadow-sm sm:rounded-lg">
             <div class="p-1 ">
                 <div class=" grid grid-cols-1 text-center py-1">
-                    <span class=" text-lg">{{ $title->nama_siswa }}</span>
+                    <span class="text-lg">{{ substr($title->nama_siswa, 0, 25) }}{{ strlen($title->nama_siswa) > 20 ? '...' : '' }}</span>
+
+
                     <span class=" text-xs  font-semibold">NIS : {{$title->nis}}</span>
                 </div>
             </div>
@@ -39,68 +41,66 @@
             <div class="p-4">
                 <div class=" grid grid-cols-1 sm:grid-cols-2 gap-2">
                     <div>
-                        <span class=" text-lg">Riwayat Asrama </span>
+                        <span class=" text-lg  sm:text-sm uppercase">Riwayat Asrama </span>
                         <table class=" w-full    ">
                             <thead>
-                                <tr class=" border bg-gray-100 dark:bg-purple-600">
-                                    <th class=" border text-center py-1">No</th>
-                                    <th class=" border text-center"> Periode</th>
-                                    <th class=" border text-center"> Asrama</th>
-                                    <th class=" border text-center"> Type</th>
+                                <tr class=" uppercase border text-sm sm:text-sm bg-gray-100 dark:bg-purple-600">
+                                    <th class=" border text-sm sm:text-sm text-center py-1">No</th>
+                                    <th class=" border text-sm sm:text-sm text-center"> Periode</th>
+                                    <th class=" border text-sm sm:text-sm text-center"> Asrama</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach($Asrama as $user)
-                                <tr class=" border">
-                                    <td class=" border text-center p-1">
+                                <tr class=" uppercase border">
+                                    <td class="text-xs sm:text-sm  border text-center p-1">
                                         {{$loop->iteration}}
                                     </td>
-                                    <td class=" border text-center">
+                                    <td class="text-xs sm:text-sm  border text-center">
                                         {{$user->periode}} {{$user->ket_semester}}
                                     </td>
-                                    <td class=" border text-center">
+                                    <td class="text-xs sm:text-sm  border text-center">
                                         {{$user->nama_asrama}}
                                     </td>
-                                    <td class=" border text-center">
-                                        {{$user->type_asrama}}
-                                    </td>
+
                                 </tr>
                                 @endforeach
                             </tbody>
                         </table>
                     </div>
                     <div>
-                        <span class=" text-lg">Riwayat Kehadiran </span>
+                        <span class=" text-lg  sm:text-sm uppercase">Riwayat Kehadiran </span>
                         <table class=" w-full    ">
                             <thead>
-                                <tr class=" border bg-gray-100 dark:bg-purple-600">
-                                    <th class=" border text-center py-1">No</th>
-                                    <th class=" border text-center py-1">Periode</th>
-                                    <th class=" border text-center py-1">Kelas</th>
-                                    <th class=" border text-center"> Izin</th>
-                                    <th class=" border text-center"> Sakit</th>
-                                    <th class=" border text-center"> Alfa</th>
+                                <tr class=" uppercase border bg-gray-100 dark:bg-purple-600">
+                                    <th class=" border text-sm sm:text-sm text-center py-1">No</th>
+                                    <th class=" border text-sm sm:text-sm text-center py-1">Periode</th>
+                                    <th class=" border text-sm sm:text-sm text-center py-1">Kelas</th>
+                                    <th class="border text-center text-sm sm:text-sm" width="15%">Izin</th>
+                                    <th class="border text-center text-sm sm:text-sm" width="15%">Sakit</th>
+                                    <th class="border text-center text-sm sm:text-sm" width="15%">Alfa</th>
+
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach($presensi as $user)
-                                <tr class=" border">
-                                    <td class=" border text-center p-1">
+                                <tr class=" uppercase border">
+                                    <td class=" text-xs sm:text-sm border text-center p-1">
                                         {{$loop->iteration}}
                                     </td>
-                                    <td class=" border text-center">
+                                    <td class=" text-xs sm:text-sm border text-center">
                                         {{$user->periode}} {{$user->ket_semester}}
                                     </td>
-                                    <td class=" border text-center">
+                                    <td class=" text-xs sm:text-sm border text-center">
                                         {{$user->nama_kelas}}
                                     </td>
-                                    <td class=" border text-center">
+                                    <td class=" text-xs sm:text-sm border text-center">
                                         {{$user->izin}}
                                     </td>
-                                    <td class=" border text-center">
+                                    <td class=" text-xs sm:text-sm border text-center">
                                         {{$user->sakit}}
                                     </td>
-                                    <td class=" border text-center">
+                                    <td class=" text-xs sm:text-sm border text-center">
                                         {{$user->alfa}}
                                     </td>
                                 </tr>

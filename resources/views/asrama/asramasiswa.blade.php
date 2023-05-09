@@ -78,7 +78,7 @@
                                 <tr class=" border  uppercase text-xs ">
                                     <th class=" text-center px-1 border py-1">no</th>
                                     @role('super admin')
-                                    <th class=" text-center px-1 border  hidden sm:block ">periode</th>
+                                    <th class=" text-center px-1 border   ">periode</th>
                                     @endrole
                                     <th class=" text-center px-1 border ">Daftar Asrama</th>
                                     <th class=" text-center px-1 border "> asrama</th>
@@ -103,10 +103,9 @@
                                         {{$loop->iteration}}
                                     </td>
                                     @role('super admin')
-                                    <td class=" -rotate-90 hidden    border text-center">
+                                    <td class="border text-center transform rotate-90 lg:rotate-0 sm:rotate-90 ">
                                         <a href="pesertaasrama/{{$item->id}}">
-                                            {{$item->periode}}
-                                            {{$item->ket_semester}}
+                                            {{$item->periode}} {{$item->ket_semester}}
                                         </a>
                                     </td>
                                     @endrole

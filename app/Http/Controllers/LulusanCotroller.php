@@ -33,6 +33,7 @@ class LulusanCotroller
             ->join('periode', 'periode.id', '=', 'lulusan.periode_id')
             ->join('kelasmi', 'kelasmi.id', '=', 'lulusan.kelasmi_id')
             ->join('semester', 'semester.id', '=', 'periode.semester_id')
+            ->where('lulusan.periode_id', session('periode_id'))
             ->select(
                 [
                 'kelasmi.nama_kelas',

@@ -34,6 +34,7 @@ use App\Http\Controllers\SesiPerangkatController;
 use App\Http\Controllers\TranskipController;
 use App\Http\Controllers\UserguruController;
 use App\Http\Controllers\ValidasiController;
+use App\Models\Mapel;
 
 // batas
 Route::get('/manajemen-user', [RegisteredUserController::class, 'index'])->middleware(['auth'])->name('admin');
@@ -164,8 +165,10 @@ Route::post('peringkat', [RaportController::class, 'peringkat'])->middleware(['a
 
 // Controller Mata Pelajaran
 Route::get('mapel', [MapelController::class, 'index'])->middleware(['auth'])->name('mapel');
+Route::get('edit-mapel/{mapel}', [MapelController::class, 'edit'])->middleware(['auth']);
 Route::get('addmapel', [MapelController::class, 'create'])->middleware(['auth']);
 Route::post('mapel', [MapelController::class, 'store'])->middleware(['auth']);
+Route::patch('mapel/{mapel}', [MapelController::class, 'update']);
 Route::delete('mapel/{mapel}', [MapelController::class, 'destroy'])->middleware(['auth']);
 
 // Controller Pengaturan
