@@ -47,12 +47,10 @@
         }
     </style>
     <div>
-
     </div>
     @if($kelasmi)
-    <div class="py-1">
-
-        <div class="bg-white dark:bg-dark-bg overflow-hidden shadow-sm " id="blanko">
+    <div class="py-1" id="blanko">
+        <div class="bg-white dark:bg-dark-bg overflow-hidden shadow-sm ">
             @foreach ($dataMapel as $mapel)
             <div class=" p-1 ">
                 <div class=" overflow-auto bg-white dark:bg-dark-bg  ">
@@ -91,7 +89,6 @@
                         <div>
                             :
                         </div>
-
                     </div>
                     <table class="table-fixed w-full text-green-800">
                         <thead class="border border-b-2 border-green-600">
@@ -99,17 +96,15 @@
                                 <th class="border border-green-600 px-1 w-8" rowspan="2">NO</th>
                                 <th class="border border-green-600 px-1 w-1/5">TANGGAL KBM</th>
                                 <th class="border border-green-600 px-1 text-xs" colspan="2">NILAI TUGAS</th>
-
-                                @for ($i = 0; $i < 17; $i++) <th class="border border-green-600 px-1">
+                                @for ($i = 0; $i < 18; $i++) <th class="border border-green-600 px-1">
                                     </th>
                                     @endfor
-
                             </tr>
                             <tr class="border border-green-600 text-xs sm:text-sm">
                                 <th class="border border-green-600 px-1">NAMA</th>
                                 <th class="border border-green-600 px-1">1</th>
                                 <th class="border border-green-600 px-1">2</th>
-                                @for ($i = 1; $i <= 17; $i++) <th class="border border-green-600 px-1 text-xs">PERT {{ $i }}</th>
+                                @for ($i = 1; $i <= 18; $i++) <th class="border border-green-600 px-1 text-xs">PERT {{ $i }}</th>
                                     @endfor
                             </tr>
                         </thead>
@@ -117,14 +112,15 @@
                             @foreach ($dataSiswa as $siswa)
                             <tr class=" border border-green-600 text-xs sm:text-sm even:bg-gray-100 ">
                                 <td class="border border-green-600 text-center px-1 text-xs">{{ $loop->iteration }}</td>
-                                <td class="border border-green-600 px-1 py-1 text-xs capitalize">{{ strtolower($siswa->nama_siswa) }}</td>
-                                @for ($i = 0; $i < 19; $i++) <td class="border border-green-600 px-1">
+                                <td class="border border-green-600 px-1 py-2 text-xs capitalize">{{ strtolower($siswa->nama_siswa) }}</td>
+                                @for ($i = 0; $i < 20; $i++) <td class="border border-green-600 px-1">
                                     </td>
                                     @endfor
                             </tr>
                             @endforeach
                         </tbody>
                     </table>
+                    <div class="break-after-page"></div>
                     <div>
                         <div class=" text-center text-green-800">
                             <p class=" font-semibold text-1xl">
@@ -161,34 +157,60 @@
                             <div>
                                 :
                             </div>
-
                         </div>
                     </div>
-                    <table class=" mt-2 w-full border text-sm">
-                        <thead>
-                            <tr class=" text-green-800">
-                                <th class=" border border-green-600 w-5  text-center">No</th>
-                                <th class=" border border-green-600">Hari / Tangggal</th>
-                                <th class=" border border-green-600">Materi</th>
-                                <th class=" border border-green-600">Rincian</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @for ($i = 1; $i < 18; $i++) <tr>
-                                <td class="border border-green-600 py-3 text-center">{{$i}}</td>
-                                <td class="border border-green-600 py-3 w-1/4"></td>
-                                <td class="border border-green-600 py-3 w-1/4"></td>
-                                <td class="border border-green-600 py-4"></td>
-                                </tr>
-                                @endfor
-                        </tbody>
-                    </table>
+                    <div class=" grid grid-cols-2 gap-2">
+                        <div>
+                            <table class=" mt-2 w-full border text-sm">
+                                <thead>
+                                    <tr class=" text-green-800">
+                                        <th class=" border border-green-600 w-5  text-center">No</th>
+                                        <th class=" border border-green-600">Hari / Tangggal</th>
+                                        <th class=" border border-green-600 px-1">Pert Ke </th>
+                                        <th class=" border border-green-600">Materi</th>
+                                        <th class=" border border-green-600">Rincian</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for ($i = 1; $i < 10; $i++) <tr class=" text-green-800">
+                                        <td class="border border-green-600 py-4  text-center">{{$i}}</td>
+                                        <td class="border border-green-600   w-36"></td>
+                                        <td class="border border-green-600  w-5  text-center capitalize font-semibold">Pert {{$i}}</td>
+                                        <td class="border border-green-600  w-1/4"></td>
+                                        <td class="border border-green-600 "></td>
+                                        </tr>
+                                        @endfor
+                                </tbody>
+                            </table>
+                        </div>
+                        <div>
+                            <table class=" mt-2 w-full border text-sm">
+                                <thead>
+                                    <tr class=" text-green-800">
+                                        <th class=" border border-green-600 w-5  text-center">No</th>
+                                        <th class=" border border-green-600">Hari / Tangggal</th>
+                                        <th class=" border border-green-600 px-1">Pert Ke </th>
+                                        <th class=" border border-green-600">Materi</th>
+                                        <th class=" border border-green-600">Rincian</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for ($i = 10; $i < 19; $i++) <tr class=" text-green-800">
+                                        <td class="border border-green-600 py-4  text-center">{{$i}}</td>
+                                        <td class="border border-green-600   w-36"></td>
+                                        <td class="border border-green-600  w-5  text-center capitalize font-semibold">Pert {{$i}}</td>
+                                        <td class="border border-green-600  w-1/4"></td>
+                                        <td class="border border-green-600 "></td>
+                                        </tr>
+                                        @endfor
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="break-after-page"></div>
+                    @endforeach
                 </div>
             </div>
-            <div class="break-after-page"></div>
-            @endforeach
         </div>
-    </div>
-
-    @endif
+        @endif
 </x-app-layout>
