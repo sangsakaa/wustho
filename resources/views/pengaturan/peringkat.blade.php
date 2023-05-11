@@ -7,6 +7,11 @@
         </h2>
         @endif
     </x-slot>
+    <style>
+        .page-break {
+            page-break-after: always;
+        }
+    </style>
     <div class="">
         <div class=" flex gap-2">
             <button class="flex text-white rounded-md  bg-green-800 px-2 py-1 " onclick="printContent('div1')">
@@ -108,11 +113,10 @@
                         </td>
                         <td class=" px-2 text-sm border border-green-800 text-center">
 
-                            @if($ringkasan['jmlujian'] + $ringkasan['jmlharian'] <= 600) <span class="font-semibold text-red-600"> Tidak Naik</span>
+                            @if($ringkasan['jmlujian'] + $ringkasan['jmlharian'] <= 600) <span class="font-semibold text-red-600 text-sm"> Tidak Naik</span>
                                 @else
                                 <span class="font-semibold">Naik</span>
                                 @endif
-
                         </td>
                     </tr>
                 </tbody>
@@ -120,5 +124,6 @@
             </table>
         </div>
         @endif
+        <div class="break-after-page"></div>
     </div>
 </x-app-layout>

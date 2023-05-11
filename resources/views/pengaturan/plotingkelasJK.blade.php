@@ -118,11 +118,6 @@
           @endforeach
           @endif
           @endforeach
-
-
-
-
-
         </tbody>
       </table>
 
