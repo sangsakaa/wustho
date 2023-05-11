@@ -70,6 +70,7 @@
                         <th class=" border border-gray-800 text-xs px-2" rowspan="2">NAMA</th>
                         <th colspan="2" class=" text-xs border border-green-800 text-center">TOTAL NILAI</th>
                         <th class=" border border-green-800 text-xs px-2" rowspan="2">PERINGKAT</th>
+                        <th class=" border border-green-800 text-xs px-2" rowspan="2">STATUS</th>
                     </tr>
                     <tr class=" text-white">
                         <th class=" text-xs px-2 text-center">NH</th>
@@ -104,6 +105,14 @@
                         </td>
                         <td class=" px-2 text-sm border border-green-800 text-center">
                             {{ $ringkasan['peringkat'] }}
+                        </td>
+                        <td class=" px-2 text-sm border border-green-800 text-center">
+
+                            @if($ringkasan['jmlujian'] + $ringkasan['jmlharian'] <= 600) <span class="font-semibold text-red-600"> Tidak Naik</span>
+                                @else
+                                <span class="font-semibold">Naik</span>
+                                @endif
+
                         </td>
                     </tr>
                 </tbody>
