@@ -28,7 +28,7 @@
                 </form>
             </div>
             <div class=" justify-end grid">
-                <button class="flex text-white rounded-md  bg-green-800 px-2 py-1 " onclick="printContent('div1')">
+                <button class="flex text-white rounded-md  bg-green-600 px-2 py-1 " onclick="printContent('div1')">
                     Cetak Rekap Nilai</button>
                 <script>
                     function printContent(el) {
@@ -90,15 +90,15 @@
                             $totalNilai += $nilaiHarian + $nilaiUjian;
                             @endphp
                             <span>
-                                @if($nilaiHarian < 65) <span class=" text-red-600">{{$nilaiHarian}}</span> @else {{$nilaiHarian}} @endif / @if($nilaiUjian < 65) <span class=" text-red-600">{{$nilaiUjian}}</span> @else {{$nilaiUjian}} @endif</span>
+                                @if($nilaiHarian < 60) <span class=" text-red-600">{{$nilaiHarian}}</span> @else {{$nilaiHarian}} @endif / @if($nilaiUjian < 60) <span class=" text-red-600">{{$nilaiUjian}}</span> @else {{$nilaiUjian}} @endif</span>
                                 @endif
                                 @endforeach
                         </td>
                         @endforeach
                         <td class="   text-center border border-black text-sm  ">
-                            @if($totalNilai < 800) <span class=" text-red-600"> {{ $totalNilai }}</span> @else {{ $totalNilai }} @endif </td>
+                            @if($totalNilai < 600) <span class=" text-red-600"> {{ $totalNilai }}</span> @else {{ $totalNilai }} @endif </td>
                         <td class="   text-center border border-black ">
-                            @if($totalNilai < 800) <span class=" text-red-600"> Tidak Lulus</span> @else Lulus @endif </td>
+                            @if($totalNilai < 600) <span class=" text-red-600"> Tidak Lulus</span> @else Lulus @endif </td>
 
 
                     </tr>

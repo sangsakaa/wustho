@@ -136,7 +136,6 @@
 
             <td class="border border-green-700 px-1 capitalize text-center">{{ $nilai->total_harian + $nilai->total_ujian }}</td>
           </tr>
-
           @if ($isMultipleOf30 && !$isLastRow)
           @php
           $nextKelasIndex = floor(($key + 1)/30); // menghitung indeks kelas A, B, C, dst. untuk baris berikutnya

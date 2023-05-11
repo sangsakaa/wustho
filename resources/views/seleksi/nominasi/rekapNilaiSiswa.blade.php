@@ -90,15 +90,15 @@
                             $totalNilai += $nilaiHarian + $nilaiUjian;
                             @endphp
                             <span>
-                                @if($nilaiHarian < 65) <span class=" text-red-600">{{$nilaiHarian}}</span> @else {{$nilaiHarian}} @endif / @if($nilaiUjian < 65) <span class=" text-red-600">{{$nilaiUjian}}</span> @else {{$nilaiUjian}} @endif</span>
+                                @if($nilaiHarian < 60) <span class=" text-red-600">{{$nilaiHarian}}</span> @else {{$nilaiHarian}} @endif / @if($nilaiUjian < 60) <span class=" text-red-600">{{$nilaiUjian}}</span> @else {{$nilaiUjian}} @endif</span>
                                 @endif
                                 @endforeach
                         </td>
                         @endforeach
                         <td class="   text-center border border-black text-sm  ">
-                            @if($totalNilai < 800) <span class=" text-red-600"> {{ $totalNilai }}</span> @else {{ $totalNilai }} @endif </td>
+                            @if($totalNilai < 600) <span class=" text-red-600"> {{ $totalNilai }}</span> @else {{ $totalNilai }} @endif </td>
                         <td class="   text-center border border-black ">
-                            @if($totalNilai < 800) <span class=" text-red-600"> Tidak Naik</span> @else Naik @endif </td>
+                            @if($totalNilai < 600) <span class=" text-red-600"> Tidak Naik</span> @else Naik @endif </td>
 
 
                     </tr>
