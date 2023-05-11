@@ -131,8 +131,7 @@ class KelasmiController extends Controller
             ->select('siswa.nama_siswa', 'nis.nis', 'siswa.kota_asal', 'pesertakelas.id', 'siswa.jenis_kelamin', 'kelas.kelas', 'kelasmi.nama_kelas')
             ->where('pesertakelas.kelasmi_id', $kelasmi->id)
             ->orderby('nama_siswa');
-        $count_laki_laki = $dataKelas->where('siswa.jenis_kelamin', 'L')->count();
-        $count_perempuan = $dataKelas->where('siswa.jenis_kelamin', 'P')->count();
+        
 
         if (request('cari')) {
             $dataKelas->where(
@@ -149,8 +148,7 @@ class KelasmiController extends Controller
                 'datakelasmi' => $datakelasmi,
                 'kelasmi' => $kelasmi,
                 'hitung' => $anggota,
-                'count_laki_laki' => $count_laki_laki,
-                'count_perempuan' => $count_perempuan
+                
             ]
         );
     }
