@@ -128,9 +128,12 @@ class KelasmiController extends Controller
             ->join('nis', 'nis.siswa_id', '=', 'siswa.id')
             ->join('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
             ->join('kelas', 'kelas.id', '=', 'kelasmi.kelas_id')
-            ->select('siswa.nama_siswa', 'nis.nis', 'siswa.kota_asal', 'pesertakelas.id', 'kelas.kelas', 'kelasmi.nama_kelas')
+            ->select('siswa.nama_siswa', 'nis.nis', 'siswa.kota_asal', 'pesertakelas.id', 'siswa.jenis_kelamin', 'kelas.kelas', 'kelasmi.nama_kelas')
             ->where('pesertakelas.kelasmi_id', $kelasmi->id)
             ->orderby('nama_siswa');
+        $count_laki_laki = $dataKelas->where('siswa.jenis_kelamin', 'L')->count();
+        $count_perempuan = $dataKelas->where('siswa.jenis_kelamin', 'P')->count();
+
         if (request('cari')) {
             $dataKelas->where(
                 'nama_siswa',
@@ -145,7 +148,9 @@ class KelasmiController extends Controller
                 'dataKelas' => $dataKelas->paginate(40),
                 'datakelasmi' => $datakelasmi,
                 'kelasmi' => $kelasmi,
-                'hitung' => $anggota
+                'hitung' => $anggota,
+                'count_laki_laki' => $count_laki_laki,
+                'count_perempuan' => $count_perempuan
             ]
         );
     }

@@ -17,8 +17,8 @@
                         <div>: {{$datakelasmi->kuota}} org</div>
                         <div>Jumlah Peserta</div>
                         <div>: {{$hitung}} org</div>
-                        <div>Sisa Kuota Kelas</div>
-                        <div>: {{($datakelasmi->kuota)-$hitung}} org</div>
+                        <div>Jenis Kelamin</div>
+                        <div>: L : {{$count_laki_laki}} P :{{$count_perempuan}} </div>
                     </div>
 
                 </div>
@@ -77,6 +77,7 @@
 
                                 <td class=" border px-2 text-center ">
                                     {{$list->kelas}}
+
                                 </td>
                                 <td class=" border px-2 text-center ">
                                     {{$list->nama_kelas}}
