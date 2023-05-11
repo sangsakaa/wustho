@@ -95,10 +95,11 @@ class KelasController extends Controller
             ->orderBy('nis');
         if (request('cari')) {
             $Datasiswa->where(
-                'nama_asrama',
+                'nama_siswa',
                 'like',
                 '%' . request('cari') . '%'
             );
+            
         };
         return view(
             'kelas_mi/pesertakolektif',
