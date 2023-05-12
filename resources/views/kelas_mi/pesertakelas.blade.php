@@ -67,16 +67,39 @@
                             </button>
                         </div>
                     </div>
-                    <div id="div1">
+                    <div id="div1" class=" text-green-800 sm:text-green-800">
+                        <div class=" text-sm px-2  text-center  sm:hidden block ">
+                            <div class=" flex">
+                                <div><img src={{ asset("asset/images/logo.png") }} alt="" width="120" class="  mt-3  p-2"></div>
+                                <div>
+                                    <center>
+
+                                        <p class=" capitalize  text-4xl  font-riqah py-2">
+                                            المدرسة الدينية الوسطى الواحدية
+                                        </p>
+
+                                        </p>
+                                        <p class="  font-serif text-lg uppercase">pondok pesantren kedunglo al munadhdhoroh</p>
+                                        <p class="  uppercase font-serif text-2xl font-semibold ">madrasah diniyah wustho
+                                            Wahidiyah</p>
+                                        <p class=" capitalize font-serif text-lg">kota kediri jawa timur indonesia</p>
+                                    </center>
+                                </div>
+                            </div>
+                            <hr>
+                            <div>
+                                <p class=" text-ml font-semibold"> Kelas : {{$datakelasmi->nama_kelas}} </p>
+                            </div>
+                        </div>
                         <Table class=" table w-full mt-1">
                             <thead>
                                 <tr class="border">
-                                    <th class=" text-sm px-2 border text-center  ">#</th>
+                                    <th class=" text-sm px-2 border text-center  ">No</th>
                                     <th class=" text-sm px-2 border text-center">Nomor Induk Siswa </th>
                                     <th class=" text-sm px-2 border text-center">Daftar Peserta </th>
                                     <th class=" text-sm px-2 border text-center"> Kelas </th>
                                     <th class=" text-sm px-2 border text-center py-1"> Nama Kelas </th>
-                                    <th class=" text-sm px-2 border text-center">Aksi</th>
+                                    <th class=" text-sm px-2 border text-center  sm:block hidden ">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -100,17 +123,19 @@
                                     <td class=" border px-2 text-center ">
                                         {{$list->nama_kelas}}
                                     </td>
-                                    <td class=" border px-3 py-1 flex justify-center    gap-2   ">
-                                        <a href="/pesertakelas/{{$list->id}}/edit" class=" grid  bg-yellow-400 py-1 px-1 text-black hover:text-white hover:bg-purple-600 rounded-md ">
-                                            <x-icons.edit></x-icons.edit>
-                                        </a>
-                                        <form action="/pesertakelas/{{$list->id}}" method="post">
-                                            @csrf
-                                            @method('delete')
-                                            <button type="submit" class=" grid bg-red-600 py-1 px-1 text-white hover:bg-purple-600 rounded-md ">
-                                                <x-icons.hapus></x-icons.hapus>
-                                            </button>
-                                        </form>
+                                    <td class=" border px-3 py-1  justify-center    gap-2 sm:block hidden   ">
+                                        <div class=" flex">
+                                            <a href="/pesertakelas/{{$list->id}}/edit" class=" grid  bg-yellow-400 py-1 px-1 text-black hover:text-white hover:bg-purple-600 rounded-md ">
+                                                <x-icons.edit></x-icons.edit>
+                                            </a>
+                                            <form action="/pesertakelas/{{$list->id}}" method="post">
+                                                @csrf
+                                                @method('delete')
+                                                <button type="submit" class=" grid bg-red-600 py-1 px-1 text-white hover:bg-purple-600 rounded-md ">
+                                                    <x-icons.hapus></x-icons.hapus>
+                                                </button>
+                                            </form>
+                                        </div>
 
                                     </td>
                                 </tr>
@@ -129,11 +154,12 @@
                                 </tr>
                             </tbody>
                         </Table>
+                        <div class=" text-sm px-2  text-center  sm:hidden block ">
+                            jika ada kesalah atau tidak ada di daftar mohon hubungi WAKA KESISWA
+                        </div>
                     </div>
-
                 </div>
             </div>
-        </div>
 
-    </div>
+        </div>
 </x-app-layout>
