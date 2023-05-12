@@ -43,9 +43,9 @@
                                 </td>
                                 <td class=" border px-2 text-center ">
                                     @if($kelas->ket_semester == "pendek"){
-                                    "tidak naiki"
-                                    @else
-                                    -
+                                    <span class=" text-red-700 font-semibold">
+                                        tidak naik
+                                    </span>
                                     @endif
                                 </td>
 
