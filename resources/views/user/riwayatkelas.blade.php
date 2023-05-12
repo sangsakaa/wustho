@@ -42,20 +42,11 @@
                                     {{$kelas->nama_kelas}}
                                 </td>
                                 <td class=" border px-2 text-center ">
-                                    @if($kelas->ket_semester == "pendek")
-                                    <span class=" px-2 py-1 bg-red-500 text-white rounded-md">
-                                        x
-                                    </span>
-                                    @elseif($kelas->ket_semester == "ganjil")
-                                    <span class=" px-2 py-1 bg-green-500 text-white rounded-md">
-                                        pindak
-                                    </span>
+                                    @if($kelas->ket_semester == "Genap")
+                                    Naik Kelas
                                     @else
-                                    xx
-
+                                    Tetap / Pindah Kelas
                                     @endif
-
-                                </td>
                             </tr>
                             @endforeach
                             @else
