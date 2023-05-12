@@ -25,6 +25,7 @@
                                 <th class=" border text-center py-1">No</th>
                                 <th class=" border text-center"> Periode</th>
                                 <th class=" border text-center"> Kelas</th>
+                                <th class=" border text-center"> Status Kelas</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -40,6 +41,14 @@
                                 <td class=" border px-2 text-center ">
                                     {{$kelas->nama_kelas}}
                                 </td>
+                                <td class=" border px-2 text-center ">
+                                    @if($kelas->ket_semester == "pendek"){
+                                    "tidak naiki"
+                                    @else
+                                    -
+                                    @endif
+                                </td>
+
 
                             </tr>
                             @endforeach
