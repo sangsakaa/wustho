@@ -18,8 +18,10 @@
                         <div>Jumlah Peserta</div>
                         <div>: {{$hitung}} org</div>
                         <div>Jenis Kelamin</div>
-                        <div>: L : P : </div>
+                        <div>: L : {{$lk}} P : {{$pr}}</div>
+
                     </div>
+
 
                 </div>
             </div>
