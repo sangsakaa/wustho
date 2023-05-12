@@ -78,14 +78,14 @@ class SesikelasController
             }
         }
 
-        return redirect()->back()->with('status', 'Sesi Berhasil ditambahkan');
+        return redirect()->back()->with('success', 'Sesi Berhasil ditambahkan');
     }
 
     public function destroy(Sesikelas $sesikelas)
     {
         Sesikelas::destroy($sesikelas->id);
         Absensikelas::where('sesikelas_id', $sesikelas->id)->delete();
-        return redirect()->back()->with('status', 'Sesi Ini sudah berhasil di hapus');
+        return redirect()->back()->with('delete', 'Sesi Ini sudah berhasil di hapus');
     }
 
     public function rekapSesi(Request $request)

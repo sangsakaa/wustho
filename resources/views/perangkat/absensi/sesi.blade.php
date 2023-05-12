@@ -14,8 +14,30 @@
             <a href="/laporan-harian-perangkat" class=" bg-blue-600 text-white rounded-md px-2 py-1">Laporan Harian</a>
         </div>
     </div>
+
     <div class=" mt-2 bg-white p-2 sm:p-2  ">
         <div>
+            @if (session('delete'))
+            <div class="py-2">
+                <div class="bg-red-500 px-2 py-1 text-white">
+                    {{ session('delete') }}
+                </div>
+            </div>
+            @endif
+            @if (session('success'))
+            <div class="py-2">
+                <div class="bg-green-500 px-2 py-1 text-white">
+                    {{ session('success') }}
+                </div>
+            </div>
+            @endif
+            @if (session('update'))
+            <div class="py-2">
+                <div class="bg-blue-500 px-2 py-1 text-white">
+                    {{ session('update') }}
+                </div>
+            </div>
+            @endif
         </div>
         <table class=" w-full">
             <thead>

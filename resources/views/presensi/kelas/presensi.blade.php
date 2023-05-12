@@ -33,12 +33,29 @@
                         <form action="/presensikelas" method="post">
                             <button class=" bg-red-600 py-1 rounded-md text-white px-4">simpan presensi</button>
                             <a href="/presensikelas" class=" bg-red-600 py-1 rounded-md text-white px-4">Kembali</a>
-                            @if (session('status'))
-                            <div class="alert alert-success w-full text-sm">
-                                {{ session('status') }}
+                            @if (session('delete'))
+                            <div class="py-2">
+                                <div class="bg-red-500 px-2 py-1 text-white">
+                                    {{ session('delete') }}
+                                </div>
+                            </div>
+                            @endif
+                            @if (session('success'))
+                            <div class="py-2">
+                                <div class="bg-green-500 px-2 py-1 text-white">
+                                    {{ session('success') }}
+                                </div>
+                            </div>
+                            @endif
+                            @if (session('update'))
+                            <div class="py-2">
+                                <div class="bg-blue-500 px-2 py-1 text-white">
+                                    {{ session('update') }}
+                                </div>
                             </div>
                             @endif
                             @csrf
+                            <meta http-equiv="refresh" content="5">
                             <table class=" mt-2 w-full">
                                 <thead>
                                     <tr class="border">

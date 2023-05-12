@@ -52,11 +52,7 @@
                                 </div>
                             </div>
                             @endif
-
                             <meta http-equiv="refresh" content="5">
-
-
-
                             <div class=" overflow-auto">
                                 <table class=" w-full border">
                                     <thead class=" border bg-gray-200 uppercase text-xs sm:text-xs ">

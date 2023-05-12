@@ -41,6 +41,28 @@
                 </div>
             </div> --}}
             <div class=" overflow-auto bg-white dark:bg-dark-bg mt-1 ">
+                @if (session('delete'))
+                <div class="py-2">
+                    <div class="bg-red-500 px-2 py-1 text-white">
+                        {{ session('delete') }}
+                    </div>
+                </div>
+                @endif
+                @if (session('success'))
+                <div class="py-2">
+                    <div class="bg-green-500 px-2 py-1 text-white">
+                        {{ session('success') }}
+                    </div>
+                </div>
+                @endif
+                @if (session('update'))
+                <div class="py-2">
+                    <div class="bg-blue-500 px-2 py-1 text-white">
+                        {{ session('update') }}
+                    </div>
+                </div>
+                @endif
+                <meta http-equiv="refresh" content="5">
                 <table class=" w-full">
                     <thead>
                         <tr class="border bg-gray-200 dark:bg-purple-600 text-xs sm:text-sm">
