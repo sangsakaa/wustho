@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        @section('title','| Kelas : '.$datakelasmi->nama_kelas )
+        @section('title','| Daftar Peserta Kelas : '.$datakelasmi->nama_kelas )
         <h2 class="font-semibold text-xl  leading-tight">
             Dashboard Kelas : {{$datakelasmi->nama_kelas}}
 
@@ -83,6 +83,7 @@
                                         <p class="  uppercase font-serif text-2xl font-semibold ">madrasah diniyah wustho
                                             Wahidiyah</p>
                                         <p class=" capitalize font-serif text-lg">kota kediri jawa timur indonesia</p>
+                                        <p class=" capitalize font-serif text-lg font-semibold">Tahun Pelajaran {{$datakelasmi->periode}} {{$datakelasmi->ket_semester}}</p>
                                     </center>
                                 </div>
                             </div>
@@ -154,8 +155,8 @@
                                 </tr>
                             </tbody>
                         </Table>
-                        <div class=" text-sm px-2  text-center  sm:hidden block ">
-                            jika ada kesalah atau tidak ada di daftar mohon hubungi WAKA KESISWA
+                        <div class=" text-sm     sm:hidden block ">
+                            jika ada kesalah atau tidak ada di daftar mohon hubungi WAKA KESISWAAN
                         </div>
                     </div>
                 </div>

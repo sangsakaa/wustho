@@ -133,7 +133,9 @@ class KelasmiController extends Controller
 
         $datakelasmi = Kelasmi::query()
             ->join('kelas', 'kelas.id', '=', 'kelasmi.kelas_id')
-            ->select('kelasmi.id', 'kelasmi.nama_kelas', 'kelasmi.kuota')
+            ->join('periode', 'kelasmi.periode_id', '=', 'periode.id')
+            ->join('semester', 'periode.semester_id', '=', 'semester.id')
+            ->select('kelasmi.id', 'kelasmi.nama_kelas', 'kelasmi.kuota', 'periode.periode', 'semester.ket_semester')
             ->where('kelasmi.id', $kelasmi->id)->first();
         $dataKelas = Pesertakelas::query()
             ->join('siswa', 'siswa.id', '=', 'pesertakelas.siswa_id')
