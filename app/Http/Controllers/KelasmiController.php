@@ -119,8 +119,7 @@ class KelasmiController extends Controller
 
     {
         $anggota = Pesertakelas::where('kelasmi_id', $kelasmi->id)
-            ->join('siswa', 'siswa.id', '=', 'pesertakelas.siswa_id')
-            ->where('jenis_kelamin', 'L')
+            
             ->count('kelasmi_id');
         $lk = Pesertakelas::where('kelasmi_id', $kelasmi->id)
             ->join('siswa', 'siswa.id', '=', 'pesertakelas.siswa_id')
