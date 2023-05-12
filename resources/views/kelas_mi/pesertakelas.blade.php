@@ -156,7 +156,7 @@
                             </tbody>
                         </Table>
                         <div class=" text-sm     sm:hidden block ">
-                            jika ada kesalah atau tidak ada di daftar mohon hubungi WAKA KESISWAAN
+                            jika ada kesalahan atau tidak ada di daftar mohon hubungi WAKA KESISWAAN
                         </div>
                     </div>
                 </div>
