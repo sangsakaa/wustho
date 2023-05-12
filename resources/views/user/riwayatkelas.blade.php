@@ -44,8 +44,10 @@
                                 <td class=" border px-2 text-center ">
                                     @if($kelas->ket_semester == "Genap")
                                     Naik Kelas
-                                    @else
+                                    @elseif($kelas->ket_semester == "Ganjil")
                                     Tetap / Pindah Kelas
+                                    @elseif($kelas->ket_semester == "Pendek")
+                                    Tetap / tidak Naik
                                     @endif
                             </tr>
                             @endforeach
