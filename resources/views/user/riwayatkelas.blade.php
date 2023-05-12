@@ -47,7 +47,9 @@
                                     @elseif($kelas->ket_semester == "Ganjil")
                                     Tetap / Pindah Kelas
                                     @elseif($kelas->ket_semester == "Pendek")
-                                    Tetap / tidak Naik
+                                    <span class=" text-red-800 font-semibold">
+                                        Tetap / tidak Naik
+                                    </span>
                                     @endif
                             </tr>
                             @endforeach
