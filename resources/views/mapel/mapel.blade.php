@@ -1,8 +1,8 @@
 <x-app-layout>
     <x-slot name="header">
-        @section('title', ' | Mata Pelajaran' )
+        @section('title', ' | Kurikulum' )
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Daftar Mata Pelajaran') }}
+            {{ __('Daftar Mata Pelajaran dan Kurikulum') }}
         </h2>
     </x-slot>
     <div class=" px-2 mt-2 overflow-auto ">
@@ -37,6 +37,7 @@
                                     {{ session('delete') }}
                                 </div>
                             </div>
+                            <meta http-equiv="refresh" content="5">
                             @endif
                             @if (session('success'))
                             <div class="py-2">
@@ -44,6 +45,7 @@
                                     {{ session('success') }}
                                 </div>
                             </div>
+                            <meta http-equiv="refresh" content="5">
                             @endif
                             @if (session('update'))
                             <div class="py-2">
@@ -51,8 +53,8 @@
                                     {{ session('update') }}
                                 </div>
                             </div>
-                            @endif
                             <meta http-equiv="refresh" content="5">
+                            @endif
                             <div class=" overflow-auto">
                                 <table class=" w-full border">
                                     <thead class=" border bg-gray-200 uppercase text-xs sm:text-xs ">

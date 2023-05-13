@@ -19,7 +19,6 @@ class MapelController extends Controller
     public function index()
     {
         $datakelas = Kelas::all();
-        
         $Pelajara = Mapel::query()
             ->leftjoin('kelas', 'kelas.id', '=', 'mapel.kelas_id')
             ->leftjoin('periode', 'periode.id', '=', 'mapel.periode_id')
@@ -49,6 +48,7 @@ class MapelController extends Controller
             ->join('semester', 'semester.id', '=', 'periode.semester_id')
             ->select('periode.id', 'periode.periode', 'semester.ket_semester')
             ->orderby('ket_semester', 'desc')
+            ->where('periode.id', session('periode_id'))
             ->get();
         $datakelas = Kelas::all();
         return view('mapel/addmapel', [
@@ -98,7 +98,7 @@ class MapelController extends Controller
             ->join('semester', 'semester.id', '=', 'periode.semester_id')
             ->select('periode.id', 'periode.periode', 'semester.ket_semester')
             ->orderby('ket_semester', 'desc')
-            ->where('periode.id', session('periode_id'))
+            // ->where('periode.id', session('periode_id'))
             ->get();
         return view('mapel.editmapel', compact('datakelas', 'mapel', 'dataPeriode'));
     }
