@@ -24,6 +24,7 @@ class MapelController extends Controller
             ->leftjoin('periode', 'periode.id', '=', 'mapel.periode_id')
             ->leftjoin('semester', 'semester.id', '=', 'periode.semester_id')
             ->select('mapel.*', 'kelas.kelas', 'periode', 'ket_semester')
+            ->where('mapel.periode_id', session('periode_id'))
             ->OrderBy('kelas')
             ->OrderBy('mapel')
             ->get();
