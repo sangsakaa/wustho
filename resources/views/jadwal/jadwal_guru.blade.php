@@ -23,7 +23,7 @@
             <select id="hari" name="mapel_id" class=" py-1">
                 <option value="">Pilih Mata Pelajaran</option>
                 @foreach($daftarMapel as $mapel)
-                <option value="{{$mapel->id}}">{{$mapel->kelas}} - {{$mapel->mapel}} - {{$mapel->nama_kitab}}</option>
+                <option value="{{$mapel->id}}">{{$mapel->kelas}} - {{$mapel->mapel}} - {{$mapel->nama_kitab}} {{$mapel->periode}} {{$mapel->ket_semester}}</option>
                 @endforeach
             </select>
             <div></div>

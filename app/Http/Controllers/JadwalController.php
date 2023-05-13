@@ -75,7 +75,9 @@ class JadwalController
         $daftarMapel = Mapel::query()
             ->join('kelas', 'kelas.id', '=', 'mapel.kelas_id')
             ->join('kelasmi', 'kelasmi.kelas_id', '=', 'kelas.id')
-            ->select('mapel.id', 'kelas.kelas', 'mapel', 'nama_kitab')
+            ->join('periode', 'periode.id', '=', 'mapel.periode_id')
+            ->join('semester', 'semester.id', '=', 'periode.semester_id')
+            ->select('mapel.id', 'kelas.kelas', 'mapel', 'nama_kitab', 'periode', 'ket_semester')
             ->where('kelasmi.id', $jadwal->kelasmi_id)
             ->whereNotExists(function ($query) use ($jadwal) {
                 $query->select(DB::raw(1))
