@@ -84,7 +84,8 @@ class JadwalController
                     ->from('daftar_jadwal')
                     ->join('jadwal', 'jadwal.id', '=', 'daftar_jadwal.jadwal_id')
                     ->whereColumn('daftar_jadwal.mapel_id', '=', 'mapel.id')
-                    ->where('jadwal.kelasmi_id', $jadwal->kelasmi_id);
+                ->where('jadwal.kelasmi_id', $jadwal->kelasmi_id)
+                ->where('jadwal.periode_id', session('periode_id'));
             })
             ->orderBy('kelas.kelas')
             ->orderBy('mapel')

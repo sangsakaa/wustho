@@ -163,13 +163,13 @@ class PresensiGuruController
             ->get();
 
         $laporanGuru->collect(); // Isi dengan data laporan guru Anda
+        
 
         // Menghitung jumlah laporan guru dengan keterangan tertentu
         $jmlKet = $laporanGuru->groupBy('keterangan')->map(function ($item) {
                 return $item->count();
             });
         // dd($jmlKet);
-
         // Menambahkan presentasi dalam keterangan
         $totalLaporan = $jmlKet->sum();
         $Sakit = $jmlKet->get('sakit', 0);
@@ -180,8 +180,7 @@ class PresensiGuruController
         $presentasiHadir = $totalLaporan > 0 ? $Hadir / $totalLaporan * 100 : 0;
         $presentasiIzin = $totalLaporan > 0 ? $Izin / $totalLaporan * 100 : 0;
         $presentasiAlfa = $totalLaporan > 0 ? $Alfa / $totalLaporan * 100 : 0;
-
-
+        
         // Menampilkan hasil
 
         return view('presensi.guru.laporan.laporan', compact(
@@ -216,7 +215,6 @@ class PresensiGuruController
             ->select(DB::raw("DATE_FORMAT(sesi_kelas_guru.tanggal,'%M') as bulan"), 'guru.nama_guru', DB::raw('count(*) as total'), 'absensiguru.keterangan')
             ->groupBy(DB::raw("DATE_FORMAT(sesi_kelas_guru.tanggal,'%M')"), 'absensiguru.keterangan', 'guru.nama_guru')
             ->whereBetween('sesi_kelas_guru.tanggal', [$startOfMonth, $endOfMonth])
-
             ->orderby('nama_guru')
             ->get();
 
@@ -260,9 +258,6 @@ class PresensiGuruController
         } catch (InvalidFormatException $ex) {
             $tanggal = now()->format('Y-m');
         }
-
-
-        
 
         return view(
             'presensi.guru.laporan.laporanSemester',
