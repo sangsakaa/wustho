@@ -98,6 +98,7 @@
             <x-heroicon-o-view-grid class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
         </x-slot>
         <x-sidebar.sublink title=" BLANGKO SAP" href="{{ route('sap') }}" :active="request()->routeIs('sap')" />
+        <x-sidebar.sublink title=" BLANGKO LAP HARIAN" href="{{ route('blankoHarian') }}" :active="request()->routeIs('blankoHarian')" />
         <x-sidebar.sublink title="BLANGKO PRESENSI" href="{{ route('absensikelas/blanko') }}" :active="request()->routeIs('absensikelas/blanko')" />
     </x-sidebar.dropdown>
     <x-sidebar.dropdown title="LAPORAN" :active="Str::startsWith(request()->route()->uri(), 'buttons')">

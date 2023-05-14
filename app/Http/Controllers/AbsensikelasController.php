@@ -379,4 +379,17 @@ class AbsensikelasController
             'periode' => $periode,
         ]);
     }
+    public function blankoLApHarian()
+    {
+        $bulan = now();
+        setlocale(LC_TIME, 'id_ID');
+
+        $bulan = Carbon::now()->locale('id_ID')->isoFormat('MMMM Y');
+        $kelasmi = Kelasmi::query()
+            ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
+            ->join('semester', 'semester.id', '=', 'periode.semester_id')
+            ->select('nama_kelas', 'periode', 'ket_semester')
+            ->where('kelasmi.periode_id', session('periode_id'))->get();
+        return view('presensi.kelas.blankoHarian', compact('kelasmi', 'bulan'));
+    }
 }

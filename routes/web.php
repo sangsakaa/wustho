@@ -226,6 +226,8 @@ Route::get('sesikelas/rekap', [SesikelasController::class, 'rekapSesi'])->middle
 Route::get('absensikelas/{sesikelas}', [AbsensikelasController::class, 'index'])->where('sesikelas', '[0-9]+')->middleware(['auth']);
 Route::post('absensikelas', [AbsensikelasController::class, 'store'])->middleware(['auth']);
 Route::get('absensikelas/blanko', [AbsensikelasController::class, 'blanko'])->middleware(['auth'])->name('absensikelas/blanko');
+
+Route::get('blankoHarian', [AbsensikelasController::class, 'blankoLApHarian'])->middleware(['auth'])->name('blankoHarian');
 Route::get('absensikelas/rekap-per-hari', [AbsensikelasController::class, 'rekapPerHari'])->middleware(['auth'])->name('absensikelas/rekap-per-hari');
 Route::get('absensikelas/rekap-per-bulan', [AbsensikelasController::class, 'rekapPerBulan'])->middleware(['auth'])->name('absensikelas/rekap-per-bulan');
 Route::get('absensikelas/rekap-semester', [AbsensikelasController::class, 'rekapSemester'])->middleware(['auth'])->name('absensikelas/rekap-semester');
