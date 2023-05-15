@@ -29,6 +29,7 @@ class NilaiController extends Controller
         $dataMapel = Mapel::query()
             ->join('kelas', 'kelas.id', '=', 'mapel.kelas_id')
             ->select('mapel.id', 'mapel.mapel', 'kelas.kelas', 'mapel.nama_kitab')
+            ->where('mapel.periode_id', session('periode_id'))
             ->orderBy('kelas.kelas')
             ->orderBy('mapel.mapel')
         ->get();
