@@ -146,6 +146,7 @@ class JadwalController
                     'kelas.kelas',
                     'mapel.mapel',
                     'guru.nama_guru',
+                'guru.jenis_kelamin',
                     'jadwal.periode_id',
                     'periode.periode'
                 ]
@@ -155,7 +156,7 @@ class JadwalController
 
             ->orderBy('kelasmi.nama_kelas')
             ->orderBy('jadwal.id')
-            ->groupBy('hari', 'jadwal.id', 'kelasmi.nama_kelas', 'jadwal.periode_id', 'periode.periode', 'kelas.kelas', 'mapel.mapel', 'guru.nama_guru');
+        ->groupBy('hari', 'jadwal.id', 'kelasmi.nama_kelas', 'jadwal.periode_id', 'periode.periode', 'kelas.kelas', 'mapel.mapel', 'guru.nama_guru', 'guru.jenis_kelamin');
         $title = $jadwalByDay;
         $jadwalByDayMap = [];
 
@@ -167,32 +168,6 @@ class JadwalController
         if (request('kelasmi_id')) {
             $jadwal->where('kelas', 'like', '%' . request('kelasmi_id') . '%');
         }
-
-        $jadwalByDay3 = Jadwal::query()
-            ->leftJoin('kelasmi', 'kelasmi.id', '=', 'jadwal.kelasmi_id')
-            ->groupBy('kelasmi.nama_kelas') // tambahkan ini
-            ->leftJoin('kelas', 'kelas.id', '=', 'kelasmi.kelas_id')
-            ->join('periode', 'periode.id', '=', 'jadwal.periode_id')
-            ->join('semester', 'semester.id', '=', 'periode.semester_id')
-            ->leftJoin('daftar_jadwal', 'daftar_jadwal.jadwal_id', '=', 'jadwal.id')
-            ->leftJoin('mapel', 'mapel.id', '=', 'daftar_jadwal.mapel_id')
-            ->leftJoin('guru', 'guru.id', '=', 'daftar_jadwal.guru_id')
-            ->select(
-                [
-                    'hari',
-                    'jadwal.id',
-                    'kelasmi.nama_kelas',
-                    'kelas.kelas',
-                    'mapel.mapel',
-                    'guru.nama_guru',
-                    'jadwal.periode_id'
-                ]
-            )
-            ->where('kelas.kelas', 3)
-            ->where('kelasmi.periode_id', session('periode_id'))
-            ->orderBy('kelasmi.nama_kelas')
-            ->orderBy('jadwal.id')
-        ->groupBy('hari', 'jadwal.id', 'kelasmi.nama_kelas', 'jadwal.periode_id', 'kelas.kelas', 'mapel.mapel', 'guru.nama_guru');
         return view(
             'jadwal.jadwal1',
             [
