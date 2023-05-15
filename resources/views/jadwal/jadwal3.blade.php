@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        @section('title', ' | Daftar Jadwal' )
+        @section('title', ' | Kalas : 3 Daftar Jadwal' )
 
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Dashboard kegiatan') }}

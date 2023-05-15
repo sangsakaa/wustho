@@ -60,6 +60,7 @@
                     <th class=" border text-center text-xs sm:text-sm">Hari</th>
                     <th class=" border text-center text-xs sm:text-sm">Periode</th>
                     <th class=" border text-center text-xs sm:text-sm">Kelas</th>
+                    <th class=" border text-center text-xs sm:text-sm">Mapel</th>
                     <th class=" border text-center text-xs sm:text-sm">Daftar Pendidik</th>
                 </tr>
             </thead>
@@ -68,8 +69,10 @@
                 <tr class=" even:bg-gray-100">
                     <th class=" px-1 border text-xs sm:text-sm text-center py-1">{{$loop->iteration}}</th>
                     <td class=" px-1 border text-xs sm:text-sm text-center capitalize">{{$jadwal->hari}}</td>
+
                     <td class=" px-1 border text-xs sm:text-sm text-center"> {{$jadwal->periode}} {{$jadwal->ket_semester}}</td>
                     <td class=" px-1 border text-xs sm:text-sm text-center"><a href="/jadwal-guru/{{$jadwal->id}}" target="_blank"> {{$jadwal->nama_kelas}}</a> </td>
+                    <td class=" px-1 border text-xs sm:text-sm text-center capitalize">{{$jadwal->mapel}}</td>
                     <td class=" px-1 border text-xs sm:text-sm text-left w-1/2">
                         @if($jadwal->nama_guru !== null)
                         @if($jadwal->jenis_kelamin == 'L')
