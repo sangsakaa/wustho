@@ -44,7 +44,7 @@
                         </p>
                     </center>
                     <hr class=" border-b-2   border-b-green-700">
-                    <span class="   font-semibold ">Kelas : {{$datakelasmi->kelas}}</span>
+                    <span class="   font-semibold ">Kelas : 1</span>
                     <table class=" mb-4 w-full">
                         <thead>
                             <tr class=" border text-sm">
