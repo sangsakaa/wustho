@@ -205,6 +205,7 @@ class JadwalController
                     'kelas.kelas',
                     'mapel.mapel',
                     'guru.nama_guru',
+                'guru.jenis_kelamin',
                     'jadwal.periode_id'
                 ]
             )
@@ -212,7 +213,7 @@ class JadwalController
             ->where('kelasmi.periode_id', session('periode_id'))
             ->orderBy('kelasmi.nama_kelas')
             ->orderBy('jadwal.id')
-            ->groupBy('hari', 'jadwal.id', 'kelasmi.nama_kelas', 'jadwal.periode_id', 'kelas.kelas', 'mapel.mapel', 'guru.nama_guru');
+        ->groupBy('hari', 'jadwal.id', 'kelasmi.nama_kelas', 'jadwal.periode_id', 'kelas.kelas', 'mapel.mapel', 'guru.nama_guru', 'guru.jenis_kelamin');
 
         $jadwalByDayMap2 = [];
 
@@ -260,6 +261,7 @@ class JadwalController
                     'kelas.kelas',
                     'mapel.mapel',
                     'guru.nama_guru',
+                'guru.jenis_kelamin',
                     'jadwal.periode_id'
                 ]
             )
@@ -267,7 +269,7 @@ class JadwalController
             ->where('kelasmi.periode_id', session('periode_id'))
             ->orderBy('kelasmi.nama_kelas')
             ->orderBy('jadwal.id')
-            ->groupBy('hari', 'jadwal.id', 'kelasmi.nama_kelas', 'jadwal.periode_id', 'kelas.kelas', 'mapel.mapel', 'guru.nama_guru');
+        ->groupBy('hari', 'jadwal.id', 'kelasmi.nama_kelas', 'jadwal.periode_id', 'kelas.kelas', 'mapel.mapel', 'guru.nama_guru', 'guru.jenis_kelamin');
 
         $jadwalByDayMap3 = [];
 

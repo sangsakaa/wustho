@@ -69,7 +69,11 @@
                                 <td class=" border text-sm border-green-800 capitalize text-center">{{ $jadwal->nama_kelas }}</td>
                                 <td class=" border text-sm border-green-800 capitalize text-center">{{ $jadwal->kelas }}</td>
                                 <td class=" border text-sm border-green-800 capitalize text-center">{{ $jadwal->mapel }}</td>
-                                <td class=" border text-sm border-green-800 capitalize text-center">{{ $jadwal->nama_guru }}</td>
+                                <td class=" border text-sm border-green-800 capitalize text-center"> @if($jadwal->jenis_kelamin == "L")
+                                    Bapak. {{ $jadwal->nama_guru }}
+                                    @else
+                                    Ibu. {{ $jadwal->nama_guru }}
+                                    @endif</td>
                                 @if ($key == 0)
                             </tr>
                             @endif
