@@ -35,7 +35,6 @@
                 </select>
                 <div class=" w-full   flex   grid-cols-6   gap-2">
                     <button class=" bg-red-600 px-2 py-1 text-white">Simpan</button>
-
                 </div>
             </div>
         </form>
@@ -51,7 +50,7 @@
             <a href="/cetak-jadwal-2" class=" bg-red-600 px-2 py-1 text-white text-xs sm:text-sm"> KELAS 2</a>
             <a href="/cetak-jadwal-3" class=" bg-red-600 px-2 py-1 text-white text-xs sm:text-sm"> KELAS 3</a>
             <a href="/laporan-poling-guru" class=" bg-red-600 px-2 py-1 text-white text-xs sm:text-sm">LAPORAN</a>
-            <a href="/cetak-jadwal-kolektif" class=" bg-red-600 px-2 py-1 text-white text-xs sm:text-sm uppercase">Kolektif</a>
+            <a href="/cetak-jadwal-kolektif" class=" bg-red-600 px-2 py-1 text-white text-xs sm:text-sm uppercase">Buat Jadwal</a>
         </div>
         <table class=" w-full">
             <thead class=" fixed-top">
@@ -71,7 +70,7 @@
                     <td class=" px-1 border text-xs sm:text-sm text-center capitalize">{{$jadwal->hari}}</td>
 
                     <td class=" px-1 border text-xs sm:text-sm text-center"> {{$jadwal->periode}} {{$jadwal->ket_semester}}</td>
-                    <td class=" px-1 border text-xs sm:text-sm text-center"><a href="/jadwal-guru/{{$jadwal->id}}" target="_blank"> {{$jadwal->nama_kelas}}</a> </td>
+                    <td class=" px-1 border text-xs sm:text-sm text-center"><a href="/jadwal-guru/{{$jadwal->id}}"> {{$jadwal->nama_kelas}}</a> </td>
                     <td class=" px-1 border text-xs sm:text-sm text-center capitalize">{{$jadwal->mapel}}</td>
                     <td class=" px-1 border text-xs sm:text-sm text-left w-1/2">
                         @if($jadwal->nama_guru !== null)

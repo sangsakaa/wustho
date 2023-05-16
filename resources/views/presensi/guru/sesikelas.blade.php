@@ -8,8 +8,8 @@
     <div class="">
         <div class="">
             <div class=" bg-white dark:bg-dark-bg px-2 shadow-sm ">
-                <div class="px-2 flex  gap-2 w-full border-gray-200">
-                    <div>
+                <div class="px-2 grid sm:flex sm:grid-cols-1  gap-1 w-full border-gray-200">
+                    <div class="  ">
                         <form action="/sesi-presensi-guru" method="get" class="mr-auto">
                             <input type="date" name="tanggal" class="py-1 dark:bg-dark-bg" value="{{ $tanggal->toDateString() }}">
                             <button class=" bg-red-600 py-1 dark:bg-purple-600 mt-1 my-1 rounded-sm hover:bg-purple-600 text-white px-4 ">
@@ -17,7 +17,7 @@
                             </button>
                         </form>
                     </div>
-                    <div>
+                    <div class="  ">
                         <form action="/sesi-presensi-guru" method="post">
                             @csrf
                             <input type="hidden" name="tanggal" value="{{ $tanggal->toDateString() }}">
@@ -26,13 +26,13 @@
                             </button>
                         </form>
                     </div>
-                    <div class=" py-2">
+                    <div class=" py-2  hidden  sm:block">
                         <a href="/laporan-harian-guru" class=" bg-red-600 py-1 dark:bg-purple-600 mt-2 my-1 rounded-sm hover:bg-purple-600 text-white px-4 ">
                             Laporan Harian
                         </a>
 
                     </div>
-                    <div class=" py-2">
+                    <div class=" py-2  hidden  sm:block">
                         <a href="/laporan-semester-guru" class=" bg-red-600 py-1 dark:bg-purple-600 mt-2 my-1 rounded-sm hover:bg-purple-600 text-white px-4 ">
                             Laporan Semester
                         </a>
@@ -119,7 +119,7 @@
     <div class="my-1">
         <div class="">
             <div class=" bg-sky-200 dark:bg-dark-bg overflow-hidden shadow-sm">
-                <div class="p-6  ">
+                <div class="p-2 sm:text-sm text-xs  ">
                     <p class=" font-semibold">Keterangan : </p>
                     <p class=" px-2">1. Nilai diambail dari <b class=" underline">Ulangan Harian dan Ujian Akhir
                             Semester</b></p>
