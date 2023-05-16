@@ -118,13 +118,14 @@
                                     @endfor
                             </tr>
                             @endforeach
-                            @for ($i = 39; $i < 41; $i++) <tr class=" border border-green-600 text-xs sm:text-sm even:bg-gray-100 ">
-                                <td class="border border-green-600 text-center px-1 py-2 text-xs">{{$i}}</td>
-                                @for($x = 0; $x < 21; $x++) <td class="border border-green-600 px-1 py-2 text-xs capitalize">
+                            @for ($i = $dataSiswa->count(); $i < 40; $i++) <tr class="border border-green-600 text-xs sm:text-sm {{ $i % 2 == 0 ? 'even:bg-gray-100' : '' }}">
+                                <td class="border border-green-600 text-center px-1 py-2 h-2 text-xs">{{$i+1}}</td>
+                                @for ($x = 0; $x < 21; $x++) <td class="border border-green-600 px-1 py-2 text-xs capitalize">
                                     </td>
                                     @endfor
                                     </tr>
                                     @endfor
+
                         </tbody>
                     </table>
                     <div class="break-after-page"></div>
