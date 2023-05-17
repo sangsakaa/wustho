@@ -58,7 +58,7 @@
                             </div>
                             @endif
                             <div class=" overflow-auto">
-                                <Table class=" w-full  border-collapse border border-slate-500 mt-2 ">
+                                <Table class=" w-full  border-collapse border border-slate-500 mt-2  ">
                                     <thead>
                                         <tr class=" border dark:bg-purple-600 uppercase text-xs sm:text-xs bg-gray-50 ">
                                             <th class=" border text-xs py-1">No</th>
@@ -74,7 +74,7 @@
                                     <tbody class="">
                                         @if($kelasMI->count() != null)
                                         @foreach ($kelasMI as $item)
-                                        <tr class=" hover:bg-green-200 border dark:hover:bg-purple-600 even:bg-gray-100">
+                                        <tr class=" hover:bg-green-200 border dark:hover:bg-purple-600 even:bg-gray-100 text-xs sm:text-sm">
                                             <th class=" text-xs text-center border">{{$loop->iteration}}</th>
                                             <td class=" text-xs text-center border"> {{$item->periode}} {{$item->ket_semester}}</td>
                                             <td class=" text-xs text-center border"><a href="/pesertakelas/{{$item->id}}"> {{$item->kelas}}</a></td>

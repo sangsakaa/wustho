@@ -371,9 +371,52 @@ class JadwalController
             ['laporan' => $laporan]
         );
     }
+    public function LaporanPlotingKelas()
+    {
+        $laporan = Jadwal::query()
+            ->leftJoin('kelasmi', 'kelasmi.id', '=', 'jadwal.kelasmi_id')
+            ->leftJoin('kelas', 'kelas.id', '=', 'kelasmi.kelas_id')
+            ->join('periode', 'periode.id', '=', 'jadwal.periode_id')
+            ->join('semester', 'semester.id', '=', 'periode.semester_id')
+            ->leftJoin('daftar_jadwal', 'daftar_jadwal.jadwal_id', '=', 'jadwal.id')
+            ->leftJoin('mapel', 'mapel.id', '=', 'daftar_jadwal.mapel_id')
+            ->leftJoin('guru', 'guru.id', '=', 'daftar_jadwal.guru_id')
+            ->where('kelasmi.periode_id', session('periode_id'))
+            ->whereNotNull('guru.nama_guru')
+            ->select('guru.nama_guru', 'nama_kelas', DB::raw('count(distinct mapel.id) as jumlah_mapel'), DB::raw('count(distinct kelasmi.id) as jumlah_kelas'))
+            ->groupBy('guru.id', 'guru.nama_guru', 'nama_kelas')
+            ->orderby('nama_kelas')
+            ->orderby('nama_guru')
+            ->get();
+        $Periode = Jadwal::query()
+            ->leftJoin('kelasmi', 'kelasmi.id', '=', 'jadwal.kelasmi_id')
+            ->leftJoin('kelas', 'kelas.id', '=', 'kelasmi.kelas_id')
+            ->join('periode', 'periode.id', '=', 'jadwal.periode_id')
+            ->join('semester', 'semester.id', '=', 'periode.semester_id')
+            ->leftJoin('daftar_jadwal', 'daftar_jadwal.jadwal_id', '=', 'jadwal.id')
+            ->leftJoin('mapel', 'mapel.id', '=', 'daftar_jadwal.mapel_id')
+            ->leftJoin('guru', 'guru.id', '=', 'daftar_jadwal.guru_id')
+            ->where('kelasmi.periode_id', session('periode_id'))
+            ->whereNotNull('guru.nama_guru')
+            ->select('periode.periode', 'semester.ket_semester')
+            ->selectRaw('count(distinct mapel.id) as jumlah_mapel')
+            ->selectRaw('count(distinct kelasmi.id) as jumlah_kelas')
+            ->groupBy('periode.periode', 'semester.ket_semester')
+            ->orderBy('periode.periode')
+            ->orderBy('semester.ket_semester')
+            ->first();
+
+
+        return view(
+            'jadwal.laporankelas',
+            [
+                'laporan' => $laporan,
+                'Periode' => $Periode
+            ]
+        );
+    }
     public function destroyGuru(Daftar_Jadwal $daftar_Jadwal)
     {
-
         Daftar_Jadwal::destroy('id', $daftar_Jadwal->id);
         return redirect()->back();
         

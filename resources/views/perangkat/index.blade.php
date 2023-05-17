@@ -7,12 +7,12 @@
     </x-slot>
     <div class=" bg-white p-2 sm:p-2  ">
         <div>
-            <a href="/form-perangkat" class=" bg-blue-600 text-white rounded-md px-2 py-1">add</a>
+            <a href="/form-perangkat" class=" bg-blue-600 text-white rounded-md px-2 py-1 capitalize">Tambah data</a>
         </div>
-        <div class=" overflow-hidden">
+        <div class=" overflow-auto">
             <Table class=" sm:w-full w-full  mt-2">
                 <thead class=" bg-gray-50 dark:bg-purple-600">
-                    <tr class=" border  ">
+                    <tr class=" border text-xs sm:text-sm ">
                         <th class="px-2 border py-1">No</th>
                         <th class="px-2 border text-center ">NIG</th>
                         <th class="px-2 border text-center w-1/2 sm:w-1/4">Nama Guru</th>
@@ -28,7 +28,7 @@
                 <tbody>
                     @if($dataPerangkat->count() != null)
                     @foreach ($dataPerangkat as $item)
-                    <tr class=" border hover:bg-green-100">
+                    <tr class=" border hover:bg-green-100 text-xs sm:text-sm">
                         <th class=" text-center border">{{$loop->iteration}}</th>
 
                         <td class=" px-2 border text-center capitalize">

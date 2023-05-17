@@ -7,11 +7,11 @@
         </h2>
     </x-slot>
     <div class="px-4 py-2">
-
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
             <div class=" p-2 gap-2  flex  bg-white border-b border-gray-200">
                 <div>
                     <a href="/Daftar-Jadwal" class=" py-1 px-2 bg-red-600 text-white ">Jadwal</a>
+
                 </div>
                 <div>
                     <button class=" bg-red-600  dark:bg-purple-600 w-full rounded-sm hover:bg-purple-600 text-white px-4 " onclick="printContent('blanko')">
@@ -20,7 +20,6 @@
                 </div>
             </div>
         </div>
-
     </div>
     <script>
         function printContent(el) {
@@ -36,16 +35,18 @@
             <div class="bg-white overflow-hidden  sm:rounded-lg text-sm sm:text-sm">
                 <div class="p-2 bg-white  border-gray-200 ">
                     <center>
-                        <p class=" font-semibold text-xs  sm:text-2xl text-green-800">
-                            MADRASAH DINIYAH WUSTHO WAHIDIYAH
-                        </p>
-                        <p class=" font-semibold text-xs  sm:text-md text-green-800">
-                            LAPORAN PLOTING JADWAL PELAJARAN
-                        </p>
-                        <p class=" font-semibold text-xs  sm:text-md uppercase text-green-800">
-                            TAHUN PELAJARAN
+                        <div class=" block sm:hidden">
+                            <p class=" font-semibold text-xs  sm:text-2xl text-green-800">
+                                MADRASAH DINIYAH WUSTHO WAHIDIYAH
+                            </p>
+                            <p class=" font-semibold text-xs  sm:text-md text-green-800">
+                                LAPORAN PLOTING JADWAL PELAJARAN
+                            </p>
+                            <p class=" font-semibold text-xs  sm:text-md uppercase text-green-800">
+                                TAHUN PELAJARAN
 
-                        </p>
+                            </p>
+                        </div>
                     </center>
                     <hr class=" border-b-2   border-b-green-700">
                     <div class=" overflow-auto ">
@@ -66,10 +67,10 @@
                                 @if($data->jumlah_kelas >= 1)
                                 <tr class="border text-xs  sm:text-sm border-green-800 text-center">
                                     <td class="px-1 border text-xs  sm:text-sm border-green-800 text-center">{{ $loop->iteration }}</td>
-                                    <td class="px-1 border text-xs  sm:text-sm border-green-800 text-left {{ $data->jumlah_kelas <= 1 ? 'text-red-600 font-semibold' : '' }}">{{ $data->nama_guru }}</td>
+                                    <td class="px-1 border text-xs  sm:text-sm border-green-800 text-left {{ $data->jumlah_kelas+1 <= 1 ? 'text-red-600 font-semibold' : '' }}">{{ $data->nama_guru }}</td>
                                     <td class="px-1 border text-xs  sm:text-sm border-green-800 text-center">{{ $data->periode }}</td>
                                     <td class="px-1 border text-xs  sm:text-sm border-green-800 text-center">{{ $data->ket_semester }}</td>
-                                    <td class="px-1 border text-xs  sm:text-sm border-green-800 text-center {{ $data->jumlah_kelas <= 1 ? 'text-red-600' : '' }}">{{ $data->jumlah_kelas }}</td>
+                                    <td class="px-1 border text-xs  sm:text-sm border-green-800 text-center {{ $data->jumlah_kelas+1 <= 1 ? 'text-red-600' : '' }}">{{ $data->jumlah_kelas*2 }}</td>
                                     <td class="px-1 border text-xs  sm:text-sm border-green-800 text-center">{{ $data->jumlah_mapel }}</td>
                                     <td class="px-1 border text-xs  sm:text-sm border-green-800 text-center">{{ 'Rp.' . number_format($data->jumlah_kelas * 30000) }}</td>
                                 </tr>

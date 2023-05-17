@@ -316,6 +316,7 @@ Route::get('cetak-jadwal-1', [JadwalController::class, 'CetakJadwal1'])->middlew
 Route::get('cetak-jadwal-2', [JadwalController::class, 'CetakJadwal2'])->middleware(['auth']);
 Route::get('cetak-jadwal-3', [JadwalController::class, 'CetakJadwal3'])->middleware(['auth']);
 Route::get('laporan-poling-guru', [JadwalController::class, 'LaporanPloting'])->middleware(['auth']);
+Route::get('laporan-poling-guru-kelas', [JadwalController::class, 'LaporanPlotingKelas'])->middleware(['auth']);
 
 Route::delete('jadwal-guru/{daftar_Jadwal}', [JadwalController::class, 'destroyGuru'])->middleware(['auth']);
 
