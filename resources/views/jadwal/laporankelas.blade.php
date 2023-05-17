@@ -33,6 +33,8 @@
         <div class=" mx-auto ">
             <div class="bg-white overflow-hidden  sm:rounded-lg text-sm sm:text-sm">
                 <div class="p-2 bg-white  border-gray-200 ">
+                    @if($Periode == null )
+
                     <center>
                         <div class=" ">
                             <p class=" font-semibold sm:text-xs  text-2xl text-green-800">
@@ -100,6 +102,11 @@ text-center">
 
 
                     </div>
+                    @else
+                    <span>
+                        Tidak Ada Ploting Guru
+                    </span>
+                    @endif
                 </div>
             </div>
         </div>
