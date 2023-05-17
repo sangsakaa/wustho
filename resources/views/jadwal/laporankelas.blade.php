@@ -33,7 +33,7 @@
         <div class=" mx-auto ">
             <div class="bg-white overflow-hidden  sm:rounded-lg text-sm sm:text-sm">
                 <div class="p-2 bg-white  border-gray-200 ">
-                    @if($Periode == null )
+                    @if($Periode !== null )
 
                     <center>
                         <div class=" ">
@@ -44,8 +44,12 @@
                                 LAPORAN PLOTING GURU
                             </p>
                             <p class=" font-semibold text-xs  sm:text-md uppercase text-green-800">
-                                TAHUN PELAJARAN {{$Periode->periode}} {{$Periode->ket_semester}}
+                                TAHUN PELAJARAN
+                                @if($Periode !== null )
+                                {{$Periode->periode}} {{$Periode->ket_semester}}
+                                @else
 
+                                @endif
                             </p>
                         </div>
                     </center>
