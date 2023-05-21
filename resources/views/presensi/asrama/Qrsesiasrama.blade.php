@@ -13,8 +13,8 @@
         <div class=" w-full sm:w-1/2">
 
           <h1 class="text-center">QR Code Reader</h1>
-          <video id="video" style="width: 100%; height: auto;"></video>
-          <canvas id="canvas" style="display: none;"></canvas>
+          <video id="video" width="100%" style="width: 90px; height: 90px;"></video>
+          <canvas id="canvas" style="display:none;"></canvas>
           <div id="result"></div>
 
           <script src="https://cdn.jsdelivr.net/npm/qr-scanner"></script>
@@ -32,11 +32,6 @@
 
               // Mengaktifkan kamera saat halaman selesai dimuat
               scanner.start();
-
-              // Mengatur proporsi video di perangkat seluler
-              if (window.innerWidth <= 600) { // Ubah angka 600 sesuai dengan batas ukuran layar yang diinginkan
-                video.style.height = "50%";
-              }
             };
           </script>
 
