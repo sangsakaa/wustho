@@ -10,13 +10,11 @@
   <div class="px-4 mt-4 ">
     <div class=" bg-white overflow-hidden shadow-sm sm:rounded-lg">
       <div class="p-2 ">
-        <div class=" w-full sm:w-1/2">
-
+        <div class=" w-full sm:w-1/2 h-10">
           <h1 class="text-center">QR Code Reader</h1>
           <video id="video" width="450px"></video>
           <canvas id="canvas" style="display:none;"></canvas>
           <div id="result"></div>
-
           <script src="https://cdn.jsdelivr.net/npm/qr-scanner"></script>
           <script>
             window.onload = function() {
