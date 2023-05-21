@@ -26,6 +26,7 @@ use App\Http\Controllers\LulusanCotroller;
 use App\Http\Controllers\PararelController;
 use App\Http\Controllers\PerangkatController;
 use App\Http\Controllers\PresensiGuruController;
+use App\Http\Controllers\QrcodeController;
 use App\Http\Controllers\RekapAsamaController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SeleksiController;
@@ -320,6 +321,11 @@ Route::get('laporan-poling-guru-kelas', [JadwalController::class, 'LaporanPlotin
 
 Route::delete('jadwal-guru/{daftar_Jadwal}', [JadwalController::class, 'destroyGuru'])->middleware(['auth']);
 
+
+
+// qrCode
+
+Route::get('Qr-Scan', [QrcodeController::class, 'Scan'])->middleware(['auth'])->name('Qr-Scan');
 
 
 

@@ -86,6 +86,7 @@
         <x-sidebar.sublink title=" Perangkat" href="{{ route('sesi-perangkat') }}" :active="request()->routeIs('sesi-perangkat')" />
         <x-sidebar.sublink title=" Guru" href="{{ route('sesi-presensi-guru') }}" :active="request()->routeIs('sesi-presensi-guru')" />
         <x-sidebar.sublink title=" SIswa" href="{{ route('sesikelas') }}" :active="request()->routeIs('sesikelas')" />
+        <x-sidebar.sublink title=" QrCode" href="{{ route('Qr-Scan') }}" :active="request()->routeIs('Qr-Scan')" />
     </x-sidebar.dropdown>
     <x-sidebar.link class=" uppercase" title="Pengaturan" href="/pengaturan" :isActive="request()->routeIs('pengaturan')">
         <x-slot name="icon">

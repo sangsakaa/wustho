@@ -332,7 +332,7 @@ class JadwalController
 
         foreach ($dataKelasMi as $kelasmi) {
             $nama_kelas = $kelasmi->nama_kelas;
-            $hari_array = ['sabtu', 'minggu', 'Senin', 'Selasa', 'Rabu', 'kamis'];
+            $hari_array = ['jumat', 'sabtu', 'minggu', 'Senin', 'Selasa', 'Rabu',];
             foreach ($hari_array as $hari) {
                 if (!$jadwal->contains(function ($jadwal) use ($nama_kelas, $hari, $daftarPeriode) {
                     return $jadwal->nama_kelas == $nama_kelas && $jadwal->hari == $hari && $jadwal->periode_id == $daftarPeriode->id;
@@ -404,9 +404,7 @@ class JadwalController
             ->groupBy('periode.periode', 'semester.ket_semester')
             ->orderBy('periode.periode')
             ->orderBy('semester.ket_semester')
-            ->first();
-
-
+        ->first();
         return view(
             'jadwal.laporankelas',
             [
