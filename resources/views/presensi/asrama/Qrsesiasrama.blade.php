@@ -13,7 +13,7 @@
         <div class="">
           <h1 class="text-center">QR Code Reader</h1>
           <div id="video-container">
-            <video id="video" width="100%" class=" h-96 w-96"></video>
+            <video id="video" width="100%" class=" h-96 w-full"></video>
             <canvas id="canvas" style="display:none;"></canvas>
             <div id="result"></div>
           </div>
