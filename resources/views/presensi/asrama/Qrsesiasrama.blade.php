@@ -11,8 +11,16 @@
     <div class=" bg-white overflow-hidden shadow-sm sm:rounded-lg">
       <div class="p-2 ">
         <div class=" w-full sm:w-1/2">
+          <style>
+            #video {
+              height: 113.386px;
+              /* 3 cm dalam piksel dengan kepadatan piksel 96 ppi */
+              width: 113.386px;
+              /* 3 cm dalam piksel dengan kepadatan piksel 96 ppi */
+            }
+          </style>
           <h1 class=" text-center">QR Code Reader</h1>
-          <video id="video" height="300px" width="300px"></video>
+          <video id="video"></video>
           <canvas id="canvas" style="display:none;"></canvas>
           <div id="result"></div>
         </div>
