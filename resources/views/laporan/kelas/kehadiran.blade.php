@@ -43,17 +43,17 @@
     <div id="div1">
         <div class=" bg-white p-4">
             <center>
-                <div class=" uppercase text-green-800">
+                <div class=" uppercase text-green-800  block sm:hidden">
                     <p class=" text-2xl">MADRASAH DINIYAH WUSTHO WAHIDIYAH</p>
                     <p class=" text-3xl">Laporan Kehadiran</p>
+                    <hr class=" border border-b-2 border-green-800">
             </center>
-
-            <table>
+            <table class=" w-full mt-2">
                 <thead>
                     <tr>
-                        <th class=" border px-1">Nama Kelas</th>
-                        <th class=" border px-1">Nama Siswa</th>
-                        <th class=" border px-1">Total Alfa</th>
+                        <th class=" border border-green-800 px-1">Nama Kelas</th>
+                        <th class=" border border-green-800 px-1">Nama Siswa</th>
+                        <th class=" border border-green-800 px-1">Total Alfa</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -67,12 +67,12 @@
                         $currentKelas = $item->nama_kelas;
                         $rowCount = $data->where('nama_kelas', $item->nama_kelas)->count();
                         @endphp
-                        <td class="border text-center px-1 py-1" rowspan="{{ $rowCount }}">
+                        <td class="border border-green-800 text-center px-1 py-1" rowspan="{{ $rowCount }}">
                             {{ $item->nama_kelas }}
                         </td>
                         @endif
-                        <td class="border px-1 py-1">{{ $item->nama_siswa }}</td>
-                        <td class="border text-center px-1 py-1">{{ $item->total_alfa }}</td>
+                        <td class="border border-green-800 px-1 py-1">{{$loop->iteration}}. {{ $item->nama_siswa }}</td>
+                        <td class="border border-green-800 text-center px-1 py-1">{{ $item->total_alfa }}</td>
                     </tr>
                     @endforeach
 
