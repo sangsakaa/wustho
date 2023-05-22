@@ -47,7 +47,32 @@
                     <p class=" text-2xl">MADRASAH DINIYAH WUSTHO WAHIDIYAH</p>
                     <p class=" text-3xl">Laporan Kehadiran</p>
             </center>
-            {{$data->count()}}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nama Kelas</th>
+                        <th>Nama Siswa</th>
+                        <th>Total Alfa</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @php
+                    $prevKelas = null;
+                    @endphp
+                    @foreach ($data as $item)
+                    <tr>
+                        @if ($item->nama_kelas != $prevKelas)
+                        <td class="border " rowspan="6">{{ $item->nama_kelas }}</td>
+                        @php
+                        $prevKelas = $item->nama_kelas;
+                        @endphp
+                        @endif
+                        <td class="border ">{{ $item->nama_siswa }}</td>
+                        <td class="border ">{{ $item->total_alfa }}</td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
         </div>
     </div>
 </x-app-layout>
