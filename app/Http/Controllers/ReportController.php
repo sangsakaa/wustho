@@ -65,7 +65,7 @@ class ReportController
             ->where('kelasmi.periode_id', session('periode_id'))
             ->where('absensikelas.keterangan', 'alfa')
             ->groupBy('nama_kelas', 'nama_siswa') // Menambahkan kolom nama_siswa pada grup
-            ->select('nama_kelas', 'nama_siswa', DB::raw('count(*) as total_alfa')) // Menambahkan kolom nama_siswa pada select
+            ->select('nama_kelas', 'nama_siswa', DB::raw('count(*) as total_alfa'), DB::raw('count(pesertakelas.id) as total_alfa')) // Menambahkan kolom nama_siswa pada select
             ->orderBy('nama_kelas')
             ->orderBy('nama_siswa')
             ->get();

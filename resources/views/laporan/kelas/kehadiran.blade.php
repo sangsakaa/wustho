@@ -47,6 +47,7 @@
                     <p class=" text-2xl">MADRASAH DINIYAH WUSTHO WAHIDIYAH</p>
                     <p class=" text-3xl">Laporan Kehadiran</p>
             </center>
+
             <table>
                 <thead>
                     <tr>
@@ -57,22 +58,26 @@
                 </thead>
                 <tbody>
                     @php
-                    $prevKelas = null;
+                    $currentKelas = null;
                     @endphp
-                    @foreach ($data as $item)
+                    @foreach($data as $item)
                     <tr>
-                        @if ($item->nama_kelas != $prevKelas)
-                        <td class="border " rowspan="6">{{ $item->nama_kelas }}</td>
-                        @php
-                        $prevKelas = $item->nama_kelas;
-                        @endphp
-                        @endif
-                        <td class="border ">{{ $item->nama_siswa }}</td>
-                        <td class="border ">{{ $item->total_alfa }}</td>
+                        <td class=" border px-1 py-1">
+                            @if($currentKelas !== $item->nama_kelas)
+                            {{ $item->nama_kelas }}
+                            @php
+                            $currentKelas = $item->nama_kelas;
+                            @endphp
+                            @endif
+                        </td>
+                        <td class=" border px-1 py-1">{{ $item->nama_siswa }}</td>
+                        <td class=" border px-1 py-1">{{ $item->total_alfa }}</td>
                     </tr>
                     @endforeach
                 </tbody>
             </table>
+
+
         </div>
     </div>
 </x-app-layout>
