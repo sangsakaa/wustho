@@ -1,6 +1,10 @@
 <?php
 
-use App\Http\Controllers\AbsensikelasController;
+use App\Models\Mapel;
+use App\Models\Siswa;
+use App\Models\Absensikelas;
+use App\Models\Pesertaasrama;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GuruController;
@@ -10,32 +14,32 @@ use App\Http\Controllers\MapelController;
 use App\Http\Controllers\NilaiController;
 use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\AsramaController;
-use App\Http\Controllers\RaportController;
-use App\Http\Controllers\KelasmiController;
-use App\Http\Controllers\KegiatanController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\PengaturanController;
-use App\Http\Controllers\SesiasramaController;
-use App\Http\Controllers\AsramasiswaController;
-use App\Http\Controllers\Auth\AuthenticatedSessionController;
-use App\Http\Controllers\PelanggaranController;
-use App\Http\Controllers\PresensikelasController;
-use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\JadwalController;
 use App\Http\Controllers\LulusanCotroller;
-use App\Http\Controllers\PararelController;
-use App\Http\Controllers\PerangkatController;
-use App\Http\Controllers\PresensiGuruController;
 use App\Http\Controllers\QrcodeController;
-use App\Http\Controllers\RekapAsamaController;
+use App\Http\Controllers\RaportController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\KelasmiController;
+use App\Http\Controllers\PararelController;
 use App\Http\Controllers\SeleksiController;
-use App\Http\Controllers\SesikelasController;
-use App\Http\Controllers\SesiPerangkatController;
+use App\Http\Controllers\KegiatanController;
 use App\Http\Controllers\TranskipController;
 use App\Http\Controllers\UserguruController;
 use App\Http\Controllers\ValidasiController;
-use App\Models\Mapel;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PerangkatController;
+use App\Http\Controllers\SesikelasController;
+use App\Http\Controllers\PengaturanController;
+use App\Http\Controllers\RekapAsamaController;
+use App\Http\Controllers\SesiasramaController;
+use App\Http\Controllers\AsramasiswaController;
+use App\Http\Controllers\PelanggaranController;
+use App\Http\Controllers\AbsensikelasController;
+use App\Http\Controllers\PresensiGuruController;
+use App\Http\Controllers\PresensikelasController;
+use App\Http\Controllers\SesiPerangkatController;
+use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 
 // batas
 Route::get('/manajemen-user', [RegisteredUserController::class, 'index'])->middleware(['auth'])->name('admin');
@@ -88,9 +92,7 @@ Route::post('kelas', [KelasController::class, 'store'])->middleware(['auth'])->n
 Route::delete('kelas/{kelas}', [KelasController::class, 'destroy'])->middleware(['auth']);
 Route::post('pesertakolektif', [KelasController::class, 'StoreKolektif'])->middleware(['auth'])->name('pesertakolektif');
 Route::get('pesertakolektif/{kelasmi}', [KelasController::class, 'pesertakolektif'])->middleware(['auth']);
-Route::get('/', function () {
-    return view('welcome');
-});
+
 // CONTROLLER KELAS MI
 Route::get('kelas_mi', [KelasmiController::class, 'index'])->middleware(['auth'])->name('kelas_mi');
 Route::get('addkelas_mi', [KelasmiController::class, 'create'])->middleware(['auth'])->name('addkelas_mi');
@@ -326,6 +328,7 @@ Route::delete('jadwal-guru/{daftar_Jadwal}', [JadwalController::class, 'destroyG
 // qrCode
 
 Route::get('Qr-Scan', [QrcodeController::class, 'Scan'])->middleware(['auth'])->name('Qr-Scan');
+Route::get('generate-Scan', [QrcodeController::class, 'generateQRCode'])->middleware(['auth'])->name('generate-Scan');
 
 
 
@@ -354,7 +357,28 @@ Route::get('Qr-Scan', [QrcodeController::class, 'Scan'])->middleware(['auth'])->
 
 
 
+Route::get(
+    '/',
+    function () {
 
+        $data = Absensikelas::query()
+            ->join('sesikelas', 'sesikelas.id', '=', 'absensikelas.sesikelas_id')
+            ->join('pesertakelas', 'pesertakelas.id', '=', 'absensikelas.pesertakelas_id')
+            ->join('siswa', 'siswa.id', '=', 'pesertakelas.siswa_id')
+            ->join('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
+            ->where('kelasmi.periode_id', session('periode_id'))
+            ->where('absensikelas.keterangan', 'alfa')
+            ->groupBy('nama_kelas', 'nama_siswa') // Menambahkan kolom nama_siswa pada grup
+            ->select('nama_kelas', 'nama_siswa', DB::raw('count(*) as total_alfa')) // Menambahkan kolom nama_siswa pada select
+            ->orderBy('nama_kelas')
+            ->orderBy('nama_siswa')
+            ->get();
+
+
+        // -dd($data);
+        return view('welcome', compact('data'));
+    }
+);
 
 
 
