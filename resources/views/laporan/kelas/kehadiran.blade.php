@@ -47,7 +47,7 @@
                     <p class=" text-2xl">MADRASAH DINIYAH WUSTHO WAHIDIYAH</p>
                     <p class=" text-3xl">Laporan Kehadiran</p>
             </center>
-            {{$dataAbsensi->count()}}
+            {{$data->count()}}
         </div>
     </div>
 </x-app-layout>
