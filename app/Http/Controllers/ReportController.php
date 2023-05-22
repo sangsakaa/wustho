@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\DB;
 
 class ReportController
 {
-    public function LapKehadiran(Request $request)
+    public function LapKehadiran()
     {
         $kelasmi = Kelasmi::query()
             ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
@@ -32,6 +32,7 @@ class ReportController
             ->orderBy('nama_kelas')
             ->orderBy('nama_siswa')
             ->get();
+        
         return view('laporan.kelas.kehadiran', [
            
             'kelasmi' => $kelasmi,

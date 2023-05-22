@@ -23,32 +23,48 @@
 
     </nav>
     <div class="dropdown" data-bs-theme="dark">
-        <table>
-            <thead>
-                <tr>
-                    <th>Nama Kelas</th>
-                    <th>Nama Siswa</th>
-                    <th>Total Alfa</th>
-                </tr>
-            </thead>
-            <tbody>
-                @php
-                $prevKelas = null;
-                @endphp
-                @foreach ($data as $item)
-                <tr>
-                    @if ($item->nama_kelas != $prevKelas)
-                    <td class="border " rowspan="6">{{ $item->nama_kelas }}</td>
+        <div class=" bg-white px-2 py-2">
+            <center>
+                <div class=" uppercase text-green-800  block sm:hidden">
+                    <p class=" text-2xl">MADRASAH DINIYAH WUSTHO WAHIDIYAH</p>
+                    <p class=" text-3xl">Laporan Kehadiran</p>
+                    <p class=" text-md">Tahun Pelajaran {{$periode = $kelasmi->periode ?? ' ';}}{{$periode = $kelasmi->ket_semester ?? ' ';}}</p>
+
+                    <hr class=" border border-b-2 border-green-800">
+            </center>
+            <table class=" w-full mt-2">
+                <thead>
+                    <tr>
+                        <th class=" border border-green-800 px-1">Nama Kelas</th>
+                        <th class=" border border-green-800 px-1">Nama Siswa</th>
+                        <th class=" border border-green-800 px-1">Total Alfa</th>
+                    </tr>
+                </thead>
+                <tbody>
                     @php
-                    $prevKelas = $item->nama_kelas;
+                    $currentKelas = null;
                     @endphp
-                    @endif
-                    <td class="border ">{{ $item->nama_siswa }}</td>
-                    <td class="border ">{{ $item->total_alfa }}</td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
+                    @foreach($data as $item)
+                    <tr>
+                        @if($currentKelas !== $item->nama_kelas)
+                        @php
+                        $currentKelas = $item->nama_kelas;
+                        $rowCount = $data->where('nama_kelas', $item->nama_kelas)->count();
+                        @endphp
+                        <td class="border border-green-800 text-center px-1 py-1" rowspan="{{ $rowCount }}">
+                            {{ $item->nama_kelas }}
+                        </td>
+                        @endif
+                        <td class="border border-green-800 px-1 py-1 capitalize">{{$loop->iteration}}. {{ strtolower($item->nama_siswa) }}</td>
+                        <td class="border border-green-800 text-center px-1 py-1">{{ $item->total_alfa }}</td>
+                    </tr>
+                    @endforeach
+
+                </tbody>
+            </table>
+
+
+        </div>
 
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
