@@ -14,21 +14,7 @@
                     <x-icons.print></x-icons.print>
                 </button>
             </div>
-            <form action="/Laporan-Kehadiran" method="get" class="w-full">
-                <div class="">
-                    <select name="kelasmi_id" id="" class="  w-1/2   py-1 dark:bg-dark-bg">
-                        <option value="">-- Semua --</option>
-                        @foreach ($dataKelasMi as $kelas)
-                        <option value="{{ $kelas->id }}" {{ $kelasmi?->id === $kelas->id ? "selected" : "" }}>
-                            {{ $kelas->nama_kelas }} {{ $kelas->periode }} {{ $kelas->ket_semester }}
-                        </option>
-                        @endforeach
-                    </select>
-                    <button class=" bg-red-600 py-1 dark:bg-purple-600 mt-1 my-1 w-full sm:w-40 rounded-sm hover:bg-purple-600 text-white px-4 ">
-                        Tampilkan
-                    </button>
-                </div>
-            </form>
+
         </div>
         <script>
             function printContent(el) {
@@ -41,11 +27,13 @@
         </script>
     </div>
     <div id="div1">
-        <div class=" bg-white p-4">
+        <div class=" bg-white px-2 py-2">
             <center>
                 <div class=" uppercase text-green-800  block sm:hidden">
                     <p class=" text-2xl">MADRASAH DINIYAH WUSTHO WAHIDIYAH</p>
                     <p class=" text-3xl">Laporan Kehadiran</p>
+                    <p class=" text-md">Tahun Pelajaran {{$periode = $kelasmi->periode ?? ' ';}}{{$periode = $kelasmi->ket_semester ?? ' ';}}</p>
+
                     <hr class=" border border-b-2 border-green-800">
             </center>
             <table class=" w-full mt-2">
@@ -71,7 +59,7 @@
                             {{ $item->nama_kelas }}
                         </td>
                         @endif
-                        <td class="border border-green-800 px-1 py-1">{{$loop->iteration}}. {{ $item->nama_siswa }}</td>
+                        <td class="border border-green-800 px-1 py-1 capitalize">{{$loop->iteration}}. {{ strtolower($item->nama_siswa) }}</td>
                         <td class="border border-green-800 text-center px-1 py-1">{{ $item->total_alfa }}</td>
                     </tr>
                     @endforeach
