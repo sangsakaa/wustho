@@ -63,19 +63,19 @@
                     @foreach($data as $item)
                     <tr>
                         @if($currentKelas !== $item->nama_kelas)
-                        <td class=" border text-center px-1 py-1" rowspan="6">
-
-                            {{ $item->nama_kelas }}
-
-                        </td>
                         @php
                         $currentKelas = $item->nama_kelas;
+                        $rowCount = $data->where('nama_kelas', $item->nama_kelas)->count();
                         @endphp
+                        <td class="border text-center px-1 py-1" rowspan="{{ $rowCount }}">
+                            {{ $item->nama_kelas }}
+                        </td>
                         @endif
-                        <td class=" border px-1 py-1">{{ $item->nama_siswa }}</td>
-                        <td class=" border text-center px-1 py-1">{{ $item->total_alfa }}</td>
+                        <td class="border px-1 py-1">{{ $item->nama_siswa }}</td>
+                        <td class="border text-center px-1 py-1">{{ $item->total_alfa }}</td>
                     </tr>
                     @endforeach
+
                 </tbody>
             </table>
 
