@@ -366,7 +366,7 @@ Route::get(
             ->join('pesertakelas', 'pesertakelas.id', '=', 'absensikelas.pesertakelas_id')
             ->join('siswa', 'siswa.id', '=', 'pesertakelas.siswa_id')
             ->join('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
-            // ->where('kelasmi.periode_id', session('periode_id'))
+            ->where('kelasmi.periode_id', session('periode_id'))
             ->where('absensikelas.keterangan', 'alfa')
             ->groupBy('nama_kelas', 'nama_siswa') // Menambahkan kolom nama_siswa pada grup
             ->select('nama_kelas', 'nama_siswa', DB::raw('count(*) as total_alfa')) // Menambahkan kolom nama_siswa pada select
