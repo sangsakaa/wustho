@@ -62,6 +62,7 @@ class ReportController
             'periode' => $periode,
 
         ]);
+        
 
     }
 }

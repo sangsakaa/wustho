@@ -20,7 +20,7 @@
             </ul>
         </div>
     </nav>
-    <div class="dropdown" data-bs-theme="dark">
+    <div class=" bg-white text-black" data-bs-theme="dark">
         <table class=" mt-2">
             <thead>
                 <tr>

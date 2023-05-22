@@ -373,7 +373,7 @@ Route::get(
             ->orderBy('nama_kelas')
             ->orderBy('nama_siswa')
             ->get();
-
+        
 
         // -dd($data);
         return view('welcome', compact('data'));
