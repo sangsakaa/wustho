@@ -51,9 +51,9 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Nama Kelas</th>
-                        <th>Nama Siswa</th>
-                        <th>Total Alfa</th>
+                        <th class=" border px-1">Nama Kelas</th>
+                        <th class=" border px-1">Nama Siswa</th>
+                        <th class=" border px-1">Total Alfa</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -62,16 +62,18 @@
                     @endphp
                     @foreach($data as $item)
                     <tr>
-                        <td class=" border px-1 py-1">
-                            @if($currentKelas !== $item->nama_kelas)
+                        @if($currentKelas !== $item->nama_kelas)
+                        <td class=" border text-center px-1 py-1" rowspan="6">
+
                             {{ $item->nama_kelas }}
-                            @php
-                            $currentKelas = $item->nama_kelas;
-                            @endphp
-                            @endif
+
                         </td>
+                        @php
+                        $currentKelas = $item->nama_kelas;
+                        @endphp
+                        @endif
                         <td class=" border px-1 py-1">{{ $item->nama_siswa }}</td>
-                        <td class=" border px-1 py-1">{{ $item->total_alfa }}</td>
+                        <td class=" border text-center px-1 py-1">{{ $item->total_alfa }}</td>
                     </tr>
                     @endforeach
                 </tbody>
