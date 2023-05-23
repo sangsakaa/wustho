@@ -7,7 +7,7 @@
             </h2>
         </div>
     </x-slot>
-    <div class=" p-4  w-full bg-white ">
+    <div class=" px-4 py-1  w-full bg-white ">
         <div class=" flex  grid-cols-2  gap-1 ">
             <div class=" mt-1">
                 <button class="  w-10 justify-center text-white   bg-green-800 px-2 py-1 " onclick="printContent('div1')">
@@ -27,7 +27,7 @@
         </script>
     </div>
     <div id="div1">
-        <div class=" bg-white px-2 py-2">
+        <div class=" bg-white px-2 ">
             <center>
                 <div class=" uppercase text-green-800  block sm:hidden">
                     <p class=" text-2xl">MADRASAH DINIYAH WUSTHO WAHIDIYAH</p>
@@ -36,7 +36,7 @@
 
                     <hr class=" border border-b-2 border-green-800">
             </center>
-            <table class=" w-full mt-2">
+            <table class=" w-full ">
                 <thead>
                     <tr>
                         <th class=" border border-green-800 px-1">Nama Kelas</th>

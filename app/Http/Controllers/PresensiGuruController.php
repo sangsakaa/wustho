@@ -57,11 +57,13 @@ class PresensiGuruController
         $daftarPeriode = Periode::query()
             ->join('semester', 'semester.id', '=', 'periode.semester_id')
             ->select('periode.id', 'periode.periode', 'semester.semester', 'semester.ket_semester')
+            ->where('periode.id', session('periode_id'))
             ->orderbY('periode.id', 'desc')->first();
         $dataKelasMi = Kelasmi::query()
             ->where('kelasmi.periode_id', session('periode_id'))
             ->orderBy('kelasmi.nama_kelas')
             ->get();
+        // dd($dataKelasMi);
 
         $sesikelas = Sesi_Kelas_Guru::query()
             ->join('kelasmi', 'kelasmi.id', '=', 'sesi_kelas_guru.kelasmi_id')
