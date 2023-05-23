@@ -61,50 +61,68 @@
                                 <x-icons.print></x-icons.print>
                                 Cetak</button>
                         </div>
-
-
                     </div>
                 </div>
                 <div id="div1">
-                    <div class=" text-center text-green-900 block sm:hidden  ">
-                        <p class=" font-semibold text-sm">
-                            MADRASAH DINIYAH WUSTHO WAHIDIYAH
-                        </p>
-                        <p class=" font-semibold uppercase text-sm">
-                            TAHUN PELAJARAN
-                        </p>
-                        <hr class=" border-b-2 border-green-900">
+                    <div class=" text-center text-green-900 block sm:hidden   ">
+                        <div class=" flex">
+                            <div><img src={{ asset("asset/images/logo.png") }} alt="" width="110" class=" p-2"></div>
+                            <div class=" ml-4 ">
+                                <center>
+
+                                    </p>
+                                    <p class="  font-serif text-lg uppercase">pondok pesantren kedunglo al munadhdhoroh</p>
+                                    <p class="  uppercase font-serif text-2xl font-semibold text-monospace ">madrasah diniyah wustho
+                                        Wahidiyah</p>
+                                    <p class=" capitalize font-serif text-xs">Alamat : Jl.KH. Wachid Hasyim Kota Kediri 64114 Jawa Timur Telp. (0354) 774511, 771018 Fax. (0354) 772179</p>
+                                    <hr class=" border-b-1 border-green-800 ">
+                                    FAFIRURU - ILALLOH
+                                </center>
+                            </div>
+                        </div>
+                        <hr class=" border-b-2 border-green-800 mb-1">
+                        <div class="  uppercase px-1 text-center"> LAPORAN BULAN :
+                            {{ \Carbon\Carbon::parse($bulan)->isoFormat(' MMMM Y') }}
+                        </div>
                     </div>
-                    <table class=" w-full mt-2">
-                        <thead>
-                            <tr class=" border border-green-800">
-                                <th class=" border border-green-800 w-16">Bulan</th>
-                                <th class=" border border-green-800 w-16">No</th>
-                                <th class=" border border-green-800">Nama Guru</th>
-                                <th class=" border border-green-800">Hadir</th>
-                                <th class=" border border-green-800">Izin</th>
-                                <th class=" border border-green-800">Sakit</th>
-                                <th class=" border border-green-800">Alfa</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($laporan_per_bulan as $bulan => $guru)
-                            @foreach ($guru as $nama_guru => $data)
-                            <tr>
-                                @if ($loop->first)
-                                <td rowspan="{{ count($guru) + 1 }}" class=" border border-green-800 -rotate-90 text-2xl font-semibold">{{ $bulan }}</td>
-                                @endif
-                                <td class=" border border-green-800 text-center px-2">{{ $loop->iteration }}</td>
-                                <td class=" border border-green-800 text-left px-2">{{ $nama_guru }}</td>
-                                <td class=" border border-green-800 text-center px-2">{{ $data['hadir'] }}</td>
-                                <td class=" border border-green-800 text-center px-2">{{ $data['izin'] }}</td>
-                                <td class=" border border-green-800 text-center px-2">{{ $data['sakit'] }}</td>
-                                <td class=" border border-green-800 text-center px-2">{{ $data['alfa'] }}</td>
-                            </tr>
-                            @endforeach
-                            @endforeach
-                        </tbody>
-                    </table>
+                    <div class=" px-2">
+                        <table class=" w-full">
+                            <thead>
+                                <tr class=" border border-green-800">
+                                    <th rowspan="2" class=" border border-green-800 w-16">Bulan</th>
+                                    <th rowspan="2" class=" border border-green-800 w-5">No</th>
+                                    <th rowspan="2" class=" border border-green-800 w-16">Nama Guru</th>
+                                    <th colspan="4" class=" border border-green-800">Keterangan</th>
+                                </tr>
+                                <tr class=" border border-green-800">
+                                    <th class=" border border-green-800 w-5">Hadir</th>
+                                    <th class=" border border-green-800 w-5">Izin</th>
+                                    <th class=" border border-green-800 w-5">Sakit</th>
+                                    <th class=" border border-green-800 w-5">Alfa</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($laporan_per_bulan as $bulan => $guru)
+                                @foreach ($guru as $nama_guru => $data)
+                                <tr>
+                                    @if ($loop->first)
+                                    <td rowspan="{{ count($guru) + 1 }}" class="border border-green-800 text-center -rotate-90 text-2xl font-semibold">
+                                        {{ \Carbon\Carbon::parse($bulan)->isoFormat(' MMMM') }}
+                                    </td>
+
+                                    @endif
+                                    <td class=" border border-green-800 text-center px-2">{{ $loop->iteration }}</td>
+                                    <td class=" border border-green-800 text-left px-2">{{ $nama_guru }}</td>
+                                    <td class=" border border-green-800 text-center px-2">{{ $data['hadir'] }}</td>
+                                    <td class=" border border-green-800 text-center px-2">{{ $data['izin'] }}</td>
+                                    <td class=" border border-green-800 text-center px-2">{{ $data['sakit'] }}</td>
+                                    <td class=" border border-green-800 text-center px-2">{{ $data['alfa'] }}</td>
+                                </tr>
+                                @endforeach
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>

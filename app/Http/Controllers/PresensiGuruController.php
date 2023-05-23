@@ -151,6 +151,7 @@ class PresensiGuruController
         } catch (InvalidFormatException $ex) {
             $tanggal = now();
         }
+        
         $laporanGuru = Absensiguru::query()
             ->leftJoin('sesi_kelas_guru', 'absensiguru.sesi_kelas_guru_id', 'sesi_kelas_guru.id')
             ->leftJoin('daftar_jadwal', 'daftar_jadwal.id', 'absensiguru.daftar_jadwal_id')
@@ -193,10 +194,8 @@ class PresensiGuruController
             'Sakit',
             'Hadir',
             'Izin',
-            'Alfa'
+            'Alfa',
             
-            
-
 
         ));
     }
@@ -205,9 +204,16 @@ class PresensiGuruController
         $startOfMonth = now()->startOfMonth()->toDateString();
         $endOfMonth = now()->endOfMonth()->toDateString();
 
-        $bulan = $request->bulan ? Carbon::parse($request->bulan) : now();
-        
-        
+        $bulan = $request->bulan ? Carbon::parse($request->bulan)->locale('id')->format('m-Y') : now()->locale('id')->format('m-Y');
+
+        // dd($bulan);
+
+        $kelasmi = Kelasmi::query()
+        ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
+        ->join('semester', 'semester.id', '=', 'periode.semester_id')
+        ->where('periode.id', session('periode_id'))
+        ->select('kelasmi.nama_kelas', 'periode.periode', 'semester.ket_semester', 'periode.id')
+        ->first();
         $laporan = Absensiguru::query()
             ->leftJoin('sesi_kelas_guru', 'absensiguru.sesi_kelas_guru_id', 'sesi_kelas_guru.id')
             ->leftJoin('daftar_jadwal', 'daftar_jadwal.id', 'absensiguru.daftar_jadwal_id')
@@ -267,6 +273,7 @@ class PresensiGuruController
             
                 'tanggal' => $tanggal,
                 'laporan_per_bulan' => $laporan_per_bulan,
+                'kelasmi' => $kelasmi
 
             ]
         );

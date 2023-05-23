@@ -40,8 +40,10 @@
                 <thead>
                     <tr>
                         <th class=" border border-green-800 px-1">Nama Kelas</th>
+                        <th class=" border border-green-800 px-1">Total Kelas</th>
                         <th class=" border border-green-800 px-1">Nama Siswa</th>
                         <th class=" border border-green-800 px-1">Total Alfa</th>
+                        <th class=" border border-green-800 px-1">Total Sakit</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -58,9 +60,14 @@
                         <td class="border border-green-800 text-center px-1 py-1" rowspan="{{ $rowCount }}">
                             {{ $item->nama_kelas }}
                         </td>
+                        <td class="border border-green-800 text-center px-1 py-1" rowspan="{{ $rowCount }}">
+                            {{$data->where('nama_kelas', $item->nama_kelas)->count()}}
+                        </td>
                         @endif
+
                         <td class="border border-green-800 px-1 py-1 capitalize">{{$loop->iteration}}. {{ strtolower($item->nama_siswa) }}</td>
                         <td class="border border-green-800 text-center px-1 py-1">{{ $item->total_alfa }}</td>
+                        <td class="border border-green-800 text-center px-1 py-1">{{ $item->total_sakit }}</td>
                     </tr>
                     @endforeach
 
