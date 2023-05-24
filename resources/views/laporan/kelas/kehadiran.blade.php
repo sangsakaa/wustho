@@ -49,7 +49,7 @@
                     <tr>
                         <th class=" border border-green-800 px-1">Total Hadir</th>
                         <th class=" border border-green-800 px-1">Total Sakit</th>
-                        <th class=" border border-green-800 px-1">Total Izi</th>
+                        <th class=" border border-green-800 px-1">Total Izin</th>
                         <th class=" border border-green-800 px-1">Total Alfa</th>
 
                     </tr>
