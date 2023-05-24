@@ -79,7 +79,7 @@
                         <td class="border border-green-800 text-center px-1 py-1">{{ $item->total_sakit}}</td>
                         <td class="border border-green-800 text-center px-1 py-1">{{ $item->total_izin }}</td>
                         <td class="border border-green-800 text-center px-1 py-1">{{ $item->total_alfa}}</td>
-                        <td class="border border-green-800 text-center px-1 py-1">{{ number_format($item->total_kehadiran *100 /$item->total_peserta_kelas * $item->total_sesikelas  ,0,2)}} % </td>
+                        <td class="border border-green-800 text-center px-1 py-1">{{ number_format($item->total_kehadiran *100/$item->total_peserta_kelas / $item->total_sesikelas   ,0,2)}} % </td>
 
                     </tr>
                     @endforeach
