@@ -34,7 +34,7 @@ class ReportController
                 DB::raw('SUM(CASE WHEN absensikelas.keterangan = "sakit" THEN 1 ELSE 0 END) as total_sakit'),
             DB::raw('SUM(CASE WHEN absensikelas.keterangan = "izin" THEN 1 ELSE 0 END) as total_izin'),
             DB::raw('COUNT(DISTINCT pesertakelas.id) as total_peserta_kelas'),
-            DB::raw('SUM(CASE WHEN absensikelas.keterangan IN ("alfa", "sakit") THEN 1 ELSE 0 END) as total_kehadiran')
+            DB::raw('SUM(CASE WHEN absensikelas.keterangan IN ("hadir") THEN 1 ELSE 0 END) as total_kehadiran')
             )
             ->orderBy('nama_kelas')
             ->orderBy('nama_siswa')
