@@ -25,7 +25,7 @@ class ReportController
             ->join('siswa', 'siswa.id', '=', 'pesertakelas.siswa_id')
             ->join('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
             // ->whereIn('absensikelas.keterangan', ['alfa', 'sakit'])
-            ->groupBy('nama_kelas',  'periode_id')
+            ->groupBy('nama_kelas', 'periode_id')
             ->select(
                 'nama_kelas',
                 // 'nama_siswa',
@@ -34,12 +34,14 @@ class ReportController
                 DB::raw('SUM(CASE WHEN absensikelas.keterangan = "sakit" THEN 1 ELSE 0 END) as total_sakit'),
             DB::raw('SUM(CASE WHEN absensikelas.keterangan = "izin" THEN 1 ELSE 0 END) as total_izin'),
             DB::raw('COUNT(DISTINCT pesertakelas.id) as total_peserta_kelas'),
-            DB::raw('SUM(CASE WHEN absensikelas.keterangan IN ("hadir") THEN 1 ELSE 0 END) as total_kehadiran')
+                DB::raw('SUM(CASE WHEN absensikelas.keterangan IN ("hadir") THEN 1 ELSE 0 END) as total_kehadiran'),
+                DB::raw('COUNT(DISTINCT absensikelas.sesikelas_id) as total_sesikelas')
             )
             ->orderBy('nama_kelas')
             ->orderBy('nama_siswa')
             ->where('kelasmi.periode_id', session('periode_id'))
         ->get();
+
         // dd($data);
         return view('laporan.kelas.kehadiran', [
 
