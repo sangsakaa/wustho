@@ -1,8 +1,8 @@
 <x-app-layout>
     <x-slot name="header">
-        @section('title', ' |Sesi Perangkat '.$hariIni )
-        <h2 class="font-semibold text-xl leading-tight">
-            {{ __('Dashboard Sesi Perangkat : '.$hariIni) }}
+        @section('title', ' |Sesi Perangkat '.\Carbon\Carbon::parse($hariIni)->isoFormat(' dddd ,DD MMMM Y') )
+        <h2 class="font-semibold sm:text-xl  text-sm leading-tight">
+            {{ __('Sesi Perangkat : '.\Carbon\Carbon::parse($hariIni)->isoFormat(' dddd ,DD MMMM Y')) }}
         </h2>
     </x-slot>
     <div class=" bg-white p-2 sm:p-2  ">
@@ -57,16 +57,19 @@
 
                         </a>
                     </td>
-                    <td class=" border border-green-800 px-1 text-center">
+                    <td class=" border border-green-800 px-1 text-center sm:text-sm  text-xs">
                         {{$org->periode}}
                         {{$org->ket_semester}}
                     </td>
-                    <td class=" border border-green-800 px-1 text-center">
-
+                    <td class=" border  px-1 sm:text-center justify-items-center grid ">
                         @if($org->SesiP !== null)
-                        sudah di absen
+                        <span class=" hidden sm:block">sudah di absen</span>
+                        <span class="  block  sm:hidden text-center"> <x-icons.check class="w-5 h-5 text-green-600" aria-hidden="true" /></span>
+
                         @else
-                        <span class=" text-red-600">Belum di absensi</span>
+                        <span class=" hidden sm:block">Belum di absensi</span>
+                        <span class="  block  sm:hidden text-center"><x-icons.x-mark class="w-5 h-5 text-red-600" aria-hidden="true" /></span>
+
                         @endif
 
                     </td>

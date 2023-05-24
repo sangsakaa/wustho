@@ -64,10 +64,10 @@
                     </div>
                 </div>
                 <div id="div1">
-                    <div class=" text-center text-green-900 block sm:hidden   ">
+                    <div class=" text-center text-green-700 block sm:hidden   ">
                         <div class=" flex">
-                            <div><img src={{ asset("asset/images/logo.png") }} alt="" width="110" class=" p-2"></div>
-                            <div class=" ml-4 ">
+                            <div><img src={{ asset("asset/images/logo.png") }} alt="" width="110" class=" px-2"></div>
+                            <div class="  ml-5 ">
                                 <center>
 
                                     </p>
@@ -75,12 +75,13 @@
                                     <p class="  uppercase font-serif text-2xl font-semibold text-monospace ">madrasah diniyah wustho
                                         Wahidiyah</p>
                                     <p class=" capitalize font-serif text-xs">Alamat : Jl.KH. Wachid Hasyim Kota Kediri 64114 Jawa Timur Telp. (0354) 774511, 771018 Fax. (0354) 772179</p>
-                                    <hr class=" border-b-1 border-green-800 ">
-                                    FAFIRURU - ILALLOH
+                                    <hr class=" border-b-1 border-green-700 ">
+                                    FAFIRRUU - ILALLOH
                                 </center>
                             </div>
                         </div>
-                        <hr class=" border-b-2 border-green-800 mb-1">
+                        <hr class=" border-b-2 border-green-700 mb-1">
+                        <hr class=" border-b-1 border-green-700 mb-1">
                         <div class="  uppercase px-1 text-center"> LAPORAN BULAN :
                             {{ \Carbon\Carbon::parse($bulan)->isoFormat(' MMMM Y') }}
                         </div>

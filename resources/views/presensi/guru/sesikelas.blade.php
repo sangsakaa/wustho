@@ -2,7 +2,7 @@
     <x-slot name="header">
         @section('title', ' | Presensi Kelas Guru')
         <h2 class="font-semibold sm:text-xl leading-tight text-sm">
-            {{ __('Presensi Kelas Guru (' . $tanggal->isoFormat('dddd, D MMMM YYYY')) . ')' }}
+            {{ __('Presensi Kelas Guru (' . \Carbon\Carbon::parse($tanggal)->isoFormat('dddd DD MMMM Y') ) . ')' }}
         </h2>
     </x-slot>
     <div class="">
