@@ -39,12 +39,19 @@
             <table class=" w-full mt-1 ">
                 <thead>
                     <tr>
-                        <th class=" border border-green-800 px-1">Nama Kelas</th>
-                        <th class=" border border-green-800 px-1">Total Peserta Kelas</th>
+                        <th rowspan="2" class=" border border-green-800 px-1">No</th>
+                        <th rowspan="2" class=" border border-green-800 px-1">Nama Kelas</th>
+                        <th rowspan="2" class=" border border-green-800 px-1">Total Peserta Kelas</th>
+                        <th colspan="4" class=" border border-green-800 px-1">Total Hadir</th>
+
+                        <th rowspan="2" class=" border border-green-800 px-1">Presentasi Kehadiran</th>
+                    </tr>
+                    <tr>
                         <th class=" border border-green-800 px-1">Total Hadir</th>
-                        <th class=" border border-green-800 px-1">Total Alfa</th>
                         <th class=" border border-green-800 px-1">Total Sakit</th>
-                        <th class=" border border-green-800 px-1">Total Izin</th>
+                        <th class=" border border-green-800 px-1">Total Izi</th>
+                        <th class=" border border-green-800 px-1">Total Alfa</th>
+
                     </tr>
                 </thead>
                 <tbody>
@@ -59,18 +66,20 @@
                         $rowCount = $data->where('nama_kelas', $item->nama_kelas)->count();
                         @endphp
                         <td class="border border-green-800 text-center px-1 py-1" rowspan="{{ $rowCount }}">
+                            {{ $loop->iteration}}
+                        </td>
+                        <td class="border border-green-800 text-center px-1 py-1" rowspan="{{ $rowCount }}">
                             {{ $item->nama_kelas }}
                         </td>
                         <td class="border border-green-800 text-center px-1 py-1" rowspan="{{ $rowCount }}">
                             {{$item->total_peserta_kelas}}
                         </td>
                         @endif
-                        <td class="border border-green-800 text-center px-1 py-1 capitalize">{{$item->total_kehadiran}}</td>
-                        <td class="border border-green-800 text-center px-1 py-1">{{ $item->total_alfa }}</td>
-                        <td class="border border-green-800 text-center px-1 py-1">{{ $item->total_sakit }}</td>
+                        <td class="border border-green-800 text-center px-1 py-1">{{ $item->total_kehadiran}}</td>
+                        <td class="border border-green-800 text-center px-1 py-1">{{ $item->total_sakit}}</td>
                         <td class="border border-green-800 text-center px-1 py-1">{{ $item->total_izin }}</td>
-
-
+                        <td class="border border-green-800 text-center px-1 py-1">{{ $item->total_alfa}}</td>
+                        <td class="border border-green-800 text-center px-1 py-1">{{ number_format($item->total_kehadiran * 100 / $item->total_peserta_kelas,0,2)}} % </td>
                     </tr>
                     @endforeach
 
