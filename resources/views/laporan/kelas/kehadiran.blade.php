@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        @section('title', ' | Dashboard Utama' )
+        @section('title', ' | Laporan Akumulasi Semester' )
         <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
             <h2 class="text-xl font-semibold leading-tight">
                 {{ __('Laporan Kehadiran') }}
@@ -28,17 +28,33 @@
     </div>
     <div id="div1">
         <div class=" bg-white px-2 ">
-            <center>
-                <div class=" uppercase text-green-800  block sm:hidden">
-                    <p class=" text-2xl">MADRASAH DINIYAH WUSTHO WAHIDIYAH</p>
-                    <p class=" text-3xl">Laporan Kehadiran</p>
-                    <p class=" text-md">Tahun Pelajaran {{$periode = $kelasmi->periode ?? ' ';}}{{$periode = $kelasmi->ket_semester ?? ' ';}}</p>
+            <div class="  ">
+                <div class=" text-center text-green-700 block sm:hidden   ">
+                    <div class=" flex">
+                        <div><img src={{ asset("asset/images/logo.png") }} alt="" width="110" class=" px-2"></div>
+                        <div class="  ml-5 ">
+                            <center>
 
-                    <hr class=" border border-b-2 border-green-800">
-            </center>
+                                </p>
+                                <p class="  font-serif text-lg uppercase">pondok pesantren kedunglo al munadhdhoroh</p>
+                                <p class="  uppercase font-serif text-2xl font-semibold text-monospace ">madrasah diniyah wustho
+                                    Wahidiyah</p>
+                                <p class=" capitalize font-serif text-xs">Alamat : Jl.KH. Wachid Hasyim Kota Kediri 64114 Jawa Timur Telp. (0354) 774511, 771018 Fax. (0354) 772179</p>
+
+                                <hr class=" border-b-1 border-green-700 ">
+                                FAFIRRUU - ILALLOH
+                            </center>
+                        </div>
+                    </div>
+                    <hr class=" border-b-2 border-green-700 mb-1">
+                    <hr class=" border-b-1 border-green-700 mb-1">
+                    <p class=" uppercase underline text-green-800 border-green-800 text-md">Tahun Pelajaran {{$periode = $kelasmi->periode ?? ' ';}} {{$periode = $kelasmi->ket_semester ?? ' ';}}</p>
+                </div>
+            </div>
+
             <table class=" w-full mt-1 ">
                 <thead>
-                    <tr>
+                    <tr class=" text-green-800">
                         <th rowspan="2" class=" border border-green-800 px-1">No</th>
                         <th rowspan="2" class=" border border-green-800 px-1">Nama Kelas</th>
                         <th rowspan="2" class=" border border-green-800 px-1">Total Peserta Kelas</th>
@@ -46,7 +62,7 @@
 
                         <th rowspan="2" class=" border border-green-800 px-1">Presentasi Kehadiran</th>
                     </tr>
-                    <tr>
+                    <tr class=" text-green-800">
                         <th class=" border border-green-800 px-1">Total Hadir</th>
                         <th class=" border border-green-800 px-1">Total Sakit</th>
                         <th class=" border border-green-800 px-1">Total Izin</th>
@@ -59,7 +75,7 @@
                     $currentKelas = null;
                     @endphp
                     @foreach($data as $item)
-                    <tr>
+                    <tr class=" text-green-800">
                         @if($currentKelas !== $item->nama_kelas)
                         @php
                         $currentKelas = $item->nama_kelas;
