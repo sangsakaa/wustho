@@ -141,15 +141,17 @@
                                 @foreach ($dataBulan as $index => $data)
                                 <tr>
                                     @if ($index === 0)
-                                    <td class=" border border-green-800" rowspan="{{ $dataBulan->count() }}">{{ $bulan }}</td>
+                                    <td class="border border-green-800" rowspan="{{ $dataBulan->count() }}">{{ $bulan }}</td>
                                     @endif
-                                    <td class=" border border-green-800">{{$loop->iteration}} . {{ $data->nama_guru }}</td>
-                                    <td class=" border border-green-800">{{ $data->total }}</td>
-                                    <td class=" border border-green-800">{{ $data->jumlah_sesi_kelas_guru }}</td>
+                                    <td class="border border-green-800">{{$loop->iteration}}. {{ $data->nama_guru }}</td>
+                                    <td class="border border-green-800">{{ $data->total }}</td>
+                                    <td class="border border-green-800">{{ $data->jumlah_sesi_kelas_guru }}</td>
                                 </tr>
                                 @endforeach
                                 @endforeach
                             </tbody>
+
+
                         </table>
 
 
