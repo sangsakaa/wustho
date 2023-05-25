@@ -126,18 +126,19 @@
                                 @endforeach
                             </tbody>
                         </table>
-                        <table>
+                        <table class=" border w-full mt-2">
                             <thead>
-                                <tr>
-                                    <th>Bulan</th>
-                                    <th>Nama Guru</th>
-                                    <th>Total</th>
-                                    <th>Jumlah Sesi Kelas Guru</th>
-                                    <th>Keterangan</th>
+                                <tr class=" border border-green-800">
+                                    <th class=" border border-green-800">Bulan</th>
+                                    <th class=" border border-green-800">Nama Guru</th>
+
+                                    <th class=" border border-green-800">Jumlah Pertemuan</th>
+
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($laporan->groupBy('bulan') as $bulan => $dataBulan)
+                                @foreach ($dataBulan->groupBy('nama_guru') as $namaGuru => $dataGuru)
                                 @php
                                 $alfaCount = 0;
                                 $hadirCount = 0;
@@ -145,30 +146,32 @@
                                 $sakitCount = 0;
                                 @endphp
 
-                                @foreach ($dataBulan as $index => $data)
+                                @foreach ($dataGuru as $index => $data)
                                 <tr>
                                     @if ($index === 0)
-                                    <td rowspan="{{ $dataBulan->count() }}">{{ $bulan }}</td>
+                                    <td class=" border border-green-800 text-center" rowspan="{{ $dataGuru->count() }}">
+                                        {{ \Carbon\Carbon::parse($bulan)->isoFormat(' MMMM') }}
+                                    </td>
+                                    <td class=" border border-green-800 px-1" rowspan="{{ $dataGuru->count() }}">{{ $namaGuru }}</td>
                                     @endif
-                                    <td>{{ $data->nama_guru }}</td>
-                                    <td>{{ $data->total }}</td>
-                                    <td>{{ $data->jumlah_sesi_kelas_guru }}</td>
-                                    <td>{{ $data->keterangan }}</td>
+
+                                    <td class=" border border-green-800">{{ $data->jumlah_sesi_kelas_guru }}</td>
+
                                 </tr>
 
                                 @php
                                 // Menghitung jumlah keterangan
                                 switch ($data->keterangan) {
-                                case 'Alfa':
+                                case 'alfa':
                                 $alfaCount++;
                                 break;
-                                case 'Hadir':
+                                case 'hadir':
                                 $hadirCount++;
                                 break;
-                                case 'Izin':
+                                case 'izin':
                                 $izinCount++;
                                 break;
-                                case 'Sakit':
+                                case 'sakit':
                                 $sakitCount++;
                                 break;
                                 }
@@ -176,14 +179,15 @@
                                 @endforeach
 
                                 <tr>
-                                    <td colspan="4"><strong>Total Keterangan</strong></td>
-                                    <td>
+                                    <td class=" border border-green-800 px-1" colspan="2"><strong>Total Keterangan</strong></td>
+                                    <td class=" border border-green-800 px-1">
                                         Alfa: {{ $alfaCount }},
                                         Hadir: {{ $hadirCount }},
                                         Izin: {{ $izinCount }},
                                         Sakit: {{ $sakitCount }}
                                     </td>
                                 </tr>
+                                @endforeach
                                 @endforeach
                             </tbody>
                         </table>
