@@ -155,7 +155,7 @@
                                     <td class=" border border-green-800 px-1" rowspan="{{ $dataGuru->count() }}">{{ $namaGuru }}</td>
                                     @endif
 
-                                    <td class=" border border-green-800">{{ $data->jumlah_sesi_kelas_guru }}</td>
+                                    <td class=" border border-green-800">{{ $data->jumlah_sesi_kelas_guru }}| {{$data->total}}</td>
 
                                 </tr>
 
