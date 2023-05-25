@@ -26,12 +26,13 @@
             }
         </script>
     </div>
-    <style>
-        .page-break {
-            page-break-after: always;
-        }
-    </style>
+
     <div id="div1">
+        <style>
+            .page-break {
+                page-break-after: always;
+            }
+        </style>
         <div class=" bg-white px-2 ">
             <div class="  ">
                 <div class=" text-center text-green-700 block sm:hidden   ">
@@ -104,10 +105,12 @@
 
                     </tr>
                     @endforeach
+
                 </tbody>
             </table>
-            <div class="page-break"></div>
+
         </div>
+        <div class="page-break"></div>
         <div class="dropdown" data-bs-theme="dark">
             <div class=" bg-white px-2 py-2">
                 <center>
