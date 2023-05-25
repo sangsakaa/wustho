@@ -124,6 +124,17 @@
                             </tbody>
                         </table>
                     </div>
+                    <div class="  flex grid-cols-2 text-right">
+                        <div class=" w-2/3"></div>
+                        <div class="  text-left text-sm">
+                            Kedunglo, <?php
+                                        $date = date_create(now());
+                                        echo \Carbon\Carbon::parse($date)->isoFormat(' DD MMMM Y');
+                                        ?></p>
+                            Al Mudir / Kepala <br><br><br><br>
+                            Muh. Bahrul Ulum, S.H
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
