@@ -161,7 +161,7 @@
                         Muh. Bahrul Ulum, S.H
                     </div>
                 </div>
-                <div class="page-break"></div>
             </div>
+            <div class="page-break"></div>
         </div>
 </x-app-layout>
