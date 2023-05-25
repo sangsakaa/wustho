@@ -84,6 +84,7 @@
                         <hr class=" border-b-1 border-green-700 mb-1">
                         <div class="  uppercase px-1 text-center"> LAPORAN BULAN :
                             {{ \Carbon\Carbon::parse($bulan)->isoFormat(' MMMM Y') }}
+
                         </div>
                     </div>
                     <div class=" px-2">
@@ -114,6 +115,8 @@
                                     @endif
                                     <td class=" border border-green-800 text-center px-2">{{ $loop->iteration }}</td>
                                     <td class=" border border-green-800 text-left px-2">{{ $nama_guru }}</td>
+
+
                                     <td class=" border border-green-800 text-center px-2">{{ $data['hadir'] }}</td>
                                     <td class=" border border-green-800 text-center px-2">{{ $data['izin'] }}</td>
                                     <td class=" border border-green-800 text-center px-2">{{ $data['sakit'] }}</td>
@@ -123,6 +126,29 @@
                                 @endforeach
                             </tbody>
                         </table>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Bulan</th>
+                                    <th>Nama Guru</th>
+                                    <th>Total</th>
+                                    <th>Jumlah Sesi Kelas Guru</th>
+                                    <th>Keterangan</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($laporan as $data)
+                                <tr>
+                                    <td>{{ $data->bulan }}</td>
+                                    <td>{{ $data->nama_guru }}</td>
+                                    <td>{{ $data->total }}</td>
+                                    <td>{{ $data->jumlah_sesi_kelas_guru }}</td>
+                                    <td>{{ $data->keterangan }}</td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+
                     </div>
                     <div class="  flex grid-cols-2 text-right">
                         <div class=" w-2/3"></div>
