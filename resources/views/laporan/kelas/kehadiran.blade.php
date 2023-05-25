@@ -102,8 +102,51 @@
 
                 </tbody>
             </table>
-
-
         </div>
-    </div>
+        <div class="dropdown" data-bs-theme="dark">
+            <div class=" bg-white px-2 py-2">
+                <center>
+                    <div class=" uppercase text-green-800  block sm:hidden">
+
+                        <p class=" text-3xl">Detail Laporan Ketidakhadiran</p>
+                        <p class=" text-md">Tahun Pelajaran {{$periode = $kelasmi->periode ?? ' ';}} {{$periode = $kelasmi->ket_semester ?? ' ';}}</p>
+
+                        <hr class=" border border-b-2 border-green-800">
+                </center>
+                <table class=" w-full mt-2">
+                    <thead>
+                        <tr>
+                            <th class=" border border-green-800  text-center px-1">Nama Kelas</th>
+                            <th class=" border border-green-800  text-center px-1">Nama Siswa</th>
+                            <th class=" border border-green-800  text-center px-1">Total Alfa</th>
+                            <th class=" border border-green-800  text-center px-1">Total Sakit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @php
+                        $currentKelas = null;
+                        @endphp
+                        @foreach($dataDetail as $item)
+                        <tr>
+                            @if($currentKelas !== $item->nama_kelas)
+                            @php
+                            $currentKelas = $item->nama_kelas;
+                            $rowCount = $dataDetail->where('nama_kelas', $item->nama_kelas)->count();
+                            @endphp
+                            <td class="border border-green-800 text-center px-1 py-1" rowspan="{{ $rowCount }}">
+                                {{ $item->nama_kelas }}
+                            </td>
+                            @endif
+                            <td class="border border-green-800 px-1 py-1 capitalize">{{$loop->iteration}}. {{ strtolower($item->nama_siswa) }}</td>
+                            <td class="border border-green-800 text-center px-1 py-1">{{ $item->total_alfa }}</td>
+                            <td class="border border-green-800 text-center px-1 py-1">{{ $item->total_sakit }}</td>
+                        </tr>
+                        @endforeach
+
+                    </tbody>
+                </table>
+
+
+            </div>
+        </div>
 </x-app-layout>
