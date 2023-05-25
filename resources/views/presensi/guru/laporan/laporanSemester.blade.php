@@ -137,17 +137,58 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($laporan as $data)
+                                @foreach ($laporan->groupBy('bulan') as $bulan => $dataBulan)
+                                @php
+                                $alfaCount = 0;
+                                $hadirCount = 0;
+                                $izinCount = 0;
+                                $sakitCount = 0;
+                                @endphp
+
+                                @foreach ($dataBulan as $index => $data)
                                 <tr>
-                                    <td>{{ $data->bulan }}</td>
+                                    @if ($index === 0)
+                                    <td rowspan="{{ $dataBulan->count() }}">{{ $bulan }}</td>
+                                    @endif
                                     <td>{{ $data->nama_guru }}</td>
                                     <td>{{ $data->total }}</td>
                                     <td>{{ $data->jumlah_sesi_kelas_guru }}</td>
                                     <td>{{ $data->keterangan }}</td>
                                 </tr>
+
+                                @php
+                                // Menghitung jumlah keterangan
+                                switch ($data->keterangan) {
+                                case 'Alfa':
+                                $alfaCount++;
+                                break;
+                                case 'Hadir':
+                                $hadirCount++;
+                                break;
+                                case 'Izin':
+                                $izinCount++;
+                                break;
+                                case 'Sakit':
+                                $sakitCount++;
+                                break;
+                                }
+                                @endphp
+                                @endforeach
+
+                                <tr>
+                                    <td colspan="4"><strong>Total Keterangan</strong></td>
+                                    <td>
+                                        Alfa: {{ $alfaCount }},
+                                        Hadir: {{ $hadirCount }},
+                                        Izin: {{ $izinCount }},
+                                        Sakit: {{ $sakitCount }}
+                                    </td>
+                                </tr>
                                 @endforeach
                             </tbody>
                         </table>
+
+
 
                     </div>
                     <div class="  flex grid-cols-2 text-right">
