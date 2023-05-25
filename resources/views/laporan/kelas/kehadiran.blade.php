@@ -26,6 +26,11 @@
             }
         </script>
     </div>
+    <style>
+        .page-break {
+            page-break-after: always;
+        }
+    </style>
     <div id="div1">
         <div class=" bg-white px-2 ">
             <div class="  ">
@@ -99,9 +104,9 @@
 
                     </tr>
                     @endforeach
-
                 </tbody>
             </table>
+            <div class="page-break"></div>
         </div>
         <div class="dropdown" data-bs-theme="dark">
             <div class=" bg-white px-2 py-2">
@@ -145,8 +150,18 @@
 
                     </tbody>
                 </table>
-
-
+                <div class="  flex grid-cols-2 text-right">
+                    <div class=" w-2/3"></div>
+                    <div class="  text-left text-sm">
+                        Kedunglo, <?php
+                                    $date = date_create(now());
+                                    echo \Carbon\Carbon::parse($date)->isoFormat(' DD MMMM Y');
+                                    ?></p>
+                        Al Mudir / Kepala <br><br><br><br>
+                        Muh. Bahrul Ulum, S.H
+                    </div>
+                </div>
+                <div class="page-break"></div>
             </div>
         </div>
 </x-app-layout>
