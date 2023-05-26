@@ -64,6 +64,7 @@
                         <th rowspan="2" class=" border border-green-800 px-1">No</th>
                         <th rowspan="2" class=" border border-green-800 px-1">Nama Kelas</th>
                         <th rowspan="2" class=" border border-green-800 px-1">Total Peserta Kelas</th>
+                        <th rowspan="2" class=" border border-green-800 px-1">Total Sesi</th>
                         <th colspan="4" class=" border border-green-800 px-1">Total Hadir</th>
 
                         <th rowspan="2" class=" border border-green-800 px-1">Presentasi Kehadiran</th>
@@ -95,6 +96,9 @@
                         </td>
                         <td class="border border-green-800 text-center px-1 py-1" rowspan="{{ $rowCount }}">
                             {{$item->total_peserta_kelas}}
+                        </td>
+                        <td class="border border-green-800 text-center px-1 py-1" rowspan="{{ $rowCount }}">
+                            {{$item->total_sesikelas}}
                         </td>
                         @endif
                         <td class="border border-green-800 text-center px-1 py-1">{{ $item->total_kehadiran}}</td>
