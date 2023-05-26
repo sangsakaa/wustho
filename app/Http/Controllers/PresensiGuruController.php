@@ -235,6 +235,7 @@ class PresensiGuruController
 
         $laporan_per_bulan = [];
 
+    
         foreach ($laporan as $data) {
             if (isset($data->bulan) && isset($data->nama_guru)) {
                 $bulan = $data->bulan;
@@ -274,15 +275,34 @@ class PresensiGuruController
             $tanggal = now()->format('Y-m');
         }
 
+        $laporanDetail = Absensiguru::query()
+        ->leftJoin('sesi_kelas_guru', 'absensiguru.sesi_kelas_guru_id', 'sesi_kelas_guru.id')
+        ->leftJoin('daftar_jadwal', 'daftar_jadwal.id', 'absensiguru.daftar_jadwal_id')
+        ->leftJoin('kelasmi', 'kelasmi.id', 'sesi_kelas_guru.kelasmi_id')
+        ->leftJoin('guru', 'guru.id', 'daftar_jadwal.guru_id')
+        ->select(
+            DB::raw("DATE_FORMAT(sesi_kelas_guru.tanggal,'%M') as bulan"),
+            'guru.nama_guru',
+            'kelasmi.nama_kelas',
+            'keterangan',
+            DB::raw('count(*) as total'),
+            DB::raw('count(DISTINCT sesi_kelas_guru.id) as jumlah_sesi_kelas_guru'),
+        )
+        ->groupBy(DB::raw("DATE_FORMAT(sesi_kelas_guru.tanggal,'%M')"),  'guru.nama_guru', 'nama_kelas', 'keterangan')
+        ->whereBetween('sesi_kelas_guru.tanggal', [$startOfMonth, $endOfMonth])
+            // ->orderBy('nama_kelas')
+            ->orderBy('nama_guru')
+            ->get();
+
         return view(
             'presensi.guru.laporan.laporanSemester',
             [
                 'laporan' => $laporan,
                 'bulan' => $bulan,
-        
                 'tanggal' => $tanggal,
                 'laporan_per_bulan' => $laporan_per_bulan,
                 'kelasmi' => $kelasmi,
+                'laporanDetail' => $laporanDetail
                
 
             ]

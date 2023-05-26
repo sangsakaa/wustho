@@ -66,7 +66,7 @@ class ReportController
         // dd($data);
         return view('laporan.kelas.kehadiran', [
 
-            'kelasmi' => $kelasmi,
+            'kelasmi' => $kelasmi, 
             'data' => $data,
             'dataDetail' => $dataDetail
 

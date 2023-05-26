@@ -126,42 +126,41 @@
                                 @endforeach
                             </tbody>
                         </table>
-                        <table class=" w-full mt-2">
+                        <table class="w-full mt-2">
                             <thead>
                                 <tr>
-                                    <th class=" border border-green-800">Bulan</th>
-                                    <th class=" border border-green-800">Nama Guru</th>
-                                    <th class=" border border-green-800">Total</th>
-                                    <th class=" border border-green-800">Jumlah Sesi Kelas Guru</th>
-
+                                    <th class="border border-green-800">No</th>
+                                    <th class="border border-green-800">Nama Guru</th>
+                                    @foreach ($laporanDetail->pluck('nama_kelas')->unique()->sort() as $namaKelas)
+                                    <th class="border border-green-800">{{ $namaKelas }}</th>
+                                    @endforeach
+                                    <th class="border border-green-800">Total</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($laporan->groupBy('bulan') as $bulan => $dataBulan)
-                                @php $isFirstBulan = true; @endphp
-                                @foreach ($dataBulan->groupBy('nama_guru') as $nama_guru => $dataGuru)
-                                @foreach ($dataGuru as $index => $data)
+                                @foreach ($laporanDetail->sortBy('nama_guru')->groupBy('nama_guru') as $namaGuru => $details)
                                 <tr>
-                                    @if ($isFirstBulan)
-                                    <td class="border border-green-800" rowspan="{{ $dataBulan->count() }}">{{ $bulan }}</td>
-                                    @php $isFirstBulan = false; @endphp
-                                    @endif
-                                    @if ($loop->first)
-                                    <td class="border border-green-800">{{ $nama_guru }}</td>
-                                    @endif
-                                    <td class="border border-green-800">{{ $data->total }}</td>
-                                    <td class="border border-green-800">{{ $data->jumlah_sesi_kelas_guru }}</td>
+                                    <td class="border border-green-800 text-center">{{ $loop->iteration }}</td>
+                                    <td class="border border-green-800 px-1">{{ $namaGuru }}</td>
+                                    @foreach ($laporanDetail->pluck('nama_kelas')->unique()->sort() as $namaKelas)
+                                    @php
+                                    $sesiKelas = $details->where('nama_kelas', $namaKelas)->first();
+                                    @endphp
+                                    <td class="border border-green-800{{ $loop->first ? ' ' : '' }} text-center">
+                                        {{ $sesiKelas ? $sesiKelas->jumlah_sesi_kelas_guru : '-' }}
+                                    </td>
+                                    @endforeach
+                                    <td class="border border-green-800  text-center">
+                                        {{ $details->sum('jumlah_sesi_kelas_guru') }}
+                                    </td>
                                 </tr>
-                                @endforeach
-                                @endforeach
                                 @endforeach
                             </tbody>
 
 
 
-
-
                         </table>
+
 
 
                     </div>
