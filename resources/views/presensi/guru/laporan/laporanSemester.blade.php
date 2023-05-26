@@ -64,6 +64,11 @@
                     </div>
                 </div>
                 <div id="div1">
+                    <style>
+                        .page-break {
+                            page-break-after: always;
+                        }
+                    </style>
                     <div class=" text-center text-green-700 block sm:hidden   ">
                         <div class=" flex">
                             <div><img src={{ asset("asset/images/logo.png") }} alt="" width="110" class=" px-2"></div>
@@ -126,6 +131,7 @@
                                 @endforeach
                             </tbody>
                         </table>
+                        <div class="page-break"></div>
                         <div class=" py-1">
                             <p class=" text-lg text-center block sm:hidden uppercase text-green-800 font-semibold ">Detail Laporan Kehadiran</p>
                         </div>
