@@ -126,20 +126,30 @@
                                 @endforeach
                             </tbody>
                         </table>
-                        <table class="w-full mt-2">
+                        <div class=" py-1">
+                            <p class=" text-lg text-center block sm:hidden uppercase text-green-800 font-semibold ">Detail Laporan Kehadiran</p>
+                        </div>
+
+                        <table class="w-full ">
                             <thead>
                                 <tr>
-                                    <th class="border border-green-800">No</th>
-                                    <th class="border border-green-800">Nama Guru</th>
+                                    <th rowspan="2" class="border border-green-800">No</th>
+                                    <th rowspan="2" class="border border-green-800">Nama Guru</th>
+                                    <th class="border border-green-800" colspan="{{ $laporanDetail->pluck('nama_kelas')->unique()->count() }}">Kelas</th>
+                                    <th rowspan="2" class="border border-green-800">Total</th>
+                                </tr>
+                                <tr>
+
+
                                     @foreach ($laporanDetail->pluck('nama_kelas')->unique()->sort() as $namaKelas)
                                     <th class="border border-green-800">{{ $namaKelas }}</th>
                                     @endforeach
-                                    <th class="border border-green-800">Total</th>
+
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($laporanDetail->sortBy('nama_guru')->groupBy('nama_guru') as $namaGuru => $details)
-                                <tr>
+                                <tr class=" even:bg-gray-100">
                                     <td class="border border-green-800 text-center">{{ $loop->iteration }}</td>
                                     <td class="border border-green-800 px-1">{{ $namaGuru }}</td>
                                     @foreach ($laporanDetail->pluck('nama_kelas')->unique()->sort() as $namaKelas)
@@ -164,7 +174,7 @@
 
 
                     </div>
-                    <div class="  flex grid-cols-2 text-right">
+                    <div class="  flex grid-cols-2 text-right block sm:hidden">
                         <div class=" w-2/3"></div>
                         <div class="  text-left text-sm">
                             Kedunglo, <?php
