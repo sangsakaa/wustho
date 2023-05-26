@@ -65,7 +65,7 @@
                         <th rowspan="2" class=" border border-green-800 px-1">Nama Kelas</th>
                         <th rowspan="2" class=" border border-green-800 px-1">Total Peserta Kelas</th>
                         <th rowspan="2" class=" border border-green-800 px-1">Total Sesi</th>
-                        <th colspan="4" class=" border border-green-800 px-1">Total Hadir</th>
+                        <th colspan="4" class=" border border-green-800 px-1">Keterangan</th>
 
                         <th rowspan="2" class=" border border-green-800 px-1">Presentasi Kehadiran</th>
                     </tr>
