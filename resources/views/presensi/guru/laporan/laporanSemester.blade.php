@@ -146,7 +146,9 @@
                                     <td class="border border-green-800" rowspan="{{ $dataBulan->count() }}">{{ $bulan }}</td>
                                     @php $isFirstBulan = false; @endphp
                                     @endif
-                                    <td class="border border-green-800">{{ $loop->iteration }}. {{ $nama_guru }}</td>
+                                    @if ($loop->first)
+                                    <td class="border border-green-800">{{ $nama_guru }}</td>
+                                    @endif
                                     <td class="border border-green-800">{{ $data->total }}</td>
                                     <td class="border border-green-800">{{ $data->jumlah_sesi_kelas_guru }}</td>
                                 </tr>
@@ -154,6 +156,7 @@
                                 @endforeach
                                 @endforeach
                             </tbody>
+
 
 
 
