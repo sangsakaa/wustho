@@ -138,18 +138,24 @@
                             </thead>
                             <tbody>
                                 @foreach ($laporan->groupBy('bulan') as $bulan => $dataBulan)
-                                @foreach ($dataBulan as $index => $data)
+                                @php $isFirstBulan = true; @endphp
+                                @foreach ($dataBulan->groupBy('nama_guru') as $nama_guru => $dataGuru)
+                                @foreach ($dataGuru as $index => $data)
                                 <tr>
-                                    @if ($index === 0)
+                                    @if ($isFirstBulan)
                                     <td class="border border-green-800" rowspan="{{ $dataBulan->count() }}">{{ $bulan }}</td>
+                                    @php $isFirstBulan = false; @endphp
                                     @endif
-                                    <td class="border border-green-800">{{$loop->iteration}}. {{ $data->nama_guru }}</td>
+                                    <td class="border border-green-800">{{ $loop->iteration }}. {{ $nama_guru }}</td>
                                     <td class="border border-green-800">{{ $data->total }}</td>
                                     <td class="border border-green-800">{{ $data->jumlah_sesi_kelas_guru }}</td>
                                 </tr>
                                 @endforeach
                                 @endforeach
+                                @endforeach
                             </tbody>
+
+
 
 
                         </table>
