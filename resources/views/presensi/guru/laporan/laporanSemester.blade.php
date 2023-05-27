@@ -93,9 +93,9 @@
                         </div>
                     </div>
                     <div class="px-2">
-                        <table class=" w-full">
+                        <table class="w-full">
                             <thead>
-                                <tr class=" border border-green-800">
+                                <tr class="border border-green-800">
                                     <th class="border border-green-800 px-1">Bulan</th>
                                     <th class="border border-green-800 px-1">Nama Guru</th>
                                     <th class="border border-green-800 px-1">Hari</th>
@@ -115,40 +115,56 @@
                                 <tr class="even:bg-gray-100">
                                     <td class="border border-green-800 px-1" colspan="6">{{ $nama_guru }}</td>
                                 </tr>
+                                @if ($laporanGuru->isEmpty())
+                                <tr>
+                                    <td class="border border-green-800 px-1" colspan="12">No schedule available.</td>
+                                </tr>
+                                @else
+                                @php
+                                $jumlahHari = ['jumat' => 0, 'sabtu' => 0, 'minggu' => 0, 'Senin' => 0, 'Selasa' => 0, 'Rabu' => 0];
+                                @endphp
                                 @foreach($laporanGuru as $data)
                                 <tr class="even:bg-gray-100">
                                     <td class="border border-green-800 px-1">{{ $data->bulan }}</td>
                                     <td class="border border-green-800 px-1">{{ $data->nama_guru }}</td>
                                     <td class="border border-green-800 px-1">
-                                        {{$data->hari}}
-
+                                        {{ $data->hari }}
                                     </td>
                                     <td class="border border-green-800 px-1">{{ $data->nama_kelas }}</td>
                                     <td class="border border-green-800 px-1">{{ $data->total }}</td>
                                     <td class="border border-green-800 px-1">{{ $data->jumlah_sesi_kelas_guru }}</td>
                                     @php
-                                    $jumlahJumat = $laporanGuru->where('hari', 'jumat')->sum('total');
-                                    $jumlahSabtu = $laporanGuru->where('hari', 'sabtu')->sum('total');
-                                    $jumlahMinggu = $laporanGuru->where('hari', 'minggu')->sum('total');
-                                    $jumlahSenin = $laporanGuru->where('hari', 'Senin')->sum('total');
-                                    $jumlahSelasa = $laporanGuru->where('hari', 'Selasa')->sum('total');
-                                    $jumlahRabu = $laporanGuru->where('hari', 'Rabu')->sum('total');
+                                    $jumlahHari[$data->hari] += $data->total;
                                     @endphp
-                                    <td class="border border-green-800 px-1 {{ $jumlahJumat > 0 ? '' : 'bg-red-200' }}">{{ $jumlahJumat > 0 ? $jumlahJumat : '' }}</td>
-                                    <td class="border border-green-800 px-1 {{ $jumlahSabtu > 0 ? '' : 'bg-red-200' }}">{{ $jumlahSabtu > 0 ? $jumlahSabtu : '' }}</td>
-                                    <td class="border border-green-800 px-1 {{ $jumlahMinggu > 0 ? '' : 'bg-red-200' }}">{{ $jumlahMinggu > 0 ? $jumlahMinggu : '' }}</td>
-                                    <td class="border border-green-800 px-1 {{ $jumlahSenin > 0 ? '' : 'bg-red-200' }}">{{ $jumlahSenin > 0 ? $jumlahSenin : '' }}</td>
-                                    <td class="border border-green-800 px-1 {{ $jumlahSelasa > 0 ? '' : 'bg-red-200' }}">{{ $jumlahSelasa > 0 ? $jumlahSelasa : '' }}</td>
-                                    <td class="border border-green-800 px-1 {{ $jumlahRabu > 0 ? '' : 'bg-red-200' }}">{{ $jumlahRabu > 0 ? $jumlahRabu : '' }}</td>
+                                    <td class="border border-green-800 px-1 {{ $jumlahHari['jumat'] > 0 ? '' : 'bg-red-200' }}">
+                                        {{ $jumlahHari['jumat'] }}
+                                    </td>
+                                    <td class="border border-green-800 px-1 {{ $jumlahHari['sabtu'] > 0 ? '' : 'bg-red-200' }}">
+                                        {{ $jumlahHari['sabtu'] }}
+                                    </td>
+                                    <td class="border border-green-800 px-1 {{ $jumlahHari['minggu'] > 0 ? '' : 'bg-red-200' }}">
+                                        {{ $jumlahHari['minggu'] }}
+                                    </td>
+                                    <td class="border border-green-800 px-1 {{ $jumlahHari['Senin'] > 0 ? '' : 'bg-red-200' }}">
+                                        {{ $jumlahHari['Senin'] }}
+                                    </td>
+                                    <td class="border border-green-800 px-1 {{ $jumlahHari['Selasa'] > 0 ? '' : 'bg-red-200' }}">
+                                        {{ $jumlahHari['Selasa'] }}
+                                    </td>
+                                    <td class="border border-green-800 px-1 {{ $jumlahHari['Rabu'] > 0 ? '' : 'bg-red-200' }}">
+                                        {{ $jumlahHari['Rabu'] }}
+                                    </td>
                                 </tr>
                                 @endforeach
+                                @endif
                                 @endforeach
                             </tbody>
                         </table>
 
+
                     </div>
 
-                    <table class=" w-full">
+                    <table class=" w-full mt-2">
                         <thead>
                             <tr class=" border border-green-800">
                                 <th rowspan="2" class=" border border-green-800 w-16">Bulan</th>
