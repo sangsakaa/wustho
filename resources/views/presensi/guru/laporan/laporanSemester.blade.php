@@ -115,9 +115,9 @@
                                     <td class="border px-1">{{ $data->nama_guru }}</td>
                                     <td class="border px-1">{{ $data->total }}</td>
                                     <td class="border px-1">{{ $data->jumlah_sesi_kelas_guru }}</td>
-                                    @foreach(['Jumat', 'Sabtu', 'Minggu', 'Senin', 'Selasa', 'Rabu'] as $hari)
+                                    @foreach(['jumat', 'sabtu', 'minggu', 'senin', 'selasa', 'rabu'] as $hari)
                                     @if ($data->hari == $hari)
-                                    <td class="border px-1">{{ $data->jumlah_hari }}</td>
+                                    <td class="border px-1">{{ $data->hari }} <br>{{$data->keterangan}}</td>
                                     @else
                                     <td class="border px-1"></td>
                                     @endif
