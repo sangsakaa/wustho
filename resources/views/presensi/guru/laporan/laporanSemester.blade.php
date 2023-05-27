@@ -96,13 +96,17 @@
                         <table class="w-full">
                             <thead>
                                 <tr class="border border-green-800">
-                                    <th class="border border-green-800 px-1">Bulan</th>
-                                    <th class="border border-green-800 px-1">Nama Guru</th>
-                                    <th class="border border-green-800 px-1 w-5">Kls</th>
-                                    <th class="border border-green-800 px-1 w-5">Hari</th>
-                                    <th class="border border-green-800 px-1 w-5">Total</th>
-                                    <th class="border border-green-800 px-1">Sesi</th>
-                                    <th class="border border-green-800 px-1">Jumlah Sesi</th>
+                                    <th rowspan="2" class="border border-green-800 px-1">Bulan</th>
+                                    <th rowspan="2" class="border border-green-800 px-1">Nama Guru</th>
+                                    <th rowspan="2" class="border border-green-800 px-1 w-5">Kls</th>
+                                    <th rowspan="2" class="border border-green-800 px-1 w-5">Hari</th>
+                                    <th rowspan="2" class="border border-green-800 px-1 w-5">Total</th>
+                                    <th rowspan="2" class="border border-green-800 px-1">Sesi</th>
+                                    <th rowspan="2" class="border border-green-800 px-1">Jumlah Sesi</th>
+                                    <th colspan="6" class="border border-green-800 px-1">Terjadwal Hari</th>
+
+                                </tr>
+                                <tr class="border border-green-800">
                                     <th class="border border-green-800 px-1">Jumat</th>
                                     <th class="border border-green-800 px-1">Sabtu</th>
                                     <th class="border border-green-800 px-1">Minggu</th>
@@ -222,10 +226,9 @@
                                             break;
                                             }
                                             @endphp
-                                            H: {{ $jumlahHadir }} <br>
-                                            I: {{ $jumlahIzin }} <br>
-                                            S: {{ $jumlahSakit }} <br>
-
+                                            H: {{ $jumlahHadir }}
+                                            I: {{ $jumlahIzin }}
+                                            S: {{ $jumlahSakit }}
                                             A: {{ $jumlahAlfa }}
 
                                         </td>
