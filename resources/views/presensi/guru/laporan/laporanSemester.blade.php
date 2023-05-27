@@ -98,7 +98,6 @@
                                 <tr class="border border-green-800">
                                     <th class="border border-green-800 px-1">Bulan</th>
                                     <th class="border border-green-800 px-1">Nama Guru</th>
-                                    <th class="border border-green-800 px-1">Hari</th>
                                     <th class="border border-green-800 px-1">Kelas</th>
                                     <th class="border border-green-800 px-1">Total</th>
                                     <th class="border border-green-800 px-1">Jumlah Sesi</th>
@@ -124,35 +123,32 @@
                                 $jumlahHari = ['jumat' => 0, 'sabtu' => 0, 'minggu' => 0, 'Senin' => 0, 'Selasa' => 0, 'Rabu' => 0];
                                 @endphp
                                 @foreach($laporanGuru as $data)
+                                @php
+                                $jumlahHari[$data->hari] += $data->total;
+                                @endphp
                                 <tr class="even:bg-gray-100">
                                     <td class="border border-green-800 px-1">{{ $data->bulan }}</td>
                                     <td class="border border-green-800 px-1">{{ $data->nama_guru }}</td>
-                                    <td class="border border-green-800 px-1">
-                                        {{ $data->hari }}
-                                    </td>
                                     <td class="border border-green-800 px-1">{{ $data->nama_kelas }}</td>
                                     <td class="border border-green-800 px-1">{{ $data->total }}</td>
                                     <td class="border border-green-800 px-1">{{ $data->jumlah_sesi_kelas_guru }}</td>
-                                    @php
-                                    $jumlahHari[$data->hari] += $data->total;
-                                    @endphp
-                                    <td class="border border-green-800 px-1 {{ $jumlahHari['jumat'] > 0 ? '' : 'bg-red-200' }}">
-                                        {{ $jumlahHari['jumat'] }}
+                                    <td class="border border-green-800 px-1 {{ $data->hari == 'jumat' && $jumlahHari['jumat'] > 0 ? '' : 'bg-red-200' }}">
+                                        {{ $data->hari == 'jumat' ? $jumlahHari['jumat'] : '' }}
                                     </td>
-                                    <td class="border border-green-800 px-1 {{ $jumlahHari['sabtu'] > 0 ? '' : 'bg-red-200' }}">
-                                        {{ $jumlahHari['sabtu'] }}
+                                    <td class="border border-green-800 px-1 {{ $data->hari == 'sabtu' && $jumlahHari['sabtu'] > 0 ? '' : 'bg-red-200' }}">
+                                        {{ $data->hari == 'sabtu' ? $jumlahHari['sabtu'] : '' }}
                                     </td>
-                                    <td class="border border-green-800 px-1 {{ $jumlahHari['minggu'] > 0 ? '' : 'bg-red-200' }}">
-                                        {{ $jumlahHari['minggu'] }}
+                                    <td class="border border-green-800 px-1 {{ $data->hari == 'minggu' && $jumlahHari['minggu'] > 0 ? '' : 'bg-red-200' }}">
+                                        {{ $data->hari == 'minggu' ? $jumlahHari['minggu'] : '' }}
                                     </td>
-                                    <td class="border border-green-800 px-1 {{ $jumlahHari['Senin'] > 0 ? '' : 'bg-red-200' }}">
-                                        {{ $jumlahHari['Senin'] }}
+                                    <td class="border border-green-800 px-1 {{ $data->hari == 'Senin' && $jumlahHari['Senin'] > 0 ? '' : 'bg-red-200' }}">
+                                        {{ $data->hari == 'Senin' ? $jumlahHari['Senin'] : '' }}
                                     </td>
-                                    <td class="border border-green-800 px-1 {{ $jumlahHari['Selasa'] > 0 ? '' : 'bg-red-200' }}">
-                                        {{ $jumlahHari['Selasa'] }}
+                                    <td class="border border-green-800 px-1 {{ $data->hari == 'Selasa' && $jumlahHari['Selasa'] > 0 ? '' : 'bg-red-200' }}">
+                                        {{ $data->hari == 'Selasa' ? $jumlahHari['Selasa'] : '' }}
                                     </td>
-                                    <td class="border border-green-800 px-1 {{ $jumlahHari['Rabu'] > 0 ? '' : 'bg-red-200' }}">
-                                        {{ $jumlahHari['Rabu'] }}
+                                    <td class="border border-green-800 px-1 {{ $data->hari == 'Rabu' && $jumlahHari['Rabu'] > 0 ? '' : 'bg-red-200' }}">
+                                        {{ $data->hari == 'Rabu' ? $jumlahHari['Rabu'] : '' }}
                                     </td>
                                 </tr>
                                 @endforeach
@@ -160,6 +156,7 @@
                                 @endforeach
                             </tbody>
                         </table>
+
 
 
                     </div>
