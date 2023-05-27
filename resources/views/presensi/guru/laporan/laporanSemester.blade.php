@@ -102,6 +102,7 @@
                                     <th class="border border-green-800 px-1">Hari</th>
                                     <th class="border border-green-800 px-1">Total</th>
                                     <th class="border border-green-800 px-1">Jumlah Sesi</th>
+                                    <th class="border border-green-800 px-1">Jumlah Sesi</th>
                                     <th class="border border-green-800 px-1">Jumat</th>
                                     <th class="border border-green-800 px-1">Sabtu</th>
                                     <th class="border border-green-800 px-1">Minggu</th>
@@ -192,8 +193,6 @@
                                             {{ $jumlahRabu }}
                                             @endif
                                         </td>
-
-
                                         <td class="border border-green-800 px-1">{{ $data->total }}</td>
                                         <td class="border border-green-800 px-1">{{ $data->jumlah_sesi_kelas_guru }}</td>
                                         <td class="border border-green-800 text-center px-1 {{ $data->hari == 'jumat' && $jumlahHari['jumat'] > 0 ? '' : 'bg-red-200' }}">
