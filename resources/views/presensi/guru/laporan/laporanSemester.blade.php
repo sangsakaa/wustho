@@ -93,59 +93,59 @@
                         </div>
                     </div>
                     <div class="px-2">
-                        <table>
+                        <table class=" w-full">
                             <thead>
-                                <tr>
-                                    <th class=" border px-1">Bulan</th>
-                                    <th class=" border px-1">Nama Guru</th>
-                                    <th class=" border px-1">Total</th>
-                                    <th class=" border px-1">Jumlah Sesi Kelas Guru</th>
-                                    <th class=" border px-1">Jumat</th>
-                                    <th class=" border px-1">Sabtu</th>
-                                    <th class=" border px-1">Minggu</th>
-                                    <th class=" border px-1">Senin</th>
-                                    <th class=" border px-1">Selasa</th>
-                                    <th class=" border px-1">Rabu</th>
+                                <tr class=" border border-green-800">
+                                    <th class="border border-green-800 px-1">Bulan</th>
+                                    <th class="border border-green-800 px-1">Nama Guru</th>
+                                    <th class="border border-green-800 px-1">Hari</th>
+                                    <th class="border border-green-800 px-1">Kelas</th>
+                                    <th class="border border-green-800 px-1">Total</th>
+                                    <th class="border border-green-800 px-1">Jumlah Sesi</th>
+                                    <th class="border border-green-800 px-1">Jumat</th>
+                                    <th class="border border-green-800 px-1">Sabtu</th>
+                                    <th class="border border-green-800 px-1">Minggu</th>
+                                    <th class="border border-green-800 px-1">Senin</th>
+                                    <th class="border border-green-800 px-1">Selasa</th>
+                                    <th class="border border-green-800 px-1">Rabu</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach($laporan->groupBy('nama_guru') as $nama_guru => $laporanGuru)
                                 <tr class="even:bg-gray-100">
-                                    <td class="border px-1" colspan="6">{{ $nama_guru }}</td>
+                                    <td class="border border-green-800 px-1" colspan="6">{{ $nama_guru }}</td>
                                 </tr>
                                 @foreach($laporanGuru as $data)
                                 <tr class="even:bg-gray-100">
-                                    <td class="border px-1">{{ $data->bulan }}</td>
-                                    <td class="border px-1">{{ $data->nama_guru }}</td>
-                                    <td class="border px-1">{{ $data->total }}</td>
-                                    <td class="border px-1">{{ $data->jumlah_sesi_kelas_guru }}</td>
-                                    @foreach(['jumat', 'sabtu', 'minggu', 'Senin', 'Selasa', 'Rabu'] as $hari)
-                                    @if ($data->hari == $hari)
-                                    <td class="border px-1">{{ $data->hari }} @php
-                                        $inisial = $data->keterangan; // Ambil nilai dari variabel $data->keterangan
-                                        @endphp
+                                    <td class="border border-green-800 px-1">{{ $data->bulan }}</td>
+                                    <td class="border border-green-800 px-1">{{ $data->nama_guru }}</td>
+                                    <td class="border border-green-800 px-1">
+                                        {{$data->hari}}
 
-                                        @if($inisial === 'hadir')
-                                        (H)
-                                        @elseif($inisial === 'sakit')
-                                        (S)
-                                        @elseif($inisial === 'izin')
-                                        (I)
-                                        @elseif($inisial === 'alfa')
-                                        (A)
-                                        @else
-                                        Keterangan tidak valid
-                                        @endif</td>
-                                    @else
-                                    <td class="border px-1 text-center">x</td>
-                                    @endif
-                                    @endforeach
+                                    </td>
+                                    <td class="border border-green-800 px-1">{{ $data->nama_kelas }}</td>
+                                    <td class="border border-green-800 px-1">{{ $data->total }}</td>
+                                    <td class="border border-green-800 px-1">{{ $data->jumlah_sesi_kelas_guru }}</td>
+                                    @php
+                                    $jumlahJumat = $laporanGuru->where('hari', 'jumat')->sum('total');
+                                    $jumlahSabtu = $laporanGuru->where('hari', 'sabtu')->sum('total');
+                                    $jumlahMinggu = $laporanGuru->where('hari', 'minggu')->sum('total');
+                                    $jumlahSenin = $laporanGuru->where('hari', 'Senin')->sum('total');
+                                    $jumlahSelasa = $laporanGuru->where('hari', 'Selasa')->sum('total');
+                                    $jumlahRabu = $laporanGuru->where('hari', 'Rabu')->sum('total');
+                                    @endphp
+                                    <td class="border border-green-800 px-1 {{ $jumlahJumat > 0 ? '' : 'bg-red-200' }}">{{ $jumlahJumat > 0 ? $jumlahJumat : '' }}</td>
+                                    <td class="border border-green-800 px-1 {{ $jumlahSabtu > 0 ? '' : 'bg-red-200' }}">{{ $jumlahSabtu > 0 ? $jumlahSabtu : '' }}</td>
+                                    <td class="border border-green-800 px-1 {{ $jumlahMinggu > 0 ? '' : 'bg-red-200' }}">{{ $jumlahMinggu > 0 ? $jumlahMinggu : '' }}</td>
+                                    <td class="border border-green-800 px-1 {{ $jumlahSenin > 0 ? '' : 'bg-red-200' }}">{{ $jumlahSenin > 0 ? $jumlahSenin : '' }}</td>
+                                    <td class="border border-green-800 px-1 {{ $jumlahSelasa > 0 ? '' : 'bg-red-200' }}">{{ $jumlahSelasa > 0 ? $jumlahSelasa : '' }}</td>
+                                    <td class="border border-green-800 px-1 {{ $jumlahRabu > 0 ? '' : 'bg-red-200' }}">{{ $jumlahRabu > 0 ? $jumlahRabu : '' }}</td>
                                 </tr>
                                 @endforeach
                                 @endforeach
                             </tbody>
-
                         </table>
+
                     </div>
 
                     <table class=" w-full">

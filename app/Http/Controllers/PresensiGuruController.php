@@ -219,6 +219,7 @@ class PresensiGuruController
             ->leftJoin('sesi_kelas_guru', 'absensiguru.sesi_kelas_guru_id', 'sesi_kelas_guru.id')
             ->leftJoin('daftar_jadwal', 'daftar_jadwal.id', 'absensiguru.daftar_jadwal_id')
             ->leftJoin('jadwal', 'jadwal.id', 'daftar_jadwal.jadwal_id')
+            ->leftJoin('kelasmi', 'kelasmi.id', 'jadwal.kelasmi_id')
             ->leftJoin('guru', 'guru.id', 'daftar_jadwal.guru_id')
             ->select(
             DB::raw("DATE_FORMAT(sesi_kelas_guru.tanggal, '%M') as bulan"),
@@ -228,15 +229,14 @@ class PresensiGuruController
             'absensiguru.keterangan',
             DB::raw('COUNT(DISTINCT DATE(sesi_kelas_guru.tanggal)) as jumlah_hari'),
             'hari',
+            'nama_kelas'
         )
-            ->groupBy(DB::raw("DATE_FORMAT(sesi_kelas_guru.tanggal, '%M')"), 'absensiguru.keterangan', 'guru.nama_guru', 'hari')
+            ->groupBy(DB::raw("DATE_FORMAT(sesi_kelas_guru.tanggal, '%M')"), 'absensiguru.keterangan', 'guru.nama_guru', 'hari', 'nama_kelas')
             ->whereBetween('sesi_kelas_guru.tanggal', [$startOfMonth, $endOfMonth])
             ->where('sesi_kelas_guru.periode_id', session('periode_id'))
         ->orderBy('nama_guru')
         ->get();
-
-        // dd($laporan);
-        $laporan_per_bulan = [];
+        
 
         foreach ($laporan as $data) {
             if (isset($data->bulan) && isset($data->nama_guru)) {
@@ -297,31 +297,7 @@ class PresensiGuruController
             ->where('sesi_kelas_guru.periode_id', session('periode_id'))
             
             ->orderBy('nama_guru')
-            ->get();
-
-
-        // $bulanIni = $request->bulan ? Carbon::parse($request->bulan)->locale('id') : now()->locale('id');
-        // $jumlahHari = $bulanIni->daysInMonth;
-
-        // $TahunIni = $bulanIni->format('Y');
-        // $namaBulanIni = $bulanIni->format('F');
-
-        // $jumlahJumatRabu = 0;
-
-        // for ($tanggal = 1; $tanggal <= $jumlahHari; $tanggal++) {
-        //     $tanggalIni = Carbon::create($TahunIni, $bulanIni->month, $tanggal);
-        //     $namaHari = $tanggalIni->isoFormat('dddd');
-
-        //     if ($namaHari === 'Jumat' || $namaHari === 'Rabu') {
-        //         $jumlahJumatRabu++;
-        //     }
-        // }
-
-        // echo "Jumlah hari Jumat dan Rabu dalam bulan $namaBulanIni tahun $TahunIni adalah $jumlahJumatRabu hari.";
-
-
-        
-
+        ->get();
         return view(
             'presensi.guru.laporan.laporanSemester',
             [
@@ -331,6 +307,7 @@ class PresensiGuruController
                 'laporan_per_bulan' => $laporan_per_bulan,
                 'kelasmi' => $kelasmi,
                 'laporanDetail' => $laporanDetail,
+                
                 
                
 
