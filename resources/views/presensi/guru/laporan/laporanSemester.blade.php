@@ -109,7 +109,11 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($laporan as $data)
+                                @foreach($laporan->groupBy('nama_guru') as $nama_guru => $laporanGuru)
+                                <tr class="even:bg-gray-100">
+                                    <td class="border px-1" colspan="6">{{ $nama_guru }}</td>
+                                </tr>
+                                @foreach($laporanGuru as $data)
                                 <tr class="even:bg-gray-100">
                                     <td class="border px-1">{{ $data->bulan }}</td>
                                     <td class="border px-1">{{ $data->nama_guru }}</td>
@@ -124,13 +128,11 @@
                                     @endforeach
                                 </tr>
                                 @endforeach
+                                @endforeach
                             </tbody>
+
                         </table>
-
-
-
                     </div>
-
 
                     <table class=" w-full">
                         <thead>
