@@ -100,7 +100,6 @@
                                     <th class=" border px-1">Nama Guru</th>
                                     <th class=" border px-1">Total</th>
                                     <th class=" border px-1">Jumlah Sesi Kelas Guru</th>
-                                    <th class=" border px-1">Keterangan</th>
                                     <th class=" border px-1">Jumat</th>
                                     <th class=" border px-1">Sabtu</th>
                                     <th class=" border px-1">Minggu</th>
@@ -116,8 +115,6 @@
                                     <td class="border px-1">{{ $data->nama_guru }}</td>
                                     <td class="border px-1">{{ $data->total }}</td>
                                     <td class="border px-1">{{ $data->jumlah_sesi_kelas_guru }}</td>
-                                    <!-- <td class="border px-1">{{ $data->keterangan }}</td> -->
-                                    <td class="border px-1">{{ $data->jumlah_hari }}</td>
                                     @foreach(['Jumat', 'Sabtu', 'Minggu', 'Senin', 'Selasa', 'Rabu'] as $hari)
                                     @if ($data->hari == $hari)
                                     <td class="border px-1">{{ $data->jumlah_hari }}</td>
