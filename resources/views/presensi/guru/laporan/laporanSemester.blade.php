@@ -98,10 +98,10 @@
                                 <tr class="border border-green-800">
                                     <th class="border border-green-800 px-1">Bulan</th>
                                     <th class="border border-green-800 px-1">Nama Guru</th>
-                                    <th class="border border-green-800 px-1 w-5">Kelas</th>
-                                    <th class="border border-green-800 px-1">Hari</th>
-                                    <th class="border border-green-800 px-1">Total</th>
-                                    <th class="border border-green-800 px-1">Jumlah Sesi</th>
+                                    <th class="border border-green-800 px-1 w-5">Kls</th>
+                                    <th class="border border-green-800 px-1 w-5">Hari</th>
+                                    <th class="border border-green-800 px-1 w-5">Total</th>
+                                    <th class="border border-green-800 px-1">Sesi</th>
                                     <th class="border border-green-800 px-1">Jumlah Sesi</th>
                                     <th class="border border-green-800 px-1">Jumat</th>
                                     <th class="border border-green-800 px-1">Sabtu</th>
@@ -193,8 +193,42 @@
                                             {{ $jumlahRabu }}
                                             @endif
                                         </td>
-                                        <td class="border border-green-800 px-1">{{ $data->total }}</td>
-                                        <td class="border border-green-800 px-1">{{ $data->jumlah_sesi_kelas_guru }}</td>
+                                        <td class="border border-green-800 px-1 text-center">{{ $data->jumlah_sesi_kelas_guru }}</td>
+                                        <td class="border border-green-800 px-1">
+
+                                            @php
+                                            $jumlahHadir = 0;
+                                            $jumlahIzin = 0;
+                                            $jumlahAlfa = 0;
+                                            $jumlahSakit = 0;
+                                            @endphp
+                                            @php
+                                            // Menghitung keterangan
+                                            switch ($data->keterangan) {
+                                            case 'hadir':
+                                            $jumlahHadir++;
+                                            break;
+                                            case 'izin':
+                                            $jumlahIzin++;
+                                            break;
+                                            case 'alfa':
+                                            $jumlahAlfa++;
+                                            break;
+                                            case 'sakit':
+                                            $jumlahSakit++;
+                                            break;
+                                            default:
+                                            // Tindakan jika ada keterangan lainnya (opsional)
+                                            break;
+                                            }
+                                            @endphp
+                                            H: {{ $jumlahHadir }} <br>
+                                            I: {{ $jumlahIzin }} <br>
+                                            S: {{ $jumlahSakit }} <br>
+
+                                            A: {{ $jumlahAlfa }}
+
+                                        </td>
                                         <td class="border border-green-800 text-center px-1 {{ $data->hari == 'jumat' && $jumlahHari['jumat'] > 0 ? '' : 'bg-red-200' }}">
                                             {{ $data->hari == 'jumat' ? $jumlahHari['jumat'] : '' }}
                                         </td>
