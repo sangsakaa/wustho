@@ -102,7 +102,7 @@
                                     <th rowspan="2" class="border border-green-800 px-1 w-5">Hari</th>
                                     <th rowspan="2" class="border border-green-800 px-1 w-5">Total</th>
                                     <th rowspan="2" class="border border-green-800 px-1">Sesi</th>
-                                    <th rowspan="2" class="border border-green-800 px-1">Jumlah Sesi</th>
+                                    <th rowspan="2" class="border border-green-800 px-1">Keterangan</th>
                                     <th colspan="6" class="border border-green-800 px-1">Terjadwal Hari</th>
 
                                 </tr>
