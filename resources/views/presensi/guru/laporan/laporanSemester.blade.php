@@ -98,7 +98,8 @@
                                 <tr class="border border-green-800">
                                     <th class="border border-green-800 px-1">Bulan</th>
                                     <th class="border border-green-800 px-1">Nama Guru</th>
-                                    <th class="border border-green-800 px-1">Kelas</th>
+                                    <th class="border border-green-800 px-1 w-5">Kelas</th>
+                                    <th class="border border-green-800 px-1">Hari</th>
                                     <th class="border border-green-800 px-1">Total</th>
                                     <th class="border border-green-800 px-1">Jumlah Sesi</th>
                                     <th class="border border-green-800 px-1">Jumat</th>
@@ -111,12 +112,12 @@
                             </thead>
                             <tbody>
                                 @foreach($laporan->groupBy('nama_guru') as $nama_guru => $laporanGuru)
-                                <tr class="even:bg-gray-100">
-                                    <td class="border border-green-800 px-1" colspan="6">{{ $nama_guru }}</td>
+                                <tr class="">
+                                    <td class="border border-green-800 px-1" colspan="13">{{$loop->iteration}} . {{ $nama_guru }}</td>
                                 </tr>
                                 @if ($laporanGuru->isEmpty())
                                 <tr>
-                                    <td class="border border-green-800 px-1" colspan="12">No schedule available.</td>
+                                    <td class="border border-green-800 px-1" colspan="13">No schedule available.</td>
                                 </tr>
                                 @else
                                 @php
@@ -126,39 +127,100 @@
                                 @php
                                 $jumlahHari[$data->hari] += $data->total;
                                 @endphp
-                                <tr class="even:bg-gray-100">
+                                <tr class=" border">
                                     <td class="border border-green-800 px-1">{{ $data->bulan }}</td>
                                     <td class="border border-green-800 px-1">{{ $data->nama_guru }}</td>
-                                    <td class="border border-green-800 px-1">{{ $data->nama_kelas }}</td>
-                                    <td class="border border-green-800 px-1">{{ $data->total }}</td>
-                                    <td class="border border-green-800 px-1">{{ $data->jumlah_sesi_kelas_guru }}</td>
-                                    <td class="border border-green-800 px-1 {{ $data->hari == 'jumat' && $jumlahHari['jumat'] > 0 ? '' : 'bg-red-200' }}">
-                                        {{ $data->hari == 'jumat' ? $jumlahHari['jumat'] : '' }}
-                                    </td>
-                                    <td class="border border-green-800 px-1 {{ $data->hari == 'sabtu' && $jumlahHari['sabtu'] > 0 ? '' : 'bg-red-200' }}">
-                                        {{ $data->hari == 'sabtu' ? $jumlahHari['sabtu'] : '' }}
-                                    </td>
-                                    <td class="border border-green-800 px-1 {{ $data->hari == 'minggu' && $jumlahHari['minggu'] > 0 ? '' : 'bg-red-200' }}">
-                                        {{ $data->hari == 'minggu' ? $jumlahHari['minggu'] : '' }}
-                                    </td>
-                                    <td class="border border-green-800 px-1 {{ $data->hari == 'Senin' && $jumlahHari['Senin'] > 0 ? '' : 'bg-red-200' }}">
-                                        {{ $data->hari == 'Senin' ? $jumlahHari['Senin'] : '' }}
-                                    </td>
-                                    <td class="border border-green-800 px-1 {{ $data->hari == 'Selasa' && $jumlahHari['Selasa'] > 0 ? '' : 'bg-red-200' }}">
-                                        {{ $data->hari == 'Selasa' ? $jumlahHari['Selasa'] : '' }}
-                                    </td>
-                                    <td class="border border-green-800 px-1 {{ $data->hari == 'Rabu' && $jumlahHari['Rabu'] > 0 ? '' : 'bg-red-200' }}">
-                                        {{ $data->hari == 'Rabu' ? $jumlahHari['Rabu'] : '' }}
-                                    </td>
+                                    <td class="border border-green-800 px-1 text-center">{{ $data->nama_kelas }}</td>
+                                    <td class="border border-green-800 px-1 capitalize">{{ $data->hari }}</td>
+                                    @php
+                                    $bulan = \Carbon\Carbon::parse($data->bulan)->format('m');
+                                    $tahun = \Carbon\Carbon::parse($data->bulan)->format('Y');
+                                    $jumlahHariBulan = \Carbon\Carbon::parse('01-'.$bulan.'-'.$tahun)->daysInMonth;
+                                    $jumlahJumat = 0;
+                                    $jumlahSabtu = 0;
+                                    $jumlahMinggu = 0;
+                                    $jumlahSenin = 0;
+                                    $jumlahSelasa = 0;
+                                    $jumlahRabu = 0;
+                                    $tanggalAwal = \Carbon\Carbon::parse('01-'.$bulan.'-'.$tahun);
+                                    $tanggalAkhir = \Carbon\Carbon::parse($jumlahHariBulan.'-'.$bulan.'-'.$tahun);
+
+                                    while ($tanggalAwal <= $tanggalAkhir) { $dayOfWeek=$tanggalAwal->dayOfWeek;
+
+                                        switch ($dayOfWeek) {
+                                        case 0: // Minggu
+                                        $jumlahMinggu++;
+                                        break;
+                                        case 1: // Senin
+                                        $jumlahSenin++;
+                                        break;
+                                        case 2: // Selasa
+                                        $jumlahSelasa++;
+                                        break;
+                                        case 3: // Rabu
+                                        $jumlahRabu++;
+                                        break;
+
+                                        case 5: // Jumat
+                                        $jumlahJumat++;
+                                        break;
+                                        case 6: // Sabtu
+                                        $jumlahSabtu++;
+                                        break;
+                                        }
+
+                                        $tanggalAwal->addDay();
+                                        }
+                                        @endphp
+                                        <td class="border border-green-800 px-1 text-center">
+                                            @if ($data->hari == 'jumat' && $jumlahJumat > 0)
+                                            {{ $jumlahJumat }}
+                                            @endif
+                                            @if ($data->hari == 'sabtu' && $jumlahSabtu > 0)
+                                            {{ $jumlahSabtu }}
+                                            @endif
+                                            @if ($data->hari == 'minggu' && $jumlahMinggu > 0)
+                                            {{ $jumlahMinggu }}
+                                            @endif
+                                            @if ($data->hari == 'Senin' && $jumlahSenin > 0)
+                                            {{ $jumlahSenin }}
+                                            @endif
+                                            @if ($data->hari == 'Selasa' && $jumlahSelasa > 0)
+                                            {{ $jumlahSelasa }}
+                                            @endif
+                                            @if ($data->hari == 'Rabu' && $jumlahRabu > 0)
+                                            {{ $jumlahRabu }}
+                                            @endif
+                                        </td>
+
+
+                                        <td class="border border-green-800 px-1">{{ $data->total }}</td>
+                                        <td class="border border-green-800 px-1">{{ $data->jumlah_sesi_kelas_guru }}</td>
+                                        <td class="border border-green-800 text-center px-1 {{ $data->hari == 'jumat' && $jumlahHari['jumat'] > 0 ? '' : 'bg-red-200' }}">
+                                            {{ $data->hari == 'jumat' ? $jumlahHari['jumat'] : '' }}
+                                        </td>
+                                        <td class="border border-green-800 text-center px-1 {{ $data->hari == 'sabtu' && $jumlahHari['sabtu'] > 0 ? '' : 'bg-red-200' }}">
+                                            {{ $data->hari == 'sabtu' ? $jumlahHari['sabtu'] : '' }}
+                                        </td>
+                                        <td class="border border-green-800 text-center px-1 {{ $data->hari == 'minggu' && $jumlahHari['minggu'] > 0 ? '' : 'bg-red-200' }}">
+                                            {{ $data->hari == 'minggu' ? $jumlahHari['minggu'] : '' }}
+                                        </td>
+                                        <td class="border border-green-800 text-center px-1 {{ $data->hari == 'Senin' && $jumlahHari['Senin'] > 0 ? '' : 'bg-red-200' }}">
+                                            {{ $data->hari == 'Senin' ? $jumlahHari['Senin'] : '' }}
+                                        </td>
+                                        <td class="border border-green-800 text-center px-1 {{ $data->hari == 'Selasa' && $jumlahHari['Selasa'] > 0 ? '' : 'bg-red-200' }}">
+                                            {{ $data->hari == 'Selasa' ? $jumlahHari['Selasa'] : '' }}
+                                        </td>
+                                        <td class="border border-green-800 text-center px-1 {{ $data->hari == 'Rabu' && $jumlahHari['Rabu'] > 0 ? '' : 'bg-red-200' }}">
+                                            {{ $data->hari == 'Rabu' ? $jumlahHari['Rabu'] : '' }}
+                                        </td>
                                 </tr>
                                 @endforeach
                                 @endif
                                 @endforeach
                             </tbody>
+
                         </table>
-
-
-
                     </div>
 
                     <table class=" w-full mt-2">
