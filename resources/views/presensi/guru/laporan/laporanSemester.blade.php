@@ -121,9 +121,23 @@
                                     <td class="border px-1">{{ $data->jumlah_sesi_kelas_guru }}</td>
                                     @foreach(['jumat', 'sabtu', 'minggu', 'Senin', 'Selasa', 'Rabu'] as $hari)
                                     @if ($data->hari == $hari)
-                                    <td class="border px-1">{{ $data->hari }} <br>{{$data->keterangan}}</td>
+                                    <td class="border px-1">{{ $data->hari }} @php
+                                        $inisial = $data->keterangan; // Ambil nilai dari variabel $data->keterangan
+                                        @endphp
+
+                                        @if($inisial === 'hadir')
+                                        (H)
+                                        @elseif($inisial === 'sakit')
+                                        (S)
+                                        @elseif($inisial === 'izin')
+                                        (I)
+                                        @elseif($inisial === 'alfa')
+                                        (A)
+                                        @else
+                                        Keterangan tidak valid
+                                        @endif</td>
                                     @else
-                                    <td class="border px-1"></td>
+                                    <td class="border px-1 text-center">x</td>
                                     @endif
                                     @endforeach
                                 </tr>
