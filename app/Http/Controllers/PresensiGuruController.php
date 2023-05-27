@@ -295,7 +295,8 @@ class PresensiGuruController
             ->groupBy(DB::raw("DATE_FORMAT(sesi_kelas_guru.tanggal,'%M')"),  'guru.nama_guru', 'nama_kelas', 'keterangan')
         ->whereBetween('sesi_kelas_guru.tanggal', [$startOfMonth, $endOfMonth])
             ->where('sesi_kelas_guru.periode_id', session('periode_id'))
-            
+
+            ->orderBy('nama_kelas')
             ->orderBy('nama_guru')
         ->get();
         return view(
