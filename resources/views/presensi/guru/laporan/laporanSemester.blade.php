@@ -92,108 +92,149 @@
 
                         </div>
                     </div>
-                    <div class=" px-2">
-                        <table class=" w-full">
+                    <div class="px-2">
+                        <table>
                             <thead>
-                                <tr class=" border border-green-800">
-                                    <th rowspan="2" class=" border border-green-800 w-16">Bulan</th>
-                                    <th rowspan="2" class=" border border-green-800 w-5">No</th>
-                                    <th rowspan="2" class=" border border-green-800 w-16">Nama Guru</th>
-                                    <th colspan="4" class=" border border-green-800">Keterangan</th>
-                                </tr>
-                                <tr class=" border border-green-800">
-                                    <th class=" border border-green-800 w-5">Hadir</th>
-                                    <th class=" border border-green-800 w-5">Izin</th>
-                                    <th class=" border border-green-800 w-5">Sakit</th>
-                                    <th class=" border border-green-800 w-5">Alfa</th>
+                                <tr>
+                                    <th class=" border px-1">Bulan</th>
+                                    <th class=" border px-1">Nama Guru</th>
+                                    <th class=" border px-1">Total</th>
+                                    <th class=" border px-1">Jumlah Sesi Kelas Guru</th>
+                                    <th class=" border px-1">Keterangan</th>
+                                    <th class=" border px-1">Jumat</th>
+                                    <th class=" border px-1">Sabtu</th>
+                                    <th class=" border px-1">Minggu</th>
+                                    <th class=" border px-1">Senin</th>
+                                    <th class=" border px-1">Selasa</th>
+                                    <th class=" border px-1">Rabu</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($laporan_per_bulan as $bulan => $guru)
-                                @foreach ($guru as $nama_guru => $data)
-                                <tr>
-                                    @if ($loop->first)
-                                    <td rowspan="{{ count($guru) + 1 }}" class="border border-green-800 text-center -rotate-90 text-2xl font-semibold">
-                                        {{ \Carbon\Carbon::parse($bulan)->isoFormat(' MMMM') }}
-                                    </td>
-
+                                @foreach($laporan as $data)
+                                <tr class="even:bg-gray-100">
+                                    <td class="border px-1">{{ $data->bulan }}</td>
+                                    <td class="border px-1">{{ $data->nama_guru }}</td>
+                                    <td class="border px-1">{{ $data->total }}</td>
+                                    <td class="border px-1">{{ $data->jumlah_sesi_kelas_guru }}</td>
+                                    <!-- <td class="border px-1">{{ $data->keterangan }}</td> -->
+                                    <td class="border px-1">{{ $data->jumlah_hari }}</td>
+                                    @foreach(['Jumat', 'Sabtu', 'Minggu', 'Senin', 'Selasa', 'Rabu'] as $hari)
+                                    @if ($data->hari == $hari)
+                                    <td class="border px-1">{{ $data->jumlah_hari }}</td>
+                                    @else
+                                    <td class="border px-1"></td>
                                     @endif
-                                    <td class=" border border-green-800 text-center px-2">{{ $loop->iteration }}</td>
-                                    <td class=" border border-green-800 text-left px-2">{{ $nama_guru }}</td>
-
-
-                                    <td class=" border border-green-800 text-center px-2">{{ $data['hadir'] }}</td>
-                                    <td class=" border border-green-800 text-center px-2">{{ $data['izin'] }}</td>
-                                    <td class=" border border-green-800 text-center px-2">{{ $data['sakit'] }}</td>
-                                    <td class=" border border-green-800 text-center px-2">{{ $data['alfa'] }}</td>
-                                </tr>
-                                @endforeach
-                                @endforeach
-                            </tbody>
-                        </table>
-                        <div class="page-break"></div>
-                        <div class=" py-1">
-                            <p class=" text-lg text-center block sm:hidden uppercase text-green-800 font-semibold ">Detail Laporan Kehadiran</p>
-                        </div>
-
-                        <table class="w-full ">
-                            <thead>
-                                <tr>
-                                    <th rowspan="2" class="border border-green-800">No</th>
-                                    <th rowspan="2" class="border border-green-800">Nama Guru</th>
-                                    <th class="border border-green-800" colspan="{{ $laporanDetail->pluck('nama_kelas')->unique()->count() }}">Kelas</th>
-                                    <th rowspan="2" class="border border-green-800">Total</th>
-                                </tr>
-                                <tr>
-
-
-                                    @foreach ($laporanDetail->pluck('nama_kelas')->unique()->sort() as $namaKelas)
-                                    <th class="border border-green-800">{{ $namaKelas }}</th>
                                     @endforeach
-
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($laporanDetail->sortBy('nama_guru')->groupBy('nama_guru') as $namaGuru => $details)
-                                <tr class=" even:bg-gray-100">
-                                    <td class="border border-green-800 text-center">{{ $loop->iteration }}</td>
-                                    <td class="border border-green-800 px-1">{{ $namaGuru }}</td>
-                                    @foreach ($laporanDetail->pluck('nama_kelas')->unique()->sort() as $namaKelas)
-                                    @php
-                                    $sesiKelas = $details->where('nama_kelas', $namaKelas)->first();
-                                    @endphp
-                                    <td class="border border-green-800{{ $loop->first ? ' ' : '' }} text-center">
-                                        {{ $sesiKelas ? $sesiKelas->jumlah_sesi_kelas_guru : '-' }}
-                                    </td>
-                                    @endforeach
-                                    <td class="border border-green-800  text-center">
-                                        {{ $details->sum('jumlah_sesi_kelas_guru') }}
-                                    </td>
                                 </tr>
                                 @endforeach
                             </tbody>
-
-
-
                         </table>
 
 
 
                     </div>
-                    <div class="  flex grid-cols-2 text-right block sm:hidden">
-                        <div class=" w-2/3"></div>
-                        <div class="  text-left text-sm">
-                            Kedunglo, <?php
-                                        $date = date_create(now());
-                                        echo \Carbon\Carbon::parse($date)->isoFormat(' DD MMMM Y');
-                                        ?></p>
-                            Al Mudir / Kepala <br><br><br><br>
-                            Muh. Bahrul Ulum, S.H
-                        </div>
+
+
+                    <table class=" w-full">
+                        <thead>
+                            <tr class=" border border-green-800">
+                                <th rowspan="2" class=" border border-green-800 w-16">Bulan</th>
+                                <th rowspan="2" class=" border border-green-800 w-5">No</th>
+                                <th rowspan="2" class=" border border-green-800 w-16">Nama Guru</th>
+                                <th rowspan="2" class=" border border-green-800 w-16">Hari Wajib</th>
+                                <th colspan="4" class=" border border-green-800">Keterangan</th>
+                            </tr>
+                            <tr class=" border border-green-800">
+                                <th class=" border border-green-800 w-5">Hadir</th>
+                                <th class=" border border-green-800 w-5">Izin</th>
+                                <th class=" border border-green-800 w-5">Sakit</th>
+                                <th class=" border border-green-800 w-5">Alfa</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($laporan_per_bulan as $bulan => $guru)
+                            @foreach ($guru as $nama_guru => $data)
+                            <tr>
+                                @if ($loop->first)
+                                <td rowspan="{{ count($guru) + 1 }}" class="border border-green-800 text-center -rotate-90 text-2xl font-semibold">
+                                    {{ \Carbon\Carbon::parse($bulan)->isoFormat(' MMMM') }}
+                                </td>
+
+                                @endif
+                                <td class=" border border-green-800 text-center px-2">{{ $loop->iteration }}</td>
+                                <td class=" border border-green-800 text-left px-2">{{ $nama_guru }}</td>
+                                <td class=" border border-green-800 text-left px-2">{{''}}</td>
+                                <td class=" border border-green-800 text-center px-2">{{ $data['hadir'] }}</td>
+                                <td class=" border border-green-800 text-center px-2">{{ $data['izin'] }}</td>
+                                <td class=" border border-green-800 text-center px-2">{{ $data['sakit'] }}</td>
+                                <td class=" border border-green-800 text-center px-2">{{ $data['alfa'] }}</td>
+                            </tr>
+                            @endforeach
+                            @endforeach
+                        </tbody>
+                    </table>
+                    <div class="page-break"></div>
+                    <div class=" py-1">
+                        <p class=" text-lg text-center block sm:hidden uppercase text-green-800 font-semibold ">Detail Laporan Kehadiran</p>
+                    </div>
+                    <table class="w-full ">
+                        <thead>
+                            <tr>
+                                <th rowspan="2" class="border border-green-800">No</th>
+                                <th rowspan="2" class="border border-green-800">Nama Guru</th>
+                                <th class="border border-green-800" colspan="{{ $laporanDetail->pluck('nama_kelas')->unique()->count() }}">Kelas</th>
+                                <th rowspan="2" class="border border-green-800">Total</th>
+                            </tr>
+                            <tr>
+
+
+                                @foreach ($laporanDetail->pluck('nama_kelas')->unique()->sort() as $namaKelas)
+                                <th class="border border-green-800">{{ $namaKelas }}</th>
+                                @endforeach
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($laporanDetail->sortBy('nama_guru')->groupBy('nama_guru') as $namaGuru => $details)
+                            <tr class=" even:bg-gray-100">
+                                <td class="border border-green-800 text-center">{{ $loop->iteration }}</td>
+                                <td class="border border-green-800 px-1">{{ $namaGuru }}</td>
+                                @foreach ($laporanDetail->pluck('nama_kelas')->unique()->sort() as $namaKelas)
+                                @php
+                                $sesiKelas = $details->where('nama_kelas', $namaKelas)->first();
+                                @endphp
+                                <td class="border border-green-800{{ $loop->first ? ' ' : '' }} text-center">
+                                    {{ $sesiKelas ? $sesiKelas->jumlah_sesi_kelas_guru : '-' }}
+                                </td>
+                                @endforeach
+                                <td class="border border-green-800  text-center">
+                                    {{ $details->sum('jumlah_sesi_kelas_guru') }}
+                                </td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+
+
+
+                    </table>
+
+
+
+                </div>
+                <div class="  flex grid-cols-2 text-right block sm:hidden">
+                    <div class=" w-2/3"></div>
+                    <div class="  text-left text-sm">
+                        Kedunglo, <?php
+                                    $date = date_create(now());
+                                    echo \Carbon\Carbon::parse($date)->isoFormat(' DD MMMM Y');
+                                    ?></p>
+                        Al Mudir / Kepala <br><br><br><br>
+                        Muh. Bahrul Ulum, S.H
                     </div>
                 </div>
             </div>
         </div>
+    </div>
     </div>
     <div class="my-1">
         <div class="">
