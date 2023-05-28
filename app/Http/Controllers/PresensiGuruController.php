@@ -96,7 +96,6 @@ class PresensiGuruController
             // handle error here
         }
         // dd($hari);
-
         $dataGuru = Daftar_Jadwal::query()
             ->join('guru', 'guru.id', '=', 'daftar_jadwal.guru_id')
             ->join('jadwal', 'jadwal.id', '=', 'daftar_jadwal.jadwal_id')
@@ -112,9 +111,9 @@ class PresensiGuruController
                 ]
             )
             ->where('hari', $hari ?: 'minggu')
-
             ->where('jadwal.kelasmi_id', $sesi_Kelas_Guru->kelasmi_id)
             ->get();
+        // dd($dataGuru)->toJson();
         return view(
             'presensi.guru.DaftarHadirGuru',
             compact(
@@ -130,18 +129,23 @@ class PresensiGuruController
     public function AbsenGuru(Request $request)
     {
 
+        // dd($request);
         $absenGuru = Absensiguru::where('sesi_kelas_guru_id', $request->sesi_kelas_guru_id)->first();
 
-        if (!$absenGuru) {
+        if ($absenGuru) {
+            $absenGuru->keterangan = implode(", ", $request->keterangan);
+            $absenGuru->alasan = implode(", ", $request->alasan);
+            $absenGuru->save();
+        } else {
             $absenGuru = new Absensiguru();
             $absenGuru->sesi_kelas_guru_id = $request->sesi_kelas_guru_id;
             $absenGuru->daftar_jadwal_id = $request->daftar_jadwal_id;
+            $absenGuru->keterangan = implode(", ", $request->keterangan);
+            $absenGuru->alasan = implode(", ", $request->alasan);
+            $absenGuru->save();
         }
 
-        $absenGuru->keterangan = implode(", ", $request->keterangan); // ubah array menjadi string
-        $absenGuru->alasan = implode(", ", $request->alasan); // ubah array menjadi string
-
-        $absenGuru->save();
+        
         return redirect()->back();
     }
     public function LaporanHarian(Request $request)
