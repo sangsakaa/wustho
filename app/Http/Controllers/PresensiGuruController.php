@@ -329,7 +329,7 @@ class PresensiGuruController
 
     {
 
-        dd($sesi_Kelas_Guru);
+       
         Sesi_Kelas_Guru::destroy($sesi_Kelas_Guru->id);
         Absensiguru::where('sesi_kelas_guru_id', $sesi_Kelas_Guru->id)->delete();
         return redirect()->back();
