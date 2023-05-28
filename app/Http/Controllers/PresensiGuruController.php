@@ -97,14 +97,14 @@ class PresensiGuruController
         }
         // dd($hari);
         $dataGuru = Daftar_Jadwal::query()
-            ->leftjoin(
+            ->join(
                 'guru',
                 'guru.id',
                 '=',
                 'daftar_jadwal.guru_id'
             )
-            ->leftjoin('jadwal', 'jadwal.id', '=', 'daftar_jadwal.jadwal_id')
-            ->leftjoin('absensiguru', 'absensiguru.daftar_jadwal_id', '=', 'daftar_jadwal.id')
+            ->join('jadwal', 'jadwal.id', '=', 'daftar_jadwal.jadwal_id')
+            ->join('absensiguru', 'absensiguru.daftar_jadwal_id', '=', 'daftar_jadwal.id')
             ->select(
                 [
                     'nama_guru',
