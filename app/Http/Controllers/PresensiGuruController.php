@@ -97,27 +97,30 @@ class PresensiGuruController
         }
         // dd($hari);
         $dataGuru = Daftar_Jadwal::query()
-            ->join(
-                'guru',
-                'guru.id',
-                '=',
-                'daftar_jadwal.guru_id'
-            )
-            ->leftjoin('jadwal', 'jadwal.id', '=', 'daftar_jadwal.jadwal_id')
-            ->leftjoin('absensiguru', 'absensiguru.daftar_jadwal_id', '=', 'daftar_jadwal.id')
-            ->select(
-                [
-                    'nama_guru',
-                    'hari',
-                    'jadwal.kelasmi_id',
-                    'daftar_jadwal.id',
-                    'absensiguru.alasan',
-                    'absensiguru.keterangan'
-                ]
-            )
+            ->join('guru', 'guru.id', '=', 'daftar_jadwal.guru_id')
+            ->leftJoin('jadwal', 'jadwal.id', '=', 'daftar_jadwal.jadwal_id')
+            ->leftJoin('absensiguru', 'absensiguru.daftar_jadwal_id', '=', 'daftar_jadwal.id')
+            ->select([
+                'nama_guru',
+                'hari',
+                'jadwal.kelasmi_id',
+                'daftar_jadwal.id',
+                'absensiguru.alasan',
+                'absensiguru.keterangan'
+            ])
             ->where('hari', $hari ?: 'minggu')
             ->where('jadwal.kelasmi_id', $sesi_Kelas_Guru->kelasmi_id)
+            ->groupBy(
+                'nama_guru',
+                'hari',
+                'jadwal.kelasmi_id',
+                'daftar_jadwal.id',
+                'absensiguru.alasan',
+                'absensiguru.keterangan'
+            )
         ->get();
+
+
 
         // dd($dataGuru)->toJson();
         return view(
