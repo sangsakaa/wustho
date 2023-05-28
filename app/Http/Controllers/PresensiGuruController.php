@@ -104,7 +104,7 @@ class PresensiGuruController
                 'daftar_jadwal.guru_id'
             )
             ->join('jadwal', 'jadwal.id', '=', 'daftar_jadwal.jadwal_id')
-            ->join('absensiguru', 'absensiguru.daftar_jadwal_id', '=', 'daftar_jadwal.id')
+            ->leftjoin('absensiguru', 'absensiguru.daftar_jadwal_id', '=', 'daftar_jadwal.id')
             ->select(
                 [
                     'nama_guru',
