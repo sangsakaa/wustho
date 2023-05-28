@@ -49,7 +49,7 @@
                     </div>
                     <div class=" flex grid-cols-4 font-semibold text-sm gap-5 py-1">
                         <div class=" w-20">Kelas</div>
-                        <div>: {{$item->nama_kelas}}</div>
+                        <div>: </div>
                         <div>Tanggal</div>
                         <div>: ............ {{$bulan }}</div>
                     </div>
@@ -101,7 +101,7 @@
                     </div>
                     <div class=" flex grid-cols-4 font-semibold text-xs gap-5 py-1">
                         <div class=" w-20">Kelas</div>
-                        <div>: {{$item->nama_kelas}}</div>
+                        <div>: </div>
                         <div>Tanggal</div>
                         <div>: .......... {{$bulan }}</div>
                     </div>
