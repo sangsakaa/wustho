@@ -107,7 +107,7 @@ class PresensiGuruController
             ->selectRaw('GROUP_CONCAT(absensiguru.keterangan) AS keterangan')
             ->where('hari', $hari ?: 'minggu')
             ->where('jadwal.kelasmi_id', $sesi_Kelas_Guru->kelasmi_id)
-            ->groupBy('daftar_jadwal.id', 'nama_guru', 'jadwal.hari', 'jadwal.kelasmi_id')
+            ->groupBy('daftar_jadwal.id', 'nama_guru', 'jadwal.kelasmi_id', 'hari')
         ->get();
 
         // dd($dataGuru)->toJson();
@@ -127,15 +127,20 @@ class PresensiGuruController
     {
 
 
-        Absensiguru::updateOrCreate(
-            ['sesi_kelas_guru_id' => $request->sesi_kelas_guru_id],
-            [
-                'daftar_jadwal_id' => $request->daftar_jadwal_id,
-                'keterangan' => implode(", ", $request->keterangan),
-                'alasan' => implode(", ", $request->alasan)
-            ]
-        );
+        $absenGuru = Absensiguru::where('sesi_kelas_guru_id', $request->sesi_kelas_guru_id)->first();
 
+        if ($absenGuru) {
+            $absenGuru->keterangan = implode(", ", $request->keterangan);
+            $absenGuru->alasan = implode(", ", $request->alasan);
+            $absenGuru->save();
+        } else {
+            $absenGuru = new Absensiguru();
+            $absenGuru->sesi_kelas_guru_id = $request->sesi_kelas_guru_id;
+            $absenGuru->daftar_jadwal_id = $request->daftar_jadwal_id;
+            $absenGuru->keterangan = implode(", ", $request->keterangan);
+            $absenGuru->alasan = implode(", ", $request->alasan);
+            $absenGuru->save();
+        }
 
         
         return redirect()->back();
