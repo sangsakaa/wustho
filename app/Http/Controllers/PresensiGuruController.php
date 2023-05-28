@@ -97,22 +97,19 @@ class PresensiGuruController
         }
         // dd($hari);
         $dataGuru = Daftar_Jadwal::query()
-            ->join('guru', 'guru.id', '=', 'daftar_jadwal.guru_id')
-            ->join('jadwal', 'jadwal.id', '=', 'daftar_jadwal.jadwal_id')
-            ->leftjoin('absensiguru', 'absensiguru.daftar_jadwal_id', '=', 'daftar_jadwal.id')
-            ->select(
-                [
-                    'nama_guru',
-                    'hari',
-                    'jadwal.kelasmi_id',
-                    'daftar_jadwal.id',
-                'absensiguru.alasan',
-                'absensiguru.keterangan'
-                ]
-            )
+            ->leftJoin('guru', 'guru.id', '=', 'daftar_jadwal.guru_id')
+            ->leftJoin('jadwal', 'jadwal.id', '=', 'daftar_jadwal.jadwal_id')
+            ->leftJoin('absensiguru', 'absensiguru.daftar_jadwal_id', '=', 'daftar_jadwal.id')
+            ->select('nama_guru', 'hari', 'jadwal.kelasmi_id', 'daftar_jadwal.id')
+            ->selectRaw('MAX(absensiguru.updated_at) AS latest_updated_at')
+            ->selectRaw('MAX(absensiguru.created_at) AS latest_created_at')
+            ->selectRaw('GROUP_CONCAT(absensiguru.alasan) AS alasan')
+            ->selectRaw('GROUP_CONCAT(absensiguru.keterangan) AS keterangan')
             ->where('hari', $hari ?: 'minggu')
             ->where('jadwal.kelasmi_id', $sesi_Kelas_Guru->kelasmi_id)
-            ->get();
+            ->groupBy('daftar_jadwal.id', 'nama_guru', 'jadwal.hari', 'jadwal.kelasmi_id')
+        ->get();
+
         // dd($dataGuru)->toJson();
         return view(
             'presensi.guru.DaftarHadirGuru',
@@ -129,21 +126,16 @@ class PresensiGuruController
     public function AbsenGuru(Request $request)
     {
 
-        // dd($request);
-        $absenGuru = Absensiguru::where('sesi_kelas_guru_id', $request->sesi_kelas_guru_id)->first();
 
-        if ($absenGuru) {
-            $absenGuru->keterangan = implode(", ", $request->keterangan);
-            $absenGuru->alasan = implode(", ", $request->alasan);
-            $absenGuru->save();
-        } else {
-            $absenGuru = new Absensiguru();
-            $absenGuru->sesi_kelas_guru_id = $request->sesi_kelas_guru_id;
-            $absenGuru->daftar_jadwal_id = $request->daftar_jadwal_id;
-            $absenGuru->keterangan = implode(", ", $request->keterangan);
-            $absenGuru->alasan = implode(", ", $request->alasan);
-            $absenGuru->save();
-        }
+        Absensiguru::updateOrCreate(
+            ['sesi_kelas_guru_id' => $request->sesi_kelas_guru_id],
+            [
+                'daftar_jadwal_id' => $request->daftar_jadwal_id,
+                'keterangan' => implode(", ", $request->keterangan),
+                'alasan' => implode(", ", $request->alasan)
+            ]
+        );
+
 
         
         return redirect()->back();
