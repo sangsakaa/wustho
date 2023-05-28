@@ -86,6 +86,7 @@ class PresensiGuruController
     }
     public function DaftarGuru(Sesi_Kelas_Guru $sesi_Kelas_Guru, Request $request)
     {
+        // dd($sesi_Kelas_Guru);
         $title = $sesi_Kelas_Guru->join('kelasmi', 'kelasmi.id', '=', 'sesi_kelas_guru.kelasmi_id')->find($sesi_Kelas_Guru->id);
         $datetime = DateTime::createFromFormat('Y-m-d', $sesi_Kelas_Guru->tanggal);
         if ($datetime !== false) {
@@ -106,23 +107,21 @@ class PresensiGuruController
                 'jadwal.kelasmi_id',
                 'daftar_jadwal.id',
                 'absensiguru.alasan',
-                'absensiguru.keterangan'
+            'absensiguru.keterangan',
+            'sesi_kelas_guru_id'
             ])
             ->where('hari', $hari ?: 'minggu')
+            // ->where('absensiguru.sesi_kelas_guru_id', $sesi_Kelas_Guru->id)
             ->where('jadwal.kelasmi_id', $sesi_Kelas_Guru->kelasmi_id)
-            ->groupBy(
-                'nama_guru',
-                'hari',
-                'jadwal.kelasmi_id',
-                'daftar_jadwal.id',
-                'absensiguru.alasan',
-                'absensiguru.keterangan'
-            )
         ->get();
+        if ($dataGuru->count() > 1) {
+            $dataGuru = $dataGuru
+                ->where('sesi_kelas_guru_id', $sesi_Kelas_Guru->id);
+        }
 
 
 
-        // dd($dataGuru)->toJson();
+        //dd($dataGuru)->toJson();
         return view(
             'presensi.guru.DaftarHadirGuru',
             compact(
