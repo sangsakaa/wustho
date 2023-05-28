@@ -49,7 +49,7 @@
                     </div>
                     <div class=" flex grid-cols-4 font-semibold text-sm gap-5 py-1">
                         <div class=" w-20">Kelas</div>
-                        <div>: </div>
+                        <div>: {{$item->nama_kelas}}</div>
                         <div>Tanggal</div>
                         <div>: ............ {{$bulan }}</div>
                     </div>
@@ -87,38 +87,55 @@
             <div class="page-break "></div>
             <div class=" grid grid-cols-2 gap-1">
                 @foreach ($kelasmi as $item)
-                <div class=" text-green-800 ">
-                    <div class=" overflow-auto bg-white dark:bg-dark-bg block sm:hidden ">
-                        <div class=" text-center text-green-900  ">
-                            <p class=" font-semibold text-sm">
-                                MADRASAH DINIYAH WUSTHO WAHIDIYAH
-                            </p>
-                            <p class=" font-semibold uppercase text-sm">
-                                TAHUN PELAJARAN {{$item->periode}} {{$item->ket_semester}}
-                            </p>
+                <div class=" text-green-800 border-green-900  border p-1 ">
+                    <div class=" flex grid-cols-2">
+                        <div><img src={{ asset("asset/images/logo.png") }} alt="" width="50" class=""></div>
+                        <div class=" w-full  ">
+                            <center>
+                                </p>
+                                <p class="  font-serif text-xs uppercase">pondok pesantren kedunglo al munadhdhoroh</p>
+                                <p class="  uppercase font-serif text-xs font-semibold text-monospace ">madrasah diniyah wustho
+                                    Wahidiyah</p>
+                                <p class=" capitalize font-serif text-xs">Alamat : Jl.KH. Wachid Hasyim Kota Kediri 64114 Jawa Timur </p>
+                                <hr class=" border-b-1 border-green-700 ">
+                                <p class=" text-xs"> Tahun Pelajaran {{$item->periode}} {{$item->ket_semester}}</p>
+                            </center>
+
                         </div>
-                        <hr class=" border-b-2 border-green-900">
-                    </div>
-                    <div class=" flex grid-cols-4 font-semibold text-xs gap-5 py-1">
-                        <div class=" w-20">Kelas</div>
-                        <div>: </div>
-                        <div>Tanggal</div>
-                        <div>: .......... {{$bulan }}</div>
                     </div>
                     <div class=" text-center">
-                        <p class=" uppercase text-xs font-semibold">izin mengikuti/meninggalkan pelajaran</p>
-                        <hr>
+                        <p class="   text-sm uppercase font-semibold mt-1  underline border-b-green-800">Surat izin </p>
                     </div>
-                    <div class=" grid grid-cols-2">
-                        <div class=" py-1">Nama</div>
-                        <div class=" py-1 border-b-2 ">:</div>
-                        <div class=" py-1">Kelas</div>
-                        <div class=" py-1 border-b-2 ">:</div>
-                        <div class=" py-1">Asrama</div>
-                        <div class=" py-1 border-b-2 ">:</div>
+                    <div class=" px-4 grid grid-cols-">
+                        <div class=" mt-2  w-32 grid grid-cols-2">
+                            <div>
+                                Nama
+                            </div>
+                            <div>:</div>
+                        </div>
+                        <div class=" mt-2 border-b-2  "></div>
+                        <div class=" mt-2  w-32 grid grid-cols-2">
+                            <div>
+                                kelas
+                            </div>
+                            <div>:</div>
+                        </div>
+                        <div class=" mt-2 border-b-2  ">
+                            @foreach ($kelasmi as $item)
+                            <input type="checkbox" name="" id="" class=" px-2 uppercase text-bold ">
+                            <span class=" px-2">{{$item->nama_kelas}}</span>
+                            @endforeach
+                        </div>
+                        <div class=" mt-2  w-32 grid grid-cols-2">
+                            <div>
+                                Asrama
+                            </div>
+                            <div>:</div>
+                        </div>
+                        <div class=" mt-2 border-b-2  "></div>
                     </div>
                     <div class=" ">
-                        <p class="  capitalize text-xs">untuk mengikuti/meninggalkan pelajaran karena</p>
+                        <p class="  capitalize text-xs py-1">Diberikan izin tidak mengikuti Kegiatan Madin Wustho Wahidiyah karena : </p>
                         <div class="">
                             <input type="checkbox" name="" id=""> Sakit
                             <input type="checkbox" name="" id=""> Izin
@@ -126,15 +143,14 @@
                                 <p class="px-1">Alasan :</p>
                                 <p></p>
                             </div>
-                            <div class=" grid grid-cols-2">
+                            <div class=" text-xs mt-2 grid grid-cols-2">
+                                <div></div>
                                 <div class="  text-center">
                                     <p>Ketua Asrama,</p>
-                                    <p class=" mt-16">..............</p>
+                                    <p>Kedunglo, ........ {{$bulan }}</p>
+                                    <p class="  mt-12">..............</p>
                                 </div>
-                                <div class=" text-center">
-                                    <p>Mentor,</p>
-                                    <p class=" mt-16">..............</p>
-                                </div>
+
                             </div>
                         </div>
                     </div>
