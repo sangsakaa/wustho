@@ -104,53 +104,53 @@
                         </div>
                     </div>
                     <div class=" text-center">
-                        <p class="   text-sm uppercase font-semibold mt-1  underline border-b-green-800">Surat izin </p>
+                        <p class="   text-sm uppercase font-semibold   underline border-b-green-800">Surat izin </p>
                     </div>
-                    <div class=" px-4 grid grid-cols-">
-                        <div class=" mt-2  w-32 grid grid-cols-2">
+                    <div class=" px-2 grid grid-cols-">
+                        <div class="   w-32 grid grid-cols-2">
                             <div>
                                 Nama
                             </div>
                             <div>:</div>
                         </div>
-                        <div class=" mt-2 border-b-2  "></div>
-                        <div class=" mt-2  w-32 grid grid-cols-2">
+                        <div class="  border-b-2 mt-2 "></div>
+                        <div class="    w-32 grid grid-cols-2">
                             <div>
                                 kelas
                             </div>
                             <div>:</div>
                         </div>
-                        <div class=" mt-2 border-b-2  ">
+                        <div class="  border-b-2  ">
                             @foreach ($kelasmi as $item)
-                            <input type="checkbox" name="" id="" class=" px-2 uppercase text-bold ">
-                            <span class=" px-2">{{$item->nama_kelas}}</span>
+                            <input type="checkbox" name="" id="" class="  uppercase text-bold ">
+                            <span class="">{{$item->nama_kelas}}</span>
                             @endforeach
                         </div>
-                        <div class=" mt-2  w-32 grid grid-cols-2">
+                        <div class="   w-32 grid grid-cols-2">
                             <div>
                                 Asrama
                             </div>
                             <div>:</div>
                         </div>
-                        <div class=" mt-2 border-b-2  "></div>
+                        <div class="  border-b-2 mt-2  "></div>
                     </div>
-                    <div class=" ">
+                    <div class=" text-xs ">
                         <p class="  capitalize text-xs py-1">Diberikan izin tidak mengikuti Kegiatan Madin Wustho Wahidiyah karena : </p>
                         <div class="">
                             <input type="checkbox" name="" id=""> Sakit
                             <input type="checkbox" name="" id=""> Izin
-                            <div class=" h-20 border border-green-800">
-                                <p class="px-1">Alasan :</p>
-                                <p></p>
-                            </div>
-                            <div class=" text-xs mt-2 grid grid-cols-2">
-                                <div></div>
-                                <div class="  text-center">
-                                    <p>Ketua Asrama,</p>
-                                    <p>Kedunglo, ........ {{$bulan }}</p>
-                                    <p class="  mt-12">..............</p>
+                            <div class="   flex grid-cols-2">
+                                <div class=" mt-1  w-3/4  h-12 border border-green-800">
+                                    <p class="px-1">Alasan :</p>
+                                    <p></p>
                                 </div>
+                                <div class=" px-1   text-xs  grid grid-cols-1">
 
+                                    <p class=" text-xs sm:text-xs">Ketua Asrama,</p>
+                                    <p>Kediri,__{{$bulan}}</p>
+                                    <p class="   mt-5 ">..............</p>
+
+                                </div>
                             </div>
                         </div>
                     </div>
