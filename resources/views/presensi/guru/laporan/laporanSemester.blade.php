@@ -289,7 +289,10 @@
 
                                 <td class=" border border-green-800 text-left px-2">
 
-                                    {{ \Carbon\Carbon::parse($bulan)->isoFormat(' MMMM') }}
+
+                                    <!-- {{ \Carbon\Carbon::parse($bulan)->daysInMonth ; }} -->
+
+
                                 </td>
                                 <td class=" border border-green-800 text-center px-2">{{ $data['hadir'] }}</td>
                                 <td class=" border border-green-800 text-center px-2">{{ $data['izin'] }}</td>
