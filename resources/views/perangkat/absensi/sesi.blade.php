@@ -12,6 +12,7 @@
                 <button class=" bg-blue-600 text-white rounded-md px-2 py-1">buat Sesi</button>
             </form>
             <a href="/laporan-harian-perangkat" class=" bg-blue-600 text-white rounded-md px-2 py-1">Laporan Harian</a>
+            <a href="/laporan-Bulanan-perangkat" class=" bg-blue-600 text-white rounded-md px-2 py-1">Laporan Bulanan</a>
         </div>
     </div>
 

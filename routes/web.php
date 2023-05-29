@@ -306,6 +306,7 @@ Route::get('/daftar-sesi-perangkat/{sesiPerangkat}', [SesiPerangkatController::c
 Route::post('/daftar-sesi-perangkat/{sesiPerangkat}', [SesiPerangkatController::class, 'StoredaftarSesi']);
 
 Route::get('laporan-harian-perangkat', [SesiPerangkatController::class, 'LaporanHarian']);
+Route::get('laporan-Bulanan-perangkat', [SesiPerangkatController::class, 'LaporanBulanan']);
 
 
 

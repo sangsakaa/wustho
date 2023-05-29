@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\SesiPerangkat;
 use Illuminate\Support\Carbon;
 use App\Models\AbsensiPerangkat;
+use Illuminate\Support\Facades\DB;
 use Carbon\Exceptions\InvalidFormatException;
 
 class SesiPerangkatController
@@ -98,5 +99,33 @@ class SesiPerangkatController
             ->get();
 
         return view('perangkat.absensi.laporanHarian', compact('laporanHarian', 'tanggal'));
+    }
+    public function LaporanBulanan(Request $request)
+    {
+        try {
+            $tanggal = $request->tanggal ? Carbon::parse($request->tanggal) : now();
+        } catch (InvalidFormatException $ex) {
+            $tanggal = now();
+        }
+        $laporanBulanan = AbsensiPerangkat::query()
+            ->leftJoin('perangkat', 'absensi_perangkat.perangkat_id', '=', 'perangkat.id')
+            ->leftJoin('sesi_perangkat', 'absensi_perangkat.sesi_perangkat_id', '=', 'sesi_perangkat.id')
+            ->select(
+                'tanggal',
+                'nama_perangkat',
+                DB::raw('COUNT(*) as total'),
+                DB::raw('SUM(CASE WHEN keterangan = "alfa" THEN 1 ELSE 0 END) as jumlah_alfa'),
+                DB::raw('SUM(CASE WHEN keterangan = "hadir" THEN 1 ELSE 0 END) as jumlah_hadir'),
+                DB::raw('SUM(CASE WHEN keterangan = "izin" THEN 1 ELSE 0 END) as jumlah_izin'),
+                DB::raw('SUM(CASE WHEN keterangan = "sakit" THEN 1 ELSE 0 END) as jumlah_sakit')
+            )
+            ->groupBy('nama_perangkat', 'tanggal')
+            ->whereMonth('sesi_perangkat.tanggal', $tanggal->month)
+            ->get();
+
+
+
+
+        return view('perangkat.absensi.laporanBulanan', compact('laporanBulanan', 'tanggal'));
     }
 }

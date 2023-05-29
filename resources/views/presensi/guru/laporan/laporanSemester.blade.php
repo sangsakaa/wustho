@@ -1,3 +1,4 @@
+use Illuminate\Support\Carbon;
 <x-app-layout>
     <x-slot name="header">
         @section('title', ' | Laporan Guru')
@@ -96,10 +97,10 @@
                         <table class="w-full">
                             <thead>
                                 <tr class="border border-green-800">
-                                    <th rowspan="2" class="border border-green-800 px-1">Bulan</th>
+                                    <!-- <th rowspan="2" class="border border-green-800 px-1">Bulan</th> -->
                                     <th rowspan="2" class="border border-green-800 px-1">Nama Guru</th>
                                     <th rowspan="2" class="border border-green-800 px-1 w-5">Kls</th>
-                                    <th rowspan="2" class="border border-green-800 px-1 w-5">Hari</th>
+                                    <!-- <th rowspan="2" class="border border-green-800 px-1 w-5">Hari</th> -->
                                     <th rowspan="2" class="border border-green-800 px-1 w-5">Total</th>
                                     <th rowspan="2" class="border border-green-800 px-1">Sesi</th>
                                     <th rowspan="2" class="border border-green-800 px-1">Keterangan</th>
@@ -118,7 +119,7 @@
                             <tbody>
                                 @foreach($laporan->groupBy('nama_guru') as $nama_guru => $laporanGuru)
                                 <tr class="">
-                                    <td class="border border-green-800 px-1" colspan="13">{{$loop->iteration}} . {{ $nama_guru }}</td>
+                                    <td class="border border-green-800 px-1 font-semibold" colspan="13">{{$loop->iteration}} . {{ $nama_guru }}</td>
                                 </tr>
                                 @if ($laporanGuru->isEmpty())
                                 <tr>
@@ -133,10 +134,10 @@
                                 $jumlahHari[$data->hari] += $data->total;
                                 @endphp
                                 <tr class=" border">
-                                    <td class="border border-green-800 px-1">{{ $data->bulan }}</td>
-                                    <td class="border border-green-800 px-1">{{ $data->nama_guru }}</td>
+                                    <!-- <td class="border border-green-800 px-1">{{ $data->bulan }}</td> -->
+                                    <td class="border border-green-800 px-4">{{ $data->nama_guru }}</td>
                                     <td class="border border-green-800 px-1 text-center">{{ $data->nama_kelas }}</td>
-                                    <td class="border border-green-800 px-1 capitalize">{{ $data->hari }}</td>
+                                    <!-- <td class="border border-green-800 px-1 capitalize">{{ $data->hari }}</td> -->
                                     @php
                                     $bulan = \Carbon\Carbon::parse($data->bulan)->format('m');
                                     $tahun = \Carbon\Carbon::parse($data->bulan)->format('Y');
@@ -165,7 +166,6 @@
                                         case 3: // Rabu
                                         $jumlahRabu++;
                                         break;
-
                                         case 5: // Jumat
                                         $jumlahJumat++;
                                         break;
@@ -287,7 +287,32 @@
                                 @endif
                                 <td class=" border border-green-800 text-center px-2">{{ $loop->iteration }}</td>
                                 <td class=" border border-green-800 text-left px-2">{{ $nama_guru }}</td>
-                                <td class=" border border-green-800 text-left px-2">{{''}}</td>
+
+                                <td class=" border border-green-800 text-left px-2">
+
+                                    <?php
+
+
+
+                                    $bulan = "2023-05"; // Mengganti $bulan dengan format yang sesuai (YYYY-MM)
+
+                                    $start =
+                                        \Carbon\Carbon::parse($bulan)->startOfMonth();
+                                    $end =
+                                        \Carbon\Carbon::parse($bulan)->endOfMonth();
+                                    $jumlahHari = $end->diffInDays($start) + 1; // Menambahkan 1 hari karena menghitung juga hari pertama
+
+                                    $jumlahHariKecualiKamis = 0;
+                                    for ($i = 0; $i < $jumlahHari; $i++) {
+                                        $tanggal = $start->addDays($i);
+                                        if ($tanggal->dayOfWeek !== Carbon::THURSDAY) {
+                                            $jumlahHariKecualiKamis++;
+                                        }
+                                    }
+
+                                    echo "Jumlah hari dalam bulan " . $start->isoFormat('MMMM') . " (kecuali Kamis): " . $jumlahHariKecualiKamis;
+                                    ?>
+                                </td>
                                 <td class=" border border-green-800 text-center px-2">{{ $data['hadir'] }}</td>
                                 <td class=" border border-green-800 text-center px-2">{{ $data['izin'] }}</td>
                                 <td class=" border border-green-800 text-center px-2">{{ $data['sakit'] }}</td>
@@ -310,8 +335,6 @@
                                 <th rowspan="2" class="border border-green-800">Total</th>
                             </tr>
                             <tr>
-
-
                                 @foreach ($laporanDetail->pluck('nama_kelas')->unique()->sort() as $namaKelas)
                                 <th class="border border-green-800">{{ $namaKelas }}</th>
                                 @endforeach
