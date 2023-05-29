@@ -1,4 +1,3 @@
-use Illuminate\Support\Carbon;
 <x-app-layout>
     <x-slot name="header">
         @section('title', ' | Laporan Guru')
@@ -290,28 +289,7 @@ use Illuminate\Support\Carbon;
 
                                 <td class=" border border-green-800 text-left px-2">
 
-                                    <?php
-
-
-
-                                    $bulan = "2023-05"; // Mengganti $bulan dengan format yang sesuai (YYYY-MM)
-
-                                    $start =
-                                        \Carbon\Carbon::parse($bulan)->startOfMonth();
-                                    $end =
-                                        \Carbon\Carbon::parse($bulan)->endOfMonth();
-                                    $jumlahHari = $end->diffInDays($start) + 1; // Menambahkan 1 hari karena menghitung juga hari pertama
-
-                                    $jumlahHariKecualiKamis = 0;
-                                    for ($i = 0; $i < $jumlahHari; $i++) {
-                                        $tanggal = $start->addDays($i);
-                                        if ($tanggal->dayOfWeek !== Carbon::THURSDAY) {
-                                            $jumlahHariKecualiKamis++;
-                                        }
-                                    }
-
-                                    echo "Jumlah hari dalam bulan " . $start->isoFormat('MMMM') . " (kecuali Kamis): " . $jumlahHariKecualiKamis;
-                                    ?>
+                                    {{ \Carbon\Carbon::parse($bulan)->isoFormat(' MMMM') }}
                                 </td>
                                 <td class=" border border-green-800 text-center px-2">{{ $data['hadir'] }}</td>
                                 <td class=" border border-green-800 text-center px-2">{{ $data['izin'] }}</td>
