@@ -126,7 +126,7 @@
                                 </tr>
                                 @else
                                 @php
-                                $jumlahHari = ['jumat' => 0, 'sabtu' => 0, 'minggu' => 0, 'Senin' => 0, 'Selasa' => 0, 'Rabu' => 0];
+                                $jumlahHari = ['jumat' => 0, 'sabtu' => 0, 'minggu' => 0, 'Senin' => 0, 'Selasa' => 0, 'Rabu' => 0, 'Kamis' => 0];
                                 @endphp
                                 @foreach($laporanGuru as $data)
                                 @php
@@ -165,6 +165,9 @@
                                         case 3: // Rabu
                                         $jumlahRabu++;
                                         break;
+                                        case 4: // Kamis
+                                        $jumlahRabu++;
+                                        break;
                                         case 5: // Jumat
                                         $jumlahJumat++;
                                         break;
@@ -177,6 +180,7 @@
                                         }
                                         @endphp
                                         <td class="border border-green-800 px-1 text-center">
+
                                             @if ($data->hari == 'jumat' && $jumlahJumat > 0)
                                             {{ $jumlahJumat }}
                                             @endif
@@ -230,6 +234,7 @@
                                             S: {{ $jumlahSakit }}
                                             A: {{ $jumlahAlfa }}
 
+                                            {{ \Carbon\Carbon::parse($data->bulan)->daysInMonth ; }}
                                         </td>
                                         <td class="border border-green-800 text-center px-1 {{ $data->hari == 'jumat' && $jumlahHari['jumat'] > 0 ? '' : 'bg-red-200' }}">
                                             {{ $data->hari == 'jumat' ? $jumlahHari['jumat'] : '' }}
@@ -290,7 +295,7 @@
                                 <td class=" border border-green-800 text-left px-2">
 
 
-                                    <!-- {{ \Carbon\Carbon::parse($bulan)->daysInMonth ; }} -->
+                                    {{ \Carbon\Carbon::parse($bulan)->daysInMonth ; }}
 
 
                                 </td>
