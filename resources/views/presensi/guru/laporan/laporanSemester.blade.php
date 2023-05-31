@@ -132,6 +132,7 @@
                                 @php
                                 $jumlahHari[$data->hari] += $data->total;
                                 @endphp
+
                                 <tr class=" border">
                                     <!-- <td class="border border-green-800 px-1">{{ $data->bulan }}</td> -->
                                     <td class="border border-green-800 px-4">{{ $data->nama_guru }}</td>
