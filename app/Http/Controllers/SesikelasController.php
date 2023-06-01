@@ -13,7 +13,7 @@ use Illuminate\Http\Request;
 
 class SesikelasController
 {
-    public function index(Request $request)
+    public function index(Request $request, Sesikelas $sesikelas)
     {
         try {
             $tgl = $request->tgl ? Carbon::parse($request->tgl) : now();
@@ -29,7 +29,7 @@ class SesikelasController
             ->orderBy('kelasmi.nama_kelas')
             ->get();
 
-        $sesikelas = Sesikelas::query()
+        $Datasesikelas = Sesikelas::query()
             ->join('kelasmi', 'kelasmi.id', '=', 'sesikelas.kelasmi_id')
             ->join('periode', 'periode.id', 'kelasmi.periode_id')
             ->join('semester', 'semester.id', 'periode.semester_id')
@@ -41,6 +41,7 @@ class SesikelasController
 
         return view('presensi.kelas.sesikelas', [
             'dataKelasMi' => $dataKelasMi,
+            'Datasesikelas' => $Datasesikelas,
             'sesikelas' => $sesikelas,
             'tgl' => $tgl,
         ]);
@@ -83,6 +84,7 @@ class SesikelasController
 
     public function destroy(Sesikelas $sesikelas)
     {
+        
         Sesikelas::destroy($sesikelas->id);
         Absensikelas::where('sesikelas_id', $sesikelas->id)->delete();
         return redirect()->back()->with('delete', 'Sesi Ini sudah berhasil di hapus');

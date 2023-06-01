@@ -151,7 +151,7 @@ Route::get('sesi-presensi-guru/{sesi_Kelas_Guru}', [PresensiGuruController::clas
 Route::post('sesi-presensi-guru/{sesi_Kelas_Guru}', [PresensiGuruController::class, 'AbsenGuru'])->middleware(['auth']);
 Route::get('laporan-harian-guru', [PresensiGuruController::class, 'LaporanHarian'])->middleware(['auth'])->name('laporan-harian-guru');
 Route::get('laporan-semester-guru', [PresensiGuruController::class, 'laporanSemester'])->middleware(['auth'])->name('laporan-semester-guru');
-Route::delete('sesikelas/{sesi_Kelas_Guru}', [PresensiGuruController::class, 'DeleteSesi'])->middleware(['auth']);
+Route::delete('sesi-presensi-guru/{sesi_Kelas_Guru}', [PresensiGuruController::class, 'DeleteSesi'])->middleware(['auth']);
 
 
 
@@ -391,7 +391,6 @@ Route::get(
             ->orderBy('nama_siswa')
             ->where('kelasmi.periode_id', $kelasmi->id)
         ->get();
-
 
         // dd($data);
 
