@@ -107,6 +107,10 @@ class SesiPerangkatController
         } catch (InvalidFormatException $ex) {
             $tanggal = now();
         }
+        $bulan = $request->bulan ? Carbon::parse($request->bulan) : now();
+        $periodeBulan = $bulan->startOfMonth()->daysUntil($bulan->copy()->endOfMonth());
+        
+        
         $laporanBulanan = AbsensiPerangkat::query()
             ->leftJoin('perangkat', 'absensi_perangkat.perangkat_id', '=', 'perangkat.id')
             ->leftJoin('sesi_perangkat', 'absensi_perangkat.sesi_perangkat_id', '=', 'sesi_perangkat.id')
@@ -120,12 +124,12 @@ class SesiPerangkatController
                 DB::raw('SUM(CASE WHEN keterangan = "sakit" THEN 1 ELSE 0 END) as jumlah_sakit')
             )
             ->groupBy('nama_perangkat', 'tanggal')
-            ->whereMonth('sesi_perangkat.tanggal', $tanggal->month)
+            ->whereBetween('sesi_perangkat.tanggal', [$periodeBulan->first()->toDateString(), $periodeBulan->last()->toDateString()])
             ->get();
 
 
 
 
-        return view('perangkat.absensi.laporanBulanan', compact('laporanBulanan', 'tanggal'));
+        return view('perangkat.absensi.laporanBulanan', compact('laporanBulanan', 'tanggal', 'bulan'));
     }
 }

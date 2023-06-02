@@ -104,7 +104,7 @@
                             </th>
                             <td class=" grid justify-items-center py-1 ">
                                 <form action="/sesikelas/{{ $sesi->id }}" method="post">
-                                    {{$sesi->id}}
+
                                     @csrf
                                     @method('delete')
                                     <button class=" bg-red-500 text-white p-1 rounded-md" onclick=" return confirm ('apakah hapus yakin  sesi ini : {{ $sesi->nama_kelas }} Tanggal : {{ \Carbon\Carbon::parse($sesi->tgl)->isoFormat(' DD MMMM Y') }} ')"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
