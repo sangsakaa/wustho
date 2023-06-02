@@ -102,7 +102,7 @@
                         <td class="border border-green-800 text-green-800 px-1 text-center">{{ $laporanPerangkat->sum('jumlah_hadir') }}</td>
                         <td class="border border-green-800 text-green-800 px-1 text-center">{{ $laporanPerangkat->sum('jumlah_izin') }}</td>
                         <td class="border border-green-800 text-green-800 px-1 text-center">{{ $laporanPerangkat->sum('jumlah_sakit') }}</td>
-                        <td class="border border-green-800 text-green-800 px-1 text-center">{{ $laporanPerangkat->sum('jumlah_hadir') * 100/$laporanPerangkat->sum('total')  }} % </td>
+                        <td class="border border-green-800 text-green-800 px-1 text-center">{{ number_format($laporanPerangkat->sum('jumlah_hadir') * 100/$laporanPerangkat->sum('total'),0)  }} % </td>
                     </tr>
                     @endforeach
                     @endforeach
