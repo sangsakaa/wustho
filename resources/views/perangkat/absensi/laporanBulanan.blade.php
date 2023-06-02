@@ -70,7 +70,7 @@
                         <th rowspan="2" class=" border border-green-800 text-green-800 px-1">No</th>
                         <th rowspan=" 2" class=" border border-green-800 text-green-800 px-1">Nama Perangkat</th>
                         <!-- <th rowspan=" 2" class=" border border-green-800 text-green-800 px-1">Wajib</th> -->
-                        <th colspan="5" class=" border border-green-800 text-green-800 px-1">Keterangan</th>
+                        <th colspan="6" class=" border border-green-800 text-green-800 px-1">Keterangan</th>
 
                     </tr>
                     <tr>
@@ -79,6 +79,7 @@
                         <th class=" border border-green-800 text-green-800 px-1">Hadir</th>
                         <th class=" border border-green-800 text-green-800 px-1">Izin</th>
                         <th class=" border border-green-800 text-green-800 px-1">Sakit</th>
+                        <th class=" border border-green-800 text-green-800 px-1">% Hadir</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -86,7 +87,7 @@
                     return \Carbon\Carbon::parse($laporan->tanggal)->format('F');
                     }) as $bulan => $laporanBulananGrup)
                     <tr>
-                        <td class="border border-green-800 text-green-800 text-center px-1" rowspan="6" style="font-weight: bold;">
+                        <td class="border border-green-800 text-green-800 text-center px-1" rowspan="7" style="font-weight: bold;">
 
                             {{ \Carbon\Carbon::parse( $bulan)->isoFormat('  MMMM ') }}
                         </td>
@@ -101,6 +102,7 @@
                         <td class="border border-green-800 text-green-800 px-1 text-center">{{ $laporanPerangkat->sum('jumlah_hadir') }}</td>
                         <td class="border border-green-800 text-green-800 px-1 text-center">{{ $laporanPerangkat->sum('jumlah_izin') }}</td>
                         <td class="border border-green-800 text-green-800 px-1 text-center">{{ $laporanPerangkat->sum('jumlah_sakit') }}</td>
+                        <td class="border border-green-800 text-green-800 px-1 text-center">{{ $laporanPerangkat->sum('jumlah_hadir') * 100/$laporanPerangkat->sum('total')  }} % </td>
                     </tr>
                     @endforeach
                     @endforeach
