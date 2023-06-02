@@ -109,7 +109,12 @@ class SesiPerangkatController
         }
         $bulan = $request->bulan ? Carbon::parse($request->bulan) : now();
         $periodeBulan = $bulan->startOfMonth()->daysUntil($bulan->copy()->endOfMonth());
-        
+        $periode = Periode::query()
+            ->join('semester', 'semester.id', '=', 'periode.semester_id')
+            ->select('periode.id', 'periode.periode', 'semester.ket_semester')
+            ->where('periode.id', session('periode_id'))
+            ->first();
+
         
         $laporanBulanan = AbsensiPerangkat::query()
             ->leftJoin('perangkat', 'absensi_perangkat.perangkat_id', '=', 'perangkat.id')
@@ -130,6 +135,6 @@ class SesiPerangkatController
 
 
 
-        return view('perangkat.absensi.laporanBulanan', compact('laporanBulanan', 'tanggal', 'bulan'));
+        return view('perangkat.absensi.laporanBulanan', compact('laporanBulanan', 'tanggal', 'bulan', 'periodeBulan', 'periode'));
     }
 }
