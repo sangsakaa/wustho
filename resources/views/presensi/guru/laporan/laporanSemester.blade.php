@@ -104,14 +104,14 @@
                                     <th class="border border-green-800 px-2 w-5 ">I</th>
                                     <th class="border border-green-800 px-2 w-5 ">S</th>
                                     <th class="border border-green-800 px-2 w-5 ">A</th>
-                                    <th class="border border-green-800 px-2 w-5 ">%</th>
+                                    <th class="border border-green-800 px-2   ">% H</th>
 
-                                    <th class="border border-green-800 px-1 w-5">Jumat</th>
-                                    <th class="border border-green-800 px-1 w-5">Sabtu</th>
-                                    <th class="border border-green-800 px-1 w-5">Minggu</th>
-                                    <th class="border border-green-800 px-1 w-5">Senin</th>
-                                    <th class="border border-green-800 px-1 w-5">Selasa</th>
-                                    <th class="border border-green-800 px-1 w-5">Rabu</th>
+                                    <th class="border border-green-800 text-xs  px-1 w-5">Jumat</th>
+                                    <th class="border border-green-800 text-xs  px-1 w-5">Sabtu</th>
+                                    <th class="border border-green-800 text-xs  px-1 w-5">Minggu</th>
+                                    <th class="border border-green-800 text-xs  px-1 w-5">Senin</th>
+                                    <th class="border border-green-800 text-xs  px-1 w-5">Selasa</th>
+                                    <th class="border border-green-800 text-xs  px-1 w-5">Rabu</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -146,6 +146,7 @@
                                         {{ $data->jumlah_alfa }}
                                     </td>
                                     <td class="border border-green-800 px-1 text-center">
+                                        {{ number_format($data->jumlah_hadir *100/$data->jumlah_sesi_kelas_guru),0}}%
                                     </td>
                                     <td class="border border-green-800 text-center px-1 {{ $data->hari == 'jumat' ? '' : 'bg-red-200' }}">
                                         {{ $data->hari == 'jumat' ? $data->total : '' }}
