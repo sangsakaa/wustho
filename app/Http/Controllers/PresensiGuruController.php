@@ -237,6 +237,7 @@ class PresensiGuruController
         )
             ->groupBy(DB::raw("DATE_FORMAT(sesi_kelas_guru.tanggal, '%M')"), 'absensiguru.keterangan', 'guru.nama_guru', 'hari', 'nama_kelas')
             ->where('sesi_kelas_guru.periode_id', session('periode_id'))
+        
         ->orderBy('nama_guru');
 
         $laporan = $laporanQuery->clone()->whereBetween('sesi_kelas_guru.tanggal', [$startOfMonth, $endOfMonth])->get();
