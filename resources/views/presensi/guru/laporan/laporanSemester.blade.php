@@ -151,14 +151,14 @@
                                     <td class="border border-green-800 text-center px-1 {{ $data->hari == 'minggu' ? '' : 'bg-red-200' }}">
                                         {{ $data->hari == 'minggu' ? $data->total : '' }}
                                     </td>
-                                    <td class="border border-green-800 text-center px-1 {{ $data->hari == 'Senin' ? '' : 'bg-red-200' }}">
-                                        {{ $data->hari == 'Senin' ? $data->total : '' }}
+                                    <td class="border border-green-800 text-center px-1 {{ $data->hari == 'senin' ? '' : 'bg-red-200' }}">
+                                        {{ $data->hari == 'senin' ? $data->total : '' }}
                                     </td>
-                                    <td class="border border-green-800 text-center px-1 {{ $data->hari == 'Selasa' ? '' : 'bg-red-200' }}">
-                                        {{ $data->hari == 'Selasa' ? $data->total : '' }}
+                                    <td class="border border-green-800 text-center px-1 {{ $data->hari == 'selasa' ? '' : 'bg-red-200' }}">
+                                        {{ $data->hari == 'selasa' ? $data->total : '' }}
                                     </td>
-                                    <td class="border border-green-800 text-center px-1 {{ $data->hari == 'Rabu' ? '' : 'bg-red-200' }}">
-                                        {{ $data->hari == 'Rabu' ? $data->total : '' }}
+                                    <td class="border border-green-800 text-center px-1 {{ $data->hari == 'rabu' ? '' : 'bg-red-200' }}">
+                                        {{ $data->hari == 'rabu' ? $data->total : '' }}
                                     </td>
                                 </tr>
                                 @endforeach
