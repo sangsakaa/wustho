@@ -92,7 +92,8 @@ class PresensiGuruController
         if ($datetime !== false) {
             $formatter = new IntlDateFormatter('id_ID', IntlDateFormatter::FULL, IntlDateFormatter::NONE);
             $formatter->setPattern('EEEE');
-            $hari = $formatter->format($datetime);
+            $hari = strtolower($formatter->format($datetime));
+            // dd($hari);
         } else {
             // handle error here
         }
