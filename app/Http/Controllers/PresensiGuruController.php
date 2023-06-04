@@ -111,15 +111,12 @@ class PresensiGuruController
             'sesi_kelas_guru_id'
             ])
             ->where('hari', $hari ?: 'minggu')
-            // ->where('absensiguru.sesi_kelas_guru_id', $sesi_Kelas_Guru->id)
             ->where('jadwal.kelasmi_id', $sesi_Kelas_Guru->kelasmi_id)
         ->get();
         if ($dataGuru->count() > 1) {
             $dataGuru = $dataGuru
                 ->where('sesi_kelas_guru_id', $sesi_Kelas_Guru->id);
         }
-
-
 
         //dd($dataGuru)->toJson();
         return view(
@@ -136,8 +133,6 @@ class PresensiGuruController
     }
     public function AbsenGuru(Request $request)
     {
-
-
         $absenGuru = Absensiguru::where('sesi_kelas_guru_id', $request->sesi_kelas_guru_id)->first();
 
         if ($absenGuru) {
@@ -158,8 +153,6 @@ class PresensiGuruController
     }
     public function LaporanHarian(Request $request)
     {
-
-
         try {
             $tanggal = $request->tanggal ? Carbon::parse($request->tanggal) : now();
         } catch (InvalidFormatException $ex) {
@@ -178,7 +171,6 @@ class PresensiGuruController
             ->get();
 
         $laporanGuru->collect(); // Isi dengan data laporan guru Anda
-
 
         // Menghitung jumlah laporan guru dengan keterangan tertentu
         $jmlKet = $laporanGuru->groupBy('keterangan')->map(function ($item) {
@@ -209,8 +201,6 @@ class PresensiGuruController
             'Hadir',
             'Izin',
             'Alfa',
-
-
         ));
     }
     public function laporanSemester(Request $request)
@@ -314,8 +304,6 @@ class PresensiGuruController
                 }
             }
         }
-
-
         try {
             $tanggal = $request->tanggal ? Carbon::parse($request->tanggal) : now();
             $tanggal = $tanggal->format('Y-m');

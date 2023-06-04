@@ -107,12 +107,12 @@
 
                                 </tr>
                                 <tr class="border border-green-800">
-                                    <th class="border border-green-800 px-1">Jumat</th>
-                                    <th class="border border-green-800 px-1">Sabtu</th>
-                                    <th class="border border-green-800 px-1">Minggu</th>
-                                    <th class="border border-green-800 px-1">Senin</th>
-                                    <th class="border border-green-800 px-1">Selasa</th>
-                                    <th class="border border-green-800 px-1">Rabu</th>
+                                    <th class="border border-green-800 px-1 w-5">Jumat</th>
+                                    <th class="border border-green-800 px-1 w-5">Sabtu</th>
+                                    <th class="border border-green-800 px-1 w-5">Minggu</th>
+                                    <th class="border border-green-800 px-1 w-5">Senin</th>
+                                    <th class="border border-green-800 px-1 w-5">Selasa</th>
+                                    <th class="border border-green-800 px-1 w-5">Rabu</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -134,13 +134,13 @@
                                         {{ $data->jumlahHari }}
                                     </td>
                                     <td class="border border-green-800 px-1 text-center">{{ $data->jumlah_sesi_kelas_guru }}</td>
-                                    <td class="border border-green-800 px-1">
+                                    <td class="border border-green-800 px-1 text-center">
                                         H: {{ $data->jumlah_hadir }}
                                         I: {{ $data->jumlah_izin }}
                                         S: {{ $data->jumlah_sakit }}
                                         A: {{ $data->jumlah_alfa }}
 
-                                        {{ \Carbon\Carbon::parse($data->bulan)->daysInMonth ; }}
+
                                     </td>
                                     <td class="border border-green-800 text-center px-1 {{ $data->hari == 'jumat' ? '' : 'bg-red-200' }}">
                                         {{ $data->hari == 'jumat' ? $data->total : '' }}
@@ -169,10 +169,10 @@
                         </table>
                     </div>
 
-                    <table class=" w-full mt-2">
+                    <!-- <table class=" w-full mt-2">
                         <thead>
                             <tr class=" border border-green-800">
-                                <th rowspan="2" class=" border border-green-800 w-16">Bulan</th>
+                                <th rowspan="2" class=" border border-green-800 w-16">xBulan</th>
                                 <th rowspan="2" class=" border border-green-800 w-5">No</th>
                                 <th rowspan="2" class=" border border-green-800 w-16">Nama Guru</th>
                                 <th rowspan="2" class=" border border-green-800 w-16">Hari Wajib</th>
@@ -215,7 +215,7 @@
                             @endforeach
                             @endif
                         </tbody>
-                    </table>
+                    </table> -->
                     <div class="page-break"></div>
                     <div class=" py-1">
                         <p class=" text-lg text-center block sm:hidden uppercase text-green-800 font-semibold ">Detail Laporan Kehadiran</p>

@@ -61,7 +61,6 @@
                 <span class=" uppercase font-semibold"> Laporan Bulan : {{ \Carbon\Carbon::parse(  $bulan)->isoFormat('  MMMM ') }}</span>
             </div>
             <div>
-
             </div>
             <table class="w-full ">
                 <thead>
@@ -71,7 +70,6 @@
                         <th rowspan=" 2" class=" border border-green-800 text-green-800 px-1">Nama Perangkat</th>
                         <!-- <th rowspan=" 2" class=" border border-green-800 text-green-800 px-1">Wajib</th> -->
                         <th colspan="6" class=" border border-green-800 text-green-800 px-1">Keterangan</th>
-
                     </tr>
                     <tr>
                         <th class=" border border-green-800 text-green-800 px-1">Sesi</th>

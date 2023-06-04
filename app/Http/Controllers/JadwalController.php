@@ -332,7 +332,7 @@ class JadwalController
 
         foreach ($dataKelasMi as $kelasmi) {
             $nama_kelas = $kelasmi->nama_kelas;
-            $hari_array = ['jumat', 'sabtu', 'minggu', 'Senin', 'Selasa', 'Rabu',];
+            $hari_array = ['jumat', 'sabtu', 'minggu', 'senin', 'selasa', 'rabu',];
             foreach ($hari_array as $hari) {
                 if (!$jadwal->contains(function ($jadwal) use ($nama_kelas, $hari, $daftarPeriode) {
                     return $jadwal->nama_kelas == $nama_kelas && $jadwal->hari == $hari && $jadwal->periode_id == $daftarPeriode->id;
