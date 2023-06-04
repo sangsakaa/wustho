@@ -92,7 +92,7 @@
                             <thead>
                                 <tr class="border border-green-800">
 
-                                    <th rowspan="2" class="border border-green-800 px-1">Nama Guru</th>
+                                    <th rowspan="2" class="border border-green-800 px-1">Nama </th>
                                     <th rowspan="2" class="border border-green-800 px-1 w-5">Kls</th>
                                     <th rowspan="2" class="border border-green-800 px-1 w-5">Total</th>
                                     <th rowspan="2" class="border border-green-800 px-1">Sesi</th>
@@ -104,14 +104,14 @@
                                     <th class="border border-green-800 px-2 w-5 ">I</th>
                                     <th class="border border-green-800 px-2 w-5 ">S</th>
                                     <th class="border border-green-800 px-2 w-5 ">A</th>
-                                    <th class="border border-green-800 px-2   ">% H</th>
+                                    <th class="border border-green-800 px-2   w-16   ">% H</th>
 
-                                    <th class="border border-green-800 text-xs  px-1 w-5">Jumat</th>
-                                    <th class="border border-green-800 text-xs  px-1 w-5">Sabtu</th>
-                                    <th class="border border-green-800 text-xs  px-1 w-5">Minggu</th>
-                                    <th class="border border-green-800 text-xs  px-1 w-5">Senin</th>
-                                    <th class="border border-green-800 text-xs  px-1 w-5">Selasa</th>
-                                    <th class="border border-green-800 text-xs  px-1 w-5">Rabu</th>
+                                    <th class="border border-green-800 text-xs  px-1 w-10">Jumat</th>
+                                    <th class="border border-green-800 text-xs  px-1 w-10">Sabtu</th>
+                                    <th class="border border-green-800 text-xs  px-1 w-10">Minggu</th>
+                                    <th class="border border-green-800 text-xs  px-1 w-10">Senin</th>
+                                    <th class="border border-green-800 text-xs  px-1 w-10">Selasa</th>
+                                    <th class="border border-green-800 text-xs  px-1 w-10">Rabu</th>
                                 </tr>
                             </thead>
                             <tbody>
