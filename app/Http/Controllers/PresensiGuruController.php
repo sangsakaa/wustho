@@ -241,7 +241,7 @@ class PresensiGuruController
 
         $laporan = $laporanQuery->clone()->whereBetween('sesi_kelas_guru.tanggal', [$startOfMonth, $endOfMonth])->get();
         $periodeBulan = $tanggal->startOfMonth()->daysUntil($tanggal->copy()->endOfMonth());
-        $jumlahHari = ['jumat' => 0, 'sabtu' => 0, 'minggu' => 0, 'Senin' => 0, 'Selasa' => 0, 'Rabu' => 0, 'Kamis' => 0];
+        $jumlahHari = ['jumat' => 0, 'sabtu' => 0, 'minggu' => 0, 'senin' => 0, 'selasa' => 0, 'rabu' => 0, 'kamis' => 0];
         foreach ($periodeBulan as $hari) {
             $dayOfWeek = $hari->dayOfWeek;
             switch($dayOfWeek) {
@@ -249,16 +249,16 @@ class PresensiGuruController
                     $jumlahHari['minggu']++;
                     break;
                 case 1:
-                    $jumlahHari['Senin']++;
+                    $jumlahHari['senin']++;
                     break;
                 case 2:
-                    $jumlahHari['Selasa']++;
+                    $jumlahHari['selasa']++;
                     break;
                 case 3:
-                    $jumlahHari['Rabu']++;
+                    $jumlahHari['rabu']++;
                     break;
                 case 4:
-                    $jumlahHari['Kamis']++;
+                    $jumlahHari['kamis']++;
                     break;
                 case 5:
                     $jumlahHari['jumat']++;
