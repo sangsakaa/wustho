@@ -7,20 +7,18 @@
 
         </h2>
     </x-slot>
-    <div class="pb-1 pt-2">
-        <script>
-            function printContent(el) {
-                var fullbody = document.body.innerHTML;
-                var printContent = document.getElementById(el).innerHTML;
-                document.body.innerHTML = printContent;
-                window.print();
-                document.body.innerHTML = fullbody;
-            }
-        </script>
 
-    </div>
-    <div class="">
-        <div class="bg-white dark:bg-dark-bg overflow-hidden shadow-sm ">
+    <script>
+        function printContent(el) {
+            var fullbody = document.body.innerHTML;
+            var printContent = document.getElementById(el).innerHTML;
+            document.body.innerHTML = printContent;
+            window.print();
+            document.body.innerHTML = fullbody;
+        }
+    </script>
+    <div class=" ">
+        <div class="p-2 bg-white dark:bg-dark-bg overflow-hidden shadow-sm ">
             <div class=" overflow-auto bg-white dark:bg-dark-bg mt-1 ">
                 <div class=" px-2 grid grid-cols-2">
                     <div>
@@ -42,14 +40,13 @@
                             ?>
                             <input type="month" name="bulan" class="py-1 dark:bg-dark-bg" value="<?= isset($_GET['bulan']) ? $_GET['bulan'] : $tanggal ?>">
                             <!-- tambahkan elemen <span> untuk menampilkan nama bulan -->
-
                             <button class="bg-red-600 py-1 dark:bg-purple-600 mt-1 my-1 w-full sm:w-40 rounded-sm hover:bg-purple-600 text-white px-4">
                                 Pilih Bulan
                             </button>
                         </form>
 
                     </div>
-                    <div class=" py-1 flex gap-2  justify-end ">
+                    <div class="  flex gap-2  justify-end ">
                         <a href="/sesi-presensi-guru" class=" bg-red-600 py-1 dark:bg-purple-600 mt-2 my-1 rounded-sm hover:bg-purple-600 text-white px-4 ">
                             Kembali
                         </a>
@@ -74,18 +71,16 @@
                             <div><img src={{ asset("asset/images/logo.png") }} alt="" width="110" class=" px-2"></div>
                             <div class="  ml-5 ">
                                 <center>
-
                                     </p>
                                     <p class="  font-serif text-lg uppercase">pondok pesantren kedunglo al munadhdhoroh</p>
                                     <p class="  uppercase font-serif text-2xl font-semibold text-monospace ">madrasah diniyah wustho
                                         Wahidiyah</p>
                                     <p class=" capitalize font-serif text-xs">Alamat : Jl.KH. Wachid Hasyim Kota Kediri 64114 Jawa Timur Telp. (0354) 774511, 771018 Fax. (0354) 772179</p>
                                     <hr class=" border-b-1 border-green-700 ">
-                                    FAFIRRUU - ILALLOH
                                 </center>
                             </div>
                         </div>
-                        <hr class=" border-b-2 border-green-700 mb-1">
+                        <hr class=" border-b-2 border-green-700 mb-1 mt-1">
                         <hr class=" border-b-1 border-green-700 mb-1">
                         <div class="  uppercase px-1 text-center"> LAPORAN BULAN :
                             {{ \Carbon\Carbon::parse($bulan)->isoFormat(' MMMM Y') }}
@@ -96,17 +91,21 @@
                         <table class="w-full">
                             <thead>
                                 <tr class="border border-green-800">
-                                    <!-- <th rowspan="2" class="border border-green-800 px-1">Bulan</th> -->
+
                                     <th rowspan="2" class="border border-green-800 px-1">Nama Guru</th>
                                     <th rowspan="2" class="border border-green-800 px-1 w-5">Kls</th>
-                                    <!-- <th rowspan="2" class="border border-green-800 px-1 w-5">Hari</th> -->
                                     <th rowspan="2" class="border border-green-800 px-1 w-5">Total</th>
                                     <th rowspan="2" class="border border-green-800 px-1">Sesi</th>
-                                    <th rowspan="2" class="border border-green-800 px-1">Keterangan</th>
+                                    <th colspan="5" class="border border-green-800 px-1">Keterangan</th>
                                     <th colspan="6" class="border border-green-800 px-1">Terjadwal Hari</th>
-
                                 </tr>
                                 <tr class="border border-green-800">
+                                    <th class="border border-green-800 px-2 w-5 ">H</th>
+                                    <th class="border border-green-800 px-2 w-5 ">I</th>
+                                    <th class="border border-green-800 px-2 w-5 ">S</th>
+                                    <th class="border border-green-800 px-2 w-5 ">A</th>
+                                    <th class="border border-green-800 px-2 w-5 ">%</th>
+
                                     <th class="border border-green-800 px-1 w-5">Jumat</th>
                                     <th class="border border-green-800 px-1 w-5">Sabtu</th>
                                     <th class="border border-green-800 px-1 w-5">Minggu</th>
@@ -124,23 +123,29 @@
                                 @else
                                 @foreach($laporanGuru as $index => $data)
                                 <tr class="border border-green-800 {{ $index === 0 ? 'border-t-2' : '' }}">
-                                    <!-- <td class="border border-green-800 px-1">{{ $data->bulan }}</td> -->
                                     @if ($index === 0)
-                                    <td class="border border-green-800 px-4" rowspan="{{ $laporanGuru->count() }}">{{ $data->nama_guru }}</td>
+
+                                    <td class="border border-green-800 px-4 py-1" rowspan="{{ $laporanGuru->count() }}">{{ $data->nama_guru }}</td>
                                     @endif
                                     <td class="border border-green-800 px-1 text-center">{{ $data->nama_kelas }}</td>
-                                    <!-- <td class="border border-green-800 px-1 capitalize">{{ $data->hari }}</td> -->
+
                                     <td class="border border-green-800 px-1 text-center">
                                         {{ $data->jumlahHari }}
                                     </td>
                                     <td class="border border-green-800 px-1 text-center">{{ $data->jumlah_sesi_kelas_guru }}</td>
                                     <td class="border border-green-800 px-1 text-center">
-                                        H: {{ $data->jumlah_hadir }}
-                                        I: {{ $data->jumlah_izin }}
-                                        S: {{ $data->jumlah_sakit }}
-                                        A: {{ $data->jumlah_alfa }}
-
-
+                                        {{ $data->jumlah_hadir }}
+                                    </td>
+                                    <td class="border border-green-800 px-1 text-center">
+                                        {{ $data->jumlah_izin }}
+                                    </td>
+                                    <td class="border border-green-800 px-1 text-center">
+                                        {{ $data->jumlah_sakit }}
+                                    </td>
+                                    <td class="border border-green-800 px-1 text-center">
+                                        {{ $data->jumlah_alfa }}
+                                    </td>
+                                    <td class="border border-green-800 px-1 text-center">
                                     </td>
                                     <td class="border border-green-800 text-center px-1 {{ $data->hari == 'jumat' ? '' : 'bg-red-200' }}">
                                         {{ $data->hari == 'jumat' ? $data->total : '' }}
@@ -276,7 +281,6 @@
             </div>
         </div>
     </div>
-    </div>
     <div class="my-1">
         <div class="">
             <div class=" bg-sky-200 dark:bg-dark-bg overflow-hidden shadow-sm">
@@ -292,5 +296,4 @@
             </div>
         </div>
     </div>
-
 </x-app-layout>
