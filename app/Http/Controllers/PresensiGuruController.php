@@ -72,6 +72,7 @@ class PresensiGuruController
             ->where('sesi_kelas_guru.periode_id', session('periode_id'))
             ->where('sesi_kelas_guru.tanggal', $request->tanggal)
             ->get();
+        // dd($sesikelas);
 
         foreach ($dataKelasMi as $kelasmi) {
             if ($sesikelas->doesntContain('nama_kelas', $kelasmi->nama_kelas)) {
@@ -111,11 +112,11 @@ class PresensiGuruController
             'absensiguru.keterangan',
             'sesi_kelas_guru_id'
             ])
-           
-            // ->where('hari', $hari)
+
+            ->where('hari', $hari)
             ->where('jadwal.kelasmi_id', $sesi_Kelas_Guru->kelasmi_id)
         ->get();
-        // dd($dataGuru);
+        dd($dataGuru);
         
         if ($dataGuru->count() > 1) {
             $dataGuru = $dataGuru
