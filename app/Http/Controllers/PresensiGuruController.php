@@ -271,8 +271,14 @@ class PresensiGuruController
         }
         $laporan->append('jumlahHari');
         foreach ($laporan as $absensiGuru) {
-            $absensiGuru->jumlahHari = $jumlahHari[$absensiGuru->hari];
+            if (isset($jumlahHari[$absensiGuru->hari])) {
+                $absensiGuru->jumlahHari = $jumlahHari[$absensiGuru->hari];
+            } else {
+                // Tindakan jika kunci tidak ditemukan dalam array $jumlahHari
+                // Misalnya, Anda dapat memberikan nilai default ke $absensiGuru->jumlahHari
+            }
         }
+
 
         $laporanSemester = $laporanQuery->get();
 
