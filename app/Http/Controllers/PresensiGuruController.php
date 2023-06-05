@@ -107,7 +107,7 @@ class PresensiGuruController
                 'nama_guru',
                 'hari',
                 'jadwal.kelasmi_id',
-                'daftar_jadwal.id',
+                // 'daftar_jadwal.id',
                 'absensiguru.alasan',
             'absensiguru.keterangan',
             'sesi_kelas_guru_id'
