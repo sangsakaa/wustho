@@ -111,9 +111,11 @@ class PresensiGuruController
             'absensiguru.keterangan',
             'sesi_kelas_guru_id'
             ])
-            ->where('hari', $hari)
+           
+            // ->where('hari', $hari)
             ->where('jadwal.kelasmi_id', $sesi_Kelas_Guru->kelasmi_id)
         ->get();
+        // dd($dataGuru);
         
         if ($dataGuru->count() > 1) {
             $dataGuru = $dataGuru
