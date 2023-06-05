@@ -146,7 +146,8 @@
                                         {{ $data->jumlah_alfa }}
                                     </td>
                                     <td class="border border-green-800 px-1 text-center">
-                                        {{ number_format($data->jumlah_hadir *100/$data->jumlahHari),0}}%
+                                        {{ $data->jumlahHari != 0 ? number_format($data->jumlah_hadir * 100 / $data->jumlahHari, 0) : 'N/A' }}%
+
                                     </td>
                                     <td class="border border-green-800 text-center px-1 {{ $data->hari == 'jumat' ? '' : 'bg-red-200' }}">
                                         {{ $data->hari == 'jumat' ? $data->total : '' }}
