@@ -56,7 +56,7 @@
                                 <p class=" capitalize font-serif text-xs">Alamat : Jl.KH. Wachid Hasyim Kota Kediri 64114 Jawa Timur Telp. (0354) 774511, 771018 Fax. (0354) 772179</p>
 
                                 <hr class=" border-b-1 border-green-700 ">
-                                FAFIRRUU - ILALLOH
+
                             </center>
                         </div>
                     </div>
