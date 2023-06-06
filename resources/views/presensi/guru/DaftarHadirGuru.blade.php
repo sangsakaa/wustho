@@ -71,7 +71,6 @@
                                             {{ $loop->iteration }}
                                         </td>
                                         <td class=" px-2 border sm:text-sm text-xs w-1/3 capitalize ">
-                                            {{ $item}}
                                             {{ strtolower($item->nama_guru) }}
                                             <input type="hidden" name="daftar_jadwal_id" value="{{ $item->id }}">
                                         </td>
