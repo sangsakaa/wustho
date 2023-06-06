@@ -14,6 +14,14 @@
                     <x-icons.print></x-icons.print>
                 </button>
             </div>
+            <div class=" grid sm:justify-end justify-start">
+                <form action="/Laporan-Kehadiran" method="get" class="w-full">
+                    <input type="month" name="bulan" class=" py-1 dark:bg-dark-bg" value="{{ $bulan->format('Y-m') }}">
+                    <button class=" bg-red-600 py-1 dark:bg-purple-600 mt-1 my-1 sm:w-40 rounded-sm hover:bg-purple-600 text-white px-4 ">
+                        Pilih Bulan
+                    </button>
+                </form>
+            </div>
 
         </div>
         <script>
@@ -112,6 +120,17 @@
 
                 </tbody>
             </table>
+            <div class=" mt-1  flex grid-cols-2 text-right block sm:hidden">
+                <div class=" w-2/3"></div>
+                <div class="  text-left text-sm">
+                    Kedunglo, <?php
+                                $date = date_create(now());
+                                echo \Carbon\Carbon::parse($date)->isoFormat(' DD MMMM Y');
+                                ?></p>
+                    Al Mudir / Kepala <br><br><br><br>
+                    Muh. Bahrul Ulum, S.H
+                </div>
+            </div>
 
         </div>
         <div class="page-break"></div>
@@ -157,7 +176,7 @@
 
                     </tbody>
                 </table>
-                <div class="  flex grid-cols-2 text-right">
+                <div class="  flex grid-cols-2 text-right mt-1 block sm:hidden">
                     <div class=" w-2/3"></div>
                     <div class="  text-left text-sm">
                         Kedunglo, <?php

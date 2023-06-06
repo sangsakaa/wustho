@@ -7,12 +7,16 @@ use App\Models\Periode;
 use App\Models\Absensikelas;
 use Illuminate\Http\Request;
 use App\Models\Pesertaasrama;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class ReportController
 {
-    public function LapKehadiran()
+    public function LapKehadiran(Request $request)
     {
+        $bulan = $request->bulan ? Carbon::parse($request->bulan) : now();
+        $periodeBulan = $bulan->startOfMonth()->daysUntil($bulan->copy()->endOfMonth());
+
         $kelasmi = Kelasmi::query()
             ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
             ->join('semester', 'semester.id', '=', 'periode.semester_id')
@@ -41,6 +45,7 @@ class ReportController
             ->orderBy('nama_kelas')
             ->orderBy('nama_siswa')
             ->where('kelasmi.periode_id', session('periode_id'))
+            ->whereBetween('sesikelas.tgl', [$periodeBulan->first()->toDateString(), $periodeBulan->last()->toDateString()])
         ->get();
         $dataDetail = Absensikelas::query()
             ->join('sesikelas', 'sesikelas.id', '=', 'absensikelas.sesikelas_id')
@@ -61,6 +66,7 @@ class ReportController
             ->orderBy('nama_kelas')
             ->orderBy('nama_siswa')
             ->where('kelasmi.periode_id', $kelasmi->id)
+            ->whereBetween('sesikelas.tgl', [$periodeBulan->first()->toDateString(), $periodeBulan->last()->toDateString()])
             ->get();
 
         // dd($data);
@@ -68,7 +74,9 @@ class ReportController
 
             'kelasmi' => $kelasmi, 
             'data' => $data,
-            'dataDetail' => $dataDetail
+            'dataDetail' => $dataDetail,
+            'bulan' => $bulan,
+            'periodeBulan' => $periodeBulan
 
         ]);
 
