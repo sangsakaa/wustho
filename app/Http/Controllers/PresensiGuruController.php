@@ -103,7 +103,7 @@ class PresensiGuruController
         $dataGuru = Daftar_Jadwal::query()
             ->join('jadwal', 'jadwal.id', '=', 'daftar_jadwal.jadwal_id')
             ->select('daftar_jadwal.id', 'kelasmi_id', 'guru_id')
-            ->where('daftar_jadwal.id', $sesi_Kelas_Guru->id)
+            ->where('daftar_jadwal.id', $sesi_Kelas_Guru->kelasmi_id)
         ->get();
         return view(
             'presensi.guru.DaftarHadirGuru',
