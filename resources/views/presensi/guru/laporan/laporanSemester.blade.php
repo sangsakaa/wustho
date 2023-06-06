@@ -82,9 +82,10 @@
                         </div>
                         <hr class=" border-b-2 border-green-700 mb-1 mt-1">
                         <hr class=" border-b-1 border-green-700 mb-1">
-                        <div class="  uppercase px-1 text-center"> LAPORAN BULAN :
-                            {{ \Carbon\Carbon::parse($bulan)->isoFormat(' MMMM Y') }}
+                        <div class="  uppercase px-1 text-center">
+                            <p class=" uppercase font-semibold ">laporan presensi Guru : Bulan {{ \Carbon\Carbon::parse(  $bulan)->isoFormat('  MMMM ') }} </p>
 
+                            <p class=" font-semibold uppercase"> semester {{$kelasmi->ket_semester}} Tahun Pelajaran {{$kelasmi->periode}}</p>
                         </div>
                     </div>
                     <div class="px-2">
