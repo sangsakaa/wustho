@@ -57,9 +57,12 @@
                 </div>
                 <hr class=" border-b-2 border-green-700 mb-1 mt-1">
                 <hr class=" border-b-1 border-green-700 mb-1">
-                <p class=" uppercase underline text-green-800 border-green-800 text-md">Tahun Pelajaran {{$periode->periode }} {{$periode->ket_semester}}</p>
-                <span class=" uppercase font-semibold"> Laporan Bulan : {{ \Carbon\Carbon::parse(  $bulan)->isoFormat('  MMMM ') }}</span>
+                <p class=" uppercase font-semibold ">laporan presensi Perangkat : Bulan {{ \Carbon\Carbon::parse(  $bulan)->isoFormat('  MMMM ') }} </p>
+                <p class=" uppercase font-semibold  text-green-700 border-green-800 text-md">Semester {{$periode->ket_semester}} Tahun Pelajaran {{$periode->periode }} </p>
+
             </div>
+
+
             <div>
             </div>
             <table class="w-full ">

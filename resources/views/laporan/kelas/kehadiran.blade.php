@@ -43,7 +43,7 @@
         </style>
         <div class=" bg-white px-2 ">
             <div class="  ">
-                <div class=" text-center text-green-700 block sm:hidden   ">
+                <div class=" text-center text-green-700 block sm:hidden    ">
                     <div class=" flex">
                         <div><img src={{ asset("asset/images/logo.png") }} alt="" width="110" class=" px-2"></div>
                         <div class="  ml-5 ">
@@ -62,7 +62,8 @@
                     </div>
                     <hr class=" border-b-2 border-green-700 mb-1">
                     <hr class=" border-b-1 border-green-700 mb-1">
-                    <p class=" uppercase underline text-green-800 border-green-800 text-md">Tahun Pelajaran {{$periode = $kelasmi->periode ?? ' ';}} {{$periode = $kelasmi->ket_semester ?? ' ';}}</p>
+                    <p class=" uppercase font-semibold ">laporan presensi murid : Bulan {{ \Carbon\Carbon::parse(  $bulan)->isoFormat('  MMMM ') }} </p>
+                    <p class=" uppercase font-semibold  text-green-700 border-green-800 text-md">Semester {{$periode = $kelasmi->ket_semester ?? ' ';}} Tahun Pelajaran {{$periode = $kelasmi->periode ?? ' ';}} </p>
                 </div>
             </div>
 
@@ -137,11 +138,11 @@
         <div class="dropdown" data-bs-theme="dark">
             <div class=" bg-white px-2 py-2">
                 <center>
-                    <div class=" uppercase text-green-800  block sm:hidden">
+                    <div class=" uppercase text-green-700  block sm:hidden">
 
-                        <p class=" text-3xl">Detail Laporan Ketidakhadiran</p>
-                        <p class=" text-md">Tahun Pelajaran {{$periode = $kelasmi->periode ?? ' ';}} {{$periode = $kelasmi->ket_semester ?? ' ';}}</p>
-
+                        <p class=" text-3xl bold">Detail Laporan Ketidakhadiran</p>
+                        <p class=" uppercase font-semibold ">Bulan : {{ \Carbon\Carbon::parse(  $bulan)->isoFormat('  MMMM ') }} </p>
+                        <p class=" uppercase font-semibold  text-green-700 border-green-800 text-md">Semester {{$periode = $kelasmi->ket_semester ?? ' ';}} Tahun Pelajaran {{$periode = $kelasmi->periode ?? ' ';}} </p>
                         <hr class=" border border-b-2 border-green-800">
                 </center>
                 <table class=" w-full mt-2">
