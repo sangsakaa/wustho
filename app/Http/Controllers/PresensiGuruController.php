@@ -87,6 +87,7 @@ class PresensiGuruController
     }
     public function DaftarGuru(Sesi_Kelas_Guru $sesi_Kelas_Guru, Request $request)
     {
+
         // dd($sesi_Kelas_Guru);
         $title = $sesi_Kelas_Guru->join('kelasmi', 'kelasmi.id', '=', 'sesi_kelas_guru.kelasmi_id')->find($sesi_Kelas_Guru->id);
         $datetime = DateTime::createFromFormat('Y-m-d', $sesi_Kelas_Guru->tanggal);
@@ -100,30 +101,10 @@ class PresensiGuruController
         }
         // dd($hari);
         $dataGuru = Daftar_Jadwal::query()
-            ->join('guru', 'guru.id', '=', 'daftar_jadwal.guru_id')
-            ->leftJoin('jadwal', 'jadwal.id', '=', 'daftar_jadwal.jadwal_id')
-            ->leftJoin('absensiguru', 'absensiguru.daftar_jadwal_id', '=', 'daftar_jadwal.id')
-            ->select([
-                'nama_guru',
-                'hari',
-                'jadwal.kelasmi_id',
-            // 'daftar_jadwal.id',
-                'absensiguru.alasan',
-            'absensiguru.keterangan',
-            'absensiguru.sesi_kelas_guru_id'
-            ])
-
-            ->where('hari', $hari)
-            ->where('jadwal.kelasmi_id', $sesi_Kelas_Guru->kelasmi_id)
+            ->join('jadwal', 'jadwal.id', '=', 'daftar_jadwal.jadwal_id')
+            ->select('daftar_jadwal.id', 'kelasmi_id', 'guru_id')
+            ->where('daftar_jadwal.id', $sesi_Kelas_Guru->id)
         ->get();
-        // dd($dataGuru);
-        
-        if ($dataGuru->count() > 1) {
-            $dataGuru = $dataGuru
-                ->where('sesi_kelas_guru_id', $sesi_Kelas_Guru->id);
-        }
-
-        //dd($dataGuru)->toJson();
         return view(
             'presensi.guru.DaftarHadirGuru',
             compact(
