@@ -3,7 +3,7 @@
         @section('title', ' | Laporan Guru')
         <h2 class="font-semibold sm:text-xl leading-tight text-sm">
 
-            {{ __(' Laporan Semester Presensi Guru ') }} <br>
+            {{ __(' Laporan Bulanan Presensi Guru ') }} <br>
 
         </h2>
     </x-slot>
@@ -120,13 +120,15 @@
                                 @if ($laporanGuru->isEmpty())
                                 <tr>
                                     <td class="border border-green-800 px-1" colspan="13">No schedule available.</td>
+
                                 </tr>
                                 @else
                                 @foreach($laporanGuru as $index => $data)
-                                <tr class="border border-green-800 {{ $index === 0 ? 'border-t-2' : '' }}">
-                                    @if ($index === 0)
 
-                                    <td class="border border-green-800 px-4 py-1" rowspan="{{ $laporanGuru->count() }}">{{ $data->nama_guru }}</td>
+                                <tr class="border border-green-800 {{ $index === 0 ? 'border-t-2' : '' }}">
+
+                                    @if ($index === 0)
+                                    <td class="border border-green-800 px-4 py-1" rowspan="{{ $laporanGuru->count() }}"> {{ $data->nama_guru }}</td>
                                     @endif
                                     <td class="border border-green-800 px-1 text-center">{{ $data->nama_kelas }}</td>
 
@@ -173,8 +175,18 @@
                                 @endif
                                 @endforeach
                             </tbody>
-
                         </table>
+                        <div class=" mt-1  flex grid-cols-2 text-right block sm:hidden">
+                            <div class=" w-2/3"></div>
+                            <div class="  text-left text-sm">
+                                Kedunglo, <?php
+                                            $date = date_create(now());
+                                            echo \Carbon\Carbon::parse($date)->isoFormat(' DD MMMM Y');
+                                            ?></p>
+                                Al Mudir / Kepala <br><br><br><br>
+                                Muh. Bahrul Ulum, S.H
+                            </div>
+                        </div>
                     </div>
 
                     <!-- <table class=" w-full mt-2">
@@ -262,10 +274,18 @@
                             </tr>
                             @endforeach
                         </tbody>
-
-
-
                     </table>
+                    <div class=" mt-1  flex grid-cols-2 text-right block sm:hidden">
+                        <div class=" w-2/3"></div>
+                        <div class="  text-left text-sm">
+                            Kedunglo, <?php
+                                        $date = date_create(now());
+                                        echo \Carbon\Carbon::parse($date)->isoFormat(' DD MMMM Y');
+                                        ?></p>
+                            Al Mudir / Kepala <br><br><br><br>
+                            Muh. Bahrul Ulum, S.H
+                        </div>
+                    </div>
 
 
 

@@ -40,6 +40,7 @@
         <div class="">
             <div class="bg-white overflow-hidden shadow-sm ">
                 <div class="p-2 bg-white border-b border-gray-200">
+
                     <form action="/daftar-sesi-perangkat/{{$sesiPerangkat->id}}" method="post">
                         <button class=" bg-red-600 py-1 rounded-md text-white px-4">simpan presensi</button>
                         <a href="/sesi-perangkat" class=" bg-red-600 py-1 rounded-md text-white px-4">Kembali</a>

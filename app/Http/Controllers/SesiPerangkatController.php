@@ -13,8 +13,15 @@ use Carbon\Exceptions\InvalidFormatException;
 
 class SesiPerangkatController
 {
-    public function sesiPerangkat()
+    public function sesiPerangkat(Request $request)
     {
+        try {
+            $tanggal = $request->tanggal ? Carbon::parse($request->tanggal) : now();
+        } catch (InvalidFormatException $ex) {
+            $tanggal = now();
+        }
+        $bulan = $request->bulan ? Carbon::parse($request->bulan) : now();
+        $periodeBulan = $bulan->startOfMonth()->daysUntil($bulan->copy()->endOfMonth());
         $dataPeriode = Periode::query()
             ->join('semester', 'semester.id', '=', 'periode.semester_id')
             ->get();
@@ -31,27 +38,34 @@ class SesiPerangkatController
                 'periode',
                 'ket_semester',
             )
+            ->where('sesi_perangkat.tanggal', $tanggal->toDateString())
             ->get();
+        
         return view('perangkat.absensi.sesi', compact(
             [
                 'dataPeriode',
                 'hariIni',
-                'dataSesiPerangkat'
+                'dataSesiPerangkat',
+                'tanggal'
             ]
         ));
     }
-    public function buatSesi()
+    public function buatSesi(Request $request)
     {
         $dataPeriode = Periode::latest('id')->first();
-        $hariIni = now()->format('Y-m-d');
-        $sesi = SesiPerangkat::where('tanggal', $hariIni)
+        try {
+            $tanggal = $request->tanggal ? Carbon::parse($request->tanggal) : now();
+        } catch (InvalidFormatException $ex) {
+            $tanggal = now();
+        }
+        $sesi = SesiPerangkat::where('tanggal', $tanggal)
             ->where('periode_id', $dataPeriode->id)
             ->first();
 
         if (!$sesi) {
             try {
                 $sesi = new SesiPerangkat();
-                $sesi->tanggal = $hariIni;
+                $sesi->tanggal = $tanggal;
                 $sesi->periode_id = $dataPeriode->id;
                 $sesi->save();
             } catch (\Illuminate\Database\QueryException $e) {
@@ -130,11 +144,7 @@ class SesiPerangkatController
             )
             ->groupBy('nama_perangkat', 'tanggal')
             ->whereBetween('sesi_perangkat.tanggal', [$periodeBulan->first()->toDateString(), $periodeBulan->last()->toDateString()])
-            ->get();
-
-
-
-
+        ->get();
         return view('perangkat.absensi.laporanBulanan', compact('laporanBulanan', 'tanggal', 'bulan', 'periodeBulan', 'periode'));
     }
 }
