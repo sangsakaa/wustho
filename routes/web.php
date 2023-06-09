@@ -147,12 +147,12 @@ Route::delete('nig/{nig}', [GuruController::class, 'destroyNig'])->middleware(['
 // sesi Presensi Guru
 Route::get('sesi-presensi-guru', [PresensiGuruController::class, 'index'])->middleware(['auth'])->name('sesi-presensi-guru');
 Route::post('sesi-presensi-guru', [PresensiGuruController::class, 'store'])->middleware(['auth']);
-Route::get('sesi-presensi-guru/{sesi_Kelas_Guru}', [PresensiGuruController::class, 'DaftarGuru'])->middleware(['auth']);
+Route::get('sesi-presensi-guru/{sesi_Kelas_Guru}', [PresensiGuruController::class, 'DaftarGuru'])->where('sesi_Kelas_Guru', '[0-9]+')->middleware(['auth']);
 Route::post('sesi-presensi-guru/{sesi_Kelas_Guru}', [PresensiGuruController::class, 'AbsenGuru'])->middleware(['auth']);
 Route::get('laporan-harian-guru', [PresensiGuruController::class, 'LaporanHarian'])->middleware(['auth'])->name('laporan-harian-guru');
 Route::get('laporan-semester-guru', [PresensiGuruController::class, 'laporanSemester'])->middleware(['auth'])->name('laporan-semester-guru');
 Route::delete('sesi-presensi-guru/{sesi_Kelas_Guru}', [PresensiGuruController::class, 'DeleteSesi'])->middleware(['auth']);
-
+Route::get('sesi-presensi-guru/rekap', [PresensiGuruController::class, 'rekapSesi'])->middleware(['auth']);
 
 
 

@@ -223,7 +223,7 @@ class PresensiGuruController
         )
             ->groupBy(DB::raw("DATE_FORMAT(sesi_kelas_guru.tanggal, '%M')"), 'absensiguru.keterangan', 'guru.nama_guru', 'hari', 'nama_kelas')
             ->where('sesi_kelas_guru.periode_id', session('periode_id'))
-        
+
         ->orderBy('nama_guru');
 
         $laporan = $laporanQuery->clone()->whereBetween('sesi_kelas_guru.tanggal', [$startOfMonth, $endOfMonth])->get();
@@ -351,4 +351,54 @@ class PresensiGuruController
         return redirect()->back();
     }
 
+    public function rekapSesi(Request $request)
+    {
+        $bulan = $request->bulan ? Carbon::parse($request->bulan) : now();
+        $periodeBulan = $bulan->startOfMonth()->daysUntil($bulan->copy()->endOfMonth());
+
+        $periode = Periode::query()
+            ->join('semester', 'semester.id', '=', 'periode.semester_id')
+            ->select('periode.id', 'periode.periode', 'semester.ket_semester')
+            ->where('periode.id', session('periode_id'))
+            ->first();
+
+        $datakelasmi = Kelasmi::query()
+            ->join('periode', 'periode.id', 'kelasmi.periode_id')
+            ->join('semester', 'semester.id', 'periode.semester_id')
+            ->select('kelasmi.id', 'kelasmi.nama_kelas', 'periode.periode', 'semester.ket_semester')
+            ->where('kelasmi.periode_id', session('periode_id'))
+            ->orderBy('kelasmi.nama_kelas')
+            ->get();
+
+        $dataSesikelasguru = Sesi_Kelas_Guru::query()
+            ->join('kelasmi', 'kelasmi.id', '=', 'sesi_kelas_guru.kelasmi_id')
+            ->leftJoin('absensiguru', 'absensiguru.sesi_kelas_guru_id', '=', 'sesi_kelas_guru.id')
+            ->select('sesi_kelas_guru.*', 'kelasmi.nama_kelas', 'absensiguru.keterangan')
+            ->where('kelasmi.periode_id', session('periode_id'))
+            ->whereBetween('sesi_kelas_guru.tanggal', [$periodeBulan->first()->toDateString(), $periodeBulan->last()->toDateString()])
+            ->get()
+            ->groupBy('kelasmi_id');
+
+        $dataRekapSesi = $datakelasmi
+            ->keyBy('id')
+            ->map(function ($kelasmi, $kelasmi_id) use ($dataSesikelasguru, $periodeBulan) {
+                foreach ($periodeBulan as $hari) {
+                    $sesiPerBulan[] = [
+                        'hari' => $hari,
+                        'data' => $dataSesikelasguru->count() ? $dataSesikelasguru[$kelasmi_id]->firstWhere('tanggal', $hari->toDateString()) : null
+                    ];
+                }
+                return [
+                    'sesiPerBulan' => $sesiPerBulan,
+                    'kelasmi' => $kelasmi,
+                ];
+            });
+
+        return view('presensi.guru.rekapSesi', [
+            'dataRekapSesi' => $dataRekapSesi,
+            'periodeBulan' => $periodeBulan,
+            'periode' => $periode,
+            'bulan' => $bulan,
+        ]);
+    }
 }
