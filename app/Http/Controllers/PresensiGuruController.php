@@ -104,10 +104,18 @@ class PresensiGuruController
             ->join('jadwal', 'jadwal.id', '=', 'daftar_jadwal.jadwal_id')
             ->join('guru', 'guru.id', '=', 'daftar_jadwal.guru_id')
             ->leftjoin('absensiguru', function ($join) use ($sesi_Kelas_Guru) {
-                $join->on('absensiguru.daftar_jadwal_id', '=', 'daftar_jadwal.id')
-                ->where('absensiguru.sesi_kelas_guru_id', '=', $sesi_Kelas_Guru->kelasmi_id);
+            $join->on('absensiguru.daftar_jadwal_id', '=', 'daftar_jadwal.id')
+            ->where('absensiguru.sesi_kelas_guru_id', '=', $sesi_Kelas_Guru->id);
         })
-            ->select('daftar_jadwal.id', 'kelasmi_id', 'nama_guru', 'hari', 'absensiguru.keterangan')
+            ->select(
+                'daftar_jadwal.id',
+                'sesi_kelas_guru_id',
+                'kelasmi_id',
+                'nama_guru',
+                'hari',
+                'absensiguru.keterangan',
+                'absensiguru.alasan'
+            )
             ->where('jadwal.kelasmi_id', $sesi_Kelas_Guru->kelasmi_id)
             ->where('jadwal.hari', $hari)
         ->get();
