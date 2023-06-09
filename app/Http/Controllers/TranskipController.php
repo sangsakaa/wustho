@@ -28,11 +28,13 @@ class TranskipController
         $dataPeriode = Periode::query()
             ->join('semester', 'semester.id', '=', 'periode.semester_id')
             ->select('periode.periode', 'ket_semester', 'periode.id')
+            ->where('periode.id', session('periode_id'))
             ->orderby('ket_semester', 'desc')
         ->get();
         $dataMapel = Mapel::query()
             ->join('kelas', 'kelas.id', '=', 'mapel.kelas_id')
             ->select('kelas.kelas', 'mapel.mapel', 'mapel.id')
+            ->where('mapel.periode_id', session('periode_id'))
             ->where('kelas.kelas', 3)
             ->orderby('mapel.mapel')
             ->get();
