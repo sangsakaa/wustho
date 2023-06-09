@@ -42,7 +42,7 @@
                                         <label for="">Mata Pelajaran</label>
                                         <select name="mapel_id" id="" class=" w-full  py-1 px-1">
                                             @foreach($dataMapel as $item)
-                                            <option value="{{$item->id}}"> Kelas {{$item->kelas}} - {{$item->mapel}} </option>
+                                            <option value="{{$item->id}}"> Kelas {{$item->kelas}} - {{$item->mapel}} {{$item->periode}} {{$item->ket_semester}} </option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -60,7 +60,6 @@
 
                                             <select name="kelasmi_id" id="" class=" w-full  py-1 px-1">
                                                 @foreach($kelasMi as $item)
-
                                                 <option value="{{$item->id}}">{{$item->id}} - {{$item->nama_kelas}} {{$item->periode}} {{$item->ket_semester}}</option>
                                                 @endforeach
                                             </select>
