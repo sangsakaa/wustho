@@ -40,15 +40,15 @@
                         </thead>
                         <tbody class=" text-sm border border-green-800">
                             @foreach ($dataRekapSesi as $rekapSesi)
-                            <tr class=" border border-green-800 text-xs sm:text-sm even:bg-green-100 hover:bg-gray-200">
-                                <th class="border border-green-800 text-center ">{{ $rekapSesi['kelasmi']->nama_kelas }}</th>
+                            <tr class="  border border-green-800 text-xs sm:text-sm even:bg-green-100 hover:bg-gray-200">
+                                <th class=" py-2 border border-green-800 text-center ">{{ $rekapSesi['kelasmi']->nama_kelas }}</th>
                                 @foreach ($rekapSesi['sesiPerBulan'] as $sesi)
                                 <td class="border border-green-800 {{ $sesi['hari']->isThursday() ? " bg-green-800 text-white" : "" }}">
                                     <div class="grid justify-items-center">
                                         @if (!$sesi['data'])
                                         @elseif ($sesi['data']->keterangan)
                                         <a target="_blank" href="/sesi-presensi-guru/{{ $sesi['data']->id }}">
-                                            <x-icons.check class=" font-semibold uppercase w-4 h-4 {{ $sesi['data']->keterangan === 'hadir' ? 'text-green-800' : 'text-yellow-600' }}" aria-hidden="true" />
+                                            <x-icons.check class=" font-semibold uppercase w-4 h-4 {{ $sesi['data']->keterangan === 'hadir' ? 'text-green-800' : 'font-semibold text-yellow-600' }}" aria-hidden="true" />
                                         </a>
                                         @else
                                         <a target="_blank" href="/sesi-presensi-guru/{{ $sesi['data']->id }}">

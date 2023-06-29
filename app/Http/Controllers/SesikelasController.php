@@ -120,6 +120,7 @@ class SesikelasController
         $dataRekapSesi = $datakelasmi
             ->keyBy('id')
             ->map(function ($kelasmi, $kelasmi_id) use ($dataSesikelas, $periodeBulan) {
+            dd($kelasmi);
                 foreach ($periodeBulan as $hari) {
                     $sesiPerBulan[] = [
                         'hari' => $hari,

@@ -233,12 +233,13 @@ class PresensiGuruController
             'hari',
             'nama_kelas'
         )
-            ->groupBy(DB::raw("DATE_FORMAT(sesi_kelas_guru.tanggal, '%M')"), 'absensiguru.keterangan', 'guru.nama_guru', 'hari', 'nama_kelas')
+            ->groupBy(DB::raw("DATE_FORMAT(sesi_kelas_guru.tanggal, '%M')"), 'guru.nama_guru', 'hari', 'nama_kelas')
             ->where('sesi_kelas_guru.periode_id', session('periode_id'))
 
         ->orderBy('nama_guru');
 
         $laporan = $laporanQuery->clone()->whereBetween('sesi_kelas_guru.tanggal', [$startOfMonth, $endOfMonth])->get();
+        // dd($laporan);
         $periodeBulan = $tanggal->startOfMonth()->daysUntil($tanggal->copy()->endOfMonth());
         $jumlahHari = ['jumat' => 0, 'sabtu' => 0, 'minggu' => 0, 'senin' => 0, 'selasa' => 0, 'rabu' => 0, 'kamis' => 0];
         foreach ($periodeBulan as $hari) {
