@@ -100,7 +100,7 @@ class SesikelasController
             ->select('periode.id', 'periode.periode', 'semester.ket_semester')
             ->where('periode.id', session('periode_id'))
             ->first();
-
+        // dd($periode);
         $datakelasmi = Kelasmi::query()
             ->join('periode', 'periode.id', 'kelasmi.periode_id')
             ->join('semester', 'semester.id', 'periode.semester_id')
@@ -120,7 +120,7 @@ class SesikelasController
         $dataRekapSesi = $datakelasmi
             ->keyBy('id')
             ->map(function ($kelasmi, $kelasmi_id) use ($dataSesikelas, $periodeBulan) {
-            dd($kelasmi);
+            // dd($kelasmi);
                 foreach ($periodeBulan as $hari) {
                     $sesiPerBulan[] = [
                         'hari' => $hari,

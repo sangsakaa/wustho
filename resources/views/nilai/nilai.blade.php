@@ -106,7 +106,6 @@
                             </div>
                             <input type="hidden" name="nilaimapel_id" value="{{$nilaimapel->id}}">
                         </form>
-                        </form>
                     </div>
                 </div>
             </div>
