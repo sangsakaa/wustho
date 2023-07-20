@@ -14,13 +14,24 @@
 <body>
     <div class=" ">
         <div class=" px-2 py-2 grid grid-cols-2  w-full bg-blue-200 ">
-            <div>
-                <a class="navbar-brand" href="/">
-                    <img src="asset/images/logo.png" alt="" width="70px">
-                </a>
+            <div class=" flex grid-cols-1">
+                <div>
+                    <a class="navbar-brand" href="/">
+                        <img src="asset/images/logo.png" alt="" width="90px">
+                    </a>
+                </div>
+                <div class=" py-1 px-2">
+                    <p class=" text-2xl">NIMW</p>
+                    <p class="  text-blue-600">Nomor Induk Murid Wustho</p>
+                    <p>Alamat : Pondok Pesantren Kedunglo
+                        Jl.KH. Wachid Hasyim Kota Kediri
+                        Jawa Timur
+                    </p>
+                </div>
+
             </div>
             <div class=" justify-end grid">
-                <div class=" mt-4 mx-4 ">
+                <div class="  mt-8 mx-4 ">
                     <a class=" py-2 bg-blue-700 text-white px-4 " href="{{ route('login') }}">Masuk</a>
                 </div>
             </div>
@@ -29,8 +40,7 @@
     <!-- <div class="dropdown" data-bs-theme="dark"> -->
     <div class=" px-2 mt-2">
         <div class=" bg-white px-2 py-2">
-
-            <div class=" grid grid-cols-2 ">
+            <div class="  grid grid-cols-1 sm:grid-cols-2 ">
                 <div class="  w-full grid grid-cols-1">
                     <form action="/" method="get" class="  text-sm gap-1 ">
                         <div class=" w-full px-4 gap-2">
@@ -43,13 +53,13 @@
                     </form>
                 </div>
                 <div class="">
-                    <div class="sm:grid-cols-1 grid-cols-2 flex">
+                    <div class=" grid-cols-2 flex">
                         <div>
                             <img src="asset/images/logo.png" alt="" width="80px">
                         </div>
                         <div class=" px-1">
                             <p>MADRASAH DINIYAH WAHIDIYAH</p>
-                            <p class=" text-2xl">MADRASAH DINIYAH WUSTHO WAHIDIYAH</p>
+                            <p class=" text-sm sm:text-2xl">MADRASAH DINIYAH WUSTHO WAHIDIYAH</p>
                             <p>Alamat : Pondok Pesantren Kedunglo
                                 Jl.KH. Wachid Hasyim Kota Kediri
                                 Jawa Timur
@@ -64,29 +74,53 @@
                                 @if($detail->id == request('cari'))
                                 @else
                                 <div class=" grid grid-cols-2">
-                                    <div>
+                                    <div class=" py-2">
                                         NIMW
                                     </div>
-                                    <div>
+                                    <div class=" py-2">
                                         : {{$detail->nis}}
                                     </div>
                                 </div>
                                 <hr>
                                 <div class=" grid grid-cols-2">
-                                    <div>
+                                    <div class=" py-2">
                                         Nama
                                     </div>
-                                    <div>
+                                    <div class=" py-2">
                                         : {{$detail->nama_siswa}}
                                     </div>
                                 </div>
                                 <hr>
                                 <div class=" grid grid-cols-2">
-                                    <div>
+                                    <div class=" py-2">
                                         Tempat ,Tanggal Lahir
                                     </div>
-                                    <div>
+                                    <div class=" py-2">
                                         : {{$detail->tempat_lahir}} , {{$detail->tanggal_lahir}}
+                                    </div>
+                                </div>
+                                <div class=" grid grid-cols-2">
+                                    <div class=" py-2">
+                                        Kelas
+                                    </div>
+                                    <div class=" py-2">
+                                        @if($detail->kelasTerakhir)
+                                        : {{$detail->kelasTerakhir->KelasMi->nama_kelas}}
+                                        @else
+                                        : <span class=" text-red-600 font-semibold capitalize"> belum ada kelas </span>
+                                        @endif
+                                    </div>
+                                </div>
+                                <div class=" grid grid-cols-2">
+                                    <div class=" py-2">
+                                        Asrama
+                                    </div>
+                                    <div class=" py-2">
+                                        @if($detail->asramaTerkhir != null )
+                                        {{$detail->asramaTerkhir->asramaSiswa->asrama->nama_asrama}}
+                                        @else
+                                        : <span class=" text-red-600 font-semibold capitalize"> belum ada asrama </span>
+                                        @endif
                                     </div>
                                 </div>
                                 <hr>
