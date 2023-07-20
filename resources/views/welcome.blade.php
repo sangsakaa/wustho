@@ -43,7 +43,7 @@
                     </form>
                 </div>
                 <div class="">
-                    <div class="grid-cols-2 flex">
+                    <div class="sm:grid-cols-1 grid-cols-2 flex">
                         <div>
                             <img src="asset/images/logo.png" alt="" width="80px">
                         </div>
