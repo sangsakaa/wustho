@@ -8,7 +8,7 @@
     <div class=" bg-white p-2 sm:p-2  ">
         <div class=" flex gap-2 px-2  mt-2">
             <form action="/sesi-perangkat" method="get" class=" flex gap-1">
-                <input type="date" name="cari" value="{{ $tanggal->toDateString() }}" class=" border border-green-800 text-green-800 rounded-md py-1 dark:bg-dark-bg " placeholder=" Cari ..">
+                <input type="date" name="tanggal" value="{{ $tanggal->toDateString() }}" class=" border border-green-800 text-green-800 rounded-md py-1 dark:bg-dark-bg " placeholder=" Cari ..">
                 <button type="submit" class=" px-2   bg-blue-500  rounded-md text-white">
                     Tanggal </button>
             </form>

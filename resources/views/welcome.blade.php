@@ -12,28 +12,106 @@
 </head>
 
 <body>
-    <nav class="navbar bg-body-tertiary">
-        <div class="container">
-            <a class="navbar-brand" href="/">
-                <img src="asset/images/logo.png" alt="" width="50px"><br>
-            </a>
-            <ul class=" mx-4">
-                <a class="dropdown-item active py-2" href="{{ route('login') }}">Masuk</a>
-            </ul>
+    <div class=" ">
+        <div class=" px-2 py-2 grid grid-cols-2  w-full bg-blue-200 ">
+            <div>
+                <a class="navbar-brand" href="/">
+                    <img src="asset/images/logo.png" alt="" width="70px">
+                </a>
+            </div>
+            <div class=" justify-end grid">
+                <div class=" mt-4 mx-4 ">
+                    <a class=" py-2 bg-blue-700 text-white px-4 " href="{{ route('login') }}">Masuk</a>
+                </div>
+            </div>
         </div>
-
-    </nav>
-    <div class="dropdown" data-bs-theme="dark">
+    </div>
+    <!-- <div class="dropdown" data-bs-theme="dark"> -->
+    <div class=" px-2 mt-2">
         <div class=" bg-white px-2 py-2">
             <center>
                 <div class=" uppercase text-green-800  block sm:hidden">
                     <p class=" text-2xl">MADRASAH DINIYAH WUSTHO WAHIDIYAH</p>
                     <p class=" text-3xl">Laporan Kehadiran</p>
                     <p class=" text-md">Tahun Pelajaran {{$periode = $kelasmi->periode ?? ' ';}}{{$periode = $kelasmi->ket_semester ?? ' ';}}</p>
-
                     <hr class=" border border-b-2 border-green-800">
             </center>
-            <table class=" w-full mt-2">
+            <div class=" grid grid-cols-2 ">
+                <div class="  w-full grid grid-cols-1">
+                    <form action="/" method="get" class="  text-sm gap-1 ">
+                        <div class=" w-full px-4 gap-2">
+                            <div class=" py-1">
+                                <input type="text" max="8" name="cari" value="{{ request('cari') }}" class=" border w-full  py-2 px-2 " placeholder=" Masukan NIMW : 20220200109" autofocus>
+                            </div>
+                            <button type="submit" class=" px-2 py-2 rounded-md    bg-blue-500   text-white">
+                                Cari By NIMW </button>
+                        </div>
+                    </form>
+                </div>
+                <div class="">
+                    <div class="grid-cols-2 flex">
+                        <div>
+                            <img src="asset/images/logo.png" alt="" width="80px">
+                        </div>
+                        <div class=" px-1">
+                            <p>MADRASAH DINIYAH WAHIDIYAH</p>
+                            <p class=" text-2xl">MADRASAH DINIYAH WUSTHO WAHIDIYAH</p>
+                            <p>Alamat : Pondok Pesantren Kedunglo
+                                Jl.KH. Wachid Hasyim Kota Kediri
+                                Jawa Timur
+                            </p>
+                            <hr class=" ">
+                            <div>
+
+                                @if($dataNIS->isEmpty())
+                                <p>No data available.</p>
+                                @else
+                                @foreach($dataNIS as $detail)
+                                @if($detail->id == request('cari'))
+                                @else
+                                <div class=" grid grid-cols-2">
+                                    <div>
+                                        NIMW
+                                    </div>
+                                    <div>
+                                        : {{$detail->nis}}
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class=" grid grid-cols-2">
+                                    <div>
+                                        Nama
+                                    </div>
+                                    <div>
+                                        : {{$detail->nama_siswa}}
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class=" grid grid-cols-2">
+                                    <div>
+                                        Tempat ,Tanggal Lahir
+                                    </div>
+                                    <div>
+                                        : {{$detail->tempat_lahir}} , {{$detail->tanggal_lahir}}
+                                    </div>
+                                </div>
+                                <hr>
+
+                                @endif
+                                @endforeach
+                                @endif
+
+
+
+
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <!-- <table class=" w-full mt-2">
                 <thead>
                     <tr>
                         <th class=" border border-green-800  text-center px-1">Nama Kelas</th>
@@ -64,7 +142,7 @@
                     @endforeach
 
                 </tbody>
-            </table>
+            </table> -->
 
 
         </div>

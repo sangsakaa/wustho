@@ -391,11 +391,18 @@ Route::get(
             ->orderBy('nama_siswa')
             ->where('kelasmi.periode_id', $kelasmi->id)
         ->get();
+        $dataNIS = Siswa::query()
+        ->join('nis', 'nis.siswa_id', 'siswa.id')
+        ->select('nis', 'nama_siswa', 'tempat_lahir', 'tanggal_lahir');
+        if (request('cari') !== null) {
+            $dataNIS->where('nis', '=', request('cari'));
+        }
 
-        // dd($data);
-
-        // -dd($data);
-        return view('welcome', compact('data', 'kelasmi'));
+        return view('welcome', [
+            'data' => $data,
+            'kelasmi',
+            'dataNIS' => $dataNIS->get()
+        ]);
     }
 );
 

@@ -20,11 +20,7 @@ class SesiPerangkatController
         } catch (InvalidFormatException $ex) {
             $tanggal = now();
         }
-        $bulan = $request->bulan ? Carbon::parse($request->bulan) : now();
-        $periodeBulan = $bulan->startOfMonth()->daysUntil($bulan->copy()->endOfMonth());
-        $dataPeriode = Periode::query()
-            ->join('semester', 'semester.id', '=', 'periode.semester_id')
-            ->get();
+       
 
         date_default_timezone_set('Asia/Jakarta'); // set timezone to WIB
         $hariIni = date('l, d F Y', strtotime('now'));
@@ -43,7 +39,7 @@ class SesiPerangkatController
         
         return view('perangkat.absensi.sesi', compact(
             [
-                'dataPeriode',
+               
                 'hariIni',
                 'dataSesiPerangkat',
                 'tanggal'
@@ -52,6 +48,7 @@ class SesiPerangkatController
     }
     public function buatSesi(Request $request)
     {
+        
         $dataPeriode = Periode::latest('id')->first();
         try {
             $tanggal = $request->tanggal ? Carbon::parse($request->tanggal) : now();
@@ -60,12 +57,14 @@ class SesiPerangkatController
         }
         $sesi = SesiPerangkat::where('tanggal', $tanggal)
             ->where('periode_id', $dataPeriode->id)
+            ->where('sesi_perangkat.tanggal', $request->tanggal)
             ->first();
-
         if (!$sesi) {
             try {
                 $sesi = new SesiPerangkat();
                 $sesi->tanggal = $tanggal;
+                
+
                 $sesi->periode_id = $dataPeriode->id;
                 $sesi->save();
             } catch (\Illuminate\Database\QueryException $e) {
