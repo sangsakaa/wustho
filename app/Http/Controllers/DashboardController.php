@@ -69,12 +69,16 @@ class DashboardController extends Controller
             ];
         })->values();
         $dataSiswa = DB::table('siswa')
-        ->select(DB::raw('count(*) as jumlah'), 'jenis_kelamin')
-        ->groupBy('jenis_kelamin')
+            ->select(DB::raw('count(*) as jumlah'), 'jenis_kelamin',)
+            ->groupBy('jenis_kelamin')
+            
         ->get()
         ->toArray();
+        // dd($dataSiswa);
         $data = Siswa::query()
-        ->join('nis', 'siswa.id', '=', 'nis.siswa_id')->get();
+            ->join('nis', 'siswa.id', '=', 'nis.siswa_id')
+            ->whereNot('madrasah_diniyah', "Ula")
+            ->get();
         $countLakiLaki = 0;
         $countPerempuan = 0;
         foreach ($data as $item) {
