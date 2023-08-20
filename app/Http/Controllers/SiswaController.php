@@ -20,7 +20,10 @@ class SiswaController extends Controller
     {
 
         $data = Siswa::query()
-            ->latest();
+            ->join('nis', 'nis.siswa_id', '=', 'siswa.id')
+            ->whereNot('madrasah_diniyah', 'ula')
+            ->select('siswa.*')
+            ->orderby('nis');
         if (request('cari')) {
             $data->where('nama_siswa', 'like', '%' . request('cari') . '%');
             
