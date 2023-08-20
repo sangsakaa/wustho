@@ -213,4 +213,5 @@ class RegisteredUserController extends Controller
 
         return redirect()->back()->with('status', $jumlahUserGuru . ' user untuk guru telah dibuat');
     }
+    
 }
