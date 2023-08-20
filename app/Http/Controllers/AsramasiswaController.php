@@ -267,6 +267,7 @@ class AsramasiswaController extends Controller
                 $join->on('peserta_asrama_periode_terpilih.siswa_id', '=', 'siswa.id');
             })
             ->where('peserta_asrama_periode_terpilih.siswa_id', null)
+            ->whereNot('madrasah_diniyah', 'ula')
             ->select(
                 [
                     'siswa.id',

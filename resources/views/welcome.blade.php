@@ -53,7 +53,7 @@
             </div>
             <div class=" bg-blue-200 p-2 rounded-md">
                 <div class=" sm:flex grid ">
-                    <div>
+                    <div class=" justify-center">
                         <img src="asset/images/logo.png" alt="" width="70px">
                     </div>
                     <div class=" px-2 mt-1">
