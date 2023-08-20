@@ -54,18 +54,18 @@
                         <td class=" border px-2 text-center">{{ \Carbon\Carbon::parse($item->tanggal_masuk)->isoFormat('D/M/Y') }} </td>
                         <td class=" border px-2 text-center">{{ $item->status }} </td>
                         <td class="  text-center flex justify-center gap-1 p-1">
-                            <form action="/guru/{{$item->id}}" method="post">
+                            <form action="/edit-form-perangkat/{{$item->id}}" method="post">
                                 @csrf
                                 @method('delete')
                                 <button class=" bg-red-500 text-white p-1  rounded-md flex" onclick=" return confirm('apakah anda yakin menghapus data ini: {{$item->nama_guru}}')"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
                                     </svg></button>
                             </form>
-                            <a href="/guru/{{$item->id}}/edit" class=" bg-yellow-500 rounded p-1 flex ">
+                            <a href="/edit-form-perangkat/{{$item->id}}/edit" class=" bg-yellow-500 rounded p-1 flex ">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
                                 </svg></a>
-                            <a href="guru/{{$item->id}}" class=" text-white bg-sky-400 py-0 hover:bg-purple-600  px-2 rounded-sm">
+                            <a href="edit-form-perangkat/{{$item->id}}" class=" text-white bg-sky-400 py-0 hover:bg-purple-600  px-2 rounded-sm">
                                 Detail
                             </a>
                         </td>

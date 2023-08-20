@@ -298,6 +298,10 @@ Route::get('Laporan-Kehadiran', [ReportController::class, 'LapKehadiran'])->midd
 // Perangkat
 Route::get('data-perangkat', [PerangkatController::class, 'index'])->middleware(['auth'])->name('data-perangkat');
 Route::get('form-perangkat', [PerangkatController::class, 'create'])->middleware(['auth'])->name('form-perangkat');
+
+Route::get('edit-form-perangkat/{perangkat}/edit', [PerangkatController::class, 'edit'])->middleware(['auth']);
+Route::patch('edit-form-perangkat/{perangkat}/edit', [PerangkatController::class, 'update'])->middleware(['auth']);
+
 Route::post('data-perangkat', [PerangkatController::class, 'store'])->middleware(['auth'])->name('form-perangkat');
 // sesiPerangkat
 Route::get('sesi-perangkat', [SesiPerangkatController::class, 'sesiPerangkat'])->name('sesi-perangkat');
