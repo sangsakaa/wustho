@@ -41,7 +41,7 @@
         <div class=" grid grid-cols-1 sm:grid-cols-2 p-2 gap-2">
             <div class=" h-32 rounded-md bg-blue-300 p-2">
                 <form action="/" method="get" class="  text-sm gap-1 ">
-                    <div class=" w-full px-4 gap-2">
+                    <div class=" w-full px-4 py-2 gap-2">
                         <span class=" uppercase">Pencarian NIMW (Nomor induk murid WUSTHO)</span>
                         <div class=" py-1">
                             <input type="text" max="8" name="cari" value="{{ request('cari') }}" class=" border w-full  py-2 px-2 " placeholder=" Masukan NIMW : 20220200109" autofocus>
@@ -58,7 +58,7 @@
                     </div>
                     <div class=" px-2 mt-1">
                         <p class=" text-sm">MADRASAH DINIYAH WAHIDIYAH</p>
-                        <p class=" text-xs sm:text-sm">MADRASAH DINIYAH WUSTHO WAHIDIYAH</p>
+                        <p class=" text-xs sm:text-sm font-semibold">MADIN WUSTHO WAHIDIYAH</p>
                         <p class=" text-sm">Alamat : Pondok Pesantren Kedunglo
                             Jl.KH. Wachid Hasyim Kota Kediri
                             Jawa Timur
@@ -95,22 +95,13 @@
                         <div class=" py-2">
                             Tempat ,Tanggal Lahir
                         </div>
-                        <div class=" py-2">
-                            : {{$detail->tempat_lahir}} , {{ \Carbon\Carbon::parse($detail->tanggal_lahir)->isoFormat(' DD MMMM Y') }}
+                        <div class=" py-2  capitalize">
+                            : {{strtolower($detail->tempat_lahir)}} , {{ \Carbon\Carbon::parse($detail->tanggal_lahir)->isoFormat(' DD MMMM Y') }}
                         </div>
                     </div>
 
                 </div>
-                <hr>
-                <div class=" grid grid-cols-2">
-                    <div class=" py-2">
-                        Asrama
-                    </div>
-                    <div class=" py-2">
-                        :
-                    </div>
-                </div>
-                <hr>
+
                 @endif
                 @endforeach
                 @endif
