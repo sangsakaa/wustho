@@ -7,7 +7,7 @@
         </span>
         <span>by</span>
         <a href="https://wustho.smedi.my.id/" target="_blank" class="text-blue-600 hover:underline sm:text-xs text-xs">
-            MADIN WUSTHO WAHIDIYAH &copy 2022 <span class=" uppercase text-xs"></span>
+            MADIN WUSTHA WAHIDIYAH &copy 2022 <span class=" uppercase text-xs"></span>
         </a>
     </p>
     @endrole
@@ -31,7 +31,7 @@
         </span>
         <span>by</span>
         <a href="https://wustho.smedi.my.id/" target="_blank" class="text-blue-600 hover:underline sm:text-xs text-xs">
-            MADIN WUSTHO WAHIDIYAH &copy 2022
+            MADIN WUSTHA WAHIDIYAH &copy 2022
         </a>
     </p>
     @endrole

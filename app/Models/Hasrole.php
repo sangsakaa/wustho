@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Hasrole extends Model
 {
     use HasFactory;
-    protected $table = "role_has_permissions";
-    const UPDATED_AT = null;
+    protected $table = "model_has_roles";
+    // const UPDATED_AT = null;
+    public $timestamps = false;
 }

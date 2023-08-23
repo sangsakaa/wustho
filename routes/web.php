@@ -53,7 +53,11 @@ Route::get('/gurudashboard', [UserguruController::class, 'DashboardGuru'])->midd
 
 Route::get('manajemen', [RegisteredUserController::class, 'manajemen'])->middleware(['auth'])->name('manajemen');
 Route::get('register', [RegisteredUserController::class, 'create'])->middleware(['auth'])->name('register');
+
 Route::get('HasRole', [RegisteredUserController::class, 'HasRole'])->middleware(['auth'])->name('HasRole');
+Route::post('HasRole', [RegisteredUserController::class, 'storeole']);
+Route::post('HasRole', [RegisteredUserController::class, 'storeHasRole']);
+
 Route::post('admin', [RegisteredUserController::class, 'role_has_permission'])->middleware(['auth']);
 Route::delete('admin/{user}', [RegisteredUserController::class, 'destroy']);
 Route::get('/buatakunsiswa', [RegisteredUserController::class, 'buatAkunSiswa'])->middleware(['auth']);

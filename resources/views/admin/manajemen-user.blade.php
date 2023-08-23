@@ -29,7 +29,7 @@
 
         <div class=" py-4 px-4 grid grid-cols-1">
           <span> User Role</span>
-          <form action="/admin" method="get" class="  gap-1">
+          <form action="/manajemen-user" method="get" class="  gap-1">
             <div class=" grid sm:grid-cols-2 grid-cols-1 gap-1 w-1/2 ">
               <input type="text" name="cari" value="{{ request('cari') }}" class=" border text-green-800 rounded-sm py-1  sm:w-full " placeholder=" Cari ...">
               <button type="submit" class=" px-2 py-1  w-1/4    bg-blue-500  rounded-sm text-white">

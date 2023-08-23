@@ -57,7 +57,6 @@
             <x-icons.usercircle class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
         </x-slot>
     </x-sidebar.link>
-
     <x-sidebar.dropdown title="KESISWAAN" :active="Str::startsWith(request()->route()->uri(), 'buttons')">
         <x-slot name="icon">
             <x-heroicon-o-view-grid class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
@@ -191,4 +190,15 @@
         </x-slot>
     </x-sidebar.link>
     @endrole
+
+    @if(auth()->check())
+    @if(auth()->user()->hasRole('siswa'))
+    {{-- Konten untuk siswa --}}
+    <p>Selamat datang, Siswa!</p>
+    @elseif(auth()->user()->hasRole('ketua asrama'))
+    {{-- Konten untuk ketua asrama --}}
+    <p>Selamat datang, Ketua Asrama!</p>
+    @endif
+    @endif
+
 </x-perfect-scrollbar>

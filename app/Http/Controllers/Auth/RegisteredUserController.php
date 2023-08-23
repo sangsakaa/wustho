@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\Events\Registered;
 use App\Providers\RouteServiceProvider;
 use Spatie\Permission\Models\Permission;
+use Illuminate\Support\Facades\Session;
 
 class RegisteredUserController extends Controller
 {
@@ -25,7 +26,7 @@ class RegisteredUserController extends Controller
      * @return \Illuminate\View\View
      */
 
-    public function index(Guru $guru)
+    public function index()
     {
         $permissions = Permissions::all();
         $hasrole = Roles::all();
@@ -40,13 +41,8 @@ class RegisteredUserController extends Controller
                     'users.name',
                 ]
         )->orderby('nama_siswa');
-        $hasRole = Hasrole::all();
-        $RoleHas = HasRole::query()
-            ->join('permissions', 'permissions.id',  '=', 'role_has_permissions.permission_id',)
-            ->join('roles', 'roles.id', '=', 'role_has_permissions.role_id')
-            ->select('roles.name AS Role', 'permissions.name AS Permission')
-            ->orderBy('roles.name', 'desc')
-            ->get();
+        
+        
         if (request('cari')) {
             $users->where('name', 'like', '%' . request('cari') . '%');
             
@@ -56,11 +52,9 @@ class RegisteredUserController extends Controller
             'admin/manajemen-user',
             [
                 'users' => $users->paginate(10),
-                'hasRole' => $hasRole,
-                'HasRole' => $RoleHas,
                 'permissions' => $permissions,
                 'hasrole' => $hasrole,
-                'guru' => $guru
+                
             ]
         );
     }
@@ -82,14 +76,23 @@ class RegisteredUserController extends Controller
     public function HasRole()
     {
 
+        $User = User::all();
         $roles = Roles::all();
-        $permissions = Permission::query()
-            ->get();
+        $permissions = Hasrole::query()
+            ->join('roles', 'roles.id', '=', 'model_has_roles.role_id')
+            ->join('users', 'users.id', '=', 'model_has_roles.model_id')
+            ->select('users.name', 'model_id', 'role_id', 'roles.name as role_name', 'email',);
+        if (request('cari')) {
+            $permissions->where('users.name', 'like', '%' . request('cari') . '%');
+        }
+
+        $data = $permissions->get();
         return view(
             'admin/HasRole',
             [
-                'hasRole' => $permissions,
-                'roles' => $roles
+                'hasRole' => $data,
+                'roles' => $roles,
+                'User' => $User
             ]
         );
     }
@@ -212,6 +215,53 @@ class RegisteredUserController extends Controller
         }
 
         return redirect()->back()->with('status', $jumlahUserGuru . ' user untuk guru telah dibuat');
+    }
+    public function storeole(Request $request)
+    {
+        $request->validate(
+            [
+                'name' => 'required'
+            ],
+            [
+                'name.required' => 'wajib ada isinya'
+            ]
+        );
+
+
+        $dataRole = Roles::all();
+        $existingRole = Roles::where('name', $request->name)->first();
+
+        if ($existingRole) {
+            // Role dengan nama yang sama sudah ada
+            Session::flash('message', 'Role dengan nama tersebut sudah ada!');
+            Session::flash('alert-class', 'alert-danger');
+
+            // Redirect kembali ke halaman sebelumnya atau halaman tertentu
+            return redirect()->back(); // atau return redirect()->route('nama_rute');
+        } else {
+            // Role dengan nama yang sama belum ada, maka simpan data baru
+            $role = new Roles();
+            $role->name = $request->name;
+            $role->guard_name = $request->guard_name;
+            $role->save();
+
+            // Set notifikasi sukses jika diperlukan
+            Session::flash('message', 'Role berhasil disimpan!');
+            Session::flash('alert-class', 'alert-success');
+
+            return redirect()->back(); // Ganti "nama_rute" dengan nama rute yang sesuai
+        }
+    }
+    public function storeHasRole(Request $request)
+    {
+        $hasRole = new Hasrole();
+        $hasRole->role_id = $request->role_id;
+        $hasRole->model_type = $request->model_type;
+        $hasRole->model_id = $request->model_id;
+        $hasRole->save();
+        // Show a success notification in the blade view
+        Session::flash('success', 'Role and Model ID combination created successfully.');
+        return redirect()->back();
     }
     
 }

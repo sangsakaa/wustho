@@ -13,6 +13,7 @@
                     Tanggal </button>
             </form>
             <form action="/sesi-perangkat" method="post">
+                <input type="hidden" name="tanggal" value="{{ $tanggal->toDateString() }}" class=" border border-green-800 text-green-800 rounded-md py-1 dark:bg-dark-bg " placeholder=" Cari ..">
                 @csrf
                 <button class=" bg-blue-600 text-white rounded-md px-2 py-1">buat Sesi</button>
             </form>
