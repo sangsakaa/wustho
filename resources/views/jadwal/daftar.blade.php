@@ -63,6 +63,7 @@
                         <th class=" border text-center text-xs sm:text-sm">Kelas</th>
                         <th class=" border text-center text-xs sm:text-sm">Mapel</th>
                         <th class=" border text-center text-xs sm:text-sm">Daftar Pendidik</th>
+                        <th class=" border text-center text-xs sm:text-sm">ACt</th>
                     </tr>
                 </thead>
                 <tbody class=" overflow-auto">
@@ -80,15 +81,23 @@
                             @else
                             Ibu
                             @endif
-
                             {{$jadwal->nama_guru}}
-
                             @else
                             <span class=" text-red-600">Belum terjadwal</span>
                             @endif
                         </td>
-                        <td>
-
+                        <td class=" text-center">
+                            <form action="/Daftar-Jadwal/{{$jadwal->id}}" method="post">
+                                @csrf
+                                @method('delete')
+                                <button title="hapus jadwal">
+                                    <span class=" text-red-700">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                    </span>
+                                </button>
+                            </form>
                         </td>
 
                     </tr>

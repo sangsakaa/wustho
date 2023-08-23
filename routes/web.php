@@ -333,6 +333,7 @@ Route::get('laporan-poling-guru', [JadwalController::class, 'LaporanPloting'])->
 Route::get('laporan-poling-guru-kelas', [JadwalController::class, 'LaporanPlotingKelas'])->middleware(['auth']);
 
 Route::delete('jadwal-guru/{daftar_Jadwal}', [JadwalController::class, 'destroyGuru'])->middleware(['auth']);
+Route::delete('Daftar-Jadwal/{jadwal}', [JadwalController::class, 'destroy'])->middleware(['auth']);
 
 
 

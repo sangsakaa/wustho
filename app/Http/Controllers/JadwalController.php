@@ -417,6 +417,11 @@ class JadwalController
     {
         Daftar_Jadwal::destroy('id', $daftar_Jadwal->id);
         return redirect()->back();
-        
+    }
+    public function destroy(Jadwal $jadwal)
+    {
+        Jadwal::destroy('id', $jadwal->id);
+        Daftar_Jadwal::where('jadwal_id', $jadwal->id);
+        return redirect()->back();
     }
 }
