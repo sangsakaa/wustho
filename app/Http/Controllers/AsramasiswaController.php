@@ -277,11 +277,11 @@ class AsramasiswaController extends Controller
                 'nis.madrasah_diniyah',
                     'nis.tanggal_masuk'
                 ]
-            )
-            ->orderBy('nis.madrasah_diniyah')
+        )
             // ->orderBy('siswa.nama_siswa');
             ->orderBy('siswa.jenis_kelamin')
-            ->orderBy('siswa.nama_siswa');
+        ->orderBy('siswa.nama_siswa')
+        ->orderBy('nis.madrasah_diniyah');
         if (request('cari')) {
             $Datasiswa->where(function ($query) {
                 $query->where('nis', 'like', '%' . request('cari') . '%')
@@ -290,7 +290,6 @@ class AsramasiswaController extends Controller
             // ->orWhere('nama_kelas', 'like', '%' . request('cari') . '%')
             // ->orWhere('nis', 'like', '%' . request('cari') . '%')
             // ->orWhere('tanggal_masuk', 'like', '%' . request('cari') . '%')
-
         }
         $a = $Datasiswa->count();
 
