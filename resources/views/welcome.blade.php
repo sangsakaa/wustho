@@ -22,7 +22,7 @@
                 </div>
                 <div class=" py-1 px-2">
                     <p class=" text-lg">NIMW</p>
-                    <p class="  text-blue-600">Nomor Induk Murid Wustho</p>
+                    <p class="  text-blue-600">Nomor Induk Murid </p>
                     <p class=" text-xs">Alamat : Pondok Pesantren Kedunglo
                         Jl.KH. Wachid Hasyim Kota Kediri
                         Jawa Timur
@@ -42,7 +42,7 @@
             <div class=" h-32 rounded-md bg-blue-300 p-2">
                 <form action="/" method="get" class="  text-sm gap-1 ">
                     <div class=" w-full px-4 py-2 gap-2">
-                        <span class=" uppercase">Pencarian NIMW (Nomor induk murid WUSTHO)</span>
+                        <span class=" uppercase">Pencarian NIMW (Nomor induk murid )</span>
                         <div class=" py-1">
                             <input type="text" max="8" name="cari" value="{{ request('cari') }}" class=" border w-full  py-2 px-2 " placeholder=" Masukan NIMW : 20220200109" autofocus>
                         </div>
@@ -58,7 +58,7 @@
                     </div>
                     <div class=" px-2 mt-1">
                         <p class=" text-sm">MADRASAH DINIYAH WAHIDIYAH</p>
-                        <p class=" text-xs sm:text-sm font-semibold">MADIN WUSTHO WAHIDIYAH</p>
+                        <p class="  text-blue-600">Nomor Induk Murid </p>
                         <p class=" text-sm">Alamat : Pondok Pesantren Kedunglo
                             Jl.KH. Wachid Hasyim Kota Kediri
                             Jawa Timur
