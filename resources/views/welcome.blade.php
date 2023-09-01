@@ -120,7 +120,7 @@
                 <hr>
                 <div class=" grid grid-cols-2">
                     <div class=" py-2">
-                        Kelas Sekarang
+                        Asrama Sekarang
                     </div>
                     <div class=" py-2">
                         :
