@@ -71,7 +71,7 @@
                     <p>No data available.</p>
                     @else
                     @foreach($dataNIS as $detail)
-                    @if($detail->id == request('cari'))
+                    @if($detail->id == request('cari') || is_null(request('cari')))
                     @else
                     <div class=" grid grid-cols-2">
                         <div class=" py-2">
@@ -92,7 +92,6 @@
                         </div>
                         <div class=" py-2">
                             : {{$detail->nama_siswa}}
-
                         </div>
                     </div>
                     <hr>
@@ -104,7 +103,6 @@
                             : {{strtolower($detail->tempat_lahir)}} , {{ \Carbon\Carbon::parse($detail->tanggal_lahir)->isoFormat(' DD MMMM Y') }}
                         </div>
                     </div>
-
                 </div>
                 <div class=" grid grid-cols-2">
                     <div class=" py-2">
