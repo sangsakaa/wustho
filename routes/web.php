@@ -402,13 +402,14 @@ Route::get(
         ->get();
         $dataNIS = Siswa::query()
             ->leftjoin('nis', 'nis.siswa_id', 'siswa.id')
-        ->join('pesertakelas', 'siswa.id', '=', 'pesertakelas.siswa_id')
-        ->select('siswa.id', 'nis', 'nama_siswa', 'tempat_lahir', 'tanggal_lahir')
-        ->distinct()
-            // ->get()
+            // ->select('nis', 'nama_siswa', 'tempat_lahir', 'tanggal_lahir')
+            ->select('siswa.*')
         ;
 
-    
+        // dd($dataNIS);
+
+        
+
         if (request('cari') !== null) {
             $dataNIS->where('nis', '=', request('cari'));
         }

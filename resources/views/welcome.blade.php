@@ -78,7 +78,11 @@
                             NIMW
                         </div>
                         <div class=" py-2">
-                            : {{$detail->nis}}
+                            : @if($detail->NisTerakhir != null)
+                            {{$detail->NisTerakhir->nis}}
+                            @else
+                            <span class=" text-red-600 font-semibold capitalize"> belum ada nis </span>
+                            @endif
                         </div>
                     </div>
                     <hr>
@@ -112,6 +116,20 @@
                         {{$detail->kelasTerakhir->KelasMi->nama_kelas}}
                         @else
                         <span class=" text-red-600 font-semibold capitalize"> belum ada kelas </span>
+                        @endif
+                    </div>
+                </div>
+                <hr>
+                <div class=" grid grid-cols-2">
+                    <div class=" py-2">
+                        Kelas Sekarang
+                    </div>
+                    <div class=" py-2">
+                        :
+                        @if($detail->asramaTerkhir != null )
+                        {{$detail->asramaTerkhir->asramaSiswa->asrama->nama_asrama}}
+                        @else
+                        <span class=" text-red-600 font-semibold capitalize"> belum ada asrama </span>
                         @endif
                     </div>
                 </div>
