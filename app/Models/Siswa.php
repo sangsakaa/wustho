@@ -30,4 +30,6 @@ class Siswa extends Model
     {
         return $this->hasOne(Pesertaasrama::class)->latestOfMany();
     }
+    
+
 }

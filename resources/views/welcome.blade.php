@@ -88,6 +88,7 @@
                         </div>
                         <div class=" py-2">
                             : {{$detail->nama_siswa}}
+
                         </div>
                     </div>
                     <hr>
@@ -101,6 +102,20 @@
                     </div>
 
                 </div>
+                <div class=" grid grid-cols-2">
+                    <div class=" py-2">
+                        Kelas Sekarang
+                    </div>
+                    <div class=" py-2">
+                        :
+                        @if($detail->kelasTerakhir)
+                        {{$detail->kelasTerakhir->KelasMi->nama_kelas}}
+                        @else
+                        <span class=" text-red-600 font-semibold capitalize"> belum ada kelas </span>
+                        @endif
+                    </div>
+                </div>
+                <hr>
 
                 @endif
                 @endforeach

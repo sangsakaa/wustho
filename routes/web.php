@@ -401,8 +401,9 @@ Route::get(
             ->where('kelasmi.periode_id', $kelasmi->id)
         ->get();
         $dataNIS = Siswa::query()
-        ->join('nis', 'nis.siswa_id', 'siswa.id')
-        ->select('nis', 'nama_siswa', 'tempat_lahir', 'tanggal_lahir');
+            ->leftjoin('nis', 'nis.siswa_id', 'siswa.id')
+            ->select('nis', 'nama_siswa', 'tempat_lahir', 'tanggal_lahir');
+    
         if (request('cari') !== null) {
             $dataNIS->where('nis', '=', request('cari'));
         }
