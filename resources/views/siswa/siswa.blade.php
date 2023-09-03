@@ -140,6 +140,12 @@
                                 </td>
                             </tr>
                             @endforeach
+                            @else
+                            <tr>
+                                <td colspan="9" class=" border py-1 text-center text-red-700">
+                                    <span>Data tidak ditemukan !!</span>
+                                </td>
+                            </tr>
                             @endif
                         </tbody>
                     </table>
