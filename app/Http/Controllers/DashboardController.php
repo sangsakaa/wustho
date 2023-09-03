@@ -151,7 +151,7 @@ class DashboardController extends Controller
         ->join('kelas', 'kelas.id', '=', 'kelasmi.kelas_id')
         ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
         ->join('semester', 'semester.id', '=', 'periode.semester_id')
-        ->where('nis.madrasah_diniyah', 'wustho')
+            ->where('nis.madrasah_diniyah', 'Wustho')
         // ->where('kelasmi.periode_id', session('periode_id'))
         ->groupBy(DB::raw('YEAR(nis.tanggal_masuk)'))
         ->selectRaw('YEAR(nis.tanggal_masuk) as tahun_masuk, count(*) as total_siswa')
