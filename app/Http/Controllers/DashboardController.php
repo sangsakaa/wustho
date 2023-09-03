@@ -78,6 +78,7 @@ class DashboardController extends Controller
         $data = Siswa::query()
             ->join('nis', 'siswa.id', '=', 'nis.siswa_id')
             // ->whereNot('madrasah_diniyah', "Ula")
+            // ->whereNot('madrasah_diniyah', "Wustho")
             ->get();
         $countLakiLaki = 0;
         $countPerempuan = 0;
@@ -90,12 +91,16 @@ class DashboardController extends Controller
         }
         $ula = 0;
         $wustho = 0;
+        $ulya = 0;
         foreach ($data as $item) {
             if ($item->madrasah_diniyah == 'Ula') {
                 $ula++;
             } elseif ($item->madrasah_diniyah == 'Wustho') {
                 $wustho++;
+            } elseif ($item->madrasah_diniyah == 'Ulya') {
+                $ulya++;
             }
+
         }
         $dataSiswaPeriode = Pesertakelas::query()
         ->join('siswa', 'siswa.id', '=', 'pesertakelas.siswa_id')
@@ -167,7 +172,7 @@ class DashboardController extends Controller
                 'dataSiswa',
                 'countLakiLaki',
                 'countPerempuan',
-                'ula', 'wustho',
+                'ula', 'wustho', 'ulya',
                 'data',
                 'dataAngkatan',
                 'dataSiswaPeriode',

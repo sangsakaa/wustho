@@ -60,13 +60,14 @@
                     var studentsChart = new Chart(ctx, {
                         type: 'bar',
                         data: {
-                            labels: ['WUSTHO', 'ULA'],
+                            labels: ['ULA', 'WUSTHO', 'ULYA'],
                             datasets: [{
                                 label: 'BERDASARKAN JENJANG',
                                 data: [
 
+                                    <?php echo json_encode($ula); ?>,
                                     <?php echo json_encode($wustho); ?>,
-                                    <?php echo json_encode($ula); ?>
+                                    <?php echo json_encode($ulya); ?>
 
                                 ],
                                 backgroundColor: [
