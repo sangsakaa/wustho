@@ -57,29 +57,43 @@
                 <canvas id="madin" class=" font-semibold"></canvas>
                 <script>
                     var ctx = document.getElementById('madin').getContext('2d');
+                    var datasets = [];
+
+                    <?php if ($ula) : ?>
+                        datasets.push({
+                            label: 'ULA',
+                            data: [<?php echo json_encode($ula); ?>],
+                            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                            borderColor: 'rgba(54, 162, 235, 1)',
+                            borderWidth: 1
+                        });
+                    <?php endif; ?>
+
+                    <?php if ($wustho) : ?>
+                        datasets.push({
+                            label: 'WUSTHO',
+                            data: [<?php echo json_encode($wustho); ?>],
+                            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                            borderColor: 'rgba(255, 99, 132, 1)',
+                            borderWidth: 1
+                        });
+                    <?php endif; ?>
+
+                    <?php if ($ulya) : ?>
+                        datasets.push({
+                            label: 'ULYA',
+                            data: [<?php echo json_encode($ulya); ?>],
+                            backgroundColor: 'rgba(255, 206, 86, 0.2)',
+                            borderColor: 'rgba(255, 206, 86, 1)',
+                            borderWidth: 1
+                        });
+                    <?php endif; ?>
+
                     var studentsChart = new Chart(ctx, {
                         type: 'bar',
                         data: {
-                            labels: ['ULA', 'WUSTHO', 'ULYA'],
-                            datasets: [{
-                                label: 'BERDASARKAN JENJANG',
-                                data: [
-
-                                    <?php echo json_encode($ula); ?>,
-                                    <?php echo json_encode($wustho); ?>,
-                                    <?php echo json_encode($ulya); ?>
-
-                                ],
-                                backgroundColor: [
-                                    'rgba(54, 162, 235, 0.2)',
-                                    'rgba(255,99, 132, 0.2)'
-                                ],
-                                borderColor: [
-                                    'rgba(54, 162, 235, 1)',
-                                    'rgba(255, 99, 132, 1)'
-                                ],
-                                borderWidth: 1
-                            }]
+                            labels: ['JENJANG'],
+                            datasets: datasets
                         },
                         options: {
                             scales: {
@@ -92,6 +106,7 @@
                         }
                     });
                 </script>
+
 
             </div>
         </div>
