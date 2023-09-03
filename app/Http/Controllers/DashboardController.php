@@ -77,7 +77,7 @@ class DashboardController extends Controller
         // dd($dataSiswa);
         $data = Siswa::query()
             ->join('nis', 'siswa.id', '=', 'nis.siswa_id')
-            ->whereNot('madrasah_diniyah', "Ula")
+            // ->whereNot('madrasah_diniyah', "Ula")
             ->get();
         $countLakiLaki = 0;
         $countPerempuan = 0;
@@ -152,7 +152,7 @@ class DashboardController extends Controller
         ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
         ->join('semester', 'semester.id', '=', 'periode.semester_id')
         ->where('nis.madrasah_diniyah', 'wustho')
-        ->where('kelasmi.periode_id', session('periode_id'))
+        // ->where('kelasmi.periode_id', session('periode_id'))
         ->groupBy(DB::raw('YEAR(nis.tanggal_masuk)'))
         ->selectRaw('YEAR(nis.tanggal_masuk) as tahun_masuk, count(*) as total_siswa')
         ->get();

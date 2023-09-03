@@ -103,6 +103,7 @@
                             : {{strtolower($detail->tempat_lahir)}} , {{ \Carbon\Carbon::parse($detail->tanggal_lahir)->isoFormat(' DD MMMM Y') }}
                         </div>
                     </div>
+                    <hr>
                 </div>
                 <div class=" grid grid-cols-2">
                     <div class=" py-2">
