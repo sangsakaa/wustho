@@ -31,6 +31,7 @@ class SiswaController extends Controller
 
         if (request('cari')) {
             $data->where('nama_siswa', 'like', '%' . request('cari') . '%');
+            $data->Orwhere('nis', 'like', '%' . request('cari') . '%');
             
            
         }
