@@ -8,8 +8,7 @@
         <div class=" mx-auto ">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class=" bg-white border-b border-gray-200">
-                    <div class=" px-4 py-4 grid grid-cols-3">
-
+                    <div class=" px-4 py-4 grid grid-cols-1">
                         <form action="/siswa" method="post">
                             @role('super admin')
                             <span class=" capitalize text-2xl text-blue-300">biodata siswa</span>
@@ -17,7 +16,7 @@
                             @role('pengurus')
                             <span class=" capitalize text-2xl text-blue-300">biodata Santri</span>
                             @endrole
-                            <div class=" grid-cols-1">
+                            <div class=" grid-cols-1 sm:grid-cols-1">
                                 @csrf
                                 <label for="">Nama lengkap</label>
                                 <input name="nama_siswa" type="text" class=" w-full py-1 rounded-md @error('nama_siswa') is-invalid @enderror" placeholder=" masukan nama lengkap" value="{{old('nama_siswa')}}">

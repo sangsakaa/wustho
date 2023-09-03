@@ -10,7 +10,7 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-2 bg-white border-b border-gray-200">
                     <div class=" grid grid-cols-1 gap-1">
-                        <div class=" flex gap-1 justify-end">
+                        <div class=" flex gap-1 mt-1 justify-end">
                             <a href="/addasrama">
                                 <button class=" bg-blue-500 text-white p-1 rounded-md"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -29,16 +29,14 @@
                             </a>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
-
     </div>
     <div class="mt-2 px-4">
         <div class=" mx-auto ">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class=" grid grid-cols-2 p-2 bg-white border-b border-gray-200 gap-2 ">
+                <div class=" grid sm:grid-cols-2 grid-cols-1 p-2 bg-white border-b border-gray-200 gap-2 ">
                     <div>
                         <span>Daftar Asrama Putra</span>
                         <Table class=" w-full ">
@@ -47,11 +45,9 @@
                                     <th class=" py-1">#</th>
                                     <th class=" text-center">Asrama</th>
                                     <th class=" text-center">Type Asrama</th>
-
                                     @role('super admin')
                                     <th class=" text-center">Aksi</th>
                                     @endrole
-
                                 </tr>
                             </thead>
                             <tbody>

@@ -59,17 +59,17 @@
     </x-sidebar.link>
     <x-sidebar.dropdown title="KESISWAAN" :active="Str::startsWith(request()->route()->uri(), 'buttons')">
         <x-slot name="icon">
-            <x-heroicon-o-view-grid class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
+            <x-icons.user-academi class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
         </x-slot>
         <x-sidebar.sublink title=" Data Siswa" href="{{ route('siswa') }}" :active="request()->routeIs('siswa')" />
+        <x-sidebar.sublink title="Data Asrama" href="{{ route('asramasiswa') }}" :active="request()->routeIs('asramasiswa')" />
         <x-sidebar.sublink title=" Data Kelas" href="{{ route('kelas_mi') }}" :active="request()->routeIs('kelas_mi')" />
-        <x-sidebar.sublink title="Daftar Asrama" href="{{ route('asramasiswa') }}" :active="request()->routeIs('asramasiswa')" />
 
     </x-sidebar.dropdown>
 
     <x-sidebar.dropdown class=" sm:uppercase capitalize" title="KURIKULUM" :active="Str::startsWith(request()->route()->uri(), 'buttons')">
         <x-slot name="icon">
-            <x-heroicon-o-view-grid class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
+            <x-icons.academi class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
         </x-slot>
         <x-sidebar.sublink title=" Data Mata Pelajaran" href="{{ route('mapel') }}" :active="request()->routeIs('mapel')" />
         <x-sidebar.sublink title=" Data Guru" href="{{ route('guru') }}" :active="request()->routeIs('guru')" />
@@ -80,7 +80,7 @@
     </x-sidebar.dropdown>
     <x-sidebar.dropdown title="PRESENSI" :active="Str::startsWith(request()->route()->uri(), 'buttons')">
         <x-slot name="icon">
-            <x-heroicon-o-view-grid class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
+            <x-icons.list-academi class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
         </x-slot>
         <x-sidebar.sublink title=" Perangkat" href="{{ route('sesi-perangkat') }}" :active="request()->routeIs('sesi-perangkat')" />
         <x-sidebar.sublink title=" Guru" href="{{ route('sesi-presensi-guru') }}" :active="request()->routeIs('sesi-presensi-guru')" />
