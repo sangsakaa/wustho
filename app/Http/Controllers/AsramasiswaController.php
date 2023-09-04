@@ -253,14 +253,15 @@ class AsramasiswaController extends Controller
     {
         $kelas = Asramasiswa::query()
             ->join('asrama', 'asrama.id', '=', 'asramasiswa.asrama_id')
-            ->select('asrama.nama_asrama', 'asramasiswa.id')
+            ->select('asrama.nama_asrama', 'asramasiswa.id', 'type_asrama')
+            ->where('asramasiswa.periode_id', session('periode_id'))
+            ->orderby('type_asrama')
             ->get();
 
         $pesertaAsramaPeriodeTerpilih = Pesertaasrama::query()
             ->join('asramasiswa', 'asramasiswa.id', '=', 'pesertaasrama.asramasiswa_id')
             ->where('asramasiswa.periode_id', $asramasiswa->periode_id)
             ->select('pesertaasrama.siswa_id');
-
         $Datasiswa = Siswa::query()
             ->leftJoin('nis', 'nis.siswa_id', '=', 'siswa.id')
             ->leftJoinSub($pesertaAsramaPeriodeTerpilih, 'peserta_asrama_periode_terpilih', function ($join) {
@@ -270,18 +271,18 @@ class AsramasiswaController extends Controller
             // ->whereNot('madrasah_diniyah', 'ula')
             ->select(
                 [
-                    'siswa.id',
-                    'siswa.nama_siswa',
-                    'siswa.jenis_kelamin',
-                    'nis.nis',
                 'nis.madrasah_diniyah',
+                'siswa.jenis_kelamin',
+                'siswa.nama_siswa',
+                'siswa.id',
+                'nis.nis',
                     'nis.tanggal_masuk'
                 ]
         )
-            // ->orderBy('siswa.nama_siswa');
+            ->orderBy('nis.madrasah_diniyah')
+            ->orderBy('nis.nis')
             ->orderBy('siswa.jenis_kelamin')
-        ->orderBy('siswa.nama_siswa')
-        ->orderBy('nis.madrasah_diniyah');
+        ->orderBy('siswa.nama_siswa');
         if (request('cari')) {
             $Datasiswa->where(function ($query) {
                 $query->where('nis', 'like', '%' . request('cari') . '%')

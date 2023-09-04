@@ -25,10 +25,10 @@
                     <form action="/kolektifasrama" method="post" enctype="multipart/form-data">
                         @csrf
                         <div class=" py-1 w-3/5 flex grid-cols-2 gap-2 ">
-                            <select name="asramasiswa_id" id="" class=" py-1 w-full" required>
+                            <select name="asramasiswa_id" id="" class=" py-1 w-full capitalize" required>
                                 <option value="">-- Pilih asrama --</option>
                                 @foreach($kelas as $kelas )
-                                <option value="{{$kelas->id}}" {{ $asramasiswa->id == $kelas->id ? "selected" : "" }}>{{$loop->iteration}} | {{$kelas->nama_asrama}} |{{$kelas->type_asrama}}</option>
+                                <option value="{{$kelas->id}}" {{ $asramasiswa->id == $kelas->id ? "selected" : "" }}> {{$kelas->type_asrama}} | {{$kelas->nama_asrama}} </option>
                                 @endforeach
                             </select>
                             <button type="submit" class=" w-1/5 bg-blue-600 text-white rounded-sm px-2 py-1"> Kolektif</button>
@@ -42,7 +42,7 @@
                                     <th class=" border px-2" class=" text-center"> Nomor Induk Siswa</th>
                                     <th class=" border px-2">Nama Siswa</th>
                                     <th class=" border px-2"> JK</th>
-                                    <th class=" border px-2 capitalize">madrasah <br> diniyah</th>
+                                    <th class=" border px-2 capitalize">jenjang</th>
                                     <th class=" border px-2">Angkatan</th>
 
                                 </tr>
