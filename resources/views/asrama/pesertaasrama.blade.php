@@ -19,7 +19,7 @@
 
         <div class="  shadow-sm sm:rounded-lg">
             <div class="p-2 dark:bg-dark-bg bg-white  dark:text-purple-600 ">
-                <div class=" grid grid-cols-8">
+                <div class=" grid grid-cols-4">
                     <div>Nama Asrama</div>
                     <div class=" uppercase  font-semibold"> : {{$tittle->nama_asrama}} </div>
                     <div>Kuota Asrama</div>
