@@ -149,20 +149,14 @@ class DashboardController extends Controller
         ->groupBy('kelasmi.kelas_id', 'kelas.kelas', 'semester.semester', 'siswa.jenis_kelamin', 'periode.periode', 'semester.ket_semester')
         ->selectRaw('kelasmi.kelas_id,semester.semester,kelas.kelas,siswa.jenis_kelamin,semester.ket_semester,periode.periode, count(*) as total_siswa')
         ->get();
-        $tahunMasuk = Pesertakelas::query()
-        ->join('siswa', 'siswa.id', '=', 'pesertakelas.siswa_id')
-        ->join('nis', 'siswa.id', '=', 'nis.siswa_id')
-        ->join('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
-        ->join('kelas', 'kelas.id', '=', 'kelasmi.kelas_id')
-        ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
-        ->join('semester', 'semester.id', '=', 'periode.semester_id')
-            ->where('nis.madrasah_diniyah', 'Wustho')
-        // ->where('kelasmi.periode_id', session('periode_id'))
-        ->groupBy(DB::raw('YEAR(nis.tanggal_masuk)'))
+        $tahunMasuk = Siswa::query()
+            ->join('nis', 'siswa.id', '=', 'nis.siswa_id')
+            // ->where('nis.madrasah_diniyah', 'Wustho')
+            ->groupBy(DB::raw('YEAR(nis.tanggal_masuk)'))
         ->selectRaw('YEAR(nis.tanggal_masuk) as tahun_masuk, count(*) as total_siswa')
         ->get();
 
-
+        // dd($tahunMasuk);
 
 
 

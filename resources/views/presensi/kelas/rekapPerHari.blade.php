@@ -43,6 +43,7 @@
                         </p>
                         <p class=" font-semibold uppercase">
                             {{-- TAHUN PELAJARAN {{$kelasmi->periode}} {{$kelasmi->ket_semester}} --}}
+
                         </p>
                     </div>
                     <hr class=" border-b-2 border-green-900">
