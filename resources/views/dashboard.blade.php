@@ -120,7 +120,7 @@
                     data: {
                         labels: <?php echo json_encode($TitleKelas->pluck('nama_kelas')); ?>,
                         datasets: [{
-                            label: 'Total Siswa',
+                            label: 'Berdasakan Kelas',
                             data: <?php echo json_encode($TitleKelas->pluck('total_siswa')); ?>,
                             backgroundColor: 'rgba(54, 162, 235, 0.2)',
                             borderColor: 'rgba(54, 162, 235, 1)',
