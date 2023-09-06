@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Pesertaasrama;
-use App\Models\Pesertakelas;
-use App\Models\Presensikelas;
 use App\Models\Siswa;
+use App\Models\Absensikelas;
+use App\Models\Pesertakelas;
+use App\Models\Pesertaasrama;
+use App\Models\Presensikelas;
 
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
@@ -74,6 +76,7 @@ class UserController extends Controller
     {
 
         $siswa_id = Auth::user()->siswa_id;
+        // dd($siswa_id);
         $title = Siswa::query()
             ->join('nis', 'nis.siswa_id', '=', 'siswa.id')
             ->where('siswa.id', $siswa_id)->first();
@@ -100,13 +103,27 @@ class UserController extends Controller
             ->join('asrama', 'asrama.id', '=', 'asramasiswa.asrama_id')
             ->where('pesertaasrama.siswa_id', $siswa_id)
             ->get();
-        $presensi = Presensikelas::query()
-        ->join('pesertakelas', 'pesertakelas.id', '=', 'presensikelas.pesertakelas_id')
-            ->join('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
+        $presensi = Pesertakelas::query()
+        ->select(
+            DB::raw('SUM(CASE WHEN absensikelas.keterangan = "hadir" THEN 1 ELSE 0 END) as hadir'),
+            DB::raw('SUM(CASE WHEN absensikelas.keterangan = "alfa" THEN 1 ELSE 0 END) as alfa'),
+            DB::raw('SUM(CASE WHEN absensikelas.keterangan = "sakit" THEN 1 ELSE 0 END) as sakit'),
+            DB::raw('SUM(CASE WHEN absensikelas.keterangan = "izin" THEN 1 ELSE 0 END) as izin'),
+            'periode',
+            'ket_semester'
+
+        )
+            ->join('kelasmi', 'kelasmi.id', 'pesertakelas.kelasmi_id')
+            ->join('absensikelas', 'absensikelas.pesertakelas_id', 'pesertakelas.id')
+            ->join('sesikelas', 'sesikelas.id', '=', 'absensikelas.sesikelas_id')
             ->join('periode', 'periode.id', 'kelasmi.periode_id')
             ->join('semester', 'semester.id', 'periode.semester_id')
         ->where('pesertakelas.siswa_id', $siswa_id)
+            // ->where('kelasmi.periode_id', session('periode_id'))
+            ->groupBy('pesertakelas.id', 'periode', 'ket_semester') // Jika Anda ingin mengelompokkan hasil per siswa
         ->get();
+
+        // dd($presensi);
         return view(
             'user/userdashboard',
             [

@@ -70,39 +70,24 @@
                     </div>
                     <div>
                         <span class=" text-lg  sm:text-sm uppercase">Riwayat Kehadiran </span>
-                        <table class=" w-full    ">
+                        <table class=" w-full">
                             <thead>
-                                <tr class=" uppercase border bg-gray-100 dark:bg-purple-600">
-                                    <th class=" border text-sm sm:text-sm text-center py-1">No</th>
-                                    <th class=" border text-sm sm:text-sm text-center py-1">Periode</th>
-                                    <th class=" border text-sm sm:text-sm text-center py-1">Kelas</th>
-                                    <th class="border text-center text-sm sm:text-sm" width="15%">Izin</th>
-                                    <th class="border text-center text-sm sm:text-sm" width="15%">Sakit</th>
-                                    <th class="border text-center text-sm sm:text-sm" width="15%">Alfa</th>
-
+                                <tr class="uppercase border text-sm sm:text-sm bg-gray-100 dark:bg-purple-600">
+                                    <th>Periode</th>
+                                    <th>Hadir</th>
+                                    <th>Alfa</th>
+                                    <th>Sakit</th>
+                                    <th>Izin</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($presensi as $user)
-                                <tr class=" uppercase border">
-                                    <td class=" text-xs sm:text-sm border text-center p-1">
-                                        {{$loop->iteration}}
-                                    </td>
-                                    <td class=" text-xs sm:text-sm border text-center">
-                                        {{$user->periode}} {{$user->ket_semester}}
-                                    </td>
-                                    <td class=" text-xs sm:text-sm border text-center">
-                                        {{$user->nama_kelas}}
-                                    </td>
-                                    <td class=" text-xs sm:text-sm border text-center">
-                                        {{$user->izin}}
-                                    </td>
-                                    <td class=" text-xs sm:text-sm border text-center">
-                                        {{$user->sakit}}
-                                    </td>
-                                    <td class=" text-xs sm:text-sm border text-center">
-                                        {{$user->alfa}}
-                                    </td>
+                                @foreach ($presensi as $data)
+                                <tr>
+                                    <td class="text-xs sm:text-sm  border text-center p-1">{{ $data->periode }} {{$data->ket_semester}}</td>
+                                    <td class="text-xs sm:text-sm  border text-center p-1">{{ $data->hadir }}</td>
+                                    <td class="text-xs sm:text-sm  border text-center p-1">{{ $data->alfa }}</td>
+                                    <td class="text-xs sm:text-sm  border text-center p-1">{{ $data->sakit }}</td>
+                                    <td class="text-xs sm:text-sm  border text-center p-1">{{ $data->izin }}</td>
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -112,7 +97,7 @@
             </div>
         </div>
     </div>
-    </div>
+
     <div class="py-2 px-2">
         <div class=" overflow-hidden shadow-sm sm:rounded-lg">
             <div class="p-2 bg-sky-300 dark:bg-purple-600  text-white">

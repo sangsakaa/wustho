@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        @section('title', ' | Detail Data Siswa' )
+        @section('title', ' | Detail Riwayat Kehadiran' )
         <h2 class="font-semibold text-xl leading-tight uppercase sm:text-xl">
             {{ __('Riwayat Kehadiran ') }}
         </h2>
@@ -20,10 +20,10 @@
     <div class="bg-white dark:bg-dark-bg overflow-hidden shadow-sm mt-2 ">
         <div class="p-4  border-b border-gray-200">
             <div class=" grid grid-cols-1  text-xs sm:text-sm sm:grid-cols-1 gap-2">
-                <div>
+                <div class=" overflow-auto">
                     <table class=" w-full sm:w-1/4">
                         <thead>
-                            <tr>
+                            <tr class=" border bg-gray-100 dark:bg-purple-600">
                                 <td class=" px-1 py-1 border text-center font-semibold " colspan="4">KETERANGAN</td>
                             </tr>
                             <tr>
@@ -39,7 +39,6 @@
                                 <td class=" border text-center">{{$izin}}</td>
                                 <td class=" border text-center">{{$sakit}}</td>
                                 <td class=" border text-center">{{$alfa}}</td>
-
                             </tr>
                         </tbody>
                     </table>
@@ -55,7 +54,7 @@
                                 <th class=" border text-center"> Periode</th>
                                 <th class=" border text-center"> KLS</th>
                                 <th class=" border text-center"> Ket</th>
-                                <th class=" border text-center"> Alasan</th>
+                                <!-- <th class=" border text-center"> Alasan</th> -->
                             </tr>
                         </thead>
                         <tbody>
@@ -79,9 +78,9 @@
                                     {{$kelas->keterangan}}
 
                                 </td>
-                                <td class=" border px-2 text-center capitalize ">
+                                <!-- <td class=" border px-2 text-center capitalize ">
                                     {{$kelas->alasan}}
-                                </td>
+                                </td> -->
 
                             </tr>
                             @endforeach

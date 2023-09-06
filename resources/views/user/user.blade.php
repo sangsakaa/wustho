@@ -29,16 +29,18 @@
             </div>
         </div>
     </div>
-    <div class=" bg-white p-2 px-2 w-full grid-cols-2 flex gap-2">
-        <div>
-            <a href="/siswa/{{$siswa->id}}/edit" class="   uppercase font-semibold bg-yellow-500  px-2 py-1  text-center">
-                edit
-            </a>
-        </div>
-        <div>
-            <a href="/statusanak/{{$siswa->id}}" class=" bg-blue-500 px-2 py-1 hover:bg-purple-500 text-white">
-                edit
-            </a>
+    <div class=" p-2">
+        <div class=" bg-white p-2 px-2 w-full grid-cols-2 flex gap-2 justify-center sm:justify-start">
+            <div>
+                <a href="/siswa/{{$siswa->id}}/edit" class="     bg-yellow-500  px-2 py-1  text-center">
+                    Update Data Siswa
+                </a>
+            </div>
+            <div>
+                <a href="/statusanak/{{$siswa->id}}" class=" bg-blue-500 px-2 py-1 hover:bg-purple-500 text-white">
+                    edit data status Anak
+                </a>
+            </div>
         </div>
     </div>
 

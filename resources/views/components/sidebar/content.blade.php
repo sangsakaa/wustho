@@ -161,7 +161,17 @@
     </x-sidebar.link>
 
     @endrole
-    @role('siswa')
+
+    @role('guru')
+    <x-sidebar.link title="Nilai Akhir" href="/nilaiperguru" :isActive="request()->routeIs('guru')">
+        <x-slot name="icon">
+            <x-icons.usercircle class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
+        </x-slot>
+    </x-sidebar.link>
+    @endrole
+
+    @if(auth()->check())
+    @if(auth()->user()->hasRole('siswa'))
     <x-sidebar.link title="Profil" href="/user" :isActive="request()->routeIs('user')">
         <x-slot name="icon">
             <x-icons.usercircle class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
@@ -182,19 +192,7 @@
             <x-icons.books class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
         </x-slot>
     </x-sidebar.link>
-    @endrole
-    @role('guru')
-    <x-sidebar.link title="Nilai Akhir" href="/nilaiperguru" :isActive="request()->routeIs('guru')">
-        <x-slot name="icon">
-            <x-icons.usercircle class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
-        </x-slot>
-    </x-sidebar.link>
-    @endrole
 
-    @if(auth()->check())
-    @if(auth()->user()->hasRole('siswa'))
-    {{-- Konten untuk siswa --}}
-    <p>Selamat datang, Siswa!</p>
     @elseif(auth()->user()->hasRole('ketua asrama'))
     {{-- Konten untuk ketua asrama --}}
     <p>Selamat datang, Ketua Asrama!</p>
