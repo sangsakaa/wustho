@@ -156,10 +156,10 @@ class AbsensikelasController
         $datakelasmi = Kelasmi::query()
             ->join('periode', 'periode.id', 'kelasmi.periode_id')
             ->join('semester', 'semester.id', 'periode.semester_id')
-            ->select('kelasmi.id', 'kelasmi.nama_kelas', 'periode.periode', 'semester.ket_semester')
+            ->select('kelasmi.id', 'periode.periode', 'semester.ket_semester', 'jenjang')
             ->where('kelasmi.periode_id', session('periode_id'))
             ->orderBy('kelasmi.nama_kelas')
-            ->get();
+        ->first();
 
         $tgl = $request->tgl ? Carbon::parse($request->tgl) : now();
 

@@ -33,18 +33,23 @@
         }
     </script>
     @if($rekapAbsensi)
+
     <div class="py-1">
         <div class="bg-white dark:bg-dark-bg overflow-hidden shadow-sm " id="blanko">
             <div class=" p-1 ">
                 <div class=" overflow-auto bg-white dark:bg-dark-bg  ">
                     <div class=" text-center text-green-900">
-                        <p class=" font-semibold text-3xl">
-                            MADRASAH DINIYAH WUSTHA WAHIDIYAH
+                        @if($dataKelasMi->jenjang === "Wustho")
+                        <p class=" font-semibold text-3xl uppercase">
+                            MADRASAH DINIYAH {{$dataKelasMi->jenjang}} WAHIDIYAH
                         </p>
                         <p class=" font-semibold uppercase">
-                            {{-- TAHUN PELAJARAN {{$kelasmi->periode}} {{$kelasmi->ket_semester}} --}}
+                            TAHUN PELAJARAN {{$dataKelasMi->periode}} {{$dataKelasMi->ket_semester}}
 
                         </p>
+                        @endif
+
+
                     </div>
                     <hr class=" border-b-2 border-green-900">
                     <div class=" text-green-900  text-2xl text-center uppercase font-semibold">
