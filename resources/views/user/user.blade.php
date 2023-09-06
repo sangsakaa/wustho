@@ -50,15 +50,18 @@
                     Update Data Siswa
                 </a>
             </div>
-            <div>
+            <!-- <div>
                 <a href="/statusanak/{{$siswa->id}}" class=" bg-blue-500 px-2 py-1 hover:bg-purple-500 text-white">
-                    edit data status Anak
+                    Update
                 </a>
-            </div>
+            </div> -->
             <div>
-                <a href="/pesertaasrama/{{$siswa->id}}/edit" class=" bg-blue-500 px-2 py-1 hover:bg-purple-500 text-white">
-                    edit data status Asrama
+
+                <a href="/pesertaasrama/{{$peserAsrama->id}}/edit" class=" bg-blue-500 px-2 py-1 hover:bg-purple-500 text-white">
+                    Update Asrama
                 </a>
+
+
             </div>
         </div>
     </div>

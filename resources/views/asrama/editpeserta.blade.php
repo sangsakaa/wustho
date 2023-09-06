@@ -23,7 +23,8 @@
                             <div>
                                 <button class=" bg-blue-600 text-white rounded-md px-4 py-1"> Update Asrama</button>
                             </div>
-                            <a href="/pesertaasrama/{{$pesertaasrama->asramasiswa_id}}" class=" bg-red-600 text-white rounded-md px-4 py-1"> Batal</a>
+
+
                         </div>
                     </div>
                 </form>

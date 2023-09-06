@@ -227,7 +227,12 @@ class AsramasiswaController extends Controller
 
             ]);
 
-        return redirect('/pesertaasrama/' . $pesertaasrama->asramasiswa_id);
+        if (auth()->user()->hasRole('super admin')) {
+            return redirect('/pesertaasrama/' . $pesertaasrama->asramasiswa_id);
+        } elseif (auth()->user()->hasRole('siswa')) {
+            return redirect('/user');
+        }
+
     }
 
     /**

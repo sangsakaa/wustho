@@ -17,6 +17,15 @@ class UserController extends Controller
     public function Personal()
     {
         $siswa_id = Auth::user()->siswa_id;
+        $peserAsrama = Pesertaasrama::query()
+            ->join('asramasiswa', 'asramasiswa.id', '=', 'pesertaasrama.asramasiswa_id')
+            ->join('periode', 'periode.id', 'asramasiswa.periode_id')
+            ->join('semester', 'semester.id', 'periode.semester_id')
+            ->join('asrama', 'asrama.id', '=', 'asramasiswa.asrama_id')
+            ->where('asramasiswa.periode_id', session('periode_id'))
+            ->where('pesertaasrama.siswa_id', $siswa_id)
+            ->select('pesertaasrama.id')
+            ->first();
         $user = Siswa::query()
             ->join('nis', 'nis.siswa_id', '=', 'siswa.id')
             ->select('siswa.id', 'nama_siswa', 'nis', 'tempat_lahir', 'tanggal_lahir', 'kota_asal', 'agama')
@@ -25,6 +34,7 @@ class UserController extends Controller
             'user/user',
             [
                 'siswa' => $user,
+                'peserAsrama' => $peserAsrama
             ]
         );
     }
