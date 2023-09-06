@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         @if($kelasmi)
-        @section('title', '| Blanko Presensi Kelas : '. $kelasmi->nama_kelas)
+        @section('title', '| Presensi Kelas : '. $kelasmi->nama_kelas)
         @endif
         <h2 class="font-semibold text-xl leading-tight">
             {{ __('Blanko Presensi Kelas') }}
@@ -48,12 +48,31 @@
             <div class=" p-1 ">
                 <div class=" overflow-auto bg-white dark:bg-dark-bg  ">
                     <div class=" text-center text-green-900 mt-5">
-                        <p class=" font-semibold text-3xl">
-                            MADRASAH DINIYAH WUSTHA WAHIDIYAH
+
+                        @if($kelasmi->jenjang === "Wustho")
+                        <p class="font-semibold text-3xl uppercase">
+                            MADRASAH DINIYAH {{$kelasmi->jenjang}} WAHIDIYAH
                         </p>
-                        <p class=" font-semibold uppercase">
+                        <p class="font-semibold uppercase">
                             TAHUN PELAJARAN {{$kelasmi->periode}} {{$kelasmi->ket_semester}}
                         </p>
+                        @elseif($kelasmi->jenjang === "Ulya")
+                        <p class="font-semibold text-3xl uppercase">
+                            MADRASAH DINIYAH {{$kelasmi->jenjang}} WAHIDIYAH
+                        </p>
+                        <p class="font-semibold uppercase">
+                            TAHUN PELAJARAN {{$kelasmi->periode}} {{$kelasmi->ket_semester}}
+                        </p>
+                        @elseif($kelasmi->jenjang === "Ula")
+                        <p class="font-semibold text-3xl uppercase">
+                            MADRASAH DINIYAH {{$kelasmi->jenjang}} WAHIDIYAH
+                        </p>
+                        <p class="font-semibold uppercase">
+                            TAHUN PELAJARAN {{$kelasmi->periode}} {{$kelasmi->ket_semester}}
+                        </p>
+                        @endif
+
+
                     </div>
                     <hr class=" border-b-2 border-green-900">
                     <div class=" grid grid-cols-2">
