@@ -44,7 +44,7 @@ class KelasmiController extends Controller
                     $join->on('kelasmi.id', '=', 'datajumlahpeserta.id');
                 }
             )
-            ->selectRaw('kelasmi.id,nama_kelas,ket_semester,kelas,periode,kuota,count(pesertakelas.siswa_id) as jumlah_nilai_ujian, jumlah_peserta_asrama')
+            ->selectRaw('kelasmi.id,nama_kelas,jenjang,ket_semester,kelas,periode,kuota,count(pesertakelas.siswa_id) as jumlah_nilai_ujian, jumlah_peserta_asrama')
             ->where('kelasmi.periode_id', session('periode_id'))
             ->groupBy(
                 'kelasmi.id',
@@ -53,7 +53,8 @@ class KelasmiController extends Controller
                 'kuota',
                 'ket_semester',
                 'periode',
-                'jumlah_peserta_asrama'
+            'jumlah_peserta_asrama',
+            'jenjang'
             )
             ->orderBy('periode')
             ->orderBy('ket_semester')

@@ -13,19 +13,26 @@
         </div>
         <div class=" gap-4 bg-white w-full flex grid-cols-2  ">
             <div class=" w-full grid grid-cols-2 px-2 py-1  ">
-                <div class=" px-1 text-xs sm:text-lg    ">Nomor Induk siswa</div>
-                <div class=" px-1 text-xs sm:text-lg   ">: {{$siswa->nis}}</div>
-                <div class=" px-1 text-xs sm:text-lg  ">Nama Lengkap </div>
-                <div class=" px-1 text-xs sm:text-lg "> : {{$siswa->nama_siswa}}</div>
-                <div class=" px-1 text-xs sm:text-lg  ">Agama </div>
-                <div class=" px-1 text-xs sm:text-lg "> : {{$siswa->agama}}</div>
-                <div class=" px-1 text-xs sm:text-lg ">Tempat, Tanggal Lahir</div>
-                <div class=" px-1 capitalize text-xs sm:text-lg"> : {{strtolower($siswa->tempat_lahir)}},
-
+                <div class=" px-1 text-xs sm:text-sm  ">NIM</div>
+                <div class=" px-1 text-xs sm:text-sm  ">: {{$siswa->nis}}</div>
+                <div class=" px-1 text-xs sm:text-sm  ">Nama </div>
+                <div class=" px-1 text-xs sm:text-sm "> : {{$siswa->nama_siswa}}</div>
+                <div class=" px-1 text-xs sm:text-sm  ">Agama </div>
+                <div class=" px-1 text-xs sm:text-sm "> : {{$siswa->agama}}</div>
+                <div class=" px-1 text-xs sm:text-sm ">TTL</div>
+                <div class=" px-1 capitalize text-xs sm:text-sm"> : {{strtolower($siswa->tempat_lahir)}},
                     {{ \Carbon\Carbon::parse($siswa->tanggal_lahir)->isoFormat(' DD MMMM Y') }}
                 </div>
-                <div class=" px-1 text-xs sm:text-lg ">Asal Kota</div>
-                <div class=" px-1 text-xs sm:text-lg capitalize "> : {{$siswa->kota_asal}}</div>
+                <div class=" px-1 text-xs sm:text-sm ">Asal Kota</div>
+                <div class=" px-1 text-xs sm:text-sm capitalize "> : {{$siswa->kota_asal}}</div>
+                <div class=" px-1 text-xs sm:text-sm ">Kelas</div>
+                <div class=" px-1 text-xs sm:text-sm capitalize "> : @if($siswa->kelasTerakhir)
+                    {{$siswa->kelasTerakhir->KelasMi->nama_kelas}}
+                    @else
+                    <span class=" text-red-600 font-semibold capitalize"> belum ada kelas </span>
+                    @endif
+                </div>
+
             </div>
         </div>
     </div>
@@ -43,7 +50,4 @@
             </div>
         </div>
     </div>
-
-
-
 </x-app-layout>

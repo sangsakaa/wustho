@@ -64,6 +64,7 @@
                                             <th class=" border text-xs py-1">No</th>
                                             <th class=" border ">Periode</th>
                                             <th class=" border w-10 px-1">Kelas</th>
+                                            <th class=" border ">Jenjang</th>
                                             <th class=" border ">Nama Kelas</th>
                                             <th class=" border w-10 text-xs text-center px-1">Kuota</th>
                                             <th class=" border  w-10 text-xs text-center">Jml</th>
@@ -78,6 +79,7 @@
                                             <th class=" text-xs text-center border">{{$loop->iteration}}</th>
                                             <td class=" text-xs text-center border"> {{$item->periode}} {{$item->ket_semester}}</td>
                                             <td class=" text-xs text-center border"><a href="/pesertakelas/{{$item->id}}"> {{$item->kelas}}</a></td>
+                                            <td class=" text-xs text-center border"><a href="/pesertakelas/{{$item->id}}"> {{$item->jenjang}}</a></td>
                                             <td class=" text-xs text-center py-2"><a href="/pesertakelas/{{$item->id}}" class=" text-xs  uppercase font-semibold py-1 px-2 rounded-md sm:xs">{{$item->nama_kelas}}</a></td>
                                             <td class=" text-xs text-center border"> {{$item->kuota}}</td>
                                             <td class=" text-xs text-center border"> {{$item->jumlah_nilai_ujian}}</td>
