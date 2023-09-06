@@ -40,14 +40,28 @@
                 <div class=" overflow-auto bg-white dark:bg-dark-bg  ">
                     <div class=" text-center text-green-900">
                         @if($dataKelasMi->jenjang === "Wustho")
-                        <p class=" font-semibold text-3xl uppercase">
+                        <p class="font-semibold text-3xl uppercase">
                             MADRASAH DINIYAH {{$dataKelasMi->jenjang}} WAHIDIYAH
                         </p>
-                        <p class=" font-semibold uppercase">
+                        <p class="font-semibold uppercase">
                             TAHUN PELAJARAN {{$dataKelasMi->periode}} {{$dataKelasMi->ket_semester}}
-
+                        </p>
+                        @elseif($dataKelasMi->jenjang === "Ulya")
+                        <p class="font-semibold text-3xl uppercase">
+                            MADRASAH DINIYAH {{$dataKelasMi->jenjang}} WAHIDIYAH
+                        </p>
+                        <p class="font-semibold uppercase">
+                            TAHUN PELAJARAN {{$dataKelasMi->periode}} {{$dataKelasMi->ket_semester}}
+                        </p>
+                        @elseif($dataKelasMi->jenjang === "Ula")
+                        <p class="font-semibold text-3xl uppercase">
+                            MADRASAH DINIYAH {{$dataKelasMi->jenjang}} WAHIDIYAH
+                        </p>
+                        <p class="font-semibold uppercase">
+                            TAHUN PELAJARAN {{$dataKelasMi->periode}} {{$dataKelasMi->ket_semester}}
                         </p>
                         @endif
+
 
 
                     </div>
