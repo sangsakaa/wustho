@@ -32,6 +32,13 @@
                     <span class=" text-red-600 font-semibold capitalize"> belum ada kelas </span>
                     @endif
                 </div>
+                <div class=" px-1 text-xs sm:text-sm ">Asrama</div>
+                <div class=" px-1 text-xs sm:text-sm capitalize "> : @if($siswa->asramaTerkhir != null )
+                    {{$siswa->asramaTerkhir->asramaSiswa->asrama->nama_asrama}}
+                    @else
+                    <span class=" text-red-600 font-semibold capitalize"> belum ada asrama </span>
+                    @endif
+                </div>
 
             </div>
         </div>
@@ -46,6 +53,11 @@
             <div>
                 <a href="/statusanak/{{$siswa->id}}" class=" bg-blue-500 px-2 py-1 hover:bg-purple-500 text-white">
                     edit data status Anak
+                </a>
+            </div>
+            <div>
+                <a href="/pesertaasrama/{{$siswa->id}}/edit" class=" bg-blue-500 px-2 py-1 hover:bg-purple-500 text-white">
+                    edit data status Asrama
                 </a>
             </div>
         </div>
