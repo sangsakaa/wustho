@@ -80,7 +80,7 @@
                         <tr class=" border hover:bg-gray-100  dark:hover:bg-purple-600 text-xs sm:text-sm ">
                             <th class=" border px-1">{{ $loop->iteration }}</th>
                             <th class=" border text-center px-1">
-                                {{ \Carbon\Carbon::parse($sesi->tgl)->isoFormat(' DD MMMM Y') }}
+                                {{ \Carbon\Carbon::parse($sesi->tgl)->isoFormat(' DD MMMM') }}
                             </th>
                             <th class=" border text-center px-1 w-11">
                                 <a href="/absensikelas/{{ $sesi->id }}" class=" bg-blue-600 rounded-md px-1 py-1 text-white dark:text-purple-600  dark:bg-dark-bg text-xs">

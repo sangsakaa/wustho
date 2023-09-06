@@ -22,7 +22,7 @@
     <div class="py-1">
         <div class="bg-white dark:bg-dark-bg overflow-hidden shadow-sm " id="blanko">
             <div class=" p-1 ">
-                <div class=" overflow-auto bg-white dark:bg-dark-bg">
+                <div class="  overflow-scroll bg-white dark:bg-dark-bg">
                     <table class="table-fixed w-full border border-green-800">
                         <thead>
                             <tr class="border bg-green-200  text-black dark:bg-purple-600 text-xs sm:text-sm">
