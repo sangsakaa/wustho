@@ -22,7 +22,7 @@ class ApiSiswaController
             ->join('pesertaasrama', 'siswa.id', '=', 'pesertaasrama.siswa_id')
             ->join('asramasiswa', 'pesertaasrama.asramasiswa_id', '=', 'asramasiswa.id')
             ->join('asrama', 'asrama.id', '=', 'asramasiswa.asrama_id')
-            ->where('asramasiswa.periode_id', session('periode_id'))
+            // ->where('asramasiswa.periode_id', session('periode_id'))
             ->get();
         // dd($siswa);
         return response()->json(['siswa' => $siswa]);
