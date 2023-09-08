@@ -20,9 +20,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 });
 Route::get('siswa', [ApiSiswaController::class, 'index'])->name('siswa');
-Route::get('siswa/{siswa}', [ApiSiswaController::class, 'show']);
-Route::post('siswa', [ApiSiswaController::class, 'store']);
-Route::get('siswa/{siswa}/edit', [ApiSiswaController::class, 'edit']);
-Route::patch('siswa/{siswa}', [ApiSiswaController::class, 'update']);
-Route::delete('siswa/{siswa}', [ApiSiswaController::class, 'destroy']);
-Route::get('nis', [ApiSiswaController::class, 'nis']);
+
+Route::get('data-asrama', [ApiSiswaController::class, 'dataAsrama']);
