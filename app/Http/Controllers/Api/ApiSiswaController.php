@@ -22,6 +22,21 @@ class ApiSiswaController
             ->join('pesertaasrama', 'siswa.id', '=', 'pesertaasrama.siswa_id')
             ->join('asramasiswa', 'pesertaasrama.asramasiswa_id', '=', 'asramasiswa.id')
             ->join('asrama', 'asrama.id', '=', 'asramasiswa.asrama_id')
+            ->select(
+                [
+                    'nis',
+                    'nama_siswa',
+                    'madrasah_diniyah',
+                    'jenis_kelamin',
+                    'agama',
+                    'tanggal_masuk',
+                    'nama_lembaga',
+                    'tempat_lahir',
+                    'tanggal_lahir',
+                    'kota_asal',
+                    'nama_asrama'
+                ]
+            )
             // ->where('asramasiswa.periode_id', session('periode_id'))
             ->get();
         // dd($siswa);
