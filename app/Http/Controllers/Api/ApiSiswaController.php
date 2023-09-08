@@ -19,9 +19,9 @@ class ApiSiswaController
     {
         $siswa = Siswa::query()
             ->join('nis', 'nis.siswa_id', '=', 'siswa.id')
-            ->join('pesertaasrama', 'siswa.id', '=', 'pesertaasrama.siswa_id')
-            ->join('asramasiswa', 'pesertaasrama.asramasiswa_id', '=', 'asramasiswa.id')
-            ->join('asrama', 'asrama.id', '=', 'asramasiswa.asrama_id')
+            // ->join('pesertaasrama', 'siswa.id', '=', 'pesertaasrama.siswa_id')
+            // ->join('asramasiswa', 'pesertaasrama.asramasiswa_id', '=', 'asramasiswa.id')
+            // ->join('asrama', 'asrama.id', '=', 'asramasiswa.asrama_id')
             // ->select(
             //     [
             //         'nis',
