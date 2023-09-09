@@ -38,8 +38,7 @@
                         </a>
                     </div>
                     <div class=" py-2  hidden  sm:block">
-                        <a href="/sesi-presensi-guru/rekap"
-                            class=" bg-red-600 py-1 dark:bg-purple-600 mt-2 my-1 rounded-sm hover:bg-purple-600 text-white px-4 ">
+                        <a href="/sesi-presensi-guru/rekap" class=" bg-red-600 py-1 dark:bg-purple-600 mt-2 my-1 rounded-sm hover:bg-purple-600 text-white px-4 ">
                             Rekap
                         </a>
                     </div>
@@ -118,8 +117,6 @@
                 </table>
             </div>
         </div>
-    </div>
-    </div>
     </div>
     <div class="my-1">
         <div class="">
