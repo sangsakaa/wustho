@@ -21,4 +21,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 Route::get('siswa', [ApiSiswaController::class, 'index'])->name('siswa');
 
-Route::get('data-asrama', [ApiSiswaController::class, 'dataAsrama']);
+Route::get('data-asrama', [ApiSiswaController::class, 'dataAsrama'])->name('data-asrama');
