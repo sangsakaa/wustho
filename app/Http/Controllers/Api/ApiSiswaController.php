@@ -59,7 +59,7 @@ class ApiSiswaController
             ->join('asramasiswa', 'asramasiswa.id', '=', 'pesertaasrama.asramasiswa_id')
             ->join('asrama', 'asrama.id', '=', 'asramasiswa.asrama_id')
             ->select('siswa.id as siswa_id', 'asrama.nama_asrama')
-            // ->where('asramasiswa.periode_id', session('periode_id'))
+            ->where('asramasiswa.periode_id', session('periode_id'))
         ;
 
         $dataAbsensiKelas = Absensikelas::query()
@@ -73,7 +73,7 @@ class ApiSiswaController
             ->select('kelasmi.jenjang', 'peserta_asrama.nama_asrama', 'absensikelas.id As id_sesi_kelas', 'siswa.nama_siswa', 'absensikelas.keterangan', 'nama_kelas', 'tgl')
             // ->where('sesikelas.tgl', $tgl->toDateString())
             ->whereIn('keterangan', ['sakit', 'izin', 'alfa', 'hadir'])
-            
+      
             ->orderBy('peserta_asrama.nama_asrama')
             ->orderBy('kelasmi.nama_kelas')
             ->orderBy('absensikelas.keterangan')
