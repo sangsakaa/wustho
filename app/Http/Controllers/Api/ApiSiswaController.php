@@ -72,6 +72,7 @@ class ApiSiswaController
             })
             ->select('kelasmi.jenjang', 'peserta_asrama.nama_asrama', 'absensikelas.id', 'siswa.nama_siswa', 'absensikelas.keterangan', 'nama_kelas', 'tgl')
             ->where('sesikelas.tgl', $tgl->toDateString())
+            ->whereIn('keterangan', ['sakit', 'izin', 'alfa'])
             
             ->orderBy('peserta_asrama.nama_asrama')
             ->orderBy('kelasmi.nama_kelas')
