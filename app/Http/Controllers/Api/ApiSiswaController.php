@@ -58,7 +58,7 @@ class ApiSiswaController
             ->join('siswa', 'siswa.id', '=', 'pesertaasrama.siswa_id')
             ->join('asramasiswa', 'asramasiswa.id', '=', 'pesertaasrama.asramasiswa_id')
             ->join('asrama', 'asrama.id', '=', 'asramasiswa.asrama_id')
-            ->select('siswa.id as siswa_id', 'asrama.nama_asrama', 'jenjang')
+            ->select('siswa.id as siswa_id', 'asrama.nama_asrama')
             // ->where('asramasiswa.periode_id', session('periode_id'))
         ;
 
