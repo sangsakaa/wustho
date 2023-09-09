@@ -70,7 +70,7 @@ class ApiSiswaController
             ->joinSub($pesertaasrama, 'peserta_asrama', function ($join) {
                 $join->on('peserta_asrama.siswa_id', '=', 'siswa.id');
             })
-            ->select('kelasmi.jenjang', 'peserta_asrama.nama_asrama', 'absensikelas.id', 'siswa.nama_siswa', 'absensikelas.keterangan', 'nama_kelas', 'tgl')
+            ->select('kelasmi.jenjang', 'peserta_asrama.nama_asrama', 'absensikelas.id As id_sesi_kelas', 'siswa.nama_siswa', 'absensikelas.keterangan', 'nama_kelas', 'tgl')
             ->where('sesikelas.tgl', $tgl->toDateString())
             ->whereIn('keterangan', ['sakit', 'izin', 'alfa'])
             
