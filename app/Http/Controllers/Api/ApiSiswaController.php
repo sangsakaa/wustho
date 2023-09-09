@@ -19,26 +19,27 @@ class ApiSiswaController
     {
         $siswa = Siswa::query()
             ->join('nis', 'nis.siswa_id', '=', 'siswa.id')
-            ->join('pesertaasrama', 'siswa.id', '=', 'pesertaasrama.siswa_id')
-            ->join('asramasiswa', 'pesertaasrama.asramasiswa_id', '=', 'asramasiswa.id')
-            ->join('asrama', 'asrama.id', '=', 'asramasiswa.asrama_id')
-            // ->select(
-            //     [
-            //         'nis',
-            //         'nama_siswa',
-            //         'madrasah_diniyah',
-            //         'jenis_kelamin',
-            //         'agama',
-            //         'tanggal_masuk',
-            //         'nama_lembaga',
-            //         'tempat_lahir',
-            //         'tanggal_lahir',
-            //         'kota_asal',
-            //         'nama_asrama'
-            //     ]
-            // )
-            // ->where('asramasiswa.periode_id', session('periode_id'))
+            // ->join('pesertaasrama', 'siswa.id', '=', 'pesertaasrama.siswa_id')
+            // ->join('asramasiswa', 'pesertaasrama.asramasiswa_id', '=', 'asramasiswa.id')
+            // ->join('asrama', 'asrama.id', '=', 'asramasiswa.asrama_id')
+            ->select([
+                'nis.nis',
+                'siswa.nama_siswa',
+                'nis.tanggal_masuk',
+                'nis.madrasah_diniyah',
+                'nis.nama_lembaga',
+                'siswa.jenis_kelamin',
+                'siswa.agama',
+                'siswa.tempat_lahir',
+                'siswa.tanggal_lahir',
+                'siswa.kota_asal',
+                // 'asrama.nama_asrama'
+            ])
+            // ->groupBy('nis.nis') // Mengelompokkan data berdasarkan NIS
             ->get();
+
+
+
         // dd($siswa);
         return response()->json(['siswa' => $siswa]);
     }
@@ -49,13 +50,7 @@ class ApiSiswaController
     }
     public function dataAsrama(Request $request)
     {
-        $datakelasmi = Kelasmi::query()
-            ->join('periode', 'periode.id', 'kelasmi.periode_id')
-            ->join('semester', 'semester.id', 'periode.semester_id')
-            ->select('kelasmi.id', 'periode.periode', 'semester.ket_semester', 'jenjang')
-            // ->where('kelasmi.periode_id', session('periode_id'))
-            ->orderBy('kelasmi.nama_kelas')
-            ->first();
+        
 
         $tgl = $request->tgl ? Carbon::parse($request->tgl) : now();
 
@@ -75,47 +70,21 @@ class ApiSiswaController
             ->joinSub($pesertaasrama, 'peserta_asrama', function ($join) {
                 $join->on('peserta_asrama.siswa_id', '=', 'siswa.id');
             })
-            ->select('kelasmi.jenjang', 'peserta_asrama.nama_asrama',  'siswa.nama_siswa', 'absensikelas.keterangan')
+            ->select('kelasmi.jenjang', 'peserta_asrama.nama_asrama',  'siswa.nama_siswa', 'absensikelas.keterangan', 'nama_kelas', 'tgl')
             ->where('sesikelas.tgl', $tgl->toDateString())
+            
             ->orderBy('peserta_asrama.nama_asrama')
             ->orderBy('kelasmi.nama_kelas')
             ->orderBy('absensikelas.keterangan')
             ->orderBy('siswa.nama_siswa')
-            ->get();
-
-        $absensiGrup = $dataAbsensiKelas
-            ->where('keterangan', '!=', 'hadir')
-            ->groupBy('nama_asrama')
-            ->map(function ($item, $key) {
-                return $item
-                    ->groupBy('nama_kelas');
-            });
-
-        $rekapAbsensi = $dataAbsensiKelas
-            ->groupBy('nama_asrama',)
-            ->map(function ($item, $nama_asrama) use ($absensiGrup) {
-                return $item
-                    ->groupBy('nama_kelas')
-                    ->map(function ($item, $nama_kelas) use ($absensiGrup, $nama_asrama) {
-                        $nullAbsensi =  new Absensikelas([
-                            'nama_asrama' => $nama_asrama,
-                            'nama_siswa' => '-',
-                            'keterangan' => '-'
-                        ]);
-                        $total = $item->count();
-                        $hadir = $item->where('keterangan', 'hadir')->count();
-                        $tidakHadir = $total - $hadir;
-                        $absensi = $tidakHadir === 0 ? collect([$nullAbsensi]) : $absensiGrup[$nama_asrama][$nama_kelas];
-                        // 
-
-                    })
-                    ->filter();
-            });
+            ->groupby('nama_siswa', 'jenjang', 'keterangan', 'nama_kelas', 'tgl')
+        ->get();
+        
 
         return response()->json(
             [
-                'dataKelasMi' => $tgl->toDateString(),
-                'rekapAbsensi' => $rekapAbsensi,
+
+                'dataAbsensiKelas' => $dataAbsensiKelas,
                 'tgl' => $tgl,
             ]
         );
