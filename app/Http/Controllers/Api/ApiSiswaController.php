@@ -70,7 +70,7 @@ class ApiSiswaController
             ->joinSub($pesertaasrama, 'peserta_asrama', function ($join) {
                 $join->on('peserta_asrama.siswa_id', '=', 'siswa.id');
             })
-            ->select('kelasmi.jenjang', 'periode_id', 'peserta_asrama.nama_asrama', 'absensikelas.id As id_sesi_kelas', 'siswa.nama_siswa', 'absensikelas.keterangan', 'nama_kelas', 'tgl')
+            ->select('kelasmi.jenjang',  'peserta_asrama.nama_asrama', 'absensikelas.id As id_sesi_kelas', 'siswa.nama_siswa', 'absensikelas.keterangan', 'nama_kelas', 'tgl')
 
             ->whereIn('keterangan', ['sakit', 'izin', 'alfa'])
            
@@ -78,7 +78,7 @@ class ApiSiswaController
             ->orderBy('kelasmi.nama_kelas')
             ->orderBy('absensikelas.keterangan')
             ->orderBy('siswa.nama_siswa')
-            ->groupby('nama_siswa', 'jenjang', 'keterangan', 'nama_kelas', 'tgl', 'absensikelas.id', 'periode_id')
+            ->groupby('nama_siswa', 'jenjang', 'keterangan', 'nama_kelas', 'tgl', 'absensikelas.id',)
         ->get();
         
 
