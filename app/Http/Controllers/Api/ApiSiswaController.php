@@ -71,8 +71,8 @@ class ApiSiswaController
                 $join->on('peserta_asrama.siswa_id', '=', 'siswa.id');
             })
             ->select('kelasmi.jenjang', 'periode_id', 'peserta_asrama.nama_asrama', 'absensikelas.id As id_sesi_kelas', 'siswa.nama_siswa', 'absensikelas.keterangan', 'nama_kelas', 'tgl')
-            
-            ->whereIn('keterangan', ['sakit', 'izin', 'alfa', 'hadir'])
+
+            ->whereIn('keterangan', ['sakit', 'izin', 'alfa'])
            
             ->orderBy('peserta_asrama.nama_asrama')
             ->orderBy('kelasmi.nama_kelas')
