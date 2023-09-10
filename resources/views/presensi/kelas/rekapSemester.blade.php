@@ -43,11 +43,12 @@
             <div class=" p-1 ">
                 <div class=" overflow-auto bg-white dark:bg-dark-bg  ">
                     <div class=" text-center text-green-900">
-                        <p class=" font-semibold text-3xl">
-                            MADRASAH DINIYAH WUSTHA WAHIDIYAH
+                        <p class=" font-semibold text-3xl uppercase">
+                            MADRASAH DINIYAH {{ $kelasmi?->jenjang }} WAHIDIYAH
                         </p>
                         <p class=" font-semibold uppercase">
                             TAHUN PELAJARAN {{$periode->periode}} {{$periode->ket_semester}}
+
                         </p>
                     </div>
                     <hr class=" border-b-2 border-green-900">
@@ -63,46 +64,49 @@
                         <thead class="border border-b-2 border-green-600">
                             <tr class="border  border-green-600 text-xs sm:text-sm">
                                 <th class="border border-green-600 px-1 w-8">NO</th>
-                                <th class="border border-green-600 px-1">NAMA SISWA</th>
+                                <th class="border border-green-600 px-1 w-1/2">NAMA SISWA</th>
                                 <th class="border border-green-600 px-1 w-8">JK</th>
-                                <th class="border border-green-600 px-1 w-24">ASRAMA</th>
+
                                 <th class="border border-green-600 px-1 w-16">KELAS</th>
                                 <th class="border border-green-600 px-1 w-14 sm:w-14">HADIR</th>
                                 <th class="border border-green-600 px-1 w-14 sm:w-14">IZIN</th>
                                 <th class="border border-green-600 px-1 w-14 sm:w-14">SAKIT</th>
                                 <th class="border border-green-600 px-1 w-14 sm:w-14">ALFA</th>
+                                <th class="border border-green-600 px-1 w-14 ">%H</th>
                                 <th class="border border-green-600 px-1 ">Status</th>
                             </tr>
                         </thead>
                         <tbody class=" text-xs sm:text-sm">
-                            @foreach ($dataAbsensi as $absensi)
+                            @foreach ($dataAbsensi->sortByDesc(function ($absensi) {
+                            $total_absensi = $absensi->hadir + $absensi->sakit + $absensi->alfa + $absensi->izin;
+                            return $total_absensi > 0 ? ($absensi->hadir / $total_absensi * 100) : 0;
+                            }) as $absensi)
                             <tr class=" border border-green-600 odd:bg-white  even:bg-gray-200 ">
                                 <td class="border border-green-600 text-center px-1">{{ $loop->iteration }}</td>
                                 <td class="border border-green-600 px-1 capitalize">
                                     {{strtolower($absensi->nama_siswa) }}
                                 </td>
                                 <td class="border border-green-600 text-center px-1">{{ $absensi->jenis_kelamin }}</td>
-                                <td class="border border-green-600 text-center px-1">{{ $absensi->nama_asrama }}</td>
                                 <td class="border border-green-600 text-center px-1">{{ $absensi->nama_kelas }}</td>
                                 <td class="border border-green-600 text-center px-1">{{ $absensi->hadir !== 0 ? $absensi->hadir : '-' }}</td>
                                 <td class="border border-green-600 text-center px-1">{{ $absensi->izin !== 0 ? $absensi->izin : '-' }}</td>
                                 <td class="border border-green-600 text-center px-1">{{ $absensi->sakit !== 0 ? $absensi->sakit : '-' }}</td>
                                 <td class="border border-green-600 text-center px-1">{{ $absensi->alfa !== 0 ? $absensi->alfa : '-' }}</td>
-                                <td class=" text-center">
+                                <td class=" text-center border border-green-600">
                                     <?php
                                     $total_absensi = $absensi->hadir + $absensi->sakit + $absensi->alfa + $absensi->izin;
                                     $persentase_absensi = $absensi->hadir / $total_absensi * 100;
                                     echo  number_format($persentase_absensi, 0) . "%";
                                     ?>
-                                    @if($persentase_absensi >= 79)
-                                    <span class="  font-semibold "> Naik Kelas</span>
+
+                                </td>
+                                <td class=" text-center border border-green-600">
+
+                                    @if($persentase_absensi >= 75)
+                                    <span class="  font-semibold "> Tutas</span>
                                     @else
-                                    <span class="  font-semibold  text-red-600"> Tidak Naik</span>
+                                    <span class="  font-semibold  text-red-600"> Belum Tuntas</span>
                                     @endif
-
-
-
-
                                 </td>
                             </tr>
 
