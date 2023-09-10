@@ -103,7 +103,7 @@
                                 <td class=" text-center border border-green-600">
 
                                     @if($persentase_absensi >= 75)
-                                    <span class="  font-semibold "> Tutas</span>
+                                    <span class="  font-semibold "> Tuntas</span>
                                     @else
                                     <span class="  font-semibold  text-red-600"> Belum Tuntas</span>
                                     @endif
