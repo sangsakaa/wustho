@@ -92,18 +92,42 @@ class ApiSiswaController
 
         // Mengambil semua peserta asrama untuk seorang siswa
         $siswa = Siswa::query()
+            ->join('nis', 'nis.siswa_id', 'siswa.id')
             ->join('pesertaasrama', 'pesertaasrama.siswa_id', 'siswa.id')
             ->join('asramasiswa', 'asramasiswa.id', 'pesertaasrama.asramasiswa_id')
-            ->join('asrama', 'asrama.id', 'asramasiswa.asramaa_id')
-
-            // ->join('pesertakelas', 'pesertakelas.siswa_id', 'siswa.id')
-            ->limit(2)
-            ->get();
-
-
+            ->join('asrama', 'asrama.id', 'asramasiswa.asrama_id')
+            ->join('pesertakelas', 'pesertakelas.siswa_id', 'siswa.id')
+            ->join('kelasmi', 'kelasmi.id', 'pesertakelas.kelasmi_id')
+            ->select([
+                'nis.nis',
+                'siswa.nama_siswa',
+                'nis.tanggal_masuk',
+                'nis.madrasah_diniyah',
+                'nis.nama_lembaga',
+                'siswa.jenis_kelamin',
+                'siswa.agama',
+                'siswa.tempat_lahir',
+                'siswa.tanggal_lahir',
+                'siswa.kota_asal',
+                'asrama.nama_asrama',
+                'kelasmi.nama_kelas',
+            ])
+            ->groupBy([
+                'nis.nis',
+                'siswa.nama_siswa',
+                'nis.tanggal_masuk',
+                'nis.madrasah_diniyah',
+                'nis.nama_lembaga',
+                'siswa.jenis_kelamin',
+                'siswa.agama',
+                'siswa.tempat_lahir',
+                'siswa.tanggal_lahir',
+                'siswa.kota_asal',
+                'asrama.nama_asrama',
+                'kelasmi.nama_kelas',
+            ]) // Mengelompokkan data berdasarkan NIS
+        ->get();
         // Mengambil siswa yang terkait dengan suatu entri peserta asrama
-
-
         return response()->json(
             ['dataKelas' => $siswa]
         );
