@@ -19,12 +19,10 @@ class ApiSiswaController
 
     {
         $siswa = Siswa::query()
-            ->join('nis', 'nis.siswa_id', 'siswa.id')
-            ->join('pesertaasrama', 'pesertaasrama.siswa_id', 'siswa.id')
-            ->join('asramasiswa', 'asramasiswa.id', 'pesertaasrama.asramasiswa_id')
-            ->join('asrama', 'asrama.id', 'asramasiswa.asrama_id')
-            ->join('pesertakelas', 'pesertakelas.siswa_id', 'siswa.id')
-            ->join('kelasmi', 'kelasmi.id', 'pesertakelas.kelasmi_id')
+            ->join('nis', 'nis.siswa_id', '=', 'siswa.id')
+            // ->join('pesertaasrama', 'siswa.id', '=', 'pesertaasrama.siswa_id')
+            // ->join('asramasiswa', 'pesertaasrama.asramasiswa_id', '=', 'asramasiswa.id')
+            // ->join('asrama', 'asrama.id', '=', 'asramasiswa.asrama_id')
             ->select([
                 'nis.nis',
                 'siswa.nama_siswa',
@@ -36,23 +34,9 @@ class ApiSiswaController
                 'siswa.tempat_lahir',
                 'siswa.tanggal_lahir',
                 'siswa.kota_asal',
-            'asrama.nama_asrama',
-            'kelasmi.nama_kelas',
+                // 'asrama.nama_asrama'
             ])
-            ->groupBy([
-                'nis.nis',
-                'siswa.nama_siswa',
-                'nis.tanggal_masuk',
-                'nis.madrasah_diniyah',
-                'nis.nama_lembaga',
-                'siswa.jenis_kelamin',
-                'siswa.agama',
-                'siswa.tempat_lahir',
-                'siswa.tanggal_lahir',
-                'siswa.kota_asal',
-                'asrama.nama_asrama',
-                'kelasmi.nama_kelas',
-            ]) // Mengelompokkan data berdasarkan NIS
+            // ->groupBy('nis.nis') // Mengelompokkan data berdasarkan NIS
             ->get();
 
 
@@ -110,9 +94,9 @@ class ApiSiswaController
         $siswa = Siswa::query()
             ->join('pesertaasrama', 'pesertaasrama.siswa_id', 'siswa.id')
             ->join('asramasiswa', 'asramasiswa.id', 'pesertaasrama.asramasiswa_id')
-            ->join('asrama', 'asrama.id', 'asramasiswa.asrama_id')
-            ->join('pesertakelas', 'pesertakelas.siswa_id', 'siswa.id')
-            ->join('kelasmi', 'kelasmi.id', 'pesertakelas.kelasmi_id')
+            ->join('asrama', 'asrama.id', 'asramasiswa.asramaa_id')
+
+            // ->join('pesertakelas', 'pesertakelas.siswa_id', 'siswa.id')
             ->limit(2)
             ->get();
 
