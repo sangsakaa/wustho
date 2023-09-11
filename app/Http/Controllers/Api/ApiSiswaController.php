@@ -129,7 +129,7 @@ class ApiSiswaController
         ->get();
         // Mengambil siswa yang terkait dengan suatu entri peserta asrama
         return response()->json(
-            ['dataKelas' => $siswa]
+            ['siswa' => $siswa]
         );
     }
 }
