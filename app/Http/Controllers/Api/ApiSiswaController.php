@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Api;
 
-
+use App\Models\Nis;
 use App\Models\Siswa;
-
-use App\Models\Absensikelas;
+use App\Models\Kelasmi;
 use App\Models\Periode;
+use App\Models\Asramasiswa;
+use App\Models\Absensikelas;
 use Illuminate\Http\Request;
 use App\Models\Pesertaasrama;
 use Illuminate\Support\Carbon;
@@ -17,11 +18,12 @@ class ApiSiswaController
     public function index()
 
     {
+        $periode = Periode::latest()->first();
         $siswa = Siswa::query()
             ->join('nis', 'nis.siswa_id', '=', 'siswa.id')
-            // ->join('pesertaasrama', 'siswa.id', '=', 'pesertaasrama.siswa_id')
-            // ->join('asramasiswa', 'pesertaasrama.asramasiswa_id', '=', 'asramasiswa.id')
-            // ->join('asrama', 'asrama.id', '=', 'asramasiswa.asrama_id')
+            ->join('pesertaasrama', 'siswa.id', '=', 'pesertaasrama.siswa_id')
+            ->join('asramasiswa', 'pesertaasrama.asramasiswa_id', '=', 'asramasiswa.id')
+            ->join('asrama', 'asrama.id', '=', 'asramasiswa.asrama_id')
             ->select([
                 'nis.nis',
                 'siswa.nama_siswa',
@@ -33,8 +35,9 @@ class ApiSiswaController
                 'siswa.tempat_lahir',
                 'siswa.tanggal_lahir',
                 'siswa.kota_asal',
-                // 'asrama.nama_asrama'
+            'asrama.nama_asrama'
             ])
+            ->where('asramasiswa.periode_id', $periode->id)
             // ->groupBy('nis.nis') // Mengelompokkan data berdasarkan NIS
             ->get();
 
@@ -67,9 +70,7 @@ class ApiSiswaController
                 $join->on('peserta_asrama.siswa_id', '=', 'siswa.id');
             })
             ->select('kelasmi.jenjang',  'peserta_asrama.nama_asrama', 'absensikelas.id As id_sesi_kelas', 'siswa.nama_siswa', 'absensikelas.keterangan', 'nama_kelas', 'tgl')
-
             ->whereIn('keterangan', ['sakit', 'izin', 'alfa'])
-           
             ->orderBy('peserta_asrama.nama_asrama')
             ->orderBy('kelasmi.nama_kelas')
             ->orderBy('absensikelas.keterangan')
@@ -88,10 +89,7 @@ class ApiSiswaController
     }
     public function rekapSemester()
     {
-        $periode = Periode::query()
-            ->latest()
-            ->first();
-        // dd($periode);
+
         // Mengambil semua peserta asrama untuk seorang siswa
         $siswa = Siswa::query()
             ->join('nis', 'nis.siswa_id', 'siswa.id')
@@ -128,12 +126,16 @@ class ApiSiswaController
                 'asrama.nama_asrama',
                 'kelasmi.nama_kelas',
             ]) // Mengelompokkan data berdasarkan NIS
-            ->where('asramasiswa.periode_id', $periode->id)
-            ->where('kelasmi.periode_id', $periode->id)
         ->get();
+
+        return response()->json(['siswa' => $siswa]);
+
+
         // Mengambil siswa yang terkait dengan suatu entri peserta asrama
+
+
         return response()->json(
-            ['siswa' => $siswa]
+            ['dataKelas' => $siswa]
         );
     }
 }
