@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\Nis;
+
 use App\Models\Siswa;
-use App\Models\Kelasmi;
-use App\Models\Periode;
-use App\Models\Asramasiswa;
+
 use App\Models\Absensikelas;
+use App\Models\Periode;
 use Illuminate\Http\Request;
 use App\Models\Pesertaasrama;
 use Illuminate\Support\Carbon;
@@ -67,13 +66,15 @@ class ApiSiswaController
             ->joinSub($pesertaasrama, 'peserta_asrama', function ($join) {
                 $join->on('peserta_asrama.siswa_id', '=', 'siswa.id');
             })
-            ->select('kelasmi.jenjang',  'peserta_asrama.nama_asrama', 'absensikelas.id As id_sesi_kelas', 'siswa.nama_siswa',  'nama_kelas',)
+            ->select('kelasmi.jenjang',  'peserta_asrama.nama_asrama', 'absensikelas.id As id_sesi_kelas', 'siswa.nama_siswa', 'absensikelas.keterangan', 'nama_kelas', 'tgl')
+
             ->whereIn('keterangan', ['sakit', 'izin', 'alfa'])
+           
             ->orderBy('peserta_asrama.nama_asrama')
             ->orderBy('kelasmi.nama_kelas')
             ->orderBy('absensikelas.keterangan')
             ->orderBy('siswa.nama_siswa')
-            ->groupby('nama_siswa', 'jenjang', 'keterangan', 'nama_kelas',)->latest()
+            ->groupby('nama_siswa', 'jenjang', 'keterangan', 'nama_kelas', 'tgl', 'absensikelas.id',)
         ->get();
         
 
@@ -87,7 +88,10 @@ class ApiSiswaController
     }
     public function rekapSemester()
     {
-
+        $periode = Periode::query()
+            ->latest()
+            ->first();
+        // dd($periode);
         // Mengambil semua peserta asrama untuk seorang siswa
         $siswa = Siswa::query()
             ->join('nis', 'nis.siswa_id', 'siswa.id')
@@ -124,6 +128,8 @@ class ApiSiswaController
                 'asrama.nama_asrama',
                 'kelasmi.nama_kelas',
             ]) // Mengelompokkan data berdasarkan NIS
+            ->where('asramasiswa.periode_id', $periode->id)
+            ->where('kelasmi.periode_id', $periode->id)
         ->get();
         // Mengambil siswa yang terkait dengan suatu entri peserta asrama
         return response()->json(
