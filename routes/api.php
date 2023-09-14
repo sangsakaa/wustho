@@ -28,4 +28,4 @@ Route::get('getDataSiswa', [ApiSiswaController::class, 'getDataSiswa'])->name('g
 
 Route::get('data-asrama', [ApiSiswaController::class, 'dataAsrama'])->name('data-asrama');
 // Api guru
-Route::get('data-guru', [ApiGuruController::class, 'dataGuru'])->name('data-guru');
+Route::get('getDataGuru', [ApiGuruController::class, 'getDataGuru'])->name('getDataGuru');
