@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\ApiGuruController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\ApiSiswaController;
@@ -24,3 +25,9 @@ Route::get('siswa', [ApiSiswaController::class, 'index'])->name('siswa');
 Route::get('data-asrama', [ApiSiswaController::class, 'dataAsrama'])->name('data-asrama');
 
 Route::get('data-Kelas', [ApiSiswaController::class, 'rekapSemester'])->name('data-Kelas');
+
+
+
+
+// Api guru
+Route::get('data-guru', [ApiGuruController::class, 'dataGuru'])->name('data-guru');
