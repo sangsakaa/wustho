@@ -20,14 +20,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 
 });
-Route::get('siswa', [ApiSiswaController::class, 'index'])->name('siswa');
+// Api getDataSiswa
+Route::get('getDataSiswa', [ApiSiswaController::class, 'getDataSiswa'])->name('getDataSiswa');
+
+
+
 
 Route::get('data-asrama', [ApiSiswaController::class, 'dataAsrama'])->name('data-asrama');
-
-Route::get('data-Kelas', [ApiSiswaController::class, 'rekapSemester'])->name('data-Kelas');
-
-
-
-
 // Api guru
 Route::get('data-guru', [ApiGuruController::class, 'dataGuru'])->name('data-guru');

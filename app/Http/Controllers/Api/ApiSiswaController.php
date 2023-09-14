@@ -15,39 +15,6 @@ use Illuminate\Support\Facades\DB;
 
 class ApiSiswaController
 {
-    public function index()
-
-    {
-        $periode = Periode::latest()->first();
-        $siswa = Siswa::query()
-            ->leftjoin('nis', 'nis.siswa_id', '=', 'siswa.id')
-            ->leftjoin('pesertaasrama', 'siswa.id', '=', 'pesertaasrama.siswa_id')
-            ->leftjoin('asramasiswa', 'pesertaasrama.asramasiswa_id', '=', 'asramasiswa.id')
-            ->leftjoin('asrama', 'asrama.id', '=', 'asramasiswa.asrama_id')
-            ->leftjoin('pesertakelas', 'pesertakelas.siswa_id', 'siswa.id')
-            ->leftjoin('kelasmi', 'kelasmi.id', 'pesertakelas.kelasmi_id')
-            ->select([
-                'nis.nis',
-                'siswa.nama_siswa',
-                'nis.tanggal_masuk',
-                'nis.madrasah_diniyah',
-                'nis.nama_lembaga',
-                'siswa.jenis_kelamin',
-                'siswa.agama',
-                'siswa.tempat_lahir',
-                'siswa.tanggal_lahir',
-                'siswa.kota_asal',
-            'asrama.nama_asrama',
-            'nama_kelas',
-            'kelasmi.periode_id'
-            ])
-            ->where('asramasiswa.periode_id', $periode->id)
-            // ->groupBy('nis.nis') // Mengelompokkan data berdasarkan NIS
-            ->get();
-        // dd($siswa);
-        return response()->json(['siswa' => $siswa]);
-    }
-    
     public function dataAsrama(Request $request)
     {
         $tgl = $request->tgl ? Carbon::parse($request->tgl) : now();
@@ -82,9 +49,8 @@ class ApiSiswaController
             ]
         );
     }
-    public function rekapSemester()
+    public function getDataSiswa()
     {
-
         // Mengambil semua peserta asrama untuk seorang siswa
         $periode = Periode::query()
             ->join('semester', 'semester.id', '=', 'periode.semester_id')
@@ -118,11 +84,7 @@ class ApiSiswaController
             // Mengubah ini menjadi 'nis.nis'
             ->get();
         return response()->json(['siswa' => $siswa]);
-
-
         // Mengambil siswa yang terkait dengan suatu entri peserta asrama
-
-
         
     }
 }
