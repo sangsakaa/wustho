@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class ApiGuruController
 {
-    public function dataGuru()
+    public function getDataGuru()
     {
         $data = Guru::all();
         return response(['guru' => $data]);
