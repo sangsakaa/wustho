@@ -17,12 +17,19 @@ class ApiSiswaController
 {
     public function dataAsrama(Request $request)
     {
+        $periode = Periode::query()
+            ->join('semester', 'semester.id', '=', 'periode.semester_id')
+            ->select('periode.id', 'ket_semester', 'periode.periode')
+            ->latest('periode.created_at')
+            ->first();
         $tgl = $request->tgl ? Carbon::parse($request->tgl) : now();
         $pesertaasrama = Pesertaasrama::query()
             ->join('siswa', 'siswa.id', '=', 'pesertaasrama.siswa_id')
             ->join('asramasiswa', 'asramasiswa.id', '=', 'pesertaasrama.asramasiswa_id')
             ->join('asrama', 'asrama.id', '=', 'asramasiswa.asrama_id')
             ->select('siswa.id as siswa_id', 'asrama.nama_asrama')
+        ->where('asramasiswa.periode_id', $periode->id)
+            
             // ->where('asramasiswa.periode_id', session('periode_id'))
         ;
         $dataAbsensiKelas = Absensikelas::query()
@@ -39,6 +46,7 @@ class ApiSiswaController
             ->orderBy('kelasmi.nama_kelas')
             ->orderBy('absensikelas.keterangan')
             ->orderBy('siswa.nama_siswa')
+            ->where('kelasmi.periode_id', $periode->id)
             ->groupby('nama_siswa', 'jenjang', 'keterangan', 'nama_kelas', 'tgl', 'absensikelas.id',)
         ->get();
         return response()->json(
