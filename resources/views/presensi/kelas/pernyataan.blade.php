@@ -105,18 +105,18 @@
                         </div>
                         <div>
                             <span class=" py-2">Detail Kehadiran</span>
-                            <table class="w-full">
+                            <table class="w-f">
                                 <thead>
                                     <tr>
                                         <th colspan="5" class="border border-black">Keterangan</th>
                                     </tr>
                                     <tr>
-                                        <th class="border border-black">Hadir</th>
-                                        <th class="border border-black">Izin</th>
-                                        <th class="border border-black">Sakit</th>
-                                        <th class="border border-black">Alfa</th>
+                                        <th class="border border-black px-2">Hadir</th>
+                                        <th class="border border-black px-2">Izin</th>
+                                        <th class="border border-black px-2">Sakit</th>
+                                        <th class="border border-black px-2">Alfa</th>
 
-                                        <th class="border border-black">Status</th>
+                                        <th class="border border-black px-2">Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
