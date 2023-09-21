@@ -133,7 +133,7 @@
                                         <td class="border border-black text-center">
                                             {{ $absensi->alfa !== 0 ? $absensi->alfa : '-' }}
                                         </td>
-                                        <td class="border border-black text-center">
+                                        <td class="border border-black text-center px-2">
                                             {{ number_format($persentase_absensi, 0) }}%
                                             @if($persentase_absensi >= 75)
                                             <span class="font-semibold"> Tuntas</span>
