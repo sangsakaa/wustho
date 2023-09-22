@@ -1,8 +1,16 @@
 import './bootstrap';
-
+import toastr from "toastr";
+window.toastr = toastr;
 import Alpine from "alpinejs";
 import collapse from "@alpinejs/collapse";
 import PerfectScrollbar from "perfect-scrollbar";
+
+toastr.options = {
+    closeButton: true,
+    progressBar: true,
+    positionClass: "toast-top-right",
+    timeOut: 5000,
+};
 
 window.PerfectScrollbar = PerfectScrollbar;
 

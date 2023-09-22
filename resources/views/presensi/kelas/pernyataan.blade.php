@@ -72,7 +72,7 @@
                     <hr class=" border-b-2 border-green-900">
                     <p class=" underline py-2 uppercase font-semibold">Surat Pernyataan</p>
                 </div>
-                <p>Yang Bertanda Tangan di bawah ini:</p>
+                <p class=" text-sm">Yang Bertanda Tangan di bawah ini:</p>
                 <div class="capitalize grid grid-cols-2 text-sm">
 
                     <div>
@@ -92,10 +92,10 @@
                     Yang terhormat,
 
                     <p class=" ml-8 mt-2">
-                        Saya, <span class=" font-semibold capitalize">{{strtolower($absensi->nama_siswa)}}</span>, dengan ini menyatakan kesanggupan dan komitmen saya
+                        Saya, <span class=" font-semibold capitalize">{{strtolower($absensi->nama_siswa)}}</span>, dengan ini menyatakan kesanggupan dan komitmen saya untuk :
                     </p>
                     <p class="  text-justify ">
-                        saya untuk :
+
                     <div class=" grid grid-cols-2 gap-2">
                         <div>
                             @foreach (range(1, 5) as $number)
@@ -104,7 +104,7 @@
                             @endforeach
                         </div>
                         <div>
-                            <span class=" py-2">Detail Kehadiran</span>
+                            <span class=" py-2 mt-6">Detail Kehadiran</span>
                             <table class="w-f">
                                 <thead>
                                     <tr>

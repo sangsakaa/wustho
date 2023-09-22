@@ -21,12 +21,15 @@
             </div>
             @endif
             @if (session('success'))
-            <div class=" py-2">
-                <div class=" bg-green-500 px-2 py-1 text-white">
-                    {{ session('success') }}
-                </div>
-            </div>
+            <script>
+                toastr.success("{{ session('success') }}");
+            </script>
             @endif
+            <script>
+                toastr.success('ok')
+            </script>
+
+
             @if (session('update'))
             <div class=" py-2">
                 <div class=" bg-blue-500 px-2 py-1 text-white">

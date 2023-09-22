@@ -56,11 +56,11 @@ class SiswaController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'nama_siswa' => 'required|min:5|max:50',
+        $request->validate([
+            // 'nama_siswa' => 'required|min:5|max:50',
         ], [
-            'nama_siswa.min' => 'tidak boleh kurang dari 5 karakter',
-            'nama_siswa.max' => 'tidak boleh lebih dari 60 karakter'
+            // 'nama_siswa.min' => 'tidak boleh kurang dari 5 karakter',
+            // 'nama_siswa.max' => 'tidak boleh lebih dari 60 karakter'
         ]);
         $siswa = new Siswa();
         $siswa->nama_siswa = $request->nama_siswa;
@@ -70,6 +70,8 @@ class SiswaController extends Controller
         $siswa->tanggal_lahir = $request->tanggal_lahir;
         $siswa->kota_asal = $request->kota_asal;
         $siswa->save();
+        
+        
         
         return redirect('siswa')->with('success', 'data berhasil ditambahkan');
     }

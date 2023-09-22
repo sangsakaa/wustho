@@ -13,7 +13,7 @@
 
         <div class="p-0 ">
             <div class=" px-2 font-semibold ">
-                <canvas id="jenis_kelamin" class=" font-semibold"></canvas>
+                <canvas id="jenis_kelamin" class="font-semibold"></canvas>
                 <script>
                     var ctx = document.getElementById('jenis_kelamin').getContext('2d');
                     var studentsChart = new Chart(ctx, {
@@ -28,16 +28,14 @@
                                 ],
                                 backgroundColor: [
                                     'rgba(54, 162, 235, 0.2)',
-                                    'rgba(255,99, 132, 0.2)'
+                                    'rgba(255, 99, 132, 0.2)'
                                 ],
                                 borderColor: [
                                     'rgba(54, 162, 235, 1)',
                                     'rgba(255, 99, 132, 1)'
                                 ],
                                 borderWidth: 1
-
                             }]
-
                         },
                         options: {
                             scales: {

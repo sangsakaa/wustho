@@ -24,15 +24,15 @@
                                 <div class=" text-red-500">{{ $message }}</div>
                                 @enderror
                                 <label for="">Jenis Kelamin</label>
-                                <select name="jenis_kelamin" id="" class=" w-full py-1 rounded-md" required>
+                                <select name="jenis_kelamin" id="" class=" w-full py-1 rounded-md" required value="{{old('jenis_kelamin')}}">
                                     <option value="">-- Pilih Jenis Kelamin --</option>
                                     <option value="L"> Laki Laki </option>
                                     <option value="P"> Perempuan </option>
                                 </select>
 
                                 <label for="">Agama</label>
-                                <select name="agama" id="" class=" w-full py-1 rounded-md" required>
-                                    <option value="">-- Pilih Agama --</option>
+                                <select name="agama" id="" class=" w-full py-1 rounded-md" required value="{{old('agama')}}">
+                                    <!-- <option value="">-- Pilih Agama --</option> -->
                                     <option value="Islam"> Islam </option>
                                 </select>
                                 <label for="">Tempat Lahir</label>
@@ -53,5 +53,9 @@
                 </div>
             </div>
         </div>
+
+
     </div>
+
+
 </x-app-layout>
