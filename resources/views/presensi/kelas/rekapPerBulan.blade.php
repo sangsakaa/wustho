@@ -48,7 +48,7 @@
                 <div class=" overflow-auto bg-white dark:bg-dark-bg  ">
                     <div class=" text-center text-green-900">
                         <p class=" font-semibold text-3xl">
-                            MADRASAH DINIYAH WUSTHA WAHIDIYAH
+                            MADRASAH DINIYAH <span class=" uppercase"> {{ $kelasmi->jenjang }}</span> WAHIDIYAH
                         </p>
                         <p class=" font-semibold uppercase">
                             TAHUN PELAJARAN {{$kelasmi->periode}} {{$kelasmi->ket_semester}}
