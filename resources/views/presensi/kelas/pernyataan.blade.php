@@ -152,9 +152,33 @@
                     </p>
                     <p>kasih.</p>
                 </div>
-                <div class="grid-cols-2 justify-end grid text-sm">
+                <div class="grid-cols-3 justify-end grid text-sm">
+                    <div class=" text-center">
+                        <p> <br>
+                            Kepala Madrasah,
+                        </p>
+                        <br><br><br>
+
+                        <p class=" capitalize">
+                            @if($absensi->jenjang == "Ula")
+                            {{-- Kode untuk jenjang Ula --}}
+                            @elseif($absensi->jenjang == "Wustho")
+                            <span>Muh.Bahrul Ulum,S.H.</span>
+                            @else
+                            {{-- Kode untuk kasus lainnya --}}
+                            @endif
+
+
+                        </p>
+                    </div>
+                    <div class=" text-center"> <br>
+                        <p>Pengurus Pondok</p>
+                        <br><br><br>
+                        <p>--------------------</p>
+                    </div>
                     <div class=" text-center">
                         <p>
+                            Kediri, ............... <br>
                             Hormat saya,
                         </p>
                         <br><br><br>
@@ -163,11 +187,7 @@
                             {{strtolower($absensi->nama_siswa)}}
                         </p>
                     </div>
-                    <div class=" text-center">
-                        <p>Pengurus Pondok</p>
-                        <br><br><br>
-                        <p>--------------------</p>
-                    </div>
+
                 </div>
         </div>
         <hr class=" outline-dashed border-none outline-1 border-green-800 ">
