@@ -89,7 +89,7 @@
                 <div class=" text-sm">
                     Yang terhormat,
 
-                    <p class=" ml-8 mt-2">
+                    <p class="  mt-2">
                         Saya, <span class=" font-semibold capitalize">{{strtolower($absensi->nama_siswa)}}</span>, dengan ini menyatakan kesanggupan dan komitmen saya untuk :
                     </p>
                     <p class="  text-justify ">
@@ -98,12 +98,12 @@
                         <div>
                             @foreach (range(1, 5) as $number)
                             <p>{{ $number }} . </p>
-                            <hr>
+                            <hr class="  border-gray-400">
                             @endforeach
                         </div>
-                        <div class=" mt-2">
+                        <div class=" mt-2 ">
                             <span class=" py-2 mt-6">Detail Kehadiran</span>
-                            <table class="w-f">
+                            <table class=" w-full">
                                 <thead>
                                     <tr>
                                         <th colspan="5" class="border border-black">Keterangan</th>
@@ -148,9 +148,9 @@
                         Demikian surat pernyataan kesanggupan ini saya buat sebagai Syarat Mengikuti <span class=" font-semibold underline capitalize">ujian akhir semester {{$periode->ket_semester}} Periode {{$periode->periode}} {{$periode->ket_semester}}</span> dengan sadar dan tanpa paksaan. Saya siap untuk menerima sanksi yang berlaku apabila saya melanggar komitmen ini.
                     </p>
                     <p class=" text-justify mt-2 ml-8">
-                        Atas perhatian dan pengertian Bapak/Ibu Kepala Madrasah Diniyah, saya ucapkan terima
+                        Atas perhatian dan pengertian Bapak/Ibu Kepala Madrasah Diniyah, saya ucapkan terima kasih.
                     </p>
-                    <p>kasih.</p>
+
                 </div>
                 <div class="grid-cols-3 justify-end grid text-sm">
                     <div class=" text-center">
