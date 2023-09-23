@@ -39,24 +39,23 @@
         }
     </script>
     <div class="p-2">
-        <div class="bg-white dark:bg-dark-bg overflow-hidden shadow-sm  p-4" id="blanko">
-
-
+        <div class="bg-white dark:bg-dark-bg overflow-hidden shadow-sm  p-2" id="blanko">
 
             @foreach ($dataAbsensi->sortByDesc(function ($absensi) {
             $total_absensi = $absensi->hadir + $absensi->sakit + $absensi->alfa + $absensi->izin;
             return $total_absensi > 0 ? ($absensi->hadir / $total_absensi * 100) : 0;
             }) as $absensi)
-            <style>
-                .page-break {
-                    page-break-after: always;
-                }
-            </style>
+
             @php
             $total_absensi = $absensi->hadir + $absensi->sakit + $absensi->alfa + $absensi->izin;
             $persentase_absensi = $absensi->hadir / $total_absensi * 100;
             @endphp
             @if($persentase_absensi < 75) <div class="">
+                <style>
+                    .page-break {
+                        page-break-after: always;
+                    }
+                </style>
                 <div class=" text-center  text-sm">
                     <p>
                         PONDOK PESANTREN KEDUNGLO AL MUNADHDHOROH
@@ -68,13 +67,12 @@
                     </p>
                     <span>Alamat : Jl.KH. Wachid Hasyim Kota Kediri 64114 Jawa Timur</span>
 
-
                     <hr class=" border-b-2 border-green-900">
+                    <hr class="  border-green-900 mt-0.5">
                     <p class=" underline py-2 uppercase font-semibold">Surat Pernyataan</p>
                 </div>
                 <p class=" text-sm">Yang Bertanda Tangan di bawah ini:</p>
                 <div class="capitalize grid grid-cols-2 text-sm">
-
                     <div>
                         Nama
                     </div>
@@ -82,7 +80,7 @@
                         : {{ $absensi->nama_siswa }}
                     </div>
                     <div>
-                        Kelas
+                        Kelas / Asrama
                     </div>
                     <div>
                         : {{ $absensi->nama_kelas }} /{{$absensi->nama_asrama}}
@@ -96,14 +94,14 @@
                     </p>
                     <p class="  text-justify ">
 
-                    <div class=" grid grid-cols-2 gap-2">
+                    <div class=" grid grid-cols-2 gap-4">
                         <div>
                             @foreach (range(1, 5) as $number)
                             <p>{{ $number }} . </p>
                             <hr>
                             @endforeach
                         </div>
-                        <div>
+                        <div class=" mt-2">
                             <span class=" py-2 mt-6">Detail Kehadiran</span>
                             <table class="w-f">
                                 <thead>
@@ -111,12 +109,11 @@
                                         <th colspan="5" class="border border-black">Keterangan</th>
                                     </tr>
                                     <tr>
-                                        <th class="border border-black px-2">Hadir</th>
-                                        <th class="border border-black px-2">Izin</th>
-                                        <th class="border border-black px-2">Sakit</th>
-                                        <th class="border border-black px-2">Alfa</th>
-
-                                        <th class="border border-black px-2">Status</th>
+                                        <th class="border border-black px-1">Hadir</th>
+                                        <th class="border border-black px-1">Izin</th>
+                                        <th class="border border-black px-1">Sakit</th>
+                                        <th class="border border-black px-1">Alfa</th>
+                                        <th class="border border-black px-1">Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -146,7 +143,6 @@
                             </table>
                         </div>
                     </div>
-
                     </p>
                     <p class="  text-justify mt-2">
                         Demikian surat pernyataan kesanggupan ini saya buat sebagai Syarat Mengikuti <span class=" font-semibold underline capitalize">ujian akhir semester {{$periode->ket_semester}} Periode {{$periode->periode}} {{$periode->ket_semester}}</span> dengan sadar dan tanpa paksaan. Saya siap untuk menerima sanksi yang berlaku apabila saya melanggar komitmen ini.
@@ -156,33 +152,27 @@
                     </p>
                     <p>kasih.</p>
                 </div>
-                <div class="grid-cols-2 justify-end grid">
-                    <div class=" text-sm mt-2">
+                <div class="grid-cols-2 justify-end grid text-sm">
+                    <div class=" text-center">
                         <p>
                             Hormat saya,
                         </p>
-
                         <br><br><br>
 
                         <p class=" capitalize">
                             {{strtolower($absensi->nama_siswa)}}
                         </p>
                     </div>
-                    <div class=" py-2 text-sm">
-
-                        <div>
-                            <p>Ketua Pondok</p>
-                            <br><br><br>
-                            <p>Afif Afandi,S.E</p>
-                        </div>
+                    <div class=" text-center">
+                        <p>Pengurus Pondok</p>
+                        <br><br><br>
+                        <p>--------------------</p>
                     </div>
                 </div>
-                <div class="page-break"></div>
-                @endif
-                @endforeach
-
-
-
-
         </div>
+        <hr class=" outline-dashed border-none outline-1 border-green-800 ">
+        <div class="page-break"></div>
+        @endif
+        @endforeach
+    </div>
 </x-app-layout>

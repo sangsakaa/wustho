@@ -9,6 +9,17 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class=" bg-white border-b border-gray-200">
                     <div class=" p-6 grid grid-cols-1">
+                        @if (session('update'))
+                        <script>
+                            Toastify({
+                                text: "data berhasil di di update",
+                                className: "update",
+                                style: {
+                                    background: "linear-gradient(to right, #00b09b, #96c93d)",
+                                }
+                            }).showToast();
+                        </script>
+                        @endif
                         <form action="/siswa/{{$siswa->id}}" method="post">
                             @csrf
                             @method('patch')

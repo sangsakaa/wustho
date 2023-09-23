@@ -29,16 +29,21 @@
                                     <option value="L"> Laki Laki </option>
                                     <option value="P"> Perempuan </option>
                                 </select>
-
                                 <label for="">Agama</label>
                                 <select name="agama" id="" class=" w-full py-1 rounded-md" required value="{{old('agama')}}">
                                     <!-- <option value="">-- Pilih Agama --</option> -->
                                     <option value="Islam"> Islam </option>
                                 </select>
-                                <label for="">Tempat Lahir</label>
-                                <input name="tempat_lahir" type="text" class=" w-full py-1 rounded-md" placeholder=" masukan tempat Lahir" value="{{old('tempat_lahir')}}" required>
-                                <label for="">Tanggal Lahir</label>
-                                <input name="tanggal_lahir" type="date" class=" w-full py-1 rounded-md" placeholder=" masukan nama lengkap" required>
+                                <div class=" grid grid-cols-1 gap-2 sm:grid-cols-2">
+                                    <div>
+                                        <label for="">Tempat Lahir</label>
+                                        <input name="tempat_lahir" type="text" class=" w-full py-1 rounded-md" placeholder=" masukan tempat Lahir" value="{{old('tempat_lahir')}}" required>
+                                    </div>
+                                    <div>
+                                        <label for="">Tanggal Lahir</label>
+                                        <input name="tanggal_lahir" type="date" class=" w-full py-1 rounded-md" placeholder=" masukan nama lengkap" required>
+                                    </div>
+                                </div>
                                 <label for="">Asal Kota</label>
                                 <input name="kota_asal" type="text" class=" w-full py-1 rounded-md" placeholder=" masukan Asal Kota" required value="{{old('kota_asal')}}">
                                 <div>

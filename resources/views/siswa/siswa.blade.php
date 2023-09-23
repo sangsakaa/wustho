@@ -14,29 +14,28 @@
     <div class="dark:bg-dark-bg dark:text-purple-600   ">
         <div class="  shadow-sm sm:rounded-md">
             @if (session('delete'))
-            <div class=" py-2">
-                <div class=" bg-red-500 px-2 py-1 text-white">
-                    {{ session('delete') }}
-                </div>
-            </div>
+            <script>
+                Toastify({
+                    text: "data berhasil dihapus",
+                    className: "delete",
+                    style: {
+                        background: "linear-gradient(to right, #00b09b, #96c93d)",
+                    }
+                }).showToast();
+            </script>
             @endif
             @if (session('success'))
             <script>
-                toastr.success("{{ session('success') }}");
+                Toastify({
+                    text: "data berhasil di tambahkan",
+                    className: "success",
+                    style: {
+                        background: "linear-gradient(to right, #00b09b, #96c93d)",
+                    }
+                }).showToast();
             </script>
             @endif
-            <script>
-                toastr.success('ok')
-            </script>
 
-
-            @if (session('update'))
-            <div class=" py-2">
-                <div class=" bg-blue-500 px-2 py-1 text-white">
-                    {{ session('update') }}
-                </div>
-            </div>
-            @endif
             <div class=" p-2  bg-white dark:bg-black ">
                 <div class="px-1 py-2 border-b border-gray-200 flex   gap-1">
                     <a href="/addsiswa">
