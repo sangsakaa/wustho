@@ -1,6 +1,9 @@
 <?php
 
 use Maatwebsite\Excel\Excel;
+use Maatwebsite\Excel\DefaultValueBinder;
+use PhpOffice\PhpSpreadsheet\Cell\StringValueBinder;
+use PhpOffice\PhpSpreadsheet\Cell\AdvancedValueBinder;
 
 return [
     'exports' => [
