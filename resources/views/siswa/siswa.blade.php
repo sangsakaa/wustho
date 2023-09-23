@@ -153,7 +153,6 @@
                     </table>
                 </div>
                 <div colspan="10" class=" px-1 dark:text-purple-600 dark:bg-dark-bg text-xs sm:text-sm mt-1">
-                    {{$dataSiswa->links()}}
                 </div>
                 <div class=" bg-sky-400 rounded-md text-white px-1 grid grid-cols-1 mt-1">
                     <span class="px-4 mt-4 text-bold">Keterangan :</span>

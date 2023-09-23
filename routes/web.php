@@ -41,6 +41,7 @@ use App\Http\Controllers\PresensikelasController;
 use App\Http\Controllers\SesiPerangkatController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\ExportController;
 
 // batas
 Route::get('/manajemen-user', [RegisteredUserController::class, 'index'])->middleware(['auth'])->name('admin');
@@ -342,6 +343,13 @@ Route::delete('Daftar-Jadwal/{jadwal}', [JadwalController::class, 'destroy'])->m
 
 Route::get('Qr-Scan', [QrcodeController::class, 'Scan'])->middleware(['auth'])->name('Qr-Scan');
 Route::get('generate-Scan', [QrcodeController::class, 'generateQRCode'])->middleware(['auth'])->name('generate-Scan');
+
+
+
+
+
+// Route Export
+Route::get('Exports-data', [ExportController::class, 'Exports'])->middleware(['auth'])->name('Exports-data');
 
 
 
