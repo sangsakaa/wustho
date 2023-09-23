@@ -25,11 +25,11 @@
                             Pilih Presensi
                         </button>
                     </form>
-                    <div class=" flex grid-cols-1 gap-2 py-1">
+                    <div class="  grid-cols-1 gap-2 py-1">
                         <button class=" bg-red-600 py-1 sm:w-40 rounded-sm hover:bg-purple-600 text-white px-4 " onclick="printContent('blanko')">
                             Cetak
                         </button>
-                        <a href="/Exports-data" class=" text-center bg-blue-600 sm:w-40    text-white "><span class=" py-1">Export</span></a>
+                        <a href="/Exports-data" class=" text-center bg-blue-600 sm:w-40 py-1    text-white "><span class=" px-2 py-2">Export</span></a>
                     </div>
                 </div>
             </div>
