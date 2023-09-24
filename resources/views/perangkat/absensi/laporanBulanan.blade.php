@@ -112,12 +112,27 @@
             <div class="  flex grid-cols-2 text-right block sm:hidden ">
                 <div class=" w-2/3"></div>
                 <div class=" text-green-800  text-left text-sm">
-                    Kedunglo, <?php
-                                $date = date_create(now());
-                                echo \Carbon\Carbon::parse($date)->isoFormat(' DD MMMM Y');
-                                ?></p>
-                    <p class=" font-semibold">Al Mudir / Kepala</p> <br><br><br>
-                    <p class=" font-semibold">Muh. Bahrul Ulum, S.H</p>
+                    @if($kelasmi->jenjang == "Ula")
+                    Kedunglo,
+                    {{ \Carbon\Carbon::now()->isoFormat('D MMMM Y') }}
+                    <p class="font-semibold">Al Mudir / Kepala</p>
+                    <br><br><br>
+                    <p class="font-semibold">----------------------------</p>
+                    @elseif($kelasmi->jenjang == "Wustho")
+                    Kedunglo,
+                    {{ \Carbon\Carbon::now()->isoFormat('D MMMM Y') }}
+                    <p class="font-semibold">Al Mudir / Kepala</p>
+                    <br><br><br>
+                    <p class="font-semibold">Muh. Bahrul Ulum, S.H</p>
+                    @else
+                    Kedunglo,
+                    {{ \Carbon\Carbon::now()->isoFormat('D MMMM Y') }}
+                    <p class="font-semibold">Al Mudir / Kepala</p>
+                    <br><br><br>
+                    <p class="font-semibold">Munir Maliki,MM</p>
+                    @endif
+
+
                 </div>
             </div>
         </div>
