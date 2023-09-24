@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\SesiPerangkat;
 use Illuminate\Support\Carbon;
 use App\Models\AbsensiPerangkat;
+use App\Models\Kelasmi;
 use Illuminate\Support\Facades\DB;
 use Carbon\Exceptions\InvalidFormatException;
 
@@ -115,6 +116,8 @@ class SesiPerangkatController
     }
     public function LaporanBulanan(Request $request)
     {
+        $kelasmi = Kelasmi::first();
+        // dd($kelasmi);
         try {
             $tanggal = $request->tanggal ? Carbon::parse($request->tanggal) : now();
         } catch (InvalidFormatException $ex) {
@@ -144,6 +147,6 @@ class SesiPerangkatController
             ->groupBy('nama_perangkat', 'tanggal')
             ->whereBetween('sesi_perangkat.tanggal', [$periodeBulan->first()->toDateString(), $periodeBulan->last()->toDateString()])
         ->get();
-        return view('perangkat.absensi.laporanBulanan', compact('laporanBulanan', 'tanggal', 'bulan', 'periodeBulan', 'periode'));
+        return view('perangkat.absensi.laporanBulanan', compact('laporanBulanan', 'tanggal', 'bulan', 'periodeBulan', 'periode', 'kelasmi'));
     }
 }

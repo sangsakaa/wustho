@@ -47,7 +47,7 @@
 
                             </p>
                             <p class="  font-serif text-lg sm:text-xs uppercase">pondok pesantren kedunglo al munadhdhoroh</p>
-                            <p class="  uppercase font-serif text-2xl font-semibold text-monospace ">madrasah diniyah wustho
+                            <p class="  uppercase font-serif text-2xl font-semibold text-monospace ">madrasah diniyah {{$kelasmi->jenjang}}
                                 Wahidiyah</p>
                             <p class=" capitalize font-serif text-xs">Alamat : Jl.KH. Wachid Hasyim Kota Kediri 64114 Jawa Timur Telp. (0354) 774511, 771018 Fax. (0354) 772179</p>
                             <hr class=" border-b-1 border-green-700 mt-0.5 ">

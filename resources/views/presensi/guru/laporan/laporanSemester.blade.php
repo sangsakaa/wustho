@@ -71,6 +71,7 @@
                             <div><img src={{ asset("asset/images/logo.png") }} alt="" width="110" class=" px-2"></div>
                             <div class="  ml-5 ">
                                 <center>
+
                                     </p>
                                     <p class="  font-serif text-lg uppercase">pondok pesantren kedunglo al munadhdhoroh</p>
                                     <p class="  uppercase font-serif text-2xl font-semibold text-monospace ">madrasah diniyah wustho
