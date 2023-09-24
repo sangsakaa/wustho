@@ -22,9 +22,14 @@
                             Tampilkan
                         </button>
                     </form>
-                    <button class=" bg-red-600 py-1 dark:bg-purple-600 mt-1 my-1 w-full sm:w-40 rounded-sm hover:bg-purple-600 text-white px-4 " onclick="printContent('blanko')">
-                        Cetak
-                    </button>
+                    <div class=" flex gap-2">
+                        <button class=" bg-red-600 py-1 dark:bg-purple-600 mt-1 my-1 w-full sm:w-40 rounded-sm hover:bg-purple-600 text-white px-4 " onclick="printContent('blanko')">
+                            Cetak
+                        </button>
+                        <div>
+                            {{$dataAbsensi->count()}}
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -39,6 +44,7 @@
         }
     </script>
     <div class="p-2">
+
         <div class="bg-white dark:bg-dark-bg overflow-hidden shadow-sm  p-2" id="blanko">
 
             @foreach ($dataAbsensi->sortByDesc(function ($absensi) {
