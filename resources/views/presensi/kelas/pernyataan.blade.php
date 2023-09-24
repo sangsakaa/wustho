@@ -6,7 +6,20 @@
         </h2>
     </x-slot>
     <div class="my-1">
-        <div class="">
+        @php
+        $totalCountBelow75 = 0; // Initialize a variable to count the items below 75%
+        @endphp
+
+        @foreach ($dataAbsensi->sortByDesc(function ($absensi) {
+        $total_absensi = $absensi->hadir + $absensi->sakit + $absensi->alfa + $absensi->izin;
+        return $total_absensi > 0 ? ($absensi->hadir / $total_absensi * 100) : 0;
+        }) as $absensi)
+
+        @php
+        $total_absensi = $absensi->hadir + $absensi->sakit + $absensi->alfa + $absensi->izin;
+        $persentase_absensi = $absensi->hadir / $total_absensi * 100;
+
+        if ($persentase_absensi < 75) { $totalCountBelow75++; } @endphp @endforeach <div class="">
             <div class=" bg-white dark:bg-dark-bg overflow-hidden shadow-sm ">
                 <div class="mx-2 px-2 border-gray-200 grid grid-cols-1 w-full sm:grid-cols-1  gap-2">
                     <form action="/blanko-pernyataan" method="get" class="w-full">
@@ -26,13 +39,16 @@
                         <button class=" bg-red-600 py-1 dark:bg-purple-600 mt-1 my-1 w-full sm:w-40 rounded-sm hover:bg-purple-600 text-white px-4 " onclick="printContent('blanko')">
                             Cetak
                         </button>
-                        <div>
-                            {{$dataAbsensi->count()}}
+                        <div class=" py-1">
+                            <p class=" py-1">
+                                Total Kehadiran Kurang dari 75% : {{ $totalCountBelow75 }}
+                            </p>
+
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+    </div>
     </div>
     <script>
         function printContent(el) {
