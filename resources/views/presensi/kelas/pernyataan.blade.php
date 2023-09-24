@@ -50,7 +50,7 @@
             $total_absensi = $absensi->hadir + $absensi->sakit + $absensi->alfa + $absensi->izin;
             $persentase_absensi = $absensi->hadir / $total_absensi * 100;
             @endphp
-            @if($persentase_absensi < 75) <div class="">
+            @if($persentase_absensi <= 75) <div class="">
                 <style>
                     .page-break {
                         page-break-after: always;
