@@ -111,7 +111,7 @@
             </table>
             <div class="  flex grid-cols-2 text-right block sm:hidden ">
                 <div class=" w-2/3"></div>
-                <div class=" text-green-800  text-left text-sm">
+                <div class=" text-green-800  text-left text-sm mb-2">
                     @if($kelasmi->jenjang == "Ula")
                     Kedunglo,
                     {{ \Carbon\Carbon::now()->isoFormat('D MMMM Y') }}
