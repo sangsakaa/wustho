@@ -117,7 +117,7 @@
                     {{ \Carbon\Carbon::now()->isoFormat('D MMMM Y') }}
                     <p class="font-semibold">Al Mudir / Kepala</p>
                     <br><br><br>
-                    <p class="font-semibold">----------------------------</p>
+
                     @elseif($kelasmi->jenjang == "Wustho")
                     Kedunglo,
                     {{ \Carbon\Carbon::now()->isoFormat('D MMMM Y') }}
@@ -131,8 +131,6 @@
                     <br><br><br>
                     <p class="font-semibold">Munir Maliki,MM</p>
                     @endif
-
-
                 </div>
             </div>
         </div>
