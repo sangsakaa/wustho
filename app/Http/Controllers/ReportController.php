@@ -20,7 +20,7 @@ class ReportController
         $kelasmi = Kelasmi::query()
             ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
             ->join('semester', 'semester.id', '=', 'periode.semester_id')
-            ->select('kelasmi.nama_kelas', 'periode.periode', 'semester.ket_semester', 'periode.id')
+            ->select('kelasmi.nama_kelas', 'periode.periode', 'semester.ket_semester', 'periode.id', 'jenjang')
             ->where('kelasmi.periode_id', session('periode_id'))
         ->first();
         // dd($kelasmi->id);

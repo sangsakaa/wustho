@@ -51,7 +51,7 @@
 
                                 </p>
                                 <p class="  font-serif text-lg uppercase">pondok pesantren kedunglo al munadhdhoroh</p>
-                                <p class="  uppercase font-serif text-2xl font-semibold text-monospace ">madrasah diniyah wustho
+                                <p class="  uppercase font-serif text-lg font-semibold text-monospace ">madrasah diniyah {{$kelasmi->jenjang}}
                                     Wahidiyah</p>
                                 <p class=" capitalize font-serif text-xs">Alamat : Jl.KH. Wachid Hasyim Kota Kediri 64114 Jawa Timur Telp. (0354) 774511, 771018 Fax. (0354) 772179</p>
 
@@ -124,12 +124,19 @@
             <div class=" mt-1  flex grid-cols-2 text-right block sm:hidden">
                 <div class=" w-2/3"></div>
                 <div class="  text-left text-sm">
+
+                    @if($kelasmi->jenjang == "Ula")
+                    {{-- Kode untuk jenjang Ula --}}
+                    @elseif($kelasmi->jenjang == "Wustho")
                     Kedunglo, <?php
                                 $date = date_create(now());
                                 echo \Carbon\Carbon::parse($date)->isoFormat(' DD MMMM Y');
                                 ?></p>
                     Al Mudir / Kepala <br><br><br><br>
                     Muh. Bahrul Ulum, S.H
+                    @else
+                    {{-- Kode untuk kasus lainnya --}}
+                    @endif
                 </div>
             </div>
 
@@ -180,12 +187,19 @@
                 <div class="  flex grid-cols-2 text-right mt-1 block sm:hidden">
                     <div class=" w-2/3"></div>
                     <div class="  text-left text-sm">
+                        @if($kelasmi->jenjang == "Ula")
+                        {{-- Kode untuk jenjang Ula --}}
+                        @elseif($kelasmi->jenjang == "Wustho")
                         Kedunglo, <?php
                                     $date = date_create(now());
                                     echo \Carbon\Carbon::parse($date)->isoFormat(' DD MMMM Y');
                                     ?></p>
                         Al Mudir / Kepala <br><br><br><br>
                         Muh. Bahrul Ulum, S.H
+                        @else
+                        {{-- Kode untuk kasus lainnya --}}
+                        @endif
+
                     </div>
                 </div>
             </div>
