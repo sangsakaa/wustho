@@ -155,6 +155,7 @@
                                 <th class=" border px-1">Nama Asrama</th>
                                 <th class=" border px-1">Peserta Asrama</th>
                                 <th class=" border px-1">Total Hadir</th>
+                                <th class=" border px-1">Total selurah Hari</th>
                                 <th class=" border px-1">Total Alfa</th>
                                 <th class=" border px-1">Total Sakit</th>
                                 <th class=" border px-1">Total Izin</th>
@@ -172,8 +173,12 @@
                                 <td class="text-center border">
                                     {{$item->total_peserta_kelas}}
                                 </td>
+
                                 <td class="text-center border">
                                     {{$item->total_kehadiran}}
+                                </td>
+                                <td class="text-center border">
+                                    {{$item->total_kehadiran + $item->total_alfa + $item->total_sakit +$item->total_izin}}
                                 </td>
                                 <td class="text-center border">
                                     {{$item->total_alfa}}
@@ -185,13 +190,10 @@
                                     {{$item->total_izin}}
                                 </td>
                                 <td class="text-center border">
-                                    <?php
-                                    // Hitung presentase alfa
-                                    $presentase_alfa = ($item->total_alfa / $item->total_peserta_kelas) * 100;
-                                    echo number_format($presentase_alfa, 0);  // Menampilkan presentase dengan 2 desimal
-                                    ?>
-
+                                    {{ number_format($item->total_alfa/$item->total_kehadiran + $item->total_alfa + $item->total_sakit +$item->total_izin,0)}} %
                                 </td>
+
+
                             </tr>
                             @endforeach
 
