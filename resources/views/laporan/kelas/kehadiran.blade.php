@@ -153,8 +153,7 @@
                             <tr>
 
                                 <th class=" border px-1">Nama Asrama</th>
-                                <th class=" border px-1">Total Sesi</th>
-                                <th class=" border px-1">Total Peserta Asrama</th>
+                                <th class=" border px-1">Peserta Asrama</th>
                                 <th class=" border px-1">Total Hadir</th>
                                 <th class=" border px-1">Total Alfa</th>
                                 <th class=" border px-1">Total Sakit</th>
@@ -169,14 +168,12 @@
                                 <td class="text-center border">
                                     {{$item->nama_asrama}}
                                 </td>
-                                <td class="text-center border">
-                                    {{$item->total_sesikelas}}
-                                </td>
+
                                 <td class="text-center border">
                                     {{$item->total_peserta_kelas}}
                                 </td>
                                 <td class="text-center border">
-                                    {{$item->total_hadir}}
+                                    {{$item->total_kehadiran}}
                                 </td>
                                 <td class="text-center border">
                                     {{$item->total_alfa}}
@@ -191,8 +188,8 @@
                                     <?php
                                     // Hitung presentase alfa
                                     $presentase_alfa = 0;
-                                    if ($item->total_hadir > 0) {
-                                        $presentase_alfa = ($item->total_alfa / $item->total_hadir) * 100;
+                                    if ($item->total_kehadiran > 0) {
+                                        $presentase_alfa = ($item->total_alfa / $item->total_peserta_kelas) * 100;
                                     }
                                     echo number_format($presentase_alfa, 0);  // Menampilkan presentase dengan 2 desimal
                                     ?>

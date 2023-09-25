@@ -57,14 +57,14 @@ class ReportController
         ->join('asramasiswa', 'asramasiswa.id', 'pesertaasrama.asramasiswa_id')
         ->join('asrama', 'asrama.id', 'asramasiswa.asrama_id')
             ->join('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
-        ->groupBy('nama_asrama',)
+        ->groupBy('nama_asrama', 'kelasmi.periode_id')
         ->select(
             'nama_asrama',
+            'kelasmi.periode_id',
             DB::raw('SUM(CASE WHEN absensikelas.keterangan = "alfa" THEN 1 ELSE 0 END) as total_alfa'),
             DB::raw('SUM(CASE WHEN absensikelas.keterangan = "sakit" THEN 1 ELSE 0 END) as total_sakit'),
             DB::raw('SUM(CASE WHEN absensikelas.keterangan = "izin" THEN 1 ELSE 0 END) as total_izin'),
-            DB::raw('SUM(CASE WHEN absensikelas.keterangan = "hadir" THEN 1 ELSE 0 END) as total_hadir'),
-            DB::raw('COUNT(DISTINCT pesertakelas.id) as total_peserta_kelas'),
+            DB::raw('COUNT(DISTINCT pesertaasrama.id) as total_peserta_kelas'),
             DB::raw('SUM(CASE WHEN absensikelas.keterangan IN ("hadir") THEN 1 ELSE 0 END) as total_kehadiran'),
             DB::raw('COUNT(DISTINCT absensikelas.sesikelas_id) as total_sesikelas')
         )
