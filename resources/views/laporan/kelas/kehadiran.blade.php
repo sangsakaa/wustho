@@ -189,13 +189,10 @@
                                     // Hitung presentase alfa
                                     $presentase_alfa = 0;
                                     if ($item->total_kehadiran > 0) {
-                                        $presentase_alfa = ($item->total_alfa / $item->total_kehadiran) * 100;
-                                        // Pastikan presentase tidak melebihi 100
-                                        $presentase_alfa = ($presentase_alfa > 100) ? 100 : $presentase_alfa;
+                                        $presentase_alfa = ($item->total_alfa / $item->total_peserta_kelas) * 100;
                                     }
-                                    echo number_format($presentase_alfa, 0); // Menampilkan presentase tanpa desimal
+                                    echo number_format($presentase_alfa, 0);  // Menampilkan presentase dengan 2 desimal
                                     ?>
-
                                     %
                                 </td>
                             </tr>
