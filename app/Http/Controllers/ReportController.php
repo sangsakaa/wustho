@@ -50,13 +50,13 @@ class ReportController
         ->get();
         $dataDetail =
         Absensikelas::query()
-            ->join('sesikelas', 'sesikelas.id', '=', 'absensikelas.sesikelas_id')
-            ->join('pesertakelas', 'pesertakelas.id', '=', 'absensikelas.pesertakelas_id')
-            ->join('siswa', 'siswa.id', '=', 'pesertakelas.siswa_id')
+        ->join('sesikelas', 'sesikelas.id', '=', 'absensikelas.sesikelas_id')
+        ->join('pesertakelas', 'pesertakelas.id', '=', 'absensikelas.pesertakelas_id')
+        ->join('siswa', 'siswa.id', '=', 'pesertakelas.siswa_id')
         ->join('pesertaasrama', 'pesertaasrama.siswa_id', '=', 'siswa.id')
-        ->join('asramasiswa', 'asramasiswa.id', 'pesertaasrama.asramasiswa_id')
-        ->join('asrama', 'asrama.id', 'asramasiswa.asrama_id')
-            ->join('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
+        ->join('asramasiswa', 'asramasiswa.id', '=', 'pesertaasrama.asramasiswa_id')
+        ->join('asrama', 'asrama.id', '=', 'asramasiswa.asrama_id')
+        ->join('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
         ->groupBy('nama_asrama', 'kelasmi.periode_id', 'asramasiswa.periode_id')
         ->select(
             'nama_asrama',
@@ -67,12 +67,14 @@ class ReportController
             DB::raw('SUM(CASE WHEN absensikelas.keterangan = "izin" THEN 1 ELSE 0 END) as total_izin'),
             DB::raw('COUNT(DISTINCT pesertaasrama.id) as total_peserta_kelas'),
             DB::raw('SUM(CASE WHEN absensikelas.keterangan IN ("hadir") THEN 1 ELSE 0 END) as total_kehadiran'),
-            DB::raw('COUNT(DISTINCT absensikelas.sesikelas_id) as total_sesikelas')
+            DB::raw('COUNT(DISTINCT absensikelas.sesikelas_id) as total_sesikelas'),
+            DB::raw('(SUM(CASE WHEN absensikelas.keterangan = "alfa" THEN 1 ELSE 0 END) / SUM(CASE WHEN absensikelas.keterangan IN ("hadir") THEN 1 ELSE 0 END)) * 100 as persentase_alfa')
         )
-            ->where('asramasiswa.periode_id', session('periode_id'))
-            ->where('kelasmi.periode_id', session('periode_id'))
-            ->whereBetween('sesikelas.tgl', [$periodeBulan->first()->toDateString(), $periodeBulan->last()->toDateString()])
-            ->get();
+        ->where('asramasiswa.periode_id', session('periode_id'))
+        ->where('kelasmi.periode_id', session('periode_id'))
+        ->whereBetween('sesikelas.tgl', [$periodeBulan->first()->toDateString(), $periodeBulan->last()->toDateString()])
+        ->get();
+
         
         return view('laporan.kelas.kehadiran', [
 
