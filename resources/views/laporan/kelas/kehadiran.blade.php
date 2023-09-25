@@ -163,19 +163,21 @@
                             </tr>
                         </thead>
                         <tbody>
+
+
                             @foreach($dataDetail as $result)
                             <tr>
-                                <td class=" border text-center px-1">{{ $result->nama_asrama }}</td>
-
-                                <td class=" border text-center px-1">{{ $result->total_alfa }}</td>
-                                <td class=" border text-center px-1">{{ $result->total_sakit }}</td>
-                                <td class=" border text-center px-1">{{ $result->total_izin }}</td>
-                                <td class=" border text-center px-1">{{ $result->total_peserta_kelas }}</td>
-                                <td class=" border text-center px-1">{{ $result->total_kehadiran }}</td>
-                                <td class=" border text-center px-1">{{ $result->total_sesikelas }}</td>
-                                <td class=" border text-center px-1">{{ number_format($result->presentase_alfa,0) }}%</td>
+                                <td class="border text-center px-1">{{ $result->nama_asrama }}</td>
+                                <td class="border text-center px-1">{{ $result->total_alfa }}</td>
+                                <td class="border text-center px-1">{{ $result->total_sakit }}</td>
+                                <td class="border text-center px-1">{{ $result->total_izin }}</td>
+                                <td class="border text-center px-1">{{ $result->total_peserta_kelas }}</td>
+                                <td class="border text-center px-1">{{ $result->total_kehadiran }}</td>
+                                <td class="border text-center px-1">{{ $result->total_sesikelas }}</td>
+                                <td class="border text-center px-1">{{ number_format($result->presentase_alfa, 0) }}%</td>
                             </tr>
                             @endforeach
+
                         </tbody>
                     </table>
 

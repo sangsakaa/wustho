@@ -73,6 +73,7 @@ class ReportController
         ->where('asramasiswa.periode_id', session('periode_id'))
         ->where('kelasmi.periode_id', session('periode_id'))
         ->whereBetween('sesikelas.tgl', [$periodeBulan->first()->toDateString(), $periodeBulan->last()->toDateString()])
+        ->orderby('presentase_alfa', 'desc')
         ->get();
 
 
