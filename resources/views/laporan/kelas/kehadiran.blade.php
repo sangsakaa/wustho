@@ -190,7 +190,8 @@
                                     {{$item->total_izin}}
                                 </td>
                                 <td class="text-center border">
-                                    {{ number_format($item->total_alfa/$item->total_kehadiran + $item->total_alfa + $item->total_sakit +$item->total_izin,0)}} %
+                                    {{number_format($item->total_alfa / $item->total_kehadiran + $item->total_alfa + $item->total_sakit +$item->total_izin *100,0)}}
+                                    %
                                 </td>
 
 
