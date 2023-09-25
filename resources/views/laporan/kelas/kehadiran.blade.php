@@ -41,21 +41,18 @@
                 page-break-after: always;
             }
         </style>
-        <div class=" bg-white px-2 ">
-            <div class="  ">
+        <div class=" p-4 bg-white px-2 ">
+            <div class="   ">
                 <div class=" text-center text-green-700 block sm:hidden    ">
                     <div class=" flex">
                         <div><img src={{ asset("asset/images/logo.png") }} alt="" width="110" class=" px-2"></div>
                         <div class="  ml-5 ">
                             <center>
-
                                 </p>
                                 <p class="  font-serif text-lg uppercase">pondok pesantren kedunglo al munadhdhoroh</p>
                                 <p class="  uppercase font-serif text-lg font-semibold text-monospace ">madrasah diniyah {{$kelasmi->jenjang}}
                                     Wahidiyah</p>
-                                <p class=" capitalize font-serif text-xs">Alamat : Jl.KH. Wachid Hasyim Kota Kediri 64114 Jawa Timur Telp. (0354) 774511, 771018 Fax. (0354) 772179</p>
-
-                                <hr class=" border-b-1 border-green-700 ">
+                                <p class=" capitalize font-serif text-xs">Alamat : Jl.KH. Wachid Hasyim Kota Kediri 64114 Jawa Timur</p>
 
                             </center>
                         </div>
@@ -124,7 +121,6 @@
             <div class=" mt-1  flex grid-cols-2 text-right block sm:hidden">
                 <div class=" w-2/3"></div>
                 <div class="  text-left text-sm">
-
                     @if($kelasmi->jenjang == "Ula")
                     {{-- Kode untuk jenjang Ula --}}
                     @elseif($kelasmi->jenjang == "Wustho")
@@ -139,10 +135,9 @@
                     @endif
                 </div>
             </div>
-
         </div>
         <div class="page-break"></div>
-        <div class="dropdown" data-bs-theme="dark">
+        <div class="dropdown " data-bs-theme="dark">
             <div class=" bg-white px-2 py-2">
                 <center>
                     <div class=" uppercase text-green-700  block sm:hidden">
@@ -152,38 +147,64 @@
                         <p class=" uppercase font-semibold  text-green-700 border-green-800 text-md">Semester {{$periode = $kelasmi->ket_semester ?? ' ';}} Tahun Pelajaran {{$periode = $kelasmi->periode ?? ' ';}} </p>
                         <hr class=" border border-b-2 border-green-800">
                 </center>
-                <table class=" w-full mt-2">
-                    <thead>
-                        <tr>
-                            <th class=" border border-green-800  text-center px-1">Nama Kelas</th>
-                            <th class=" border border-green-800  text-center px-1">Nama Siswa</th>
-                            <th class=" border border-green-800  text-center px-1">Total Alfa</th>
-                            <th class=" border border-green-800  text-center px-1">Total Sakit</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @php
-                        $currentKelas = null;
-                        @endphp
-                        @foreach($dataDetail as $item)
-                        <tr>
-                            @if($currentKelas !== $item->nama_kelas)
-                            @php
-                            $currentKelas = $item->nama_kelas;
-                            $rowCount = $dataDetail->where('nama_kelas', $item->nama_kelas)->count();
-                            @endphp
-                            <td class="border border-green-800 text-center px-1 py-1" rowspan="{{ $rowCount }}">
-                                {{ $item->nama_kelas }}
-                            </td>
-                            @endif
-                            <td class="border border-green-800 px-1 py-1 capitalize">{{$loop->iteration}}. {{ strtolower($item->nama_siswa) }}</td>
-                            <td class="border border-green-800 text-center px-1 py-1">{{ $item->total_alfa }}</td>
-                            <td class="border border-green-800 text-center px-1 py-1">{{ $item->total_sakit }}</td>
-                        </tr>
-                        @endforeach
+                <div class=" ">
+                    <table class=" w-full mt-2">
+                        <thead>
+                            <tr>
 
-                    </tbody>
-                </table>
+                                <th class=" border px-1">Nama Asrama</th>
+                                <th class=" border px-1">Total Sesi</th>
+                                <th class=" border px-1">Total Peserta Asrama</th>
+                                <th class=" border px-1">Total Hadir</th>
+                                <th class=" border px-1">Total Alfa</th>
+                                <th class=" border px-1">Total Sakit</th>
+                                <th class=" border px-1">Total Izin</th>
+                                <th class=" border px-1">% Asrama Alfa </th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($dataDetail as $item)
+                            <tr>
+                                <td class="text-center border">
+                                    {{$item->nama_asrama}}
+                                </td>
+                                <td class="text-center border">
+                                    {{$item->total_sesikelas}}
+                                </td>
+                                <td class="text-center border">
+                                    {{$item->total_peserta_kelas}}
+                                </td>
+                                <td class="text-center border">
+                                    {{$item->total_hadir}}
+                                </td>
+                                <td class="text-center border">
+                                    {{$item->total_alfa}}
+                                </td>
+                                <td class="text-center border">
+                                    {{$item->total_sakit}}
+                                </td>
+                                <td class="text-center border">
+                                    {{$item->total_izin}}
+                                </td>
+                                <td class="text-center border">
+                                    <?php
+                                    // Hitung presentase alfa
+                                    $presentase_alfa = 0;
+                                    if ($item->total_hadir > 0) {
+                                        $presentase_alfa = ($item->total_alfa / $item->total_hadir) * 100;
+                                    }
+                                    echo number_format($presentase_alfa, 0);  // Menampilkan presentase dengan 2 desimal
+                                    ?>
+                                    %
+                                </td>
+                            </tr>
+                            @endforeach
+
+
+                        </tbody>
+                    </table>
+                </div>
                 <div class="  flex grid-cols-2 text-right mt-1 block sm:hidden">
                     <div class=" w-2/3"></div>
                     <div class="  text-left text-sm">
