@@ -190,9 +190,12 @@
                                     $presentase_alfa = 0;
                                     if ($item->total_kehadiran > 0) {
                                         $presentase_alfa = ($item->total_alfa / $item->total_kehadiran) * 100;
+                                        // Pastikan presentase tidak melebihi 100
+                                        $presentase_alfa = ($presentase_alfa > 100) ? 100 : $presentase_alfa;
                                     }
-                                    echo number_format($presentase_alfa, 0);  // Menampilkan presentase dengan 2 desimal
+                                    echo number_format($presentase_alfa, 0); // Menampilkan presentase tanpa desimal
                                     ?>
+
                                     %
                                 </td>
                             </tr>
