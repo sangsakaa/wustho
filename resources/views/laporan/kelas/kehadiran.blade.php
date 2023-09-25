@@ -151,14 +151,16 @@
                     <table class=" w-full">
                         <thead>
                             <tr>
+                                <th class=" border">No</th>
                                 <th class=" border">Nama Asrama</th>
+                                <th class=" border"> Peserta Kelas</th>
+                                <th class=" border"> Sesikelas</th>
+                                <th class=" border"> Hadir</th>
+                                <th class=" border"> Alfa</th>
+                                <th class=" border"> Sakit</th>
+                                <th class=" border"> Izin</th>
 
-                                <th class=" border">Total Alfa</th>
-                                <th class=" border">Total Sakit</th>
-                                <th class=" border">Total Izin</th>
-                                <th class=" border">Total Peserta Kelas</th>
-                                <th class=" border">Total Kehadiran</th>
-                                <th class=" border">Total Sesikelas</th>
+
                                 <th class=" border">Presentase Alfa</th>
                             </tr>
                         </thead>
@@ -166,14 +168,17 @@
 
 
                             @foreach($dataDetail as $result)
-                            <tr>
+                            <tr class="  even:bg-gray-200">
+                                <td class="border text-center px-1">{{ $loop->iteration }}</td>
                                 <td class="border text-center px-1">{{ $result->nama_asrama }}</td>
+                                <td class="border text-center px-1">{{ $result->total_peserta_kelas }}</td>
+                                <td class="border text-center px-1">{{ $result->total_sesikelas }}</td>
+                                <td class="border text-center px-1">{{ $result->total_kehadiran }}</td>
                                 <td class="border text-center px-1">{{ $result->total_alfa }}</td>
                                 <td class="border text-center px-1">{{ $result->total_sakit }}</td>
                                 <td class="border text-center px-1">{{ $result->total_izin }}</td>
-                                <td class="border text-center px-1">{{ $result->total_peserta_kelas }}</td>
-                                <td class="border text-center px-1">{{ $result->total_kehadiran }}</td>
-                                <td class="border text-center px-1">{{ $result->total_sesikelas }}</td>
+
+
                                 <td class="border text-center px-1">{{ number_format($result->presentase_alfa, 0) }}%</td>
                             </tr>
                             @endforeach
