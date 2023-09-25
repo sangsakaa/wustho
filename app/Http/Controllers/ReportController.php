@@ -68,12 +68,13 @@ class ReportController
             DB::raw('COUNT(DISTINCT pesertaasrama.id) as total_peserta_kelas'),
             DB::raw('SUM(CASE WHEN absensikelas.keterangan IN ("hadir") THEN 1 ELSE 0 END) as total_kehadiran'),
             DB::raw('COUNT(DISTINCT absensikelas.sesikelas_id) as total_sesikelas'),
-            DB::raw('(SUM(CASE WHEN absensikelas.keterangan = "alfa" THEN 1 ELSE 0 END) / SUM(CASE WHEN absensikelas.keterangan IN ("hadir") THEN 1 ELSE 0 END)) * 100 as persentase_alfa')
+            DB::raw('(SUM(CASE WHEN absensikelas.keterangan = "alfa" THEN 1 ELSE 0 END) / COUNT(DISTINCT absensikelas.id)) * 100 as presentase_alfa')
         )
         ->where('asramasiswa.periode_id', session('periode_id'))
         ->where('kelasmi.periode_id', session('periode_id'))
         ->whereBetween('sesikelas.tgl', [$periodeBulan->first()->toDateString(), $periodeBulan->last()->toDateString()])
         ->get();
+
 
         
         return view('laporan.kelas.kehadiran', [

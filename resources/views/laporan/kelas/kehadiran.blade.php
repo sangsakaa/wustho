@@ -148,58 +148,37 @@
                         <hr class=" border border-b-2 border-green-800">
                 </center>
                 <div class=" ">
-                    <table class=" w-full mt-2">
+                    <table class=" w-full">
                         <thead>
                             <tr>
+                                <th class=" border">Nama Asrama</th>
 
-                                <th class=" border px-1">Nama Asrama</th>
-                                <th class=" border px-1">Peserta Asrama</th>
-                                <th class=" border px-1">Total Hadir</th>
-                                <th class=" border px-1">Total selurah Hari</th>
-                                <th class=" border px-1">Total Alfa</th>
-                                <th class=" border px-1">Total Sakit</th>
-                                <th class=" border px-1">Total Izin</th>
-                                <th class=" border px-1">% Asrama Alfa </th>
-
+                                <th class=" border">Total Alfa</th>
+                                <th class=" border">Total Sakit</th>
+                                <th class=" border">Total Izin</th>
+                                <th class=" border">Total Peserta Kelas</th>
+                                <th class=" border">Total Kehadiran</th>
+                                <th class=" border">Total Sesikelas</th>
+                                <th class=" border">Presentase Alfa</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($dataDetail as $item)
+                            @foreach($dataDetail as $result)
                             <tr>
-                                <td class="text-center border">
-                                    {{$item->nama_asrama}}
-                                </td>
+                                <td class=" border text-center px-1">{{ $result->nama_asrama }}</td>
 
-                                <td class="text-center border">
-                                    {{$item->total_peserta_kelas}}
-                                </td>
-
-                                <td class="text-center border">
-                                    {{$item->total_kehadiran}}
-                                </td>
-                                <td class="text-center border">
-                                    {{$item->total_kehadiran + $item->total_alfa + $item->total_sakit +$item->total_izin}}
-                                </td>
-                                <td class="text-center border">
-                                    {{$item->total_alfa}}
-                                </td>
-                                <td class="text-center border">
-                                    {{$item->total_sakit}}
-                                </td>
-                                <td class="text-center border">
-                                    {{$item->total_izin}}
-                                </td>
-                                <td class="text-center border">
-                                    {{number_format($item->persentase_alfa,0)}} %
-                                </td>
-
-
+                                <td class=" border text-center px-1">{{ $result->total_alfa }}</td>
+                                <td class=" border text-center px-1">{{ $result->total_sakit }}</td>
+                                <td class=" border text-center px-1">{{ $result->total_izin }}</td>
+                                <td class=" border text-center px-1">{{ $result->total_peserta_kelas }}</td>
+                                <td class=" border text-center px-1">{{ $result->total_kehadiran }}</td>
+                                <td class=" border text-center px-1">{{ $result->total_sesikelas }}</td>
+                                <td class=" border text-center px-1">{{ number_format($result->presentase_alfa,0) }}%</td>
                             </tr>
                             @endforeach
-
-
                         </tbody>
                     </table>
+
                 </div>
                 <div class="  flex grid-cols-2 text-right mt-1 block sm:hidden">
                     <div class=" w-2/3"></div>
