@@ -65,7 +65,7 @@
             </div>
             <table class=" w-full mt-1 ">
                 <thead>
-                    <tr class=" text-green-800">
+                    <tr class=" text-sm text-green-800">
                         <th rowspan="2" class=" border border-green-800 px-1">No</th>
                         <th rowspan="2" class=" border border-green-800 px-1">Nama Kelas</th>
                         <th rowspan="2" class=" border border-green-800 px-1">Total Peserta Kelas</th>
@@ -74,7 +74,7 @@
 
                         <th rowspan="2" class=" border border-green-800 px-1">Presentasi Kehadiran</th>
                     </tr>
-                    <tr class=" text-green-800">
+                    <tr class=" text-sm text-green-800">
                         <th class=" border border-green-800 px-1">Total Hadir</th>
                         <th class=" border border-green-800 px-1">Total Sakit</th>
                         <th class=" border border-green-800 px-1">Total Izin</th>
@@ -87,7 +87,7 @@
                     $currentKelas = null;
                     @endphp
                     @foreach($data as $item)
-                    <tr class=" text-green-800">
+                    <tr class=" text-sm text-green-800">
                         @if($currentKelas !== $item->nama_kelas)
                         @php
                         $currentKelas = $item->nama_kelas;
@@ -118,16 +118,16 @@
             </table>
             <table class=" w-full mt-2">
                 <thead>
-                    <tr class=" text-green-800">
+                    <tr class=" text-sm text-green-800">
                         <th rowspan="2" class=" border border-green-800 px-1">No</th>
-                        <th rowspan="2" class=" border border-green-800 px-1">Nama Asrama</th>
+                        <th rowspan="2" class=" border border-green-800 px-1 w-1/4">Nama Asrama</th>
                         <th rowspan="2" class=" border border-green-800 px-1">Peserta Asrama</th>
                         <th rowspan="2" class=" border border-green-800 px-1">Total Sesi</th>
                         <th colspan="4" class=" border border-green-800 px-1">Keterangan</th>
 
                         <th rowspan="2" class=" border border-green-800 px-1">% Alfa</th>
                     </tr>
-                    <tr class=" text-green-800">
+                    <tr class=" text-sm text-green-800">
                         <th class=" border border-green-800 px-1">Total Hadir</th>
                         <th class=" border border-green-800 px-1">Total Sakit</th>
                         <th class=" border border-green-800 px-1">Total Izin</th>
