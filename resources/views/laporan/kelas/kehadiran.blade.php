@@ -42,8 +42,8 @@
             }
         </style>
         <div class=" p-4 bg-white px-2 grid grid-cols-1 ">
-            <div class="   ">
-                <div class=" text-center text-green-700 block     ">
+            <div id="kop" class="   ">
+                <div class=" text-center text-green-700 sm:hidden   hidden   ">
                     <div class=" flex">
                         <div><img src={{ asset("asset/images/logo.png") }} alt="" width="105" class="py-1"></div>
                         <div class=" w-full  ml-5 justify-items-center ">
@@ -54,7 +54,7 @@
                             <p class=" uppercase font-semibold  text-green-700 border-green-800 text-md">Semester {{$periode = $kelasmi->ket_semester ?? ' ';}} Tahun Pelajaran {{$periode = $kelasmi->periode ?? ' ';}} </p>
                         </div>
                     </div>
-                    <div class=" w-full">
+                    <div class=" w-full ">
                         <hr class=" border-b-2 border-green-700 mb-1">
                         <hr class=" border-b-1 border-green-700 mb-1">
                         <p class=" uppercase font-semibold ">laporan presentasi kelas : Bulan {{ \Carbon\Carbon::parse(  $bulan)->isoFormat('  MMMM ') }} </p>
@@ -88,7 +88,7 @@
                         $currentKelas = null;
                         @endphp
                         @foreach($data as $item)
-                        <tr class=" text-sm text-green-800">
+                        <tr class=" text-sm text-green-800 even:bg-gray-200">
                             @if($currentKelas !== $item->nama_kelas)
                             @php
                             $currentKelas = $item->nama_kelas;
@@ -116,7 +116,7 @@
                         @endforeach
                     </tbody>
                 </table>
-                <div class=" justify-items-center text-center py-2">
+                <div class=" justify-items-center text-center py-2 hidden">
                     <p class=" uppercase font-semibold text-green-700 ">laporan presentasi Asrama : Bulan {{ \Carbon\Carbon::parse(  $bulan)->isoFormat('  MMMM ') }} </p>
                 </div>
                 <table class=" w-full mt-1">
@@ -154,7 +154,7 @@
                     </tbody>
                 </table>
             </div>
-            <div class=" mt-1  flex grid-cols-2 text-right block sm:hidden">
+            <div class=" mt-1  flex grid-cols-2 text-right hidden sm:hidden">
                 <div class=" w-2/3"></div>
                 <div class="  text-left text-sm">
                     @if($kelasmi->jenjang == "Ula")

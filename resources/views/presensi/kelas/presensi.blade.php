@@ -55,11 +55,11 @@
                             </div>
                             @endif
                             @csrf
-                            <meta http-equiv="refresh" content="5">
+                            <!-- <meta http-equiv="refresh" content="5"> -->
                             <table class=" mt-2 w-full">
                                 <thead>
                                     <tr class="border">
-                                        <th class=" border px-1">#</th>
+                                        <th class=" border px-1">No</th>
                                         <th class=" border px-1 w-1/7 ">NIS</th>
                                         <th class=" border px-1 ">NAMA SISWA</th>
                                         <th class=" border px-1">KELAS</th>
@@ -71,7 +71,7 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($dataSiswa as $item)
-                                    <tr class=" border hover:bg-gray-100">
+                                    <tr class=" border hover:bg-gray-100 text-sm">
                                         <td class=" px-2 border text-center w-10">
                                             {{ $loop->iteration }}
                                             <input type="hidden" name="pesertakelas[]" value="{{ $item->id }}">
@@ -80,7 +80,7 @@
                                         <td class=" px-2 border text-center ">
                                             {{ $item->nis }}
                                         </td>
-                                        <td class=" px-2 border text-sm ">
+                                        <td class=" px-2 border text-sm capitalize ">
                                             {{ strtolower($item->nama_siswa) }}
                                         </td>
                                         <td class=" px-2 border text-center ">
