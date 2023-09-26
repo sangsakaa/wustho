@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Pesertakelas;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Presensikelas extends Model
 {
@@ -13,4 +14,9 @@ class Presensikelas extends Model
     protected $table = 'presensikelas';
 
     public $guarded = [];
+    public function pesertaKelas()
+    {
+        return $this->belongsTo(PesertaKelas::class, 'pesertakelas_id');
+    }
+
 }

@@ -7,16 +7,28 @@
     </x-slot>
     <div class="p-2">
         <div class=" dark:bg-dark-bg bg-white overflow-hidden shadow-sm sm:rounded-lg">
-            <div class="p-1 ">
-                <div class=" grid grid-cols-1 text-center py-1">
-                    mohon saran dan masukan
+            <div class="p-2 grid grid-cols-2 ">
+
+                <div>Nama</div>
+                <div>
+                    : {{$title->nama_guru}}
                 </div>
+                <div>Jenjang</div>
+                <div>
+                    : {{$title->jenjang}}
+                </div>
+
             </div>
         </div>
         <div class=" mt-2 dark:bg-dark-bg bg-white overflow-hidden shadow-sm sm:rounded-lg">
             <div class="p-4 ">
-                <div class=" overflow-auto grid sm:grid-cols-4 grid-cols-2 gap-2">
-
+                <div class=" ">
+                    <p class=" font-semibold">Mata Pelajaran :</p>
+                    <p>
+                        @foreach($mapelGuru as $list)
+                        {{$loop->iteration}} . {{$list->mapel}}
+                        @endforeach
+                    </p>
                 </div>
             </div>
         </div>
@@ -27,7 +39,6 @@
 
             </div>
         </div>
-    </div>
     </div>
     <div class="py-2 px-2">
         <div class=" overflow-hidden shadow-sm sm:rounded-lg">

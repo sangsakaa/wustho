@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use App\Models\Siswa;
+use App\Models\Kelasmi;
+use App\Models\Presensikelas;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -19,5 +21,9 @@ class Pesertakelas extends Model
     public function kelasMi()
     {
         return $this->belongsTo(Kelasmi::class, 'kelasmi_id', 'id');
+    }
+    public function presensiKelas()
+    {
+        return $this->hasMany(PresensiKelas::class, 'pesertakelas_id');
     }
 }
