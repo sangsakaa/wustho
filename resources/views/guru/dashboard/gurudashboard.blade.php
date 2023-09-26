@@ -11,6 +11,10 @@
 
                 <div>Nama</div>
                 <div>
+                    : {{$title->nig}}
+                </div>
+                <div>Nama</div>
+                <div>
                     : {{$title->nama_guru}}
                 </div>
                 <div>Jenjang</div>
