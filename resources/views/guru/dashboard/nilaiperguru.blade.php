@@ -25,34 +25,40 @@
     </div>
     <div class=" p-2">
         <div class="bg-white dark:bg-dark-bg overflow-hidden shadow-sm sm:rounded-lg">
-            <div class="p-4 overflow-hidden">
+            <div class="p-4  overflow-auto">
                 <table class=" w-full">
                     <thead>
-                        <tr>
+                        <tr class=" border">
                             <th class=" border px-1 py-1">No</th>
-                            <th class=" border px-1 py-1">Periode</th>
+                            <th class="  px-1 py-1 hidden sm:block">Periode</th>
                             <th class=" border px-1 py-1">Mata Pelajaran</th>
-                            <th class=" border px-1 py-1">Kitab</th>
+
                             <th class=" border px-1 py-1">Kelas</th>
+                            <th class=" border px-1 py-1">Kelas</th>
+                            <th class=" border px-1 py-1">NH</th>
+                            <th class=" border px-1 py-1">HU</th>
 
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($dataguru as $guru)
-                        <tr class=" even:bg-gray-100">
+                        <tr class=" even:bg-gray-100 border ">
                             <th class=" border px-1 py-1">{{$loop->iteration}}</th>
-                            <td class=" border px-1 py-1 text-center">{{$guru->periode}} {{$guru->ket_semester}}</td>
-                            <td class=" border px-1 py-1 text-center">{{$guru->mapel}}</td>
-                            <td class=" border px-1 py-1 text-center">{{$guru->nama_kitab}}</td>
+                            <td class="  px-1 py-1 text-center  hidden sm:block">{{$guru->periode}} {{$guru->ket_semester}}</td>
+                            <td class=" border px-1 py-1 text-center">
+                                <a href="/nilai/{{$guru->id}}">{{$guru->mapel}}</a>
+                            </td>
                             <td class=" border px-1 py-1 text-center">
                                 <a href="/nilai/{{$guru->id}}">{{$guru->nama_kelas}}</a>
                             </td>
+                            <th class=" border text-center px-1">{{$guru->jumlah_peserta_kelas}} </td>
+                            <th class=" border text-center px-1">{{$guru->jumlah_nilai_harian}} </td>
+                            <th class=" border text-center px-1">{{$guru->jumlah_nilai_ujian}} </td>
+
+
                         </tr>
                         @endforeach
-                        <tr>
-                            <td class=" border px-1 py-1 text-center" colspan="4">Total Mata Pelajaran</td>
-                            <td class=" border px-1 py-1 text-center">{{$dataguru->count()}}</td>
-                        </tr>
+
                     </tbody>
                 </table>
             </div>
