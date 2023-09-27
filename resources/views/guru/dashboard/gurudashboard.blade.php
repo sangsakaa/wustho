@@ -34,7 +34,7 @@
 
 
                     <p class=" ml-4">
-                        Nulai Harian : {{number_format($list->jumlah_nilai_harian/$list->jumlah_peserta_kelas * 100,0)}}% @if ($list->jumlah_nilai_harian == $list->jumlah_peserta_kelas )
+                        Nilai Harian : {{number_format($list->jumlah_nilai_harian/$list->jumlah_peserta_kelas * 100,0)}}% @if ($list->jumlah_nilai_harian == $list->jumlah_peserta_kelas )
                         <span>tuntas</span>
                         @else
                         Belum tuntas
