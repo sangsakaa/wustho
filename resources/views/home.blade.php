@@ -73,7 +73,7 @@
     <section class="jumbotron jumbotron-fluid text-center">
         <center>
             <img src="asset/images/logo.png" alt="" width="150px">
-            <h1 class="display-4">Madrasah Diniyah {{$kelasmi->jenjang}} Wahidiyah</h1>
+            <h1 class="display-4 text-md ">Madrasah Diniyah {{$kelasmi->jenjang}} Wahidiyah</h1>
             <p class="lead text-monospace">"Mencetak Wali yang Intelek dan Intelektual yang Wali"</p>
             <div class=" py-4">
                 <a class="py-2 text-white bg-blue-600 rounded-md px-4" href="{{ route('login') }}">Masuk</a>
