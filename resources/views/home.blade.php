@@ -127,24 +127,24 @@
                     <h2> MADRASAH DINIYAH WAHIDIYAH</h2>
                 </div>
             </div>
-            <div class="  grid grid-cols-3">
+            <div class="  sm:grid sm:grid-cols-3 grid grid-cols-1">
                 <div class=" grid justify-center justify-items-center">
                     <img src="asset/images/logo.png" class=" px-2" alt="" width="160px">
                     <div class="card-body">
-                        <h3 class="card-text">MADIN ULA WAHIDIYAH </h3>
+                        <h3 class="card-text"> ULA WAHIDIYAH </h3>
                     </div>
 
                 </div>
                 <div class=" grid justify-center justify-items-center">
                     <img src="asset/images/logo.png" class=" px-2" alt="" width="160px">
                     <div class="card-body">
-                        <h3 class="card-text">MADIN WUSTHA WAHIDIYAH </h3>
+                        <h3 class="card-text"> WUSTHA WAHIDIYAH </h3>
                     </div>
                 </div>
                 <div class=" grid justify-center justify-items-center">
                     <img src="asset/images/logo.png" class=" px-2" alt="" width="160px">
                     <div class="card-body">
-                        <h3 class="card-text">MADIN ULYA WAHIDIYAH</h3>
+                        <h3 class="card-text"> ULYA WAHIDIYAH</h3>
                     </div>
                 </div>
             </div>
