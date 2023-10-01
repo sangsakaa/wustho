@@ -13,7 +13,19 @@
 
         <div class="p-0 ">
             <div class=" px-2 font-semibold ">
-                <canvas id="jenis_kelamin" class="font-semibold"></canvas>
+                <div class=" grid grid-cols-2 gap-2">
+                    <div class=" bg-green-300 rounded-md p-5 ">
+                        <span>{{$countLakiLaki}}</span>
+                    </div>
+                    <div class=" bg-green-300 rounded-md p-5">
+                        <span>{{$countPerempuan}}</span>
+                    </div>
+                    <div class=" bg-green-300 rounded-md p-5">
+                        <span>{{$wustho}}</span>
+                    </div>
+                </div>
+
+                <!-- <canvas id="jenis_kelamin" class="font-semibold"></canvas> -->
                 <script>
                     var ctx = document.getElementById('jenis_kelamin').getContext('2d');
                     var studentsChart = new Chart(ctx, {

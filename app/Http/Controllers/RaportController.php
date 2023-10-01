@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Absensikelas;
 use App\Models\Nilai;
 use App\Models\Siswa;
 use App\Models\Kelasmi;
@@ -161,7 +162,8 @@ class RaportController extends Controller
             })
             ->keyBy('id');
         $presensi = Presensikelas::join('pesertakelas', 'pesertakelas.id', '=', 'presensikelas.pesertakelas_id')
-            ->where('pesertakelas.peserta_id', $siswa);
+        ->where('pesertakelas.peserta_id', $siswa);
+        // dd($siswa);
         return view(
             'report/raportkelas',
             [
@@ -264,6 +266,7 @@ class RaportController extends Controller
             ->keyBy('id');
         $presensi = Presensikelas::join('pesertakelas', 'pesertakelas.id', '=', 'presensikelas.pesertakelas_id')
             ->where('pesertakelas.peserta_id', $siswa);
+        
         return view(
             'pengaturan/peringkat',
             [

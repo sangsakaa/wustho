@@ -31,6 +31,7 @@ class PresensikelasController
             )
             ->selectRaw('kelasmi.id,nama_kelas,ket_semester,kelas,periode,kuota,count(pesertakelas.siswa_id) as jumlah_nilai_ujian, jumlah_peserta_asrama')
             ->groupBy(
+            
                 'kelasmi.id',
                 'nama_kelas',
                 'kelas',

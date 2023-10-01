@@ -22,8 +22,6 @@ class Pesertakelas extends Model
     {
         return $this->belongsTo(Kelasmi::class, 'kelasmi_id', 'id');
     }
-    public function presensiKelas()
-    {
-        return $this->hasMany(PresensiKelas::class, 'pesertakelas_id');
-    }
+
+    
 }

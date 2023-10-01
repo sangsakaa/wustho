@@ -16,7 +16,7 @@ class Presensikelas extends Model
     public $guarded = [];
     public function pesertaKelas()
     {
-        return $this->belongsTo(PesertaKelas::class, 'pesertakelas_id');
+        return $this->hasMany(PesertaKelas::class,  'id');
     }
 
 }

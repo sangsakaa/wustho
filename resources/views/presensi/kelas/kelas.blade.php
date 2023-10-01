@@ -41,7 +41,7 @@
                                                 {{ $item->jumlah_nilai_ujian }}
                                             </td>
                                             <td class=" text-xs px-2 border text-center w-40">
-                                                {{$item->pesertaKelas}}
+
                                             </td>
                                         </tr>
                                         @endforeach

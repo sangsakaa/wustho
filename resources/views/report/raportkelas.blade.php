@@ -9,7 +9,7 @@
         @endif
 
         <h2 class="font-semibold text-xl  leading-tight">
-            {{ __('Report Per Kelas') }}
+            {{ __('Report Per Kelas -') }}
         </h2>
     </x-slot>
     <div class="py-1 ">
@@ -25,6 +25,7 @@
                     <div class=" py-1">
                         <a href="/pengaturan" class=" py-1 px-2 bg-red-600 rounded-md text-white">Batal</a>
                     </div>
+
                 </div>
                 <div class=" mt-4">
                     <form action="/raportkelas" method="post">
@@ -62,7 +63,7 @@
                 <div class="grid  p-2 bg-white   ">
                     <div class=" grid grid-cols-1 justify-items-center">
                         <span class=" font-semibold "> DAFTAR NILAI HASIL TADRIS</span>
-                        <span class=" font-semibold"> MADRASAH DINIYAH WUSTHO WAHIDIYAH</span>
+                        <span class=" font-semibold uppercase"> MADRASAH DINIYAH {{$siswa->jenjang}} WAHIDIYAH</span>
                     </div>
                     <hr>
 

@@ -62,6 +62,7 @@
                 </tr>
             </thead>
             <tbody>
+                @if($nominasi->count() != null)
                 @foreach($nominasi as $item)
                 <tr class=" border ">
                     <th>{{$loop->iteration}}</th>
@@ -91,6 +92,13 @@
                     </td>
                 </tr>
                 @endforeach
+                @else
+                <tr class=" border ">
+                    <td colspan="6" class=" text-center">
+                        <span class=" font-semibold capitalize "> belum ada daftar nominasi</span>
+                    </td>
+                </tr>
+                @endif
             </tbody>
         </table>
     </div>

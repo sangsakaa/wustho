@@ -385,7 +385,7 @@ Route::get(
         $kelasmi = Kelasmi::query()
             ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
             ->join('semester', 'semester.id', '=', 'periode.semester_id')
-            ->select('kelasmi.nama_kelas', 'periode.periode', 'semester.ket_semester', 'periode.id')
+            ->select('kelasmi.nama_kelas', 'periode.periode', 'semester.ket_semester', 'periode.id', 'jenjang')
             ->latest('kelasmi.created_at')
             ->first();
         // dd($kelasmi->id);
@@ -418,9 +418,9 @@ Route::get(
             $dataNIS->where('nis', '=', request('cari'));
         }
 
-        return view('welcome', [
+        return view('home', [
             'data' => $data,
-            'kelasmi',
+            'kelasmi' => $kelasmi,
             'dataNIS' => $dataNIS->get()
         ]);
     }

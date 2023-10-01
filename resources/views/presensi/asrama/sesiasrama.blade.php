@@ -22,7 +22,7 @@
             </select>
             <!-- <label for="" class=" py-2"> Asrama</label> -->
             <select name="asramasiswa_id" id="" class=" py-1 text-xs sm:text-sm">
-              <option value="" class=" text-center">---- Pilih Asrama ----</option>
+              <option value="" class=" ">---- Pilih Asrama ----</option>
               @foreach($asramasiswa as $peri)
               <option value="{{$peri->id}}">{{$peri->nama_asrama}} </option>
               @endforeach
@@ -34,7 +34,7 @@
               <option value="{{$peri->id}}">{{$peri->kegiatan}}</option>
               @endforeach
             </select>
-            <button class=" bg-blue-700  text-white py-1 px-2 "> Create Sesi Asrama</button>
+            <button class=" bg-blue-700  text-white py-1 px-2 "> Sesi Asrama</button>
           </div>
         </form>
       </div>
