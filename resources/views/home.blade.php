@@ -45,7 +45,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm fixed-top">
         <div class="container">
             <img src="asset/images/logo.png" class=" px-2" alt="" width="60px">
-            <a class="navbar-brand uppercase" href="/">MADIN {{$kelasmi->jenjang}} Wahidiyah</a>
+            <a class="navbar-brand uppercase" href="/">{{$kelasmi->jenjang}} </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -73,7 +73,7 @@
     <section class="jumbotron jumbotron-fluid text-center">
         <center>
             <img src="asset/images/logo.png" alt="" width="150px">
-            <h1 class="display-4">{{$kelasmi->jenjang}}</h1>
+            <h1 class="display-4">Madrasah Diniyah {{$kelasmi->jenjang}} Wahidiyah</h1>
             <p class="lead text-monospace">"Mencetak Wali yang Intelek dan Intelektual yang Wali"</p>
             <div class=" py-4">
                 <a class="py-2 text-white bg-blue-600 rounded-md px-4" href="{{ route('login') }}">Masuk</a>
