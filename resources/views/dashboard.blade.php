@@ -31,15 +31,19 @@
                         <span>Perempuan : {{$countPerempuan}}</span>
                     </div>
                 </div>
-                <div class=" bg-green-300 rounded-md p-5">
-                    @if($ula)
-                    <span> Total : {{$ula}}</span>
-                    @elseif($wustho)
-                    <span> Total : {{$wustho}}</span>
-                    @else
-                    <span> Total : {{$ulya}}</span>
-                    @endif
+                <div class="  w-full flex">
+                    <div class=" bg-green-800 w-1"></div>
+                    <div class=" bg-green-300 w-full  p-5 ">
+                        @if($ula)
+                        <span> Total : {{$ula}}</span>
+                        @elseif($wustho)
+                        <span> Total : {{$wustho}}</span>
+                        @else
+                        <span> Total : {{$ulya}}</span>
+                        @endif
+                    </div>
                 </div>
+
             </div>
             <div class=" grid grid-cols-1 sm:grid-cols-2 gap-2">
                 <div>
