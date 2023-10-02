@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Absensikelas;
+use App\Models\Kelasmi;
 use App\Models\Nis;
 use App\Models\Pesertaasrama;
 use App\Models\Pesertakelas;
@@ -22,6 +23,7 @@ class DashboardController extends Controller
     public function index()
     {
 
+        
         $dataAngkatan = Nis::select('madrasah_diniyah', 'tanggal_masuk')->get()->groupBy('madrasah_diniyah')->map(function ($item) {
             return $item->groupBy('tanggal_masuk')->count();
         });
@@ -157,6 +159,12 @@ class DashboardController extends Controller
         ->get();
 
         // dd($tahunMasuk);
+        $TitleMadrasak = Kelasmi::query()
+        ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
+        ->join('semester', 'semester.id', '=', 'periode.semester_id')
+        ->select('periode', 'semester', 'ket_semester', 'jenjang', 'periode_id')
+        ->where('kelasmi.periode_id', session('periode_id'))
+        ->first();
 
 
 
@@ -173,7 +181,8 @@ class DashboardController extends Controller
                 'dataSiswaPerKelas',
                 'TitleKelas',
                 'jenisKelamin',
-                'tahunMasuk'
+                'tahunMasuk',
+                'TitleMadrasak'
             ]
         ));
     }
