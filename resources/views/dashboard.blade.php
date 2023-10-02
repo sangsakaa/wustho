@@ -33,7 +33,7 @@
                 </div>
                 <div class=" bg-green-300 rounded-md p-5">
                     @if($ula)
-                    <span> Total : <br> {{$ula}}</span>
+                    <span> Total : {{$ula}}</span>
                     @elseif($wustho)
                     <span> Total : {{$wustho}}</span>
                     @else
@@ -196,9 +196,9 @@
         const dataBarChart = {
             labels: labelsBarChart,
             datasets: [{
-                label: 'Data Murid Bedasarkan Kelas',
+                label: 'Data Murid Bedasarkan Kelas ',
                 backgroundColor: <?php echo json_encode($colors); ?>,
-                borderColor: "hsl(217, 57%, 51%)",
+                borderColor: "hsl(217, 52%, 51%)",
                 data: <?php echo json_encode($dataSiswa); ?>,
             }]
         };
