@@ -7,10 +7,8 @@
     <title>SMEDI @yield('title')</title>
     <link rel="shortcut icon" href="{{ asset('asset/images/logo.png') }}" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <style>
     .jumbotron {
@@ -42,110 +40,82 @@
 
 <body id="home">
     <!-- Navbar -->
+
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm fixed-top">
         <div class="container">
-            <img src="asset/images/logo.png" class=" px-2" alt="" width="60px">
-            <a class="navbar-brand uppercase" href="/">{{$kelasmi->jenjang}} </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="#home">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#about">About Us</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#project">Faculty</a>
-                    </li>
-                    <li class="nav-item bg-sky-300">
 
+            <a class="navbar-brand uppercase " href="/">{{ $kelasmi->jenjang }}</a>
+
+            <div :class="navClasses">
+
+                <ul class="navbar-nav ml-auto text-white">
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('login') }}">Masuk</a>
                     </li>
                 </ul>
             </div>
-
         </div>
     </nav>
-    <!-- end Navbar -->
-    <!-- Jumbotron -->
+
+
+    <script>
+        export default {
+            data() {
+                return {
+                    isOpen: false,
+                };
+            },
+            computed: {
+                navClasses() {
+                    return {
+                        'collapse navbar-collapse': !this.isOpen,
+                        'navbar-collapse': this.isOpen,
+                    };
+                },
+            },
+            methods: {
+                toggleNav() {
+                    this.isOpen = !this.isOpen;
+                },
+            },
+        };
+    </script>
+
+    <style scoped>
+        /* Tambahkan gaya CSS khusus di sini jika diperlukan */
+    </style>
+
+
     <section class="jumbotron jumbotron-fluid text-center">
         <center>
             <img src="asset/images/logo.png" alt="" width="150px">
+            <h2 class=" mt-4"> MADRASAH DINIYAH WAHIDIYAH</h2>
+            <p class=" uppercase sm:text-3xl text-xs">Madrasah Diniyah {{$kelasmi->jenjang}} Wahidiyah</p>
 
-            <p class="lead text-monospace">Madrasah Diniyah {{$kelasmi->jenjang}} Wahidiyah</p>
-            <div class=" py-4">
-                <a class="py-2 text-white bg-blue-600 rounded-md px-4" href="{{ route('login') }}">Masuk</a>
-            </div>
         </center>
 
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+        <!-- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
             <path fill="#fff" fill-opacity="1" d="M0,192L48,202.7C96,213,192,235,288,250.7C384,267,480,277,576,240C672,203,768,117,864,106.7C960,96,1056,160,1152,197.3C1248,235,1344,245,1392,250.7L1440,256L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z">
             </path>
-        </svg>
+        </svg> -->
     </section>
     <!-- end Jumbotron -->
     <!-- Abouts -->
-    <section id="about">
-        <div class="container">
-            <div class="row text-center mb-3">
-                <div class="col">
-                    <h2>About</h2>
-                </div>
-            </div>
-            <div class="row justify-content-center text-center text-monospace">
-                <div class="col-sm-4">
-                    Sejarah <br>
-                    //
-                </div>
-                <div class="col-sm-4">
-                    Visi <br>
 
-                    <br>
+    <!-- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
+        <path fill="#e2edff" fill-opacity="1" d="M0,192L48,202.7C96,213,192,235,288,250.7C384,267,480,277,576,240C672,203,768,117,864,112C960,107,1056,181,1152,192C1248,203,1344,149,1392,122.7L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z">
+        </path>
+    </svg> -->
 
-                    Misi <br>
 
-                </div>
-                <div class="col-sm-4">
-                    Tujuan <br>
-
-                </div>
-            </div>
-        </div>
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
-            <path fill="#e2edff" fill-opacity="1" d="M0,192L48,202.7C96,213,192,235,288,250.7C384,267,480,277,576,240C672,203,768,117,864,112C960,107,1056,181,1152,192C1248,203,1344,149,1392,122.7L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z">
-            </path>
-        </svg>
-    </section>
     <!-- end about -->
     <!-- Project -->
     <section id="project">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col text-center mb-3">
-                    <h2> MADRASAH DINIYAH WAHIDIYAH</h2>
-                </div>
-            </div>
-            <div class="  sm:grid sm:grid-cols-3 grid grid-cols-1">
-                <div class=" grid justify-center justify-items-center">
-                    <img src="asset/images/logo.png" class=" px-2" alt="" width="160px">
-                    <div class="card-body">
-                        <h3 class="card-text"> ULA WAHIDIYAH </h3>
-                    </div>
 
-                </div>
-                <div class=" grid justify-center justify-items-center">
-                    <img src="asset/images/logo.png" class=" px-2" alt="" width="160px">
-                    <div class="card-body">
-                        <h3 class="card-text"> WUSTHA WAHIDIYAH </h3>
-                    </div>
-                </div>
-                <div class=" grid justify-center justify-items-center">
-                    <img src="asset/images/logo.png" class=" px-2" alt="" width="160px">
-                    <div class="card-body">
-                        <h3 class="card-text"> ULYA WAHIDIYAH</h3>
-                    </div>
                 </div>
             </div>
         </div>
@@ -167,18 +137,15 @@
             </div>
             <div class="row justify-content-center mb-3 ">
                 <div class="col-sm-6">
-                    <form>
+                    <div>
                         <div class="form-group text-center">
-                            <a type="button" class="btn btn-danger" href=""><i class="bi bi-globe"></i> Pendaftaran</a>
+                            <a type="button" class=" bg-blue-600 btn btn-danger" href=""><i class="bi bi-globe"></i> Pendaftaran</a>
 
-                            <a type="button" class="btn btn-danger" href="https://chat.whatsapp.com/Eo33aM3j6XDHNV8L08x25m">Join Group</a>
+                            <a type="button" class=" bg-blue-600 btn btn-danger" href="#">INFORMASI</a>
                             <br>
                             <small>jika ada kendala bisa hubungi nomor di atas atau join ini</small>
                         </div>
-
-
-
-                    </form>
+                    </div>
                 </div>
             </div>
 
