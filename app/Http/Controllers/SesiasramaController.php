@@ -42,6 +42,7 @@ class SesiasramaController extends Controller
         $periode = Periode::query()
             ->join('semester', 'periode.semester_id', '=', 'semester.id')
             ->select('periode.id', 'periode.periode', 'semester.ket_semester')
+            ->where('periode.id', session('periode_id'))
         ->orderBy('id', 'desc')->get();
         $kegiatan = Kegiatan::all();
         // $tanggal = $request->tgl ? Carbon::parse($request->tgl) : now();

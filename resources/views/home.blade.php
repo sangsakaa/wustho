@@ -7,7 +7,6 @@
     <title>SMEDI @yield('title')</title>
     <link rel="shortcut icon" href="{{ asset('asset/images/logo.png') }}" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
-
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <style>
@@ -40,25 +39,21 @@
 
 <body id="home">
     <!-- Navbar -->
-
     <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow-sm fixed-top">
-        <div class="container">
-
-            <a class="navbar-brand uppercase " href="/">{{ $kelasmi->jenjang }}</a>
-
-            <div :class="navClasses">
-
+        <div class="container sm:text-xs">
+            <a class="navbar-brand uppercase text-sm  " href="/">{{ $kelasmi->jenjang }}</a>
+            <div :class="navClasses   hover:hover:bg-sky-300">
                 <ul class="navbar-nav ml-auto text-white">
-
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('login') }}">Masuk</a>
+                        <a class="nav-link   " href="{{ route('login') }}">MASUK</a>
+                    </li>
+                    <li class="nav-item sm:block hidden">
+                        <a class="nav-link   " href="/nism-siswa">NISN</a>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
-
-
     <script>
         export default {
             data() {
@@ -85,16 +80,12 @@
     <style scoped>
         /* Tambahkan gaya CSS khusus di sini jika diperlukan */
     </style>
-
-
     <section class="jumbotron jumbotron-fluid text-center">
         <center>
             <img src="asset/images/logo.png" alt="" width="150px">
             <h2 class=" mt-4"> MADRASAH DINIYAH WAHIDIYAH</h2>
             <p class=" uppercase sm:text-3xl text-xs">Madrasah Diniyah {{$kelasmi->jenjang}} Wahidiyah</p>
-
         </center>
-
         <!-- <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
             <path fill="#fff" fill-opacity="1" d="M0,192L48,202.7C96,213,192,235,288,250.7C384,267,480,277,576,240C672,203,768,117,864,106.7C960,96,1056,160,1152,197.3C1248,235,1344,245,1392,250.7L1440,256L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z">
             </path>
@@ -107,15 +98,12 @@
         <path fill="#e2edff" fill-opacity="1" d="M0,192L48,202.7C96,213,192,235,288,250.7C384,267,480,277,576,240C672,203,768,117,864,112C960,107,1056,181,1152,192C1248,203,1344,149,1392,122.7L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z">
         </path>
     </svg> -->
-
-
     <!-- end about -->
     <!-- Project -->
     <section id="project">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col text-center mb-3">
-
                 </div>
             </div>
         </div>
@@ -148,7 +136,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
             <path fill="#0d6efd" fill-opacity="1" d="M0,160L48,181.3C96,203,192,245,288,234.7C384,224,480,160,576,149.3C672,139,768,181,864,186.7C960,192,1056,160,1152,128C1248,96,1344,64,1392,48L1440,32L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z">

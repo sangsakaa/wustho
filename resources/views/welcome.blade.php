@@ -39,7 +39,7 @@
     <div>
         <div class=" grid grid-cols-1 sm:grid-cols-2 p-2 gap-2">
             <div class=" h-32 rounded-md bg-blue-300 p-2">
-                <form action="/" method="get" class="  text-sm gap-1 ">
+                <form action="/nism-siswa" method="get" class="  text-sm gap-1 ">
                     <div class=" w-full px-4 py-2 gap-2">
                         <span class=" uppercase">Pencarian NIMW (Nomor induk murid )</span>
                         <div class=" py-1">
