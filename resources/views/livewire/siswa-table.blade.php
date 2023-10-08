@@ -19,7 +19,6 @@
                 <option>100</option>
                 <option>500</option>
             </select>
-
         </div>
     </div>
     <div class=" overflow-auto">
@@ -119,6 +118,7 @@
                 @endif
                 <tr>
                     <td colspan=" 9" class=" py-1">
+                        {{$data}}
                     </td>
                 </tr>
             </tbody>
