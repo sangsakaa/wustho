@@ -10,7 +10,7 @@
             @endrole
         </h2>
     </x-slot>
-    @can('show post')
+
     <div class="dark:bg-dark-bg dark:text-purple-600 px-2   ">
         <div class="  shadow-sm sm:rounded-md">
 
@@ -26,7 +26,7 @@
                 </div>
 
             </div>
-            @endcan
+
         </div>
     </div>
 </x-app-layout>

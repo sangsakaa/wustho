@@ -15,7 +15,7 @@ class SiswaTable extends Component
     {
         $data = Siswa::search($this->search)
             ->leftJoin('nis', 'nis.siswa_id', '=', 'siswa.id')
-        ->select('siswa.*',)
+            ->select('siswa.*')
         ->paginate($this->perPage);
         
         return view('livewire.siswa-table', ['data' => $data]);
