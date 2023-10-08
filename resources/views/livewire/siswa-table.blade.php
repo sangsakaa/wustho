@@ -121,12 +121,10 @@
                 @endif
                 <tr>
                     <td colspan=" 9" class=" py-1">
-
                     </td>
                 </tr>
             </tbody>
         </table>
-
     </div>
 
 </div>
