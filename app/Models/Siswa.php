@@ -30,6 +30,17 @@ class Siswa extends Model
     {
         return $this->hasOne(Pesertaasrama::class)->latestOfMany();
     }
+    public static function search($search)
+    {
+        // dd($search);
+        return empty($search) ? static::query() : static::query()
+            ->where('nis', 'like', '%' . $search . '%')
+            ->orWhere('nama_siswa', 'like', '%' . $search . '%');
+    }
+    public function kelasmi()
+    {
+        return $this->belongsToMany(Kelasmi::class, 'pesertakelas', 'siswa_id', 'kelasmi_id');
+    }
     
 
 }

@@ -30,6 +30,7 @@
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @livewireStyles
 </head>
 
 <body class="font-sans antialiased">
@@ -55,13 +56,14 @@
                 <!-- Page Content -->
                 <main class="  flex-1">
                     {{ $slot }}
+
                 </main>
                 <!-- Page Footer -->
                 <x-footer />
             </div>
         </div>
     </div>
-
+    @livewireScripts
 </body>
 
 </html>

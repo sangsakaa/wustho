@@ -104,8 +104,16 @@
               <td class=" border px-2 text-center">{{$item->kegiatan}}</td>
 
               <td class=" border px-2 text-center capitalize">
-                <span class=" font-semibold">{{$item->SesiAsrama->count()}} org </span>|
-                {{$item->SesiAsrama->countBy('keterangan')}}
+                <span class="font-semibold">{{$item->SesiAsrama->count()}} org</span> |
+
+                Sakit: {{$item->SesiAsrama->where('keterangan', 'sakit')->count()}} org |
+                Izin: {{$item->SesiAsrama->where('keterangan', 'izin')->count()}} org |
+                Alfa: {{$item->SesiAsrama->where('keterangan', 'alfa')->count()}} org |
+                Hadir: {{$item->SesiAsrama->where('keterangan', 'hadir')->count()}} org
+
+
+
+
               </td>
               <td class=" text-center py-1 grid justify-center">
                 @if($item->SesiAsrama->count() == 0 )
@@ -139,7 +147,7 @@
         </table>
       </div>
     </div>
-  </div>
+
   </div>
   <div class="px-4 mt-1">
     <div class=" mx-auto mt-1 ">

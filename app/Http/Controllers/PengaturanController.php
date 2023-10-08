@@ -256,5 +256,9 @@ class PengaturanController extends Controller
             ]
         );
     }
+    public function testLive()
+    {
+        return view('pengaturan.live');
+    }
     
 }

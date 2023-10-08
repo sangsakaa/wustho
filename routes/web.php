@@ -247,12 +247,11 @@ Route::get('rekap-harian', [RekapAsamaController::class, 'RekapHarian']);
 
 Route::get('download_file', [PengaturanController::class, 'download_file']);
 Route::patch('pesertaasrama/{pesertaasrama}', [AsramasiswaController::class, 'updatepeserta']);
-
-
 // Data Validasi
 Route::get('validasi-data', [ValidasiController::class, 'index'])->middleware(['auth']);
 Route::get('blangko-ijazah/{lulusan}', [ValidasiController::class, 'blangkoijazah'])->middleware(['auth']);
 Route::get('blangko-transkip/{lulusan}', [ValidasiController::class, 'blangkoTranskip'])->middleware(['auth']);
+Route::get('live-siswa', [PengaturanController::class, 'testLive'])->middleware(['auth']);
 
 
 // LULUSAN

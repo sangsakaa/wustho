@@ -49,17 +49,17 @@
                             Hari, tanggal : {{ $tgl->isoFormat('dddd, D MMMM YYYY') }}
                         </div>
                     </div>
-                    <div class=" overflow-auto ">
-                        <table class="table-fixed w-full text-green-900 my-2">
+                    <div class="  overflow-hidden ">
+                        <table class=" w-full text-green-900 my-2">
                             <thead class="border border-b-2 border-green-600">
                                 <tr class="border  border-green-600 text-xs sm:text-sm">
                                     <th class="border border-green-600 px-1 w-8">No</th>
-                                    <th class="border border-green-600 px-1 w-1/12">Kegiatan</th>
+                                    <th class="border border-green-600 px-1 w-1/12 sm:w-1/12 ">Kegiatan</th>
                                     <th class="border border-green-600 px-1 w-1/12 ">Asrama</th>
                                     <th class="border border-green-600 px-1 w-11 ">Total</th>
                                     <th class="border border-green-600 px-1 w-11">Tidak Hadir</th>
                                     <th class="border border-green-600 px-1 w-11">Hadir</th>
-                                    <th class="border border-green-600 px-1 w-1/4 sm:w-1/2 ">Yang tidak hadir</th>
+                                    <th class="border border-green-600 px-1 w-1/4  sm:w-fit ">Yang tidak hadir</th>
                                     <th class="border border-green-600 px-1 w-10 sm:w-11 ">Ket</th>
                                     <th class="border border-green-600 px-1 w-1/7  ">Alasan</th>
 
