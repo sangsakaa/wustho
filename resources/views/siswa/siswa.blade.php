@@ -37,7 +37,7 @@
             @endif
             <div class=" p-2  bg-white dark:bg-black ">
                 <livewire:siswa-table></livewire:siswa-table>
-                dd
+
                 <div class=" bg-sky-400 rounded-md text-white px-1 grid grid-cols-1 mt-1">
                     <span class="px-4 mt-4 text-bold">Keterangan :</span>
                     <div class=" px-6 mb-4">
