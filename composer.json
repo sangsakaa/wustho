@@ -19,7 +19,7 @@
         "laravel/framework": "^9.19",
         "laravel/sanctum": "^2.14.1",
         "laravel/tinker": "^2.7",
-        "livewire/livewire": "^2.0",
+        "livewire/livewire": "^3.0",
         "maatwebsite/excel": "^3.1",
         "nesbot/carbon": "^2.66",
         "riskihajar/terbilang": "^2.0",
