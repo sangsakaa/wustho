@@ -121,7 +121,7 @@
                 @endif
                 <tr>
                     <td colspan=" 9" class=" py-1">
-                        {{$data}}
+
                     </td>
                 </tr>
             </tbody>
