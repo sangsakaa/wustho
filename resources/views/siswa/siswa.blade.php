@@ -13,28 +13,7 @@
     @can('show post')
     <div class="dark:bg-dark-bg dark:text-purple-600 px-2   ">
         <div class="  shadow-sm sm:rounded-md">
-            @if (session('delete'))
-            <script>
-                Toastify({
-                    text: "data berhasil dihapus",
-                    className: "delete",
-                    style: {
-                        background: "linear-gradient(to right, #00b09b, #96c93d)",
-                    }
-                }).showToast();
-            </script>
-            @endif
-            @if (session('success'))
-            <script>
-                Toastify({
-                    text: "data berhasil di tambahkan",
-                    className: "success",
-                    style: {
-                        background: "linear-gradient(to right, #00b09b, #96c93d)",
-                    }
-                }).showToast();
-            </script>
-            @endif
+
             <div class=" p-2  bg-white dark:bg-black ">
                 <livewire:siswa-table></livewire:siswa-table>
                 <div class=" bg-sky-400 rounded-md text-white px-1 grid grid-cols-1 mt-1">
