@@ -17,7 +17,7 @@ class SiswaTable extends Component
             ->leftJoin('nis', 'nis.siswa_id', '=', 'siswa.id')
         ->select('siswa.*',)
         ->paginate($this->perPage);
-        ;
+        
         return view('livewire.siswa-table', ['data' => $data]);
     }
 }
