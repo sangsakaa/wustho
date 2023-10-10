@@ -35,7 +35,7 @@ class Siswa extends Model
         // dd($search);
         return empty($search) ? static::query() : static::query()
             ->where('nis', 'like', '%' . $search . '%')
-            ->orWhere('nama_siswa', 'like', '%' . $search . '%');
+        ->orWhere('nama_siswa', 'like', '%' . $search . '%');
     }
     public function kelasmi()
     {
