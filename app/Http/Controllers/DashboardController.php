@@ -166,8 +166,6 @@ class DashboardController extends Controller
         ->where('kelasmi.periode_id', session('periode_id'))
         ->first();
 
-
-
         return view('dashboard', compact(
             [
                 'datasetsAbsensi',

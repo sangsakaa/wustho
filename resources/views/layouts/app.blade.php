@@ -18,8 +18,6 @@
     <!-- toastr -->
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
-
-
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- Styles -->
     <style>
@@ -56,7 +54,6 @@
                 <!-- Page Content -->
                 <main class="  flex-1">
                     {{ $slot }}
-
                 </main>
                 <!-- Page Footer -->
                 <x-footer />
