@@ -24,7 +24,7 @@
                             <a href="/juara-pararel" class=" mt-2 bg-red-600 px-2 py-1 text-white"> Kelas 3</a>
                         </div>
                         <div class=" flex grid-cols-1 justify-end">
-                            <form action="/nilaimapel" method="get" class=" flex gap-1">
+                            <form action="/progress-nilai" method="get" class=" flex gap-1">
                                 <input type="text" name="cari" value="{{ request('cari') }}" class=" border border-green-800 text-green-800 rounded-md py-1 dark:bg-dark-bg " placeholder=" Cari ..">
                                 <button type="submit" class=" px-2   bg-blue-500  rounded-md text-white">
                                     Cari </button>
