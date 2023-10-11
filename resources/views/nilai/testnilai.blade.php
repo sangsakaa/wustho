@@ -91,8 +91,6 @@
                                         <td class="text-center border py-1 px-1 ">{{$nilai->uh1 + $nilai->uh2 +$nilai->uh3 +$nilai->uts + $nilai->uas}}</td>
                                         <td class="text-center border py-1 px-1 ">{{($nilai->uh1 + $nilai->uh2 +$nilai->uh3 +$nilai->uts + $nilai->uas)/5}}</td>
                                         <td class="text-center border py-1 px-1 ">
-
-
                                         </td>
                                     </tr>
                                     @endforeach

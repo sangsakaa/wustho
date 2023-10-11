@@ -22,7 +22,7 @@ class MahasiswaTable extends Component
         $data = Siswa::search($this->search)
             ->orderby($this->sortcolumName, $this->sortDerection)
             ->leftJoin('nis', 'nis.siswa_id', '=', 'siswa.id')
-            ->select('siswa.*')
+            ->select('siswa.*', 'nis')
             ->paginate($this->perPage);
         return view('livewire.mahasiswa-table', ['data' => $data]);
     }

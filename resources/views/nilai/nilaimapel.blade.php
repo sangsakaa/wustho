@@ -46,6 +46,7 @@
                             <a href="/Rekapitulasi-Nilai" class=" mt-2 bg-red-600 px-2 py-1 text-white"> Kelas 1</a>
                             <a href="/Rekapitulasi-Nilai-Siswa" class=" mt-2 bg-red-600 px-2 py-1 text-white"> Kelas 2</a>
                             <a href="/juara-pararel" class=" mt-2 bg-red-600 px-2 py-1 text-white"> Kelas 3</a>
+                            <a href="/progress-nilai" class=" mt-2 bg-red-600 px-2 py-1 text-white"> Progress</a>
                         </div>
                         <div class=" flex grid-cols-1 justify-end">
                             <form action="/nilaimapel" method="get" class=" flex gap-1">

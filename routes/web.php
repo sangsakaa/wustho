@@ -113,6 +113,8 @@ Route::get('pesertakelas/{pesertakelas}/edit', [KelasmiController::class, 'editp
 Route::patch('pesertakelas/{pesertakelas}', [KelasmiController::class, 'storepesertakelas']);
 // Controller nilai
 Route::get('nilaimapel', [NilaiController::class, 'index'])->middleware(['auth'])->name('nilaimapel');
+Route::get('progress-nilai', [NilaiController::class, 'progress'])->middleware(['auth'])->name('progress-nilai');
+
 Route::get('nilai/{nilaimapel}', [NilaiController::class, 'show'])->middleware(['auth']);
 Route::post('nilai', [NilaiController::class, 'store'])->middleware(['auth'])->name('nilai');
 Route::get('nilai', [NilaiController::class, 'nilaipersiswa'])->middleware(['auth'])->name('nilaipersiswa');
