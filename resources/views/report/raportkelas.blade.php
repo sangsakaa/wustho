@@ -25,7 +25,6 @@
                     <div class=" py-1">
                         <a href="/pengaturan" class=" py-1 px-2 bg-red-600 rounded-md text-white">Batal</a>
                     </div>
-
                 </div>
                 <div class=" mt-4">
                     <form action="/raportkelas" method="post">
@@ -260,12 +259,9 @@
                         </div>
                         <div class=" text-sm   mt-4 text-left ">
                             <p class=" ">
-
-                            <p class=" underline"> Kedunglo, 27 Sya'ban 1444 H </p>
-
-                            <p class="  px-20 ml-1">19 Maret 2023 M</p>
+                            <p class=" underline"> Kedunglo, 30 Robi'ul Awwal 1445 H </p>
+                            <p class="  px-20 ml-6"> 14 Oktober 2023 M</p>
                             <p class="">Kepala Madrasah,</p>
-
                             <img src="{{asset('asset/images/ttd.png')}}" width="150" alt="">
 
 
