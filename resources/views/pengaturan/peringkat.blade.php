@@ -113,9 +113,9 @@
                         </td>
                         <td class=" px-2 text-sm border border-green-800 text-center">
 
-                            @if($ringkasan['jmlujian'] + $ringkasan['jmlharian'] <= 600) <span class="font-semibold text-red-600 text-sm"> Tidak Naik</span>
+                            @if($ringkasan['jmlujian'] + $ringkasan['jmlharian'] <= 600) <span class="font-semibold text-red-600 text-sm"> -</span>
                                 @else
-                                <span class="font-semibold">Naik</span>
+                                <span class="font-semibold">-</span>
                                 @endif
                         </td>
                     </tr>
