@@ -14,8 +14,7 @@ class PararelController
 {
     public function index(Request $request)
     {
-        
-        
+           
         $nilaiPerPesertaKelas = Nilai::query()
             ->join('pesertakelas', 'pesertakelas.id', '=', 'nilai.pesertakelas_id')
             ->join('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
@@ -110,7 +109,6 @@ class PararelController
         if (request('kelasmi_id')) {
             $siswa->where('kelasmi.id', 'like', '%' . request('kelasmi_id') . '%');
         }
-
         return view('seleksi.nominasi.index', [
             'nilaiPesertaKelasMap' => $nilaiPesertaKelasMap,
             'siswa' => $siswa->paginate(40),
@@ -121,8 +119,6 @@ class PararelController
     }
     public function indexSiswa(Request $request)
     {
-
-
         $nilaiPerPesertaKelas = Nilai::query()
             ->join('pesertakelas', 'pesertakelas.id', '=', 'nilai.pesertakelas_id')
             ->join('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
@@ -143,7 +139,7 @@ class PararelController
             ->where('kelasmi.periode_id', session('periode_id'))
             // ->where('kelas.kelas', 3)
             ->get()
-            ->groupBy('pesertakelas_id');
+            ->groupBy('pesertakelas_id', 'mapel');
 
         $nilaiPesertaKelasMap = collect();
 
@@ -163,7 +159,6 @@ class PararelController
                 if (!isset($nilaiPesertaKelas[$namaSiswa][$mapel])) {
                     $nilaiPesertaKelas[$namaSiswa][$mapel] = [];
                 }
-
                 $nilaiPesertaKelas[$namaSiswa][$mapel]['nilaiHarian'] = $nilaiHarian;
                 $nilaiPesertaKelas[$namaSiswa][$mapel]['nilaiUjian'] = $nilaiUjian;
             });
@@ -186,11 +181,7 @@ class PararelController
             ->select('kelasmi.id', 'nama_kelas')
             ->where('kelasmi.periode_id', session('periode_id'))
             ->orderBy('nama_kelas') // perbaikan pada penulisan orderBy
-            ->get();
-
-
-
-
+        ->get();
         $mapel = Mapel::query()
             ->join('kelas', 'kelas.id', '=', 'mapel.kelas_id')
             ->where('kelas', 1)
@@ -299,11 +290,7 @@ class PararelController
             ->select('kelasmi.id', 'nama_kelas')
             ->where('kelasmi.periode_id', session('periode_id'))
             ->orderBy('nama_kelas') // perbaikan pada penulisan orderBy
-            ->get();
-
-
-
-
+        ->get();
         $mapel = Mapel::query()
             ->join('kelas', 'kelas.id', '=', 'mapel.kelas_id')
             ->where('kelas', 2)
