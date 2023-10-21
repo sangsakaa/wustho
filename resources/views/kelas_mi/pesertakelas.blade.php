@@ -65,16 +65,14 @@
                         </div>
                     </div>
                     <div id="div1" class=" text-green-800 sm:text-green-800">
-                        <div class=" text-sm px-2  text-center  sm:hidden hidden ">
+                        <div class=" text-sm px-2  text-center  sm:hidden block ">
                             <div class=" flex">
                                 <div><img src={{ asset("asset/images/logo.png") }} alt="" width="120" class="  mt-3  p-2"></div>
                                 <div>
                                     <center>
-
                                         <p class=" capitalize  text-4xl  font-riqah py-2">
                                             المدرسة الدينية الوسطى الواحدية
                                         </p>
-
                                         </p>
                                         <p class="  font-serif text-lg uppercase">pondok pesantren kedunglo al munadhdhoroh</p>
                                         <p class="  uppercase font-serif text-2xl font-semibold ">madrasah diniyah wustho
@@ -96,7 +94,6 @@
                                         <th class=" text-sm px-2 border text-center  ">No</th>
                                         <th class=" text-sm px-2 border text-center">NIM </th>
                                         <th class=" text-sm px-2 border text-center">Nama </th>
-
                                         <th class=" text-sm px-2 border text-center py-1"> Nama Kelas </th>
                                         <th class=" text-sm px-2 border text-center   ">Aksi</th>
                                     </tr>
@@ -114,14 +111,12 @@
                                         <td class=" border px-2 capitalize">
                                             {{strtolower($list->nama_siswa)}}
                                         </td>
-
-
                                         <td class=" border px-2 text-center ">
                                             {{$list->nama_kelas}}
                                         </td>
-                                        <td class=" border px-3 py-1      gap-2    ">
-                                            <div class=" flex gap-2 justify-center">
-                                                <a href="/pesertakelas/{{$list->id}}/edit" class=" grid  bg-yellow-400 py-1 px-1 text-black hover:text-white hover:bg-purple-600 rounded-md ">
+                                        <td class=" hidden sm:block border px-3 py-1        gap-2    ">
+                                            <div class="   flex gap-2 justify-center">
+                                                <a href="/pesertakelas/{{$list->id}}/edit" class="   grid  bg-yellow-400 py-1 px-1 text-black hover:text-white hover:bg-purple-600 rounded-md ">
                                                     <x-icons.edit></x-icons.edit>
                                                 </a>
                                                 <form action="/pesertakelas/{{$list->id}}" method="post">
