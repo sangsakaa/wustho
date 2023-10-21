@@ -32,7 +32,6 @@
                             <th class=" border px-1 py-1">No</th>
                             <th class="  px-1 py-1 hidden sm:block">Periode</th>
                             <th class=" border px-1 py-1">Mata Pelajaran</th>
-
                             <th class=" border px-1 py-1">Kelas</th>
                             <th class=" border px-1 py-1">Jumlah</th>
                             <th class=" border px-1 py-1">NH</th>

@@ -29,27 +29,60 @@
                     <div>
                         <p class=" font-semibold">Mata Pelajaran & Progress :</p>
 
-                        @if($mapelGuru->count() != null)
-                        @foreach($mapelGuru as $list)
-                        <div class=" grid grid-cols-2">
+                        <div class=" grid grid-cols-4">
+                            @if($mapelGuru->count() != null)
+                            @foreach($mapelGuru as $list)
                             <div>
-                                <p> {{$loop->iteration}} . {{$list->nama_kelas}} {{$list->mapel}} {{$list->periode}} {{$list->ket_semester}}</p>
-                                <p class=" ml-4">
+                                <p class=" font-semibold"> {{$loop->iteration}} . {{$list->nama_kelas}} {{$list->mapel}} {{$list->periode}} {{$list->ket_semester}}</p>
+                                <div class=" grid grid-cols-2">
+                                    <div class=" px-5">
+                                        Nilai Harian
+                                    </div>
+                                    <div>
+                                        <div class=" ">
+                                            <span class=" flex ml-5">
+                                                : {{number_format($list->jumlah_nilai_harian/$list->jumlah_peserta_kelas * 100,0)}}% @if ($list->jumlah_nilai_harian == $list->jumlah_peserta_kelas )
+                                                <span class=" font-semibold text-green-600"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                                                    </svg>
+                                                </span>
+                                                @else
+                                                <span class=" text-red-600">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                                    </svg>
 
-                                    Nilai Harian : {{number_format($list->jumlah_nilai_harian/$list->jumlah_peserta_kelas * 100,0)}}% @if ($list->jumlah_nilai_harian == $list->jumlah_peserta_kelas )
-                                    <span>tuntas</span>
-                                    @else
-                                    Belum tuntas
-                                    @endif
-                                </p>
-                                <p class=" ml-4">
-                                    Nilai Ujian : {{number_format($list->jumlah_nilai_ujian/$list->jumlah_peserta_kelas * 100,0)}}%
-                                    @if ($list->jumlah_nilai_ujian == $list->jumlah_peserta_kelas )
-                                    <span>tuntas</span>
-                                    @else
-                                    Belum tuntas
-                                    @endif
-                                </p>
+                                                    @endif
+                                                    </p>
+                                                </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class=" grid grid-cols-2">
+                                    <div class=" px-5">
+                                        Nilai Ujian
+                                    </div>
+                                    <div>
+                                        <div class=" ">
+                                            <span class=" ml-5 flex">
+                                                : {{number_format($list->jumlah_nilai_ujian/$list->jumlah_peserta_kelas * 100,0)}}%
+                                                @if ($list->jumlah_nilai_ujian == $list->jumlah_peserta_kelas )
+                                                <span class=" font-semibold text-green-600"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                                                    </svg>
+                                                </span>
+                                                @else
+                                                <span class=" text-red-600">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                                    </svg>
+
+                                                </span>
+                                                @endif
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             @endforeach
                             @else
