@@ -66,22 +66,19 @@
                             page-break-after: always;
                         }
                     </style>
-                    <div class=" text-center text-green-700 block sm:hidden   ">
+                    <div class=" text-center text-green-700 block    ">
                         <div class=" flex">
                             <div><img src={{ asset("asset/images/logo.png") }} alt="" width="110" class=" px-2"></div>
-                            <div class="  ml-5 ">
-                                <center>
-
-                                    </p>
-                                    <p class="  font-serif text-lg uppercase">pondok pesantren kedunglo al munadhdhoroh</p>
-                                    <p class="  uppercase font-serif text-2xl font-semibold text-monospace ">madrasah diniyah wustho
-                                        Wahidiyah</p>
-                                    <p class=" capitalize font-serif text-xs">Alamat : Jl.KH. Wachid Hasyim Kota Kediri 64114 Jawa Timur Telp. (0354) 774511, 771018 Fax. (0354) 772179</p>
-                                    <hr class=" border-b-1 border-green-700 ">
-                                </center>
+                            <div class=" w-full grid justify-center  ml-5 ">
+                                </p>
+                                <p class="   text-lg uppercase">departemen Pendidikan Diniyah Wahidiyah</p>
+                                <p class="  uppercase  text-2xl font-semibold text-monospace ">madrasah diniyah wustho
+                                    Wahidiyah</p>
+                                <p class=" hidden capitalize  text-xs">Alamat : Jl.KH. Wachid Hasyim Kota Kediri 64114 Jawa Timur Telp. (0354) 774511, 771018 Fax. (0354) 772179</p>
+                                <p class=" font-semibold uppercase"> Tahun Pelajaran {{$kelasmi->periode}} {{$kelasmi->ket_semester}} </p>
                             </div>
                         </div>
-                        <hr class=" border-b-2 border-green-700 mb-1 mt-1">
+                        <hr class=" border-b-2 border-green-700  mb-0.5 mt-1">
                         <hr class=" border-b-1 border-green-700 mb-1">
                         <div class="  uppercase px-1 text-center">
                             <p class=" uppercase font-semibold ">laporan presensi Guru : Bulan {{ \Carbon\Carbon::parse(  $bulan)->isoFormat('  MMMM ') }} </p>
@@ -90,9 +87,10 @@
                         </div>
                     </div>
                     <div class="px-2">
-                        <table class="w-full">
+                        <table class="  w-full">
                             <thead>
                                 <tr class="border border-green-800">
+
 
                                     <th rowspan="2" class="border border-green-800 px-1">Nama </th>
                                     <th rowspan="2" class="border border-green-800 px-1 w-5">Kls</th>
@@ -101,35 +99,33 @@
                                     <th colspan="5" class="border border-green-800 px-1">Keterangan</th>
                                     <th colspan="6" class="border border-green-800 px-1">Terjadwal Hari</th>
                                 </tr>
-                                <tr class="border border-green-800">
-                                    <th class="border border-green-800 px-2 w-5 ">H</th>
-                                    <th class="border border-green-800 px-2 w-5 ">I</th>
-                                    <th class="border border-green-800 px-2 w-5 ">S</th>
-                                    <th class="border border-green-800 px-2 w-5 ">A</th>
-                                    <th class="border border-green-800 px-2   w-16   ">% H</th>
-
-                                    <th class="border border-green-800 text-xs  px-1 w-10">Jumat</th>
-                                    <th class="border border-green-800 text-xs  px-1 w-10">Sabtu</th>
-                                    <th class="border border-green-800 text-xs  px-1 w-10">Minggu</th>
-                                    <th class="border border-green-800 text-xs  px-1 w-10">Senin</th>
-                                    <th class="border border-green-800 text-xs  px-1 w-10">Selasa</th>
-                                    <th class="border border-green-800 text-xs  px-1 w-10">Rabu</th>
+                                <tr class="border border-green-800 ">
+                                    <th class="border border-green-800 px-1 w-5 ">H</th>
+                                    <th class="border border-green-800 px-1 w-5 ">I</th>
+                                    <th class="border border-green-800 px-1 w-5 ">S</th>
+                                    <th class="border border-green-800 px-1 w-5 ">A</th>
+                                    <th class="border border-green-800 px-1   w-16   ">% H</th>
+                                    <th class="border border-green-800 text-xs  w-10">Jumat</th>
+                                    <th class="border border-green-800 text-xs  w-10">Sabtu</th>
+                                    <th class="border border-green-800 text-xs  w-10">Minggu</th>
+                                    <th class="border border-green-800 text-xs  w-10">Senin</th>
+                                    <th class="border border-green-800 text-xs  w-10">Selasa</th>
+                                    <th class="border border-green-800 text-xs  w-10">Rabu</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach($laporan->groupBy('nama_guru') as $nama_guru => $laporanGuru)
                                 @if ($laporanGuru->isEmpty())
                                 <tr>
-                                    <td class="border border-green-800 px-1" colspan="13">No schedule available.</td>
 
+                                    <td class="border border-green-800 px-1" colspan="13">No schedule available.</td>
                                 </tr>
                                 @else
                                 @foreach($laporanGuru as $index => $data)
-
-                                <tr class="border border-green-800 {{ $index === 0 ? 'border-t-2' : '' }}">
+                                <tr class="border border-green-800  {{ $index === 0 ? 'border-t-2' : '' }}">
 
                                     @if ($index === 0)
-                                    <td class="border border-green-800 px-4 py-1" rowspan="{{ $laporanGuru->count() }}"> {{ $data->nama_guru }}</td>
+                                    <td class="border border-green-800 px-1 py-1" rowspan="{{ $laporanGuru->count() }}"> {{ $data->nama_guru }}</td>
                                     @endif
                                     <td class="border border-green-800 px-1 text-center">{{ $data->nama_kelas }}</td>
 
@@ -177,130 +173,8 @@
                                 @endforeach
                             </tbody>
                         </table>
-                        <div class=" mt-1  flex grid-cols-2 text-right block sm:hidden">
-                            <div class=" w-2/3"></div>
-                            <div class="  text-left text-sm">
-                                Kedunglo, <?php
-                                            $date = date_create(now());
-                                            echo \Carbon\Carbon::parse($date)->isoFormat(' DD MMMM Y');
-                                            ?></p>
-                                Al Mudir / Kepala <br><br><br><br>
-                                Muh. Bahrul Ulum, S.H
-                            </div>
-                        </div>
                     </div>
-
-                    <!-- <table class=" w-full mt-2">
-                        <thead>
-                            <tr class=" border border-green-800">
-                                <th rowspan="2" class=" border border-green-800 w-16">xBulan</th>
-                                <th rowspan="2" class=" border border-green-800 w-5">No</th>
-                                <th rowspan="2" class=" border border-green-800 w-16">Nama Guru</th>
-                                <th rowspan="2" class=" border border-green-800 w-16">Hari Wajib</th>
-                                <th colspan="4" class=" border border-green-800">Keterangan</th>
-                            </tr>
-                            <tr class=" border border-green-800">
-                                <th class=" border border-green-800 w-5">Hadir</th>
-                                <th class=" border border-green-800 w-5">Izin</th>
-                                <th class=" border border-green-800 w-5">Sakit</th>
-                                <th class=" border border-green-800 w-5">Alfa</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if ($laporan_per_bulan)
-                            @foreach ($laporan_per_bulan as $bulan => $guru)
-                            @foreach ($guru as $nama_guru => $data)
-                            <tr>
-                                @if ($loop->first)
-                                <td rowspan="{{ count($guru) + 1 }}" class="border border-green-800 text-center -rotate-90 text-2xl font-semibold">
-                                    {{ \Carbon\Carbon::parse($bulan)->isoFormat(' MMMM') }}
-                                </td>
-
-                                @endif
-                                <td class=" border border-green-800 text-center px-2">{{ $loop->iteration }}</td>
-                                <td class=" border border-green-800 text-left px-2">{{ $nama_guru }}</td>
-
-                                <td class=" border border-green-800 text-left px-2">
-
-
-                                    {{ \Carbon\Carbon::parse($bulan)->daysInMonth ; }}
-
-
-                                </td>
-                                <td class=" border border-green-800 text-center px-2">{{ $data['hadir'] }}</td>
-                                <td class=" border border-green-800 text-center px-2">{{ $data['izin'] }}</td>
-                                <td class=" border border-green-800 text-center px-2">{{ $data['sakit'] }}</td>
-                                <td class=" border border-green-800 text-center px-2">{{ $data['alfa'] }}</td>
-                            </tr>
-                            @endforeach
-                            @endforeach
-                            @endif
-                        </tbody>
-                    </table> -->
                     <div class="page-break"></div>
-                    <div class=" py-1">
-                        <p class=" text-lg text-center block sm:hidden uppercase text-green-800 font-semibold ">Detail Laporan Kehadiran</p>
-                    </div>
-                    <table class="w-full ">
-                        <thead>
-                            <tr>
-                                <th rowspan="2" class="border border-green-800">No</th>
-                                <th rowspan="2" class="border border-green-800">Nama Guru</th>
-                                <th class="border border-green-800" colspan="{{ $laporanDetail->pluck('nama_kelas')->unique()->count() }}">Kelas</th>
-                                <th rowspan="2" class="border border-green-800">Total</th>
-                            </tr>
-                            <tr>
-                                @foreach ($laporanDetail->pluck('nama_kelas')->unique()->sort() as $namaKelas)
-                                <th class="border border-green-800">{{ $namaKelas }}</th>
-                                @endforeach
-
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($laporanDetail->sortBy('nama_guru')->groupBy('nama_guru') as $namaGuru => $details)
-                            <tr class=" even:bg-gray-100">
-                                <td class="border border-green-800 text-center">{{ $loop->iteration }}</td>
-                                <td class="border border-green-800 px-1">{{ $namaGuru }}</td>
-                                @foreach ($laporanDetail->pluck('nama_kelas')->unique()->sort() as $namaKelas)
-                                @php
-                                $sesiKelas = $details->where('nama_kelas', $namaKelas)->first();
-                                @endphp
-                                <td class="border border-green-800{{ $loop->first ? ' ' : '' }} text-center">
-                                    {{ $sesiKelas ? $sesiKelas->jumlah_sesi_kelas_guru : '-' }}
-                                </td>
-                                @endforeach
-                                <td class="border border-green-800  text-center">
-                                    {{ $details->sum('jumlah_sesi_kelas_guru') }}
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                    <div class=" mt-1  flex grid-cols-2 text-right block sm:hidden">
-                        <div class=" w-2/3"></div>
-                        <div class="  text-left text-sm">
-                            Kedunglo, <?php
-                                        $date = date_create(now());
-                                        echo \Carbon\Carbon::parse($date)->isoFormat(' DD MMMM Y');
-                                        ?></p>
-                            Al Mudir / Kepala <br><br><br><br>
-                            Muh. Bahrul Ulum, S.H
-                        </div>
-                    </div>
-
-
-
-                </div>
-                <div class="  flex grid-cols-2 text-right block sm:hidden">
-                    <div class=" w-2/3"></div>
-                    <div class="  text-left text-sm">
-                        Kedunglo, <?php
-                                    $date = date_create(now());
-                                    echo \Carbon\Carbon::parse($date)->isoFormat(' DD MMMM Y');
-                                    ?></p>
-                        Al Mudir / Kepala <br><br><br><br>
-                        Muh. Bahrul Ulum, S.H
-                    </div>
                 </div>
             </div>
         </div>
