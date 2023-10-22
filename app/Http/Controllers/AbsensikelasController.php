@@ -135,6 +135,7 @@ class AbsensikelasController
                 'pesertakelas.id',
                 'siswa.nama_siswa',
                 'nis.nis',
+            'jenis_kelamin',
                 'kelas.kelas',
                 'kelasmi.nama_kelas',
             )
