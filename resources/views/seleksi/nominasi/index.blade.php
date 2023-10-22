@@ -1,14 +1,14 @@
 <x-app-layout>
     @if($kelasmi !== null)
 
-    @section('title','| Rekap Nilai : '.$kelasmi->nama_kelas )
+    @section('title','| Nilai Lager : '.$kelasmi->nama_kelas )
     @else
-    @section('title','Kelas 3' )
+    @section('title','| Lager' )
     @endif
     <x-slot name="header">
-        @section('title', ' | Tambah Mata Pelajaran' )
+        @section('title', ' | Nilai Lage' )
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Tambah Mata Pelajaran') }}
+            {{ __('Nilai Lage') }}
         </h2>
     </x-slot>
     <div class=" grid grid-cols-1  gap-2 px-2 py-2">
