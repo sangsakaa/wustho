@@ -4,7 +4,6 @@
             {{ __('Dashboard Input Nilai Kelas') }}
         </h2>
     </x-slot>
-
     <div class="">
         <div class="py-2">
             <div class="">

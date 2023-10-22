@@ -43,9 +43,7 @@
                     <div class=" grid grid-cols-1 sm:grid-cols-2">
                         <div>
                             <a href="/mapel" class=" mt-2 bg-red-600 px-2 py-1 text-white">Mata Pelajaran</a>
-                            <a href="/Rekapitulasi-Nilai" class=" mt-2 bg-red-600 px-2 py-1 text-white"> Kelas 1</a>
-                            <a href="/Rekapitulasi-Nilai-Siswa" class=" mt-2 bg-red-600 px-2 py-1 text-white"> Kelas 2</a>
-                            <a href="/juara-pararel" class=" mt-2 bg-red-600 px-2 py-1 text-white"> Kelas 3</a>
+                            <a href="/juara-pararel" class=" mt-2 bg-red-600 px-2 py-1 text-white"> Lager Nilai</a>
                             <a href="/progress-nilai" class=" mt-2 bg-red-600 px-2 py-1 text-white"> Progress</a>
                         </div>
                         <div class=" flex grid-cols-1 justify-end">
