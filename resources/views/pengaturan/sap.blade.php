@@ -54,17 +54,23 @@
             @foreach ($dataMapel as $mapel)
             <div class=" p-1 ">
                 <div class=" overflow-auto bg-white dark:bg-dark-bg  ">
-                    <div class=" text-center text-green-800">
-                        <p class=" font-semibold text-1xl">
-                            MADRASAH DINIYAH WUSTHO WAHIDIYAH
-                        </p>
-                        <p class=" text-2xl uppercase font-semibold">Satuan Acara Pembelajaran</p>
-                        <p class=" font-semibold uppercase">
-                            TAHUN PELAJARAN {{$kelasmi->periode}} {{$kelasmi->ket_semester}}
-                        </p>
+                    <div class=" text-center text-green-900  tracking-wider flex">
+                        <div class=" py-1">
+                            <img src={{ asset("asset/images/logo.png") }} alt="" width="120" class=" ">
+                        </div>
+                        <div class=" w-full py-1">
+                            <p class="text-lg uppercase font-semibold tracking-widest ">departemen pendidikan diniyah wahidiyah</p>
+                            <p class=" font-semibold text-1xl">
+                                MADRASAH DINIYAH WUSTHO WAHIDIYAH
+                            </p>
+                            <p class=" text-2xl uppercase font-semibold">Satuan Acara Pembelajaran</p>
+                            <p class=" font-semibold uppercase">
+                                TAHUN PELAJARAN {{$kelasmi->periode}} {{$kelasmi->ket_semester}}
+                            </p>
+                        </div>
                     </div>
                     <hr class=" border-b-2 border-green-800">
-                    <div class=" grid grid-cols-4">
+                    <div class=" grid grid-cols-4 text-green-800">
                         <div class=" text-sm text-green-800 mt-1 font-semibold">
                             KELAS
                         </div>
@@ -130,14 +136,20 @@
                     </table>
                     <div class="break-after-page"></div>
                     <div>
-                        <div class=" text-center text-green-800">
-                            <p class=" font-semibold text-1xl">
-                                MADRASAH DINIYAH WUSTHO WAHIDIYAH
-                            </p>
-                            <p class=" text-2xl uppercase font-semibold">Satuan Acara Pembelajaran</p>
-                            <p class=" font-semibold uppercase">
-                                TAHUN PELAJARAN {{$kelasmi->periode}} {{$kelasmi->ket_semester}}
-                            </p>
+                        <div class=" text-center text-green-900  tracking-wider flex">
+                            <div class=" py-1">
+                                <img src={{ asset("asset/images/logo.png") }} alt="" width="120" class=" ">
+                            </div>
+                            <div class=" w-full py-1">
+                                <p class="text-lg uppercase font-semibold tracking-widest ">departemen pendidikan diniyah wahidiyah</p>
+                                <p class=" font-semibold text-1xl">
+                                    MADRASAH DINIYAH WUSTHO WAHIDIYAH
+                                </p>
+                                <p class=" text-2xl uppercase font-semibold">Satuan Acara Pembelajaran</p>
+                                <p class=" font-semibold uppercase">
+                                    TAHUN PELAJARAN {{$kelasmi->periode}} {{$kelasmi->ket_semester}}
+                                </p>
+                            </div>
                         </div>
                         <hr class=" border-b-2 border-green-800">
                         <div class=" grid grid-cols-4">

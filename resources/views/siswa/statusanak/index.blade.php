@@ -57,13 +57,23 @@
                         <div class=" grid grid-cols-1 justify-items-end">
                             <a href="/statuspengamal/{{$siswa->id}}" class=" bg-blue-500 px-2 py-1 hover:bg-purple-500 text-white">Status Pengamal</a>
                         </div>
-
                         @endrole
                     </div>
                     <div class=" grid grid-cols-1 sm:grid-cols-1 gap-2 py-1">
                         <form action="/statusanak/{{$siswa->id}}" method="post">
                             @csrf
                             <div class=" grid grid-cols-1 sm:grid-cols-2 gap-2">
+                                @if (session('create'))
+                                <script>
+                                    Toastify({
+                                        text: "data berhasil di di create",
+                                        className: "create",
+                                        style: {
+                                            background: "linear-gradient(to right, #00b09b, #96c93d)",
+                                        }
+                                    }).showToast();
+                                </script>
+                                @endif
                                 @if($sp->count() == 1 )
                                 <span>data sudah sesuia</span>
                                 @elseif($sp->count() == 0)

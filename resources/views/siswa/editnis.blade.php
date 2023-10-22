@@ -13,6 +13,7 @@
                     <div class=" grid grid-cols-1 sm:grid-cols-1 gap-2">
                         <div class=" py-1">
 
+
                             <form action="/nis/{{$nis->id}}" method="post">
                                 @csrf
                                 @method('patch')

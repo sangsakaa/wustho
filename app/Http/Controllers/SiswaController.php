@@ -223,7 +223,7 @@ class SiswaController extends Controller
                 'tanggal_masuk' => $request->tanggal_masuk,
 
             ]);
-        return redirect('/nis/' . $nis->siswa_id);
+        return redirect('/nis/' . $nis->siswa_id)->with('update', 'pembaharuan data NIM berhasil');
         
     }
     public function statuspengamal(Siswa $siswa,)

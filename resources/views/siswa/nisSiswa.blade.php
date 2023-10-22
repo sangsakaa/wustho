@@ -76,6 +76,17 @@
                         </div>
                     </div>
                     <div>
+                        @if (session('update'))
+                        <script>
+                            Toastify({
+                                text: "data NIM berhasil di update",
+                                className: "update",
+                                style: {
+                                    background: "linear-gradient(to right, #00b09b, #96c93d)",
+                                }
+                            }).showToast();
+                        </script>
+                        @endif
                         <span>Detail Nomor Induk Siswa</span>
                         <table class=" w-full">
                             <thead>
