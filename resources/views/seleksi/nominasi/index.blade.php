@@ -3,15 +3,13 @@
 
     @section('title','| Rekap Nilai : '.$kelasmi->nama_kelas )
     @else
-
     @section('title','Kelas 3' )
     @endif
     <x-slot name="header">
         <div class="flex bg-white dark:bg-dark-eval-0 flex-col gap-2 py-2 justify-between px-4 md:flex-row md:items-center md:justify-between">
-
         </div>
     </x-slot>
-    <div class="p-6 overflow-hidden bg-white  shadow-md dark:bg-dark-eval-1">
+    <div class="p-4  bg-white  shadow-md dark:bg-dark-eval-1">
         <div class=" w-full  py-1 grid grid-cols-2">
             <div class=" w-full">
                 <form action="/juara-pararel" method="get" class="  text-sm gap-1 flex">
@@ -42,7 +40,7 @@
             </div>
         </div>
         @if($kelasmi)
-        <div id="div1" class="  overflow-hidden ">
+        <div id="div1" class=" ">
             <center>
                 <div class=" text-center text-green-900 mt-5">
                     <p class=" font-semibold text-3xl">
@@ -55,20 +53,19 @@
                 <p class="  uppercase font-semibold">
                     daftar Nilai Kelas {{$kelasmi->nama_kelas}} </p>
             </center>
-            <div class=" overflow-auto">
+            <div class=" ">
                 <table class="w-full">
                     <thead>
                         <tr class="border border-black text-sm">
                             <th class="border border-black">No</th>
                             <th class="border border-black">Nama Siswa</th>
                             <th class="border border-black -rotate-90">Kelas</th>
-                            <th class="border border-black -rotate-90">Nama Kelas</th>
                             @php
                             $subjectNames = [];
                             @endphp
                             @foreach($mapel as $m)
                             @if(!in_array($m->mapel, $subjectNames))
-                            <th class="rotate-90 h-48 border border-black">{{ $m->mapel }}</th>
+                            <th class="rotate-90 h-44  w-16 border border-black ">{{ $m->mapel }}</th>
                             @php
                             $subjectNames[] = $m->mapel;
                             @endphp
@@ -83,7 +80,6 @@
                         <tr class="border border-black even:bg-gray-100 text-sm">
                             <td class="text-center">{{ $loop->iteration }}</td>
                             <td class="border border-black px-2 capitalize">{{ strtolower($s->nama_siswa) }}</td>
-                            <td class="border border-black px-2 text-center">{{ $s->kelas }}</td>
                             <td class="border border-black px-2 text-center">{{ $s->nama_kelas }}</td>
                             @php
                             $totalNilai = 0;
@@ -123,22 +119,22 @@
                                     @endif
                             </td>
                             <td class="text-center border border-black">
-                                @if($totalNilai < 600) <span class="text-red-600"> Tidak Lulus</span>
+                                @if($totalNilai < 600) <span class="text-red-600"> Belum Tuntas</span>
                                     @else
-                                    Lulus
+                                    Tuntas
                                     @endif
                             </td>
                         </tr>
                         @endforeach
                     </tbody>
                 </table>
-
             </div>
         </div>
+        @else
+        <div class=" p-6 bg-yellow-300">
+            <span class=" capitalize">pilih kelas </span>
+        </div>
+        @endif
     </div>
-    @else
-    <div class=" p-6 bg-yellow-300">
-        <span class=" capitalize">pilih kelas </span>
-    </div>
-    @endif
+
 </x-app-layout>
