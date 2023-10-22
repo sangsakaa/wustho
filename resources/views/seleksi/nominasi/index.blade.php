@@ -68,7 +68,9 @@
                                     </p>
                                 </div>
                                 <p class="  uppercase font-semibold">
-                                    daftar Nilai Kelas {{$kelasmi->nama_kelas}} </p>
+                                    daftar Nilai Kelas {{$kelasmi->nama_kelas}}
+
+                                </p>
                             </center>
                             <div class=" ">
                                 <table class="w-full text-sm">

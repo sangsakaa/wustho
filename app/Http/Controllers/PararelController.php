@@ -6,9 +6,9 @@ use App\Models\Kelasmi;
 use App\Models\Mapel;
 use App\Models\Nilai;
 use App\Models\Pesertakelas;
-use App\Models\Siswa;
+
 use Illuminate\Http\Request;
-use Svg\Tag\Rect;
+
 
 class PararelController
 {
@@ -76,16 +76,11 @@ class PararelController
             ->where('kelasmi.periode_id', session('periode_id'))
             ->orderby('nama_kelas')
         ->get();
-
-        $mapel = Mapel::query()
-            ->join('kelas', 'kelas.id', '=', 'mapel.kelas_id')
-            ->whereNotIn('mapel', ['Qiro\'atul Kutub', 'Mengajar'])
-        ->select('mapel.id', 'mapel', 'kelas')
-            ->orderBy('kelas.kelas')
-            ->orderBy('mapel.id')
-        ->get();
+        // dd($dataKelasMi);
+        
 
         $kelasmi = Kelasmi::query()
+            ->join('kelas', 'kelas.id', 'kelasmi.kelas_id')
         ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
         ->join(
             'semester',
@@ -93,10 +88,17 @@ class PararelController
             '=',
             'periode.semester_id'
         )
-        ->select('kelasmi.id', 'kelasmi.nama_kelas', 'periode.periode', 'semester.ket_semester')
+            ->select('kelasmi.id', 'kelasmi.nama_kelas', 'periode.periode', 'semester.ket_semester', 'kelas')
         ->where('kelasmi.periode_id', session('periode_id'))
         ->where('kelasmi.id', $request->kelasmi_id)
         ->first();
+        $mapel = Mapel::query()
+        ->join('kelas', 'kelas.id', '=', 'mapel.kelas_id')
+        ->whereNotIn('mapel', ['Qiro\'atul Kutub', 'Mengajar'])
+        ->select('mapel.id', 'mapel', 'kelas')
+        ->where('kelas', $kelasmi->kelas)
+        ->orderBy('mapel.id')
+        ->get();
         if (request('kelasmi_id')) {
             $siswa->where('kelasmi.id', 'like', '%' . request('kelasmi_id') . '%');
         }
