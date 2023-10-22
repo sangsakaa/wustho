@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        @section('title', ' | Laporan Bulanan '.\Carbon\Carbon::parse( $bulan)->isoFormat(' MMMM Y '))
+        @section('title', ' | Laporan Bulanan Perangkat '.\Carbon\Carbon::parse( $bulan)->isoFormat(' MMMM Y '))
         <h2 class="font-semibold text-xl leading-tight">
             LAPORAN BULANAN
         </h2>
