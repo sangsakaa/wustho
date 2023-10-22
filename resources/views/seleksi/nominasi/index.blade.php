@@ -6,9 +6,9 @@
     @section('title','| Lager' )
     @endif
     <x-slot name="header">
-        @section('title', ' | Nilai Lage' )
+        @section('title', ' | Nilai Lager' )
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Nilai Lage') }}
+            {{ __('Nilai Lager') }}
         </h2>
     </x-slot>
     <div class=" grid grid-cols-1  gap-2 px-2 py-2">
