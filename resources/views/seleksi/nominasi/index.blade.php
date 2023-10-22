@@ -59,20 +59,46 @@
                         @if($kelasmi)
                         <div id="div1" class="p-4 mt-2  bg-white  shadow-md dark:bg-dark-eval-1">
                             <center>
-                                <div class=" text-center text-green-900 mt-5">
-                                    <p class=" font-semibold text-3xl">
-                                        MADRASAH DINIYAH WUSTHO WAHIDIYAH
-                                    </p>
-                                    <p class=" font-semibold uppercase">
-                                        TAHUN PELAJARAN {{$kelasmi->periode}} {{$kelasmi->ket_semester}}
-                                    </p>
+                                <div class=" text-center text-green-900  tracking-wider flex">
+                                    <div class="">
+                                        <img src={{ asset("asset/images/logo.png") }} alt="" width="100" class="  mb-1    ">
+                                    </div>
+                                    <div class=" w-full ">
+                                        @if($kelasmi->jenjang === "Wustho")
+                                        <div class="grid   justify-items-center     ">
+                                            </p>
+                                            <p class="   text-lg uppercase font-semibold tracking-widest ">departemen pendidikan diniyah wahidiyah</p>
+                                            <p class="font-semibold text-3xl uppercase">
+                                                MADRASAH DINIYAH {{$kelasmi->jenjang}} WAHIDIYAH
+                                            </p>
+                                            <p class="font-semibold uppercase  tracking-widest">
+                                                TAHUN PELAJARAN {{$kelasmi->periode}} {{$kelasmi->ket_semester}}
+                                            </p>
+                                        </div>
+                                        @elseif($kelasmi->jenjang === "Ulya")
+                                        <p class="font-semibold text-3xl uppercase">
+                                            MADRASAH DINIYAH {{$kelasmi->jenjang}} WAHIDIYAH
+                                        </p>
+                                        <p class="font-semibold uppercase  tracking-widest">
+                                            TAHUN PELAJARAN {{$kelasmi->periode}} {{$kelasmi->ket_semester}}
+                                        </p>
+                                        @elseif($kelasmi->jenjang === "Ula")
+                                        <p class="font-semibold text-3xl uppercase">
+                                            MADRASAH DINIYAH {{$kelasmi->jenjang}} WAHIDIYAH
+                                        </p>
+                                        <p class="font-semibold uppercase  tracking-widest">
+                                            TAHUN PELAJARAN {{$kelasmi->periode}} {{$kelasmi->ket_semester}}
+                                        </p>
+                                        @endif
+                                    </div>
                                 </div>
-                                <p class="  uppercase font-semibold">
-                                    daftar Nilai Kelas {{$kelasmi->nama_kelas}}
-
-                                </p>
                             </center>
-                            <div class=" ">
+                            <hr class=" border-b-2 border-green-900">
+                            <hr class=" mt-0.5 border-b-1 border-green-900">
+                            <div class=" mt-2 ">
+                                <div class=" uppercase grid justify-center text-green-900 font-semibold tracking-widest">
+                                    Daftar Nilai Lager Kelas : {{$kelasmi->nama_kelas}}
+                                </div>
                                 <table class="w-full text-sm">
                                     <thead>
                                         <tr class="border border-black text-sm">
