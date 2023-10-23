@@ -60,7 +60,7 @@
                         </div>
                         <div class=" w-full py-1">
 
-                            <p class=" font-semibold text-1xl">
+                            <p class=" font-semibold text-1xl  uppercase">
                                 MADRASAH DINIYAH {{$kelasmi->jenjang}} WAHIDIYAH
                             </p>
                             <p class=" text-2xl uppercase font-semibold">Satuan Acara Pembelajaran</p>
