@@ -152,7 +152,7 @@
                             </div>
                         </div>
                         <hr class=" border-b-2 border-green-800">
-                        <div class=" grid grid-cols-4">
+                        <div class=" grid grid-cols-4 text-green-800">
                             <div class=" text-sm text-green-800 mt-1 font-semibold">
                                 KELAS
                             </div>
