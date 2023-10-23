@@ -11,23 +11,27 @@
         <div class="">
 
             <div class=" bg-white dark:bg-dark-bg overflow-hidden shadow-sm ">
-                <div class="mx-2 px-2 border-gray-200 grid grid-cols-1 w-full sm:grid-cols-1  gap-2">
-                    <form action="/sap" method="get" class="w-full">
-                        <select name="kelasmi_id" id="" class=" my-1 w-full sm:w-1/5 py-1 dark:bg-dark-bg" required>
-                            <option value="">-- Pilih Kelas --</option>
-                            @foreach ($dataKelasMi as $kelas)
-                            <option value="{{ $kelas->id }}" {{ $kelasmi?->id === $kelas->id ? "selected" : "" }}>
-                                {{ $kelas->nama_kelas }} {{ $kelas->periode }} {{ $kelas->ket_semester }}
-                            </option>
-                            @endforeach
-                        </select>
-                        <button class=" bg-red-600 py-1 dark:bg-purple-600 mt-1 my-1 w-full sm:w-40 rounded-sm hover:bg-purple-600 text-white px-4 ">
-                            Pilih Kelas
+                <div class="mx-2 px-2 border-gray-200 grid grid-cols-2 w-full sm:grid-cols-2  gap-2">
+                    <div class=" w-full">
+                        <form action="/sap" method="get" class="w-full">
+                            <select name="kelasmi_id" id="" class=" my-1 w-full sm:w-1/2 py-1 dark:bg-dark-bg" required>
+                                <option value="">-- Pilih Kelas --</option>
+                                @foreach ($dataKelasMi as $kelas)
+                                <option value="{{ $kelas->id }}" {{ $kelasmi?->id === $kelas->id ? "selected" : "" }}>
+                                    {{ $kelas->nama_kelas }} {{ $kelas->periode }} {{ $kelas->ket_semester }}
+                                </option>
+                                @endforeach
+                            </select>
+                            <button class=" bg-red-600 py-1 dark:bg-purple-600 mt-1 my-1 w-full sm:w-40 rounded-sm hover:bg-purple-600 text-white px-4 ">
+                                Pilih Kelas
+                            </button>
+                        </form>
+                    </div>
+                    <div class=" justify-end grid">
+                        <button class=" bg-red-600 py-1 dark:bg-purple-600 mt-1 my-1 w-full sm:w-40 rounded-sm hover:bg-purple-600 text-white px-4 " onclick="printContent('blanko')">
+                            Cetak
                         </button>
-                    </form>
-                    <button class=" bg-red-600 py-1 dark:bg-purple-600 mt-1 my-1 w-full sm:w-40 rounded-sm hover:bg-purple-600 text-white px-4 " onclick="printContent('blanko')">
-                        Cetak
-                    </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -222,7 +226,7 @@
                     </div>
                     <div class=" grid grid-cols-2 gap-2">
                         <div>
-                            <table class=" mt-2 w-full border text-sm">
+                            <table class=" mt-1 w-full border text-sm">
                                 <thead>
                                     <tr class=" text-green-800">
                                         <th class=" border border-green-600 w-5  text-center">No</th>
@@ -235,7 +239,9 @@
                                 <tbody>
                                     @for ($i = 1; $i < 10; $i++) <tr class=" text-green-800">
                                         <td class="border border-green-600 py-4  text-center">{{$i}}</td>
-                                        <td class="border border-green-600   w-36"></td>
+                                        <td class="border border-green-600   w-36">
+
+                                        </td>
                                         <td class="border border-green-600  w-5  text-center capitalize font-semibold">Pert {{$i}}</td>
                                         <td class="border border-green-600  w-1/4"></td>
                                         <td class="border border-green-600 "></td>
@@ -245,7 +251,7 @@
                             </table>
                         </div>
                         <div>
-                            <table class=" mt-2 w-full border text-sm">
+                            <table class=" mt-1 w-full border text-sm">
                                 <thead>
                                     <tr class=" text-green-800">
                                         <th class=" border border-green-600 w-5  text-center">No</th>
@@ -258,7 +264,9 @@
                                 <tbody>
                                     @for ($i = 10; $i < 19; $i++) <tr class=" text-green-800">
                                         <td class="border border-green-600 py-4  text-center">{{$i}}</td>
-                                        <td class="border border-green-600   w-36"></td>
+                                        <td class="border border-green-600   w-36">
+
+                                        </td>
                                         <td class="border border-green-600  w-5  text-center capitalize font-semibold">Pert {{$i}}</td>
                                         <td class="border border-green-600  w-1/4"></td>
                                         <td class="border border-green-600 "></td>
