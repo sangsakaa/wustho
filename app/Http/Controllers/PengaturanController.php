@@ -130,7 +130,7 @@ class PengaturanController extends Controller
         $kelasmi = Kelasmi::query()
             ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
             ->join('semester', 'semester.id', '=', 'periode.semester_id')
-            ->select('kelasmi.id', 'kelasmi.nama_kelas', 'periode.periode', 'semester.ket_semester')
+            ->select('kelasmi.id', 'kelasmi.nama_kelas', 'periode.periode', 'semester.ket_semester', 'jenjang')
             ->where('kelasmi.periode_id', session('periode_id'))
             ->where('kelasmi.id', $request->kelasmi_id)
             ->first();
@@ -153,11 +153,29 @@ class PengaturanController extends Controller
         $dataMapel = Nilaimapel::query()
             ->join('guru', 'guru.id', '=', 'nilaimapel.guru_id')
             ->join('kelasmi', 'kelasmi.id', '=', 'nilaimapel.kelasmi_id')
+            ->leftjoin('daftar_jadwal', 'daftar_jadwal.guru_id', '=', 'guru.id')
+            ->leftjoin('jadwal', 'daftar_jadwal.jadwal_id', '=', 'jadwal.id') // Mengubah daftar_jadwal.id menjadi jadwal.id
             ->join('mapel', 'mapel.id', '=', 'nilaimapel.mapel_id')
-        ->select('nilaimapel.id', 'nama_guru', 'mapel')
-        ->where('nilaimapel.kelasmi_id', $kelasmi->id);
-        
-        
+        ->select(
+            [
+                'nilaimapel.id',
+                'nama_guru', 'mapel',
+                'jadwal.hari',
+                'jadwal.periode_id',
+                'kelasmi.periode_id',
+                'jadwal.kelasmi_id',
+                'jadwal.id'
+            ]
+        )
+        ->where('nilaimapel.kelasmi_id', $kelasmi->id)
+        ->where('jadwal.kelasmi_id', $kelasmi->id)
+        ->where('kelasmi.periode_id', session('periode_id'))
+        ->where('jadwal.periode_id', session('periode_id')); // Menggunakan get() untuk mengambil hasil
+
+// Sekarang Anda memiliki hasil dalam variabel $dataMapel
+
+
+        // dd($dataMapel);
         $dataSiswa = Pesertakelas::query()
             ->join('siswa', 'siswa.id', '=', 'pesertakelas.siswa_id')
             ->join('nis', 'siswa.id', '=', 'nis.siswa_id')

@@ -50,18 +50,18 @@
     </div>
     @if($kelasmi)
     <div class="py-1" id="blanko">
-        <div class="bg-white dark:bg-dark-bg overflow-hidden shadow-sm ">
+        <div class="px-2 bg-white dark:bg-dark-bg overflow-hidden shadow-sm ">
             @foreach ($dataMapel as $mapel)
             <div class=" p-1 ">
                 <div class=" overflow-auto bg-white dark:bg-dark-bg  ">
                     <div class=" text-center text-green-900  tracking-wider flex">
                         <div class=" py-1">
-                            <img src={{ asset("asset/images/logo.png") }} alt="" width="120" class=" ">
+                            <img src={{ asset("asset/images/logo.png") }} alt="" width="90" class=" ">
                         </div>
                         <div class=" w-full py-1">
-                            <p class="text-lg uppercase font-semibold tracking-widest ">departemen pendidikan diniyah wahidiyah</p>
+
                             <p class=" font-semibold text-1xl">
-                                MADRASAH DINIYAH WUSTHO WAHIDIYAH
+                                MADRASAH DINIYAH {{$kelasmi->jenjang}} WAHIDIYAH
                             </p>
                             <p class=" text-2xl uppercase font-semibold">Satuan Acara Pembelajaran</p>
                             <p class=" font-semibold uppercase">
@@ -92,8 +92,8 @@
                         <div class=" text-sm text-green-800 font-semibold">
                             HARI
                         </div>
-                        <div>
-                            :
+                        <div class=" font-semibold capitalize ">
+                            : {{ strtolower($mapel->hari )}}
                         </div>
                     </div>
                     <table class="table-fixed w-full text-green-800">
@@ -138,12 +138,12 @@
                     <div>
                         <div class=" text-center text-green-900  tracking-wider flex">
                             <div class=" py-1">
-                                <img src={{ asset("asset/images/logo.png") }} alt="" width="120" class=" ">
+                                <img src={{ asset("asset/images/logo.png") }} alt="" width="90" class=" ">
                             </div>
                             <div class=" w-full py-1">
-                                <p class="text-lg uppercase font-semibold tracking-widest ">departemen pendidikan diniyah wahidiyah</p>
-                                <p class=" font-semibold text-1xl">
-                                    MADRASAH DINIYAH WUSTHO WAHIDIYAH
+
+                                <p class=" font-semibold text-1xl uppercase">
+                                    MADRASAH DINIYAH {{$kelasmi->jenjang}} WAHIDIYAH
                                 </p>
                                 <p class=" text-2xl uppercase font-semibold">Satuan Acara Pembelajaran</p>
                                 <p class=" font-semibold uppercase">
@@ -174,9 +174,10 @@
                             <div class=" text-sm text-green-800 font-semibold">
                                 HARI
                             </div>
-                            <div>
-                                :
+                            <div class=" font-semibold capitalize ">
+                                : {{ strtolower($mapel->hari )}}
                             </div>
+
                         </div>
                     </div>
                     <div class=" grid grid-cols-2 gap-2">
