@@ -100,11 +100,51 @@
                         <thead class="border border-b-2 border-green-600">
                             <tr class="border  border-green-600 text-xs sm:text-sm">
                                 <th class="border border-green-600 px-1 w-8" rowspan="2">NO</th>
-                                <th class="border border-green-600 px-1 w-1/5">TANGGAL KBM</th>
+                                <th class="border border-green-600 px-1 w-1/5">
+
+                                    TANGGAL KBM
+                                </th>
                                 <th class="border border-green-600 px-1 text-xs" colspan="2">NILAI TUGAS</th>
-                                @for ($i = 0; $i < 18; $i++) <th class="border border-green-600 px-1">
-                                    </th>
-                                    @endfor
+                                <?php
+                                // Pastikan variabel $mapel->hari memiliki nilai yang benar
+                                $hari = strtolower($mapel->hari); // Ambil hari dari objek $mapel dan ubah menjadi huruf kecil
+                                $tanggal_awal = Illuminate\Support\Carbon::parse($kelasmi->tanggal_mulai); // Gunakan $tanggal_awal sebagai tanggal awal
+
+                                // Tambahkan hari yang diperlukan berdasarkan $mapel->hari
+                                switch ($hari) {
+                                    case 'jumat':
+                                        $tanggal_awal->modify('next friday');
+                                        break;
+                                    case 'sabtu':
+                                        $tanggal_awal->modify('next saturday');
+                                        break;
+                                    case 'minggu':
+                                        $tanggal_awal->modify('next sunday');
+                                        break;
+                                    case 'senin':
+                                        $tanggal_awal->modify('next monday');
+                                        break;
+                                    case 'selasa':
+                                        $tanggal_awal->modify('next tuesday');
+                                        break;
+                                    case 'rabu':
+                                        $tanggal_awal->modify('next wednesday');
+                                        break;
+                                    default:
+                                        // Tindakan jika $mapel->hari tidak valid
+                                        break;
+                                }
+
+                                $jumlah_hari = 18; // Pastikan variabel $jumlah_hari memiliki nilai yang benar
+
+                                if ($tanggal_awal instanceof Illuminate\Support\Carbon) {
+
+                                    for ($hari = 0; $hari < $jumlah_hari; $hari++) {
+                                        echo '<th class="border border-green-600 px-1 text-xs">' . $tanggal_awal->format('d/m ') . '</th>';
+                                        $tanggal_awal->modify('+7 days'); // Menambahkan 7 hari ke tanggal_awal
+                                    }
+                                }
+                                ?>
                             </tr>
                             <tr class="border border-green-600 text-xs sm:text-sm">
                                 <th class="border border-green-600 px-1">NAMA</th>

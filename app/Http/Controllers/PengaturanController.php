@@ -130,10 +130,11 @@ class PengaturanController extends Controller
         $kelasmi = Kelasmi::query()
             ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
             ->join('semester', 'semester.id', '=', 'periode.semester_id')
-            ->select('kelasmi.id', 'kelasmi.nama_kelas', 'periode.periode', 'semester.ket_semester', 'jenjang')
+            ->select('kelasmi.id', 'kelasmi.nama_kelas', 'periode.periode', 'semester.ket_semester', 'jenjang', 'tanggal_mulai')
             ->where('kelasmi.periode_id', session('periode_id'))
             ->where('kelasmi.id', $request->kelasmi_id)
             ->first();
+        // dd($kelasmi);
         $datakelasmi = Kelasmi::query()
             ->join('periode', 'periode.id', 'kelasmi.periode_id')
             ->join('semester', 'semester.id', 'periode.semester_id')
@@ -170,7 +171,8 @@ class PengaturanController extends Controller
         ->where('nilaimapel.kelasmi_id', $kelasmi->id)
         ->where('jadwal.kelasmi_id', $kelasmi->id)
         ->where('kelasmi.periode_id', session('periode_id'))
-        ->where('jadwal.periode_id', session('periode_id')); // Menggunakan get() untuk mengambil hasil
+        ->where('jadwal.periode_id', session('periode_id'))
+        ->orderby('hari'); // Menggunakan get() untuk mengambil hasil
 
 // Sekarang Anda memiliki hasil dalam variabel $dataMapel
 
