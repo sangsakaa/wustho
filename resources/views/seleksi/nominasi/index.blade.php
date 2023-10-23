@@ -110,7 +110,7 @@
                                             @endphp
                                             @foreach($mapel as $m)
                                             @if(!in_array($m->mapel, $subjectNames))
-                                            <th class="rotate-90  h-36  w-16  border border-black ">{{ $m->mapel }}</th>
+                                            <th class="rotate-90  h-36    w-20  border border-black ">{{ $m->mapel }}</th>
                                             @php
                                             $subjectNames[] = $m->mapel;
                                             @endphp
