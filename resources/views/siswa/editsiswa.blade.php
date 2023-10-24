@@ -80,14 +80,13 @@
                                     <label for="anak_ke">Anak Ke-</label>
                                     <input class="py-1" type="text" name="anak_ke" id="anak_ke" value="{{ isset($statusAnak->anak_ke) ? $statusAnak->anak_ke : '' }}">
                                 </div>
-
                                 <input class="py-1" type="hidden" name="siswa_id" id="siswa_id" value="{{ isset($statusAnak->siswa_id) ? $statusAnak->siswa_id : '' }}">
                                 <div class=" grid grid-cols-1">
                                     <label for="jumlah_saudara">Jumlah Saudara</label>
                                     <input class="py-1" type="text" name="jumlah_saudara" id="jumlah_saudara" value="{{ isset($statusAnak->jumlah_saudara) ? $statusAnak->jumlah_saudara : '' }}">
                                 </div>
                             </div>
-                            <div class=" grid grid-cols-2 gap-2 mt-2">
+                            <div class=" grid grid-cols-1 sm:grid-cols-2 gap-2 mt-2">
                                 <div class=" grid grid-cols-1">
                                     <label for="nama_ayah">Nama Ayah</label>
                                     <input class="py-1" type="text" name="nama_ayah" id="nama_ayah" value="{{ isset($statusAnak->nama_ayah) ? $statusAnak->nama_ayah : '' }}">
