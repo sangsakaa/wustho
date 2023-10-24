@@ -63,11 +63,9 @@
                                 <option {{ old('status_pengamal', $status_pengamal->status_pengamal ?? 'Pengamal') == 'Simpatisan' ? 'selected' : '' }} value="Simpatisan">
                                     Simpatisan</option>
                             </select>
-                            <div class=" grid grid-cols-3 gap-2">
+                            <div class=" grid grid-cols-1 sm:grid-cols-3 gap-2">
                                 <div class=" grid grid-cols-1">
                                     <label for="status_anak">Status Anak</label>
-
-
                                     <select name="status_anak" id="" class=" w-full py-1 rounded-md" required>
                                         <option value="">-- Pilih Jenis Kelamin --</option>
                                         <option {{old('status_anak',$statusAnak->status_anak)=="kandung"? 'selected':''}} value="kandung">
