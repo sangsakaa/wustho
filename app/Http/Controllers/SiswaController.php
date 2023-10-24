@@ -10,6 +10,7 @@ use App\Models\Statusanak;
 use App\Models\Pesertakelas;
 use Illuminate\Http\Request;
 use App\Models\Statuspengamal;
+use Illuminate\Database\Console\Migrations\StatusCommand;
 use Illuminate\Routing\Controller;
 
 class SiswaController extends Controller
@@ -295,13 +296,39 @@ class SiswaController extends Controller
      * @param  \App\Models\Siswa  $siswa
      * @return \Illuminate\Http\Response
      */
-    public function edit(Siswa $siswa)
+    public function edit(Siswa $siswa, Request $request)
     {
+        $status_pengamal = Statuspengamal::where('siswa_id', $siswa->id)->first();
 
+        if (!$status_pengamal) {
+            // Jika tidak ditemukan, buat status pengamal baru
+            $status_pengamal = new Statuspengamal();
+            $status_pengamal->siswa_id = $siswa->id;
+            $status_pengamal->status_pengamal = 'pengamal';
+            $status_pengamal->save();
+        }
+        $statusAnak = Statusanak::where('siswa_id', $siswa->id)->first();
+        // dd($statusAnak);
+        if (is_null($statusAnak)) {
+            $statusAnak = new Statusanak();
+            $statusAnak->siswa_id = $siswa->id;
+            $statusAnak->status_anak = $request->status_anak ?? 'kandung'; // Menggunakan nilai default 'kandung' jika tidak ada input
+            $statusAnak->anak_ke = $request->anak_ke ?? 1; // Menggunakan nilai default 1 jika tidak ada input
+            $statusAnak->jumlah_saudara = $request->jumlah_saudara ?? 1; // Menggunakan nilai default 1 jika tidak ada input
+            $statusAnak->nama_ayah = $request->nama_ayah;
+            $statusAnak->nama_ibu = $request->nama_ibu;
+            $statusAnak->pekerjaan_ayah = $request->pekerjaan_ayah;
+            $statusAnak->pekerjaan_ibu = $request->pekerjaan_ibu;
+            $statusAnak->nomor_hp_ayah = $request->nomor_hp_ayah;
+            $statusAnak->nomor_hp_ibu = $request->nomor_hp_ibu;
+            $statusAnak->save();
+        }
         return view(
             'siswa/editsiswa',
             [
                 'siswa' => $siswa,
+                'status_pengamal' => $status_pengamal,
+                'statusAnak' => $statusAnak
 
             ]
         );
@@ -316,15 +343,32 @@ class SiswaController extends Controller
      */
     public function update(Request $request, Siswa $siswa)
     {
+        
         Siswa::where('id', $siswa->id)
-            ->update([
-                'nama_siswa' => $request->nama_siswa,
-                'jenis_kelamin' => $request->jenis_kelamin,
+        ->update([
+            'nama_siswa' => $request->nama_siswa,
+            'jenis_kelamin' => $request->jenis_kelamin,
             'agama' => $request->agama,
-                'tempat_lahir' => $request->tempat_lahir,
-                'tanggal_lahir' => $request->tanggal_lahir,
-                'kota_asal' => $request->kota_asal,
-            ]);
+            'tempat_lahir' => $request->tempat_lahir,
+            'tanggal_lahir' => $request->tanggal_lahir,
+            'kota_asal' => $request->kota_asal,
+        ]);
+
+        Statuspengamal::where('siswa_id', $siswa->id)
+        ->update([
+            'status_pengamal' => $request->status_pengamal,
+        ]);
+        Statusanak::where('siswa_id', $siswa->id)
+        ->update([
+            'status_anak' => $request->status_anak,
+            'anak_ke' => $request->anak_ke,
+            'nama_ayah' => $request->nama_ayah,
+            'nama_ibu' => $request->nama_ibu,
+            'pekerjaan_ayah' => $request->pekerjaan_ayah,
+            'pekerjaan_ibu' => $request->pekerjaan_ibu,
+            'nomor_hp_ayah' => $request->nomor_hp_ayah,
+            'nomor_hp_ibu' => $request->nomor_hp_ibu,
+        ]);
 
         return redirect()->back()->with('update', 'pembaharuan data berhasil');
     }
