@@ -28,14 +28,40 @@
                             @error('nama')
                             <div class="alert alert-danger">{{ $message }}</div>
                             @enderror
-                            <label for="">Jenis Kelamin</label>
-                            <select name="jenis_kelamin" id="" class=" w-full py-1 rounded-md" required>
-                                <option value="">-- Pilih Jenis Kelamin --</option>
-                                <option {{old('jenis_kelamin',$siswa->jenis_kelamin)=="L"? 'selected':''}} value="L">
-                                    Laki-Laki</option>
-                                <option {{old('jenis_kelamin',$siswa->jenis_kelamin)=="P"? 'selected':''}} value="P">
-                                    Perempuan</option>
-                            </select>
+                            <div class=" grid grid-cols-1 gap-2 sm:grid-cols-2">
+                                <div>
+                                    <label for="">Jenis Kelamin</label>
+                                    <select name="jenis_kelamin" id="" class=" w-full py-1 rounded-md" required>
+                                        <option value="">-- Pilih Jenis Kelamin --</option>
+                                        <option {{old('jenis_kelamin',$siswa->jenis_kelamin)=="L"? 'selected':''}} value="L">
+                                            Laki-Laki</option>
+                                        <option {{old('jenis_kelamin',$siswa->jenis_kelamin)=="P"? 'selected':''}} value="P">
+                                            Perempuan</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label for="">Agama</label>
+                                    <select name="agama" id="" class=" w-full py-1 rounded-md" required>
+                                        <option value="">-- Pilih Jenis Kelamin --</option>
+                                        <option {{old('agama',$siswa->agama)=="Islam"? 'selected':''}} value="Islam">
+                                            Islam</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class=" grid grid-cols-1 gap-2 sm:grid-cols-2">
+                                <div><label for="">Kota Asal</label>
+                                    <input value="{{$siswa->kota_asal}}" name="kota_asal" type="text" class=" w-full py-1 rounded-md @error('kota_asal') is-invalid @enderror" placeholder=" masukan nama lengkap">
+                                </div>
+                                <div><label for="">Status Pengamal</label>
+                                    <select name="status_pengamal" id="" class="w-full py-1 rounded-md" required>
+                                        <option value="">-- Pilih Jenis Kelamin --</option>
+                                        <option {{ old('status_pengamal', $status_pengamal->status_pengamal ?? 'Pengamal') == 'Pengamal' ? 'selected' : '' }} value="Pengamal">
+                                            Pengamal</option>
+                                        <option {{ old('status_pengamal', $status_pengamal->status_pengamal ?? 'Pengamal') == 'Simpatisan' ? 'selected' : '' }} value="Simpatisan">
+                                            Simpatisan</option>
+                                    </select>
+                                </div>
+                            </div>
                             <div class=" grid grid-cols-1 gap-2 sm:grid-cols-2">
                                 <div>
                                     <label for="">Tempat Lahir</label>
@@ -46,23 +72,10 @@
                                     <input value="{{$siswa->tanggal_lahir}}" name="tanggal_lahir" type="date" class=" w-full py-1 rounded-md @error('nama') is-invalid @enderror" placeholder=" masukan nama lengkap">
                                 </div>
                             </div>
-                            <label for="">Agama</label>
-                            <select name="agama" id="" class=" w-full py-1 rounded-md" required>
-                                <option value="">-- Pilih Jenis Kelamin --</option>
-                                <option {{old('agama',$siswa->agama)=="Islam"? 'selected':''}} value="Islam">
-                                    Islam</option>
-                            </select>
-                            <label for="">Kota Asal</label>
-                            <input value="{{$siswa->kota_asal}}" name="kota_asal" type="text" class=" w-full py-1 rounded-md @error('kota_asal') is-invalid @enderror" placeholder=" masukan nama lengkap">
+
+
                             <input type="hidden" name="siswa_id" value="{{$siswa->id}}">
-                            <label for="">Status Pengamal</label>
-                            <select name="status_pengamal" id="" class="w-full py-1 rounded-md" required>
-                                <option value="">-- Pilih Jenis Kelamin --</option>
-                                <option {{ old('status_pengamal', $status_pengamal->status_pengamal ?? 'Pengamal') == 'Pengamal' ? 'selected' : '' }} value="Pengamal">
-                                    Pengamal</option>
-                                <option {{ old('status_pengamal', $status_pengamal->status_pengamal ?? 'Pengamal') == 'Simpatisan' ? 'selected' : '' }} value="Simpatisan">
-                                    Simpatisan</option>
-                            </select>
+
                             <div class=" grid grid-cols-1 sm:grid-cols-3 gap-2">
                                 <div class=" grid grid-cols-1">
                                     <label for="status_anak">Status Anak</label>
@@ -76,12 +89,12 @@
                                 </div>
                                 <div class=" grid grid-cols-1">
                                     <label for="anak_ke">Anak Ke-</label>
-                                    <input class="py-1" type="text" name="anak_ke" id="anak_ke" value="{{ isset($statusAnak->anak_ke) ? $statusAnak->anak_ke : '' }}">
+                                    <input class="py-1" type="number" name="anak_ke" id="anak_ke" value="{{ isset($statusAnak->anak_ke) ? $statusAnak->anak_ke : '' }}">
                                 </div>
                                 <input class="py-1" type="hidden" name="siswa_id" id="siswa_id" value="{{ isset($statusAnak->siswa_id) ? $statusAnak->siswa_id : '' }}">
                                 <div class=" grid grid-cols-1">
                                     <label for="jumlah_saudara">Jumlah Saudara</label>
-                                    <input class="py-1" type="text" name="jumlah_saudara" id="jumlah_saudara" value="{{ isset($statusAnak->jumlah_saudara) ? $statusAnak->jumlah_saudara : '' }}">
+                                    <input class="py-1" type="number" name="jumlah_saudara" id="jumlah_saudara" value="{{ isset($statusAnak->jumlah_saudara) ? $statusAnak->jumlah_saudara : '' }}">
                                 </div>
                             </div>
                             <div class=" grid grid-cols-1 sm:grid-cols-2 gap-2 mt-2">
