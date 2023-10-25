@@ -42,7 +42,7 @@
                                 <div>
                                     <label for="">Agama</label>
                                     <select name="agama" id="" class=" w-full py-1 rounded-md" required>
-                                        <option value="">-- Pilih Jenis Kelamin --</option>
+                                        <option value="">-- Pilih Agama --</option>
                                         <option {{old('agama',$siswa->agama)=="Islam"? 'selected':''}} value="Islam">
                                             Islam</option>
                                     </select>
@@ -54,7 +54,7 @@
                                 </div>
                                 <div><label for="">Status Pengamal</label>
                                     <select name="status_pengamal" id="" class="w-full py-1 rounded-md" required>
-                                        <option value="">-- Pilih Jenis Kelamin --</option>
+                                        <option value="">-- Pilih Status Pengamal --</option>
                                         <option {{ old('status_pengamal', $status_pengamal->status_pengamal ?? 'Pengamal') == 'Pengamal' ? 'selected' : '' }} value="Pengamal">
                                             Pengamal</option>
                                         <option {{ old('status_pengamal', $status_pengamal->status_pengamal ?? 'Pengamal') == 'Simpatisan' ? 'selected' : '' }} value="Simpatisan">
@@ -80,7 +80,7 @@
                                 <div class=" grid grid-cols-1">
                                     <label for="status_anak">Status Anak</label>
                                     <select name="status_anak" id="" class=" w-full py-1 rounded-md" required>
-                                        <option value="">-- Pilih Jenis Kelamin --</option>
+                                        <option value="">-- Pilih Status Anak --</option>
                                         <option {{old('status_anak',$statusAnak->status_anak)=="kandung"? 'selected':''}} value="kandung">
                                             Kandung</option>
                                         <option {{old('status_anak',$statusAnak->status_anak)=="tiri"? 'selected':''}} value="tiri">
