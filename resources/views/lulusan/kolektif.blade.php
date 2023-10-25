@@ -16,14 +16,15 @@
                                 @csrf
                                 <button class=" bg-red-600 px-1 py-1 text-white capitalize">Tambah kolektif</button>
                                 <a href="/daftar-lulusan/{{$lulusan->id}}" class=" py-1 px-2 bg-blue-600 rounded-md text-white hover:bg-purple-500">
-                                    Kembali
+                                    <span class=" py-2">Kembali</span>
                                 </a>
-                                <span class=" px-4"> {{$daftarLulusan->count()}}</span>
+                                <span class=" px-4 justify-start float-right"> Total Peserta : {{$daftarLulusan->count()}}</span>
                                 <input type="hidden" name="lulusan_id" class="py-1 " readonly value="{{$lulusan->id}}">
                                 <table class=" border w-full mt-2">
                                     <thead class=" border">
                                         <tr class="  uppercase text-sm bg-gray-100">
                                             <th class=" border px-2 py-1 text-center w-5"><input type="checkbox"></th>
+                                            <th class=" border px-2 py-1 text-center">NIM</th>
                                             <th class=" border px-2 py-1 text-center">Peserta Lulusan</th>
                                             <th class=" border px-2 py-1">Kelas</th>
                                         </tr>
@@ -35,8 +36,12 @@
                                                 <input type="checkbox" name="pesertakelas[]" value="{{$item->id}}" multiple>
 
                                             </th>
+                                            <td class=" border px-2 py-1 text-center capitalize ">
+                                                {{$item->nis}}
+
+                                            </td>
                                             <td class=" border px-2 py-1 text-left capitalize ">
-                                                {{$item->id}}
+
                                                 {{strtolower($item->nama_siswa)}}
                                             </td>
                                             <td class=" border px-2 py-1 text-center ">

@@ -103,11 +103,13 @@ class LulusanCotroller
             ->leftjoin('siswa', 'siswa.id', '=', 'pesertakelas.siswa_id')
             ->leftjoin('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
             ->leftjoin('kelas', 'kelas.id', '=', 'kelasmi.kelas_id')
+            ->leftjoin('nis', 'siswa.id', '=', 'nis.siswa_id')
             ->select(
                 [
                 'pesertakelas.id',
                     'nama_siswa',
-                    'nama_kelas'
+                'nama_kelas',
+                'nis'
 
                 ]
             )
