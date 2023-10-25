@@ -10,16 +10,12 @@ use App\Models\Statusanak;
 use App\Models\Pesertakelas;
 use Illuminate\Http\Request;
 use App\Models\Statuspengamal;
-use Illuminate\Database\Console\Migrations\StatusCommand;
 use Illuminate\Routing\Controller;
 
 class SiswaController extends Controller
 {
-    
-    
     public function index()
     {
-
         $data = Siswa::query()
             ->leftJoin('nis', 'nis.siswa_id', '=', 'siswa.id')
             // ->where(function ($query) {
@@ -32,14 +28,9 @@ class SiswaController extends Controller
         if (request('cari')) {
             $data->where('nama_siswa', 'like', '%' . request('cari') . '%');
             $data->Orwhere('nis', 'like', '%' . request('cari') . '%');
-            
-           
         }
-
         return view('siswa/siswa', ['dataSiswa' => $data->paginate(10)]);
     }
-
-
     /**
      * Show the form for creating a new resource.
      *
@@ -77,8 +68,7 @@ class SiswaController extends Controller
         return redirect('siswa')->with('success', 'data berhasil ditambahkan');
     }
     public function storeNis(Request $request)
-    {
-        
+    { 
         $nis = new nis();
         $nis->siswa_id = $request->siswa_id;
         $nis->nis = $request->nis;
@@ -120,7 +110,6 @@ class SiswaController extends Controller
      */
     public function show(Siswa $siswa, Request $request)
     {
-
         $bulan = $request->bulan ? Carbon::parse($request->bulan) : now();
         $periodeBulan = $bulan->startOfMonth()->daysUntil($bulan->copy()->endOfMonth());
         $nilai = Pesertakelas::query()
@@ -181,9 +170,7 @@ class SiswaController extends Controller
             ->first();
         return view(
             'siswa/biodata',
-
             [
-
                 'siswa' => $siswa,
                 'biodata' => $biodata
             ]
@@ -203,7 +190,6 @@ class SiswaController extends Controller
             'nis.siswa_id'
         )
         ->find($nis)->first();
-
         return view(
             'siswa.editnis',
             [
@@ -221,8 +207,7 @@ class SiswaController extends Controller
                 'nis' => $request->nis,
                 'nama_lembaga' => $request->nama_lembaga,
                 'madrasah_diniyah' => $request->madrasah_diniyah,
-                'tanggal_masuk' => $request->tanggal_masuk,
-
+            'tanggal_masuk' => $request->tanggal_masuk,
             ]);
         return redirect('/nis/' . $nis->siswa_id)->with('update', 'pembaharuan data NIM berhasil');
         
@@ -268,10 +253,8 @@ class SiswaController extends Controller
         Statusanak::destroy($statusanak->id);
         return redirect()->back();
     }
-
     public function transkip(Request $request, Siswa $siswa)
     {
-
         $nilai = Pesertakelas::query()
             ->where('pesertakelas.siswa_id', $siswa->id);
         
@@ -287,9 +270,7 @@ class SiswaController extends Controller
                 'nilai' => $nilai->get(),
             ]
         );
-       
     }
-
     /**
      * Show the form for editing the specified resource.
      *
@@ -329,11 +310,9 @@ class SiswaController extends Controller
                 'siswa' => $siswa,
                 'status_pengamal' => $status_pengamal,
                 'statusAnak' => $statusAnak
-
             ]
         );
     }
-
     /**
      * Update the specified resource in storage.
      *
@@ -353,7 +332,6 @@ class SiswaController extends Controller
             'tanggal_lahir' => $request->tanggal_lahir,
             'kota_asal' => $request->kota_asal,
         ]);
-
         Statuspengamal::where('siswa_id', $siswa->id)
         ->update([
             'status_pengamal' => $request->status_pengamal,
@@ -369,10 +347,8 @@ class SiswaController extends Controller
             'nomor_hp_ayah' => $request->nomor_hp_ayah,
             'nomor_hp_ibu' => $request->nomor_hp_ibu,
         ]);
-
         return redirect()->back()->with('update', 'pembaharuan data berhasil');
     }
-
     /**
      * Remove the specified resource from storage.
      *
@@ -391,7 +367,6 @@ class SiswaController extends Controller
         return redirect()->back();
     }
     public function destroySP(Statuspengamal $siswa)
-
     {
         Statuspengamal::destroy($siswa->id);
         return redirect()->back();

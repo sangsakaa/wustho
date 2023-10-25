@@ -60,8 +60,7 @@
                         <th class=" px-1 capitalize border border-black">Status anak</th>
                         <th class=" px-1 capitalize border border-black">jml Sdr</th>
                         <th class=" px-1 capitalize border border-black">anak ke</th>
-                        <th class=" px-1 capitalize border border-black">daerah asal</th>
-                        <th class=" px-1 capitalize border border-black">Status Pengamal</th>
+                        <th class=" px-1 capitalize border border-black">Pengamal</th>
 
                     </tr>
                 </thead>
@@ -82,7 +81,7 @@
                         <td class=" px-1 py-2 capitalize border border-black">{{$item->status_anak}}</td>
                         <td class=" px-1 py-2 capitalize border border-black">{{$item->jumlah_saudara}}</td>
                         <td class=" px-1 py-2 capitalize border border-black">{{$item->anak_ke}}</td>
-                        <td class=" px-1 py-2 capitalize border border-black w-60">{{$item->kota_asal}}</td>
+
                         <td class=" px-1 py-2 capitalize border border-black">{{$item->status_pengamal}}</td>
 
 
