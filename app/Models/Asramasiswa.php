@@ -17,4 +17,11 @@ class Asramasiswa extends Model
     {
         return $this->belongsTo(Asrama::class, 'asrama_id', 'id');
     }
+    public static function search($search)
+    {
+        // dd($search);
+        return empty($search) ? static::query() : static::query()
+            ->where('nama_asrama', 'like', '%' . $search . '%')
+            ->Orwhere('type_asrama', 'like', '%' . $search . '%');
+    }
 }
