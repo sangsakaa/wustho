@@ -34,7 +34,6 @@
                                         <tr>
                                             <th class=" border px-2 py-1 text-center w-5">
                                                 <input type="checkbox" name="pesertakelas[]" value="{{$item->id}}" multiple>
-
                                             </th>
                                             <td class=" border px-2 py-1 text-center capitalize ">
                                                 {{$item->nis}}

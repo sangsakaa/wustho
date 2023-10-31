@@ -18,6 +18,12 @@ class Kelasmi extends Model
     {
         return $this->hasMany(Pesertakelas::class, 'id', 'kelasmi');
     }
+    public static function search($search)
+    {
+        // dd($search);
+        return empty($search) ? static::query() : static::query()
+            ->where('nama_kelas', 'like', '%' . $search . '%');
+    }
 
     
     

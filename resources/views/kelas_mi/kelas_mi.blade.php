@@ -5,31 +5,7 @@
             {{ __('Dashboard Kelas') }}
         </h2>
     </x-slot>
-    <div class=" ">
-        <div class=" mx-auto ">
-            <div class="bg-white dark:bg-dark-bg overflow-hidden shadow-sm ">
-                <div class="p-2">
-                    <div class=" capitalize flex w-full gap-1">
-                        <a href="/addkelas_mi">
-                            <button class=" flex  uppercase text-xs bg-blue-500 text-white p-1 px-4 hover:bg-purple-600 ">
-                                kelas mi
-                            </button>
-                        </a>
-                        <a href="/addasramasiswa">
-                            <button class=" flex  uppercase text-xs bg-blue-500 text-white p-1 px-4 hover:bg-purple-600 ">
-                                asrama siswa
-                            </button>
-                        </a>
-                        <a href="/sesiasrama">
-                            <button class=" flex  uppercase text-xs bg-blue-500 text-white p-1 px-4 hover:bg-purple-600 ">
-                                Presensi Asrama
-                            </button>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+
     <div class=" mt-2">
         <div class=" mx-auto ">
             <div class="bg-white dark:bg-dark-bg overflow-hidden shadow-sm">
@@ -58,7 +34,8 @@
                             </div>
                             @endif
                             <div class=" overflow-auto">
-                                <Table class=" w-full  border-collapse border border-slate-500 mt-2  ">
+                                <livewire:list-kelas />
+                                <!-- <Table class=" w-full  border-collapse border border-slate-500 mt-2  ">
                                     <thead>
                                         <tr class=" border dark:bg-purple-600 uppercase text-xs sm:text-xs bg-gray-50 ">
                                             <th class=" border text-xs py-1">No</th>
@@ -121,7 +98,7 @@
                                         </tr>
                                         @endif
                                     </tbody>
-                                </Table>
+                                </Table> -->
                             </div>
                         </div>
                     </div>
