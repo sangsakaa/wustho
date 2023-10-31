@@ -3,10 +3,11 @@
         <div class="  grid grid-cols-2 w-full gap-1">
             <div>
                 <a href="/addkelas_mi">
-                    <button class=" bg-blue-500 dark:bg-green-700 text-white p-1 rounded-md">
+                    <button class="px-2 flex uppercase bg-blue-500 dark:bg-green-700 text-white p-1 rounded-md">
                         <span><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg></span>
+                        kelas
                     </button>
                 </a>
             </div>
@@ -18,8 +19,8 @@
     <div>
         <Table class=" mt-1 w-full  border-collapse border border-slate-500   ">
             <thead>
-                <tr class=" border dark:bg-purple-600 uppercase text-xs sm:text-xs bg-gray-50 ">
-                    <th class=" border text-xs py-1">No</th>
+                <tr class="  border dark:bg-purple-600 uppercase text-xs sm:text-xs bg-gray-50 ">
+                    <th class=" border text-xs py-2">No</th>
                     <th class=" border ">Periode</th>
                     <th class=" border w-10 px-1">Kelas</th>
                     <th class=" border ">Jenjang</th>
@@ -73,7 +74,7 @@
                 @endforeach
                 @else
                 <tr>
-                    <td class=" border text-center" colspan="5">
+                    <td class=" border text-center" colspan="9">
                         Data Tidak ditemukan
                     </td>
                 </tr>
