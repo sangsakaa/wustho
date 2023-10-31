@@ -23,7 +23,6 @@ class ListAsrama extends Component
             ->select('periode.id', 'ket_semester', 'periode.periode')
             ->get();
         $dataasrama = Asramasiswa::search($this->search)
-
             ->leftjoin('asrama', 'asrama.id', '=', 'asramasiswa.asrama_id')
             ->leftjoin('periode', 'periode.id', '=', 'asramasiswa.periode_id')
             ->leftjoin('semester', 'semester.id', '=', 'periode.semester_id')

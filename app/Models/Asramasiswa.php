@@ -21,7 +21,11 @@ class Asramasiswa extends Model
     {
         // dd($search);
         return empty($search) ? static::query() : static::query()
-            ->where('nama_asrama', 'like', '%' . $search . '%')
-            ->Orwhere('type_asrama', 'like', '%' . $search . '%');
+            ->where(function ($query) use ($search) {
+                $query->where('nama_asrama', 'like', '%' . $search . '%')
+                    ->orWhere('type_asrama', 'like', '%' . $search . '%');
+            })
+            ->where('asramasiswa.periode_id', session('periode_id'));
+
     }
 }
