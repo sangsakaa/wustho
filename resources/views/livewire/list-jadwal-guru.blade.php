@@ -6,6 +6,15 @@
         <a href="/laporan-poling-guru-kelas" class=" py-1 px-2 bg-red-600 text-white text-center ">Ploting</a>
         <a href="/cetak-jadwal-kolektif" class=" py-1 px-2 bg-red-600 text-white text-center ">Buat Jadwal</a>
         <input type="search" wire:model="search" class=" py-1 " placeholder=" cari nama kelas">
+        <select wire:model="perPage" class=" py-1">
+            <option>6</option>
+            <option>12</option>
+            <option>18</option>
+            <option>24</option>
+            <option>50</option>
+            <option>100</option>
+
+        </select>
     </div>
     <div class=" overflow-auto rounded">
         <table class=" w-full w-100 mt-2">

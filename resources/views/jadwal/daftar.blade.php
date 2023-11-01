@@ -53,6 +53,10 @@
     <div class="  px-4 ">
         <div class=" bg-blue-200 p-4">
             <p class=" font-semibold">Keterangan : </p>
+            <p class=" px-4">- Fitur ini di gunakan untuk menyimpan jadwal madrasah yang di buka, guru pengajar, serta kelas pengajar setiap periode
+            </p>
+            <p class=" px-4">- Sebelum memasukkan dosen mengajar , pastikan dosen tersebut sudah tercatat penugasannya pada tahun ajaran yang berlaku</p>
+
         </div>
     </div>
 

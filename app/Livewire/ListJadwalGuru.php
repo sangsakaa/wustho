@@ -10,6 +10,7 @@ use Livewire\Component;
 class ListJadwalGuru extends Component
 {
     public $search = '';
+    public $perPage = 6;
     public function render()
     {
         $daftarPeriode = Periode::query()
@@ -25,6 +26,7 @@ class ListJadwalGuru extends Component
             ->orderby('nama_kelas')
             ->get();
         $daftarJadwal = Jadwal::search($this->search)
+            
             ->leftjoin('kelasmi', 'kelasmi.id', '=', 'jadwal.kelasmi_id')
             ->join('periode', 'periode.id', '=', 'jadwal.periode_id')
             ->join('semester', 'semester.id', '=', 'periode.semester_id')
@@ -35,7 +37,7 @@ class ListJadwalGuru extends Component
             ->where('kelasmi.periode_id', session('periode_id'))
             ->orderby('kelasmi.nama_kelas')
             ->orderby('kelasmi.nama_kelas')
-            ->paginate(6);
+        ->paginate($this->perPage);
         return view('livewire.list-jadwal-guru', [
             'daftarPeriode' => $daftarPeriode,
             'daftarJadwal' => $daftarJadwal,
