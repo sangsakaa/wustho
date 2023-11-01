@@ -17,4 +17,11 @@ class Jadwal extends Model
     {
         return $this->hasMany(Daftar_Jadwal::class, 'jadwal_id');
     }
+    public static function search($search)
+    {
+        // dd($search);
+        return empty($search) ? static::query() : static::query()
+            ->where('nama_kelas', 'like', '%' . $search . '%')
+            ->Orwhere('nama_guru', 'like', '%' . $search . '%');
+    }
 }
