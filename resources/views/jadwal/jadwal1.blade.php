@@ -28,6 +28,11 @@
         }
     </script>
     <div id="blanko" class="p-4">
+        <style>
+            .page-break {
+                page-break-after: always;
+            }
+        </style>
         <div class=" mx-auto ">
             <div class="bg-white overflow-hidden  sm:rounded-lg text-sm sm:text-sm">
                 <div class="p-2 bg-white border-b border-gray-200">
@@ -44,47 +49,73 @@
                         </p>
                     </center>
                     <hr class=" border-b-2   border-b-green-700">
-                    <span class="   font-semibold ">Kelas : 1</span>
-                    <table class=" mb-4 w-full">
+                    <hr class=" border-b  mt-0.5   border-b-green-700">
+
+                    @php
+                    $jadwalByKelas = [];
+
+                    foreach ($jadwalByDayMap as $hari => $jadwals) {
+                    foreach ($jadwals as $jadwal) {
+                    $nama_kelas = $jadwal->nama_kelas;
+
+                    if (!isset($jadwalByKelas[$nama_kelas][$hari])) {
+                    $jadwalByKelas[$nama_kelas][$hari] = [];
+                    }
+
+                    $jadwalByKelas[$nama_kelas][$hari][] = [
+                    'nama_guru' => $jadwal->nama_guru,
+                    'kelas' => $jadwal->kelas,
+                    'mapel' => $jadwal->mapel,
+                    ];
+                    }
+                    }
+                    @endphp
+
+                    <table class="mb-4 mt-2 w-full">
                         <thead>
-                            <tr class=" border text-sm">
-                                <th class=" border text-sm border-green-800 py-2">Hari</th>
-                                <th class=" border text-sm border-green-800">ID</th>
-                                <th class=" border text-sm border-green-800">Nama Kelas</th>
-                                <th class=" border text-sm border-green-800">Kelas</th>
-                                <th class=" border text-sm border-green-800">Mapel</th>
-                                <th class=" border text-sm border-green-800">Nama Guru</th>
+                            <tr class="border text-sm">
+                                <th class="border text-sm border-green-800 py-2">Nama Kelas</th>
+
+                                <?php
+                                // Array asal
+                                // Ubah urutan hari
+                                $customOrder = ['jumat', 'sabtu', 'minggu', 'senin', 'selasa', 'rabu'];
+
+                                // Urutkan array sesuai urutan yang ditentukan
+                                $sortedJadwalByDayMap = [];
+                                foreach ($customOrder as $hari) {
+                                    if (isset($jadwalByDayMap[$hari])) {
+                                        $sortedJadwalByDayMap[$hari] = $jadwalByDayMap[$hari];
+                                    }
+                                }
+
+                                // Sekarang Anda dapat melakukan iterasi dengan urutan yang diinginkan
+                                foreach ($sortedJadwalByDayMap as $hari => $jadwals) {
+                                    echo '<th class="border text-sm border-green-800 uppercase">' . $hari . '</th>';
+                                }
+                                ?>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($jadwalByDayMap as $hari => $jadwals)
-                            <tr class=" border text-sm border-green-800 capitalize text-center">
-                                <td class=" border text-sm border-green-800 capitalize text-center" rowspan="{{ count($jadwals) }}">{{ $hari }}</td>
-                                @foreach ($jadwals as $key => $jadwal)
-                                @if ($key > 0)
-                            <tr class=" border text-sm border-green-800 capitalize text-center even:bg-gray-100">
-                                @endif
-                                <td class=" border text-sm border-green-800 capitalize text-center py-1">{{ $loop->iteration }}</td>
-                                <td class=" border text-sm border-green-800 capitalize text-center">{{ $jadwal->nama_kelas }}</td>
-                                <td class=" border text-sm border-green-800 capitalize text-center">{{ $jadwal->kelas }}</td>
-                                <td class=" border text-sm border-green-800 capitalize text-center">{{ $jadwal->mapel }}</td>
-                                <td class=" border text-sm border-green-800 capitalize text-center">
-
-                                    @if($jadwal->jenis_kelamin == "L")
-                                    Bapak. {{ $jadwal->nama_guru }}
-                                    @else
-                                    Ibu. {{ $jadwal->nama_guru }}
+                            @foreach ($jadwalByKelas as $nama_kelas => $jadwalsByHari)
+                            <tr class=" even:bg-yellow-100 border text-sm border-green-800 capitalize text-center">
+                                <td class="border text-sm border-green-800">{{ $nama_kelas }}</td>
+                                @foreach ($customOrder as $hari)
+                                <td class="border text-sm border-green-800">
+                                    @if (isset($jadwalsByHari[$hari]))
+                                    @foreach ($jadwalsByHari[$hari] as $jadwal)
+                                    <span class=" font-semibold">{{ $jadwal['nama_guru'] }}</span> <br> {{ $jadwal['mapel'] }}<br>
+                                    @endforeach
                                     @endif
-
                                 </td>
-                                @if ($key == 0)
-                            </tr>
-                            @endif
-                            @endforeach
+                                @endforeach
                             </tr>
                             @endforeach
+
                         </tbody>
                     </table>
+
+                    <div class="page-break"></div>
                 </div>
             </div>
         </div>

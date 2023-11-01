@@ -22,9 +22,9 @@
                 <tr class="  border dark:bg-purple-600 uppercase text-xs sm:text-xs bg-gray-50 ">
                     <th class=" border text-xs py-2">No</th>
                     <th class=" border ">Periode</th>
-                    <th class=" border w-10 px-1">Kelas</th>
+                    <th class=" border w-10 px-1">Tingkat</th>
                     <th class=" border ">Jenjang</th>
-                    <th class=" border ">Nama Kelas</th>
+                    <th class=" border "> Kelas</th>
                     <th class=" border w-10 text-xs text-center px-1">Kuota</th>
                     <th class=" border  w-10 text-xs text-center">Jml</th>
                     <th class=" border text-xs text-center">Status</th>
@@ -41,7 +41,10 @@
                     <td class=" text-xs text-center border"><a href="/pesertakelas/{{$item->id}}"> {{$item->jenjang}}</a></td>
                     <td class=" text-xs text-center py-2"><a href="/pesertakelas/{{$item->id}}" class=" text-xs  uppercase font-semibold py-1 px-2 rounded-md sm:xs">{{$item->nama_kelas}}</a></td>
                     <td class=" text-xs text-center border"> {{$item->kuota}}</td>
-                    <td class=" text-xs text-center border"> {{$item->jumlah_nilai_ujian}}</td>
+                    <td class=" text-xs text-center border">
+
+                        {{$item->jumlah_nilai_ujian}}
+                    </td>
                     <td class=" text-xs px-1 border text-center w-40">
                         @if($item->kuota == $item->jumlah_nilai_ujian )
                         <span class=" text-xs bg-yellow-300 px-4 py-1 rounded-md capitalize text-black">full</span>

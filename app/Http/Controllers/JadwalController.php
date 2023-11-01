@@ -152,7 +152,7 @@ class JadwalController
                     'periode.periode'
                 ]
             )
-            ->where('kelas.kelas', 1)
+            // ->where('kelas.kelas', 1)
             ->where('kelasmi.periode_id', session('periode_id'))
 
             ->orderBy('kelasmi.nama_kelas')
@@ -179,113 +179,7 @@ class JadwalController
             ]
         );
     }
-    public function CetakJadwal2(Request $request)
-    {
-        $datakelasmi = Kelasmi::query()
-            ->join('periode', 'periode.id', 'kelasmi.periode_id')
-            ->join('semester', 'semester.id', 'periode.semester_id')
-            ->join('kelas', 'kelas.id', 'kelasmi.kelas_id')
-            ->select('kelasmi.id', 'kelasmi.nama_kelas', 'periode.periode', 'semester.ket_semester', 'kelas.kelas')
-            ->where('kelasmi.periode_id', session('periode_id'))
-            ->orderBy('kelasmi.nama_kelas')
-            ->first();
-        $jadwalByDay2 = Jadwal::query()
-            ->leftJoin('kelasmi', 'kelasmi.id', '=', 'jadwal.kelasmi_id')
-            ->groupBy('kelasmi.nama_kelas') // tambahkan ini
-            ->leftJoin('kelas', 'kelas.id', '=', 'kelasmi.kelas_id')
-            ->join('periode', 'periode.id', '=', 'jadwal.periode_id')
-            ->join('semester', 'semester.id', '=', 'periode.semester_id')
-            ->leftJoin('daftar_jadwal', 'daftar_jadwal.jadwal_id', '=', 'jadwal.id')
-            ->leftJoin('mapel', 'mapel.id', '=', 'daftar_jadwal.mapel_id')
-            ->leftJoin('guru', 'guru.id', '=', 'daftar_jadwal.guru_id')
-            ->select(
-                [
-                    'hari',
-                    'jadwal.id',
-                    'kelasmi.nama_kelas',
-                    'kelas.kelas',
-                    'mapel.mapel',
-                    'guru.nama_guru',
-                'guru.jenis_kelamin',
-                    'jadwal.periode_id'
-                ]
-            )
-            ->where('kelas.kelas', 2)
-            ->where('kelasmi.periode_id', session('periode_id'))
-            ->orderBy('kelasmi.nama_kelas')
-            ->orderBy('jadwal.id')
-        ->groupBy('hari', 'jadwal.id', 'kelasmi.nama_kelas', 'jadwal.periode_id', 'kelas.kelas', 'mapel.mapel', 'guru.nama_guru', 'guru.jenis_kelamin');
-
-        $jadwalByDayMap2 = [];
-
-        // Loop untuk mapping jadwal bedasarkan hari
-        foreach ($jadwalByDay2->get() as $jadwal) {
-            $jadwalByDayMap2[$jadwal->hari][] = $jadwal;
-        }
-
-        if (request('kelasmi_id')) {
-            $jadwalByDay2->where('kelas', 'like', '%' . request('kelasmi_id') . '%')->get();
-        }
-        return view(
-            'jadwal.jadwal2',
-            [
-                'jadwalByDayMap2' => $jadwalByDayMap2,
-                'datakelasmi' => $datakelasmi,
-            ]
-        );
-    }
-    public function CetakJadwal3(Request $request)
-    {
-
-        $datakelasmi = Kelasmi::query()
-            ->join('periode', 'periode.id', 'kelasmi.periode_id')
-            ->join('semester', 'semester.id', 'periode.semester_id')
-            ->join('kelas', 'kelas.id', 'kelasmi.kelas_id')
-            ->select('kelasmi.id', 'kelasmi.nama_kelas', 'periode.periode', 'semester.ket_semester', 'kelas.kelas')
-            ->where('kelasmi.periode_id', session('periode_id'))
-            ->orderBy('kelasmi.nama_kelas')
-            ->first();
-        $jadwalByDay3 = Jadwal::query()
-            ->leftJoin('kelasmi', 'kelasmi.id', '=', 'jadwal.kelasmi_id')
-            ->groupBy('kelasmi.nama_kelas') // tambahkan ini
-            ->leftJoin('kelas', 'kelas.id', '=', 'kelasmi.kelas_id')
-            ->join('periode', 'periode.id', '=', 'jadwal.periode_id')
-            ->join('semester', 'semester.id', '=', 'periode.semester_id')
-            ->leftJoin('daftar_jadwal', 'daftar_jadwal.jadwal_id', '=', 'jadwal.id')
-            ->leftJoin('mapel', 'mapel.id', '=', 'daftar_jadwal.mapel_id')
-            ->leftJoin('guru', 'guru.id', '=', 'daftar_jadwal.guru_id')
-            ->select(
-                [
-                    'hari',
-                    'jadwal.id',
-                    'kelasmi.nama_kelas',
-                    'kelas.kelas',
-                    'mapel.mapel',
-                    'guru.nama_guru',
-                'guru.jenis_kelamin',
-                    'jadwal.periode_id'
-                ]
-            )
-            ->where('kelas.kelas', 3)
-            ->where('kelasmi.periode_id', session('periode_id'))
-            ->orderBy('kelasmi.nama_kelas')
-            ->orderBy('jadwal.id')
-        ->groupBy('hari', 'jadwal.id', 'kelasmi.nama_kelas', 'jadwal.periode_id', 'kelas.kelas', 'mapel.mapel', 'guru.nama_guru', 'guru.jenis_kelamin');
-
-        $jadwalByDayMap3 = [];
-
-        // Loop untuk mapping jadwal bedasarkan hari
-        foreach ($jadwalByDay3->get() as $jadwal) {
-            $jadwalByDayMap3[$jadwal->hari][] = $jadwal;
-        }
-        return view(
-            'jadwal.jadwal3',
-            [
-                'jadwalByDayMap3' => $jadwalByDayMap3,
-                'datakelasmi' => $datakelasmi,
-            ]
-        );
-    }
+    
 
     public function StoreDaftarJadwal(Jadwal $jadwal, Request $request)
     {

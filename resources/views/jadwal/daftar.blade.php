@@ -45,12 +45,11 @@
             {{ session('error') }}
         </div>
         @endif
-        <div class="  grid-cols-2 grid  sm:grid sm:grid-cols-6 gap-2">
-            <a href="/cetak-jadwal-1" class=" py-1 px-2 bg-red-600 text-white text-center "> KELAS 1</a>
-            <a href="/cetak-jadwal-2" class=" py-1 px-2 bg-red-600 text-white text-center "> KELAS 2</a>
-            <a href="/cetak-jadwal-3" class=" py-1 px-2 bg-red-600 text-white text-center "> KELAS 3</a>
+        <div class="  grid-cols-1  flex  sm:flex sm:grid-cols-6 gap-2">
+            <a href="/cetak-jadwal-1" class=" py-1 px-2 bg-red-600 text-white text-center "> JADWAL</a>
+
             <a href="/laporan-poling-guru" class=" py-1 px-2 bg-red-600 text-white text-center ">LAPORAN</a>
-            <a href="/laporan-poling-guru-kelas" class=" py-1 px-2 bg-red-600 text-white text-center ">Laporan Ploting</a>
+            <a href="/laporan-poling-guru-kelas" class=" py-1 px-2 bg-red-600 text-white text-center ">Ploting</a>
             <a href="/cetak-jadwal-kolektif" class=" py-1 px-2 bg-red-600 text-white text-center ">Buat Jadwal</a>
         </div>
         <div class=" rounded-md overflow-auto">
