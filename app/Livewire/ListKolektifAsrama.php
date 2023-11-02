@@ -12,6 +12,7 @@ class ListKolektifAsrama extends Component
 {
     public $search = '';
     public $asramasiswa;
+    public $perPage = 10;
 
 
 
@@ -55,7 +56,8 @@ class ListKolektifAsrama extends Component
             ->orderBy('nis.nis')
             ->orderBy('siswa.jenis_kelamin')
             ->orderBy('siswa.nama_siswa')
-            ->get();
+        ->paginate($this->perPage);
+        
 
 
 

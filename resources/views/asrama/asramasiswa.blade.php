@@ -16,6 +16,7 @@
                 <div class="p-2">
                     <div class=" overflow-auto p-1 md:overflow-auto">
                         <livewire:list-asrama />
+
                     </div>
                 </div>
             </div>
@@ -31,8 +32,6 @@
                             <div class=" px-2">
                                 <p class=" capitalize">1. Untuk penambahan <b>anggota asrama </b> <u>wajib</u> memiliki <b><u>NIS (nomor induk siswa)</u></b> </p>
                                 <p class=" capitalize">2. jika tidak memili harap <b>NIS (nomor induk siswa)</b> konfimasi ke pihak madin bagian <b>kesiswaan & kepala sekolah</b> </p>
-
-
                             </div>
                         </div>
                     </div>

@@ -34,6 +34,7 @@
             }
         </style>
         <div class=" mx-auto ">
+            @if($datakelasmi)
             <div class="bg-white overflow-hidden  sm:rounded-lg text-sm sm:text-sm">
                 <div class="p-2 bg-white border-b border-gray-200">
                     <center>
@@ -118,6 +119,11 @@
                     <div class="page-break"></div>
                 </div>
             </div>
+            @else
+            <div class=" px-4 bg-blue-300">
+                <span>belum ada ploting guru dan mapel</span>
+            </div>
+            @endif
         </div>
     </div>
 </x-app-layout>
