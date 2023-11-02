@@ -1,4 +1,16 @@
 <div>
+    @if (session('update'))
+    <script>
+        Toastify({
+            text: "data berhasil di di update",
+            className: "update",
+            style: {
+                background: "linear-gradient(to right, #00b09b, #96c93d)",
+            }
+        }).showToast();
+    </script>
+    @endif
+
     <div class="  grid-cols-1  flex  sm:flex sm:grid-cols-6 gap-2">
         <a href="/cetak-jadwal-1" class=" py-1 px-2 bg-red-600 text-white text-center ">JADWAL</a>
 

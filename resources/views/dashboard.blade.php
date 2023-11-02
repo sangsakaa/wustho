@@ -13,12 +13,11 @@
             <div class="  w-full flex">
                 <div class=" bg-green-800 w-1"></div>
                 <div class=" bg-green-300 w-full  p-2 sm:p-5 ">
-                    <p>madrasah diniyah {{$TitleMadrasak->jenjang}}</p>
-                    <p>{{$TitleMadrasak->periode}} {{$TitleMadrasak->ket_semester}}</p>
+                    <p>{{ $TitleMadrasak->jenjang ?? '-' }}</p>
+                    <p>{{ $TitleMadrasak->periode ?? '-' }} {{ $TitleMadrasak->ket_semester ?? '-' }}</p>
                 </div>
             </div>
             <div class=" grid grid-cols-3 gap-2">
-
                 <div class="  w-full flex">
                     <div class=" bg-green-800 w-1"></div>
                     <div class=" bg-green-300 w-full  p-5 ">
@@ -43,7 +42,6 @@
                         @endif
                     </div>
                 </div>
-
             </div>
             <div class=" grid grid-cols-1 sm:grid-cols-2 gap-2">
                 <div>

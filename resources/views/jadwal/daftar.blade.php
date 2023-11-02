@@ -40,12 +40,15 @@
     </div>
     <div class=" px-4 py-2  ">
         <div class="  mt-2 bg-white grid sm:grid-cols-1 grid-cols-1 px-4 py-4 gap-2">
-            @if (session('error'))
-            <div class=" text-red-600 font-semibold">
-                {{ session('error') }}
-            </div>
-            @endif
             <div class="  overflow-auto">
+                @if (session('update'))
+                <div class="py-2">
+                    <div class="bg-blue-500 px-2 py-1 text-white">
+                        {{ session('update') }}
+                    </div>
+                </div>
+                <meta http-equiv="refresh" content="5">
+                @endif
                 <livewire:list-jadwal-guru></livewire:list-jadwal-guru>
             </div>
         </div>

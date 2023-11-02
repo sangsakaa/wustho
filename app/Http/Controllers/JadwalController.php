@@ -61,11 +61,11 @@ class JadwalController
             ->count();
 
         if ($existingJadwal > 0) {
-            return redirect()->back()->with('error', 'Jadwal untuk kelas dan hari ini sudah ada!');
+            return redirect()->back()->with('update', 'pembaharuan data berhasil');
         }
 
         $jadwal->save();
-        return redirect()->back();
+        return redirect()->back()->with('update', 'pembaharuan data berhasil');
     }
     // Daftar_jadwal
     public function DaftarJadwal(Jadwal $jadwal)
@@ -193,10 +193,10 @@ class JadwalController
             ->where('guru_id', $request->guru_id)
             ->count();
         if ($existingJadwal > 0) {
-            return redirect()->back()->with('error', 'Jadwal untuk kelas dan hari ini sudah ada!');
+            return redirect()->back()->with('update', 'Jadwal untuk kelas dan hari ini sudah ada!');
         }
         $daftarJadwal->save();
-        return redirect()->back();
+        return redirect()->back()->with('update', 'Jadwal untuk kelas dan hari ini sudah ada!');
     }
     public function JadwalKolektif()
     {
