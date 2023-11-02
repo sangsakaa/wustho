@@ -96,13 +96,13 @@
                         @endforeach
                         @else
                         <tr>
-                            <td class=" border text-center" colspan="6">
+                            <td class=" border text-center" colspan="7">
                                 Tidak ada data yang ditemukan
                             </td>
                         </tr>
                         @endif
                         <tr>
-                            <td class=" py-1 " colspan="6">
+                            <td class=" py-1 " colspan="7">
 
                             </td>
                         </tr>
