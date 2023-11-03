@@ -203,6 +203,8 @@ return [
         App\Providers\ViewServiceProvider::class,
         Yajra\DataTables\DataTablesServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
+        Livewire\LivewireServiceProvider::class,
+
 
     ],
 

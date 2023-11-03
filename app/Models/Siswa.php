@@ -34,9 +34,11 @@ class Siswa extends Model
     {
         // dd($search);
         return empty($search) ? static::query() : static::query()
-            ->where('nis', 'like', '%' . $search . '%')
-        ->orWhere('nama_siswa', 'like', '%' . $search . '%');
-         
+            ->orWhere('nis', 'like', '%' . $search . '%')
+            ->orWhere('nama_siswa', 'like', '%' . $search . '%')
+            ->where(function ($query) use ($search) {
+                $query->where('asramasiswa.periode_id', session('periode_id')); // tambahkan ini untuk memastikan data sesuai dengan 
+            }); 
     }
     
     public function kelasmi()

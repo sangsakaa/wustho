@@ -112,6 +112,7 @@ class KelasController extends Controller
     }
     public function StoreKolektif(Request $request)
     {
+        
         foreach ($request->siswa as $siswa) {
             $peserta = new Pesertakelas();
             $peserta->siswa_id = $siswa;

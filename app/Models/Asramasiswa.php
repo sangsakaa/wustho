@@ -24,7 +24,11 @@ class Asramasiswa extends Model
                 $query->where('nama_asrama', 'like', '%' . $search . '%')
                     ->orWhere('type_asrama', 'like', '%' . $search . '%');
             })
-        ->where('asramasiswa.periode_id', session('periode_id'));
+            ->whereHas('asramasiswa', function ($query) {
+                $query->where('periode_id', session('periode_id'));
+            })
+            ->get();
+
 
     }
 }
