@@ -22,6 +22,16 @@ class Pesertakelas extends Model
     {
         return $this->belongsTo(Kelasmi::class, 'kelasmi_id', 'id');
     }
+    public static function search($search)
+    {
+        // dd($search);
+        return empty($search) ? static::query() : static::query()
+            ->orWhere('nis', 'like', '%' . $search . '%')
+            ->orWhere('nama_siswa', 'like', '%' . $search . '%')
+            ->whereHas('kelasmi', function ($query) use ($search) {
+                $query->where('periode_id', session('periode_id'));
+            });
+    }
 
     
 }

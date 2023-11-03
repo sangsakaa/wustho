@@ -17,7 +17,6 @@
                     <option>100</option>
                     <option>500</option>
                 </select>
-
             </div>
 
         </div>
@@ -33,9 +32,7 @@
                         <option value="{{$kelas->id}}" {{ $kelas->id == $kelasmi ? "selected" : "" }}>{{$kelas->nama_kelas}} {{$kelas->periode}} {{$kelas->ket_semester}}{{$kelas->ket_periode}}</option>
                         @endforeach
                     </select>
-
-
-                    <button type="submit" class=" w-1/4 bg-blue-600 text-white rounded-sm px-4 py-1"> Kolektif</button>
+                    <button type="submit" class=" w-1/4 bg-blue-600 text-white rounded-sm px-4"> Kolektif</button>
 
                 </div>
 
