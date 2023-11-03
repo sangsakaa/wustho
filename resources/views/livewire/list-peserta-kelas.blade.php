@@ -31,7 +31,7 @@
                 <x-icons.print></x-icons.print>
             </button>
         </div>
-        <div class=" bg-white p-2">
+        <div id="div1" class=" bg-white p-2">
             <Table class=" table w-full mt-1">
                 <thead>
                     <tr class="border">
