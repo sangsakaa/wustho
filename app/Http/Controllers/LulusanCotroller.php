@@ -27,6 +27,7 @@ class LulusanCotroller
         $dataPeriode = Periode::query()
             ->join('semester', 'semester.id', '=', 'periode.semester_id')
             ->select('periode.id', 'periode.periode', 'semester.ket_semester')
+            ->where('periode.id', session('periode_id'))
             ->orderby('ket_semester', 'desc')
             ->get();
         $dataLulusan = Lulusan::query()

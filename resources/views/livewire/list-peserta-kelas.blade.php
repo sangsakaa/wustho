@@ -38,8 +38,9 @@
                         <th class=" text-sm px-2 border text-center  ">No</th>
                         <th class=" text-sm px-2 border text-center">NIM </th>
                         <th class=" text-sm px-2 border text-center">Nama </th>
-                        <th class=" text-sm px-2 border text-center py-1"> Nama Kelas </th>
-                        <th class=" text-sm px-2 border text-center   ">Aksi</th>
+                        <th class=" text-sm px-2 border text-center py-1"> JK </th>
+                        <th class=" text-sm px-2 border text-center py-1"> Kelas </th>
+                        <th class=" text-sm px-2 border text-center    " id="hidden-td">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -55,11 +56,14 @@
                         <td class=" border px-2 capitalize">
                             {{strtolower($list->nama_siswa)}}
                         </td>
+                        <td class=" border px-2 text-center capitalize">
+                            {{strtolower($list->jenis_kelamin)}}
+                        </td>
                         <td class=" border px-2 text-center ">
                             {{$list->nama_kelas}}
                         </td>
-                        <td class=" hidden sm:block border px-3 py-1        gap-2    ">
-                            <div class="   flex gap-2 justify-center">
+                        <td class="border px-3 py-1 gap-2">
+                            <div class="    flex gap-2 justify-center" id="hidden-td">
                                 <a href="/pesertakelas/{{$list->id}}/edit" class="   grid  bg-yellow-400 py-1 px-1 text-black hover:text-white hover:bg-purple-600 rounded-md ">
                                     <x-icons.edit></x-icons.edit>
                                 </a>
@@ -71,7 +75,6 @@
                                     </button>
                                 </form>
                             </div>
-
                         </td>
                     </tr>
                     @endforeach

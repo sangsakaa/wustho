@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use DateTime;
 use App\Models\Kelasmi;
 use App\Models\Periode;
 use App\Models\Nominasi;
@@ -9,7 +10,8 @@ use App\Models\Pesertakelas;
 use Illuminate\Http\Request;
 use App\Models\Daftar_Nominasi;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Validator;
+
+
 
 
 class SeleksiController
@@ -19,6 +21,7 @@ class SeleksiController
         $dataPeriode = Periode::query()
             ->join('semester', 'semester.id', '=', 'periode.semester_id')
             ->select('periode.id', 'periode.periode', 'semester.ket_semester')
+            ->where('periode.id', session('periode_id'))
             ->orderBy('periode')->get();
         $daftarKelas = Kelasmi::query()
             ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
@@ -115,15 +118,16 @@ class SeleksiController
     public function StoreNominasi(Request $request)
     {
 
-        $hijri = 1444;
+        $awal = DB::table('daftar_nominasi')->max('nomor_ujian');
+        $empatAngkaTerakhir = substr($awal, -4);
 
-        // Mendapatkan nomor urut terakhir dari database
-        $lastNumber = DB::table('daftar_nominasi')->max('id');
+        $now = 1444; // Tahun sekarang (sesuai dengan pertanyaan Anda)
+        $nextYear = $now + 1;
 
         // Mengkonversi tipe data variabel $lastNumber menjadi integer
-        $lastNumber = (int) $lastNumber;
+        $lastNumber = (int) $empatAngkaTerakhir;
 
-        $hijriYear = $hijri;
+        $hijriYear = $nextYear;
 
         // Menggabungkan komponen kode menjadi satu string
         $codePrefix = $hijriYear . '-' . 'II' . '-';
@@ -131,9 +135,11 @@ class SeleksiController
 
         // Menambahkan leading zero pada nomor urut baru jika kurang dari 4 digit
         $newNumberStr = str_pad($newNumber, 4, '0', STR_PAD_LEFT);
+        // dd($newNumberStr);
 
         // Gabungkan prefix dengan nomor urut baru
         $code = $codePrefix . $newNumberStr;
+        // dd($code);
 
         $pesertakelas = $request->input('pesertakelas', []);
         foreach ($pesertakelas as $peserta) {
@@ -144,7 +150,6 @@ class SeleksiController
                 $newNumberStr = str_pad($newNumber, 4, '0', STR_PAD_LEFT);
                 $code = $codePrefix . $newNumberStr;
             }
-
             $nominasi = new Daftar_Nominasi();
             $nominasi->pesertakelas_id = $peserta;
             $nominasi->nominasi_id = $request->nominasi_id;

@@ -2,7 +2,7 @@
     <x-slot name="header">
         @section('title','| Daftar Peserta Kelas : '.$kelasmi->nama_kelas )
         <h2 class="font-semibold text-xl  leading-tight">
-            Dashboard Kelas : {{$kelasmi->nama_ke}}
+            Daftar Kelas : {{$kelasmi->nama_kelas}}
         </h2>
     </x-slot>
 

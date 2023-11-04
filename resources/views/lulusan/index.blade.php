@@ -2,7 +2,7 @@
     <x-slot name="header">
         @section('title', ' | Data Lulusan' )
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard Data Lulusan') }}
+            {{ __('Data Lulusan') }}
         </h2>
     </x-slot>
     <div class=" grid grid-cols-1 sm:grid-cols-1 gap-2 px-2 py-2">
