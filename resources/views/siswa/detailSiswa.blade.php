@@ -12,10 +12,9 @@
                     <div class=" sm:grid grid grid-cols-2 sm:grid-cols-4 overflow-auto  ">
                         <div class=" ">Nama </div>
                         <div class="  uppercase font-semibold   text-xs ">: {{$siswa->nama_siswa}}</div>
-                        <div class=" ">Tempa </div>
-                        <div class="  capitalize">: {{$siswa->tempat_lahir}}</div>
-                        <div class=" ">Tanggal Lahir </div>
-                        <div class="  capitalize">: {{ \Carbon\Carbon::parse($siswa->tanggal_lahir)->isoFormat(' DD MMMM Y') }}</div>
+                        <div class=" ">Tempat </div>
+                        <div class="  capitalize">: {{strtolower($siswa->tempat_lahir)}} ,{{ \Carbon\Carbon::parse($siswa->tanggal_lahir)->isoFormat(' DD MMMM Y') }}</div>
+
                         <div class="  ">Jenis Kelamin </div>
                         <div class=" "> : {{$siswa->jenis_kelamin}}</div>
                         <div class="      ">Status Asrama </div>
