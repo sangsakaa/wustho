@@ -56,7 +56,7 @@ class PengaturanController extends Controller
             ->get();
         $periode = Periode::query()
             ->join('semester', 'semester.id', '=', 'periode.semester_id')
-            ->select('periode.id', 'periode.periode', 'semester.semester', 'semester.ket_semester')
+            ->select('periode.id', 'periode.periode', 'semester.semester', 'semester.ket_semester', 'tahun_hijriyah')
             ->get();
         return view(
             'pengaturan/periode',

@@ -121,8 +121,10 @@ class SeleksiController
         $awal = DB::table('daftar_nominasi')->max('nomor_ujian');
         $empatAngkaTerakhir = substr($awal, -4);
 
-        $now = 1444; // Tahun sekarang (sesuai dengan pertanyaan Anda)
-        $nextYear = $now + 1;
+        $kodeTahun = DB::table('periode')
+            ->where('periode.id', session('periode_id'))
+            ->max('tahun_hijriyah');
+        $nextYear = $kodeTahun;
 
         // Mengkonversi tipe data variabel $lastNumber menjadi integer
         $lastNumber = (int) $empatAngkaTerakhir;

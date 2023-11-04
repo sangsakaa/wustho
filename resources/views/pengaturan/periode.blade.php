@@ -5,7 +5,7 @@
             {{ __('Dashboard Pengaturan Periode') }}
         </h2>
     </x-slot>
-    <div class=" grid grid-cols-1 sm:grid-cols-2 gap-2 px-2 py-2">
+    <div class=" grid grid-cols-1 sm:grid-cols-1 gap-2 px-2 py-2">
         <div class="">
             <div class=" mx-auto ">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
@@ -27,23 +27,25 @@
             <div class=" mx-auto ">
                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                     <div class=" bg-white border-b border-gray-200">
-                        <div class=" p-6 grid grid-cols-1">
+                        <div class=" p-6 grid grid-cols-1 gap-2">
                             <form action="/periode" method="post">
                                 @csrf
-                                <label for="">Periode</label>
-                                <input name="periode" type="text" class=" w-full sm:w-full py-1 rounded-md" placeholder="  Periode : 2022/2023">
-                                <label for="">Semester</label>
-                                <select name="semester_id" id="" class=" w-full py-1 rounded-md">
-                                    @foreach($semester as $list)
-                                    <option value="{{$list->id}}">{{$list->ket_semester}}</option>
-                                    @endforeach
-                                </select>
+                                <div class=" grid grid-cols-2 gap-2">
+                                    <label for="">Periode</label>
+                                    <input name="periode" type="text" class=" w-full sm:w-full py-1 rounded-md" placeholder="  Periode : 2022/2023">
+                                    <label for="">Semester</label>
+                                    <select name="semester_id" id="" class=" w-full py-1 rounded-md">
+                                        @foreach($semester as $list)
+                                        <option value="{{$list->id}}">{{$list->ket_semester}}</option>
+                                        @endforeach
+                                    </select>
+
+                                </div>
                                 <button type="submit" class=" px-2 py-1 bg-blue-600 text-white rounded-md mt-1">Simpan</button>
                                 <a href="/siswa" class=" px-2 py-1 bg-red-600 text-white rounded-md mt-1">
                                     Batal
                                 </a>
                             </form>
-
                             <table class=" border">
                                 <thead class=" border">
                                     <tr class=" capitalize bg-gray-100">
@@ -51,6 +53,7 @@
                                         <th class=" border px-2 py-1 text-center">Periode</th>
                                         <th class=" border px-2 py-1 text-center">semester</th>
                                         <th class=" border px-2 py-1 text-center">Ket Semester</th>
+                                        <th class=" border px-2 py-1 text-center">Tahun Hijriyah</th>
                                         <th class=" border px-2 py-1 text-center">Aksi</th>
                                     </tr>
                                 </thead>
@@ -68,6 +71,9 @@
                                         </th>
                                         <th class=" border px-2 text-center">
                                             <a href="/report/{{$list->id}}"> {{$list->ket_semester}}</a>
+                                        </th>
+                                        <th class=" border px-2 text-center">
+                                            <a href="/report/{{$list->id}}"> {{$list->tahun_hijriyah}}</a>
                                         </th>
                                         <th class=" border px-2 text-center">
                                             <form action="/periode/{{$list->id}}" method="post">
