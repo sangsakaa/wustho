@@ -64,6 +64,7 @@
                                 </p>
                             </div>
                             @elseif($kelasmi->jenjang === "Ulya")
+                            <p class="   text-lg uppercase font-semibold tracking-widest ">departemen pendidikan diniyah wahidiyah</p>
                             <p class="font-semibold text-3xl uppercase">
                                 MADRASAH DINIYAH {{$kelasmi->jenjang}} WAHIDIYAH
                             </p>
@@ -71,6 +72,7 @@
                                 TAHUN PELAJARAN {{$kelasmi->periode}} {{$kelasmi->ket_semester}}
                             </p>
                             @elseif($kelasmi->jenjang === "Ula")
+                            <p class="   text-lg uppercase font-semibold tracking-widest ">departemen pendidikan diniyah wahidiyah</p>
                             <p class="font-semibold text-3xl uppercase">
                                 MADRASAH DINIYAH {{$kelasmi->jenjang}} WAHIDIYAH
                             </p>
