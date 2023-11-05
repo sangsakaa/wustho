@@ -24,6 +24,12 @@
                                     <option>100</option>
                                     <option>500</option>
                                 </select>
+                                <select wire:model="jenis_kelamin" class=" py-1">
+
+                                    <option>L</option>
+                                    <option>P</option>
+
+                                </select>
                             </div>
 
                         </div>
