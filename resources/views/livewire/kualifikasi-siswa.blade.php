@@ -1,5 +1,14 @@
 <div>
     <input type="search" wire:model="search" class=" py-1 " placeholder=" cari nama kelas">
+    <select wire:model="perPage" class=" py-1">
+        <option>6</option>
+        <option>12</option>
+        <option>18</option>
+        <option>24</option>
+        <option>50</option>
+        <option>100</option>
+
+    </select>
     <table class="w-full">
         <thead>
             <tr>

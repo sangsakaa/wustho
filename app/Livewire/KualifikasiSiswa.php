@@ -9,6 +9,7 @@ use Livewire\Component;
 class KualifikasiSiswa extends Component
 {
     public $search = '';
+    public $perPage = 6;
     public function render()
     {
         $dataSiswa = Pesertakelas::search($this->search)
@@ -21,7 +22,7 @@ class KualifikasiSiswa extends Component
             ->selectRaw('SUM(CASE WHEN absensikelas.keterangan = "hadir" THEN 1 ELSE 0 END) as kehadiran')
             ->groupBy('siswa.nama_siswa', 'periode.periode', 'nis', 'nama_kelas')
             ->orderby('nis.nis')
-            ->get();
+        ->paginate($this->perPage);
 
 
         return view('livewire.kualifikasi-siswa', ['dataSiswa' => $dataSiswa]);
