@@ -6,7 +6,7 @@ use App\Models\Siswa;
 use Livewire\Component;
 use App\Models\Asramasiswa;
 use App\Models\Pesertaasrama;
-use Illuminate\Support\Facades\DB;
+
 
 class ListKolektifAsrama extends Component
 {
@@ -60,10 +60,6 @@ class ListKolektifAsrama extends Component
             ->orderBy('siswa.nama_siswa')
         ->paginate($this->perPage)
         ->where('jenis_kelamin', $this->jenis_kelamin);
-        
-
-
-
         return view('livewire.list-kolektif-asrama', [
             'Datasiswa' => $Datasiswa,
             'kelas' => $kelas,

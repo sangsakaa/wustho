@@ -2,7 +2,7 @@
   <x-slot name="header">
     @section('title', ' | Live' )
     <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-      {{ __('Dashboard Card User Account') }}
+      {{ __('Detail') }}
     </h2>
   </x-slot>
   <style>
@@ -20,6 +20,6 @@
     }
   </script>
   <div class=" p-4 bg-white ">
-    <livewire:siswa-table></livewire:siswa-table>
+    <livewire:kualifikasi-siswa></livewire:kualifikasi-siswa>
   </div>
 </x-app-layout>
