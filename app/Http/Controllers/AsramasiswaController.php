@@ -117,10 +117,7 @@ class AsramasiswaController extends Controller
         $tittle = Asramasiswa::query()
             ->join('asrama', 'asrama.id', '=', 'asramasiswa.asrama_id')
             ->select('asrama.nama_asrama', 'asramasiswa.kuota', 'asramasiswa.id')
-            ->where('asramasiswa.id', $asramasiswa->id)->first();
-        
-        
-        
+        ->where('asramasiswa.id', $asramasiswa->id)->first();
         return view(
             'asrama/pesertaasrama',
             [

@@ -71,12 +71,13 @@
         <x-slot name="icon">
             <x-icons.academi class="flex-shrink-0 w-6 h-6" aria-hidden="true" />
         </x-slot>
-        <x-sidebar.sublink title=" Data Mata Pelajaran" href="{{ route('mapel') }}" :active="request()->routeIs('mapel')" />
+        <x-sidebar.sublink title=" Mata Pelajaran" href="{{ route('mapel') }}" :active="request()->routeIs('mapel')" />
         <x-sidebar.sublink title=" Data Guru" href="{{ route('guru') }}" :active="request()->routeIs('guru')" />
-        <x-sidebar.sublink title=" Ploting Guru" href="{{ route('Daftar-Jadwal') }}" :active="request()->routeIs('Daftar-Jadwal')" />
-        <x-sidebar.sublink title=" Lulusan" href="{{ route('lulusan') }}" :active="request()->routeIs('lulusan')" />
-        <x-sidebar.sublink title="Daftar Seleksi" href="{{ route('daftar-seleksi') }}" :active="request()->routeIs('daftar-seleksi')" />
+        <x-sidebar.sublink title=" Jadwal" href="{{ route('Daftar-Jadwal') }}" :active="request()->routeIs('Daftar-Jadwal')" />
         <x-sidebar.sublink title="Data Nilai" href="{{ route('nilaimapel') }}" :active="request()->routeIs('nilaimapel')" />
+        <x-sidebar.sublink title="Daftar Seleksi" href="{{ route('daftar-seleksi') }}" :active="request()->routeIs('daftar-seleksi')" />
+        <x-sidebar.sublink title=" Lulusan" href="{{ route('lulusan') }}" :active="request()->routeIs('lulusan')" />
+        <x-sidebar.sublink title="Rapor" href="{{ route('raportkelas') }}" :active="request()->routeIs('raportkelas')" />
     </x-sidebar.dropdown>
     <x-sidebar.dropdown title="PRESENSI" :active="Str::startsWith(request()->route()->uri(), 'buttons')">
         <x-slot name="icon">

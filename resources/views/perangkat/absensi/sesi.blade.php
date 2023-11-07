@@ -23,6 +23,7 @@
             </div>
             <a href="/laporan-harian-perangkat" class=" hidden sm:block bg-blue-600 text-white rounded-md px-2 py-1">Laporan Harian</a>
             <a href="/laporan-Bulanan-perangkat" class="hidden sm:block bg-blue-600 text-white rounded-md px-2 py-1">Laporan Bulanan</a>
+            <a href="/rekap-Bulanan" class="hidden sm:block bg-blue-600 text-white rounded-md px-2 py-1">Rekap Sesi</a>
         </div>
         <div class="bg-white dark:bg-dark-bg overflow-hidden shadow-sm ">
 

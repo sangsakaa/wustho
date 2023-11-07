@@ -1,5 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
+        @section('title', ' | Asrama : '.$tittle->nama_asrama )
         <h2 class="font-semibold text-xl dark:bg-dark-bg dark:text-purple-600 text-gray-800 leading-tight">
             Peserta Asrama : {{$tittle->nama_asrama}}
         </h2>
@@ -13,8 +14,6 @@
                     <div class=" uppercase  font-semibold"> : {{$tittle->nama_asrama}} </div>
                     <div>Kuota Asrama</div>
                     <div> : {{$tittle->kuota}} org </div>
-
-
                 </div>
             </div>
         </div>

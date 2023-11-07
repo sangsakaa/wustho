@@ -21,8 +21,6 @@ class SesiPerangkatController
         } catch (InvalidFormatException $ex) {
             $tanggal = now();
         }
-       
-
         date_default_timezone_set('Asia/Jakarta'); // set timezone to WIB
         $hariIni = date('l, d F Y', strtotime('now'));
         $dataSesiPerangkat = SesiPerangkat::query()
@@ -148,5 +146,49 @@ class SesiPerangkatController
             ->whereBetween('sesi_perangkat.tanggal', [$periodeBulan->first()->toDateString(), $periodeBulan->last()->toDateString()])
         ->get();
         return view('perangkat.absensi.laporanBulanan', compact('laporanBulanan', 'tanggal', 'bulan', 'periodeBulan', 'periode', 'kelasmi'));
+    }
+    public function rekapSesiPerangkat(Request $request)
+    {
+        $bulan = $request->bulan ? Carbon::parse($request->bulan) : now();
+        $periodeBulan = $bulan->startOfMonth()->daysUntil($bulan->copy()->endOfMonth());
+        $datakelasmi = Perangkat::query()
+            ->select('perangkat.*')
+            ->get();
+        $dataSesikelasguru = SesiPerangkat::query()
+            ->leftJoin('absensi_perangkat', 'absensi_perangkat.sesi_perangkat_id', '=', 'sesi_perangkat.id')
+            ->join('perangkat', 'perangkat.id', 'absensi_perangkat.perangkat_id')
+            ->select('sesi_perangkat.*', 'nama_perangkat', 'absensi_perangkat.keterangan', 'perangkat_id')
+            ->where('sesi_perangkat.periode_id', session('periode_id'))
+            ->whereBetween('sesi_perangkat.tanggal', [$periodeBulan->first()->toDateString(), $periodeBulan->last()->toDateString()])
+            ->get()->groupBy('perangkat_id');
+        $dataRekapSesi = $datakelasmi
+            ->keyBy('id')
+            ->map(function ($perangkat, $perangkat_id) use ($dataSesikelasguru, $periodeBulan) {
+                // dd($perangkat);
+                // dd($dataSesikelasguru);
+                foreach ($periodeBulan as $hari) {
+                    // dd($dataSesikelasguru);
+                    $sesiPerBulan[] = [
+                        'hari' => $hari,
+                        'data' => $dataSesikelasguru->count() ? $dataSesikelasguru[$perangkat_id]->firstWhere('tanggal', $hari->toDateString()) : null
+                    ];
+                }
+                return [
+                    'sesiPerBulan' => $sesiPerBulan,
+                    'perangkat' => $perangkat,
+                ];
+            });
+
+
+
+        return view('perangkat.absensi.rekap-sesi', [
+
+
+            'dataRekapSesi' => $dataRekapSesi,
+            'periodeBulan' => $periodeBulan,
+            'bulan' => $bulan,
+
+
+        ]);
     }
 }

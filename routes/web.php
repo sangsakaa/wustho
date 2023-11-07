@@ -170,7 +170,7 @@ Route::get('sesi-presensi-guru/rekap', [PresensiGuruController::class, 'rekapSes
 
 // Controller Raport
 Route::get('report/{pesertakelas}', [RaportController::class, 'show'])->middleware(['auth'])->name('report');
-Route::get('raportkelas', [RaportController::class, 'raportkelas'])->middleware(['auth']);
+Route::get('raportkelas', [RaportController::class, 'raportkelas'])->middleware(['auth'])->name('raportkelas');
 Route::post('raportkelas', [RaportController::class, 'raportkelas'])->middleware(['auth']);
 Route::get('peringkat', [RaportController::class, 'peringkat'])->middleware(['auth']);
 Route::post('peringkat', [RaportController::class, 'peringkat'])->middleware(['auth']);
@@ -316,6 +316,7 @@ Route::post('/daftar-sesi-perangkat/{sesiPerangkat}', [SesiPerangkatController::
 
 Route::get('laporan-harian-perangkat', [SesiPerangkatController::class, 'LaporanHarian']);
 Route::get('laporan-Bulanan-perangkat', [SesiPerangkatController::class, 'LaporanBulanan']);
+Route::get('rekap-Bulanan', [SesiPerangkatController::class, 'rekapSesiPerangkat']);
 
 
 // Jadwal Pelajaran

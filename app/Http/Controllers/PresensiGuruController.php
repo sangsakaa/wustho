@@ -395,10 +395,12 @@ class PresensiGuruController
         $dataRekapSesi = $datakelasmi
             ->keyBy('id')
             ->map(function ($kelasmi, $kelasmi_id) use ($dataSesikelasguru, $periodeBulan) {
+            // dd($dataSesikelasguru);
                 foreach ($periodeBulan as $hari) {
                     $sesiPerBulan[] = [
                         'hari' => $hari,
                         'data' => $dataSesikelasguru->count() ? $dataSesikelasguru[$kelasmi_id]->firstWhere('tanggal', $hari->toDateString()) : null
+                        
                     ];
                 }
                 return [
