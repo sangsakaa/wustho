@@ -118,40 +118,15 @@ class AsramasiswaController extends Controller
             ->join('asrama', 'asrama.id', '=', 'asramasiswa.asrama_id')
             ->select('asrama.nama_asrama', 'asramasiswa.kuota', 'asramasiswa.id')
             ->where('asramasiswa.id', $asramasiswa->id)->first();
-        $data = Pesertaasrama::query()
-            ->join('siswa', 'siswa.id', '=', 'pesertaasrama.siswa_id')
-            ->join('asramasiswa', 'asramasiswa.id', '=', 'pesertaasrama.asramasiswa_id')
-            ->join('asrama', 'asrama.id', '=', 'asramasiswa.asrama_id')
-            ->join('nis', 'nis.siswa_id', '=', 'siswa.id')
-            ->select(
-                [
-                    'pesertaasrama.id',
-                    'siswa.nama_siswa',
-                    'asrama.nama_asrama',
-                    'nis.nis',
-                    'siswa.jenis_kelamin',
-                    'siswa.kota_asal',
-                    // 'asramasiswa.id'
-                ]
-            )
-            ->where('asramasiswa_id', $asramasiswa->id)
-            ->orderBy('siswa.nama_siswa')
-            ->orderBy('nis.nis');
         
-        if (request('cari')) {
-            $data->where('nama_siswa', 'like', '%' . request('cari') . '%');
-                // ->orWhere('nis', 'like', '%' . request('cari') . '%');
-            // ->orWhere('nama_kelas', 'like', '%' . request('cari') . '%')
-            // ->orWhere('nis', 'like', '%' . request('cari') . '%')
-            // ->orWhere('tanggal_masuk', 'like', '%' . request('cari') . '%')
-
-        }
+        
+        
         return view(
             'asrama/pesertaasrama',
             [
                 'asramasiswa' => $asramasiswa,
                 'tittle' => $tittle,
-                'datapeserta' => $data->get()
+                
             ]
         );
     }

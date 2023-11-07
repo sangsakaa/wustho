@@ -19,6 +19,15 @@ class Pesertaasrama extends Model
     {
         return $this->belongsTo(Asramasiswa::class, 'asramasiswa_id', 'id');
     }
+    public static function search($search)
+    {
+        // dd($search);
+        return empty($search) ? static::query() : static::query()
+            ->orWhere('nama_siswa', 'like', '%' . $search . '%')
+            ->whereHas('asramasiswa', function ($query) use ($search) {
+                $query->where('periode_id', session('periode_id'));
+            });
+    }
     
     
 }
