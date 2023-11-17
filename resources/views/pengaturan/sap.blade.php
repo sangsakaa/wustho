@@ -151,7 +151,7 @@
                                     }
                                 }
                                 ?>
-                                d
+
                                 <th></th>
                             </tr>
                             <tr class="border border-green-600 text-xs sm:text-sm">
