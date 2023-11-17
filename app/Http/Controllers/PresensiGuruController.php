@@ -381,8 +381,7 @@ class PresensiGuruController
             ->select('kelasmi.id', 'kelasmi.nama_kelas', 'periode.periode', 'semester.ket_semester')
             ->where('kelasmi.periode_id', session('periode_id'))
             ->orderBy('kelasmi.nama_kelas')
-            ->get();
-
+        ->get();
         $dataSesikelasguru = Sesi_Kelas_Guru::query()
             ->join('kelasmi', 'kelasmi.id', '=', 'sesi_kelas_guru.kelasmi_id')
             ->leftJoin('absensiguru', 'absensiguru.sesi_kelas_guru_id', '=', 'sesi_kelas_guru.id')

@@ -30,7 +30,7 @@
                         <div class=" p-6 grid grid-cols-1 gap-2">
                             <form action="/periode" method="post">
                                 @csrf
-                                <div class=" grid grid-cols-2 gap-2">
+                                <div class=" grid grid-cols-4 gap-2">
                                     <label for="">Periode</label>
                                     <input name="periode" type="text" class=" w-full sm:w-full py-1 rounded-md" placeholder="  Periode : 2022/2023">
                                     <label for="">Semester</label>
@@ -39,6 +39,10 @@
                                         <option value="{{$list->id}}">{{$list->ket_semester}}</option>
                                         @endforeach
                                     </select>
+                                    <label for="">Tanggal Mulai</label>
+                                    <input type="date" name="tanggal_mulai" class=" py-1 rounded-md">
+                                    <label for="">Tahun Hijriyah</label>
+                                    <input type="text" name="tahun_hijriyah" class=" py-1 rounded-md" placeholder=" contoh : 1444">
 
                                 </div>
                                 <button type="submit" class=" px-2 py-1 bg-blue-600 text-white rounded-md mt-1">Simpan</button>

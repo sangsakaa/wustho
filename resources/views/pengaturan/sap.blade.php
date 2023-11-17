@@ -139,16 +139,20 @@
                                         break;
                                 }
 
-                                $jumlah_hari = 18; // Pastikan variabel $jumlah_hari memiliki nilai yang benar
+                                $jumlah_hari = 17; // Pastikan variabel $jumlah_hari memiliki nilai yang benar
 
                                 if ($tanggal_awal instanceof Illuminate\Support\Carbon) {
 
                                     for ($hari = 0; $hari < $jumlah_hari; $hari++) {
-                                        echo '<th class="border border-green-600 px-1 text-xs">' . $tanggal_awal->format('d/m ') . '</th>';
+                                        echo '<th class="border border-green-600 px-1 text-xs">' . '' .
+                                            // $tanggal_awal->format('d/m ') . 
+                                            '</th>';
                                         $tanggal_awal->modify('+7 days'); // Menambahkan 7 hari ke tanggal_awal
                                     }
                                 }
                                 ?>
+                                d
+                                <th></th>
                             </tr>
                             <tr class="border border-green-600 text-xs sm:text-sm">
                                 <th class="border border-green-600 px-1">NAMA</th>

@@ -24,16 +24,13 @@
                                     <option>500</option>
                                 </select>
                                 <select wire:model="jenis_kelamin" class=" py-1">
-
                                     <option>L</option>
                                     <option>P</option>
 
                                 </select>
                             </div>
-
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -41,7 +38,6 @@
     <div class=" py-1">
         <form action="/kolektifasrama" method="post" enctype="multipart/form-data">
             @csrf
-
             <div class="  flex   gap-2  sm:w-1/2 w-full">
                 <select name="asramasiswa_id" class="py-1 w-full capitalize" required>
                     @foreach($kelas as $asrama)
