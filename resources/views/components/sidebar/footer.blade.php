@@ -3,4 +3,5 @@
         <x-icons.menu-fold-left x-show="isSidebarOpen" class="w-6 h-6" />
         <x-icons.menu-fold-right x-show="!isSidebarOpen" class="w-6 h-6" />
     </x-button>
+
 </div>
