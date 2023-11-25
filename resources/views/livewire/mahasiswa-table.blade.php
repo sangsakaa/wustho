@@ -1,4 +1,4 @@
-<div>
+<div class=" overflow-auto">
     <div class=" flex gap-2">
         <div class=" ">
             <a href="/addsiswa">

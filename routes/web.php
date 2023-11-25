@@ -15,11 +15,13 @@ use App\Http\Controllers\MapelController;
 use App\Http\Controllers\NilaiController;
 use App\Http\Controllers\SiswaController;
 use App\Http\Controllers\AsramaController;
+use App\Http\Controllers\ExportController;
 use App\Http\Controllers\JadwalController;
 use App\Http\Controllers\LulusanCotroller;
 use App\Http\Controllers\QrcodeController;
 use App\Http\Controllers\RaportController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\JabatanController;
 use App\Http\Controllers\KelasmiController;
 use App\Http\Controllers\PararelController;
 use App\Http\Controllers\SeleksiController;
@@ -41,7 +43,6 @@ use App\Http\Controllers\PresensikelasController;
 use App\Http\Controllers\SesiPerangkatController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
-use App\Http\Controllers\ExportController;
 
 // batas
 Route::get('/manajemen-user', [RegisteredUserController::class, 'index'])->middleware(['auth'])->name('admin');
@@ -160,6 +161,10 @@ Route::get('laporan-harian-guru', [PresensiGuruController::class, 'LaporanHarian
 Route::get('laporan-semester-guru', [PresensiGuruController::class, 'laporanSemester'])->middleware(['auth'])->name('laporan-semester-guru');
 Route::delete('sesi-presensi-guru/{sesi_Kelas_Guru}', [PresensiGuruController::class, 'DeleteSesi'])->middleware(['auth']);
 Route::get('sesi-presensi-guru/rekap', [PresensiGuruController::class, 'rekapSesi'])->middleware(['auth']);
+
+// jabatan
+Route::get('jabatan', [JabatanController::class, 'index']);
+Route::post('jabatan', [JabatanController::class, 'store']);
 
 
 
@@ -303,7 +308,8 @@ Route::get('Laporan-Kehadiran', [ReportController::class, 'LapKehadiran'])->midd
 // Perangkat
 Route::get('data-perangkat', [PerangkatController::class, 'index'])->middleware(['auth'])->name('data-perangkat');
 Route::get('form-perangkat', [PerangkatController::class, 'create'])->middleware(['auth'])->name('form-perangkat');
-
+Route::get('detail-perangkat/{perangkat}', [PerangkatController::class, 'view']);
+Route::post('detail-perangkat/{perangkat}', [PerangkatController::class, 'store_jabatan']);
 Route::get('edit-form-perangkat/{perangkat}/edit', [PerangkatController::class, 'edit'])->middleware(['auth']);
 Route::patch('edit-form-perangkat/{perangkat}/edit', [PerangkatController::class, 'update'])->middleware(['auth']);
 

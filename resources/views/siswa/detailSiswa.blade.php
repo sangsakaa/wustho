@@ -73,6 +73,7 @@
                                     @if($pesertakelas->count() != null)
                                     @foreach($pesertakelas as $kelas)
                                     <tr>
+
                                         <td class=" border px-2 py-1 text-center ">
                                             {{$loop->iteration}}
                                         </td>
@@ -127,9 +128,6 @@
                                     @endif
                                 </tbody>
                             </table>
-
-
-
                             <table class=" w-full    ">
                                 <thead>
                                     <tr class=" border bg-gray-100">

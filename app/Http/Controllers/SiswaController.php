@@ -112,11 +112,14 @@ class SiswaController extends Controller
     {
         $bulan = $request->bulan ? Carbon::parse($request->bulan) : now();
         $periodeBulan = $bulan->startOfMonth()->daysUntil($bulan->copy()->endOfMonth());
-        $nilai = Pesertakelas::query()
+        $pesertakelas = Pesertakelas::query()
             ->join('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
             ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
             ->join('semester', 'semester.id', '=', 'periode.semester_id')
-            ->where('pesertakelas.siswa_id', $siswa->id)->get();
+        ->where('pesertakelas.siswa_id', $siswa->id)
+            ->orderby('periode')
+            ->orderby('semester')
+            ->get();
         $historiAsrama = Pesertaasrama::query()
         ->join('asramasiswa', 'asramasiswa.id', '=', 'pesertaasrama.asramasiswa_id')
         ->join('asrama', 'asrama.id', '=', 'asramasiswa.asrama_id')
@@ -150,7 +153,7 @@ class SiswaController extends Controller
             'siswa/detailSiswa',
             [
                 'siswa' => $siswa,
-                'pesertakelas' => $nilai,
+                'pesertakelas' => $pesertakelas,
                 'historiAsrama' => $historiAsrama,
                 'PresensiAsrama' => $PresensiAsrama->get(),
                 'PresensiKelas' => $PresensiKelas->get(),

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Jabatan;
+use App\Models\JabatanPerangkat;
 use App\Models\Perangkat;
 use Illuminate\Http\Request;
 
@@ -54,6 +56,37 @@ class PerangkatController
             ]);
 
         return redirect()->back()->with('update', 'pembaharuan data berhasil');
+    }
+    public function view(Perangkat $perangkat)
+    {
+        $jabatan = Jabatan::all();
+        $detailJab = JabatanPerangkat::query()
+            ->join('perangkat', 'perangkat.id', 'jabatan_perangkat.perangkat_id')
+            ->join('jabatan', 'jabatan.id', 'jabatan_perangkat.jabatan_id')
+            ->where('perangkat_id', $perangkat)->first();
+        return view('perangkat.detail', compact('perangkat', 'detailJab', 'jabatan'));
+    }
+    public function store_jabatan(request $request, $perangkat)
+    {
+        $perangkatId = $perangkat;
+        $jabatanId = $request->jabatan_id;
+
+        // Check if a record with the given perangkat_id already exists
+        $existingJabatan = JabatanPerangkat::where('perangkat_id', $perangkatId)->first();
+
+        if ($existingJabatan) {
+            // If a record exists, update the jabatan_id
+            $existingJabatan->jabatan_id = $jabatanId;
+            $existingJabatan->save();
+        } else {
+            // If no record exists, create a new one
+            $jabatan = new JabatanPerangkat();
+            $jabatan->perangkat_id = $perangkatId;
+            $jabatan->jabatan_id = $jabatanId;
+            $jabatan->save();
+        }
+
+        return redirect()->back();
     }
 
     

@@ -88,23 +88,19 @@
         </center>
     </section>
     <div class=" sm:grid-cols-2 grid grid-cols-1">
-        <section class="jumbotron jumbotron-fluid text-center">
-            <lord-icon src="https://cdn.lordicon.com/amjaykqd.json" trigger="hover" style="width:223px;height:223px">
+        <section class="jumbotron grid justify-items-center ">
+            <lord-icon src="https://cdn.lordicon.com/amjaykqd.json" trigger="hover" style="width:223px;height:205px">
             </lord-icon>
-
             <span>Consultation</span>
         </section>
-        <section class="jumbotron jumbotron-fluid text-center bg-blue-600 ">
-            <script src="https://cdn.lordicon.com/lordicon-1.3.0.js"></script>
-
-            <lord-icon src="https://cdn.lordicon.com/yypubrzc.json" trigger="hover" style="width:223px;height:223px">
+        <section class="jumbotron  grid justify-items-center     ">
+            <lord-icon src="https://cdn.lordicon.com/yypubrzc.json" trigger="hover" style="width:223px;height:205px">
             </lord-icon>
             <span>Development</span>
-
         </section>
     </div>
     <!-- endfooter -->
-
+    <script src="https://cdn.lordicon.com/lordicon-1.3.0.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-fQybjgWLrvvRgtW6bFlB7jaZrFsaBXjsOMm/tB9LTS58ONXgqbR9W8oWht/amnpF" crossorigin="anonymous">
@@ -117,14 +113,11 @@
     </script>
     <footer class="jumbotron jumbotron-fluid text-center">
         <div class=" bg-blue-600 h-10">
-            <div class=" py-2 text-white uppercase text-xs">
-                &copy 2022 Madrasah Diniyah Wustha
+            <div class=" py-2 text-white uppercase  text-xs">
+                &copy 2022 Madin Wustha Wahidiyah
             </div>
         </div>
-
     </footer>
 </body>
-
-
 
 </html>

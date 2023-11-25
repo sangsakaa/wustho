@@ -8,6 +8,7 @@
     <div class=" bg-white p-2 sm:p-2  ">
         <div>
             <a href="/form-perangkat" class=" bg-blue-600 text-white rounded-md px-2 py-1 capitalize">Tambah data</a>
+            <a href="jabatan" class=" bg-blue-600 text-white rounded-md px-2 py-1 capitalize">Tambah jabatan</a>
         </div>
         <div class=" overflow-auto">
             <Table class=" sm:w-full w-full  mt-2">
@@ -16,6 +17,7 @@
                         <th class="px-2 border py-1">No</th>
                         <th class="px-2 border text-center ">NIG</th>
                         <th class="px-2 border text-center w-1/2 sm:w-1/4">Nama Guru</th>
+                        <th class="px-2 border text-center">Jabatan</th>
                         <th class="px-2 border text-center">JK</th>
                         <th class="px-2 border text-center w-10">Agama</th>
                         <th class="px-2 border text-center">Tempat Lahir</th>
@@ -32,17 +34,30 @@
                         <th class=" text-center border">{{$loop->iteration}}</th>
 
                         <td class=" px-2 border text-center capitalize">
-                            <a href="guru/{{$item->id}}">
+                            <a href="detail-perangkat/{{$item->id}}">
                                 @if($item->NigTerakhir != null)
                                 {{$item->NigTerakhir->nig}}
                                 @else
-                                <span class=" text-xs text-red-600 ">belum ada nig</span>
+                                <span class=" text-xs text-red-600 "> nig</span>
                                 @endif
                             </a>
                         </td>
                         <td class=" px-2">
-                            <a href="guru/{{$item->id}}">
+                            <a href="detail-perangkat/{{$item->id}}">
                                 {{$item->nama_perangkat}}
+                            </a>
+                        </td>
+                        <td class=" px-2">
+                            <a href="detail-perangkat/{{$item->id}}">
+                                @if($item->Jabatan == null)
+                                -
+                                @else
+                                @foreach($item->Jabatan->titleJab as $lits)
+                                {{ $lits->nama_jabatan ?? '-' }}
+                                @endforeach
+                                @endif
+
+
                             </a>
                         </td>
                         <td class=" border px-2 text-center w-10"> {{$item->jenis_kelamin}}</td>
