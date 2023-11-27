@@ -220,13 +220,18 @@ class KelasmiController extends Controller
                 DB::raw('COUNT(CASE WHEN absensiguru.keterangan = "izin" THEN 1 END) as izin'),
                 DB::raw('COUNT(CASE WHEN absensiguru.keterangan = "alfa" THEN 1 END) as alfa'),
                 DB::raw('COUNT(CASE WHEN absensiguru.keterangan = "sakit" THEN 1 END) as sakit'),
-                DB::raw('COUNT(DISTINCT sesi_kelas_guru.id) as jumlah_sesi')
-            )
-            ->join('sesi_kelas_guru', 'sesi_kelas_guru.id', 'absensiguru.sesi_kelas_guru_id')
-            ->join('kelasmi', 'kelasmi.id', 'sesi_kelas_guru.kelasmi_id')
-            ->where('kelasmi.periode_id', session('periode_id'))
-            ->groupBy('kelasmi.nama_kelas')
-            ->get();
+            // Add this line for total_absensi
+            DB::raw('COUNT(DISTINCT sesi_kelas_guru.id) as jumlah_sesi'),
+            // Add this line for total_absensi_selain_hadir
+            DB::raw('COUNT(DISTINCT sesi_kelas_guru.id) - COUNT(CASE WHEN absensiguru.keterangan = "hadir" THEN 1 END) as total_absensi_selain_hadir')
+        )
+        ->join('sesi_kelas_guru', 'sesi_kelas_guru.id', 'absensiguru.sesi_kelas_guru_id')
+        ->join('kelasmi', 'kelasmi.id', 'sesi_kelas_guru.kelasmi_id')
+        ->where('kelasmi.periode_id', session('periode_id'))
+        ->groupBy('kelasmi.nama_kelas')
+        ->get();
+
+
 
 
 
