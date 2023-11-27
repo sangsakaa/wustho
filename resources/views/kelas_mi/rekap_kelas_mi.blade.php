@@ -40,6 +40,41 @@
                             @endforeach
                         </tbody>
                     </table>
+                </div>
+                <div class=" overflow-auto">
+                    <table class="  w-full mt-2">
+                        <thead>
+                            <tr class="uppercase text-sm border">
+                                <th>No</th>
+                                <th>Nama </th>
+                                <th>KLS</th>
+                                <th>I</th>
+                                <th>A</th>
+                                <th>S</th>
+                                <th>Jml</th>
+                                <th>Tot</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($rekapKelasGuru as $namaKelas => $data)
+                            <tr class=" border even:bg-gray-100">
+                                <td class=" text-left">{{ $loop->iteration }}</td>
+                                <td class=" text-left">{{ $data['nama_guru'] }}</td>
+                                <td class=" text-center">{{ $namaKelas }}</td>
+                                <td class=" text-center">{{ $data['izin'] }}</td>
+                                <td class=" text-center">{{ $data['alfa'] }}</td>
+                                <td class=" text-center">{{ $data['sakit'] }}</td>
+                                <td class=" text-center">{{ $data['jumlah_sesi'] }}</td>
+                                <td class=" text-center">{{ $data['total_absensi_selain_hadir'] }}</td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+
+
+
+
+
 
                 </div>
 

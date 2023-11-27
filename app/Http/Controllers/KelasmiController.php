@@ -230,12 +230,38 @@ class KelasmiController extends Controller
         ->where('kelasmi.periode_id', session('periode_id'))
         ->groupBy('kelasmi.nama_kelas')
         ->get();
+        $rekapKelasGuru = Absensiguru::query()
+        ->select(
+            'nama_guru',
+            'nama_kelas',
+            DB::raw('COUNT(CASE WHEN absensiguru.keterangan = "hadir" THEN 1 END) as hadir'),
+            DB::raw('COUNT(CASE WHEN absensiguru.keterangan = "izin" THEN 1 END) as izin'),
+            DB::raw('COUNT(CASE WHEN absensiguru.keterangan = "alfa" THEN 1 END) as alfa'),
+            DB::raw('COUNT(CASE WHEN absensiguru.keterangan = "sakit" THEN 1 END) as sakit'),
+            // Add this line for total_absensi
+            DB::raw('COUNT(DISTINCT sesi_kelas_guru.id) as jumlah_sesi'),
+            // Add this line for total_absensi_selain_hadir
+            DB::raw('COUNT(DISTINCT sesi_kelas_guru.id) - COUNT(CASE WHEN absensiguru.keterangan = "hadir" THEN 1 END) as total_absensi_selain_hadir')
+        )
+        ->join('sesi_kelas_guru', 'sesi_kelas_guru.id', 'absensiguru.sesi_kelas_guru_id')
+        ->join('daftar_jadwal', 'daftar_jadwal.id', 'absensiguru.daftar_jadwal_id')
+        ->join('guru', 'guru.id', 'daftar_jadwal.guru_id')
+        ->join('kelasmi', 'kelasmi.id', 'sesi_kelas_guru.kelasmi_id')
+        ->where('kelasmi.periode_id', session('periode_id'))
+        ->groupBy('nama_guru', 'nama_kelas')
+        ->get()
+        ->pluck(null, 'nama_kelas'); // Pluck the result by 'nama_kelas'
+
+        // Now $rekapKelasGuru is an associative array with 'nama_kelas' as the key
+        // You can access the data using $rekapKelasGuru['nama_kelas']
 
 
 
 
 
 
-        return view('kelas_mi.rekap_kelas_mi', compact('rekapKelas'));
+
+
+        return view('kelas_mi.rekap_kelas_mi', compact('rekapKelas', 'rekapKelasGuru'));
     }
 }
