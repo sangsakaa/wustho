@@ -107,6 +107,8 @@ Route::post('kelas_mi', [KelasmiController::class, 'store'])->middleware(['auth'
 Route::get('kelas_mi/{kelasmi}/edit', [KelasmiController::class, 'edit'])->middleware(['auth']);
 Route::delete('kelas_mi/{kelasmi}', [KelasmiController::class, 'destroy'])->middleware(['auth']);
 Route::patch('kelas_mi/{kelasmi}', [KelasmiController::class, 'update'])->middleware(['auth']);
+Route::get('rekap-kelas-mi', [KelasmiController::class, 'rekapKelas'])->middleware(['auth']);
+
 // peseta kelas
 Route::get('pesertakelas/{kelasmi}', [KelasmiController::class, 'show'])->middleware(['auth'])->name('pesertakelas');
 Route::delete('pesertakelas/{pesertakelas}', [KelasmiController::class, 'hapus'])->middleware(['auth'])->name('pesertakelas');

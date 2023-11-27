@@ -30,16 +30,21 @@
                         <a href="/laporan-harian-guru" class=" bg-red-600 py-1 dark:bg-purple-600 mt-2 my-1 rounded-sm hover:bg-purple-600 text-white px-4 ">
                             Laporan Harian
                         </a>
-
                     </div>
                     <div class=" py-2  hidden  sm:block">
                         <a href="/laporan-semester-guru" class=" bg-red-600 py-1 dark:bg-purple-600 mt-2 my-1 rounded-sm hover:bg-purple-600 text-white px-4 ">
                             Laporan Semester
                         </a>
                     </div>
-                    <div class=" py-2  hidden  sm:block">
+                    <div class=" py-2    sm:block">
                         <a href="/sesi-presensi-guru/rekap" class=" bg-red-600 py-1 dark:bg-purple-600 mt-2 my-1 rounded-sm hover:bg-purple-600 text-white px-4 ">
                             Rekap
+                        </a>
+
+                    </div>
+                    <div class="py-2">
+                        <a href="/rekap-kelas-mi" class=" bg-red-600 py-1 dark:bg-purple-600 mt-2 my-1 rounded-sm hover:bg-purple-600 text-white px-4 ">
+                            Rekap Kelas
                         </a>
                     </div>
                 </div>
