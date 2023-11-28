@@ -10,13 +10,13 @@
                 <div class=" w-full ">
                     <table class=" w-full">
                         <thead>
-                            <tr class=" uppercase text-xs">
+                            <tr class="uppercase text-sm border">
                                 <th rowspan="2" class=" border">Nama Kelas</th>
                                 <th rowspan="2" class=" border">Sesi</th>
                                 <th colspan="4" class=" border">keterangan</th>
                                 <th colspan="2" class=" border">Total</th>
                             </tr>
-                            <tr>
+                            <tr class="uppercase text-sm border">
                                 <th class=" border">Hadir</th>
                                 <th class=" border">Sakit</th>
                                 <th class=" border">Izin</th>
@@ -42,34 +42,58 @@
                     </table>
                 </div>
                 <div class=" overflow-auto">
-                    <table class="  w-full mt-2">
+
+                    <table class="w-full mt-2">
                         <thead>
                             <tr class="uppercase text-sm border">
                                 <th>No</th>
+                                <th>KLS </th>
+                                <th>No </th>
                                 <th>Nama </th>
-                                <th>KLS</th>
                                 <th>I</th>
                                 <th>A</th>
                                 <th>S</th>
-                                <th>Jml</th>
                                 <th>Tot</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($rekapKelasGuru as $namaKelas => $data)
-                            <tr class=" border even:bg-gray-100">
-                                <td class=" text-left">{{ $loop->iteration }}</td>
-                                <td class=" text-left">{{ $data['nama_guru'] }}</td>
-                                <td class=" text-center">{{ $namaKelas }}</td>
-                                <td class=" text-center">{{ $data['izin'] }}</td>
-                                <td class=" text-center">{{ $data['alfa'] }}</td>
-                                <td class=" text-center">{{ $data['sakit'] }}</td>
-                                <td class=" text-center">{{ $data['jumlah_sesi'] }}</td>
-                                <td class=" text-center">{{ $data['total_absensi_selain_hadir'] }}</td>
+                            @php
+                            $groupedData = $rekapKelasGuru->groupBy('nama_kelas');
+                            @endphp
+
+                            @foreach($groupedData as $namaKelas => $group)
+                            @php
+                            $rowspanCount = count($group);
+                            @endphp
+
+                            @foreach($group as $index => $data)
+                            <tr class="border  border-black ">
+                                @if($index === 0)
+                                <td class=" px-1 border text-center" rowspan="{{ $rowspanCount }}">{{ $loop->parent->iteration }}</td>
+                                <td class=" px-1 border   text-center" rowspan="{{ $rowspanCount }}">{{ $namaKelas }}</td>
+                                @endif
+                                <td class=" px-1 border text-center">{{ $loop->iteration }}</td>
+                                <td class=" px-1 border text-left">{{ $data->nama_guru }}</td>
+                                <td class=" px-1 border text-center">{{ $data['izin'] }}</td>
+                                <td class=" px-1 border text-center">{{ $data['alfa'] }}</td>
+                                <td class=" px-1 border text-center">{{ $data['sakit'] }}</td>
+                                <td class=" px-1 border text-center">{{ $data['total_absensi_selain_hadir'] }}</td>
+                                @if($index === 0)
+                                <td rowspan="{{ $rowspanCount }}" class="  px-1 border text-center">
+                                    {{$rekapKelasGuru->where('nama_kelas',$data->nama_kelas)->sum('total_absensi_selain_hadir')}}
+                                </td>
+                                @endif
+
                             </tr>
+                            @endforeach
                             @endforeach
                         </tbody>
                     </table>
+
+
+
+
+
 
 
 

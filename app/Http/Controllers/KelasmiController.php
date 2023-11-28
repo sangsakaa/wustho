@@ -249,8 +249,10 @@ class KelasmiController extends Controller
         ->join('kelasmi', 'kelasmi.id', 'sesi_kelas_guru.kelasmi_id')
         ->where('kelasmi.periode_id', session('periode_id'))
         ->groupBy('nama_guru', 'nama_kelas')
+            ->orderby('nama_kelas')
         ->get()
-        ->pluck(null, 'nama_kelas'); // Pluck the result by 'nama_kelas'
+            // ->pluck(null, 'nama_kelas')
+        ; // Pluck the result by 'nama_kelas'
 
         // Now $rekapKelasGuru is an associative array with 'nama_kelas' as the key
         // You can access the data using $rekapKelasGuru['nama_kelas']
