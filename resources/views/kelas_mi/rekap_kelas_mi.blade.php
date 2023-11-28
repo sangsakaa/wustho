@@ -46,14 +46,15 @@
                     <table class="w-full mt-2">
                         <thead>
                             <tr class="uppercase text-sm border">
-                                <th>No</th>
-                                <th>KLS </th>
-                                <th>No </th>
-                                <th>Nama </th>
-                                <th>I</th>
-                                <th>A</th>
-                                <th>S</th>
-                                <th>Tot</th>
+                                <th class="  border">No</th>
+                                <th class="  border">KLS </th>
+                                <th class="  border">No </th>
+                                <th class="  border">Nama </th>
+                                <th class="  border">I</th>
+                                <th class="  border">A</th>
+                                <th class="  border">S</th>
+                                <th class="  border">Tot</th>
+                                <th class="  border">Jml</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -67,7 +68,7 @@
                             @endphp
 
                             @foreach($group as $index => $data)
-                            <tr class="border  border-black ">
+                            <tr class="border even:bg-gray-100    ">
                                 @if($index === 0)
                                 <td class=" px-1 border text-center" rowspan="{{ $rowspanCount }}">{{ $loop->parent->iteration }}</td>
                                 <td class=" px-1 border   text-center" rowspan="{{ $rowspanCount }}">{{ $namaKelas }}</td>
