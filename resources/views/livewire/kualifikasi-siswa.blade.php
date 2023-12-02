@@ -7,6 +7,8 @@
         <option>24</option>
         <option>50</option>
         <option>100</option>
+        <option>300</option>
+        <option>500</option>
 
     </select>
     <table class="w-full">
@@ -38,6 +40,8 @@
             @endforeach
         </tbody>
     </table>
+
+
 
 
 

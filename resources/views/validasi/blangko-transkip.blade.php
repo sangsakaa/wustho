@@ -131,6 +131,8 @@
                         </td>
                         <td class=" border-l border-black p-1 capitalize text-center">
                             {{Terbilang::make($nilai_praktek->nilai_akhir); }}
+
+
                         </td>
                     </tr>
                     @endforeach

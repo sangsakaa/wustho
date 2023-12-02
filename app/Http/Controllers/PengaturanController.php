@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Kelas;
 use App\Models\Nilai;
 use App\Models\Kelasmi;
@@ -283,6 +284,40 @@ class PengaturanController extends Controller
     public function testLive()
     {
         return view('pengaturan.live');
+    }
+    public function kalender($year = null)
+    {
+
+        $year = $year ?: date('Y');
+        $months = range(1, 12);
+
+        $calendar = [];
+        foreach ($months as $month) {
+            $firstDay = Carbon::create($year, $month, 1)->locale('id_ID'); // Atur lokalitas ke bahasa Indonesia
+            $lastDay = $firstDay->copy()->endOfMonth();
+
+            $calendar[] = [
+                'month' => $firstDay->translatedFormat('F'), // Menggunakan translatedFormat untuk mendapatkan nama bulan dalam bahasa Indonesia
+                'days' => $this->getDaysInMonth($firstDay),
+            ];
+        }
+
+
+
+        return view('pengaturan.kalender', compact('year', 'calendar'));
+    }
+    private function getDaysInMonth($date)
+    {
+        $days = [];
+        $firstDay = $date->copy()->startOfMonth();
+        $lastDay = $date->copy()->endOfMonth();
+
+        while ($firstDay <= $lastDay) {
+            $days[] = $firstDay->copy();
+            $firstDay->addDay();
+        }
+
+        return $days;
     }
     
 }

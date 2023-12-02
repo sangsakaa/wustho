@@ -261,6 +261,7 @@ Route::get('validasi-data', [ValidasiController::class, 'index'])->middleware(['
 Route::get('blangko-ijazah/{lulusan}', [ValidasiController::class, 'blangkoijazah'])->middleware(['auth']);
 Route::get('blangko-transkip/{lulusan}', [ValidasiController::class, 'blangkoTranskip'])->middleware(['auth']);
 Route::get('live-siswa', [PengaturanController::class, 'testLive'])->middleware(['auth']);
+Route::get('kalender-pendidikan', [PengaturanController::class, 'kalender'])->middleware(['auth']);
 
 
 // LULUSAN

@@ -5,7 +5,6 @@
             {{ __('Dashboard blangko ijazah') }}
         </h2>
     </x-slot>
-
     <script>
         function printContent(el) {
             var fullbody = document.body.innerHTML;
@@ -15,8 +14,6 @@
             document.body.innerHTML = fullbody;
         }
     </script>
-
-
     <div class=" p-2 bg-white">
         <button class=" text-white   bg-green-800 px-2 py-1 " onclick="printContent('div1')">Cetak Ijazah</button>
         <a href="/blangko-transkip/{{$kelasmi->id}}" class=" text-white   bg-green-800 px-2 py-1 ">Transkip</a>
@@ -28,7 +25,7 @@
         <div>Total Ijazah </div>
         <div> : {{$data->count()}}</div>
     </div>
-    <div id="div1" class=" bg-white   w-full   ">
+    <div id="div1" class="  px-8 bg-white   w-full   ">
         @foreach($data as $ijazah)
         <style>
             .page-break {
@@ -93,40 +90,56 @@
                         </p>
                     </div>
 
-                    <p class=" text-sm  text-justify mt-4 ">
+                    <p class=" text-sm  text-justify mt-4 mx-auto lg:mx-0 ">
                         Pemegang ijazah ini, terakhir tercatat sebagai <span class=" capitalize">murid madrasah Diniyah wustho wahidiyah pondok pesantren kedunglo Kediri</span> dengan <span class=" font-semibold">Nomor Induk Murid : {{$ijazah->nis}}</span>
                     </p>
                 </div>
-                <div class="  grid grid-cols-2 text-right   ">
-                    <div class="  w-2/2  flex    px-32 pt-4 ">
-                        <div class="  border-black  border    w-32  h-40   text-justify ">
-                            <span class=" grid justify-between   p-12 font-semibold ">
-                                Foto 3x4
-                            </span>
-                        </div>
+                <div class="  flex grid-cols-1    ">
+                    <div class="   px-10 py-12">
+                        <span class="border w-40 h-48 border-black flex justify-center items-center">
+                            <p class="">Foto 3x4</p>
+                        </span>
                     </div>
-                    <div class=" text-sm   mt-4 text-left ">
-                        <p class=" ">
-                            <!-- {{ \Carbon\Carbon::parse($ijazah->tanggal_kelulusan)->isoFormat(' DD MMMM Y') }}</p> -->
-                        <p class=" underline"> Kedunglo, 27 Sya'ban 1444 H </p>
+                    <div class="   grid   text-left py-8  ">
+                        <div class="flex flex-col">
+                            <table class="  w-fit">
+                                <tbody>
+                                    <tr>
+                                        <td>Kedunglo, </td>
+                                        <td class=" text-right underline">
+                                            <p> {{ $ijazah->tanggal_lulus_hijriyah }} H</p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td class="text-right">
+                                            <p style="margin: 0; width: 100%;">{{ \Carbon\Carbon::parse($ijazah->tanggal_kelulusan)->isoFormat('DD MMMM Y') }} M</p>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <div>
+                                <p class="underline">
 
-                        <p class="  px-20 ml-1">19 Maret 2023 M</p>
-                        <!-- <p class="">Mengetahui,</p> -->
-                        <!-- <p>Pengasuh Pondok</p> -->
-                        <!-- <p>Pengasuh/ Al Mudir</p> -->
-                        <p>Pengasuh Perjuangan Wahidiyah</p>
-                        <p>Dan Pondok Pesantren Kedunglo </p>
+                                </p>
+                            </div>
+                            <div class="flex items-center">
+                                <p class="  px-20">
 
-
-                        <br><br><br><br><br>
-                        <p class=" uppercase font-semibold"> Kanjeng Romo Kyai Abdul Majid Ali Fikri R.A</p>
+                                </p>
+                            </div>
+                        </div>
+                        <div>
+                            <p class=" mb-0">Pengasuh Perjuangan Wahidiyah <br> Dan Pondok Pesantren Kedunglo</p>
+                            <br><br><br><br> <br>
+                            <p class=" uppercase font-semibold"> Kanjeng Romo Kyai Abdul Majid Ali Fikri R.A</p>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="page-break"></div>
         </div>
-
-        @endforeach
+        <div class="page-break"></div>
     </div>
-
+    @endforeach
+    </div>
 </x-app-layout>

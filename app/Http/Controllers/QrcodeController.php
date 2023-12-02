@@ -52,6 +52,7 @@ class QrcodeController
 
 
         return response($qrCode)->header('Content-Type', 'image/png');
+        
     }
         
     

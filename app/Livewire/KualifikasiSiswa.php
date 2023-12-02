@@ -3,13 +3,13 @@
 namespace App\Livewire;
 
 use App\Models\Pesertakelas;
-use App\Models\Siswa;
 use Livewire\Component;
 
 class KualifikasiSiswa extends Component
 {
     public $search = '';
     public $perPage = 6;
+    public $jenjang = 'Ula';
     public function render()
     {
         $dataSiswa = Pesertakelas::search($this->search)

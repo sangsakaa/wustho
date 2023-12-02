@@ -46,8 +46,6 @@ class ValidasiController
     }
     public function blangkoijazah(Siswa $siswa, Lulusan $lulusan)
     {
-
-
         $DataIjaza = $lulusan::query()
             ->join('kelasmi', 'kelasmi.id', '=', 'lulusan.kelasmi_id')
         ->select('kelasmi.nama_kelas')
@@ -83,6 +81,7 @@ class ValidasiController
                     'lulusan.tanggal_mulai',
                     'lulusan.tanggal_selesai',
                     'lulusan.tanggal_kelulusan',
+                'lulusan.tanggal_lulus_hijriyah',
                     'daftar_lulusan.nomor_ijazah',
                 'daftar_nominasi.nomor_ujian',
 
@@ -129,8 +128,7 @@ class ValidasiController
                     'daftar_lulusan.id',
                 'daftar_lulusan.lulusan_id',
                     'nama_siswa',
-                    'nis',
-                
+                'nis',  
                     'tanggal_kelulusan',
                     'tanggal_selesai',
                     'tanggal_mulai'
@@ -168,23 +166,13 @@ class ValidasiController
             
         }
         
-        
-        
-        
-
-        
-
-        
         return view(
             'validasi.blangko-transkip',
             [
-
                 'data' => $data,
                 'lulusan' => $lulusan,
                 'data_lulusan' => $data_lulusan,
                 'dataLulusan' => $dataLulusan,
-               
-
             ]
         );
     }

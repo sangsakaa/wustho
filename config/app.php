@@ -84,6 +84,7 @@ return [
 
     // 'locale' => 'en',
     'locale' => 'id',
+    
 
     /*
     |--------------------------------------------------------------------------
@@ -98,6 +99,7 @@ return [
 
     // 'fallback_locale' => 'en',
     'fallback_locale' => 'en',
+    // 'fallback_locale' => 'id',
 
     /*
     |--------------------------------------------------------------------------
@@ -204,6 +206,7 @@ return [
         Yajra\DataTables\DataTablesServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
         Livewire\LivewireServiceProvider::class,
+        Riskihajar\Terbilang\TerbilangServiceProvider::class,
 
 
     ],
@@ -222,6 +225,7 @@ return [
     'aliases' => Facade::defaultAliases()->merge([
         // 'ExampleClass' => App\Example\ExampleClass::class,
         'DataTables' => Yajra\DataTables\Facades\DataTables::class,
+        'Terbilang' => Riskihajar\Terbilang\Facades\Terbilang::class,
         'Terbilang' => Riskihajar\Terbilang\Facades\Terbilang::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
 

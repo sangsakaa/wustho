@@ -26,7 +26,6 @@
                                 <select wire:model="jenis_kelamin" class=" py-1">
                                     <option>L</option>
                                     <option>P</option>
-
                                 </select>
                             </div>
                         </div>
@@ -68,11 +67,9 @@
                         <tr class=" border hover:bg-green-200">
                             <td class=" border text-center">
                                 <input type="checkbox" name="siswa[]" value="{{$item->id}}" multiple>
-
                             </td>
                             <td class=" border px-2 text-center">
                                 {{$loop->iteration}}
-
                             </td>
                             <td class=" border px-2 text-center">
                                 <label for="">{{ $item->nis }}</label>
@@ -80,7 +77,6 @@
                             <td class=" border px-2 text-left capitalize">
                                 <label for="">{{ strtolower($item->nama_siswa )}}</label>
                             </td>
-
                             <td class=" border px-2 text-center">
                                 <label for="">{{ $item->jenis_kelamin}}</label>
                             </td>
@@ -104,7 +100,6 @@
                         @endif
                         <tr>
                             <td class=" py-1 " colspan="7">
-
                             </td>
                         </tr>
                     </tbody>

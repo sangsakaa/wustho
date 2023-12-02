@@ -19,7 +19,6 @@ class ListPesertaKelas extends Component
     {
         $kelasmi = Kelasmi::find($this->kelasmi);
         $anggota = Pesertakelas::where('kelasmi_id', $this->kelasmi)
-
             ->count('kelasmi_id');
         $lk = Pesertakelas::where('kelasmi_id', $this->kelasmi)
             ->join('siswa', 'siswa.id', '=', 'pesertakelas.siswa_id')

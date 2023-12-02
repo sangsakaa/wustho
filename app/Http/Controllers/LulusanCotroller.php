@@ -132,9 +132,12 @@ class LulusanCotroller
     }
     public function storeLulusan(Request $request)
     {
-        
-        $hijri = 1444;
 
+        $Jenjang = Kelasmi::first();
+        // dd($Jenjang);
+        $tahunHijrian = Periode::query()
+            ->where('periode.id', session('periode_id'))->first();
+        $hijri = $tahunHijrian->tahun_hijriyah;
         // Mendapatkan nomor urut terakhir dari database
         $lastNumber = DB::table('daftar_lulusan')->max('id');
 
@@ -152,23 +155,30 @@ class LulusanCotroller
         $newNumber = str_pad($newNumber, 4, '0', STR_PAD_LEFT);
 
         // Menggabungkan komponen kode menjadi satu string
-        $code = 'MD-01-II-' . $hijriYear . '-' . $newNumber;
+        if ($Jenjang->jenjang == "Ula") {
+            $code = 'MD-01-I-' . $hijriYear . '-' . $newNumber;
+        } elseif ($Jenjang->jenjang == "Wustho") {
+            $code = 'MD-01-II-' . $hijriYear . '-' . $newNumber;
+        } elseif ($Jenjang->jenjang == "Ulya") {
+            $code = 'MD-01-III-' . $hijriYear . '-' . $newNumber;
+        } else {
+            // Tindakan atau logika lain jika $Jenjang tidak cocok dengan nilai yang diharapkan
+            $code = 'Default-Code';
+        }
 
         $pesertaKelas = $request->input('pesertakelas', []);
 
         if (count($pesertaKelas) > 0) {
             $daftarLulusan = [];
-
             foreach ($pesertaKelas as $pesertaKelasId) {
                 $daftarLulusan[] = [
                     'pesertakelas_id' => $pesertaKelasId,
                     'lulusan_id' => $request->lulusan_id,
                     'nomor_ijazah' => $code
                 ];
-
                 // increment nomor urut untuk setiap peserta kelas
-                $newNumber++;
-                $code = 'MD-01-II-' . $hijriYear . '-' . str_pad($newNumber, 4, '0', STR_PAD_LEFT);
+                // $newNumber++;
+                // $code = 'MD-01-II-' . $hijriYear . '-' . str_pad($newNumber, 4, '0', STR_PAD_LEFT);
             }
 
             // insert multiple data ke database
