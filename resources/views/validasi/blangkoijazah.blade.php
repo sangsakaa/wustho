@@ -40,7 +40,7 @@
             <div class=" bg-white   text-center     rounded gap-4   ">
                 <div class=" px-14 ">
                     <div class="  w-full justify-end grid ">
-                        <span class="  font-semibold   mt-16"> NOMOR : {{$ijazah->nomor_ijazah}}</span>
+                        <span class="  font-semibold   mt-14"> NOMOR : {{$ijazah->nomor_ijazah}}</span>
                     </div>
                     <div class="  w-full">
                         <center>
@@ -60,13 +60,13 @@
                         <p class=" text-justify  text-sm  mt-5  ">
                             Yang bertanda tangan di bawah ini Pengasuh Pondok Pesantren Kedunglo Al Munadhdhoroh menerangkan bahwa :
                         </p>
-                        <p class=" text-2xl uppercase bold  font-serif text-center   mt-3 underline ">
+                        <p class=" text-2xl uppercase bold  font-serif text-center   mt-2 underline ">
                             {{$ijazah->nama_siswa}}
                         </p>
                         <p class=" text-sm uppercase font-semibold   font-sans text-center ">
                             nomor induk murid : {{$ijazah->nis}}
                         </p>
-                        <div class=" text-sm text-left  grid grid-cols-2 mt-4">
+                        <div class=" text-sm text-left  grid grid-cols-2 mt-2">
                             <div class=" px-1 ">Tempat, Tanggal Lahir</div>
                             <div class=" px-1 capitalize ">
                                 : {{strtolower($ijazah->tempat_lahir)}},
@@ -106,7 +106,7 @@
                                 <table class="  w-fit">
                                     <tbody>
                                         <tr>
-                                            <td>Kedunglo, </td>
+                                            <td class=" underline">Kedunglo, </td>
                                             <td class=" text-right underline">
                                                 <p> {{ $ijazah->tanggal_lulus_hijriyah }} H</p>
                                             </td>
