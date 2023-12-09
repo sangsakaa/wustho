@@ -131,7 +131,7 @@
                             </div>
                             <div>
                                 <p class=" mb-0">Pengasuh Perjuangan Wahidiyah <br> Dan Pondok Pesantren Kedunglo</p>
-                                <br><br><br><br><br>
+                                <br><br><br><br>
                                 <p class=" uppercase font-semibold"> Kanjeng Romo Kyai Abdul Majid Ali Fikri R.A</p>
                             </div>
                         </div>
