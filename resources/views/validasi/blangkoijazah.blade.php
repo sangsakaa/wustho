@@ -101,7 +101,7 @@
                                 <p class="">Foto 3x4</p>
                             </span>
                         </div>
-                        <div class="   grid   text-left  mt-4  ">
+                        <div class="   grid   text-left  mt-4 text-sm  ">
                             <div class="flex flex-col">
                                 <table class="  w-fit">
                                     <tbody>
