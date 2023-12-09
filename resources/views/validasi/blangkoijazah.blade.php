@@ -97,7 +97,7 @@
                     </div>
                     <div class="  flex grid-cols-1    ">
                         <div class="   px-10 py-12">
-                            <span class="border w-40 h-48 border-black flex justify-center items-center">
+                            <span class="border  w-36  h-40 border-black flex justify-center items-center">
                                 <p class="">Foto 3x4</p>
                             </span>
                         </div>
