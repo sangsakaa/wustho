@@ -96,7 +96,7 @@
                         </p>
                     </div>
                     <div class="  flex grid-cols-1    ">
-                        <div class="   px-10    py-9">
+                        <div class="    px-8    py-9">
                             <span class="border   w-32  h-40 border-black flex justify-center items-center">
                                 <p class="">Foto 3x4</p>
                             </span>
@@ -109,28 +109,31 @@
                                             <td class=" underline">Kedunglo, </td>
                                             <td class=" text-right underline">
                                                 <p> {{ $ijazah->tanggal_lulus_hijriyah }} H</p>
+
                                             </td>
                                         </tr>
                                         <tr>
                                             <td></td>
                                             <td class="text-right">
                                                 <p style="margin: 0; width: 100%;">{{ \Carbon\Carbon::parse($ijazah->tanggal_kelulusan)->isoFormat('DD MMMM Y') }} M</p>
+
                                             </td>
                                         </tr>
                                     </tbody>
                                 </table>
+                                <div>
+                                    <p class=" mb-0">Pengasuh Perjuangan Wahidiyah <br> Dan Pondok Pesantren Kedunglo</p>
+                                </div>
                                 <div>
                                     <p class="underline">
                                     </p>
                                 </div>
                                 <div class="flex items-center">
                                     <p class="  px-20">
-
                                     </p>
                                 </div>
                             </div>
                             <div>
-                                <p class=" mb-0">Pengasuh Perjuangan Wahidiyah <br> Dan Pondok Pesantren Kedunglo</p>
                                 <br><br><br><br>
                                 <p class=" uppercase font-semibold"> Kanjeng Romo Kyai Abdul Majid Ali Fikri R.A</p>
                             </div>
