@@ -60,13 +60,13 @@
                         <p class=" text-justify  text-sm  mt-5  ">
                             Yang bertanda tangan di bawah ini Pengasuh Pondok Pesantren Kedunglo Al Munadhdhoroh menerangkan bahwa :
                         </p>
-                        <p class=" text-2xl uppercase bold  font-serif text-center   mt-4 underline ">
+                        <p class=" text-2xl uppercase bold  font-serif text-center   mt-3 underline ">
                             {{$ijazah->nama_siswa}}
                         </p>
                         <p class=" text-sm uppercase font-semibold   font-sans text-center ">
                             nomor induk murid : {{$ijazah->nis}}
                         </p>
-                        <div class=" text-sm text-left  grid grid-cols-2 mt-5">
+                        <div class=" text-sm text-left  grid grid-cols-2 mt-4">
                             <div class=" px-1 ">Tempat, Tanggal Lahir</div>
                             <div class=" px-1 capitalize ">
                                 : {{strtolower($ijazah->tempat_lahir)}},
@@ -91,12 +91,12 @@
                                 dengan nilai sebagaimana tercantum pada daftar nilai di balik ini.
                             </p>
                         </div>
-                        <p class=" text-sm  text-justify mt-4 mx-auto lg:mx-0 ">
+                        <p class=" text-sm  text-justify mt-3 mx-auto lg:mx-0 ">
                             Pemegang ijazah ini, terakhir tercatat sebagai <span class=" capitalize">murid madrasah Diniyah wustho wahidiyah pondok pesantren kedunglo Kediri</span> dengan <span class=" font-semibold">Nomor Induk Murid : {{$ijazah->nis}}</span>
                         </p>
                     </div>
                     <div class="  flex grid-cols-1    ">
-                        <div class="   px-10 py-12">
+                        <div class="   px-10    py-9">
                             <span class="border   w-32  h-40 border-black flex justify-center items-center">
                                 <p class="">Foto 3x4</p>
                             </span>
@@ -131,7 +131,7 @@
                             </div>
                             <div>
                                 <p class=" mb-0">Pengasuh Perjuangan Wahidiyah <br> Dan Pondok Pesantren Kedunglo</p>
-                                <br><br><br><br> <br>
+                                <br><br><br><br><br>
                                 <p class=" uppercase font-semibold"> Kanjeng Romo Kyai Abdul Majid Ali Fikri R.A</p>
                             </div>
                         </div>
