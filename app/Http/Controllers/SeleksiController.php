@@ -134,6 +134,7 @@ class SeleksiController
         // Menggabungkan komponen kode menjadi satu string
         $codePrefix = $hijriYear . '-' . 'II' . '-';
         $newNumber = $lastNumber + 1;
+        
 
         // Menambahkan leading zero pada nomor urut baru jika kurang dari 4 digit
         $newNumberStr = str_pad($newNumber, 4, '0', STR_PAD_LEFT);
@@ -142,7 +143,6 @@ class SeleksiController
         // Gabungkan prefix dengan nomor urut baru
         $code = $codePrefix . $newNumberStr;
         // dd($code);
-
         $pesertakelas = $request->input('pesertakelas', []);
         foreach ($pesertakelas as $peserta) {
             $existingNomination = Daftar_Nominasi::where('nomor_ujian', $code)->first();

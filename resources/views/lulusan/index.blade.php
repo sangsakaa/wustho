@@ -29,51 +29,42 @@
                         <div class=" p-6 grid grid-cols-1">
                             <form action="/lulusan" method="post">
                                 @csrf
-                                <div class=" grid  grid-cols-2 w-full gap-2">
-                                    <div class=" w-full  ">
-                                        <label for="">Periode Lulusan</label>
-                                        <select name="periode_id" id="" class=" w-full  py-1 px-1">
-                                            @foreach($dataPeriode as $item)
-                                            <option value="{{$item->id}}">{{$item->periode}} {{$item->ket_semester}}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    <div class=" grid grid-cols-2 gap-2">
-                                        <div class=" w-full ">
-                                            <label for="">Tanggal Mulai</label>
-                                            <input type="date" class="py-1 px-1 w-full" name="tanggal_mulai">
-                                        </div>
-                                        <div class=" w-full ">
-                                            <label for="">Tanggal Selesai</label>
-                                            <input type="date" class="py-1 px-1 w-full" name="tanggal_selesai">
-                                        </div>
-                                    </div>
-                                    <div class=" grid grid-cols-2 gap-2">
-                                        <div class=" w-full ">
-                                            <label for="">Tanggal Kelulusan</label>
-                                            <input type="date" class="py-1 px-1 w-full" name="tanggal_kelulusan">
-                                        </div>
-                                        <div class=" w-full ">
-                                            <label for="">Kelas</label>
+                                <div class=" grid  grid-cols-4 w-full gap-2">
+                                    <label for="">Periode Lulusan</label>
+                                    <select name="periode_id" id="" class=" w-full  py-1 px-1">
+                                        @foreach($dataPeriode as $item)
+                                        <option value="{{$item->id}}">{{$item->periode}} {{$item->ket_semester}}</option>
+                                        @endforeach
+                                    </select>
 
-                                            <select name="kelasmi_id" id="" class=" w-full  py-1 px-1">
-                                                @foreach($kelasMi as $item)
 
-                                                <option value="{{$item->id}}">{{$item->id}} - {{$item->nama_kelas}} {{$item->periode}} {{$item->ket_semester}}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class=" w-full ">
-                                        <label for="">
-                                            <span class=" text-red-600">
-                                                data ini dari bagian Kurikulum
-                                            </span>
-                                        </label>
-                                        <div>
-                                            <button class=" py-1 px-2 bg-blue-600 rounded-sm text-white hover:bg-purple-500">Simpan</button>
-                                        </div>
-                                    </div>
+                                    <label for="">Tanggal Mulai</label>
+                                    <input type="date" class="py-1 px-1 w-full" name="tanggal_mulai">
+
+
+                                    <label for="">Tanggal Hijriyah</label>
+                                    <input type="text" class="py-1 px-1 w-full" name="tanggal_lulus_hijriyah" placeholder="12 Robi'ul Awwal 1444">
+                                    <label for="">Tanggal Selesai</label>
+                                    <input type="date" class="py-1 px-1 w-full" name="tanggal_selesai">
+                                    <label for="">Tanggal Kelulusan</label>
+                                    <input type="date" class="py-1 px-1 w-full" name="tanggal_kelulusan">
+
+
+
+                                    <label for="">Kelas</label>
+                                    <select name="kelasmi_id" id="" class="   py-1 px-1">
+                                        @foreach($kelasMi as $item)
+                                        <option value="{{$item->id}}">{{$item->nama_kelas}} {{$item->periode}} {{$item->ket_semester}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class=" py-2 grid justify-end">
+                                    <label for="">
+                                        <span class=" text-red-600">
+                                            data ini dari bagian Kurikulum
+                                        </span>
+                                    </label>
+                                    <button class=" py-1 px-2 bg-blue-600 rounded-sm text-white hover:bg-purple-500">Simpan</button>
                                 </div>
                             </form>
 

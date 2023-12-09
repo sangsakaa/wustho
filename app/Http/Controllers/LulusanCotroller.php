@@ -64,6 +64,7 @@ class LulusanCotroller
         $lulusan->tanggal_mulai = $request->tanggal_mulai;
         $lulusan->tanggal_selesai = $request->tanggal_selesai;
         $lulusan->tanggal_kelulusan = $request->tanggal_kelulusan;
+        $lulusan->tanggal_lulus_hijriyah = $request->tanggal_lulus_hijriyah;
         $lulusan->save();
         return redirect()->back();
     }
@@ -131,41 +132,40 @@ class LulusanCotroller
         );
     }
     public function storeLulusan(Request $request)
-    {
-
-        $Jenjang = Kelasmi::first();
-        // dd($Jenjang);
+    {  
         $tahunHijrian = Periode::query()
-            ->where('periode.id', session('periode_id'))->first();
+        ->where('periode.id', session('periode_id'))
+        ->first();
         $hijri = $tahunHijrian->tahun_hijriyah;
-        // Mendapatkan nomor urut terakhir dari database
-        $lastNumber = DB::table('daftar_lulusan')->max('id');
+        // Mendapatkan nomor urut terakhir dari database untuk periode saat ini
+        $lastNumber = DB::table('daftar_lulusan')
+        ->max('nomor_ijazah');
+        // Jika tidak ada nomor urut untuk periode saat ini, mulai dari 1
+        if (is_null($lastNumber)) {
+            $newNumber = 1;
+        } else {
+            // Mengambil 4 digit terakhir dari nomor urut terakhir
+            $lastNumber = (int) substr($lastNumber, -4);
 
-        // Mengkonversi tipe data variabel $lastNumber menjadi integer
-        $lastNumber = (int) $lastNumber;
+            // Menambahkan 1 pada nomor urut terakhir
+            $newNumber = $lastNumber + 1;
 
-        // Mengambil 4 digit terakhir dari nomor urut terakhir
-        $lastNumber = substr($lastNumber, -4);
+            // Jika mencapai 999, kembali ke 1
+            if ($newNumber > 999) {
+                $newNumber = 1;
+            }
+        }
 
-        // Menambahkan 1 pada nomor urut terakhir
-        $newNumber = $lastNumber + 1;
+
+        // Simpan data ke database dengan nomor urut yang baru
+
+
         $hijriYear = $hijri;
-
         // Menambahkan leading zero pada nomor urut baru jika kurang dari 4 digit
         $newNumber = str_pad($newNumber, 4, '0', STR_PAD_LEFT);
 
         // Menggabungkan komponen kode menjadi satu string
-        if ($Jenjang->jenjang == "Ula") {
-            $code = 'MD-01-I-' . $hijriYear . '-' . $newNumber;
-        } elseif ($Jenjang->jenjang == "Wustho") {
-            $code = 'MD-01-II-' . $hijriYear . '-' . $newNumber;
-        } elseif ($Jenjang->jenjang == "Ulya") {
-            $code = 'MD-01-III-' . $hijriYear . '-' . $newNumber;
-        } else {
-            // Tindakan atau logika lain jika $Jenjang tidak cocok dengan nilai yang diharapkan
-            $code = 'Default-Code';
-        }
-
+        $code = 'MD-01-II-' . $hijriYear . '-' . $newNumber;
         $pesertaKelas = $request->input('pesertakelas', []);
 
         if (count($pesertaKelas) > 0) {
@@ -176,9 +176,10 @@ class LulusanCotroller
                     'lulusan_id' => $request->lulusan_id,
                     'nomor_ijazah' => $code
                 ];
+                $newNumber++;
+                $code = 'MD-01-II-' . $hijriYear . '-' . str_pad($newNumber, 4, '0', STR_PAD_LEFT);
                 // increment nomor urut untuk setiap peserta kelas
-                // $newNumber++;
-                // $code = 'MD-01-II-' . $hijriYear . '-' . str_pad($newNumber, 4, '0', STR_PAD_LEFT);
+                
             }
 
             // insert multiple data ke database

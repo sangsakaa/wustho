@@ -153,33 +153,46 @@
                 </tbody>
             </table>
 
-            <div class="  grid grid-cols-2 text-right   ">
-                <div class="  w-2/2  flex    px-32 pt-4 ">
-                    <div class="  border-black      w-32  h-40   text-justify ">
-                        <span class=" grid justify-between   p-12 font-semibold ">
+            <div class="  grid grid-cols-2    ">
+                <div class="   px-10 py-12">
 
-                        </span>
-                    </div>
                 </div>
-                <div class=" text-sm   mt-4 text-left ">
-                    <p class=" ">
-
-                    <p class=" underline"> Kedunglo, 27 Sya'ban 1444 H </p>
-
-                    <p class="  px-20 ml-1">19 Maret 2023 M</p>
-                    <p class="">Kepala Madrasah,</p>
-
-
-
-                    <br><br><br><br><br>
-                    <p class=" uppercase font-semibold"> MUH. BAHRUL ULUM,S.H</p>
+                <div class="   grid   text-left py-8  ">
+                    <div class="flex flex-col">
+                        <table class="  w-fit">
+                            <tbody>
+                                <tr>
+                                    <td class=" underline">Kedunglo, </td>
+                                    <td class=" text-right underline">
+                                        {{$dataLulusan->tanggal_lulus_hijriyah}} H
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                    <td class="text-right">
+                                        {{ \Carbon\Carbon::parse($dataLulusan->tanggal_kelulusan)->isoFormat('DD MMMM Y') }} M
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div>
+                            <p class="underline">
+                            </p>
+                        </div>
+                        <div class="flex items-center">
+                            <p class="  px-20">
+                            </p>
+                        </div>
+                    </div>
+                    <div>
+                        <p class=" mb-0">Kepala Madin, </p>
+                        <br><br><br><br> <br>
+                        <p class=" uppercase font-semibold"> MUH.Bahrul Ulum,S.H</p>
+                    </div>
                 </div>
             </div>
         </div>
         <div class="page-break"></div>
         @endforeach
-
     </div>
-
-
 </x-app-layout>
