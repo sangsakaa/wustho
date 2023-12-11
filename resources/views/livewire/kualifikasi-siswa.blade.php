@@ -9,6 +9,11 @@
         <option>100</option>
         <option>300</option>
         <option>500</option>
+    </select>
+    <select wire:model="Kelas" class=" py-1">
+        <option>1A</option>
+        <option>2A</option>
+        <option>3A</option>
 
     </select>
     <table class="w-full">
@@ -18,29 +23,49 @@
                 <th class="border">NIM</th>
                 <th class="border">Nama Siswa</th>
                 <th class="border">Kelas</th>
-                @foreach($dataSiswa->pluck('periode')->unique() as $periode)
-                <th class="border">{{ $periode }}</th>
-                @endforeach
+
             </tr>
         </thead>
         <tbody>
-            @foreach($dataSiswa->unique('nama_siswa') as $siswa)
-            <tr>
-                <td class="border text-center">{{ $loop->iteration }}</td>
-                <td class="border text-center">{{ $siswa->nis }}</td>
-                <td class="border capitalize">{{ strtolower($siswa->nama_siswa )}}</td>
-                <td class="border text-center">{{ $siswa->nama_kelas }}</td>
-                @foreach($dataSiswa->pluck('periode')->unique() as $periode)
-                @php
-                $kehadiran = $dataSiswa->where('nama_siswa', $siswa->nama_siswa)->where('periode', $periode)->first();
-                @endphp
-                <td class="border text-center">{{ $kehadiran ? $kehadiran->kehadiran  : '-' }}</td>
-                @endforeach
-            </tr>
-            @endforeach
+
+
+
+
         </tbody>
     </table>
+    <div>
 
+
+
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Nama Siswa</th>
+                    <th>Periode</th>
+                    <th>NIS</th>
+                    <th>Nama Kelas</th>
+                    <th>Keterangan Semester</th>
+                    <th>Total Hadir</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach($dataSiswa as $index => $siswa)
+                <tr>
+                    <td class=" border ">{{ $index + 1 }}</td>
+                    <td class=" border ">{{ $siswa->nama_siswa }}</td>
+                    <td class=" border ">{{ $siswa->periode }}</td>
+                    <td class=" border ">{{ $siswa->nis }}</td>
+                    <td class=" border ">{{ $siswa->nama_kelas }}</td>
+                    <td class=" border ">{{ $siswa->ket_semester }}</td>
+                    <td class=" border ">{{ $siswa->total_hadir }}</td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+
+
+    </div>
 
 
 

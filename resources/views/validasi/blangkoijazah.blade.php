@@ -35,7 +35,12 @@
             </style>
 
             <!-- Konten lainnya di sini -->
-            <img src="{{ asset('asset/images/logo.png') }}" alt="" class="absolute    opacity-25   w-52 p-2 mt-3">
+            <style>
+                .black-and-white {
+                    filter: grayscale(150%);
+                }
+            </style>
+            <img src="{{ asset('asset/images/logo_wustho.png') }}" alt="" class="absolute     opacity-25  w-1/3  p-2 mt-3 black-and-white">
 
             <div class=" bg-white   text-center     rounded gap-4   ">
                 <div class=" px-14 ">
@@ -44,14 +49,14 @@
                     </div>
                     <div class="  w-full">
                         <center>
-                            <img src={{ asset("asset/images/logo.png") }} alt="" width="180" class="  mt-3  p-2">
+                            <img src={{ asset("asset/images/logo_wustho.png") }} alt="" width="180" class="  mt-3  p-2">
                             <p class=" font-serif text-5xl   mt-6 font-semibold ">IJAZAH</p>
                             <p class=" capitalize  text-4xl  font-riqah py-2">
                                 المدرسة الدينية الوسطى الواحدية
                             </p>
                             </p>
                             <p class="  font-serif text-lg uppercase">pondok pesantren kedunglo al munadhdhoroh</p>
-                            <p class="  uppercase font-serif text-2xl font-semibold ">madrasah diniyah wustho
+                            <p class="  uppercase font-serif text-2xl font-semibold ">madrasah diniyah takmiliyah wustho
                                 Wahidiyah</p>
                             <p class=" capitalize font-serif text-lg">kota kediri jawa timur indonesia</p>
                         </center>
@@ -83,7 +88,7 @@
                         </div>
                         <div>
                             <p class="  text-3xl uppercase bold  font-serif text-center mt-4 ">lulus</p>
-                            <p class=" text-sm text-justify mt-4 ">Dalam mengikuti <span class=" font-semibold ">Ujian Akhir Madrasah Diniyah Wustho Wahidiyah</span> yang diselenggarakan pada tanggal
+                            <p class=" text-sm text-justify mt-4 ">Dalam mengikuti <span class=" font-semibold ">Ujian Akhir Madrasah Diniyah Takmiliyah Wustho Wahidiyah</span> yang diselenggarakan pada tanggal
                                 {{ \Carbon\Carbon::parse($ijazah->tanggal_mulai)->isoFormat(' DD MMMM ') }}
                                 s.d
                                 {{ \Carbon\Carbon::parse($ijazah->tanggal_selesai)->isoFormat(' DD MMMM Y') }}
@@ -92,7 +97,7 @@
                             </p>
                         </div>
                         <p class=" text-sm  text-justify mt-3 mx-auto lg:mx-0 ">
-                            Pemegang ijazah ini, terakhir tercatat sebagai <span class=" capitalize">murid madrasah Diniyah wustho wahidiyah pondok pesantren kedunglo Kediri</span> dengan <span class=" font-semibold">Nomor Induk Murid : {{$ijazah->nis}}</span>
+                            Pemegang ijazah ini, terakhir tercatat sebagai <span class=" capitalize">murid madrasah Diniyah takmiliyah wustho wahidiyah pondok pesantren kedunglo Kediri</span> dengan <span class=" font-semibold">Nomor Induk Murid : {{$ijazah->nis}}</span>
                         </p>
                     </div>
                     <div class="  flex grid-cols-1    ">
