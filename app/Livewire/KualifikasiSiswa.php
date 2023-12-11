@@ -23,17 +23,17 @@ class KualifikasiSiswa extends Component
         ->join('semester', 'semester.id', '=', 'periode.semester_id')
         ->select(
             'siswa.nama_siswa',
-            'periode.periode',
-            'nis',
             'nama_kelas',
             'keterangan',
+            'nis',
             'periode',
+            'periode.id',
             'ket_semester',
-            DB::raw('COUNT(absensikelas.keterangan) as total_hadir') // Add this line to count attendances
         )
-            ->groupBy('ket_semester', 'siswa.nama_siswa', 'periode.periode', 'nis', 'nama_kelas', 'periode', 'keterangan')
-            ->orderBy('nis.nis')
+            ->orderBy('periode.id')
+            // ->orderBy('ket_semester')
             // ->limit(20)
+            ->where('nama_siswa', 'Zaidatul Inayah')
             ->get();
 
 
