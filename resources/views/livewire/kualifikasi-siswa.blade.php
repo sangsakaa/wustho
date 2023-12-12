@@ -1,42 +1,63 @@
 <div>
 
     <div>
-        <table border="1">
+        <select wire:model="angkatan" class=" py-1">
+            <option>2021</option>
+            <option>2022</option>
+            <option>2023</option>
+        </select>
+        <!-- resources/views/namafile.blade.php -->
+        <table class="border w-full">
             <thead>
                 <tr>
-                    <th class="border">No</th>
-                    <th class="border">Nama Siswa</th>
-                    <th class="border">Periode</th>
-                    <th class="border">NIS</th>
-                    <th class="border">Nama Kelas</th>
+                    <th rowspan="2" class=" border">NIM</th>
+                    <th rowspan="2" class=" border">Nama Siswa</th>
+                    <th rowspan="2" class=" border"> Semester</th>
+                    <th colspan="4" class=" border">Keterangan</th>
+                    <th rowspan="2" class=" border">Sesi</th>
+                    <th rowspan="2" class=" border">% Hadir</th>
+                    <th rowspan="2" class=" border">Status</th>
+                </tr>
+                <tr>
+                    <th class=" border"> A</th>
+                    <th class=" border"> I</th>
+                    <th class=" border"> S</th>
+                    <th class=" border"> H</th>
                 </tr>
             </thead>
             <tbody>
-                @php
-                $uniqueCombinations = [];
-                @endphp
-
-                @foreach($dataSiswa as $index => $siswa)
-                @php
-                $combinationKey = $siswa->periode . $siswa->ket_semester;
-                @endphp
-
-                @if (!in_array($combinationKey, $uniqueCombinations))
+                @foreach ($dataSiswa as $data)
                 <tr>
-                    <td class="border">{{ $index + 1 }}</td>
-                    <td class="border">{{ $siswa->nama_siswa }}</td>
-                    <td class="border">{{ $siswa->periode }} {{ $siswa->ket_semester }}</td>
-                    <td class="border">{{ $siswa->nis }}</td>
-                    <td class="border">{{ $siswa->nama_kelas }}</td>
+                    <td class=" border text-center"> {{ $data->nis }}</td>
+                    <td class=" border"> {{ $data->nama_siswa }}</td>
+                    <td class=" border text-center">{{$data->periode}} {{ $data->ket_semester }}</td>
+                    <td class=" border text-center px-1"> {{ $data->jumlah_alfa }}</td>
+                    <td class=" border text-center px-1"> {{ $data->jumlah_izin }}</td>
+                    <td class=" border text-center px-1"> {{ $data->jumlah_sakit }}</td>
+                    <td class=" border text-center px-1"> {{ $data->jumlah_hadir }}</td>
+                    <td class=" border text-center"> {{ $data->jumlah_sesikelas_id }}</td>
+                    <td class=" border text-center"> {{ number_format($data->presentase_hadir),2 }}%</td>
+                    <td class=" border text-center">
+                        @if(number_format($data->presentase_hadir >=75 ))
+                        V
+                        @else
+                        X
+                        @endif
+                    </td>
                 </tr>
-
-                @php
-                $uniqueCombinations[] = $combinationKey;
-                @endphp
-                @endif
                 @endforeach
             </tbody>
         </table>
+
+
+
+
+
+
+
+
+
+
 
     </div>
 

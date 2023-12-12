@@ -52,11 +52,11 @@
                             <img src={{ asset("asset/images/logo_wustho.png") }} alt="" width="180" class="  mt-3  p-2">
                             <p class=" font-serif text-5xl   mt-6 font-semibold ">IJAZAH</p>
                             <p class=" capitalize  text-4xl  font-riqah py-2">
-                                المدرسة الدينية الوسطى الواحدية
+                                المدرسة الدينية التكميلية الوسطى الواحدية
                             </p>
                             </p>
                             <p class="  font-serif text-lg uppercase">pondok pesantren kedunglo al munadhdhoroh</p>
-                            <p class="  uppercase font-serif text-2xl font-semibold ">madrasah diniyah takmiliyah wustho
+                            <p class="  uppercase font-serif text-lg font-semibold ">madrasah diniyah takmiliyah wustha
                                 Wahidiyah</p>
                             <p class=" capitalize font-serif text-lg">kota kediri jawa timur indonesia</p>
                         </center>
@@ -88,7 +88,7 @@
                         </div>
                         <div>
                             <p class="  text-3xl uppercase bold  font-serif text-center mt-4 ">lulus</p>
-                            <p class=" text-sm text-justify mt-4 ">Dalam mengikuti <span class=" font-semibold ">Ujian Akhir Madrasah Diniyah Takmiliyah Wustho Wahidiyah</span> yang diselenggarakan pada tanggal
+                            <p class=" text-sm text-justify mt-4 ">Dalam mengikuti <span class=" font-semibold ">Ujian Akhir Madrasah Diniyah Takmiliyah Wustha Wahidiyah</span> yang diselenggarakan pada tanggal
                                 {{ \Carbon\Carbon::parse($ijazah->tanggal_mulai)->isoFormat(' DD MMMM ') }}
                                 s.d
                                 {{ \Carbon\Carbon::parse($ijazah->tanggal_selesai)->isoFormat(' DD MMMM Y') }}
@@ -97,7 +97,7 @@
                             </p>
                         </div>
                         <p class=" text-sm  text-justify mt-3 mx-auto lg:mx-0 ">
-                            Pemegang ijazah ini, terakhir tercatat sebagai <span class=" capitalize">murid madrasah Diniyah takmiliyah wustho wahidiyah pondok pesantren kedunglo Kediri</span> dengan <span class=" font-semibold">Nomor Induk Murid : {{$ijazah->nis}}</span>
+                            Pemegang ijazah ini, terakhir tercatat sebagai <span class=" capitalize">murid madrasah Diniyah takmiliyah wustha wahidiyah pondok pesantren kedunglo Kediri</span> dengan <span class=" font-semibold">Nomor Induk Murid : {{$ijazah->nis}}</span>
                         </p>
                     </div>
                     <div class="  flex grid-cols-1    ">

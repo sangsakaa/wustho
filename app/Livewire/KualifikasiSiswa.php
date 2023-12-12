@@ -2,45 +2,64 @@
 
 namespace App\Livewire;
 
+use App\Models\Periode;
 use Livewire\Component;
 use App\Models\Pesertakelas;
 use Illuminate\Support\Facades\DB;
 
 class KualifikasiSiswa extends Component
 {
-    public $search = '';
-    public $perPage = 6;
-    public $Kelas = '';
-    public $jenjang = 'Ula';
+
+    public $angkatan = '2021';
     public function render()
     {
+
+
+        $periodeKelas = Periode::query()
+            ->join('semester', 'semester.id', 'periode.semester_id')
+            ->get();
         $dataSiswa = Pesertakelas::query()
             ->join('absensikelas', 'absensikelas.pesertakelas_id', 'pesertakelas.id')
-            ->join('siswa', 'pesertakelas.siswa_id', 'siswa.id')
-            ->join('nis', 'siswa.id', 'nis.siswa_id')
-            ->join('kelasmi', 'pesertakelas.kelasmi_id', 'kelasmi.id')
-            ->join('periode', 'kelasmi.periode_id', 'periode.id')
-        ->join('semester', 'semester.id', '=', 'periode.semester_id')
-        ->select(
-            'siswa.nama_siswa',
-            'nama_kelas',
-            'keterangan',
+            ->join('siswa', 'siswa.id', 'pesertakelas.siswa_id')
+            ->join('nis', 'nis.siswa_id', 'siswa.id')
+            ->join('kelasmi', 'kelasmi.id', 'pesertakelas.kelasmi_id')
+            ->join('periode', 'periode.id', 'kelasmi.periode_id')
+            ->join('semester', 'semester.id', 'periode.semester_id')
+            // ->where('kelasmi.periode_id', session('periode_id'))
+            ->select(
+            'ket_semester',
+            'nama_siswa',
             'nis',
             'periode',
-            'periode.id',
-            'ket_semester',
+            DB::raw('COUNT(CASE WHEN keterangan = "alfa" THEN 1 END) as jumlah_alfa'),
+            DB::raw('COUNT(CASE WHEN keterangan = "izin" THEN 1 END) as jumlah_izin'),
+            DB::raw('COUNT(CASE WHEN keterangan = "sakit" THEN 1 END) as jumlah_sakit'),
+            DB::raw('COUNT(CASE WHEN keterangan = "hadir" THEN 1 END) as jumlah_hadir'),
+            DB::raw('COUNT(absensikelas.sesikelas_id) as jumlah_sesikelas_id'), // tambahkan jumlah_sesikelas_id
+            DB::raw('(COUNT(CASE WHEN keterangan = "hadir" THEN 1 END) / COUNT(absensikelas.sesikelas_id)) * 100 as presentase_hadir') // hitung presentase hadir
         )
-            ->orderBy('periode.id')
-            // ->orderBy('ket_semester')
-            // ->limit(20)
-            ->where('nama_siswa', 'Zaidatul Inayah')
+            ->groupBy('ket_semester',  'periode', 'nis', 'nama_siswa') // tambahkan sesikelas_id ke dalam grup
+            ->where('nis', 'like', '%' . $this->angkatan . '%')
+
+            ->orderBy('nama_siswa')
+            ->orderBy('periode')
+            // ->limit(1000)
             ->get();
+
+
+
+        
+        
+
+// $siswaIdMap sekarang berisi map siswa_id berdasarkan periodeKelas
 
 
         return view(
             'livewire.kualifikasi-siswa',
             [
                 'dataSiswa' => $dataSiswa,
+                'periodeKelas' => $periodeKelas,
+                
 
             ]
         );
