@@ -13,8 +13,6 @@ class KualifikasiSiswa extends Component
     public $angkatan = '2021';
     public function render()
     {
-
-
         $periodeKelas = Periode::query()
             ->join('semester', 'semester.id', 'periode.semester_id')
             ->get();

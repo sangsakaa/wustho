@@ -38,8 +38,8 @@
             <div class="bg-white overflow-hidden  sm:rounded-lg text-sm sm:text-sm">
                 <div class="p-2 bg-white border-b border-gray-200">
                     <center>
-                        <p class=" font-semibold text-2xl text-green-800">
-                            MADRASAH DINIYAH WUSTHO WAHIDIYAH
+                        <p class=" font-semibold text-2xl text-green-800 uppercase">
+                            MADRASAH DINIYAH {{$kelasmi->jenjang}} WAHIDIYAH
                         </p>
                         <p class=" font-semibold text-3xl text-green-800">
                             JADWAL PELAJARAN
@@ -47,6 +47,7 @@
                         <p class=" font-semibold uppercase text-green-800">
                             TAHUN PELAJARAN
                             {{$datakelasmi->periode}} {{$datakelasmi->ket_semester}}
+
                         </p>
                     </center>
                     <hr class=" border-b-2   border-b-green-700">

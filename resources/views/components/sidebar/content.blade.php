@@ -75,8 +75,8 @@
         <x-sidebar.sublink title=" Data Guru" href="{{ route('guru') }}" :active="request()->routeIs('guru')" />
         <x-sidebar.sublink title=" Jadwal" href="{{ route('Daftar-Jadwal') }}" :active="request()->routeIs('Daftar-Jadwal')" />
         <x-sidebar.sublink title="Data Nilai" href="{{ route('nilaimapel') }}" :active="request()->routeIs('nilaimapel')" />
-        <x-sidebar.sublink title="Daftar Seleksi" href="{{ route('daftar-seleksi') }}" :active="request()->routeIs('daftar-seleksi')" />
-        <x-sidebar.sublink title=" Lulusan" href="{{ route('lulusan') }}" :active="request()->routeIs('lulusan')" />
+        <x-sidebar.sublink title="Nomor Ujian" href="{{ route('daftar-seleksi') }}" :active="request()->routeIs('daftar-seleksi')" />
+        <x-sidebar.sublink title=" Nomor Ijazah" href="{{ route('lulusan') }}" :active="request()->routeIs('lulusan')" />
         <x-sidebar.sublink title="Rapor" href="{{ route('raportkelas') }}" :active="request()->routeIs('raportkelas')" />
     </x-sidebar.dropdown>
     <x-sidebar.dropdown title="PRESENSI" :active="Str::startsWith(request()->route()->uri(), 'buttons')">

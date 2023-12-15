@@ -118,9 +118,9 @@ class JadwalController
             ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
             ->join('semester', 'semester.id', '=', 'periode.semester_id')
             ->join('kelas', 'kelas.id', 'kelasmi.kelas_id')
-            ->select('kelasmi.id', 'kelasmi.nama_kelas', 'periode.periode', 'semester.ket_semester', 'kelas.kelas')
+            ->select('kelasmi.id', 'kelasmi.nama_kelas', 'periode.periode', 'semester.ket_semester', 'jenjang')
             ->where('kelasmi.periode_id', session('periode_id'))
-            ->where('kelasmi.id', $request->kelasmi_id)
+            // ->where('kelasmi.id', $request->kelasmi_id)
             ->first();
         $datakelasmi = Kelasmi::query()
             ->join('periode', 'periode.id', 'kelasmi.periode_id')
