@@ -106,9 +106,14 @@
                                 <td class="border text-sm border-green-800">
                                     @if (isset($jadwalsByHari[$hari]))
                                     @foreach ($jadwalsByHari[$hari] as $jadwal)
-                                    <span class=" font-semibold">{{ $jadwal['nama_guru'] }}</span> <br> {{ $jadwal['mapel'] }}<br>
-                                    @endforeach
-                                    @endif
+                                    <span class=" font-semibold">
+                                        {{ $jadwal['mapel'] }}
+                                    </span>
+                                    <br>
+                                    <span class=" text-sm ">{{ strtolower($jadwal['nama_guru']) }}
+
+                                        @endforeach
+                                        @endif
                                 </td>
                                 @endforeach
                             </tr>
