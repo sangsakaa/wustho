@@ -75,8 +75,11 @@
 
                     <table class="mb-4 mt-2 w-full">
                         <thead>
+                            <tr>
+                                <th class="  border text-sm border-green-800 uppercase" rowspan="2">Kelas</th>
+                                <th class="  border text-sm border-green-800 uppercase" colspan="6">Hari</th>
+                            </tr>
                             <tr class="border text-sm">
-                                <th class="border text-sm border-green-800 py-2">Nama Kelas</th>
 
                                 <?php
                                 // Array asal
@@ -101,12 +104,12 @@
                         <tbody>
                             @foreach ($jadwalByKelas as $nama_kelas => $jadwalsByHari)
                             <tr class=" even:bg-yellow-100 border text-sm border-green-800 capitalize text-center">
-                                <td class="border text-sm border-green-800">{{ $nama_kelas }}</td>
+                                <td class="border text-lg font-semibold border-green-800">{{ $nama_kelas }}</td>
                                 @foreach ($customOrder as $hari)
                                 <td class="border text-sm border-green-800">
                                     @if (isset($jadwalsByHari[$hari]))
                                     @foreach ($jadwalsByHari[$hari] as $jadwal)
-                                    <span class=" font-semibold">
+                                    <span class=" font-semibold  text-md-center uppercase">
                                         {{ $jadwal['mapel'] }}
                                     </span>
                                     <br>
