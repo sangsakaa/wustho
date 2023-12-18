@@ -80,12 +80,10 @@
                                 <th class="  border text-sm border-green-800 uppercase" colspan="6">Hari</th>
                             </tr>
                             <tr class="border text-sm">
-
                                 <?php
                                 // Array asal
                                 // Ubah urutan hari
                                 $customOrder = ['jumat', 'sabtu', 'minggu', 'senin', 'selasa', 'rabu'];
-
                                 // Urutkan array sesuai urutan yang ditentukan
                                 $sortedJadwalByDayMap = [];
                                 foreach ($customOrder as $hari) {

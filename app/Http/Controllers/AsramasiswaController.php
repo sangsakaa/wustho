@@ -190,7 +190,7 @@ class AsramasiswaController extends Controller
             ]);
         return redirect('/asramasiswa')->with('update', 'pembaharuan data berhasil');
     }
-    public function updatepeserta(Request $request, Pesertaasrama $pesertaasrama, Asramasiswa $asramasiswa)
+    public function updatepeserta(Request $request, Pesertaasrama $pesertaasrama)
     {
         Pesertaasrama::where('id', $pesertaasrama->id)
             ->update([
@@ -198,7 +198,6 @@ class AsramasiswaController extends Controller
                 'asramasiswa_id' => $request->asramasiswa_id,
 
             ]);
-
         if (auth()->user()->hasRole('super admin')) {
             return redirect('/pesertaasrama/' . $pesertaasrama->asramasiswa_id);
         } elseif (auth()->user()->hasRole('siswa')) {

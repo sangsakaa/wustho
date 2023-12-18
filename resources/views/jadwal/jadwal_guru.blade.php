@@ -11,19 +11,23 @@
     <form action="/jadwal-guru/{{$jadwal->id}}" method="post">
         <div class=" bg-white grid sm:grid-cols-2 grid-cols-1 px-2 py-2 gap-2">
             @csrf
-
             <input type="hidden" name="jadwal_id" value="{{$jadwal->id}}">
             <label for="hari">Pilih Pengajar </label>
             <select id="hari" name="guru_id" class=" py-1">
-                @foreach($daftarGuru as $guru)
-                <option value="{{$guru->id}}">{{$guru->nama_guru}} </option>
+                <option value="">Pilih Pengajar</option>
+                @foreach ($daftarGuru as $item)
+                <option value="{{$item->id}}" @if($item->id == $jadwal->guru_id) selected @endif>
+                    {{$item->nama_guru}}
+                </option>
                 @endforeach
             </select>
             <label for="hari">Pilih Mata Pelajaran </label>
             <select id="hari" name="mapel_id" class=" py-1">
                 <option value="">Pilih Mata Pelajaran</option>
-                @foreach($daftarMapel as $mapel)
-                <option value="{{$mapel->id}}">{{$mapel->kelas}} - {{$mapel->mapel}} - {{$mapel->nama_kitab}} {{$mapel->periode}} {{$mapel->ket_semester}}</option>
+                @foreach($daftarMapel as $item)
+                <option value="{{$item->id}}" @if($item->id == $jadwal->mapel_id) selected @endif>
+                    {{$item->kelas}} - {{$item->mapel}} {{$item->periode}} {{$item->ket_semester}}
+                </option>
                 @endforeach
             </select>
             <div></div>
@@ -48,7 +52,7 @@
             <thead>
                 <tr>
                     <th class=" border text-center">No</th>
-                    <th class=" border text-center">Hari</th>
+
                     <th class=" border text-center">Daftar Pendidik</th>
                     <th class=" border text-center">Nama Kitab</th>
                     <th class=" border text-center">ACT</th>
@@ -59,7 +63,7 @@
                 @foreach($daftarJadwal as $list)
                 <tr class=" even:bg-gray-100">
                     <th class=" border text-center">{{$loop->iteration}}</th>
-                    <td class=" border text-center">{{$list->mapel}}</td>
+
                     <td class=" border text-center">{{$list->nama_guru}}</td>
                     <td class=" border text-center">{{$list->nama_kitab}}</td>
                     <td class=" border text-center">
@@ -70,6 +74,7 @@
                             <button class=" bg-red-600 px-1 py-1 text-white">
                                 Delete
                             </button>
+                            <a class=" bg-yellow-400 px-1 py-1 text-black" href="/edit-jadwal/{{$list->id}}">Edit</a>
                         </form>
                     </td>
 

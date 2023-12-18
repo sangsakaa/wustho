@@ -111,6 +111,31 @@ class JadwalController
             ]
         ));
     }
+    public function editJadwal(Daftar_Jadwal $daftar_Jadwal)
+    {
+        $jadwal = Jadwal::find($daftar_Jadwal->jadwal_id);
+        $daftarMapel = Mapel::query()
+            ->join('kelas', 'kelas.id', '=', 'mapel.kelas_id')
+            ->join('periode', 'periode.id', '=', 'mapel.periode_id')
+            ->join('semester', 'semester.id', '=', 'periode.semester_id')
+            ->select('mapel.id', 'kelas.kelas', 'mapel', 'nama_kitab', 'periode', 'ket_semester', 'mapel.periode_id')
+            ->where('mapel.periode_id', session('periode_id'))
+            ->get();
+        $dataGuru = Guru::orderby('nama_guru')->get();
+
+        return view('jadwal.edit_jadwal_guru', compact('daftar_Jadwal', 'daftarMapel', 'dataGuru', 'jadwal'));
+    }
+    public function updateJadwal(Daftar_Jadwal $daftar_Jadwal, Request $request)
+    {
+
+        Daftar_Jadwal::where('id', $daftar_Jadwal->id)
+            ->update([
+                'jadwal_id' => $request->jadwal_id,
+                'guru_id' => $request->guru_id,
+                'mapel_id' => $request->mapel_id,
+            ]);
+        return redirect()->back();
+    }
     public function CetakJadwal1(Request $request)
     {
 

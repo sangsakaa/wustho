@@ -336,6 +336,9 @@ Route::get('jadwal-guru/{jadwal}', [JadwalController::class, 'DaftarJadwal'])->m
 Route::post('jadwal-guru/{jadwal}', [JadwalController::class, 'StoreDaftarJadwal'])->middleware(['auth']);
 Route::get('/cetak-jadwal-kolektif', [JadwalController::class, 'JadwalKolektif'])->name('cetak-jadwal-kolektif');
 Route::get('cetak-jadwal-1', [JadwalController::class, 'CetakJadwal1'])->middleware(['auth']);
+Route::get('edit-jadwal/{daftar_Jadwal}', [JadwalController::class, 'editJadwal'])->middleware(['auth']);
+Route::patch('edit-jadwal/{daftar_Jadwal}/edit', [JadwalController::class, 'updateJadwal'])->middleware(['auth']);
+
 Route::get('laporan-poling-guru', [JadwalController::class, 'LaporanPloting'])->middleware(['auth']);
 Route::get('laporan-poling-guru-kelas', [JadwalController::class, 'LaporanPlotingKelas'])->middleware(['auth']);
 Route::delete('jadwal-guru/{daftar_Jadwal}', [JadwalController::class, 'destroyGuru'])->middleware(['auth']);
