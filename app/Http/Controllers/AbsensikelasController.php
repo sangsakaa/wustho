@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Absensikelas;
+use App\Models\Asramasiswa;
 use App\Models\Kelas;
 use App\Models\Kelasmi;
 use App\Models\Periode;
@@ -449,6 +450,101 @@ class AbsensikelasController
             'kelasmi' => $kelasmi,
             'dataAbsensi' => $dataAbsensi->get(),
             'periode' => $periode,
+        ]);
+    }
+    public function rekapPerBulanAsrama(Request $request)
+    {
+        $datakelasmi = Kelasmi::query()
+            ->join('periode', 'periode.id', 'kelasmi.periode_id')
+            ->join('semester', 'semester.id', 'periode.semester_id')
+            ->select('kelasmi.id', 'kelasmi.nama_kelas', 'periode.periode', 'semester.ket_semester')
+            ->where('kelasmi.periode_id', session('periode_id'))
+            ->orderBy('kelasmi.nama_kelas')
+            ->get();
+
+        $kelasmi = Kelasmi::query()
+            ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
+            ->join('semester', 'semester.id', '=', 'periode.semester_id')
+            ->select('kelasmi.id', 'kelasmi.nama_kelas', 'periode.periode', 'semester.ket_semester', 'jenjang')
+            ->where('kelasmi.periode_id', session('periode_id'))
+            ->where('kelasmi.id', $request->kelasmi_id)
+            ->first();
+
+        $bulan = $request->bulan ? Carbon::parse($request->bulan) : now();
+        $periodeBulan = $bulan->startOfMonth()->daysUntil($bulan->copy()->endOfMonth());
+
+        if (!$kelasmi) {
+            return view('presensi.asrama.rekapPerBulanAsrama', [
+                'dataKelasMi' => $datakelasmi,
+                'kelasmi' => $kelasmi,
+                'dataSiswa' => collect(),
+                'periodeBulan' => $periodeBulan,
+                'bulan' => $bulan,
+            ]);
+        }
+
+        $dataSiswa = Pesertakelas::query()
+            ->join('siswa', 'siswa.id', '=', 'pesertakelas.siswa_id')
+            ->join('pesertaasrama', 'pesertaasrama.siswa_id', 'siswa.id')
+            ->join('asramasiswa', 'asramasiswa.id', 'pesertaasrama.asramasiswa_id')
+            ->join('nis', 'siswa.id', '=', 'nis.siswa_id')
+            ->join('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
+            ->join('kelas', 'kelas.id', '=', 'kelasmi.kelas_id')
+            ->where('pesertakelas.kelasmi_id', $kelasmi->id)
+
+            ->select(
+                'pesertakelas.id',
+                'siswa.nama_siswa',
+                'asramasiswa_id',
+                'nis.nis',
+                'kelas.kelas',
+                'kelasmi.nama_kelas',
+            )
+            ->orderby('siswa.nama_siswa')
+            ->get();
+
+        $dataAbsensiKelas = Absensikelas::query()
+            ->join('sesikelas', 'sesikelas.id', '=', 'absensikelas.sesikelas_id')
+            ->select('absensikelas.*', 'sesikelas.tgl')
+            ->whereBetween('sesikelas.tgl', [$periodeBulan->first()->toDateString(), $periodeBulan->last()->toDateString()])
+            // ->where('sesikelas.kelasmi_id', $kelasmi->id)
+
+            ->get();
+
+        $dataAbsensiKelas = $dataAbsensiKelas
+            ->groupBy('pesertakelas_id');
+
+        $dataSiswa = $dataSiswa
+            ->keyBy('id')
+            ->map(function ($siswa, $key) use ($dataAbsensiKelas, $periodeBulan) {
+                $absensi = [];
+                foreach ($periodeBulan as $hari) {
+                    $absensiPerBulan[] = [
+                        'hari' => $hari,
+                        'data' => $dataAbsensiKelas->count() ? $dataAbsensiKelas[$key]->firstWhere('tgl', $hari->toDateString()) : null
+                    ];
+                }
+                $total = $dataAbsensiKelas->count() ? $dataAbsensiKelas[$key]->countBy(function ($absensiKelas) {
+                    return $absensiKelas->keterangan;
+                }) : collect();
+                return [
+                    'siswa' => $siswa,
+                    'absensiPerBulan' => $absensiPerBulan,
+                    'total' => [
+                        'hadir' => $total->get('hadir', '-'),
+                        'izin' => $total->get('izin', '-'),
+                        'sakit' => $total->get('sakit', '-'),
+                        'alfa' => $total->get('alfa', '-'),
+                    ]
+                ];
+            });
+
+        return view('presensi.asrama.rekapPerBulanAsrama', [
+            'dataKelasMi' => $datakelasmi,
+            'kelasmi' => $kelasmi,
+            'dataSiswa' => $dataSiswa,
+            'periodeBulan' => $periodeBulan,
+            'bulan' => $bulan,
         ]);
     }
 }

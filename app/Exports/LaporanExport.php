@@ -21,20 +21,19 @@ class LaporanExport implements FromCollection, WithHeadings
             'nama_siswa',
             'nama_kelas',
             'nama_asrama',
+            'periode',
+            'ket_semester',
             'tanggal_update',
             'jumlah_hadir',
             'jumlah_izin',
-            'jumlah_alfa',
             'jumlah_sakit',
+            'jumlah_alfa',
             // Tambahkan header lainnya jika diperlukan
         ];
     }
 
     public function collection()
-    {
-        
-
-        
+    {  
         return
             Sesikelas::query()
             ->join('kelasmi', 'kelasmi.id', 'sesikelas.kelasmi_id')
@@ -50,13 +49,15 @@ class LaporanExport implements FromCollection, WithHeadings
                 'nama_siswa',
                 'nama_kelas',
                 'nama_asrama',
+            // 'periode',
+            // 'ket_semester',
             DB::raw('MAX(tgl) AS tgl'), // Menggunakan MAX untuk tgl
                 DB::raw('SUM(CASE WHEN absensikelas.keterangan = "hadir" THEN 1 ELSE 0 END) AS jumlah_hadir'),
             DB::raw('SUM(CASE WHEN absensikelas.keterangan = "izin" THEN 1 ELSE 0 END) AS jumlah_izin'),
             DB::raw('SUM(CASE WHEN absensikelas.keterangan = "alfa" THEN 1 ELSE 0 END) AS jumlah_alfa'),
                 DB::raw('SUM(CASE WHEN absensikelas.keterangan = "sakit" THEN 1 ELSE 0 END) AS jumlah_sakit')
             )
-            ->groupBy('nama_siswa', 'nama_kelas', 'nama_asrama')
+        ->groupBy('nama_siswa', 'nama_kelas', 'nama_asrama')
         ->orderBy('nama_kelas')
         ->orderBy('nama_siswa')
         ->whereMonth('tgl', now()->month)

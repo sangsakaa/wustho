@@ -57,9 +57,15 @@
             </div> -->
             <div>
 
-                <a href="/pesertaasrama/{{$peserAsrama->id}}/edit" class=" bg-blue-500 px-2 py-1 hover:bg-purple-500 text-white">
+                @if ($peserAsrama)
+                <a href="/pesertaasrama/{{$peserAsrama->id}}/edit" class="bg-blue-500 px-2 py-1 hover:bg-purple-500 text-white">
                     Update Asrama
                 </a>
+                @else
+                <!-- Handle the case where $peserAsrama is null -->
+                <span class="text-red-500">Asrama information not available</span>
+                @endif
+
 
 
             </div>

@@ -128,49 +128,6 @@
                                     @endif
                                 </tbody>
                             </table>
-                            <table class=" w-full    ">
-                                <thead>
-                                    <tr class=" border bg-gray-100">
-                                        <th class=" border text-center py-1">No</th>
-                                        <th class=" border text-center"> Tanggal Presensi</th>
-                                        <th class=" border text-center"> Jenis Kegiatan</th>
-                                        <th class=" border text-center"> Ket</th>
-                                        <th class=" border text-center"> Alasan</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @if($PresensiAsrama->count() != null)
-                                    @foreach($PresensiAsrama as $kelas)
-                                    <tr>
-                                        <td class=" border px-2 py-1 text-center ">
-                                            {{$loop->iteration}}
-                                        </td>
-                                        <td class=" border px-2 text-center ">
-
-                                            {{ \Carbon\Carbon::parse($kelas->tanggal)->isoFormat(' DD MMMM Y') }}
-                                        </td>
-                                        <td class=" border px-2 text-center ">
-                                            {{$kelas->kegiatan}}
-                                        </td>
-                                        <td class=" border px-2 text-center capitalize ">
-                                            {{$kelas->keterangan}}
-                                        </td>
-                                        <td class=" border px-2 text-center ">
-                                            {{$kelas->alasan}}
-                                        </td>
-
-                                    </tr>
-                                    @endforeach
-                                    @else
-                                    <tr>
-                                        <td colspan="5" class=" border  text-center capitalize text-red-600">
-                                            Data Kegiatan Asrama tidak ada
-                                        </td>
-                                    </tr>
-                                    @endif
-                                </tbody>
-                            </table>
-
                             <form action="/siswa/{{$siswa->id}}" method="get" class="w-full  hidden">
                                 <input type="month" name="bulan" class=" py-1 dark:bg-dark-bg" value="{{ $bulan->format('Y-m') }}">
 
@@ -178,53 +135,74 @@
                                     Pilih Presensi
                                 </button>
                             </form>
-                            <table class=" w-full    ">
-                                <thead>
-                                    <tr class=" border bg-gray-100">
-                                        <th class=" border text-center py-1">No</th>
-                                        <th class=" border text-center"> Tanggal Presensi</th>
-                                        <th class=" border text-center"> Kelas</th>
-                                        <th class=" border text-center"> Ket</th>
-                                        <th class=" border text-center"> Alasan</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @if($PresensiKelas->count() != null)
-                                    @foreach($PresensiKelas as $kelas)
-                                    <tr>
-                                        <td class=" border px-2 py-1 text-center ">
-                                            {{$loop->iteration}}
-                                        </td>
-                                        <td class=" border px-2 text-center ">
 
-                                            {{ \Carbon\Carbon::parse($kelas->tgl)->isoFormat(' DD MMMM Y') }}
-                                        </td>
-                                        <td class=" border px-2 text-center ">
-                                            {{$kelas->nama_kelas}}
-                                        </td>
-                                        <td class=" border px-2 text-center capitalize ">
-                                            {{$kelas->keterangan}}
-                                        </td>
-                                        <td class=" border px-2 text-center ">
-                                            {{$kelas->alasan}}
-                                        </td>
-
-                                    </tr>
-                                    @endforeach
-                                    @else
-                                    <tr>
-                                        <td colspan="5" class=" border  text-center capitalize text-red-600">
-                                            Data Kegiatan Asrama tidak ada
-                                        </td>
-                                    </tr>
-                                    @endif
-                                </tbody>
-                            </table>
                         </div>
+                    </div>
+                    <div class=" mt-2 overflow-auto">
+
+                        <table class=" w-full">
+                            <thead>
+                                <tr>
+                                    <th rowspan="2" class=" border">Periode</th>
+                                    <th rowspan="2" class=" border">Sesi</th>
+                                    <th colspan="6" class=" border">keterangan</th>
+
+
+                                </tr>
+                                <tr>
+
+                                    <th class=" border">H</th>
+                                    <th class=" border">S</th>
+                                    <th class=" border">I</th>
+                                    <th class=" border">A</th>
+                                    <th class=" border">%H</th>
+                                    <th class=" border">Status</th>
+                                </tr>
+
+                            </thead>
+                            <tbody>
+                                @foreach($PresensiKelas as $item)
+                                <tr>
+                                    <td class=" border text-center ">
+                                        {{$item->periode}}
+                                        {{$item->ket_semester}}
+                                    </td>
+                                    <td class=" border text-center ">
+                                        {{$item->count_sesikelas_id}}
+                                    </td>
+                                    <td class=" border text-center ">
+                                        {{$item->hadir}}
+                                    </td>
+                                    <td class=" border text-center ">
+                                        {{$item->sakit}}
+                                    </td>
+                                    <td class=" border text-center ">
+                                        {{$item->izin}}
+                                    </td>
+                                    <td class=" border text-center ">
+                                        {{$item->alfa}}
+                                    </td>
+                                    <td class=" border text-center ">
+                                        {{ number_format($item->presentase_kehadiran,0)}}
+
+
+
+                                    </td>
+                                    <td class=" border text-center ">
+
+                                        @if($item->presentase_kehadiran >= 75)
+                                        <span class=" text-green-700 font-semibold">M</span>
+                                        @else
+                                        <span class=" text-red-700 font-semibold">TM</span>
+                                        @endif
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
     </div>
 </x-app-layout>

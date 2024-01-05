@@ -1,11 +1,19 @@
 <div>
 
     <div>
-        <select wire:model="angkatan" class=" py-1">
-            <option>2021</option>
-            <option>2022</option>
-            <option>2023</option>
-        </select>
+        <div class=" py-1">
+            <!-- @foreach($periodeKelas->unique('periode') as $per)
+            {{ substr($per->periode, 0, 4) }}
+            @endforeach -->
+
+            <label for="">Pilih Tahun angkatan</label>
+            <select wire:model="angkatan" class=" py-1">
+                <option>2020</option>
+                <option>2021</option>
+                <option>2022</option>
+                <option>2023</option>
+            </select>
+        </div>
         <!-- resources/views/namafile.blade.php -->
         <table class="border w-full">
             <thead>
@@ -48,17 +56,6 @@
                 @endforeach
             </tbody>
         </table>
-
-
-
-
-
-
-
-
-
-
-
     </div>
 
 

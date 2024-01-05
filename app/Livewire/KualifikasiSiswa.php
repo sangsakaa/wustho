@@ -15,6 +15,7 @@ class KualifikasiSiswa extends Component
     {
         $periodeKelas = Periode::query()
             ->join('semester', 'semester.id', 'periode.semester_id')
+            // ->substr('periode', 0, 4)
             ->get();
         $dataSiswa = Pesertakelas::query()
             ->join('absensikelas', 'absensikelas.pesertakelas_id', 'pesertakelas.id')
@@ -34,23 +35,17 @@ class KualifikasiSiswa extends Component
             DB::raw('COUNT(CASE WHEN keterangan = "sakit" THEN 1 END) as jumlah_sakit'),
             DB::raw('COUNT(CASE WHEN keterangan = "hadir" THEN 1 END) as jumlah_hadir'),
             DB::raw('COUNT(absensikelas.sesikelas_id) as jumlah_sesikelas_id'), // tambahkan jumlah_sesikelas_id
-            DB::raw('(COUNT(CASE WHEN keterangan = "hadir" THEN 1 END) / COUNT(absensikelas.sesikelas_id)) * 100 as presentase_hadir') // hitung presentase hadir
+            DB::raw('(COUNT(CASE WHEN keterangan = "hadir" THEN 1 END) / COUNT(absensikelas.sesikelas_id)) * 100 as presentase_hadir'), // hitung presentase hadir
+            
         )
             ->groupBy('ket_semester',  'periode', 'nis', 'nama_siswa') // tambahkan sesikelas_id ke dalam grup
             ->where('nis', 'like', '%' . $this->angkatan . '%')
-
             ->orderBy('nama_siswa')
+            ->whereNot('ket_semester', 'pendek')
             ->orderBy('periode')
             // ->limit(1000)
             ->get();
-
-
-
-        
-        
-
-// $siswaIdMap sekarang berisi map siswa_id berdasarkan periodeKelas
-
+            
 
         return view(
             'livewire.kualifikasi-siswa',

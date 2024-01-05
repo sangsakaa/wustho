@@ -249,6 +249,7 @@ Route::get('absensikelas/blanko', [AbsensikelasController::class, 'blanko'])->mi
 Route::get('blankoHarian', [AbsensikelasController::class, 'blankoLApHarian'])->middleware(['auth'])->name('blankoHarian');
 Route::get('absensikelas/rekap-per-hari', [AbsensikelasController::class, 'rekapPerHari'])->middleware(['auth'])->name('absensikelas/rekap-per-hari');
 Route::get('absensikelas/rekap-per-bulan', [AbsensikelasController::class, 'rekapPerBulan'])->middleware(['auth'])->name('absensikelas/rekap-per-bulan');
+Route::get('absensikelas/rekap-per-bulan-asrama', [AbsensikelasController::class, 'rekapPerBulanAsrama'])->middleware(['auth'])->name('absensikelas/rekap-per-bulan-asrama');
 Route::get('absensikelas/rekap-semester', [AbsensikelasController::class, 'rekapSemester'])->middleware(['auth'])->name('absensikelas/rekap-semester');
 Route::get('blanko-pernyataan', [AbsensikelasController::class, 'pernyataan'])->middleware(['auth'])->name('blanko-pernyataan');
 

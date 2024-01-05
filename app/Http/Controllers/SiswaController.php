@@ -5,12 +5,13 @@ namespace App\Http\Controllers;
 use Carbon\Carbon;
 use App\Models\Nis;
 use App\Models\Siswa;
-use App\Models\Pesertaasrama;
 use App\Models\Statusanak;
 use App\Models\Pesertakelas;
 use Illuminate\Http\Request;
+use App\Models\Pesertaasrama;
 use App\Models\Statuspengamal;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\DB;
 
 class SiswaController extends Controller
 {
@@ -126,28 +127,29 @@ class SiswaController extends Controller
         ->join('periode', 'periode.id', '=', 'asramasiswa.periode_id')
         ->join('semester', 'semester.id', '=', 'periode.semester_id')
         ->where('siswa_id', $siswa->id)->get();
-        $PresensiAsrama = Pesertaasrama::query()
-        ->join('presensiasrama', 'pesertaasrama.id', '=', 'presensiasrama.pesertaasrama_id')
-        ->join('sesiasrama', 'sesiasrama.id', '=', 'presensiasrama.sesiasrama_id')
-            ->join('kegiatan', 'kegiatan.id', '=', 'sesiasrama.kegiatan_id')
-            ->whereBetween('sesiasrama.tanggal', [$periodeBulan->first()->toDateString(), $periodeBulan->last()->toDateString()])
-        ->where('siswa_id', $siswa->id)
-        ->orderBy('tanggal')
-        ->orderBy('kegiatan');
-        if (request('bulan')) {
-            $PresensiAsrama->where('tanggal', 'like', '%' . request('bulan') . '%');
-        };
+
         $PresensiKelas = Pesertakelas::query()
         ->join('absensikelas', 'pesertakelas.id', '=', 'absensikelas.pesertakelas_id')
         ->join('sesikelas', 'sesikelas.id', '=', 'absensikelas.sesikelas_id')
         ->join('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
         ->join('kelas', 'kelas.id', '=', 'kelasmi.kelas_id')
-        ->where('kelasmi.periode_id', session('periode_id'))
-        ->whereBetween('sesikelas.tgl', [$periodeBulan->first()->toDateString(), $periodeBulan->last()->toDateString()])
-        ->where('siswa_id', $siswa->id);
-        if (request('bulan')) {
-            $PresensiKelas->where('tgl', 'like', '%' . request('bulan') . '%');
-        }
+        ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
+        ->join('semester', 'semester.id', '=', 'periode.semester_id')
+        ->select(
+            'periode',
+            'ket_semester',
+            DB::raw('count(case when keterangan = "alfa" then 1 else null end) as alfa'),
+            DB::raw('count(case when keterangan = "hadir" then 1 else null end) as hadir'),
+            DB::raw('count(case when keterangan = "izin" then 1 else null end) as izin'),
+            DB::raw('count(case when keterangan = "sakit" then 1 else null end) as sakit'),
+            DB::raw('count(distinct sesikelas.id) as count_sesikelas_id'), // Menggunakan DISTINCT untuk menghindari penghitungan ganda
+            DB::raw('COUNT(CASE WHEN keterangan = "hadir" THEN 1 END)/(COUNT(DISTINCT sesikelas.id)  ) * 100 as presentase_kehadiran')
+
+        )
+        ->where('siswa_id', $siswa->id)
+        ->groupBy('periode', 'ket_semester')
+        ->get();
+
 
         return view(
             'siswa/detailSiswa',
@@ -155,8 +157,8 @@ class SiswaController extends Controller
                 'siswa' => $siswa,
                 'pesertakelas' => $pesertakelas,
                 'historiAsrama' => $historiAsrama,
-                'PresensiAsrama' => $PresensiAsrama->get(),
-                'PresensiKelas' => $PresensiKelas->get(),
+
+                'PresensiKelas' => $PresensiKelas,
                 'bulan' => $bulan,
                 'periodeBulan' => $periodeBulan,
                 
