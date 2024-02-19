@@ -184,9 +184,6 @@
                                     </td>
                                     <td class=" border text-center ">
                                         {{ number_format($item->presentase_kehadiran,0)}}
-
-
-
                                     </td>
                                     <td class=" border text-center ">
 

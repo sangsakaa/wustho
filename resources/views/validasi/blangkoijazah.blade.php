@@ -25,7 +25,7 @@
         <div>Total Ijazah </div>
         <div> : {{$data->count()}}</div>
     </div>
-    <div id="div1" class="  px-8 bg-white   w-full   ">
+    <div id="div1" class="   px-12 bg-white   w-full   ">
         @foreach($data as $ijazah)
         <div class="relative flex items-center justify-center">
             <style>
@@ -40,30 +40,32 @@
                     filter: grayscale(150%);
                 }
             </style>
-            <img src="{{ asset('asset/images/logo_wustho.png') }}" alt="" class="absolute     opacity-25  w-1/3  p-2 mt-3 black-and-white">
+            <img src="{{ asset('asset/images/logo.png') }}" alt="" class="absolute     opacity-25  w-1/3  p-2 mt-3 black-and-white">
 
-            <div class=" bg-white   text-center     rounded gap-4   ">
+            <div class=" font-serif bg-white   text-center     rounded gap-4   ">
                 <div class=" px-14 ">
                     <div class="  w-full justify-end grid ">
-                        <span class="  font-semibold   mt-14"> NOMOR : {{$ijazah->nomor_ijazah}}</span>
+                        <span class="  font-semibold   mt-14 font-sans"> NOMOR : {{$ijazah->nomor_ijazah}}</span>
                     </div>
                     <div class="  w-full">
                         <center>
-                            <img src={{ asset("asset/images/logo_wustho.png") }} alt="" width="180" class="  mt-3  p-2">
-                            <p class=" font-serif text-5xl   mt-6 font-semibold ">IJAZAH</p>
-                            <p class=" capitalize  text-4xl  font-riqah py-2">
+                            <img src={{ asset("asset/images/logo.png") }} alt="" width="180" class="  mt-3  p-2">
+                            <p class=" font-semibold">DEPARTEMEN PENDIDIKAN <br> DINIYAH WAHIDIYAH</p>
+                            <p class=" font-serif text-5xl   mt-2 font-semibold ">IJAZAH</p>
+                            <!-- <p class=" capitalize  text-4xl  font-riqah py-2">
                                 المدرسة الدينية التكميلية الوسطى الواحدية
+                            </p> -->
                             </p>
-                            </p>
-                            <p class="  font-serif text-lg uppercase">pondok pesantren kedunglo al munadhdhoroh</p>
-                            <p class="  uppercase font-serif text-lg font-semibold ">madrasah diniyah takmiliyah wustha
+                            <!-- <p class="  font-serif text-lg uppercase">pondok pesantren kedunglo al munadhdhoroh</p> -->
+                            <p class="  uppercase font-serif text-lg font-semibold ">madrasah diniyah <br> takmiliyah wustha
                                 Wahidiyah</p>
-                            <p class=" capitalize font-serif text-lg">kota kediri jawa timur indonesia</p>
+                            <p class=" font-semibold ">TAHUN PELAJARAN <span class=" font-sans">2023/2024</span></p>
+                            <!-- <p class=" capitalize font-serif text-lg">kota kediri jawa timur indonesia</p> -->
                         </center>
                     </div>
                     <div class=" w-full ">
                         <p class=" text-justify  text-sm  mt-5  ">
-                            Yang bertanda tangan di bawah ini Pengasuh Pondok Pesantren Kedunglo Al Munadhdhoroh menerangkan bahwa :
+                            Yang bertanda tangan dibawah ini, Pengasuh Perjuangan Wahidiyah dan Pondok Pesantren Kedunglo menerangkan bahwa :
                         </p>
                         <p class=" text-2xl uppercase bold  font-serif text-center   mt-2 underline ">
                             {{$ijazah->nama_siswa}}
@@ -73,7 +75,7 @@
                         </p>
                         <div class=" text-sm text-left  grid grid-cols-2 mt-2">
                             <div class=" px-1 ">Tempat, Tanggal Lahir</div>
-                            <div class=" px-1 capitalize ">
+                            <div class=" px-1 capitalize font-sans ">
                                 : {{strtolower($ijazah->tempat_lahir)}},
                                 {{ \Carbon\Carbon::parse($ijazah->tanggal_lahir)->isoFormat(' DD MMMM Y') }}
                             </div>
@@ -82,22 +84,24 @@
                                 : {{$ijazah->nama_ayah}}
                             </div>
                             <div class=" px-1 ">Nomor Ujian</div>
-                            <div class=" px-1 capitalize ">
+                            <div class=" px-1 capitalize font-sans ">
                                 : {{$ijazah->nomor_ujian}}
                             </div>
                         </div>
                         <div>
                             <p class="  text-3xl uppercase bold  font-serif text-center mt-4 ">lulus</p>
-                            <p class=" text-sm text-justify mt-4 ">Dalam mengikuti <span class=" font-semibold ">Ujian Akhir Madrasah Diniyah Takmiliyah Wustha Wahidiyah</span> yang diselenggarakan pada tanggal
+                            <p class=" text-sm text-justify mt-4 ">
+                                dari Madrasah Diniyah Takmiliyah Wustha Wahidiyah Kedunglo Kediri Nomor Statistik <span class=" font-sans">321235710006</span> berdasarkan penilaian sebagaimana ketentuan yang berlaku.
+                                <!-- Dalam mengikuti <span class=" font-semibold ">Ujian Akhir Madrasah Diniyah Takmiliyah Wustha Wahidiyah</span> yang diselenggarakan pada tanggal
                                 {{ \Carbon\Carbon::parse($ijazah->tanggal_mulai)->isoFormat(' DD MMMM ') }}
                                 s.d
                                 {{ \Carbon\Carbon::parse($ijazah->tanggal_selesai)->isoFormat(' DD MMMM Y') }}
 
-                                dengan nilai sebagaimana tercantum pada daftar nilai di balik ini.
+                                dengan nilai sebagaimana tercantum pada daftar nilai di balik ini. -->
                             </p>
                         </div>
                         <p class=" text-sm  text-justify mt-3 mx-auto lg:mx-0 ">
-                            Pemegang ijazah ini, terakhir tercatat sebagai <span class=" capitalize">murid madrasah Diniyah takmiliyah wustha wahidiyah pondok pesantren kedunglo Kediri</span> dengan <span class=" font-semibold">Nomor Induk Murid : {{$ijazah->nis}}</span>
+                            Pemegang ijazah ini, terakhir tercatat sebagai <span class=" capitalize">murid madrasah Diniyah takmiliyah wustha wahidiyah kedunglo Kediri</span> dengan <span class=" font-semibold">Nomor Induk Murid : <span class=" font-sans">{{$ijazah->nis}}</span></span>
                         </p>
                     </div>
                     <div class="  flex grid-cols-1    ">
@@ -113,14 +117,14 @@
                                         <tr>
                                             <td class=" underline">Kedunglo, </td>
                                             <td class=" text-right underline">
-                                                <p> {{ $ijazah->tanggal_lulus_hijriyah }} H</p>
+                                                <p class=" font-sans"> {{ $ijazah->tanggal_lulus_hijriyah }} H</p>
 
                                             </td>
                                         </tr>
                                         <tr>
                                             <td></td>
                                             <td class="text-right">
-                                                <p style="margin: 0; width: 100%;">{{ \Carbon\Carbon::parse($ijazah->tanggal_kelulusan)->isoFormat('DD MMMM Y') }} M</p>
+                                                <p style="margin: 0; width: 100%;" class=" font-sans">{{ \Carbon\Carbon::parse($ijazah->tanggal_kelulusan)->isoFormat('DD MMMM Y') }} M</p>
 
                                             </td>
                                         </tr>
