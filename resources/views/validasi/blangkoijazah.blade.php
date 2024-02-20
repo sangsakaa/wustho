@@ -91,7 +91,7 @@
                         <div>
                             <p class="  text-3xl uppercase bold  font-serif text-center mt-4 ">lulus</p>
                             <p class=" text-sm text-justify mt-4 ">
-                                dari Madrasah Diniyah Takmiliyah Wustha Wahidiyah Kedunglo Kediri Nomor Statistik <span class=" font-sans">321235710006</span> berdasarkan penilaian sebagaimana ketentuan yang berlaku.
+                                dari Madrasah Diniyah Takmiliyah Wustha Wahidiyah Kedunglo Kediri Nomor Statistik <span class=" ">321235710006</span> berdasarkan penilaian sebagaimana ketentuan yang berlaku.
                                 <!-- Dalam mengikuti <span class=" font-semibold ">Ujian Akhir Madrasah Diniyah Takmiliyah Wustha Wahidiyah</span> yang diselenggarakan pada tanggal
                                 {{ \Carbon\Carbon::parse($ijazah->tanggal_mulai)->isoFormat(' DD MMMM ') }}
                                 s.d
