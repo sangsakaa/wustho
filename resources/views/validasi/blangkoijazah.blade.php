@@ -65,7 +65,7 @@
                     </div>
                     <div class=" w-full ">
                         <p class=" text-justify  text-sm  mt-5  ">
-                            Yang bertanda tangan dibawah ini, Pengasuh Perjuangan Wahidiyah dan Pondok Pesantren Kedunglo Al Munadhdhoroh menerangkan bahwa :
+                            Yang bertanda tangan di bawah ini, Pengasuh Perjuangan Wahidiyah dan Pondok Pesantren Kedunglo Al Munadhdhoroh menerangkan bahwa :
                         </p> <br>
                         <p class=" text-2xl uppercase bold  font-serif text-center   mt-2 underline ">
                             {{$ijazah->nama_siswa}}
