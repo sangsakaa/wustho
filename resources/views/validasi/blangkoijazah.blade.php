@@ -45,7 +45,7 @@
             <div class=" font-serif bg-white   text-center     rounded gap-4   ">
                 <div class=" px-14 ">
                     <div class="  w-full justify-end grid ">
-                        <span class="  font-semibold   mt-14 font-sans"> NOMOR : {{$ijazah->nomor_ijazah}}</span>
+                        <span class="  font-semibold   mt-14  font-serif"> NOMOR : {{$ijazah->nomor_ijazah}}</span>
                     </div>
                     <div class="  w-full">
                         <center>
@@ -59,23 +59,23 @@
                             <!-- <p class="  font-serif text-lg uppercase">pondok pesantren kedunglo al munadhdhoroh</p> -->
                             <p class="  uppercase font-serif text-lg font-semibold ">madrasah diniyah <br> takmiliyah wustha
                                 Wahidiyah</p>
-                            <p class=" font-semibold ">TAHUN PELAJARAN <span class=" font-sans">2023/2024</span></p>
+                            <p class=" font-semibold ">TAHUN PELAJARAN <span class="  font-serif">2023/2024</span></p>
                             <!-- <p class=" capitalize font-serif text-lg">kota kediri jawa timur indonesia</p> -->
                         </center>
                     </div>
                     <div class=" w-full ">
                         <p class=" text-justify  text-sm  mt-5  ">
-                            Yang bertanda tangan dibawah ini, Pengasuh Perjuangan Wahidiyah dan Pondok Pesantren Kedunglo menerangkan bahwa :
-                        </p>
+                            Yang bertanda tangan dibawah ini, Pengasuh Perjuangan Wahidiyah dan Pondok Pesantren Kedunglo Al Munadhdhoroh menerangkan bahwa :
+                        </p> <br>
                         <p class=" text-2xl uppercase bold  font-serif text-center   mt-2 underline ">
                             {{$ijazah->nama_siswa}}
                         </p>
-                        <p class=" text-sm uppercase font-semibold   font-sans text-center ">
-                            nomor induk murid : {{$ijazah->nis}}
+                        <p class=" text-sm uppercase font-semibold    text-center ">
+                            nomor induk murid : <span class="">{{$ijazah->nis}}</span>
                         </p>
                         <div class=" text-sm text-left  grid grid-cols-2 mt-2">
                             <div class=" px-1 ">Tempat, Tanggal Lahir</div>
-                            <div class=" px-1 capitalize font-sans ">
+                            <div class=" px-1 capitalize  ">
                                 : {{strtolower($ijazah->tempat_lahir)}},
                                 {{ \Carbon\Carbon::parse($ijazah->tanggal_lahir)->isoFormat(' DD MMMM Y') }}
                             </div>
@@ -84,7 +84,7 @@
                                 : {{$ijazah->nama_ayah}}
                             </div>
                             <div class=" px-1 ">Nomor Ujian</div>
-                            <div class=" px-1 capitalize font-sans ">
+                            <div class=" px-1 capitalize  ">
                                 : {{$ijazah->nomor_ujian}}
                             </div>
                         </div>
@@ -101,7 +101,7 @@
                             </p>
                         </div>
                         <p class=" text-sm  text-justify mt-3 mx-auto lg:mx-0 ">
-                            Pemegang ijazah ini, terakhir tercatat sebagai <span class=" capitalize">murid madrasah Diniyah takmiliyah wustha wahidiyah kedunglo Kediri</span> dengan <span class=" font-semibold">Nomor Induk Murid : <span class=" font-sans">{{$ijazah->nis}}</span></span>
+                            Pemegang ijazah ini, terakhir tercatat sebagai <span class=" capitalize">murid madrasah Diniyah takmiliyah wustha wahidiyah kedunglo Kediri</span> dengan <span class=" font-semibold">Nomor Induk Murid : <span class=" ">{{$ijazah->nis}}</span></span>
                         </p>
                     </div>
                     <div class="  flex grid-cols-1    ">
@@ -117,14 +117,14 @@
                                         <tr>
                                             <td class=" underline">Kedunglo, </td>
                                             <td class=" text-right underline">
-                                                <p class=" font-sans"> {{ $ijazah->tanggal_lulus_hijriyah }} H</p>
+                                                <p class=" "> {{ $ijazah->tanggal_lulus_hijriyah }} H</p>
 
                                             </td>
                                         </tr>
                                         <tr>
                                             <td></td>
                                             <td class="text-right">
-                                                <p style="margin: 0; width: 100%;" class=" font-sans">{{ \Carbon\Carbon::parse($ijazah->tanggal_kelulusan)->isoFormat('DD MMMM Y') }} M</p>
+                                                <p style="margin: 0; width: 100%;" class="  ">{{ \Carbon\Carbon::parse($ijazah->tanggal_kelulusan)->isoFormat('DD MMMM Y') }} M</p>
 
                                             </td>
                                         </tr>

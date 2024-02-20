@@ -40,11 +40,11 @@
         <div class="px-16 p-2 bg-white dark:bg-dark-bg  ">
             <center>
                 <p class="  font-serif text-2xl   mt-24  uppercase  ">daftar nilai</p>
-                <p class="  uppercase font-serif  font-semibold ">Ujian Akhir Madrasah Diniyah takmiliyah wustha
+                <p class="  uppercase font-serif  font-semibold ">Ujian Akhir Madrasah Diniyah takmiliyah wustha Wahidiyah
                 </p>
                 <!-- <p class="  font-serif text-lg uppercase">pondok pesantren kedunglo al munadhdhoroh</p> -->
-                <p class=" font-semibold  font-serif text-lg uppercase"> Wahidiyah kedunglo kediri</p>
-                <p class=" font-semibold font-serif ">TAHUN PELAJARAN <span class=" font-sans">2023/2024</span></p>
+                <p class=" font-semibold  font-serif text-lg uppercase"> kedunglo al munadhdhoroh kediri</p>
+                <p class=" font-semibold font-serif ">TAHUN PELAJARAN <span class=" ">2023/2024</span></p>
             </center>
             <div class=" mt-4 uppercase grid grid-cols-2 font-semibold text-sm sm:text-sm">
                 <div class="justify-start flex grid-cols-2 ">
