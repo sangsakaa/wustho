@@ -86,7 +86,7 @@
                                             {{ \Carbon\Carbon::parse($list->tanggal_selesai)->isoFormat('D MMM Y') }}
                                         </td>
                                         <td class=" border text-center capitalize">
-                                            {{ \Carbon\Carbon::parse($list->tanggal_kelulusan)->isoFormat('D MMM Y') }}
+                                            {{ \Carbon\Carbon::parse($list->tanggal_kelulusan)->isoFormat('D MMMM Y') }}
                                             <br>
                                             {{ $list->tanggal_lulus_hijriyah }}
                                         </td>
