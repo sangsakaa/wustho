@@ -44,6 +44,7 @@ class LulusanCotroller
                     'lulusan.tanggal_mulai',
                     'lulusan.tanggal_selesai',
                     'lulusan.tanggal_kelulusan',
+                'tanggal_lulus_hijriyah'
                 ]
             )
             ->get();

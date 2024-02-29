@@ -36,21 +36,14 @@
                                         <option value="{{$item->id}}">{{$item->periode}} {{$item->ket_semester}}</option>
                                         @endforeach
                                     </select>
-
-
                                     <label for="">Tanggal Mulai</label>
                                     <input type="date" class="py-1 px-1 w-full" name="tanggal_mulai">
-
-
                                     <label for="">Tanggal Hijriyah</label>
                                     <input type="text" class="py-1 px-1 w-full" name="tanggal_lulus_hijriyah" placeholder="12 Robi'ul Awwal 1444">
                                     <label for="">Tanggal Selesai</label>
                                     <input type="date" class="py-1 px-1 w-full" name="tanggal_selesai">
                                     <label for="">Tanggal Kelulusan</label>
                                     <input type="date" class="py-1 px-1 w-full" name="tanggal_kelulusan">
-
-
-
                                     <label for="">Kelas</label>
                                     <select name="kelasmi_id" id="" class="   py-1 px-1">
                                         @foreach($kelasMi as $item)
@@ -67,7 +60,6 @@
                                     <button class=" py-1 px-2 bg-blue-600 rounded-sm text-white hover:bg-purple-500">Simpan</button>
                                 </div>
                             </form>
-
                             <table class=" w-full mt-1 border">
                                 <thead class=" border">
                                     <tr class="  uppercase text-sm bg-gray-100">
@@ -95,7 +87,10 @@
                                         </td>
                                         <td class=" border text-center capitalize">
                                             {{ \Carbon\Carbon::parse($list->tanggal_kelulusan)->isoFormat('D MMM Y') }}
+                                            <br>
+                                            {{ $list->tanggal_lulus_hijriyah }}
                                         </td>
+
                                         <td class=" border text-center capitalize">
                                             <form action="/lulusan/{{$list->id}}" method="post">
                                                 @csrf
