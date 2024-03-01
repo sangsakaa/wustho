@@ -128,7 +128,7 @@
                                     </p>
                                 </div>
                             </div>
-                            <div class=" bg-red-200">
+                            <div class=" ">
                                 <br><br><br><br>
                                 <p class=" uppercase font-semibold"> Kanjeng Romo Kyai Abdul Majid Ali Fikri R.A</p>
                             </div>
