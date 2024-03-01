@@ -25,24 +25,21 @@
         <div>Total Ijazah </div>
         <div> : {{$data->count()}}</div>
     </div>
-    <div id="div1" class="   px-12 bg-white   w-full   ">
+    <div id="div1" class="  px-4 w-full   ">
         @foreach($data as $ijazah)
-        <div class="relative flex items-center justify-center">
+        <div class="relative    flex items-center justify-center gap-2 bg-white">
             <style>
                 .page-break {
                     page-break-after: always;
                 }
-            </style>
 
-            <!-- Konten lainnya di sini -->
-            <style>
                 .black-and-white {
                     filter: grayscale(150%);
                 }
             </style>
+            <!-- Konten lainnya di sini -->
             <img src="{{ asset('asset/images/logo.png') }}" alt="" class="absolute     opacity-25  w-1/3  p-2 mt-3 black-and-white">
-
-            <div class=" font-serif bg-white   text-center     rounded gap-4   ">
+            <div class=" font-serif    text-center     rounded gap-4   ">
                 <div class=" px-14 ">
                     <div class="  w-full justify-end grid ">
                         <span class="  font-semibold   mt-14  font-serif"> NOMOR : {{$ijazah->nomor_ijazah}}</span>
@@ -52,15 +49,11 @@
                             <img src={{ asset("asset/images/logo.png") }} alt="" width="180" class="  mt-3  p-2">
                             <p class=" font-semibold">DEPARTEMEN PENDIDIKAN <br> DINIYAH WAHIDIYAH</p>
                             <p class=" font-serif text-5xl   mt-2 font-semibold ">IJAZAH</p>
-                            <!-- <p class=" capitalize  text-4xl  font-riqah py-2">
-                                المدرسة الدينية التكميلية الوسطى الواحدية
-                            </p> -->
-                            </p>
-                            <!-- <p class="  font-serif text-lg uppercase">pondok pesantren kedunglo al munadhdhoroh</p> -->
+
                             <p class="  uppercase font-serif text-lg font-semibold ">madrasah diniyah <br> takmiliyah wustha
                                 Wahidiyah</p>
                             <p class=" font-semibold ">TAHUN PELAJARAN <span class="  font-serif">2023/2024</span></p>
-                            <!-- <p class=" capitalize font-serif text-lg">kota kediri jawa timur indonesia</p> -->
+
                         </center>
                     </div>
                     <div class=" w-full ">
@@ -92,12 +85,6 @@
                             <p class="  text-3xl uppercase bold  font-serif text-center mt-4 ">lulus</p>
                             <p class=" text-sm text-justify mt-4 ">
                                 dari Madrasah Diniyah Takmiliyah Wustha Wahidiyah Kedunglo Kediri Nomor Statistik <span class=" ">321235710006</span> berdasarkan penilaian sebagaimana ketentuan yang berlaku.
-                                <!-- Dalam mengikuti <span class=" font-semibold ">Ujian Akhir Madrasah Diniyah Takmiliyah Wustha Wahidiyah</span> yang diselenggarakan pada tanggal
-                                {{ \Carbon\Carbon::parse($ijazah->tanggal_mulai)->isoFormat(' DD MMMM ') }}
-                                s.d
-                                {{ \Carbon\Carbon::parse($ijazah->tanggal_selesai)->isoFormat(' DD MMMM Y') }}
-
-                                dengan nilai sebagaimana tercantum pada daftar nilai di balik ini. -->
                             </p>
                         </div>
                         <p class=" text-sm  text-justify mt-3 mx-auto lg:mx-0 ">
@@ -118,7 +105,6 @@
                                             <td class=" underline">Kedunglo, </td>
                                             <td class=" text-right underline">
                                                 <p class=" "> {{ $ijazah->tanggal_lulus_hijriyah }} H</p>
-
                                             </td>
                                         </tr>
                                         <tr>
@@ -142,7 +128,7 @@
                                     </p>
                                 </div>
                             </div>
-                            <div>
+                            <div class=" bg-red-200">
                                 <br><br><br><br>
                                 <p class=" uppercase font-semibold"> Kanjeng Romo Kyai Abdul Majid Ali Fikri R.A</p>
                             </div>
@@ -150,9 +136,8 @@
                     </div>
                 </div>
             </div>
-            <div class="page-break"></div>
         </div>
-    </div>
-    @endforeach
+        <div class="page-break"></div>
+        @endforeach
     </div>
 </x-app-layout>
