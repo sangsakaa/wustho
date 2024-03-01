@@ -36,7 +36,7 @@ class SeleksiController
             ->join('kelasmi', 'kelasmi.id', '=', 'nominasi.kelasmi_id')
             ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
             ->join('semester', 'semester.id', '=', 'periode.semester_id')
-            ->select('nominasi.id', 'periode.periode', 'semester.ket_semester', 'nama_kelas')
+            ->select('nominasi.id', 'periode.periode', 'semester.ket_semester', 'nama_kelas', 'nominasi.tanggal_mulai', 'nominasi.tanggal_selesai')
             ->where('kelasmi.periode_id', session('periode_id'))
             ->get();
         return view(
