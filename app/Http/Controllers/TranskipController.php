@@ -42,7 +42,7 @@ class TranskipController
                 'mapel.id',
                 'periode.periode',
                 'ket_semester',
-            'nama_kelas'
+            // 'nama_kelas'
             )
             // ->where('mapel.periode_id', session('periode_id'))
             ->where('kelas.kelas', 3)
@@ -69,7 +69,7 @@ class TranskipController
             )
             ->where('transkip.periode_id', session('periode_id'))
             ->orderby('nama_ujian')
-            ->orderby('nama_kelas')
+            ->orderby('kelasmi.nama_kelas')
         ->paginate(8);
         return view(
             'lulusan.transkip.index',
