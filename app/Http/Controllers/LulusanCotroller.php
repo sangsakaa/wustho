@@ -47,6 +47,7 @@ class LulusanCotroller
                 'tanggal_lulus_hijriyah'
                 ]
             )
+            ->orderby('kelasmi.nama_kelas')
             ->get();
         return view(
             'lulusan.index',

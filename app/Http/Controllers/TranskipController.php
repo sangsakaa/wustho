@@ -33,6 +33,7 @@ class TranskipController
         ->get();
         $dataMapel = Mapel::query()
             ->join('kelas', 'kelas.id', '=', 'mapel.kelas_id')
+            
             ->join('periode', 'periode.id', '=', 'mapel.periode_id')
             ->join('semester', 'semester.id', '=', 'periode.semester_id')
             ->select(
@@ -41,10 +42,12 @@ class TranskipController
                 'mapel.id',
                 'periode.periode',
                 'ket_semester',
+            // 'nama_kelas'
             )
             // ->where('mapel.periode_id', session('periode_id'))
             ->where('kelas.kelas', 3)
             ->orderby('mapel.mapel')
+           
             ->get();
         $dataJenisUjian = Jenis_Ujian::all();
         $dataTranskip = Transkip::query()
