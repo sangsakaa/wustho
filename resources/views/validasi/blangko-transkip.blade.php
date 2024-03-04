@@ -143,7 +143,7 @@
                         <td class=" border text-center w-20 border-black p-1">
                             {{$data_lulusan['nilai_praktek']->sum('nilai_akhir')}} <br>
                             @if($data_lulusan['praktik'] != 0)
-                            {{ number_format($data_lulusan['nilai_praktek']->sum('nilai_akhir')/$data_lulusan['praktik'],0,2)}}
+                            {{ number_format($data_lulusan['nilai_praktek']->sum('nilai_akhir')/$data_lulusan['praktik']),2}}
                             @else
                             0
                             @endif
