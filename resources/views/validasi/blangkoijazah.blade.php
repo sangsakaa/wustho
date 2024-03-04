@@ -38,7 +38,7 @@
                 }
             </style>
             <!-- Konten lainnya di sini -->
-            <img src="{{ asset('asset/images/logo.png') }}" alt="" class="absolute     opacity-25  w-1/3  p-2 mt-3 black-and-white">
+            <img src="{{ asset('asset/images/logo_wustho.png') }}" alt="" class="absolute     opacity-25  w-1/3  p-2 mt-3 black-and-white">
             <div class=" font-serif    text-center     rounded gap-4   ">
                 <div class=" px-14 ">
                     <div class="  w-full justify-end grid ">
@@ -46,7 +46,7 @@
                     </div>
                     <div class="  w-full">
                         <center>
-                            <img src={{ asset("asset/images/logo.png") }} alt="" width="180" class="  mt-3  p-2">
+                            <img src={{ asset("asset/images/logo_wustho.png") }} alt="" width="180" class="  mt-3  p-2">
                             <p class=" font-semibold">DEPARTEMEN PENDIDIKAN <br> DINIYAH WAHIDIYAH</p>
                             <p class=" font-serif text-5xl   mt-2 font-semibold ">IJAZAH</p>
 
