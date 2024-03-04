@@ -68,7 +68,7 @@ class TranskipController
                 ]
             )
             ->where('transkip.periode_id', session('periode_id'))
-            ->orderby('nama_ujian')
+            // ->orderby('nama_ujian')
             ->orderby('kelasmi.nama_kelas')
         ->paginate(8);
         return view(
