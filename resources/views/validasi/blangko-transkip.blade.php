@@ -18,7 +18,7 @@
     <div class=" p-2">
         <button class=" text-white rounded-md  bg-green-800 px-2 py-1 " onclick="printContent('div1')">Cetak Transkip</button>
         <a href="/blangko-ijazah/{{$dataLulusan->id}}" class=" text-white rounded-md  bg-green-800 px-2 py-1 ">Ijazah</a>
-        <a href="/pengaturan" class=" text-white rounded-md  bg-green-800 px-2 py-1 ">Kembali</a>
+        <a href="/lulusan" class=" text-white rounded-md  bg-green-800 px-2 py-1 ">Kembali</a>
 
     </div>
     <div class=" bg-white m-2 p-2">
@@ -28,6 +28,7 @@
             <div> : {{$dataLulusan->nama_kelas}}</div>
             <div>Jumlah Transkip Nilai</div>
             <div> : {{$data_lulusan->count()}}</div>
+
         </div>
     </div>
     <div id="div1" class="  bg-white   ">
@@ -37,7 +38,7 @@
                 page-break-after: always;
             }
         </style>
-        <div class="px-16 p-2 bg-white dark:bg-dark-bg  ">
+        <div class="px-16 p-2 bg-white dark:bg-dark-bg font-serif  ">
             <center>
                 <p class="  font-serif text-2xl   mt-24  uppercase  ">daftar nilai</p>
                 <p class="  uppercase font-serif  font-semibold ">Ujian Akhir Madrasah Diniyah takmiliyah wustha Wahidiyah
@@ -49,7 +50,7 @@
             <div class=" mt-4 uppercase grid grid-cols-1 font-semibold text-sm sm:text-sm">
                 <div class=" grid grid-cols-2 ">
                     <div class="  ">Nama Murid</div>
-                    <div> : {{$data_lulusan['lulusan']->nama_siswa}}</div>
+                    <div class=" uppercase "> : {{$data_lulusan['lulusan']->nama_siswa}}</div>
                 </div>
                 <div class=" grid grid-cols-2 ">
                     <div class=" ">Nomor Induk Murid</div>
