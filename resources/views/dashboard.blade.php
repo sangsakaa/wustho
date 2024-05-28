@@ -8,31 +8,31 @@
 
         </div>
     </x-slot>
-    <div class=" px-2 font-semibold bg-white ">
-        <div class=" grid grid-cols-1 gap-2 p-1 sm:p-5 uppercase text-sm">
-            <div class="  w-full flex">
+    <div class=" px-2 font-semibold  bg-white dark:bg-dark-bg dark:text-purple-600 ">
+        <div class=" grid grid-cols-1 gap-2 p-1 sm:p-2 uppercase text-sm">
+            <div class="  w-full   flex ">
                 <div class=" bg-green-800 w-1"></div>
-                <div class=" bg-green-300 w-full  p-2 sm:p-5 ">
-                    <p>{{ $TitleMadrasak->jenjang ?? '-' }}</p>
+                <div class=" bg-green-300 w-full  p-2 sm:p-2 ">
+                    <p>Madrasah Diniyah Takmiliyah {{ $TitleMadrasak->jenjang ?? '-' }}</p>
                     <p>{{ $TitleMadrasak->periode ?? '-' }} {{ $TitleMadrasak->ket_semester ?? '-' }}</p>
                 </div>
             </div>
             <div class=" grid grid-cols-3 gap-2">
                 <div class="  w-full flex">
                     <div class=" bg-green-800 w-1"></div>
-                    <div class=" bg-green-300 w-full  p-5 ">
+                    <div class=" bg-green-300 w-full p-2 ">
                         <span>Laki Laki : {{$countLakiLaki}}</span>
                     </div>
                 </div>
                 <div class="  w-full flex">
                     <div class=" bg-green-800 w-1"></div>
-                    <div class=" bg-green-300 w-full  p-5 ">
+                    <div class=" bg-green-300 w-full p-2 ">
                         <span>Perempuan : {{$countPerempuan}}</span>
                     </div>
                 </div>
                 <div class="  w-full flex">
                     <div class=" bg-green-800 w-1"></div>
-                    <div class=" bg-green-300 w-full  p-5 ">
+                    <div class=" bg-green-300 w-full p-2 ">
                         @if($ula)
                         <span> Total : {{$ula}}</span>
                         @elseif($wustho)
@@ -43,7 +43,7 @@
                     </div>
                 </div>
             </div>
-            <div class=" grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <div class="   grid grid-cols-1 sm:grid-cols-2 gap-2">
                 <div>
                     <canvas id="chart"></canvas>
                 </div>

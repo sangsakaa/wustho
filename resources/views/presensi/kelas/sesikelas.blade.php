@@ -62,7 +62,7 @@
                     </div>
                 </div>
                 @endif
-                <meta http-equiv="refresh" content="5">
+                <!-- <meta http-equiv="refresh" content="5"> -->
                 <table class=" w-full">
                     <thead>
                         <tr class="border bg-gray-200 dark:bg-purple-600 text-xs sm:text-sm">
