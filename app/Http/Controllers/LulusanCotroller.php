@@ -165,9 +165,21 @@ class LulusanCotroller
         $hijriYear = $hijri;
         // Menambahkan leading zero pada nomor urut baru jika kurang dari 4 digit
         $newNumber = str_pad($newNumber, 4, '0', STR_PAD_LEFT);
+        $jenjang = Kelasmi::first();
+        $jenjang = $jenjang->jenjang;
+
+        // Determine the code segment based on jenjang
+        $codeSegment = '';
+        if ($jenjang == 'Wustho') {
+            $codeSegment = 'II';
+        } elseif (
+            $jenjang == 'Ula'
+        ) {
+            $codeSegment = 'I';
+        }
 
         // Menggabungkan komponen kode menjadi satu string
-        $code = 'MD-01-II-' . $hijriYear . '-' . $newNumber;
+        $code = 'MD-01' . $codeSegment . $hijriYear . '-' . $newNumber;
         $pesertaKelas = $request->input('pesertakelas', []);
 
         if (count($pesertaKelas) > 0) {
