@@ -115,9 +115,10 @@ class SeleksiController
         $nominasi->save();
         return redirect()->back();
     }
-    public function StoreNominasi(Request $request)
+    public function StoreNominasi(Request $request, $nominasi)
     {
 
+        
         $awal = DB::table('daftar_nominasi')->max('nomor_ujian');
         $empatAngkaTerakhir = substr($awal, -4);
 
@@ -130,9 +131,21 @@ class SeleksiController
         $lastNumber = (int) $empatAngkaTerakhir;
 
         $hijriYear = $nextYear;
+        $jenjang = Kelasmi::first();
+        $jenjang = $jenjang->jenjang;
 
-        // Menggabungkan komponen kode menjadi satu string
-        $codePrefix = $hijriYear . '-' . 'II' . '-';
+        // Determine the code segment based on jenjang
+        $codeSegment = '';
+        if ($jenjang == 'Wustho') {
+            $codeSegment = 'II';
+        } elseif (
+            $jenjang == 'Ula'
+        ) {
+            $codeSegment = '1';
+        }
+
+        // Combine components into one string
+        $codePrefix = $hijriYear . '-' . $codeSegment . '-';
         $newNumber = $lastNumber + 1;
         
 
