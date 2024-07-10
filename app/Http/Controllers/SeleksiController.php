@@ -141,7 +141,7 @@ class SeleksiController
         } elseif (
             $jenjang == 'Ula'
         ) {
-            $codeSegment = '1';
+            $codeSegment = 'I';
         }
 
         // Combine components into one string
