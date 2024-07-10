@@ -158,10 +158,6 @@ class LulusanCotroller
             }
         }
 
-
-        // Simpan data ke database dengan nomor urut yang baru
-
-
         $hijriYear = $hijri;
         // Menambahkan leading zero pada nomor urut baru jika kurang dari 4 digit
         $newNumber = str_pad($newNumber, 4, '0', STR_PAD_LEFT);
@@ -190,8 +186,20 @@ class LulusanCotroller
                     'lulusan_id' => $request->lulusan_id,
                     'nomor_ijazah' => $code
                 ];
+                $jenjang = Kelasmi::first();
+                $jenjang = $jenjang->jenjang;
+
+                // Determine the code segment based on jenjang
+                $codeSegment = '';
+                if ($jenjang == 'Wustho') {
+                    $codeSegment = 'II';
+                } elseif (
+                    $jenjang == 'Ula'
+                ) {
+                    $codeSegment = 'I';
+                }
                 $newNumber++;
-                $code = 'MD-01-II-' . $hijriYear . '-' . str_pad($newNumber, 4, '0', STR_PAD_LEFT);
+                $code = 'MD-01-' . $codeSegment . '-' . $hijriYear . '-' . str_pad($newNumber, 4, '0', STR_PAD_LEFT);
                 // increment nomor urut untuk setiap peserta kelas
                 
             }
