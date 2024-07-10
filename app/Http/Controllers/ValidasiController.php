@@ -10,6 +10,7 @@ use App\Models\Pesertakelas;
 use App\Models\Daftar_lulusan;
 use App\Models\Lulusan;
 use App\Models\Nilai_Transkip;
+use App\Models\Perangkat;
 use Riskihajar\Terbilang\Facades\Terbilang;
 
 
@@ -46,6 +47,23 @@ class ValidasiController
     }
     public function blangkoijazah(Siswa $siswa, Lulusan $lulusan)
     {
+        $jenjang = Kelasmi::first();
+        $jenjang = $jenjang->jenjang;
+
+        // Determine the code segment based on jenjang
+        $codeSegment = '';
+        if ($jenjang == 'Wustho') {
+            $codeSegment = 'II';
+        } elseif (
+            $jenjang == 'Ula'
+        ) {
+            $codeSegment = 'I';
+        }
+        $kepalaSekolah = Perangkat::query()
+            ->join('jabatan_perangkat', 'jabatan_perangkat.perangkat_id', 'perangkat.id')
+            ->join('jabatan', 'jabatan.id', 'jabatan_perangkat.jabatan_id')
+            ->where('nama_jabatan', 'Kepala Sekolah')->first();
+        // dd($kepalaSekolah);
         $DataIjaza = $lulusan::query()
             ->join('kelasmi', 'kelasmi.id', '=', 'lulusan.kelasmi_id')
         ->select('kelasmi.nama_kelas')
@@ -54,7 +72,7 @@ class ValidasiController
             ->join('kelas', 'kelas.id', '=', 'kelasmi.kelas_id')
             ->where('kelasmi.periode_id', session('periode_id'))
             ->where('kelas.kelas', 3)
-            ->select('kelasmi.id', 'nama_kelas')
+            ->select('kelasmi.id', 'nama_kelas', 'jenjang')
             ->orderby('nama_kelas')
             ->get();
         $daftarLulusan = Daftar_lulusan::query()

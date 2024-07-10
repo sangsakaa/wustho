@@ -46,12 +46,27 @@
                     </div>
                     <div class="  w-full">
                         <center>
+
+                            @if ($dataKelas->first()->jenjang == 'Wustho')
                             <img src={{ asset("asset/images/logo_wustho.png") }} alt="" width="180" class="  mt-3  p-2">
+                            @elseif ($dataKelas->first()->jenjang == 'Ula')
+                            <img src={{ asset("asset/images/logoUla.png") }} alt="" width="180" class="  mt-3  p-2">
+                            @endif
+
                             <p class=" font-semibold">DEPARTEMEN PENDIDIKAN <br> DINIYAH WAHIDIYAH</p>
                             <p class=" font-serif text-5xl   mt-2 font-semibold ">IJAZAH</p>
 
-                            <p class="  uppercase font-serif text-lg font-semibold ">madrasah diniyah <br> takmiliyah wustha
-                                Wahidiyah</p>
+                            <p class="  uppercase font-serif text-lg font-semibold ">madrasah diniyah <br> takmiliyah
+                                @if ($dataKelas->first()->jenjang == 'Wustho')
+                                Wustha
+                                @elseif ($dataKelas->first()->jenjang == 'Ula')
+                                Ula
+                                @endif
+
+
+
+                                Wahidiyah
+                            </p>
                             <p class=" font-semibold ">TAHUN PELAJARAN <span class="  font-serif">2023/2024</span></p>
 
                         </center>
@@ -84,7 +99,13 @@
                         <div>
                             <p class="  text-3xl uppercase bold  font-serif text-center mt-4 ">lulus</p>
                             <p class=" text-sm text-justify mt-4 ">
-                                dari Madrasah Diniyah Takmiliyah Wustha Wahidiyah Kedunglo Kediri Nomor Statistik <span class=" ">321235710006</span> berdasarkan penilaian sebagaimana ketentuan yang berlaku.
+                                dari Madrasah Diniyah Takmiliyah
+                                @if ($dataKelas->first()->jenjang == 'Wustho')
+                                Wustha
+                                @elseif ($dataKelas->first()->jenjang == 'Ula')
+                                Ula
+                                @endif
+                                Wahidiyah Kedunglo Kediri Nomor Statistik <span class=" ">321235710006</span> berdasarkan penilaian sebagaimana ketentuan yang berlaku.
                             </p>
                         </div>
                         <p class=" text-sm  text-justify mt-3 mx-auto lg:mx-0 ">
