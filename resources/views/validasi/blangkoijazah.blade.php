@@ -105,7 +105,15 @@
                                 @elseif ($dataKelas->first()->jenjang == 'Ula')
                                 Ula
                                 @endif
-                                Wahidiyah Kedunglo Kediri Nomor Statistik <span class=" ">321235710006</span> berdasarkan penilaian sebagaimana ketentuan yang berlaku.
+                                Wahidiyah Kedunglo Kediri Nomor Statistik
+
+                                @if ($dataKelas->first()->jenjang == 'Wustho')
+                                <span class=" ">321235710006</span>
+                                @elseif ($dataKelas->first()->jenjang == 'Ula')
+                                Ula
+                                <span class=" ">311235710013</span>
+                                @endif
+                                berdasarkan penilaian sebagaimana ketentuan yang berlaku.
                             </p>
                         </div>
                         <p class=" text-sm  text-justify mt-3 mx-auto lg:mx-0 ">
