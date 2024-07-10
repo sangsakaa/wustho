@@ -39,6 +39,12 @@
             </style>
             <!-- Konten lainnya di sini -->
             <img src="{{ asset('asset/images/logo_wustho.png') }}" alt="" class="absolute     opacity-25  w-1/3  p-2 mt-3 black-and-white">
+            @if ($dataKelas->first()->jenjang == 'Wustho')
+
+            <img src="{{ asset('asset/images/logo_wustho.png') }}" alt="" class="absolute     opacity-25  w-1/3  p-2 mt-3 black-and-white">
+            @elseif ($dataKelas->first()->jenjang == 'Ula')
+            <img src="{{ asset('asset/images/logoUla.png') }}" alt="" class="absolute     opacity-25  w-1/3  p-2 mt-3 black-and-white">
+            @endif
             <div class=" font-serif    text-center     rounded gap-4   ">
                 <div class=" px-14 ">
                     <div class="  w-full justify-end grid ">
