@@ -32,6 +32,11 @@
         </div>
     </div>
     <div id="div1" class="  bg-white   ">
+        <style>
+            .nomor-ijazah {
+                font-family: Arial, sans-serif;
+            }
+        </style>
         @foreach($data as $data_lulusan)
         <style>
             .page-break {
@@ -51,7 +56,7 @@
                 </p>
                 <!-- <p class="  font-serif text-lg uppercase">pondok pesantren kedunglo al munadhdhoroh</p> -->
                 <p class=" font-semibold  font-serif text-lg uppercase"> kedunglo al munadhdhoroh kediri</p>
-                <p class=" font-semibold font-serif ">TAHUN PELAJARAN <span class=" ">2023/2024</span></p>
+                <p class=" font-semibold font-serif ">TAHUN PELAJARAN <span class="nomor-ijazah ">2023/2024</span></p>
             </center>
             <div class=" mt-4 uppercase grid grid-cols-1 font-semibold text-sm sm:text-sm">
                 <div class=" grid grid-cols-2 ">
@@ -60,7 +65,7 @@
                 </div>
                 <div class=" grid grid-cols-2 ">
                     <div class=" ">Nomor Induk Murid</div>
-                    <div class=""> : {{$data_lulusan['lulusan']->nis}}</div>
+                    <div class="nomor-ijazah"> : {{$data_lulusan['lulusan']->nis}}</div>
                 </div>
             </div>
             <hr class=" border-black">
@@ -167,13 +172,13 @@
                             <tbody>
                                 <tr>
                                     <td class=" underline">Kedunglo, </td>
-                                    <td class=" text-right underline">
+                                    <td class=" text-right underline nomor-ijazah">
                                         {{$dataLulusan->tanggal_lulus_hijriyah}} H
                                     </td>
                                 </tr>
                                 <tr>
                                     <td></td>
-                                    <td class="text-right">
+                                    <td class="text-right nomor-ijazah">
                                         {{ \Carbon\Carbon::parse($dataLulusan->tanggal_kelulusan)->isoFormat('DD MMMM Y') }} M
                                     </td>
                                 </tr>

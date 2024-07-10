@@ -27,7 +27,7 @@
     </div>
     <div id="div1" class="  px-4 w-full   ">
         @foreach($data as $ijazah)
-        <div class="relative    flex items-center justify-center gap-2 bg-white">
+        <div class="relative     flex items-center justify-center gap-2 bg-white">
             <style>
                 .page-break {
                     page-break-after: always;
@@ -42,7 +42,15 @@
             <div class=" font-serif    text-center     rounded gap-4   ">
                 <div class=" px-14 ">
                     <div class="  w-full justify-end grid ">
-                        <span class="  font-semibold   mt-14  font-serif"> NOMOR : {{$ijazah->nomor_ijazah}}</span>
+                        <style>
+                            .nomor-ijazah {
+                                font-family: Arial, sans-serif;
+                            }
+                        </style>
+
+                        <!-- <span class="  font-semibold   mt-14  font-serif"> NOMOR : {{$ijazah->nomor_ijazah}}</span> -->
+                        <span class="font-semibold mt-14 font-serif nomor-ijazah"> NOMOR : {{$ijazah->nomor_ijazah}}</span>
+
                     </div>
                     <div class="  w-full">
                         <center>
@@ -79,11 +87,11 @@
                             {{$ijazah->nama_siswa}}
                         </p>
                         <p class=" text-sm uppercase font-semibold    text-center ">
-                            nomor induk murid : <span class="">{{$ijazah->nis}}</span>
+                            nomor induk murid : <span class="nomor-ijazah">{{$ijazah->nis}}</span>
                         </p>
                         <div class=" text-sm text-left  grid grid-cols-2 mt-2">
                             <div class=" px-1 ">Tempat, Tanggal Lahir</div>
-                            <div class=" px-1 capitalize  ">
+                            <div class=" px-1 capitalize nomor-ijazah ">
                                 : {{strtolower($ijazah->tempat_lahir)}},
                                 {{ \Carbon\Carbon::parse($ijazah->tanggal_lahir)->isoFormat(' DD MMMM Y') }}
                             </div>
@@ -92,7 +100,7 @@
                                 : {{$ijazah->nama_ayah}}
                             </div>
                             <div class=" px-1 ">Nomor Ujian</div>
-                            <div class=" px-1 capitalize  ">
+                            <div class=" px-1 capitalize nomor-ijazah ">
                                 : {{$ijazah->nomor_ujian}}
                             </div>
                         </div>
@@ -116,7 +124,7 @@
                             </p>
                         </div>
                         <p class=" text-sm  text-justify mt-3 mx-auto lg:mx-0 ">
-                            Pemegang ijazah ini, terakhir tercatat sebagai <span class=" capitalize">murid madrasah Diniyah takmiliyah wustha wahidiyah kedunglo Kediri</span> dengan <span class=" font-semibold">Nomor Induk Murid : <span class=" ">{{$ijazah->nis}}</span></span>
+                            Pemegang ijazah ini, terakhir tercatat sebagai <span class=" capitalize">murid madrasah Diniyah takmiliyah wustha wahidiyah kedunglo Kediri</span> dengan <span class=" font-semibold">Nomor Induk Murid : <span class="nomor-ijazah ">{{$ijazah->nis}}</span></span>
                         </p>
                     </div>
                     <div class="  flex grid-cols-1    ">
@@ -131,14 +139,14 @@
                                     <tbody>
                                         <tr>
                                             <td class=" underline">Kedunglo, </td>
-                                            <td class=" text-right underline">
+                                            <td class=" text-right underline nomor-ijazah">
                                                 <p class=" "> {{ $ijazah->tanggal_lulus_hijriyah }} H</p>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td></td>
                                             <td class="text-right">
-                                                <p style="margin: 0; width: 100%;" class="  ">{{ \Carbon\Carbon::parse($ijazah->tanggal_kelulusan)->isoFormat('DD MMMM Y') }} M</p>
+                                                <p style="margin: 0; width: 100%;" class="nomor-ijazah  ">{{ \Carbon\Carbon::parse($ijazah->tanggal_kelulusan)->isoFormat('DD MMMM Y') }} M</p>
 
                                             </td>
                                         </tr>
