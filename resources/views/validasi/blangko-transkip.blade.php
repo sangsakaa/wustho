@@ -185,7 +185,13 @@
                     <div>
                         <p class=" mb-0">Kepala Madin, </p>
                         <br><br><br><br> <br>
-                        <p class=" uppercase font-semibold"> MUH.Bahrul Ulum,S.H</p>
+                        <p class=" uppercase font-semibold">
+                            @if ($dataKelas->first()->jenjang == 'Wustho')
+                            {{$kepalaSekolah->nama_perangkat}}
+                            @elseif ($dataKelas->first()->jenjang == 'Ula')
+                            {{$kepalaSekolah->nama_perangkat}}
+                            @endif
+                        </p>
                     </div>
                 </div>
             </div>
