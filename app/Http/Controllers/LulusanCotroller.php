@@ -179,7 +179,7 @@ class LulusanCotroller
         }
 
         // Menggabungkan komponen kode menjadi satu string
-        $code = 'MD-01-' . $codeSegment . $hijriYear . '-' . $newNumber;
+        $code = 'MD-01-' . $codeSegment . '-' . $hijriYear . '-' . $newNumber;
         $pesertaKelas = $request->input('pesertakelas', []);
 
         if (count($pesertaKelas) > 0) {
