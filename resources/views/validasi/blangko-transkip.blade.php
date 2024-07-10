@@ -41,7 +41,13 @@
         <div class="px-16 p-2 bg-white dark:bg-dark-bg font-serif  ">
             <center>
                 <p class="  font-serif text-2xl   mt-24  uppercase  ">daftar nilai</p>
-                <p class="  uppercase font-serif  font-semibold ">Ujian Akhir Madrasah Diniyah takmiliyah wustha Wahidiyah
+                <p class="  uppercase font-serif  font-semibold ">Ujian Akhir Madrasah Diniyah takmiliyah
+                    @if ($dataKelas->first()->jenjang == 'Wustho')
+                    Wustha
+                    @elseif ($dataKelas->first()->jenjang == 'Ula')
+                    Ula
+                    @endif
+                    Wahidiyah
                 </p>
                 <!-- <p class="  font-serif text-lg uppercase">pondok pesantren kedunglo al munadhdhoroh</p> -->
                 <p class=" font-semibold  font-serif text-lg uppercase"> kedunglo al munadhdhoroh kediri</p>
