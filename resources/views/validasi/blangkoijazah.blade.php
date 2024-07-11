@@ -75,12 +75,13 @@
                                 @elseif ($dataKelas->first()->jenjang == 'Ula')
                                 Ula
                                 @endif
-
-
-
                                 Wahidiyah
                             </p>
-                            <p class=" font-semibold ">TAHUN PELAJARAN <span class="  font-serif">2023/2024</span></p>
+                            <p class=" font-semibold ">TAHUN PELAJARAN
+                                <span class="nomor-ijazah  font-serif">
+                                    {{$dataPeriode->first()->periode}}
+                                </span>
+                            </p>
 
                         </center>
                     </div>

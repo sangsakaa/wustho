@@ -5,12 +5,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Siswa;
 use App\Models\Kelasmi;
+use App\Models\Lulusan;
+use App\Models\Periode;
 use App\Models\Transkip;
+use App\Models\Perangkat;
 use App\Models\Pesertakelas;
 use App\Models\Daftar_lulusan;
-use App\Models\Lulusan;
 use App\Models\Nilai_Transkip;
-use App\Models\Perangkat;
 use Riskihajar\Terbilang\Facades\Terbilang;
 
 
@@ -47,6 +48,12 @@ class ValidasiController
     }
     public function blangkoijazah(Siswa $siswa, Lulusan $lulusan)
     {
+        $dataPeriode = Periode::query()
+            ->join('semester', 'semester.id', '=', 'periode.semester_id')
+            ->select('periode.id', 'periode.periode', 'semester.ket_semester')
+            ->where('periode.id', session('periode_id'))
+            ->orderby('ket_semester', 'desc')
+            ->get();
         $jenjang = Kelasmi::first();
         $jenjang = $jenjang->jenjang;
 
@@ -118,7 +125,8 @@ class ValidasiController
                 'data' => $daftarLulusan->get(),
                 'dataKelas' => $dataKelas,
                 'kelasmi' => $lulusan,
-                'DataIjaza' => $DataIjaza
+                'DataIjaza' => $DataIjaza,
+                'dataPeriode' => $dataPeriode
                 
 
             ]
@@ -126,6 +134,12 @@ class ValidasiController
     }
     public function blangkoTranskip(Lulusan $lulusan)
     {
+        $dataPeriode = Periode::query()
+            ->join('semester', 'semester.id', '=', 'periode.semester_id')
+            ->select('periode.id', 'periode.periode', 'semester.ket_semester')
+            ->where('periode.id', session('periode_id'))
+            ->orderby('ket_semester', 'desc')
+            ->get();
         $dataKelas = Kelasmi::query()
             ->join('kelas', 'kelas.id', '=', 'kelasmi.kelas_id')
             ->where('kelasmi.periode_id', session('periode_id'))
@@ -208,7 +222,8 @@ class ValidasiController
                 'data_lulusan' => $data_lulusan,
                 'dataLulusan' => $dataLulusan,
                 'kepalaSekolah' => $kepalaSekolah,
-                'dataKelas' => $dataKelas
+                'dataKelas' => $dataKelas,
+                'dataPeriode' => $dataPeriode
             ]
         );
     }

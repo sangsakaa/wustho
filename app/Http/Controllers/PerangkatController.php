@@ -11,7 +11,16 @@ class PerangkatController
 {
     public function index()
     {
-        $dataPerangkat = Perangkat::all();
+        // $dataPerangkat = Perangkat::all();
+        $dataPerangkat = Perangkat::query()
+            ->leftJoin('jabatan_perangkat', 'jabatan_perangkat.perangkat_id', '=', 'perangkat.id')
+            ->leftJoin('jabatan', 'jabatan.id', '=', 'jabatan_perangkat.jabatan_id')
+            ->select('jabatan.id as Jab', 'perangkat.id', 'nama_perangkat')
+            ->orderBy('jabatan_id', 'asc')
+            ->orderBy('perangkat.id', 'asc')
+            ->get();
+
+
 
         return view('perangkat.index', compact('dataPerangkat'));
     }
