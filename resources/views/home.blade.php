@@ -82,9 +82,8 @@
     <section class="jumbotron jumbotron-fluid text-center">
         <center>
             <img src="asset/images/logo.png" alt="" width="150px">
-            <h2 class=" mt-4"> MADRASAH DINIYAH WAHIDIYAH</h2>
+            <h2 class=" "> MADRASAH DINIYAH WAHIDIYAH</h2>
             <p class=" uppercase sm:text-3xl text-xs">Madrasah Diniyah {{$kelasmi->jenjang}} Wahidiyah</p>
-
         </center>
     </section>
     <div class=" sm:grid-cols-2 grid grid-cols-1">
