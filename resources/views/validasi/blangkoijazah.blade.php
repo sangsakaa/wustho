@@ -121,10 +121,10 @@
                                 @endif
                                 Wahidiyah Kedunglo Kediri Nomor Statistik
                                 @if ($dataKelas->first()->jenjang == 'Wustho')
-                                <span class=" ">321235710006</span>
+                                <span class=" nomor-ijazah">321235710006</span>
                                 @elseif ($dataKelas->first()->jenjang == 'Ula')
 
-                                <span class=" ">311235710013</span>
+                                <span class=" nomor-ijazah">311235710013</span>
                                 @endif
                                 berdasarkan penilaian sebagaimana ketentuan yang berlaku.
                             </p>
