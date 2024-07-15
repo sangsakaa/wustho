@@ -258,9 +258,27 @@
                             </div>
                         </div>
                         <div class=" text-sm   mt-4 text-left ">
+                            <table>
+                                <tr class=" border-b border-black">
+                                    <td class=" px-2   ">
+                                        Kedunglo,
+                                    </td>
+                                    <td class=" px-2    text-right">
+                                        {{$hijriDate}} H
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class=" px-2   ">
+
+                                    </td>
+                                    <td class=" px-2   text-right ">
+                                        {{ Carbon\Carbon::parse(now())->isoFormat('D MMMM YYYY') }} M
+                                    </td>
+                                </tr>
+                            </table>
                             <p class=" ">
-                            <p class=" underline"> Kedunglo, 30 Robi'ul Awwal 1445 H </p>
-                            <p class="  px-20 ml-6">{{ Carbon\Carbon::parse(now())->isoFormat('D MMMM YYYY') }} </p>
+                            <p class=" underline"> </p>
+                            <p class="  px-20   pl-28 "> </p>
                             <p class="">Kepala Madrasah,</p>
                             <img src="{{asset('asset/images/ttd.png')}}" width="150" alt="">
 

@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Absensikelas;
 use App\Models\Nilai;
 use App\Models\Siswa;
 use App\Models\Kelasmi;
 use App\Models\Semester;
 use App\Models\Nilaimapel;
+use App\Models\Absensikelas;
 use App\Models\Pesertakelas;
 use Illuminate\Http\Request;
 use App\Models\Presensikelas;
 
 use Illuminate\Routing\Controller;
+use Alkoumi\LaravelHijriDate\Hijri;
 use function PHPUnit\Framework\isEmpty;
 
 class RaportController extends Controller
@@ -83,6 +84,55 @@ class RaportController extends Controller
 
     public function raportkelas(Request $request)
     {
+        setlocale(LC_TIME, 'id_ID');
+
+        // Dapatkan tanggal Hijriyah saat ini
+        // $hijriDate = Hijri::Date('l, j F o');
+        $hijriDate = Hijri::Date(' j F o');
+
+
+        // Buat terjemahan dari nama-nama bulan dan hari dalam bahasa Arab ke bahasa Indonesia
+        $translations = [
+            '١' => '1',
+            '٢' => '2',
+            '٣' => '3',
+            '٤' => '4',
+            '٥' => '5',
+            '٦' => '6',
+            '٧' => '7',
+            '٨' => '8',
+            '٩' => '9',
+            '٠' => '0',
+            'محرّم' => 'Muharram',
+            'صفر' => 'Safar',
+            'ربيع الأول' => 'Rabiul Awal',
+            'ربيع الآخر' => 'Rabiul Akhir',
+            'جمادى الأولى' => 'Jumadil Awal',
+            'جمادى الآخرة' => 'Jumadil Akhir',
+            'رجب' => 'Rajab',
+            'شعبان' => 'Sya\'ban',
+            'رمضان' => 'Ramadhan',
+            'شوال' => 'Syawal',
+            'ذو القعدة' => 'Dzulqa\'dah',
+            'ذو الحجة' => 'Dzulhijjah',
+            'السبت' => 'Sabtu',
+            'الأحد' => 'Minggu',
+            'الاثنين' => 'Senin',
+            'الثلاثاء' => 'Selasa',
+            'الأربعاء' => 'Rabu',
+            'الخميس' => 'Kamis',
+            'الجمعة' => 'Jumat'
+        ];
+
+        // Terjemahkan tanggal Hijriyah ke dalam bahasa Indonesia
+        $hijriDateInIndonesian = strtr($hijriDate, $translations);
+
+        // Cetak tanggal Hijriyah dalam bahasa Indonesia
+        // echo $hijriDateInIndonesian;
+
+        
+
+    
         $datakelasmi = Kelasmi::query()
             ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
             ->join('semester', 'semester.id', '=', 'periode.semester_id')
@@ -173,7 +223,8 @@ class RaportController extends Controller
                 'jumlahsiswa' => $ringkasanraportkelas->count(),
                 'datakelasmi' => $datakelasmi,
                 'kelasmi' => $kelasmi,
-                'presensi' => $presensi
+                'presensi' => $presensi,
+                'hijriDate' => $hijriDateInIndonesian
             ]
         );
     }
