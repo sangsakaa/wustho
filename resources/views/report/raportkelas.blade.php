@@ -273,7 +273,7 @@
                                     </td>
                                     <td class=" px-2   text-right ">
                                         {{ Carbon\Carbon::parse(now())->isoFormat('D MMMM YYYY') }} M
-                                        dddd
+
                                     </td>
                                 </tr>
                             </table>
