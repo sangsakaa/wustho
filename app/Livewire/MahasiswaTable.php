@@ -9,8 +9,8 @@ class MahasiswaTable extends Component
 {
     public $search = ''; // Pastikan variabel ini didefinisikan dengan benar
     public $perPage = 10; // Sesuaikan dengan jumlah per halaman yang diinginkan
-    public $sortcolumName = 'nama_siswa';
-    public $sortDerection = 'desc';
+    public $sortcolumName = 'nis';
+    public $sortDerection = 'asc';
 
     public function sortby($columName)
     {

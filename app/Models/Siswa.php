@@ -13,6 +13,42 @@ class Siswa extends Model
 {
     use HasFactory;
     protected $table = "siswa";
+    protected $fillable = [
+        // 
+        'id',
+        'nama_siswa',
+        'jenis_kelamin',
+        'agama',
+        'tempat_lahir',
+        'tanggal_lahir',
+        'kota_asal',
+        'created_at',
+        'updated_at',
+        'status_anak_id',
+        'siswa_id',
+        'status_anak',
+        'jumlah_saudara',
+        'anak_ke',
+        'status_anak_created_at',
+        'status_anak_updated_at',
+        'nama_ayah',
+        'pekerjaan_ayah',
+        'pekerjaan_ibu',
+        'nomor_hp_ayah',
+        'nama_ibu',
+        'nomor_hp_ibu',
+        'nis_id',
+        'siswa_id',
+        'nis',
+        'madrasah_diniyah',
+        'nama_lembaga',
+        'tanggal_masuk',
+        'nis_created_at',
+        'nis_updated_at'
+
+
+
+    ];
     
 
 

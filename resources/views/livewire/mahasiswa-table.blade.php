@@ -9,16 +9,57 @@
                 </button>
             </a>
         </div>
-        <div>
-            <input type="search" wire:model="search" class=" py-1" placeholder=" cari">
-            <select wire:model="perPage" class=" py-1">
-                <option>10</option>
-                <option>15</option>
-                <option>25</option>
-                <option>50</option>
-                <option>100</option>
-                <option>500</option>
-            </select>
+        @if (session('success'))
+        <script>
+            Toastify({
+                text: "data berhasil di import",
+                className: "success",
+                style: {
+                    background: "linear-gradient(to right, #00b09b, #96c93d)",
+                }
+            }).showToast();
+        </script>
+        @endif
+        <div class="grid grid-cols-2">
+            <div class=" flex gap-2">
+                <input type="search" wire:model="search" class=" py-1" placeholder=" cari">
+                <select wire:model="perPage" class=" py-1">
+                    <option>10</option>
+                    <option>15</option>
+                    <option>25</option>
+                    <option>50</option>
+                    <option>100</option>
+                    <option>500</option>
+                </select>
+            </div>
+            <div class=" flex gap-2   ">
+                <div class=" py-1">
+                    <a href="/export-siswa" class=" bg-green-500 px-2 py-2   rounded-md capitalize text-white">template excel</a>
+                </div>
+                <div>
+                    <form action="/import-siswa" method="post" enctype="multipart/form-data">
+                        @csrf
+                        <button type="submit" class="bg-green-500 px-2 py-1 rounded-md capitalize text-white" id="submitButton" disabled>Import</button>
+                        <input type="file" name="file" id="fileInput">
+                    </form>
+                </div>
+                <script>
+                    document.getElementById('fileInput').addEventListener('change', function() {
+                        var submitButton = document.getElementById('submitButton');
+                        if (this.files.length > 0) {
+                            submitButton.disabled = false;
+                            submitButton.classList.remove('bg-green-500');
+                            submitButton.classList.add('bg-blue-500');
+                        } else {
+                            submitButton.disabled = true;
+                            submitButton.classList.remove('bg-blue-500');
+                            submitButton.classList.add('bg-green-500');
+                        }
+                    });
+                </script>
+
+
+            </div>
         </div>
     </div>
     <div class=" overflow-auto">

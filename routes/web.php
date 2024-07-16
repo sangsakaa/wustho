@@ -355,6 +355,12 @@ Route::get('generate-Scan', [QrcodeController::class, 'generateQRCode'])->middle
 Route::get('Exports-data', [ExportController::class, 'Exports'])->middleware(['auth'])->name('Exports-data');
 
 
+Route::get('/export-siswa', [ExportController::class, 'export'])->name('export.siswa');
+Route::post('/import-siswa', [ExportController::class, 'importSiswa'])->name('import.siswa');
+
+
+
+
 
 
 

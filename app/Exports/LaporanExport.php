@@ -7,7 +7,7 @@ use App\Models\Sesikelas;
 use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\FromCollection;
-use Carbon\Carbon;
+
 
 class LaporanExport implements FromCollection, WithHeadings
 {
