@@ -3,6 +3,7 @@
 namespace App\Imports;
 
 
+
 use App\Models\Nis;
 use App\Models\Siswa;
 use App\Models\Statusanak;
@@ -22,7 +23,7 @@ class SiswaImport implements ToCollection
                 return null; // Return null for invalid or empty Excel dates
             }
 
-            return \Carbon\Carbon::createFromDate(1899, 12, 30)->addDays($excelDate - 1)->format('Y-m-d');
+            return \Carbon\Carbon::createFromDate(1899, 12, 30)->addDays($excelDate)->format('yyyy/mm/dd');
         }
 
         foreach ($data as $index => $rowData) {
@@ -92,7 +93,7 @@ class SiswaImport implements ToCollection
             Nis::updateOrCreate(
                 ['siswa_id' => $siswa->id],
                 [
-                    'nis' => $row['nis'],
+                    'nis' => is_numeric($row['nis']),
                     'madrasah_diniyah' => $row['madrasah_diniyah'],
                     'nama_lembaga' => $row['nama_lembaga'],
                     'tanggal_masuk' => excelDateToDate($row['tanggal_masuk']),
