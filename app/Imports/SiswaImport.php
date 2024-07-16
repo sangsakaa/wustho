@@ -4,12 +4,9 @@ namespace App\Imports;
 
 
 use App\Models\Nis;
-
 use App\Models\Siswa;
-use App\Models\StatusAnak;
-use Illuminate\Support\Carbon;
+use App\Models\Statusanak;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Concerns\ToCollection;
 
 class SiswaImport implements ToCollection
@@ -74,7 +71,7 @@ class SiswaImport implements ToCollection
             ]);
 
             // Save or update StatusAnak
-            StatusAnak::updateOrCreate(
+            Statusanak::updateOrCreate(
                 ['siswa_id' => $siswa->id],
                 [
                     'status_anak' => $row['status_anak'],
