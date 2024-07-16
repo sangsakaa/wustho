@@ -49,15 +49,7 @@ class SiswaImport implements ToCollection
                 // If Siswa exists, skip this row
                 continue;
             }
-
-            // Check if Siswa already exists by nama_siswa and tanggal_lahir in Nis table
-            $existingNis = Nis::query()
-                ->where('siswa_id', $existingSiswa)
-                ->first();
-            if ($existingNis) {
-                // If nama_siswa and tanggal_lahir combination exists, skip this row
-                continue;
-            }
+            
 
             // Create new Siswa
             $siswa = Siswa::create([
@@ -94,7 +86,7 @@ class SiswaImport implements ToCollection
             Nis::updateOrCreate(
                 ['siswa_id' => $siswa->id],
                 [
-                    'nis' => is_numeric($row['nis']),
+                    'nis' => $row['nis'],
                     'madrasah_diniyah' => $row['madrasah_diniyah'],
                     'nama_lembaga' => $row['nama_lembaga'],
                     'tanggal_masuk' => excelDateToDate($row['tanggal_masuk']),
