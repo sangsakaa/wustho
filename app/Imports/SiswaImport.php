@@ -42,7 +42,6 @@ class SiswaImport implements ToCollection
                 // Handle error or skip this row if necessary
                 continue;
             }
-
             // Check if Siswa already exists by id
             $existingSiswa = Siswa::where('id', $row['id'])->first();
             if ($existingSiswa) {

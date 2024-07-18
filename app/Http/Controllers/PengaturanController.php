@@ -10,6 +10,7 @@ use App\Models\Periode;
 use App\Models\Semester;
 use App\Models\Nilaimapel;
 use App\Models\Pesertakelas;
+use App\Models\Siswa;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
@@ -318,6 +319,27 @@ class PengaturanController extends Controller
         }
 
         return $days;
+    }
+    public function deleteRecordsById(Request $request)
+    {
+        // Validate the input to ensure it is a valid integer
+        $request->validate([
+            'idsql' => 'required|integer'
+        ]);
+
+        $id = $request->input('idsql');
+
+        // Start a database transaction
+        DB::transaction(function () use ($id) {
+            // Delete records from multiple tables where id is greater than or equal to the specified id
+            DB::table('siswa')->where('id', '>=', $id)->delete();
+            DB::table('nis')->where('siswa_id', '>=', $id)->delete();
+            DB::table('statusanak')->where('siswa_id', '>=', $id)->delete();
+            // Add any other related tables here if needed
+        });
+
+        // Redirect back after deletion
+        return redirect()->back()->with('success', 'Records deleted successfully');
     }
     
 }

@@ -31,6 +31,7 @@
                     <option>100</option>
                     <option>500</option>
                 </select>
+
             </div>
             <div class=" flex gap-2   ">
                 <div class=" py-1">

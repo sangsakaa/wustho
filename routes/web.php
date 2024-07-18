@@ -360,6 +360,10 @@ Route::post('/import-siswa', [ExportController::class, 'importSiswa'])->name('im
 
 
 
+// Hapus Sql
+Route::post('/delete-records', [PengaturanController::class, 'deleteRecordsById']);
+
+
 
 
 

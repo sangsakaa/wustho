@@ -30,7 +30,6 @@
                             <a href="/validasi-data" class=" py-1 px-2 bg-blue-600 rounded-md text-white hover:bg-purple-500">
                                 Validasi Data
                             </a>
-
                         </div>
 
                     </div>
@@ -49,6 +48,12 @@
                             Cari Raport </button>
 
                     </form>
+                    <form action="/delete-records" method="post">
+                        @csrf
+                        <input type="text" name="idsql" class="py-1">
+                        <button class="py-1 px-2 bg-blue-600 rounded-md text-white hover:bg-purple-500">Hapus SQL</button>
+                    </form>
+
                     <table class=" border mt-2">
                         <thead class=" border">
                             <tr class=" uppercase bg-gray-100 dark:bg-purple-600 tex-xs sm:text-xs">
