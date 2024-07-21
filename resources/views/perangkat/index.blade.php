@@ -56,8 +56,6 @@
                                 {{ $lits->nama_jabatan ?? '-' }}
                                 @endforeach
                                 @endif
-
-
                             </a>
                         </td>
                         <td class=" border px-2 text-center w-10"> {{$item->jenis_kelamin}}</td>

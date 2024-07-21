@@ -6,12 +6,13 @@ use App\Models\Nilai;
 use App\Models\Siswa;
 use App\Models\Kelasmi;
 use App\Models\Semester;
+use App\Models\Perangkat;
 use App\Models\Nilaimapel;
 use App\Models\Absensikelas;
 use App\Models\Pesertakelas;
 use Illuminate\Http\Request;
-use App\Models\Presensikelas;
 
+use App\Models\Presensikelas;
 use Illuminate\Routing\Controller;
 use Alkoumi\LaravelHijriDate\Hijri;
 use function PHPUnit\Framework\isEmpty;
@@ -89,8 +90,6 @@ class RaportController extends Controller
         // Dapatkan tanggal Hijriyah saat ini
         // $hijriDate = Hijri::Date('l, j F o');
         $hijriDate = Hijri::Date(' j F o');
-
-
         // Buat terjemahan dari nama-nama bulan dan hari dalam bahasa Arab ke bahasa Indonesia
         $translations = [
             '١' => '1',
@@ -213,6 +212,17 @@ class RaportController extends Controller
             ->keyBy('id');
         $presensi = Presensikelas::join('pesertakelas', 'pesertakelas.id', '=', 'presensikelas.pesertakelas_id')
         ->where('pesertakelas.peserta_id', $siswa);
+        $dataKelas = Kelasmi::query()
+            ->join('kelas', 'kelas.id', '=', 'kelasmi.kelas_id')
+            ->where('kelasmi.periode_id', session('periode_id'))
+            ->where('kelas.kelas', 3)
+            ->select('kelasmi.id', 'nama_kelas', 'jenjang')
+            ->orderby('nama_kelas')
+            ->get();
+        $kepalaSekolah = Perangkat::query()
+            ->join('jabatan_perangkat', 'jabatan_perangkat.perangkat_id', 'perangkat.id')
+            ->join('jabatan', 'jabatan.id', 'jabatan_perangkat.jabatan_id')
+            ->where('nama_jabatan', 'Kepala Sekolah')->first();
         // dd($siswa);
         return view(
             'report/raportkelas',
@@ -224,7 +234,9 @@ class RaportController extends Controller
                 'datakelasmi' => $datakelasmi,
                 'kelasmi' => $kelasmi,
                 'presensi' => $presensi,
-                'hijriDate' => $hijriDateInIndonesian
+                'hijriDate' => $hijriDateInIndonesian,
+                'kepalaSekolah' => $kepalaSekolah,
+                'dataKelas' => $dataKelas
             ]
         );
     }

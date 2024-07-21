@@ -15,7 +15,7 @@ class PerangkatController
         $dataPerangkat = Perangkat::query()
             ->leftJoin('jabatan_perangkat', 'jabatan_perangkat.perangkat_id', '=', 'perangkat.id')
             ->leftJoin('jabatan', 'jabatan.id', '=', 'jabatan_perangkat.jabatan_id')
-            ->select('jabatan.id as Jab', 'perangkat.id', 'nama_perangkat')
+            ->select('jabatan.id as Jab', 'perangkat.id', 'nama_perangkat', 'status', 'jenis_kelamin', 'agama', 'tanggal_lahir', 'tempat_lahir')
             ->orderBy('jabatan_id', 'asc')
             ->orderBy('perangkat.id', 'asc')
             ->get();

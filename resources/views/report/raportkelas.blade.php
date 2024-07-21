@@ -273,7 +273,6 @@
                                     </td>
                                     <td class=" px-2   text-right ">
                                         {{ Carbon\Carbon::parse(now())->isoFormat('D MMMM YYYY') }} M
-
                                     </td>
                                 </tr>
                             </table>
@@ -281,10 +280,15 @@
                             <p class=" underline"> </p>
                             <p class="  px-20   pl-28 "> </p>
                             <p class="">Kepala Madrasah,</p>
-                            <img src="{{asset('asset/images/ttd.png')}}" width="150" alt="">
 
-
-                            <p class=" uppercase font-semibold"> MUH. BAHRUL ULUM,S.H</p>
+                            <p class=" uppercase font-semibold">
+                                @if ($dataKelas->first()->jenjang == 'Wustho')
+                                <img src="{{asset('asset/images/ttd.png')}}" width="150" alt="">
+                                {{$kepalaSekolah->nama_perangkat}}
+                                @elseif ($dataKelas->first()->jenjang == 'Ula')
+                                {{$kepalaSekolah->nama_perangkat}}
+                                @endif
+                            </p>
                         </div>
                     </div>
                 </div>

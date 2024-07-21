@@ -41,18 +41,20 @@
                 <div class=" p-2 sm:p-2 grid grid-cols-1">
                     <span class=" text-center font-semibold ">LIST CETAK RAPORT</span>
                     <hr class=" py-2">
-                    <form action="/pengaturan" method="get" class=" flex gap-1">
-                        <input type="text" name="cari" value="{{ request('cari') }}" class=" dark:bg-dark-bg border border-green-800 text-green-800 rounded-md py-1 " placeholder=" Cari .." autofocus>
+                    <div class=" grid grid-cols-2">
+                        <form action="/pengaturan" method="get" class=" flex gap-1">
+                            <input type="text" name="cari" value="{{ request('cari') }}" class=" dark:bg-dark-bg border border-green-800 text-green-800 rounded-md py-1 " placeholder=" Cari .." autofocus>
 
-                        <button type="submit" class=" px-2   bg-blue-500  rounded-md text-white">
-                            Cari Raport </button>
+                            <button type="submit" class=" px-2   bg-blue-500  rounded-md text-white">
+                                Cari Raport </button>
 
-                    </form>
-                    <form action="/delete-records" method="post">
-                        @csrf
-                        <input type="text" name="idsql" class="py-1">
-                        <button class="py-1 px-2 bg-blue-600 rounded-md text-white hover:bg-purple-500">Hapus SQL</button>
-                    </form>
+                        </form>
+                        <form action="/delete-records" method="post">
+                            @csrf
+                            <input type="text" name="idsql" class="py-1">
+                            <button class="py-1 px-2 bg-blue-600 rounded-md text-white hover:bg-purple-500">Hapus SQL</button>
+                        </form>
+                    </div>
 
                     <table class=" border mt-2">
                         <thead class=" border">
