@@ -82,17 +82,30 @@ class SiswaImport implements ToCollection
             );
 
             // Save or update Nis
+            // Nis::updateOrCreate(
+            //     ['siswa_id' => $siswa->id],
+            //     [
+            //         'nis' => $row['nis'],
+            //         'madrasah_diniyah' => $row['madrasah_diniyah'],
+            //         'nama_lembaga' => $row['nama_lembaga'],
+            //         'tanggal_masuk' => excelDateToDate($row['tanggal_masuk']),
+            //         'created_at' => $row['created_at'],
+            //         'updated_at' => $row['updated_at'],
+            //     ]
+            // );
             Nis::updateOrCreate(
-                ['siswa_id' => $siswa->id],
+                ['siswa_id' => $siswa->id], // Kriteria pencarian
                 [
-                    'nis' => $row['nis'],
+                    'nis' => $row['nis'], // Nilai yang akan diupdate atau dibuat baru
                     'madrasah_diniyah' => $row['madrasah_diniyah'],
                     'nama_lembaga' => $row['nama_lembaga'],
                     'tanggal_masuk' => excelDateToDate($row['tanggal_masuk']),
                     'created_at' => $row['created_at'],
                     'updated_at' => $row['updated_at'],
-                ]
+                ],
+                ['nis'] // Field-field yang tidak boleh diubah saat update
             );
+
         }
 
         return response()->json(['message' => 'Data processed successfully']);
