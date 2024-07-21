@@ -280,12 +280,12 @@
                             <p class=" underline"> </p>
                             <p class="  px-20   pl-28 "> </p>
                             <p class="">Kepala Madrasah,</p>
-
                             <p class=" uppercase font-semibold">
                                 @if ($dataKelas->first()->jenjang == 'Wustho')
                                 <img src="{{asset('asset/images/ttd.png')}}" width="150" alt="">
                                 {{$kepalaSekolah->nama_perangkat}}
                                 @elseif ($dataKelas->first()->jenjang == 'Ula')
+                                <br><br><br><br>
                                 {{$kepalaSekolah->nama_perangkat}}
                                 @endif
                             </p>
