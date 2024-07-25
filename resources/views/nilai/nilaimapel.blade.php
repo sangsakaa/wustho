@@ -24,6 +24,7 @@
                             <option value="{{$guru->id}}">{{$loop->iteration}} - {{$guru->nama_guru}}</option>
                             @endforeach
                         </select>
+
                         <select name="kelasmi_id" id="" class=" my-1 w-full sm:w-1/5 py-1 dark:bg-dark-bg" required>
                             <option value="">-- Pilih Kelas --</option>
                             @foreach($dataKelas as $kelas)

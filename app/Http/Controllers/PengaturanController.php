@@ -70,9 +70,12 @@ class PengaturanController extends Controller
     }
     public function storeperiode(Request $request)
     {
+        // dd($request->all());
         $periode = new Periode();
         $periode->periode = $request->periode;
         $periode->semester_id = $request->semester_id;
+        $periode->tanggal_mulai = $request->tanggal_mulai;
+        $periode->tahun_hijriyah = $request->tahun_hijriyah;
         $periode->save();
         return redirect()->back();
     }

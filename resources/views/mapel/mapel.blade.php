@@ -9,12 +9,12 @@
         <div class=" mx-auto ">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-md">
                 <div class="p-2 border-b border-gray-200">
-                    <div class=" flex w-full gap-1 uppercase">
-                        <a href="/addmapel" class=" uppercase bg-blue-800 flex text-white px-1 py-1">
+                    <div class=" flex w-full gap-1 ">
+                        <a href="/addmapel" class=" capitalize rounded-md   bg-blue-800 flex text-white px-2 py-1">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
-                            mapel
+                            Tambah Mata Pelajaran
 
                         </a>
 
@@ -91,9 +91,9 @@
                                                 <form action="/mapel/{{$list->id}}" method="post">
                                                     @csrf
                                                     @method('delete')
-                                                    <button class="   bg-red-500 text-white p-1  " onclick=" return confirm('apakah anda yakin menghapus data ini : {{$list->mapel}}')">Hapus</button>
+                                                    <button class="  rounded-md  bg-red-500 text-white p-1  " onclick=" return confirm('apakah anda yakin menghapus data ini : {{$list->mapel}}')">Hapus</button>
                                                 </form>
-                                                <a href="/edit-mapel/{{$list->id}}" class=" bg-yellow-400 px-1 py-0.5 text-black">
+                                                <a href="/edit-mapel/{{$list->id}}" class=" rounded-md bg-yellow-400 px-2 py-1 text-black">
                                                     Ubah
                                                 </a>
                                             </th>

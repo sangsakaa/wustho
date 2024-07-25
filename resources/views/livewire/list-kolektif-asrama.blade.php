@@ -12,7 +12,7 @@
                                 </button>
                             </a>
                         </div>
-                        <div>
+                        <div class="">
                             <div>
                                 <input type="search" wire:model="search" class=" py-1 " placeholder=" cari nama siswa">
                                 <select wire:model="perPage" class=" py-1">
