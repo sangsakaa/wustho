@@ -31,19 +31,25 @@
                     <option>100</option>
                     <option>500</option>
                 </select>
-
             </div>
-            <div class=" flex gap-2   ">
-                <div class=" py-1">
-                    <a href="/export-siswa" class=" bg-green-500 px-2 py-2   rounded-md capitalize text-white">template excel</a>
+            <div class="    ">
+                <div class=" flex gap-1  ">
+                    <div>
+                        <a href="/export-siswa" class=" bg-green-500 px-2  py-2  rounded-md capitalize text-white">
+                            <span class="">
+                                template excel
+                            </span>
+                        </a>
+                    </div>
+                    <div>
+                        <form action="/import-siswa" method="post" enctype="multipart/form-data">
+                            @csrf
+                            <button type="submit" class="bg-green-500 px-2 py-1 rounded-md capitalize text-white" id="submitButton" disabled>Import</button>
+                            <input type="file" name="file" id="fileInput">
+                        </form>
+                    </div>
                 </div>
-                <div>
-                    <form action="/import-siswa" method="post" enctype="multipart/form-data">
-                        @csrf
-                        <button type="submit" class="bg-green-500 px-2 py-1 rounded-md capitalize text-white" id="submitButton" disabled>Import</button>
-                        <input type="file" name="file" id="fileInput">
-                    </form>
-                </div>
+
                 <script>
                     document.getElementById('fileInput').addEventListener('change', function() {
                         var submitButton = document.getElementById('submitButton');
