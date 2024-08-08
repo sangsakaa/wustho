@@ -12,13 +12,14 @@
         table {
             width: 100%;
             border-collapse: collapse;
+
         }
 
         table,
         th,
         td {
             border: 1px solid black;
-            font-size: smaller;
+            font-size: xx-small;
             padding: 2px;
             /* Added padding for table cells */
         }
@@ -46,7 +47,6 @@
             /* Set margin to 2px */
         }
     </style>
-
     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
         <div class="p-2 bg-white border-b border-gray-200">
             <div class="py-1">
