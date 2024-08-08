@@ -55,13 +55,13 @@
                         <div class="overflow-auto bg-white dark:bg-dark-bg">
                             <div class="text-center text-green-900">
                                 @if($dataKelasMi->jenjang === "Wustho")
-                                <!-- <p class="font-semibold text-3xl uppercase kop_lap">
+                                <p class="font-semibold text-3xl uppercase kop_lap">
                                     <span>MADRASAH DINIYAH {{$dataKelasMi->jenjang}} WAHIDIYAH</span> <br>
                                     <span>TAHUN PELAJARAN {{$dataKelasMi->periode}} {{$dataKelasMi->ket_semester}}</span>
                                     <hr class="custom-hr">
                                     Laporan Harian <br>
                                     Hari, tanggal : {{ $tgl->isoFormat('dddd, D MMMM YYYY') }}
-                                </p> -->
+                                </p>
                                 @elseif($dataKelasMi->jenjang === "Ulya")
                                 <p class="font-semibold text-3xl uppercase">
                                     MADRASAH DINIYAH {{$dataKelasMi->jenjang}} WAHIDIYAH
