@@ -1,9 +1,13 @@
-<div class="p-4">
+<div id="body" class="">
     <div id="body" class=" mx-auto ">
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
             <div class="p-2 bg-white border-b border-gray-200">
                 <style>
                     /* Add your custom styles here */
+                    #body {
+                        margin-top: 0;
+                    }
+
                     body {
                         font-family: 'sans-serif';
                     }
@@ -17,22 +21,17 @@
                     th,
                     td {
                         border: 1px solid black;
+                        font-size: smaller;
                     }
 
-                    th,
-                    td {
-                        padding: 1px;
-                        text-align: left;
-                    }
-
-                    .nama_as {
-                        width: 120px;
+                    .kop_lap {
+                        text-transform: uppercase;
                         text-align: center;
                     }
 
-                    .presen {
-                        width: 80px;
-                        text-align: center;
+                    .ket_nama {
+                        width: 270px;
+                        text-transform: capitalize;
                     }
 
                     .tulis_tengah {
@@ -48,11 +47,21 @@
                                 <div class=" overflow-auto bg-white dark:bg-dark-bg  ">
                                     <div class=" text-center text-green-900">
                                         @if($dataKelasMi->jenjang === "Wustho")
-                                        <p class="font-semibold text-3xl uppercase">
-                                            MADRASAH DINIYAH {{$dataKelasMi->jenjang}} WAHIDIYAH
-                                        </p>
-                                        <p class="font-semibold uppercase">
-                                            TAHUN PELAJARAN {{$dataKelasMi->periode}} {{$dataKelasMi->ket_semester}}
+                                        <p class="font-semibold text-3xl uppercase kop_lap">
+                                            <span>MADRASAH DINIYAH {{$dataKelasMi->jenjang}} WAHIDIYAH</span> <br>
+                                            <span>TAHUN PELAJARAN {{$dataKelasMi->periode}} {{$dataKelasMi->ket_semester}}</span>
+                                            <hr class="custom-hr">
+                                            Laporan Harian <br>
+                                            Hari, tanggal : {{ $tgl->isoFormat('dddd, D MMMM YYYY') }}
+                                            <style>
+                                                .custom-hr {
+                                                    border: 1;
+                                                    height: 2px;
+                                                    background: black;
+                                                    margin: 0;
+                                                    /* Adjust margin as needed */
+                                                }
+                                            </style>
                                         </p>
                                         @elseif($dataKelasMi->jenjang === "Ulya")
                                         <p class="font-semibold text-3xl uppercase">
@@ -70,13 +79,12 @@
                                         </p>
                                         @endif
                                     </div>
-                                    <hr class=" border-b-2 border-green-900">
                                     <div class=" text-green-900  text-2xl text-center uppercase font-semibold">
-                                        Laporan Harian
+
                                     </div>
                                     <div class=" grid grid-cols-2">
                                         <div class=" text-green-900  text-sm font-semibold">
-                                            Hari, tanggal : {{ $tgl->isoFormat('dddd, D MMMM YYYY') }}
+
                                         </div>
 
                                     </div>
@@ -84,15 +92,15 @@
                                         <table class="table-fixed w-full text-green-900">
                                             <thead class="border border-b-2 border-green-600">
                                                 <tr class="border  border-green-600 text-xs sm:text-sm">
-                                                    <th class="border border-green-600 px-1 w-8">No</th>
+                                                    <th class="no_more border border-green-600 px-1 w-8">No</th>
                                                     <th class="nama_as border border-green-600 px-1 w-1/6 ">Asrama</th>
                                                     <th class="border border-green-600 px-1 w-10">Kls</th>
                                                     <th class="border border-green-600 px-1 w-11 ">Total</th>
                                                     <th class="border border-green-600 px-1 w-11">Tidak <br> Hadir</th>
                                                     <th class="border border-green-600 px-1 w-11">Hadir</th>
-                                                    <th class="border border-green-600 px-1 w-1/3 sm:w-1/2 ">Yang tidak hadir</th>
+                                                    <th class="border border-green-600 px-1 w-1/3 sm:w-1/2 ">tidak hadir</th>
                                                     <th class="border border-green-600 px-1 w-10 sm:w-11 ">Ket</th>
-                                                    <th class="presen border border-green-600 px-1 w-1/6 ">Presentase Kehadiran</th>
+                                                    <th class="presen border border-green-600 px-1 w-1/6 "> %Kehadiran</th>
                                                 </tr>
                                             </thead>
                                             <tbody class=" text-sm">
@@ -102,9 +110,10 @@
                                                 @foreach ($rekapAbsensi as $nama_asrama => $dataAsrama)
                                                 @foreach ($dataAsrama as $nama_kelas => $dataKelas)
                                                 @foreach ($dataKelas['absensi'] as $absensi )
+
                                                 <tr class=" border border-green-600 text-xs sm:text-sm ">
                                                     @if ($loop->first)
-                                                    <td class="tulis_tengah border border-green-600 text-center px-1" rowspan="{{ $dataKelas['row'] }}">{{ $nomor++ }}</td>
+                                                    <td class="ongko tulis_tengah border border-green-600 text-center px-1" rowspan="{{ $dataKelas['row'] }}">{{ $nomor++ }}</td>
                                                     @endif
                                                     @if ($loop->parent->first && $loop->first)
                                                     <td class="tulis_tengah border border-green-600 px-1 text-center text-sm" rowspan="{{ $dataAsrama->sum('row') }}">{{ $nama_asrama }}</td>
@@ -115,7 +124,7 @@
                                                     <td class=" tulis_tengah border border-green-600 text-center px-1" rowspan="{{ $dataKelas['row'] }}">{{ $dataKelas['tidakHadir'] }}</td>
                                                     <td class=" tulis_tengah border border-green-600 text-center px-1" rowspan="{{ $dataKelas['row'] }}">{{ $dataKelas['hadir'] }}</td>
                                                     @endif
-                                                    <td class="  border border-green-600 px-1 text-xs capitalize ">{{ $dataKelas['tidakHadir'] !== 0 ? $loop->iteration . '. ' . strtolower($absensi->nama_siswa) : 'NIHIL' }}</td>
+                                                    <td class="nama_sis ket_nama border border-green-600 px-1 text-xs capitalize ">{{ $dataKelas['tidakHadir'] !== 0 ? $loop->iteration . '. ' . strtolower($absensi->nama_siswa) : 'NIHIL' }}</td>
                                                     <td class=" tulis_tengah border border-green-600 px-1 text-center capitalize">{{ $dataKelas['tidakHadir'] !== 0 ? $absensi->keterangan : 'NIHIL' }}</td>
                                                     @if ($loop->first)
                                                     <td class=" tulis_tengah border border-green-600 text-center px-1" rowspan="{{ $dataKelas['row'] }}">{{ number_format($dataKelas['persentase'], 1, ',') }}%</td>
@@ -132,14 +141,10 @@
                         </div>
                     </div>
                     @endif
-
-
                     </tbody>
                     </table>
-
                 </div>
             </div>
         </div>
     </div>
-
 </div>

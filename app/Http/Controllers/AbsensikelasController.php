@@ -710,9 +710,11 @@ class AbsensikelasController
             'rekapAbsensi' => $rekapAbsensi,
             'dataKelasMi' => $datakelasmi,
         ])
-            ->setOptions(['defaultFont' => 'sans-serif']);
+        ->setOptions(['defaultFont' => 'sans-serif'])
+        ->setPaper('legal', 'potret');
 
         return $pdf->stream('rekap_absensi.pdf');
+
     }
 
 }
