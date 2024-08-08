@@ -19,7 +19,7 @@
         th,
         td {
             border: 1px solid black;
-            font-size: small;
+            font-size: smaller;
             padding: 2px;
             /* Added padding for table cells */
         }
