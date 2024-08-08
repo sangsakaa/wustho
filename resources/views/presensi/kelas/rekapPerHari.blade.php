@@ -8,17 +8,25 @@
     <div class="my-1">
         <div class="">
             <div class=" bg-white dark:bg-dark-bg overflow-hidden shadow-sm ">
-                <div class="mx-2 px-2 border-gray-200 grid grid-cols-1 w-full sm:grid-cols-1  gap-2">
-                    <form action="/absensikelas/rekap-per-hari" method="get" class="w-full">
-                        {{-- @csrf --}}
-                        <input type="date" name="tgl" class=" py-1 dark:bg-dark-bg" value="{{ $tgl->toDateString() }}">
-                        <button class=" bg-red-600 py-1 dark:bg-purple-600 mt-1 my-1 w-full sm:w-40 rounded-sm hover:bg-purple-600 text-white px-4 ">
-                            Pilih
+                <div class="mx-2 px-2 border-gray-200 grid grid-cols-1 w-full sm:grid-cols-2  gap-2">
+                    <div>
+
+                        <form action="/absensikelas/rekap-per-hari" method="get" class="w-full">
+                            {{-- @csrf --}}
+                            <input type="date" name="tgl" class=" py-1 dark:bg-dark-bg" value="{{ $tgl->toDateString() }}">
+                            <button class=" bg-red-600 py-1 dark:bg-purple-600 mt-1 my-1 w-full sm:w-40 rounded-sm hover:bg-purple-600 text-white px-4 ">
+                                Pilih
+                            </button>
+                        </form>
+                    </div>
+                    <div class=" flex justify-end px-2 gap-2">
+                        <button class=" bg-red-600 py-1 dark:bg-purple-600 mt-1 my-1 w-full sm:w-40 rounded-sm hover:bg-purple-600 text-white px-4 " onclick="printContent('blanko')">
+                            Cetak
                         </button>
-                    </form>
-                    <button class=" bg-red-600 py-1 dark:bg-purple-600 mt-1 my-1 w-full sm:w-40 rounded-sm hover:bg-purple-600 text-white px-4 " onclick="printContent('blanko')">
-                        Cetak
-                    </button>
+                        <a href="/generate-pdf/{{$tgl->toDateString()}}" target="_blank">
+                            <button class=" bg-blue-600 text-white rounded-sm px-2 py-1"> Download PDF</button>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
@@ -61,9 +69,6 @@
                             TAHUN PELAJARAN {{$dataKelasMi->periode}} {{$dataKelasMi->ket_semester}}
                         </p>
                         @endif
-
-
-
                     </div>
                     <hr class=" border-b-2 border-green-900">
                     <div class=" text-green-900  text-2xl text-center uppercase font-semibold">

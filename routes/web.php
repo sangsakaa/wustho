@@ -264,6 +264,11 @@ Route::get('blangko-transkip/{lulusan}', [ValidasiController::class, 'blangkoTra
 Route::get('live-siswa', [PengaturanController::class, 'testLive'])->middleware(['auth']);
 Route::get('kalender-pendidikan', [PengaturanController::class, 'kalender'])->middleware(['auth']);
 
+// PDF
+Route::get('/generate-pdf/{tgl}', [AbsensikelasController::class, 'generatePdf']);
+Route::get('/layout-pdf', [AbsensikelasController::class, 'layoutPDF']);
+
+
 
 // LULUSAN
 // CONTROLLER LULUSAN
