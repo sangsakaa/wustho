@@ -70,11 +70,12 @@
                                     TAHUN PELAJARAN {{$dataKelasMi->periode}} {{$dataKelasMi->ket_semester}}
                                 </p>
                                 @elseif($dataKelasMi->jenjang === "Ula")
-                                <p class="font-semibold text-3xl uppercase">
-                                    MADRASAH DINIYAH {{$dataKelasMi->jenjang}} WAHIDIYAH
-                                </p>
-                                <p class="font-semibold uppercase">
-                                    TAHUN PELAJARAN {{$dataKelasMi->periode}} {{$dataKelasMi->ket_semester}}
+                                <p class="font-semibold text-3xl uppercase kop_lap">
+                                    <span>MADRASAH DINIYAH {{$dataKelasMi->jenjang}} WAHIDIYAH</span> <br>
+                                    <span>TAHUN PELAJARAN {{$dataKelasMi->periode}} {{$dataKelasMi->ket_semester}}</span>
+                                    <hr class="custom-hr">
+                                    Laporan Harian <br>
+                                    Hari, tanggal : {{ $tgl->isoFormat('dddd, D MMMM YYYY') }}
                                 </p>
                                 @endif
                             </div>

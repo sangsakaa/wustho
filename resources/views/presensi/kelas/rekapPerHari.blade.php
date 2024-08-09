@@ -23,8 +23,8 @@
                         <button class=" bg-red-600 py-1 dark:bg-purple-600 mt-1 my-1 w-full sm:w-40 rounded-sm hover:bg-purple-600 text-white px-4 " onclick="printContent('blanko')">
                             Cetak
                         </button>
-                        <a href="/generate-pdf/{{$tgl->toDateString()}}" target="_blank">
-                            <button class=" bg-blue-600 text-white rounded-sm px-2 py-1"> Download PDF</button>
+                        <a href="/generate-pdf/{{$tgl->toDateString()}}" class="bg-red-600 py-1 dark:bg-purple-600 mt-1 my-1 w-full sm:w-40 rounded-sm hover:bg-purple-600 text-white px-4 " target="_blank">
+                            <button class=" "> Download PDF</button>
                         </a>
                     </div>
                 </div>
