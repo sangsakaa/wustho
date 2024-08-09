@@ -126,6 +126,24 @@
                                         @endforeach
                                     </tbody>
                                 </table>
+                                <style>
+                                    table {
+                                        page-break-inside: auto;
+                                    }
+
+                                    tr {
+                                        page-break-inside: avoid;
+                                        page-break-after: auto;
+                                    }
+
+                                    thead {
+                                        display: table-header-group;
+                                    }
+
+                                    tfoot {
+                                        display: table-footer-group;
+                                    }
+                                </style>
                             </div>
                         </div>
                     </div>
