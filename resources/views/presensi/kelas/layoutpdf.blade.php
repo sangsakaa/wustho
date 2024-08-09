@@ -136,14 +136,12 @@
                                         page-break-after: auto;
                                     }
 
-                                    thead {
-                                        display: table-header-group;
-                                    }
-
-                                    tfoot {
-                                        display: table-footer-group;
+                                    td,
+                                    th {
+                                        page-break-inside: avoid;
                                     }
                                 </style>
+
                             </div>
                         </div>
                     </div>
