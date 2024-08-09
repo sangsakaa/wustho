@@ -128,17 +128,13 @@
                                 </table>
                                 <style>
                                     table {
-                                        page-break-inside: auto;
-                                    }
-
-                                    tr {
-                                        page-break-inside: avoid;
-                                        page-break-after: auto;
+                                        border-collapse: collapse;
                                     }
 
                                     td,
                                     th {
-                                        page-break-inside: avoid;
+                                        border: 1px solid black;
+                                        padding: 0px;
                                     }
                                 </style>
 
