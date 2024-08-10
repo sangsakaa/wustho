@@ -712,10 +712,17 @@ class AbsensikelasController
         ])
             ->setOptions([
                 'defaultFont' => 'sans-serif',
-                'isHtml5ParserEnabled' => true,  // Enable HTML5 parsing
-                'isPhpEnabled' => true,         // Enable PHP
-            ])
-        ->setPaper('legal', 'potret');
+            'isHtml5ParserEnabled' => true,
+            'isPhpEnabled' => true,
+            'debugPng' => true,
+            'chroot' => base_path(),
+            'isPhpEnabled' => true,
+            'isHtml5ParserEnabled' => true,
+            'isRemoteEnabled' => true, // enable remote file access if necessary
+        ])
+        ->setPaper('legal', 'portrait');  // Adjust paper size and orientation
+
+
 
         return $pdf->stream('rekap_absensi.pdf');
 
