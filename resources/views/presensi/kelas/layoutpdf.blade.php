@@ -16,18 +16,20 @@
         table,
         th,
         td {
-            border: 1px solid green;
-            color: green;
+            border: 1px solid #008000;
+            /* Hijau dengan kode warna */
+            color: #008000;
+            border-color: #008000;
+            /* Teks hijau dengan kode warna */
             font-size: smaller;
         }
+
 
         .kop_lap {
             text-transform: uppercase;
             justify-content: center;
 
         }
-
-
 
         .ket_nama {
             width: 280px;
@@ -37,18 +39,20 @@
 
         .tulis_tengah {
             text-align: center;
+            text-transform: capitalize;
         }
 
         .custom-hr {
-            border: none;
+            border: 1px solid;
+            border-color: #008000;
             height: 2px;
-            background: black;
+            background: green;
             margin: 0;
         }
 
         td,
         th {
-            border: 1px solid black;
+            border: 1px solid green;
             padding: 0;
         }
     </style>
@@ -62,12 +66,18 @@
 
                 /* or specify a height if necessary */
             }
+
+            .hr-cus {
+                margin-top: 0.5px;
+                border-color: #008000;
+            }
         </style>
         <div class="font-semibold text-3xl uppercase  ">
             <div class="parent ">
                 <span class=" kop_lap">MADRASAH DINIYAH {{$dataKelasMi->jenjang}} WAHIDIYAH</span> <br>
                 <span class=" kop_lap">TAHUN PELAJARAN {{$dataKelasMi->periode}} {{$dataKelasMi->ket_semester}}</span>
                 <hr class="custom-hr">
+                <hr class="hr-cus">
                 Laporan Harian <br>
                 Hari, tanggal : {{ $tgl->isoFormat('dddd, D MMMM YYYY') }}
             </div>
