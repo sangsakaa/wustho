@@ -624,111 +624,6 @@ class AbsensikelasController
             });
         return view('presensi.kelas.layoutpdf1', ['datakelasmi' => $datakelasmi, 'tgl' => $tgl, 'rekapAbsensi' => $rekapAbsensi, 'dataKelasMi' => $datakelasmi]);
     }
-
-
-
-
-
-    // public function generatePdf($tgl)
-    // {
-    //     // Ensure $tgl is parsed as a Carbon instance or use the current date
-    //     $tgl = $tgl ? Carbon::parse($tgl) : now();
-
-    //     // Retrieve class data based on the current session period
-    //     $datakelasmi = Kelasmi::query()
-    //         ->join('periode', 'periode.id', 'kelasmi.periode_id')
-    //         ->join('semester', 'semester.id', 'periode.semester_id')
-    //         ->select('kelasmi.id', 'periode.periode', 'semester.ket_semester', 'jenjang')
-    //         ->where('kelasmi.periode_id', session('periode_id'))
-    //         ->orderBy('kelasmi.nama_kelas')
-    //         ->first();
-
-    //     // Retrieve participants data
-    //     $pesertaasrama = Pesertaasrama::query()
-    //         ->join('siswa', 'siswa.id', '=', 'pesertaasrama.siswa_id')
-    //         ->join('asramasiswa', 'asramasiswa.id', '=', 'pesertaasrama.asramasiswa_id')
-    //         ->join('asrama', 'asrama.id', '=', 'asramasiswa.asrama_id')
-    //         ->select('siswa.id as siswa_id', 'asrama.nama_asrama')
-    //         ->where('asramasiswa.periode_id', session('periode_id'));
-
-    //     // Retrieve attendance data
-    //     $dataAbsensiKelas = Absensikelas::query()
-    //         ->join('sesikelas', 'sesikelas.id', '=', 'absensikelas.sesikelas_id')
-    //         ->join('pesertakelas', 'pesertakelas.id', '=', 'absensikelas.pesertakelas_id')
-    //         ->join('siswa', 'siswa.id', '=', 'pesertakelas.siswa_id')
-    //         ->join('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
-    //         ->joinSub($pesertaasrama, 'peserta_asrama', function ($join) {
-    //             $join->on('peserta_asrama.siswa_id', '=', 'siswa.id');
-    //         })
-    //         ->select('peserta_asrama.nama_asrama', 'kelasmi.nama_kelas', 'siswa.nama_siswa', 'absensikelas.keterangan')
-    //         ->where('sesikelas.tgl', $tgl->toDateString())
-    //         ->orderBy('peserta_asrama.nama_asrama')
-    //         ->orderBy('kelasmi.nama_kelas')
-    //         ->orderBy('absensikelas.keterangan')
-    //         ->orderBy('siswa.nama_siswa')
-    //         ->get();
-
-    //     // Group absences and map results
-    //     $absensiGrup = $dataAbsensiKelas
-    //         ->where('keterangan', '!=', 'hadir')
-    //         ->groupBy('nama_asrama')
-    //         ->map(function ($item, $key) {
-    //             return $item->groupBy('nama_kelas');
-    //         });
-
-    //     // Create rekap absensi with counts and percentages
-    //     $rekapAbsensi = $dataAbsensiKelas
-    //         ->groupBy('nama_asrama')
-    //         ->map(function ($item, $nama_asrama) use ($absensiGrup) {
-    //             return $item
-    //                 ->groupBy('nama_kelas')
-    //                 ->map(function ($item, $nama_kelas) use ($absensiGrup, $nama_asrama) {
-    //                     $nullAbsensi = new Absensikelas([
-    //                         'nama_asrama' => $nama_asrama,
-    //                         'nama_kelas' => $nama_kelas,
-    //                         'nama_siswa' => '-',
-    //                         'keterangan' => '-'
-    //                     ]);
-    //                     $total = $item->count();
-    //                     $hadir = $item->where('keterangan', 'hadir')->count();
-    //                     $tidakHadir = $total - $hadir;
-    //                     $absensi = $tidakHadir === 0 ? collect([$nullAbsensi]) : $absensiGrup[$nama_asrama][$nama_kelas];
-    //                     return [
-    //                         'hadir' => $hadir,
-    //                         'tidakHadir' => $tidakHadir,
-    //                         'total' => $total,
-    //                         'persentase' => $total ? ($hadir / $total * 100) : 0,
-    //                         'absensi' => $absensi,
-    //                         'row' => $absensi->count(),
-    //                     ];
-    //                 })
-    //                 ->filter();
-    //         });
-
-    //     // Load and return the PDF
-    //     $pdf = Pdf::loadView('presensi.kelas.layoutpdf', [
-    //         'datakelasmi' => $datakelasmi,
-    //         'tgl' => $tgl,
-    //         'rekapAbsensi' => $rekapAbsensi,
-    //         'dataKelasMi' => $datakelasmi,
-    //     ])
-    //         ->setOptions([
-    //             'defaultFont' => 'sans-serif',
-    //         'isHtml5ParserEnabled' => true,
-    //         'isPhpEnabled' => true,
-    //         'debugPng' => true,
-    //         'chroot' => base_path(),
-    //         'isPhpEnabled' => true,
-    //         'isHtml5ParserEnabled' => true,
-    //         'isRemoteEnabled' => true, // enable remote file access if necessary
-    //     ])
-    //     ->setPaper('legal', 'portrait');  // Adjust paper size and orientation
-
-
-
-    //     return $pdf->stream('rekap_absensi.pdf');
-
-    // }
     public function generatePdf($tgl)
     {
         // Ensure $tgl is parsed as a Carbon instance or use the current date
@@ -821,14 +716,17 @@ class AbsensikelasController
             ]
         )->render();
 
+
         // Initialize mPDF
         $mpdf = new Mpdf([
-            'format' => 'Legal',  // Adjust paper size
+            'format' => 'A4',  // Adjust paper size
             'orientation' => 'P',  // Portrait orientation
             'default_font' => 'sans-serif',
         ]);
+        
 
         // Write the HTML content to the PDF
+        
         $mpdf->WriteHTML($html);
 
         // Output the PDF to the browser

@@ -6,12 +6,16 @@
             margin: 0;
             padding: 0;
             font-family: 'sans-serif';
+
         }
 
         table {
             width: 100%;
-            border-collapse: collapse;
+
+            font-size: small;
         }
+
+
 
         table,
         th,
@@ -21,32 +25,37 @@
             color: #008000;
             border-color: #008000;
             /* Teks hijau dengan kode warna */
-            font-size: smaller;
-        }
 
+        }
 
         .kop_lap {
             text-transform: uppercase;
             justify-content: center;
+            color: #008000;
 
         }
 
         .ket_nama {
-            width: 280px;
+            width: 290px;
             text-transform: capitalize;
             padding-left: 2px;
+
         }
 
         .tulis_tengah {
             text-align: center;
+            text-transform: capitalize;
+            padding-left: 2;
+            padding-right: 2;
         }
 
         .custom-hr {
             border: 1px solid;
             border-color: #008000;
             height: 2px;
-            background: black;
+
             margin: 0;
+            color: #008000;
         }
 
         td,
@@ -59,27 +68,114 @@
         @if($dataKelasMi->jenjang === "Wustho")
         <style>
             .parent {
-                justify-content: center;
+                display: flex;
                 align-items: center;
-                text-align: center;
-
-                /* or specify a height if necessary */
+                /* Center items vertically */
             }
 
-            .hr-cus {
-                margin-top: 0.5px;
-                border-color: #008000;
+            .logo {
+                display: flex;
+                align-items: center;
+                /* Center items vertically within the logo div and ensure items stay in one line */
+            }
+
+            .logo-img {
+                max-width: 80px;
+                height: 80px;
+                margin-right: 10px;
+                /* Adjust spacing between the image and text */
+            }
+
+            .logo-text {
+                display: flex;
+                flex-direction: column;
+                /* Stack text elements vertically within the logo-text div */
+            }
+
+            #container {
+                display: flex;
+                align-items: center;
+            }
+
+            #logo {
+                margin-right: 20px;
+                text-align: center;
+                /* Adjust this value to control the space between logo and title */
+            }
+
+            #tittle {
+                display: flex;
+                flex-direction: column;
+            }
+
+            #tittle span {
+                text-align: left;
+            }
+
+
+
+            .kop {
+                width: 100%;
+                margin-top: 10px;
+            }
+
+            td {
+                border: 1px solid #ddd;
+                text-align: center;
+                /* Center text in table cell */
+                vertical-align: middle;
+                /* Center vertically */
+            }
+
+            .center-img {
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .nama_cap {
+                font-size: 20px;
+                font-weight: bold;
+                text-transform: capitalize;
+
+
+            }
+
+            table {
+                width: 100%;
+
+
+            }
+
+            .nama_sis {
+                text-align: left;
+            }
+
+            h1 {
+                text-transform: capitalize;
+                text-align: center;
             }
         </style>
-        <div class="font-semibold text-3xl uppercase  ">
-            <div class="parent ">
-                <span class=" kop_lap">MADRASAH DINIYAH {{$dataKelasMi->jenjang}} WAHIDIYAH</span> <br>
-                <span class=" kop_lap">TAHUN PELAJARAN {{$dataKelasMi->periode}} {{$dataKelasMi->ket_semester}}</span>
-                <hr class="custom-hr">
-                <hr class="hr-cus">
-                Laporan Harian <br>
-                Hari, tanggal : {{ $tgl->isoFormat('dddd, D MMMM YYYY') }}
-            </div>
+        <div>
+            <table class=" kop">
+                <tr class="h1 ">
+                    <td class="logo">
+                        <img src="img/logo.png" alt="Public Image" class="logo-img">
+                    </td>
+                    <td>
+                        <div class="logo-text">
+                            <span class="kop_lap">MADRASAH DINIYAH {{$dataKelasMi->jenjang}} WAHIDIYAH</span><br>
+                            <span class="kop_lap">TAHUN PELAJARAN {{$dataKelasMi->periode}} {{$dataKelasMi->ket_semester}}</span>
+                            <hr class="custom-hr">
+
+                            <span>
+                                Laporan Harian <br>
+                                Hari, tanggal : {{ $tgl->isoFormat('dddd, D MMMM YYYY') }}
+                            </span>
+                        </div>
+                    </td>
+                </tr>
+            </table>
         </div>
         @elseif($dataKelasMi->jenjang === "Ulya")
         <p class="font-semibold text-3xl uppercase">
@@ -99,18 +195,19 @@
         @endif
     </div>
     <div>
+
         <table class="table-fixed  w-full text-green-900">
             <thead class="border border-b-2 border-green-600">
-                <tr class="border border-green-600 text-xs sm:text-sm">
+                <tr class="judul border border-green-600 text-xs sm:text-sm">
                     <th class="no_more border border-green-600 w-8">No</th>
                     <th class="nama_as border border-green-600 w-1/6">Asrama</th>
                     <th class="border border-green-600 w-10">Kls</th>
                     <th class="border border-green-600 w-11">Total</th>
                     <th class="border border-green-600 w-11">Tidak <br> Hadir</th>
                     <th class="border border-green-600 w-11">Hadir</th>
-                    <th class="border border-green-600 w-1/3 sm:w-1/2">tidak hadir</th>
+                    <th class="border border-green-600 w-1/3 sm:w-1/2">Tidak Hadir</th>
                     <th class="border border-green-600 w-10 sm:w-11">Ket</th>
-                    <th class="presen border border-green-600 w-1/6">%Kehadiran</th>
+                    <th class="presen border border-green-600 w-1/6">%Hadir</th>
                 </tr>
             </thead>
             <tbody class="text-sm">
