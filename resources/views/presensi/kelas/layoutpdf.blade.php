@@ -39,20 +39,19 @@
 
         .tulis_tengah {
             text-align: center;
-            text-transform: capitalize;
         }
 
         .custom-hr {
             border: 1px solid;
             border-color: #008000;
             height: 2px;
-            background: green;
+            background: black;
             margin: 0;
         }
 
         td,
         th {
-            border: 1px solid green;
+            border: 1px solid black;
             padding: 0;
         }
     </style>

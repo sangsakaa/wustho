@@ -22,6 +22,7 @@
         "laravel/tinker": "^2.7",
         "livewire/livewire": "^2.0",
         "maatwebsite/excel": "^3.1",
+        "mpdf/mpdf": "^8.2",
         "nesbot/carbon": "^2.66",
         "riskihajar/terbilang": "^2.0",
         "simplesoftwareio/simple-qrcode": "^4.2",
