@@ -50,7 +50,7 @@
         }
 
         .custom-hr {
-            border: 1px solid;
+            /* border: 1px solid; */
             border-color: #008000;
             height: 2px;
 
@@ -60,7 +60,7 @@
 
         td,
         th {
-            border: 1px solid black;
+            /* border: 1px solid black; */
             padding: 0;
         }
     </style>
@@ -80,9 +80,11 @@
             }
 
             .logo-img {
-                max-width: 80px;
+                /* max-width: 80px; */
                 height: 80px;
-                margin-right: 10px;
+                margin-right: 5px;
+                margin-top: 5px;
+                margin-bottom: 5px;
                 /* Adjust spacing between the image and text */
             }
 
@@ -98,7 +100,7 @@
             }
 
             #logo {
-                margin-right: 20px;
+                /* margin-right: 20px; */
                 text-align: center;
                 /* Adjust this value to control the space between logo and title */
             }
@@ -112,15 +114,13 @@
                 text-align: left;
             }
 
-
-
             .kop {
                 width: 100%;
                 margin-top: 10px;
             }
 
             td {
-                border: 1px solid #ddd;
+                /* border: 1px solid #ddd; */
                 text-align: center;
                 /* Center text in table cell */
                 vertical-align: middle;
@@ -137,14 +137,10 @@
                 font-size: 20px;
                 font-weight: bold;
                 text-transform: capitalize;
-
-
             }
 
             table {
                 width: 100%;
-
-
             }
 
             .nama_sis {

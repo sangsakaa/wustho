@@ -719,14 +719,19 @@ class AbsensikelasController
 
         // Initialize mPDF
         $mpdf = new Mpdf([
-            'format' => 'A4',  // Adjust paper size
+            'format' => 'legal',  // Adjust paper size
             'orientation' => 'P',  // Portrait orientation
             'default_font' => 'sans-serif',
         ]);
-        
-
         // Write the HTML content to the PDF
-        
+        // Set margins (left, right, top, bottom) in millimeters
+        $mpdf->SetMargins(
+            1,
+            1,
+            5,
+            1
+        ); // Adjust these values as needed
+
         $mpdf->WriteHTML($html);
 
         // Output the PDF to the browser
