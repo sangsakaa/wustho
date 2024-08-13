@@ -726,16 +726,15 @@ class AbsensikelasController
         // Write the HTML content to the PDF
         // Set margins (left, right, top, bottom) in millimeters
         $mpdf->SetMargins(
-            1,
-            1,
+            -1,
+            -1,
             5,
             1
         ); // Adjust these values as needed
 
         $mpdf->WriteHTML($html);
-
-        // Output the PDF to the browser
-        return $mpdf->Output('rekap_absensi.pdf', Destination::INLINE);
+        // Output the PDF
+        return $mpdf->Output('Laporan Hari ini - ' . $tgl->isoFormat('dddd, D MMMM YYYY') . '.pdf', Destination::INLINE);
     }
 
 }
