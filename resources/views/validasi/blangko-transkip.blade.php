@@ -196,7 +196,7 @@
                     <div>
                         <p class=" mb-0">Kepala Madin, </p>
                         <br><br><br><br> <br>
-                        <p class=" uppercase font-semibold">
+                        <p class="  font-semibold">
                             @if ($dataKelas->first()->jenjang == 'Wustho')
                             {{$kepalaSekolah->nama_perangkat}}
                             @elseif ($dataKelas->first()->jenjang == 'Ula')

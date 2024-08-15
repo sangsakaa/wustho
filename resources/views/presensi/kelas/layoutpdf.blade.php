@@ -174,20 +174,45 @@
             </table>
         </div>
         @elseif($dataKelasMi->jenjang === "Ulya")
-        <p class="font-semibold text-3xl uppercase">
-            MADRASAH DINIYAH {{$dataKelasMi->jenjang}} WAHIDIYAH
-        </p>
-        <p class="font-semibold uppercase">
-            TAHUN PELAJARAN {{$dataKelasMi->periode}} {{$dataKelasMi->ket_semester}}
-        </p>
+        <table class=" kop">
+            <tr class="h1 ">
+                <td class="logo">
+                    <img src="img/logo.png" alt="Public Image" class="logo-img">
+                </td>
+                <td>
+                    <div class="logo-text">
+                        <span class="kop_lap">MADRASAH DINIYAH {{$dataKelasMi->jenjang}} WAHIDIYAH</span><br>
+                        <span class="kop_lap">TAHUN PELAJARAN {{$dataKelasMi->periode}} {{$dataKelasMi->ket_semester}}</span>
+                        <hr class="custom-hr">
+
+                        <span>
+                            Laporan Harian <br>
+                            Hari, tanggal : {{ $tgl->isoFormat('dddd, D MMMM YYYY') }}
+                        </span>
+                    </div>
+                </td>
+            </tr>
+        </table>
         @elseif($dataKelasMi->jenjang === "Ula")
-        <p class="font-semibold text-3xl uppercase kop_lap">
-            <span>MADRASAH DINIYAH {{$dataKelasMi->jenjang}} WAHIDIYAH</span> <br>
-            <span>TAHUN PELAJARAN {{$dataKelasMi->periode}} {{$dataKelasMi->ket_semester}}</span>
-            <hr class="custom-hr">
-            Laporan Harian <br>
-            Hari, tanggal : {{ $tgl->isoFormat('dddd, D MMMM YYYY') }}
-        </p>
+        <table class=" kop">
+            <tr class="h1 ">
+                <td class="logo">
+                    <img src="img/logo.png" alt="Public Image" class="logo-img">
+                </td>
+                <td>
+                    <div class="logo-text">
+                        <span class="kop_lap">MADRASAH DINIYAH {{$dataKelasMi->jenjang}} WAHIDIYAH</span><br>
+                        <span class="kop_lap">TAHUN PELAJARAN {{$dataKelasMi->periode}} {{$dataKelasMi->ket_semester}}</span>
+                        <hr class="custom-hr">
+
+                        <span>
+                            Laporan Harian <br>
+                            Hari, tanggal : {{ $tgl->isoFormat('dddd, D MMMM YYYY') }}
+                        </span>
+                    </div>
+                </td>
+            </tr>
+        </table>
         @endif
     </div>
     <div>
