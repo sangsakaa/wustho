@@ -128,10 +128,6 @@ class RaportController extends Controller
 
         // Cetak tanggal Hijriyah dalam bahasa Indonesia
         // echo $hijriDateInIndonesian;
-
-        
-
-    
         $datakelasmi = Kelasmi::query()
             ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
             ->join('semester', 'semester.id', '=', 'periode.semester_id')
@@ -220,10 +216,14 @@ class RaportController extends Controller
             ->orderby('nama_kelas')
             ->get();
         $kepalaSekolah = Perangkat::query()
-            ->join('jabatan_perangkat', 'jabatan_perangkat.perangkat_id', 'perangkat.id')
-            ->join('jabatan', 'jabatan.id', 'jabatan_perangkat.jabatan_id')
-            ->where('nama_jabatan', 'Kepala Sekolah')->first();
-        // dd($siswa);
+            ->join('jabatan_perangkat', 'jabatan_perangkat.perangkat_id', '=', 'perangkat.id')
+            ->join('jabatan', 'jabatan.id', '=', 'jabatan_perangkat.jabatan_id')
+            ->select('perangkat.nama_perangkat', 'jabatan.nama_jabatan', 'status')
+            ->where('jabatan.nama_jabatan', 'Kepala Sekolah')
+            ->where('status', 'Aktif')
+            ->first();
+
+
         return view(
             'report/raportkelas',
             [

@@ -4,7 +4,6 @@
         @if($kelasmi !== null)
         @section('title', ' | Raport : Kelas ' . $kelasmi->nama_kelas)
         @else
-
         @section('title','Tidak ada Kelas' )
         @endif
 
@@ -281,13 +280,26 @@
                             <p class="  px-20   pl-28 "> </p>
                             <p class="">Kepala Madrasah,</p>
                             <p class="  font-semibold">
+
+                            <p class="  font-semibold">
                                 @if ($dataKelas->first()->jenjang == 'Wustho')
                                 <img src="{{asset('asset/images/ttd.png')}}" width="150" alt="">
-                                {{$kepalaSekolah->nama_perangkat}}
-                                @elseif ($dataKelas->first()->jenjang == 'Ula')
-                                <br><br><br><br>
-                                {{$kepalaSekolah->nama_perangkat}}
-                                @endif
+                                @if($kepalaSekolah)
+                            <p>{{ $kepalaSekolah->nama_perangkat }}</p>
+                            @else
+                            <p>Tidak ada Kepala Sekolah aktif.</p>
+                            @endif
+                            @elseif ($dataKelas->first()->jenjang == 'Ula')
+                            <br><br><br><br>
+                            @if($kepalaSekolah)
+                            <p>{{ $kepalaSekolah->nama_perangkat }}</p>
+                            @else
+                            <p>Tidak ada Kepala Sekolah aktif.</p>
+                            @endif
+                            @endif
+                            </p>
+
+                            <br>
                             </p>
                         </div>
                     </div>
