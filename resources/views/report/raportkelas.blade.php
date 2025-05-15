@@ -285,14 +285,18 @@
                                 @if ($dataKelas->first()->jenjang == 'Wustho')
                                 <img src="{{asset('asset/images/ttd.png')}}" width="150" alt="">
                                 @if($kepalaSekolah)
-                            <p>{{ $kepalaSekolah->nama_perangkat }}</p>
+                            <p><span class=" font-semibold">
+                                    {{ $kepalaSekolah->nama_perangkat }}</p>
+                            </span>
                             @else
                             <p>Tidak ada Kepala Sekolah aktif.</p>
                             @endif
                             @elseif ($dataKelas->first()->jenjang == 'Ula')
                             <br><br><br><br>
                             @if($kepalaSekolah)
-                            <p>{{ $kepalaSekolah->nama_perangkat }}</p>
+                            <p><span class=" font-semibold">
+                                    {{ $kepalaSekolah->nama_perangkat }}</p>
+                            </span>
                             @else
                             <p>Tidak ada Kepala Sekolah aktif.</p>
                             @endif
