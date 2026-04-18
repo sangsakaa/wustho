@@ -85,8 +85,7 @@
                             <img src="{{ asset('asset/images/logo_ula.png') }}" width="180" class="mt-3 p-2">
 
                             @elseif ($jenjang == 'Ulya')
-                            <img src="{{ asset('asset/images/logo_ulya.png') }}" width="180" class="mt-3 p-2">
-
+                            <img src="{{ asset('asset/images/logo_kop.png') }}" width="180" class="mt-3 p-2">
                             @else
                             <img src="{{ asset('asset/images/logo_kop.png') }}" width="180" class="mt-3 p-2">
                             @endif
