@@ -117,57 +117,49 @@ class SeleksiController
     }
     public function StoreNominasi(Request $request, $nominasi)
     {
-        $awal = DB::table('daftar_nominasi')->max('nomor_ujian');
-
-        // aman kalau masih kosong
-        $lastNumber = 0;
-        if ($awal) {
-            $empatAngkaTerakhir = substr($awal, -4);
-            $lastNumber = (int) $empatAngkaTerakhir;
-        }
-
         $kodeTahun = DB::table('periode')
             ->where('id', session('periode_id'))
             ->value('tahun_hijriyah');
 
         $hijriYear = $kodeTahun;
 
-        // ambil jenjang yang benar (lebih aman pakai request atau relasi, bukan first())
         $kelas = Kelasmi::where('id', $request->kelasmi_id)->first();
         $jenjang = $kelas?->jenjang;
 
-        // mapping jenjang
         $codeSegment = match ($jenjang) {
             'Wustho' => 'II',
             'Ula'    => 'I',
-            'Ulya'   => 'III', // ✅ TAMBAHAN ULYA
+            'Ulya'   => 'III',
             default  => '0',
         };
 
-        $codePrefix = $hijriYear . '-' . $codeSegment . '-';
+        $prefixBase = $hijriYear . '-' . $codeSegment . '-';
+
+        // 🔥 ambil nomor terakhir PER JENJANG
+        $awal = DB::table('daftar_nominasi')
+            ->where('nomor_ujian', 'like', $prefixBase . '%')
+            ->max('nomor_ujian');
+
+        $lastNumber = 0;
+
+        if ($awal) {
+            $lastNumber = (int) substr($awal, -4);
+        }
 
         $pesertakelas = $request->input('pesertakelas', []);
 
         foreach ($pesertakelas as $peserta) {
 
-            $newNumber = $lastNumber + 1;
-            $newNumberStr = str_pad($newNumber, 4, '0', STR_PAD_LEFT);
-            $code = $codePrefix . $newNumberStr;
+            $lastNumber++;
 
-            // pastikan unik
-            while (DB::table('daftar_nominasi')->where('nomor_ujian', $code)->exists()) {
-                $newNumber++;
-                $newNumberStr = str_pad($newNumber, 4, '0', STR_PAD_LEFT);
-                $code = $codePrefix . $newNumberStr;
-            }
+            $nomor = str_pad($lastNumber, 4, '0', STR_PAD_LEFT);
+            $code = $prefixBase . $nomor;
 
             $nominasi = new Daftar_Nominasi();
             $nominasi->pesertakelas_id = $peserta;
             $nominasi->nominasi_id = $request->nominasi_id;
             $nominasi->nomor_ujian = $code;
             $nominasi->save();
-
-            $lastNumber = $newNumber;
         }
 
         return redirect()->back();
