@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
-use App\Models\Siswa;
+
 use App\Models\Pesertakelas;
-use App\Models\Presensikelas;
+
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -23,6 +23,10 @@ class Kelasmi extends Model
         // dd($search);
         return empty($search) ? static::query() : static::query()
             ->where('nama_kelas', 'like', '%' . $search . '%');
+    }
+    public function periode()
+    {
+        return $this->belongsTo(Periode::class, 'periode_id');
     }
 
     

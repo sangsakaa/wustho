@@ -368,128 +368,50 @@ Route::post('/import-siswa', [ExportController::class, 'importSiswa'])->name('im
 // Hapus Sql
 Route::post('/delete-records', [PengaturanController::class, 'deleteRecordsById']);
 
+Route::get('/nism-siswa', function () {
 
+    $dataNIS = collect(); // default kosong
 
+    if (request('cari')) {
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Route::get(
-    '/',
-    function () {
-
-        $kelasmi = Kelasmi::query()
-            ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
-            ->join('semester', 'semester.id', '=', 'periode.semester_id')
-            ->select('kelasmi.nama_kelas', 'periode.periode', 'semester.ket_semester', 'periode.id', 'jenjang')
-            ->latest('kelasmi.created_at')
-            ->first();
-        // dd($kelasmi->id);
-        $data = Absensikelas::query()
-            ->join('sesikelas', 'sesikelas.id', '=', 'absensikelas.sesikelas_id')
-            ->join('pesertakelas', 'pesertakelas.id', '=', 'absensikelas.pesertakelas_id')
-            ->join('siswa', 'siswa.id', '=', 'pesertakelas.siswa_id')
-            ->join('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
-            // Ambil periode terakhir dari session
-            ->whereIn('absensikelas.keterangan', ['alfa', 'sakit'])
-            ->groupBy('nama_kelas', 'nama_siswa', 'periode_id')
+        $dataNIS = DB::table('siswa')
+            ->leftJoin('nis', 'nis.siswa_id', '=', 'siswa.id')
+            ->leftJoin('daftar_lulusan', 'daftar_lulusan.pesertakelas_id', '=', 'siswa.id')
             ->select(
-                'nama_kelas',
-                'nama_siswa',
-                'periode_id',
-                DB::raw('SUM(CASE WHEN absensikelas.keterangan = "alfa" THEN 1 ELSE 0 END) as total_alfa'),
-                DB::raw('SUM(CASE WHEN absensikelas.keterangan = "sakit" THEN 1 ELSE 0 END) as total_sakit'),
-                DB::raw('count(pesertakelas.id) as total_data')
+            'siswa.id',
+            'siswa.nama_siswa',
+            'nis.nis',
+            'daftar_lulusan.nomor_ijazah'
             )
-            ->orderBy('nama_kelas')
-            ->orderBy('nama_siswa')
-            ->where('kelasmi.periode_id', $kelasmi->id)
-        ->get();
-        $dataNIS = Siswa::query()
-            ->leftjoin('nis', 'nis.siswa_id', 'siswa.id')
-            ->select('siswa.*')
-        ;
-
-        if (request('cari') !== null) {
-            $dataNIS->where('nis', '=', request('cari'));
-        }
-
-        return view('home', [
-            'data' => $data,
-            'kelasmi' => $kelasmi,
-            'dataNIS' => $dataNIS->get()
-        ]);
-    }
-);
-Route::get(
-    '/nism-siswa',
-    function () {
-
-        $kelasmi = Kelasmi::query()
-            ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
-            ->join('semester', 'semester.id', '=', 'periode.semester_id')
-            ->select('kelasmi.nama_kelas', 'periode.periode', 'semester.ket_semester', 'periode.id', 'jenjang')
-            ->latest('kelasmi.created_at')
-            ->first();
-        // dd($kelasmi->id);
-        $data = Absensikelas::query()
-            ->join('sesikelas', 'sesikelas.id', '=', 'absensikelas.sesikelas_id')
-            ->join('pesertakelas', 'pesertakelas.id', '=', 'absensikelas.pesertakelas_id')
-            ->join('siswa', 'siswa.id', '=', 'pesertakelas.siswa_id')
-            ->join('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
-            // Ambil periode terakhir dari session
-            ->whereIn('absensikelas.keterangan', ['alfa', 'sakit'])
-            ->groupBy('nama_kelas', 'nama_siswa', 'periode_id')
-            ->select(
-                'nama_kelas',
-                'nama_siswa',
-                'periode_id',
-                DB::raw('SUM(CASE WHEN absensikelas.keterangan = "alfa" THEN 1 ELSE 0 END) as total_alfa'),
-                DB::raw('SUM(CASE WHEN absensikelas.keterangan = "sakit" THEN 1 ELSE 0 END) as total_sakit'),
-                DB::raw('count(pesertakelas.id) as total_data')
-            )
-            ->orderBy('nama_kelas')
-            ->orderBy('nama_siswa')
-            ->where('kelasmi.periode_id', $kelasmi->id)
+            ->where('nis.nis', 'like', '%' . request('cari') . '%')
+            ->orderBy('siswa.nama_siswa')
             ->get();
-        $dataNIS = Siswa::query()
-            ->leftjoin('nis', 'nis.siswa_id', 'siswa.id')
-            ->select('siswa.*');
-
-        if (request('cari') !== null) {
-            $dataNIS->where('nis', '=', request('cari'));
-        }
-
-        return view('welcome', [
-            'data' => $data,
-            'kelasmi' => $kelasmi,
-            'dataNIS' => $dataNIS->get()
-        ]);
     }
-);
 
+    return view('welcome', compact('dataNIS'));
+});
+Route::get('/', function () {
+
+    $dataNIS = collect(); // default kosong
+
+    if (request('cari')) {
+
+        $dataNIS = DB::table('siswa')
+            ->leftJoin('nis', 'nis.siswa_id', '=', 'siswa.id')
+            ->leftJoin('daftar_lulusan', 'daftar_lulusan.pesertakelas_id', '=', 'siswa.id')
+            ->select(
+            'siswa.id',
+            'siswa.nama_siswa',
+            'nis.nis',
+            'daftar_lulusan.nomor_ijazah'
+            )
+            ->where('nis.nis', 'like', '%' . request('cari') . '%')
+            ->orderBy('siswa.nama_siswa')
+            ->get();
+    }
+
+    return view('welcome', compact('dataNIS'));
+});
 
 
 
