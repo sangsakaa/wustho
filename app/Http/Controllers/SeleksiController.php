@@ -117,60 +117,59 @@ class SeleksiController
     }
     public function StoreNominasi(Request $request, $nominasi)
     {
-
-        
         $awal = DB::table('daftar_nominasi')->max('nomor_ujian');
-        $empatAngkaTerakhir = substr($awal, -4);
 
-        $kodeTahun = DB::table('periode')
-            ->where('periode.id', session('periode_id'))
-            ->max('tahun_hijriyah');
-        $nextYear = $kodeTahun;
-
-        // Mengkonversi tipe data variabel $lastNumber menjadi integer
-        $lastNumber = (int) $empatAngkaTerakhir;
-
-        $hijriYear = $nextYear;
-        $jenjang = Kelasmi::first();
-        $jenjang = $jenjang->jenjang;
-
-        // Determine the code segment based on jenjang
-        $codeSegment = '';
-        if ($jenjang == 'Wustho') {
-            $codeSegment = 'II';
-        } elseif (
-            $jenjang == 'Ula'
-        ) {
-            $codeSegment = 'I';
+        // aman kalau masih kosong
+        $lastNumber = 0;
+        if ($awal) {
+            $empatAngkaTerakhir = substr($awal, -4);
+            $lastNumber = (int) $empatAngkaTerakhir;
         }
 
-        // Combine components into one string
+        $kodeTahun = DB::table('periode')
+            ->where('id', session('periode_id'))
+            ->value('tahun_hijriyah');
+
+        $hijriYear = $kodeTahun;
+
+        // ambil jenjang yang benar (lebih aman pakai request atau relasi, bukan first())
+        $kelas = Kelasmi::where('id', $request->kelasmi_id)->first();
+        $jenjang = $kelas?->jenjang;
+
+        // mapping jenjang
+        $codeSegment = match ($jenjang) {
+            'Wustho' => 'II',
+            'Ula'    => 'I',
+            'Ulya'   => 'III', // ✅ TAMBAHAN ULYA
+            default  => '0',
+        };
+
         $codePrefix = $hijriYear . '-' . $codeSegment . '-';
-        $newNumber = $lastNumber + 1;
-        
 
-        // Menambahkan leading zero pada nomor urut baru jika kurang dari 4 digit
-        $newNumberStr = str_pad($newNumber, 4, '0', STR_PAD_LEFT);
-        // dd($newNumberStr);
-
-        // Gabungkan prefix dengan nomor urut baru
-        $code = $codePrefix . $newNumberStr;
-        // dd($code);
         $pesertakelas = $request->input('pesertakelas', []);
+
         foreach ($pesertakelas as $peserta) {
-            $existingNomination = Daftar_Nominasi::where('nomor_ujian', $code)->first();
-            if ($existingNomination) {
-                // Jika nomor ujian sudah ada, buat nomor ujian baru dengan nomor urut berikutnya
-                $newNumber += 1;
+
+            $newNumber = $lastNumber + 1;
+            $newNumberStr = str_pad($newNumber, 4, '0', STR_PAD_LEFT);
+            $code = $codePrefix . $newNumberStr;
+
+            // pastikan unik
+            while (DB::table('daftar_nominasi')->where('nomor_ujian', $code)->exists()) {
+                $newNumber++;
                 $newNumberStr = str_pad($newNumber, 4, '0', STR_PAD_LEFT);
                 $code = $codePrefix . $newNumberStr;
             }
+
             $nominasi = new Daftar_Nominasi();
             $nominasi->pesertakelas_id = $peserta;
             $nominasi->nominasi_id = $request->nominasi_id;
             $nominasi->nomor_ujian = $code;
             $nominasi->save();
+
+            $lastNumber = $newNumber;
         }
+
         return redirect()->back();
     }
     public function destroy(Nominasi $nominasi)
