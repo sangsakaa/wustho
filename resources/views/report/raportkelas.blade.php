@@ -283,23 +283,23 @@
 
                             <p class="  font-semibold">
                                 @if ($dataKelas->first()->jenjang == 'Wustho')
-                                <img src="{{asset('asset/images/ttd.png')}}" width="150" alt="">
+                                <img src="{{ asset('asset/images/ttd.png') }}" width="150" alt="">
+
+                                @elseif ($dataKelas->first()->jenjang == 'Ula')
+                                <br><br><br><br>
+
+                                @elseif ($dataKelas->first()->jenjang == 'Ulya')
+                                <br><br><br><br>
+                                @endif
+
                                 @if($kepalaSekolah)
-                            <p><span class=" font-semibold">
-                                    {{ $kepalaSekolah->nama_perangkat }}</p>
-                            </span>
+                            <p>
+                                <span class="font-semibold">
+                                    {{ $kepalaSekolah->nama_perangkat }}
+                                </span>
+                            </p>
                             @else
                             <p>Tidak ada Kepala Sekolah aktif.</p>
-                            @endif
-                            @elseif ($dataKelas->first()->jenjang == 'Ula')
-                            <br><br><br><br>
-                            @if($kepalaSekolah)
-                            <p><span class=" font-semibold">
-                                    {{ $kepalaSekolah->nama_perangkat }}</p>
-                            </span>
-                            @else
-                            <p>Tidak ada Kepala Sekolah aktif.</p>
-                            @endif
                             @endif
                             </p>
 
