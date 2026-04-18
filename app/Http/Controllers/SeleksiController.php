@@ -124,12 +124,15 @@ class SeleksiController
         $hijriYear = $kodeTahun;
 
         $kelas = Kelasmi::where('id', $request->kelasmi_id)->first();
-        $jenjang = $kelas?->jenjang;
 
+        // 🔥 NORMALISASI JENJANG (INI PENTING)
+        $jenjang = strtolower(trim($kelas?->jenjang));
+
+        // 🔥 mapping semua jenjang jadi konsisten
         $codeSegment = match ($jenjang) {
-            'Wustho' => 'II',
-            'Ula'    => 'I',
-            'Ulya'   => 'III',
+            'ula'    => 'I',
+            'wustho' => 'II',
+            'ulya'   => 'III',
             default  => '0',
         };
 
@@ -140,11 +143,7 @@ class SeleksiController
             ->where('nomor_ujian', 'like', $prefixBase . '%')
             ->max('nomor_ujian');
 
-        $lastNumber = 0;
-
-        if ($awal) {
-            $lastNumber = (int) substr($awal, -4);
-        }
+        $lastNumber = $awal ? (int) substr($awal, -4) : 0;
 
         $pesertakelas = $request->input('pesertakelas', []);
 
