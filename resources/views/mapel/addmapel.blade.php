@@ -1,47 +1,90 @@
 <x-app-layout>
     <x-slot name="header">
-        @section('title', ' | Tambah Mata Pelajaran' )
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Tambah Mata Pelajaran') }}
+        @section('title', ' | Tambah Mata Pelajaran')
+        <h2 class="font-semibold text-xl text-gray-800">
+            Tambah Mata Pelajaran
         </h2>
     </x-slot>
-    <div class=" grid grid-cols-1 sm:grid-cols-1 gap-2 px-2 py-2">
-        <div class="">
-            <div class=" w-full sm:w-1/2">
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class=" bg-white border-b border-gray-200">
-                        <div class=" p-6 grid grid-cols-1 sm:grid-cols-1">
-                            <form action="/mapel" method="post">
-                                @csrf
-                                <div class=" grid grid-cols-1 w-full ">
-                                    <label for="">Nama Mapel</label>
-                                    <input name="mapel" type="text" class=" w-full sm:w-full py-1 " placeholder="  Mapel : Fiqih">
-                                    <label for="">Nama Kitab</label>
-                                    <input name="nama_kitab" type="text" class=" w-full py-1 " placeholder="  Mapel : Mabadi' Fiqiyah Juz 1">
-                                    <label for="">Kelas</label>
-                                    <select name="kelas_id" id="" class=" w-full py-1 ">
-                                        @foreach($datakelas as $list)
-                                        <option value="{{$list->id}}">{{$list->kelas}}</option>
-                                        @endforeach
-                                    </select>
-                                    <label for="">Periode Pembelajaran</label>
-                                    <select name="periode_id" id="" class=" py-1  uppercase">
-                                        @foreach($dataPeriode as $list)
-                                        {{$list->id}}
-                                        <option value="{{$list->id}}"> {{$list->periode}} {{$list->ket_semester}} </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <button type="submit" class=" px-2 py-1 bg-blue-600 text-white rounded-md mt-1">Simpan</button>
-                                <a href="/mapel" class=" px-2 py-1 bg-red-600 text-white rounded-md mt-1">
-                                    Batal
-                                </a>
-                            </form>
-                        </div>
 
+    <div class="px-4 py-6 flex justify-center">
+        <div class="w-full max-w-2xl">
+
+            <div class="bg-white border border-gray-200 rounded-xl shadow-sm p-6">
+
+                <h3 class="text-sm font-semibold text-gray-500 mb-4">
+                    Form Input Mata Pelajaran
+                </h3>
+
+                <form action="/mapel" method="post" class="space-y-4">
+                    @csrf
+
+                    <!-- MAPEL -->
+                    <div>
+                        <label class="block text-sm text-gray-600 mb-1">
+                            Nama Mata Pelajaran
+                        </label>
+                        <input name="mapel" type="text"
+                            placeholder="Contoh: Fiqih"
+                            class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                     </div>
-                </div>
+
+                    <!-- KITAB -->
+                    <div>
+                        <label class="block text-sm text-gray-600 mb-1">
+                            Nama Kitab
+                        </label>
+                        <input name="nama_kitab" type="text"
+                            placeholder="Contoh: Mabadi' Fiqiyah Juz 1"
+                            class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+
+                    <!-- KELAS -->
+                    <div>
+                        <label class="block text-sm text-gray-600 mb-1">
+                            Kelas
+                        </label>
+                        <select name="kelas_id"
+                            class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            @foreach($datakelas as $list)
+                            <option value="{{ $list->id }}">
+                                {{ $list->kelas }}
+                            </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <!-- PERIODE -->
+                    <div>
+                        <label class="block text-sm text-gray-600 mb-1">
+                            Periode Pembelajaran
+                        </label>
+                        <select name="periode_id"
+                            class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 uppercase">
+                            @foreach($dataPeriode as $list)
+                            <option value="{{ $list->id }}">
+                                {{ $list->periode }} {{ $list->ket_semester }}
+                            </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <!-- BUTTON -->
+                    <div class="flex gap-2 pt-2">
+                        <button type="submit"
+                            class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm rounded-lg shadow">
+                            Simpan
+                        </button>
+
+                        <a href="/mapel"
+                            class="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white text-sm rounded-lg shadow">
+                            Batal
+                        </a>
+                    </div>
+
+                </form>
+
             </div>
+
         </div>
     </div>
 </x-app-layout>

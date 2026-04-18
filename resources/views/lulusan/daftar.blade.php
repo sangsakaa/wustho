@@ -1,71 +1,103 @@
 <x-app-layout>
     <x-slot name="header">
-        @section('title', ' | Data Peserta Lulusan' )
+        @section('title', ' | Data Peserta Lulusan')
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard Data Peserta Lulusan') }}
+            Dashboard Data Peserta Lulusan
         </h2>
     </x-slot>
-    <div class=" grid grid-cols-1 sm:grid-cols-1 gap-2 px-2 py-2">
 
-        <div class="">
-            <div class=" mx-auto ">
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class=" bg-white border-b border-gray-200">
-                        <div class=" p-6 grid grid-cols-1">
-                            <div class=" flex gap-1">
-                                <a href="/kolektif-lulusan/{{$lulusan->id}}" class=" text-center py-1 px-2 w-20 bg-blue-600 rounded-md text-white hover:bg-purple-500">
-                                    +User
-                                </a>
-                                <a href="/lulusan" class=" text-center py-1 px-2 w-20 bg-blue-600 rounded-md text-white hover:bg-purple-500">
-                                    Batal
-                                </a>
-                                <a href="/blangko-ijazah/{{$lulusan->id}}" class=" text-center py-1 px-2 w-30 bg-blue-600 rounded-md text-white hover:bg-purple-500">
-                                    Cetak Ijazah
-                                </a>
-                            </div>
-                            <table class=" mt-1 border">
-                                <thead class=" border">
-                                    <tr class="  uppercase text-sm bg-gray-100">
-                                        <th class=" border px-2 py-1">No</th>
-                                        <th class=" border px-2 py-1 text-center">Nomor ijazah</th>
-                                        <th class=" border px-2 py-1 text-center">Peserta Lulusan</th>
-                                        <th class=" border px-2 py-1 text-center">Kelas</th>
-                                        <th class=" border px-2 py-1 text-center">act</th>
+    <div class="p-4 space-y-4">
 
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach($daftarLulusan as $item)
-                                    <tr>
-                                        <th class=" border px-1 text-center capitalize">{{$loop->iteration}}</th>
-                                        <td class=" border px-1 text-center capitalize">{{$item->nomor_ijazah}}</td>
-                                        <td class=" border px-1 text-left capitalize">{{strtolower($item->nama_siswa)}}</td>
-                                        <td class=" border px-1 text-center  uppercase ">{{$item->nama_kelas}}</td>
-                                        <td class=" border px-1 text-center capitalize">
-                                            <div class=" flex grid-cols-1 gap-2 justify-center">
-                                                <form action="/daftar-lulusan/{{$item->id}}" method="post">
-                                                    @csrf
-                                                    @method('delete')
-                                                    <button class=" px-1 py-1 bg-red-600 text-white">
-                                                        <x-icons.hapus class="flex-shrink-0 w-4 h-4" aria-hidden="true" />
-                                                    </button>
-                                                </form>
-                                                <a href="/reservasi-ijazah/{{$item->id}}" class=" font-semibold uppercase text-xs px-2 py-1  bg-yellow-400 ">
-                                                    <span class=" mt-1">Nomor Ijazah</span>
-                                                </a>
-                                            </div>
-                                        </td>
+        <!-- ACTION BUTTON -->
+        <div class="flex flex-wrap gap-2">
+            <a href="/kolektif-lulusan/{{ $lulusan->id }}"
+                class="px-3 py-1.5 bg-blue-600 text-white rounded-md hover:bg-blue-700 text-sm">
+                + Tambah User
+            </a>
 
-                                    </tr>
-                                    @endforeach
+            <a href="/lulusan"
+                class="px-3 py-1.5 bg-gray-500 text-white rounded-md hover:bg-gray-600 text-sm">
+                Kembali
+            </a>
 
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
+            <a href="/blangko-ijazah/{{ $lulusan->id }}"
+                class="px-3 py-1.5 bg-green-600 text-white rounded-md hover:bg-green-700 text-sm">
+                Cetak Ijazah
+            </a>
+        </div>
+
+        <!-- CARD -->
+        <div class="bg-white shadow-sm rounded-lg overflow-hidden">
+            <div class="p-4">
+
+                <!-- TABLE -->
+                <div class="overflow-x-auto">
+                    <table class="min-w-full border border-gray-200 text-sm">
+                        <thead class="bg-gray-100 uppercase text-xs text-gray-600">
+                            <tr>
+                                <th class="border px-2 py-2 w-10">No</th>
+                                <th class="border px-2 py-2 text-center">Nomor Ijazah</th>
+                                <th class="border px-2 py-2 text-left">Nama Peserta</th>
+                                <th class="border px-2 py-2 text-center">Kelas</th>
+                                <th class="border px-2 py-2 text-center w-32">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse($daftarLulusan as $item)
+                            <tr class="hover:bg-gray-50">
+                                <td class="border px-2 py-1 text-center">
+                                    {{ $loop->iteration }}
+                                </td>
+
+                                <td class="border px-2 py-1 text-center">
+                                    {{ $item->nomor_ijazah ?? '-' }}
+                                </td>
+
+                                <td class="border px-2 py-1 capitalize">
+                                    {{ strtolower($item->nama_siswa) }}
+                                </td>
+
+                                <td class="border px-2 py-1 text-center uppercase">
+                                    {{ $item->nama_kelas }}
+                                </td>
+
+                                <td class="border px-2 py-1 text-center">
+                                    <div class="flex justify-center gap-1">
+
+                                        <!-- DELETE -->
+                                        <form action="/daftar-lulusan/{{ $item->id }}" method="POST"
+                                            onsubmit="return confirm('Yakin hapus data {{ $item->nama_siswa }} ?')">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button
+                                                class="px-2 py-1 bg-red-600 text-white rounded hover:bg-red-700">
+                                                Hapus
+                                            </button>
+                                        </form>
+
+                                        <!-- SET NOMOR IJAZAH -->
+                                        <a href="/reservasi-ijazah/{{ $item->id }}"
+                                            class="px-2 py-1 bg-yellow-400 text-xs rounded hover:bg-yellow-500">
+                                            Nomor
+                                        </a>
+
+                                    </div>
+                                </td>
+                            </tr>
+                            @empty
+                            <tr>
+                                <td colspan="5"
+                                    class="text-center py-3 text-gray-500 italic">
+                                    Data peserta lulusan belum tersedia
+                                </td>
+                            </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
                 </div>
+
             </div>
         </div>
-    </div>
 
+    </div>
 </x-app-layout>

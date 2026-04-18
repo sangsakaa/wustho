@@ -17,18 +17,26 @@ class Asramasiswa extends Model
     {
         return $this->belongsTo(Asrama::class, 'asrama_id', 'id');
     }
+    public function pesertaasrama()
+    {
+        return $this->hasMany(Pesertaasrama::class, 'asramasiswa_id');
+    }
+    public function periode()
+    {
+        return $this->belongsTo(Periode::class, 'periode_id');
+    }
+    
     public static function search($search)
     {
-        return empty($search) ? static::query() : static::query()
-            ->where(function ($query) use ($search) {
-                $query->where('nama_asrama', 'like', '%' . $search . '%')
-                    ->orWhere('type_asrama', 'like', '%' . $search . '%');
-            })
-            ->whereHas('asramasiswa', function ($query) {
-                $query->where('periode_id', session('periode_id'));
-            })
-            ->get();
+        $query = static::query();
 
+        if ($search) {
+            $query->whereHas('asrama', function ($q) use ($search) {
+                $q->where('nama_asrama', 'like', "%{$search}%")
+                    ->orWhere('type_asrama', 'like', "%{$search}%");
+            });
+        }
 
+        return $query; // ❗ penting: TANPA get()
     }
 }

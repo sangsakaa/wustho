@@ -1,89 +1,126 @@
 <x-app-layout>
     <x-slot name="header">
-        @section('title', ' | Data Nilai Transkip' )
+        @section('title', ' | Data Nilai Transkip')
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard Data  Nilai Transkip') }}
+            Dashboard Data Nilai Transkip
         </h2>
     </x-slot>
-    <div class=" grid grid-cols-1 sm:grid-cols-1 gap-2 px-2 py-2">
-        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-            <div class=" bg-white border-b border-gray-200">
-                <div class=" p-2 flex grid-cols-1 gap-1">
-                    <a href="/periode" class=" py-1 px-2 bg-blue-600 rounded-md text-white hover:bg-purple-500">
-                        periode
-                    </a>
-                    <a href="/pengaturan" class=" py-1 px-2 bg-blue-600 rounded-md text-white hover:bg-purple-500">
-                        pengaturan
-                    </a>
-                    <a href="/pengaturan" class=" py-1 px-2 bg-blue-600 rounded-md text-white hover:bg-purple-500">
-                        pengaturan
-                    </a>
-                </div>
+
+    <div class="px-3 py-3 space-y-3">
+
+        <!-- MENU -->
+        <div class="bg-white shadow-sm rounded-lg p-3 flex flex-wrap gap-2">
+            <a href="/periode" class="px-3 py-1 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+                Periode
+            </a>
+            <a href="/pengaturan" class="px-3 py-1 bg-gray-600 text-white rounded-md hover:bg-gray-700">
+                Pengaturan
+            </a>
+            <a href="/daftar-transkip" class="px-3 py-1 bg-green-600 text-white rounded-md hover:bg-green-700">
+                Daftar Transkip
+            </a>
+        </div>
+
+        <!-- INFO -->
+        <div class="bg-white shadow-sm rounded-lg p-4 grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div>
+                <p class="text-sm text-gray-500">Mata Pelajaran</p>
+                <p class="font-semibold text-lg text-gray-800">
+                    {{ $dataTranskip->mapel }}
+                </p>
+            </div>
+            <div>
+                <p class="text-sm text-gray-500">Jenis Ujian</p>
+                <p class="font-semibold text-lg text-gray-800">
+                    {{ $dataTranskip->nama_ujian }}
+                </p>
             </div>
         </div>
-        <div class="bg-white overflow-hidden shadow-sm ">
-            <div class=" px-4 py-4 bg-white border-b grid grid-cols-4 border-gray-200">
-                <div>
-                    Mata Pelajaran
-                </div>
-                <div>
-                    : {{$dataTranskip->mapel}}
-                </div>
-                <div>
-                    Jenis Ujian
-                </div>
-                <div>
-                    : {{$dataTranskip->nama_ujian}}
-                </div>
+
+        <!-- FORM NILAI -->
+        <div class="bg-white shadow-sm rounded-lg">
+            <div class="p-4 border-b">
+                <h3 class="font-semibold text-gray-700">
+                    Input Nilai Peserta
+                </h3>
             </div>
-        </div>
-        <div class="">
-            <div class=" mx-auto ">
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class=" bg-white border-b border-gray-200">
-                        <div class=" p-6 grid grid-cols-1">
 
-                            <form action="/nilai_transkip/{{$transkip->id}}" method="post">
-                                @csrf
-                                <button class=" bg-red-600 px-1 py-1 text-white w-20"> Simpan</button>
-                                <a href="/daftar-transkip" class=" py-1 px-2 bg-blue-600  text-white hover:bg-purple-500">
-                                    Kembali
-                                </a>
-                                <input type="hidden" name="transkip_id" value="{{$transkip->id}}">
-                                <table class=" w-full mt-1 border">
-                                    <thead class=" border">
-                                        <tr class="  uppercase text-sm bg-gray-100">
-                                            <th class=" border px-2 py-1">No</th>
-                                            <th class=" border px-2 py-1 text-center">Nama Peserta Lulusan</th>
-                                            <th class=" border px-2 py-1 text-center">KLS</th>
-                                            <th class=" border px-2 py-1 text-center">Nilai Akhir</th>
+            <div class="p-4 overflow-x-auto">
 
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach($dataLulusan as $item)
-                                        <tr>
-                                            <th class=" border px-2 py-1 text-center">{{$loop->iteration}}</th>
-                                            <td class=" border px-2 py-1 text-left capitalize">
-                                                <input type="hidden" class=" py-1 " name="daftar_lulusan_id[]" value="{{$item->id}}" multiple>
-                                                <input type="hidden" name="nilai_transkip_id[{{ $item->id }}]" value="{{ $item->nilai_transkip_id }}">
-                                                {{strtolower($item->nama_siswa)}}
-                                            </td>
-                                            <td class=" border px-2 py-1 text-left capitalize w-4">{{$item->nama_kelas}}</td>
-                                            <td class=" border px-2 py-1 text-center capitalize">
-                                                <input value="{{ $item->nilai_akhir}}" class=" py-1 w-full text-center capitalize" type="number" name="nilai_akhir[{{ $item->id }}]" placeholder="MIN : 65 MAX : 100">
-                                            </td>
+                <form action="/nilai_transkip/{{ $transkip->id }}" method="POST">
+                    @csrf
 
-                                        </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            </form>
+                    <!-- ACTION -->
+                    <div class="flex justify-between mb-3">
+                        <div class="text-sm text-gray-500">
+                            Isi nilai dengan rentang <span class="font-semibold text-red-500">65 - 100</span>
+                        </div>
+                        <div class="flex gap-2">
+                            <a href="/daftar-transkip"
+                                class="px-3 py-1 bg-gray-500 text-white rounded-md hover:bg-gray-600">
+                                Kembali
+                            </a>
+                            <button type="submit"
+                                class="px-4 py-1 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+                                Simpan
+                            </button>
                         </div>
                     </div>
-                </div>
+
+                    <input type="hidden" name="transkip_id" value="{{ $transkip->id }}">
+
+                    <!-- TABLE -->
+                    <table class="w-full border text-sm">
+                        <thead class="bg-gray-100 text-gray-700 uppercase text-xs">
+                            <tr>
+                                <th class="border px-2 py-2 w-10">No</th>
+                                <th class="border px-2 py-2 text-left">Nama Peserta</th>
+                                <th class="border px-2 py-2 text-center w-20">Kelas</th>
+                                <th class="border px-2 py-2 text-center w-32">Nilai Akhir</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse($dataLulusan as $item)
+                            <tr class="hover:bg-gray-50">
+                                <td class="border px-2 py-1 text-center">
+                                    {{ $loop->iteration }}
+                                </td>
+
+                                <td class="border px-2 py-1 capitalize">
+                                    <input type="hidden" name="daftar_lulusan_id[]" value="{{ $item->id }}">
+                                    <input type="hidden" name="nilai_transkip_id[{{ $item->id }}]" value="{{ $item->nilai_transkip_id }}">
+                                    {{ strtolower($item->nama_siswa) }}
+                                </td>
+
+                                <td class="border px-2 py-1 text-center">
+                                    {{ $item->nama_kelas }}
+                                </td>
+
+                                <td class="border px-2 py-1">
+                                    <input
+                                        type="number"
+                                        name="nilai_akhir[{{ $item->id }}]"
+                                        value="{{ $item->nilai_akhir }}"
+                                        min="65"
+                                        max="100"
+                                        class="w-full border rounded px-2 py-1 text-center focus:ring focus:ring-blue-200"
+                                        placeholder="65 - 100"
+                                        required>
+                                </td>
+                            </tr>
+                            @empty
+                            <tr>
+                                <td colspan="4" class="text-center py-4 text-red-500 font-semibold">
+                                    Belum ada data peserta lulusan
+                                </td>
+                            </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+
+                </form>
             </div>
         </div>
-    </div>
 
+    </div>
 </x-app-layout>

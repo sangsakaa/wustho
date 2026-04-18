@@ -1,137 +1,180 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard Update Data Siswa') }}
+        <h2 class="text-xl font-semibold text-gray-800">
+            Dashboard Update Data Siswa
         </h2>
     </x-slot>
-    <div class="p-4">
-        <div class=" mx-auto ">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class=" bg-white border-b border-gray-200">
-                    <div class=" p-6 grid grid-cols-1">
-                        @if (session('update'))
-                        <script>
-                            Toastify({
-                                text: "data berhasil di di update",
-                                className: "update",
-                                style: {
-                                    background: "linear-gradient(to right, #00b09b, #96c93d)",
-                                }
-                            }).showToast();
-                        </script>
-                        @endif
-                        <form action="/siswa/{{$siswa->id}}" method="post">
-                            @csrf
-                            @method('patch')
-                            <label for="">Nama Lengkap</label>
-                            <input value="{{$siswa->nama_siswa}}" name="nama_siswa" type="text" class=" w-full py-1 rounded-md @error('nama') is-invalid @enderror" placeholder=" masukan nama lengkap">
-                            @error('nama')
-                            <div class="alert alert-danger">{{ $message }}</div>
-                            @enderror
-                            <div class=" grid grid-cols-1 gap-2 sm:grid-cols-2">
-                                <div>
-                                    <label for="">Jenis Kelamin</label>
-                                    <select name="jenis_kelamin" id="" class=" w-full py-1 rounded-md" required>
-                                        <option value="">-- Pilih Jenis Kelamin --</option>
-                                        <option {{old('jenis_kelamin',$siswa->jenis_kelamin)=="L"? 'selected':''}} value="L">
-                                            Laki-Laki</option>
-                                        <option {{old('jenis_kelamin',$siswa->jenis_kelamin)=="P"? 'selected':''}} value="P">
-                                            Perempuan</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label for="">Agama</label>
-                                    <select name="agama" id="" class=" w-full py-1 rounded-md" required>
-                                        <option value="">-- Pilih Agama --</option>
-                                        <option {{old('agama',$siswa->agama)=="Islam"? 'selected':''}} value="Islam">
-                                            Islam</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class=" grid grid-cols-1 gap-2 sm:grid-cols-2">
-                                <div><label for="">Kota Asal</label>
-                                    <input value="{{$siswa->kota_asal}}" name="kota_asal" type="text" class=" w-full py-1 rounded-md @error('kota_asal') is-invalid @enderror" placeholder=" masukan nama lengkap">
-                                </div>
-                                <div><label for="">Status Pengamal</label>
-                                    <select name="status_pengamal" id="" class="w-full py-1 rounded-md" required>
-                                        <option value="">-- Pilih Status Pengamal --</option>
-                                        <option {{ old('status_pengamal', $status_pengamal->status_pengamal ?? 'Pengamal') == 'Pengamal' ? 'selected' : '' }} value="Pengamal">
-                                            Pengamal</option>
-                                        <option {{ old('status_pengamal', $status_pengamal->status_pengamal ?? 'Pengamal') == 'Simpatisan' ? 'selected' : '' }} value="Simpatisan">
-                                            Simpatisan</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class=" grid grid-cols-1 gap-2 sm:grid-cols-2">
-                                <div>
-                                    <label for="">Tempat Lahir</label>
-                                    <input value="{{$siswa->tempat_lahir}}" name="tempat_lahir" type="text" class=" w-full py-1 rounded-md @error('tempat_lahir') is-invalid @enderror" placeholder=" masukan nama lengkap">
-                                </div>
-                                <div>
-                                    <label for="">Tanggal Lahir</label>
-                                    <input value="{{$siswa->tanggal_lahir}}" name="tanggal_lahir" type="date" class=" w-full py-1 rounded-md @error('nama') is-invalid @enderror" placeholder=" masukan nama lengkap">
-                                </div>
-                            </div>
 
+    <div class="p-6">
+        <div class="max-w-5xl mx-auto">
+            <div class="bg-white shadow-md rounded-xl p-6">
 
-                            <input type="hidden" name="siswa_id" value="{{$siswa->id}}">
+                {{-- Toast --}}
+                @if (session('update'))
+                <script>
+                    Toastify({
+                        text: "Data berhasil diupdate",
+                        className: "success",
+                        style: {
+                            background: "linear-gradient(to right, #00b09b, #96c93d)",
+                        }
+                    }).showToast();
+                </script>
+                @endif
 
-                            <div class=" grid grid-cols-1 sm:grid-cols-3 gap-2">
-                                <div class=" grid grid-cols-1">
-                                    <label for="status_anak">Status Anak</label>
-                                    <select name="status_anak" id="" class=" w-full py-1 rounded-md" required>
-                                        <option value="">-- Pilih Status Anak --</option>
-                                        <option {{old('status_anak',$statusAnak->status_anak)=="kandung"? 'selected':''}} value="kandung">
-                                            Kandung</option>
-                                        <option {{old('status_anak',$statusAnak->status_anak)=="tiri"? 'selected':''}} value="tiri">
-                                            Tiri</option>
-                                    </select>
-                                </div>
-                                <div class=" grid grid-cols-1">
-                                    <label for="anak_ke">Anak Ke-</label>
-                                    <input class="py-1" type="number" name="anak_ke" id="anak_ke" value="{{ isset($statusAnak->anak_ke) ? $statusAnak->anak_ke : '' }}">
-                                </div>
-                                <input class="py-1" type="hidden" name="siswa_id" id="siswa_id" value="{{ isset($statusAnak->siswa_id) ? $statusAnak->siswa_id : '' }}">
-                                <div class=" grid grid-cols-1">
-                                    <label for="jumlah_saudara">Jumlah Saudara</label>
-                                    <input class="py-1" type="number" name="jumlah_saudara" id="jumlah_saudara" value="{{ isset($statusAnak->jumlah_saudara) ? $statusAnak->jumlah_saudara : '' }}">
-                                </div>
-                            </div>
-                            <div class=" grid grid-cols-1 sm:grid-cols-2 gap-2 mt-2">
-                                <div class=" grid grid-cols-1">
-                                    <label for="nama_ayah">Nama Ayah</label>
-                                    <input class="py-1" type="text" name="nama_ayah" id="nama_ayah" value="{{ isset($statusAnak->nama_ayah) ? $statusAnak->nama_ayah : '' }}">
-                                    <label for="pekerjaan_ayah">Pekerjaan Ayah</label>
-                                    <input class="py-1" type="text" name="pekerjaan_ayah" id="pekerjaan_ayah" value="{{ isset($statusAnak->pekerjaan_ayah) ? $statusAnak->pekerjaan_ayah : '' }}">
-                                    <label for="nomor_hp_ayah">Nomor HP Ayah</label>
-                                    <input class="py-1" type="text" name="nomor_hp_ayah" id="nomor_hp_ayah" value="{{ isset($statusAnak->nomor_hp_ayah) ? $statusAnak->nomor_hp_ayah : '' }}">
-                                </div>
-                                <div class=" grid grid-cols-1">
-                                    <label for="nama_ibu">Nama Ibu</label>
-                                    <input class="py-1" type="text" name="nama_ibu" id="nama_ibu" value="{{ isset($statusAnak->nama_ibu) ? $statusAnak->nama_ibu : '' }}">
-                                    <label for="nomor_hp_ibu">Nomor HP Ibu</label>
-                                    <input class="py-1" type="text" name="nomor_hp_ibu" id="nomor_hp_ibu" value="{{ isset($statusAnak->nomor_hp_ibu) ? $statusAnak->nomor_hp_ibu : '' }}">
-                                    <label for="pekerjaan_ibu">Pekerjaan Ibu</label>
-                                    <input class="py-1" type="text" name="pekerjaan_ibu" id="pekerjaan_ibu" value="{{ isset($statusAnak->pekerjaan_ibu) ? $statusAnak->pekerjaan_ibu : '' }}">
-                                </div>
+                <form action="{{ url('/siswa/'.$siswa->id) }}" method="POST" class="space-y-6">
+                    @csrf
+                    @method('PATCH')
 
-                            </div>
-                            <button type="submit" class=" px-2 py-1 bg-sky-600 text-white rounded-md mt-1">Update</button>
-                            @role('super admin')
-                            <a href="/siswa" class=" px-2 py-1 bg-red-600 text-white rounded-md mt-1">
-                                Batal
-                            </a>
-                            @endrole
-                            @role('siswa')
-                            <a href="/user" class=" px-2 py-1 bg-red-600 text-white rounded-md mt-1">
-                                Batal
-                            </a>
-                            @endrole
-                        </form>
-
+                    {{-- Nama --}}
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Nama Lengkap</label>
+                        <input type="text" name="nama_siswa"
+                            value="{{ old('nama_siswa', $siswa->nama_siswa) }}"
+                            class="mt-1 w-full rounded-lg border-gray-300 focus:ring focus:ring-sky-200">
+                        @error('nama_siswa')
+                        <p class="text-sm text-red-500 mt-1">{{ $message }}</p>
+                        @enderror
                     </div>
 
-                </div>
+                    {{-- Grid 2 --}}
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="text-sm font-medium">Jenis Kelamin</label>
+                            <select name="jenis_kelamin"
+                                class="mt-1 w-full rounded-lg border-gray-300 focus:ring focus:ring-sky-200">
+                                <option value="">-- Pilih --</option>
+                                <option value="L" {{ old('jenis_kelamin', $siswa->jenis_kelamin) == 'L' ? 'selected' : '' }}>Laki-Laki</option>
+                                <option value="P" {{ old('jenis_kelamin', $siswa->jenis_kelamin) == 'P' ? 'selected' : '' }}>Perempuan</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="text-sm font-medium">Agama</label>
+                            <select name="agama"
+                                class="mt-1 w-full rounded-lg border-gray-300 focus:ring focus:ring-sky-200">
+                                <option value="Islam" {{ old('agama', $siswa->agama) == 'Islam' ? 'selected' : '' }}>Islam</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    {{-- Grid 2 --}}
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="text-sm font-medium">Kota Asal</label>
+                            <input type="text" name="kota_asal"
+                                value="{{ old('kota_asal', $siswa->kota_asal) }}"
+                                class="mt-1 w-full rounded-lg border-gray-300 focus:ring focus:ring-sky-200">
+                        </div>
+
+                        <div>
+                            <label class="text-sm font-medium">Status Pengamal</label>
+                            <select name="status_pengamal"
+                                class="mt-1 w-full rounded-lg border-gray-300 focus:ring focus:ring-sky-200">
+                                <option value="Pengamal" {{ old('status_pengamal', $status_pengamal->status_pengamal ?? 'Pengamal') == 'Pengamal' ? 'selected' : '' }}>Pengamal</option>
+                                <option value="Simpatisan" {{ old('status_pengamal', $status_pengamal->status_pengamal ?? '') == 'Simpatisan' ? 'selected' : '' }}>Simpatisan</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    {{-- TTL --}}
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="text-sm font-medium">Tempat Lahir</label>
+                            <input type="text" name="tempat_lahir"
+                                value="{{ old('tempat_lahir', $siswa->tempat_lahir) }}"
+                                class="mt-1 w-full rounded-lg border-gray-300 focus:ring focus:ring-sky-200">
+                        </div>
+
+                        <div>
+                            <label class="text-sm font-medium">Tanggal Lahir</label>
+                            <input type="date" name="tanggal_lahir"
+                                value="{{ old('tanggal_lahir', $siswa->tanggal_lahir) }}"
+                                class="mt-1 w-full rounded-lg border-gray-300 focus:ring focus:ring-sky-200">
+                        </div>
+                    </div>
+
+                    {{-- Status Anak --}}
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label class="text-sm font-medium">Status Anak</label>
+                            <select name="status_anak"
+                                class="mt-1 w-full rounded-lg border-gray-300">
+                                <option value="kandung" {{ old('status_anak', $statusAnak->status_anak ?? '') == 'kandung' ? 'selected' : '' }}>Kandung</option>
+                                <option value="tiri" {{ old('status_anak', $statusAnak->status_anak ?? '') == 'tiri' ? 'selected' : '' }}>Tiri</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="text-sm font-medium">Anak Ke</label>
+                            <input type="number" name="anak_ke"
+                                value="{{ old('anak_ke', $statusAnak->anak_ke ?? '') }}"
+                                class="mt-1 w-full rounded-lg border-gray-300">
+                        </div>
+
+                        <div>
+                            <label class="text-sm font-medium">Jumlah Saudara</label>
+                            <input type="number" name="jumlah_saudara"
+                                value="{{ old('jumlah_saudara', $statusAnak->jumlah_saudara ?? '') }}"
+                                class="mt-1 w-full rounded-lg border-gray-300">
+                        </div>
+                    </div>
+
+                    {{-- Orang Tua --}}
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                        {{-- Ayah --}}
+                        <div class="space-y-2">
+                            <h3 class="font-semibold text-gray-700">Data Ayah</h3>
+                            <input type="text" name="nama_ayah" placeholder="Nama Ayah"
+                                value="{{ old('nama_ayah', $statusAnak->nama_ayah ?? '') }}"
+                                class="w-full rounded-lg border-gray-300">
+                            <input type="text" name="pekerjaan_ayah" placeholder="Pekerjaan"
+                                value="{{ old('pekerjaan_ayah', $statusAnak->pekerjaan_ayah ?? '') }}"
+                                class="w-full rounded-lg border-gray-300">
+                            <input type="text" name="nomor_hp_ayah" placeholder="No HP"
+                                value="{{ old('nomor_hp_ayah', $statusAnak->nomor_hp_ayah ?? '') }}"
+                                class="w-full rounded-lg border-gray-300">
+                        </div>
+
+                        {{-- Ibu --}}
+                        <div class="space-y-2">
+                            <h3 class="font-semibold text-gray-700">Data Ibu</h3>
+                            <input type="text" name="nama_ibu" placeholder="Nama Ibu"
+                                value="{{ old('nama_ibu', $statusAnak->nama_ibu ?? '') }}"
+                                class="w-full rounded-lg border-gray-300">
+                            <input type="text" name="pekerjaan_ibu" placeholder="Pekerjaan"
+                                value="{{ old('pekerjaan_ibu', $statusAnak->pekerjaan_ibu ?? '') }}"
+                                class="w-full rounded-lg border-gray-300">
+                            <input type="text" name="nomor_hp_ibu" placeholder="No HP"
+                                value="{{ old('nomor_hp_ibu', $statusAnak->nomor_hp_ibu ?? '') }}"
+                                class="w-full rounded-lg border-gray-300">
+                        </div>
+                    </div>
+
+                    {{-- Actions --}}
+                    <div class="flex gap-2 pt-4">
+                        <button type="submit"
+                            class="px-4 py-2 bg-sky-600 hover:bg-sky-700 text-white rounded-lg">
+                            Update
+                        </button>
+
+                        @role('super admin')
+                        <a href="/siswa"
+                            class="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-lg">
+                            Batal
+                        </a>
+                        @endrole
+
+                        @role('siswa')
+                        <a href="/user"
+                            class="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-lg">
+                            Batal
+                        </a>
+                        @endrole
+                    </div>
+
+                </form>
             </div>
         </div>
     </div>

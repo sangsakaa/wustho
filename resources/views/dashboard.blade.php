@@ -1,278 +1,161 @@
 <x-app-layout>
     <x-slot name="header">
-        @section('title', ' | Dashboard Utama' )
-        <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-            <h2 class="text-xl font-semibold leading-tight">
-                {{ __('Dashboard') }}
-            </h2>
-
+        @section('title', ' | Dashboard Utama')
+        <div class="flex justify-between items-center">
+            <h2 class="text-xl font-semibold">Dashboard</h2>
         </div>
     </x-slot>
-    <div class=" px-2 font-semibold  bg-white dark:bg-dark-bg dark:text-purple-600 ">
-        <div class=" grid grid-cols-1 gap-2 p-1 sm:p-2 uppercase text-sm">
-            <div class="  w-full   flex ">
-                <div class=" bg-green-800 w-1"></div>
-                <div class=" bg-green-300 w-full  p-2 sm:p-2 ">
-                    <p>Madrasah Diniyah Takmiliyah {{ $TitleMadrasak->jenjang ?? '-' }}</p>
-                    <p>{{ $TitleMadrasak->periode ?? '-' }} {{ $TitleMadrasak->ket_semester ?? '-' }}</p>
-                </div>
-            </div>
-            <div class=" grid grid-cols-3 gap-2">
-                <div class="  w-full flex">
-                    <div class=" bg-green-800 w-1"></div>
-                    <div class=" bg-green-300 w-full p-2 ">
-                        <span>Laki Laki : {{$countLakiLaki}}</span>
-                    </div>
-                </div>
-                <div class="  w-full flex">
-                    <div class=" bg-green-800 w-1"></div>
-                    <div class=" bg-green-300 w-full p-2 ">
-                        <span>Perempuan : {{$countPerempuan}}</span>
-                    </div>
-                </div>
-                <div class="  w-full flex">
-                    <div class=" bg-green-800 w-1"></div>
-                    <div class=" bg-green-300 w-full p-2 ">
-                        @if($ula)
-                        <span> Total : {{$ula}}</span>
-                        @elseif($wustho)
-                        <span> Total : {{$wustho}}</span>
-                        @else
-                        <span> Total : {{$ulya}}</span>
-                        @endif
-                    </div>
-                </div>
-            </div>
-            <div class="   grid grid-cols-1 sm:grid-cols-2 gap-2">
-                <div>
-                    <canvas id="chart"></canvas>
-                </div>
-                <div>
-                    <canvas class="p-0" id="chartBar"></canvas>
-                </div>
-                <div>
-                    <canvas id="chartx"></canvas>
-                </div>
-                <div>
-                    <canvas id="tahunMasukChart"></canvas>
-                </div>
-                <div>
-                    <!-- <canvas id="madin" class=" font-semibold"></canvas> -->
-                </div>
-            </div>
+
+    <div class="p-4 space-y-4 bg-gray-100 dark:bg-dark-bg">
+
+        {{-- HEADER INFO --}}
+        <div class="bg-white rounded-2xl shadow p-4">
+            <h3 class="text-lg font-bold">
+                Madrasah Diniyah Takmiliyah {{ $TitleMadrasak->jenjang ?? '-' }}
+            </h3>
+            <p class="text-gray-500 text-sm">
+                {{ $TitleMadrasak->periode ?? '-' }} - {{ $TitleMadrasak->ket_semester ?? '-' }}
+            </p>
         </div>
+
+        {{-- SUMMARY CARD --}}
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+
+            <div class="bg-white rounded-2xl shadow p-4">
+                <p class="text-sm text-gray-500">Total Siswa</p>
+                <h2 class="text-2xl font-bold">{{ $siswaStats->total ?? 0 }}</h2>
+            </div>
+
+            <div class="bg-blue-100 rounded-2xl p-4">
+                <p>Laki-laki</p>
+                <h2 class="text-xl font-bold">{{ $siswaStats->laki ?? 0 }}</h2>
+            </div>
+
+            <div class="bg-pink-100 rounded-2xl p-4">
+                <p>Perempuan</p>
+                <h2 class="text-xl font-bold">{{ $siswaStats->perempuan ?? 0 }}</h2>
+            </div>
+
+            <div class="bg-green-100 rounded-2xl p-4">
+                <p>Jenjang</p>
+                <h2 class="text-sm font-bold">
+                    Ula: {{ $siswaStats->ula ?? 0 }} |
+                    W: {{ $siswaStats->wustho ?? 0 }} |
+                    Ulya: {{ $siswaStats->ulya ?? 0 }}
+                </h2>
+            </div>
+
+        </div>
+
+        {{-- CHART --}}
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+            <div class="bg-white rounded-2xl shadow p-4">
+                <h3 class="font-semibold mb-2">Siswa per Kelas</h3>
+                <canvas id="chartKelas"></canvas>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow p-4">
+                <h3 class="font-semibold mb-2">Jenis Kelamin per Kelas</h3>
+                <canvas id="chartJK"></canvas>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow p-4 md:col-span-2">
+                <h3 class="font-semibold mb-2">Tahun Masuk</h3>
+                <canvas id="chartTahun"></canvas>
+            </div>
+
+        </div>
+
     </div>
-    <!-- <canvas id="jenis_kelamin" class="font-semibold"></canvas> -->
-    <script>
-        var ctx = document.getElementById('jenis_kelamin').getContext('2d');
-        var studentsChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['Laki-laki', 'Perempuan'],
-                datasets: [{
-                    label: 'BERDASARKAN JENIS KELAMIN',
-                    data: [
-                        <?php echo json_encode($countLakiLaki); ?>,
-                        <?php echo json_encode($countPerempuan); ?>
-                    ],
-                    backgroundColor: [
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 99, 132, 0.2)'
-                    ],
-                    borderColor: [
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 99, 132, 1)'
-                    ],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
-                        }
-                    }]
-                }
-            }
-        });
-    </script>
-    <script>
-        var ctx = document.getElementById('madin').getContext('2d');
-        var datasets = [];
 
-        <?php if ($ula) : ?>
-            datasets.push({
-                label: 'ULA',
-                data: [<?php echo json_encode($ula); ?>],
-                backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                borderColor: 'rgba(54, 162, 235, 1)',
-                borderWidth: 1
-            });
-        <?php endif; ?>
-
-        <?php if ($wustho) : ?>
-            datasets.push({
-                label: 'WUSTHO',
-                data: [<?php echo json_encode($wustho); ?>],
-                backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                borderColor: 'rgba(255, 99, 132, 1)',
-                borderWidth: 1
-            });
-        <?php endif; ?>
-
-        <?php if ($ulya) : ?>
-            datasets.push({
-                label: 'ULYA',
-                data: [<?php echo json_encode($ulya); ?>],
-                backgroundColor: 'rgba(255, 206, 86, 0.2)',
-                borderColor: 'rgba(255, 206, 86, 1)',
-                borderWidth: 1
-            });
-        <?php endif; ?>
-
-        var studentsChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['JENJANG'],
-                datasets: datasets
-            },
-            options: {
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
-                        }
-                    }]
-                }
-            }
-        });
-    </script>
-    <script>
-        var ctx = document.getElementById('chart').getContext('2d');
-        var myChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: <?php echo json_encode($TitleKelas->pluck('nama_kelas')); ?>,
-                datasets: [{
-                    label: 'Berdasakan Kelas',
-                    data: <?php echo json_encode($TitleKelas->pluck('total_siswa')); ?>,
-                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                    borderColor: 'rgba(54, 162, 235, 1)',
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
-                        }
-                    }]
-                }
-            }
-        });
-    </script>
-
+    {{-- ======================
+        PREPARE DATA (ANTI ERROR PRETTIER)
+    ====================== --}}
     @php
-    $labels = [];
-    $dataSiswa = [];
-    $colors = [];
+    $kelasLabels = $dataSiswaPerKelas->pluck('kelas');
+    $kelasData = $dataSiswaPerKelas->pluck('total');
 
-    // Array warna yang akan digunakan
-    $colorArray = ["#FF6384", "#36A2EB", "#FFCE56", "#4BC0C0", "#9966FF"];
+    $jkLabels = $jenisKelamin->pluck('kelas');
+    $jkLaki = $jenisKelamin->pluck('laki');
+    $jkPerempuan = $jenisKelamin->pluck('perempuan');
 
-    foreach($dataSiswaPerKelas as $index => $data) {
-    $labels[] = $data->kelas;
-    $dataSiswa[] = $data->total_siswa;
-    // Mengambil warna dari array warna sesuai dengan indeks data
-    $colors[] = $colorArray[$index];
-    }
+    $tahunLabels = $tahunMasuk->pluck('tahun');
+    $tahunData = $tahunMasuk->pluck('total');
     @endphp
-    <!-- Required chart.js -->
+
+    {{-- CHART JS --}}
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <!-- Chart bar -->
     <script>
-        const labelsBarChart = <?php echo json_encode($labels); ?>;
-        const dataBarChart = {
-            labels: labelsBarChart,
-            datasets: [{
-                label: 'Data Murid Bedasarkan Kelas ',
-                backgroundColor: <?php echo json_encode($colors); ?>,
-                borderColor: "hsl(217, 52%, 51%)",
-                data: <?php echo json_encode($dataSiswa); ?>,
-            }]
-        };
+        const kelasLabels = @json($kelasLabels);
+        const kelasData = @json($kelasData);
 
-        const configBarChart = {
-            type: "bar",
-            data: dataBarChart,
-            options: {}
-        };
+        const jkLabels = @json($jkLabels);
+        const jkLaki = @json($jkLaki);
+        const jkPerempuan = @json($jkPerempuan);
 
-        var chartBar = new Chart(
-            document.getElementById("chartBar"),
-            configBarChart
-        );
-    </script>
-    <script>
-        var ctx = document.getElementById('chartx').getContext('2d');
-        var myChart = new Chart(ctx, {
+        const tahunLabels = @json($tahunLabels);
+        const tahunData = @json($tahunData);
+
+        // ======================
+        // CHART KELAS
+        // ======================
+        new Chart(document.getElementById('chartKelas'), {
             type: 'bar',
             data: {
-                labels: <?php echo json_encode($jenisKelamin->unique('kelas')->pluck('kelas')); ?>,
+                labels: kelasLabels,
                 datasets: [{
-                        label: 'Laki-Laki',
-                        data: <?php echo json_encode($jenisKelamin->where('jenis_kelamin', 'L')->pluck('total_siswa')); ?>,
-                        backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                        borderColor: 'rgba(54, 162, 235, 1)',
-                        borderWidth: 1
+                    label: 'Jumlah Siswa',
+                    data: kelasData,
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            }
+        });
+
+        // ======================
+        // CHART JENIS KELAMIN
+        // ======================
+        new Chart(document.getElementById('chartJK'), {
+            type: 'bar',
+            data: {
+                labels: jkLabels,
+                datasets: [{
+                        label: 'Laki-laki',
+                        data: jkLaki,
                     },
                     {
                         label: 'Perempuan',
-                        data: <?php echo json_encode($jenisKelamin->where('jenis_kelamin', 'P')->pluck('total_siswa')); ?>,
-                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                        borderColor: 'rgba(255, 99, 132, 1)',
-                        borderWidth: 1
+                        data: jkPerempuan,
                     }
                 ]
             },
             options: {
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
-                        }
-                    }]
-                }
+                responsive: true
             }
         });
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        var tahunMasukData = @json($tahunMasuk);
 
-        var tahunMasukChart = new Chart(document.getElementById('tahunMasukChart'), {
-            type: 'bar',
+        // ======================
+        // CHART TAHUN MASUK
+        // ======================
+        new Chart(document.getElementById('chartTahun'), {
+            type: 'line',
             data: {
-                labels: tahunMasukData.map(data => data.tahun_masuk),
+                labels: tahunLabels,
                 datasets: [{
-                    label: 'Tahun Angkatan',
-                    data: tahunMasukData.map(data => data.total_siswa),
-                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
-                    borderColor: 'rgba(54, 162, 235, 1)',
-                    borderWidth: 1
+                    label: 'Jumlah Siswa',
+                    data: tahunData,
                 }]
             },
             options: {
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
-                        }
-                    }]
-                }
+                responsive: true
             }
         });
     </script>

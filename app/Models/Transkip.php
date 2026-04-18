@@ -16,4 +16,8 @@ class Transkip extends Model
     {
         return $this->hasMany(Nilai_Transkip::class, 'transkip_id', 'id');
     }
+    public function nilaiTranskip()
+    {
+        return $this->hasMany(Nilai_Transkip::class);
+    }
 }

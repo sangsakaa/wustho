@@ -6,60 +6,70 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <!-- <title>{{ config('app.name', 'SMEDI') }}</title> -->
     <title>SMEDI @yield('title')</title>
     <link rel="shortcut icon" href="{{ asset('asset/images/logo.png') }}" type="image/x-icon">
-    <!-- <link rel="stylesheet" href="{{ asset('css/app.css') }}"> -->
 
-    <!-- <link rel="stylesheet" href="{{ asset('css/app.css') }}"> -->
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,200;0,300;0,400;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet" />
+    <!-- Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
 
-    <!-- toastr -->
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+    <!-- Toastify -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
+    <!-- Chart -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- Styles -->
+
     <style>
         [x-cloak] {
             display: none;
         }
     </style>
 
-    <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
 </head>
 
-<body class="font-sans antialiased">
-    <div x-data="mainState" :class="{ dark: isDarkMode }" @resize.window="handleWindowResize" x-cloak>
-        <div class="min-h-screen text-gray-900 bg-gray-100  dark:bg-dark-bg dark:text-gray-200">
-            <!-- Sidebar -->
-            <x-sidebar.sidebar />
-            <!-- Page Wrapper -->
-            <div class="flex fixed-top flex-col min-h-screen" :class="{ 
-                    'lg:ml-64': isSidebarOpen,
-                    'md:ml-16': !isSidebarOpen
-                }" style="transition-property: margin; transition-duration: 150ms;">
-                <!-- Navbar -->
-                <x-navbar />
-                <!-- Page Heading -->
-                <header>
-                    <div class=" dark:bg-dark-bg dark:text-purple-600 bg-white mt-2 mb-2 p-2 sm:p-2">
-                        Dashboard{{ $header }}
-                    </div>
-                </header>
+<body class="font-sans antialiased overflow-hidden">
+    <div x-data="mainState"
+        :class="{ dark: isDarkMode }"
+        @resize.window="handleWindowResize"
+        class="h-screen flex"
+        x-cloak>
 
-                <!-- Page Content -->
-                <main class="  flex-1">
+        <!-- Sidebar -->
+        <x-sidebar.sidebar />
+
+        <!-- Page Wrapper -->
+        <div class="flex flex-col flex-1 transition-all duration-150"
+            :class="{ 
+                'lg:ml-64': isSidebarOpen,
+                'md:ml-16': !isSidebarOpen
+             }">
+
+            <!-- Navbar -->
+            <x-navbar />
+
+            <!-- Header -->
+
+            <header class=" p-16 dark:bg-dark-bg px-4 py-2 shadow-sm">
+                <h1 class="text-sm font-semibold text-gray-700 dark:text-purple-400">
+                    Dashboard {{ $header }}
+                </h1>
+            </header>
+
+
+            <!-- Content (SCROLL AREA) -->
+            <main class="flex-1  overflow-y-auto bg-gray-100 dark:bg-dark-bg ">
+                <div class=" dark:bg-gray-800 rounded shadow-sm ">
                     {{ $slot }}
-                </main>
+                </div>
+            </main>
 
-                <!-- Page Footer -->
-                <x-footer />
-            </div>
+            <!-- Footer -->
+            <x-footer />
         </div>
     </div>
+
     @livewireScripts
 </body>
 

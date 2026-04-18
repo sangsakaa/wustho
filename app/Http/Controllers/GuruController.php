@@ -11,16 +11,30 @@ use Illuminate\Routing\Controller;
 
 class GuruController extends Controller
 {
-    
+
     public function index()
     {
-        $data = Guru::orderBy('nama_guru');
-        if (request('cari')) {
-            $data->where('nama_guru', 'like', '%' . request('cari') . '%')->orderby('nama_guru');
-        }
-        return view('guru/guru', ['dataGuru' => $data->paginate(10)]);
-    }
+        $query = Guru::query()->orderBy('nama_guru');
 
+        if (request('cari')) {
+            $query->where('nama_guru', 'like', '%' . request('cari') . '%');
+        }
+
+        $dataGuru = $query->paginate(10)->withQueryString();
+
+        $totalGuru = Guru::count();
+        $aktif = Guru::where('status', 'Aktif')->count();
+        $nonaktif = Guru::where('status', 'Non Aktif')->count();
+        $cuti = Guru::where('status', 'Cuti')->count();
+
+        return view('guru.guru', compact(
+            'dataGuru',
+            'totalGuru',
+            'aktif',
+            'nonaktif',
+            'cuti'
+        ));
+    }
     
     public function create()
     {

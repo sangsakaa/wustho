@@ -1,109 +1,154 @@
 <x-app-layout>
     <x-slot name="header">
-        @section('title','| NOMINASI : ' )
-        <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-            <h2 class="text-xl font-semibold leading-tight">
-                {{ __('Dashboard Nominasi') }}
+        @section('title',' | NOMINASI')
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
+            <h2 class="text-xl font-semibold text-gray-800">
+                Manajemen Nominasi Ujian
             </h2>
-
         </div>
     </x-slot>
-    <div class=" bg-white   px-2 py-2 gap-2">
-        <form action="/daftar-seleksi" method="post" class="   w-full">
-            @csrf
-            <div class=" w-full grid grid-cols-2 gap-1">
-                <div class=" grid grid-cols-1">
-                    <label for="">Kelas</label>
-                    <select name="kelasmi_id" id="" class=" py-1 " required>
-                        <option value="">-- Pilih Kelas --</option>
-                        @foreach($daftarKelas as $item)
-                        <option value="{{$item->id}}">
-                            {{$item->nama_kelas}}
-                            {{$item->periode}}
-                            {{$item->ket_semester}}
-                        </option>
-                        @endforeach
-                    </select>
+
+    <div class="p-4 space-y-4">
+
+        <!-- FORM -->
+        <div class="bg-white shadow-sm rounded-lg p-4">
+            <h3 class="text-sm font-semibold text-gray-600 mb-3 uppercase">
+                Form Tambah Nominasi
+            </h3>
+
+            <form action="/daftar-seleksi" method="POST">
+                @csrf
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+
+                    <!-- KELAS -->
+                    <div>
+                        <label class="text-sm font-medium">Kelas</label>
+                        <select name="kelasmi_id" required
+                            class="w-full mt-1 border-gray-300 rounded-md text-sm focus:ring-blue-500 focus:border-blue-500">
+                            <option value="">-- Pilih Kelas --</option>
+                            @foreach($daftarKelas as $item)
+                            <option value="{{ $item->id }}">
+                                {{ $item->nama_kelas }} - {{ $item->periode }} {{ $item->ket_semester }}
+                            </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <!-- PERIODE -->
+                    <div>
+                        <label class="text-sm font-medium">Periode Ujian</label>
+                        <select name="periode_id" required
+                            class="w-full mt-1 border-gray-300 rounded-md text-sm focus:ring-blue-500 focus:border-blue-500">
+                            <option value="">-- Pilih Periode --</option>
+                            @foreach($dataPeriode as $item)
+                            <option value="{{ $item->id }}">
+                                {{ $item->periode }} {{ $item->ket_semester }}
+                            </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <!-- TANGGAL MULAI -->
+                    <div>
+                        <label class="text-sm font-medium">Tanggal Mulai</label>
+                        <input type="date" name="tanggal_mulai"
+                            class="w-full mt-1 border-gray-300 rounded-md text-sm focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+
+                    <!-- TANGGAL SELESAI -->
+                    <div>
+                        <label class="text-sm font-medium">Tanggal Selesai</label>
+                        <input type="date" name="tanggal_selesai"
+                            class="w-full mt-1 border-gray-300 rounded-md text-sm focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+
                 </div>
-                <div class=" grid grid-cols-1">
-                    <label for="">Periode Ujian</label>
-                    <select name="periode_id" id="" class=" py-1 " required>
-                        <option value="">-- Pilih Periode --</option>
-                        @foreach($dataPeriode as $item)
-                        <option value="{{$item->id}}">
-                            {{$item->periode}}
-                            {{$item->ket_semester}}
-                        </option>
-                        @endforeach
-                    </select>
+
+                <!-- BUTTON -->
+                <div class="mt-4">
+                    <button type="submit"
+                        class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 text-sm">
+                        Simpan Nominasi
+                    </button>
                 </div>
-                <div class=" grid grid-cols-1">
-                    <label for="">Tanggal Mulai</label>
-                    <input name="tanggal_mulai" type="date" class=" w-full sm:w-full py-1 " placeholder="  Mapel : Fiqih">
-                </div>
-                <div class=" grid grid-cols-1">
-                    <label for="">Tanggal Selesai</label>
-                    <input name="tanggal_selesai" type="date" class=" w-full sm:w-full py-1 " placeholder="  Mapel : Fiqih">
-                </div>
-                <button class=" bg-red-600 py-1 dark:bg-purple-600 mt-1 my-1 w-full sm:w-40 rounded-sm hover:bg-purple-600 text-white px-4 capitalize ">nominasi</button>
+            </form>
+        </div>
+
+        <!-- TABLE -->
+        <div class="bg-white shadow-sm rounded-lg overflow-hidden">
+            <div class="p-3 border-b">
+                <h3 class="text-sm font-semibold text-gray-600 uppercase">
+                    Daftar Nominasi
+                </h3>
             </div>
-        </form>
+
+            <div class="overflow-x-auto">
+                <table class="min-w-full border border-gray-200 text-sm">
+                    <thead class="bg-gray-100 text-gray-600 uppercase text-xs">
+                        <tr>
+                            <th class="border px-2 py-2 w-10">No</th>
+                            <th class="border px-2 py-2 text-center">Kelas</th>
+                            <th class="border px-2 py-2 text-center">Periode</th>
+                            <th class="border px-2 py-2 text-center">Tanggal Mulai</th>
+                            <th class="border px-2 py-2 text-center">Tanggal Selesai</th>
+                            <th class="border px-2 py-2 text-center w-24">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($nominasi as $item)
+                        <tr class="hover:bg-gray-50">
+                            <td class="border px-2 py-1 text-center">
+                                {{ $loop->iteration }}
+                            </td>
+
+                            <td class="border px-2 py-1 text-center">
+                                <a href="/daftar-nominasi/{{ $item->id }}"
+                                    class="text-blue-600 hover:underline">
+                                    {{ $item->nama_kelas }}
+                                </a>
+                            </td>
+
+                            <td class="border px-2 py-1 text-center">
+                                {{ $item->periode }} {{ $item->ket_semester }}
+                            </td>
+
+                            <td class="border px-2 py-1 text-center">
+                                {{ \Carbon\Carbon::parse($item->tanggal_mulai)->isoFormat('D MMMM Y') }}
+                            </td>
+
+                            <td class="border px-2 py-1 text-center">
+                                {{ \Carbon\Carbon::parse($item->tanggal_selesai)->isoFormat('D MMMM Y') }}
+                            </td>
+
+                            <td class="border px-2 py-1 text-center">
+                                <form action="/daftar-seleksi/{{ $item->id }}" method="POST"
+                                    onsubmit="return confirm('Hapus nominasi {{ $item->nama_kelas }}?')">
+                                    @csrf
+                                    @method('DELETE')
+
+                                    <button
+                                        class="px-2 py-1 bg-red-600 text-white rounded hover:bg-red-700 text-xs">
+                                        Hapus
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="6"
+                                class="text-center py-3 text-gray-500 italic">
+                                Belum ada data nominasi
+                            </td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- PAGINATION -->
+
+        </div>
+
     </div>
-    <div class=" bg-white mt-2   px-2 py-2 gap-2">
-        <table class=" w-full">
-            <thead>
-                <tr>
-                    <th class=" border text-center px-1 ">No</th>
-                    <th class=" border text-center px-1 ">Kelas </th>
-                    <th class=" border text-center px-1 ">Periode</th>
-                    <th class=" border text-center px-1 ">Tanggal Mulai</th>
-                    <th class=" border text-center px-1 ">Tanggal Selesai</th>
-                    <th class=" border text-center px-1 capitalize ">act</th>
-                </tr>
-            </thead>
-            <tbody>
-                @if($nominasi->count() != null)
-                @foreach($nominasi as $item)
-                <tr class=" border ">
-                    <th>{{$loop->iteration}}</th>
-                    <td class=" border text-center">
-                        <a href="/daftar-nominasi/{{$item->id}}">
-                            {{$item->nama_kelas}}
-                        </a>
-                    </td>
-                    <td class=" border text-center">
-                        {{$item->periode}}
-                        {{$item->ket_semester}}
-                    </td>
-                    <td class=" border text-center">
-                        {{ \Carbon\Carbon::parse($item->tanggal_mulai)->isoFormat(' DD MMMM Y') }}
-                    </td>
-                    <td class=" border text-center">
-                        {{ \Carbon\Carbon::parse($item->tanggal_selesai)->isoFormat(' DD MMMM Y') }}
-                    </td>
-                    <td class=" border text-center">
-                        <form action="daftar-seleksi/{{$item->id}}" method="post" class=" text-red-600">
-                            @csrf
-                            @method('delete')
-                            <button>
-                                <x-icons.hapus></x-icons>
-                            </button>
-                        </form>
-                    </td>
-                </tr>
-                @endforeach
-                @else
-                <tr class=" border ">
-                    <td colspan="6" class=" text-center">
-                        <span class=" font-semibold capitalize "> belum ada daftar nominasi</span>
-                    </td>
-                </tr>
-                @endif
-            </tbody>
-        </table>
-    </div>
-
-
-
-
 </x-app-layout>

@@ -1,117 +1,126 @@
 <x-app-layout>
     <x-slot name="header">
-        @section('title', ' | Kurikulum' )
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Daftar Mata Pelajaran dan Kurikulum') }}
+        @section('title', ' | Kurikulum')
+        <h2 class="font-semibold text-xl text-gray-800">
+            Daftar Mata Pelajaran & Kurikulum
         </h2>
     </x-slot>
-    <div class=" px-2 mt-2 overflow-auto ">
-        <div class=" mx-auto ">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-md">
-                <div class="p-2 border-b border-gray-200">
-                    <div class=" flex w-full gap-1 ">
-                        <a href="/addmapel" class=" capitalize rounded-md   bg-blue-800 flex text-white px-2 py-1">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                            Tambah Mata Pelajaran
 
-                        </a>
+    <!-- ACTION -->
+    <div class="px-4 py-3">
+        <div class="flex justify-between items-center">
+            <a href="/addmapel"
+                class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm rounded-lg shadow">
 
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+                    viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        stroke-width="2" d="M12 4v16m8-8H4" />
+                </svg>
 
-                    </div>
-                </div>
-            </div>
+                Tambah Mapel
+            </a>
         </div>
-
-    </div>
-    <div class=" grid grid-cols-1 sm:grid-cols-1 gap-2 sm:px-1 px-2 py-2">
-        <div class="">
-            <div class=" mx-auto ">
-                <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class=" bg-white border-b border-gray-200">
-                        <div class=" p-4 grid grid-cols-1">
-                            @if (session('delete'))
-                            <div class="py-2">
-                                <div class="bg-red-500 px-2 py-1 text-white">
-                                    {{ session('delete') }}
-                                </div>
-                            </div>
-                            <meta http-equiv="refresh" content="5">
-                            @endif
-                            @if (session('success'))
-                            <div class="py-2">
-                                <div class="bg-green-500 px-2 py-1 text-white">
-                                    {{ session('success') }}
-                                </div>
-                            </div>
-                            <meta http-equiv="refresh" content="5">
-                            @endif
-                            @if (session('update'))
-                            <div class="py-2">
-                                <div class="bg-blue-500 px-2 py-1 text-white">
-                                    {{ session('update') }}
-                                </div>
-                            </div>
-                            <meta http-equiv="refresh" content="5">
-                            @endif
-                            <div class=" overflow-auto">
-                                <table class=" w-full border">
-                                    <thead class=" border bg-gray-200 uppercase text-xs sm:text-xs ">
-                                        <tr class=" overflow-auto">
-                                            <th class=" border px-2 py-1">No</th>
-                                            <th class=" border px-2 text-center sm:text-sm text-xs">Periode</th>
-                                            <th class=" border px-2 text-center sm:text-sm text-xs">Mata Pelajaran</th>
-                                            <th class=" border px-2 text-center sm:text-sm text-xs">Nama Kitab</th>
-                                            <th class=" border px-2 text-center sm:text-sm text-xs">Kelas</th>
-                                            <th class=" border px-2 text-center sm:text-sm text-xs">Aksi</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody class=" overflow-auto">
-                                        @foreach($listmapel as $list)
-                                        <tr class=" hover:bg-gray-100">
-                                            <th class=" border sm:text-sm text-xs">
-                                                <a href="/report/{{$list->id}}"> {{$loop->iteration}}</a>
-                                            </th>
-                                            <th class=" border sm:text-sm text-xs px-2 text-center">
-                                                <a href="/report/{{$list->id}}"> {{$list->periode}} {{$list->ket_semester}}</a>
-                                            </th>
-                                            <th class=" border sm:text-sm text-xs px-2 text-left">
-                                                <a href="/report/{{$list->id}}"> {{$list->mapel}}</a>
-                                            </th>
-                                            <th class=" border sm:text-sm text-xs px-2 text-left">
-                                                <a href="/report/{{$list->id}}"> {{$list->nama_kitab}}</a>
-                                            </th>
-                                            <th class=" border sm:text-sm text-xs px-2 text-center">
-                                                <a href="/report/{{$list->id}}">
-                                                    {{$list->kelas}}
-                                                </a>
-                                            </th>
-                                            <th class=" border sm:text-sm text-xs flex px-1  py-1 gap-1 justify-center  ">
-                                                <form action="/mapel/{{$list->id}}" method="post">
-                                                    @csrf
-                                                    @method('delete')
-                                                    <button class="  rounded-md  bg-red-500 text-white p-1  " onclick=" return confirm('apakah anda yakin menghapus data ini : {{$list->mapel}}')">Hapus</button>
-                                                </form>
-                                                <a href="/edit-mapel/{{$list->id}}" class=" rounded-md bg-yellow-400 px-2 py-1 text-black">
-                                                    Ubah
-                                                </a>
-                                            </th>
-
-                                        </tr>
-                                        @endforeach
-                                    </tbody>
-
-                                </table>
-                            </div>
-
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-
     </div>
 
+    <!-- CONTENT -->
+    <div class="px-4 pb-6">
+        <div class="bg-white border border-gray-200 rounded-xl shadow-sm p-4">
+
+            <!-- ALERT -->
+            @if (session('delete'))
+            <div class="mb-3 px-4 py-2 rounded-lg bg-red-100 text-red-700 text-sm">
+                {{ session('delete') }}
+            </div>
+            @endif
+
+            @if (session('success'))
+            <div class="mb-3 px-4 py-2 rounded-lg bg-green-100 text-green-700 text-sm">
+                {{ session('success') }}
+            </div>
+            @endif
+
+            @if (session('update'))
+            <div class="mb-3 px-4 py-2 rounded-lg bg-blue-100 text-blue-700 text-sm">
+                {{ session('update') }}
+            </div>
+            @endif
+
+            <!-- TABLE -->
+            <div class="overflow-auto">
+                <table class="w-full text-sm border rounded-lg overflow-hidden">
+
+                    <thead class="bg-gray-100 text-gray-600 uppercase text-xs">
+                        <tr>
+                            <th class="py-2 border text-center">No</th>
+                            <th class="border text-center">Periode</th>
+                            <th class="border text-left px-3">Mata Pelajaran</th>
+                            <th class="border text-left px-3">Kitab</th>
+                            <th class="border text-center">Kelas</th>
+                            <th class="border text-center">Aksi</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @forelse($listmapel as $list)
+                        <tr class="hover:bg-gray-50 transition">
+                            <td class="border text-center py-2">
+                                <a href="/report/{{ $list->id }}" class="text-blue-600 hover:underline">
+                                    {{ $loop->iteration }}
+                                </a>
+                            </td>
+
+                            <td class="border text-center">
+                                {{ $list->periode }} {{ $list->ket_semester }}
+                            </td>
+
+                            <td class="border px-3">
+                                {{ $list->mapel }}
+                            </td>
+
+                            <td class="border px-3">
+                                {{ $list->nama_kitab }}
+                            </td>
+
+                            <td class="border text-center">
+                                {{ $list->kelas }}
+                            </td>
+
+                            <td class="border">
+                                <div class="flex justify-center gap-2 py-1">
+
+                                    <!-- EDIT -->
+                                    <a href="/edit-mapel/{{ $list->id }}"
+                                        class="px-3 py-1 text-xs bg-yellow-400 hover:bg-yellow-500 text-black rounded-md">
+                                        Edit
+                                    </a>
+
+                                    <!-- DELETE -->
+                                    <form action="/mapel/{{ $list->id }}" method="post">
+                                        @csrf
+                                        @method('delete')
+                                        <button
+                                            onclick="return confirm('Yakin hapus: {{ $list->mapel }}?')"
+                                            class="px-3 py-1 text-xs bg-red-500 hover:bg-red-600 text-white rounded-md">
+                                            Hapus
+                                        </button>
+                                    </form>
+
+                                </div>
+                            </td>
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="6" class="text-center text-gray-500 py-4">
+                                Data mata pelajaran belum tersedia
+                            </td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+
+                </table>
+            </div>
+
+        </div>
+    </div>
 </x-app-layout>

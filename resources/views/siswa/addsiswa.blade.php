@@ -1,66 +1,125 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard') }}
-        </h2>
-    </x-slot>
-    <div class="p-2">
-        <div class=" mx-auto ">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class=" bg-white border-b border-gray-200">
-                    <div class=" px-4 py-4 grid grid-cols-1">
-                        <form action="/siswa" method="post">
-                            @role('super admin')
-                            <span class=" capitalize text-2xl text-blue-300">biodata siswa</span>
-                            @endrole
-                            @role('pengurus')
-                            <span class=" capitalize text-2xl text-blue-300">biodata Santri</span>
-                            @endrole
-                            <div class=" grid-cols-1 sm:grid-cols-1">
-                                @csrf
-                                <label for="">Nama lengkap</label>
-                                <input name="nama_siswa" type="text" class=" w-full py-1 rounded-md @error('nama_siswa') is-invalid @enderror" placeholder=" masukan nama lengkap" value="{{old('nama_siswa')}}">
-                                @error('nama_siswa')
-                                <div class=" text-red-500">{{ $message }}</div>
-                                @enderror
-                                <label for="">Jenis Kelamin</label>
-                                <select name="jenis_kelamin" id="" class=" w-full py-1 rounded-md" required value="{{old('jenis_kelamin')}}">
-                                    <option value="">-- Pilih Jenis Kelamin --</option>
-                                    <option value="L"> Laki Laki </option>
-                                    <option value="P"> Perempuan </option>
-                                </select>
-                                <label for="">Agama</label>
-                                <select name="agama" id="" class=" w-full py-1 rounded-md" required value="{{old('agama')}}">
-                                    <!-- <option value="">-- Pilih Agama --</option> -->
-                                    <option value="Islam"> Islam </option>
-                                </select>
-                                <div class=" grid grid-cols-1 gap-2 sm:grid-cols-2">
-                                    <div>
-                                        <label for="">Tempat Lahir</label>
-                                        <input name="tempat_lahir" type="text" class=" w-full py-1 rounded-md" placeholder=" masukan tempat Lahir" value="{{old('tempat_lahir')}}" required>
-                                    </div>
-                                    <div>
-                                        <label for="">Tanggal Lahir</label>
-                                        <input name="tanggal_lahir" type="date" class=" w-full py-1 rounded-md" placeholder=" masukan nama lengkap" required>
-                                    </div>
-                                </div>
-                                <label for="">Asal Kota</label>
-                                <input name="kota_asal" type="text" class=" w-full py-1 rounded-md" placeholder=" masukan Asal Kota" required value="{{old('kota_asal')}}">
-                                <div>
-                                    <button type="submit" class=" px-2 py-1 bg-blue-600 text-white rounded-md mt-1">Simpan</button>
-                                    <a href="/siswa" class=" px-2 py-1 bg-red-600 text-white rounded-md mt-1">
-                                        Batal
-                                    </a>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
+        <div class="max-w-4xl mx-auto px-4">
+            <h2 class="font-bold text-2xl text-gray-800 dark:text-white">
+                {{ __('Tambah Data Siswa') }}
+            </h2>
+            <p class="text-sm text-gray-500 dark:text-gray-400">
+                Form input biodata siswa / santri
+            </p>
         </div>
+    </x-slot>
 
+    <div class="bg-gray-100 dark:bg-dark-bg min-h-screen py-8">
+        <div class="max-w-4xl mx-auto px-4">
 
+            <div class="bg-white dark:bg-gray-900 shadow-md rounded-2xl p-6 border border-gray-200 dark:border-gray-700">
+
+                <form action="/siswa" method="post" class="space-y-5">
+                    @csrf
+
+                    {{-- TITLE --}}
+                    <div>
+                        @role('super admin')
+                        <h3 class="text-lg font-semibold text-blue-600 capitalize">Biodata Siswa</h3>
+                        @endrole
+
+                        @role('pengurus')
+                        <h3 class="text-lg font-semibold text-blue-600 capitalize">Biodata Santri</h3>
+                        @endrole
+                    </div>
+
+                    {{-- NAMA --}}
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                            Nama Lengkap
+                        </label>
+                        <input name="nama_siswa" type="text"
+                            class="mt-1 w-full rounded-lg border-gray-300 focus:ring-blue-500 focus:border-blue-500 @error('nama_siswa') border-red-500 @enderror"
+                            placeholder="Masukkan nama lengkap"
+                            value="{{ old('nama_siswa') }}">
+
+                        @error('nama_siswa')
+                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    {{-- JK --}}
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                            Jenis Kelamin
+                        </label>
+                        <select name="jenis_kelamin"
+                            class="mt-1 w-full rounded-lg border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+                            required>
+                            <option value="">-- Pilih Jenis Kelamin --</option>
+                            <option value="L" {{ old('jenis_kelamin') == 'L' ? 'selected' : '' }}>Laki Laki</option>
+                            <option value="P" {{ old('jenis_kelamin') == 'P' ? 'selected' : '' }}>Perempuan</option>
+                        </select>
+                    </div>
+
+                    {{-- AGAMA --}}
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                            Agama
+                        </label>
+                        <select name="agama"
+                            class="mt-1 w-full rounded-lg border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+                            required>
+                            <option value="Islam" selected>Islam</option>
+                        </select>
+                    </div>
+
+                    {{-- TEMPAT & TGL LAHIR --}}
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                Tempat Lahir
+                            </label>
+                            <input name="tempat_lahir" type="text"
+                                class="mt-1 w-full rounded-lg border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+                                placeholder="Masukkan tempat lahir"
+                                value="{{ old('tempat_lahir') }}" required>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                Tanggal Lahir
+                            </label>
+                            <input name="tanggal_lahir" type="date"
+                                class="mt-1 w-full rounded-lg border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+                                required>
+                        </div>
+                    </div>
+
+                    {{-- KOTA --}}
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                            Asal Kota
+                        </label>
+                        <input name="kota_asal" type="text"
+                            class="mt-1 w-full rounded-lg border-gray-300 focus:ring-blue-500 focus:border-blue-500"
+                            placeholder="Masukkan asal kota"
+                            value="{{ old('kota_asal') }}" required>
+                    </div>
+
+                    {{-- BUTTON --}}
+                    <div class="flex items-center gap-3 pt-2">
+                        <button type="submit"
+                            class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg shadow-sm">
+                            Simpan
+                        </button>
+
+                        <a href="/siswa"
+                            class="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-lg shadow-sm">
+                            Batal
+                        </a>
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
     </div>
-
-
 </x-app-layout>

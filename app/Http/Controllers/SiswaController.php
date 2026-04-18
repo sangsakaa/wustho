@@ -19,24 +19,23 @@ class SiswaController extends Controller
     {
         $data = Siswa::query()
             ->leftJoin('nis', 'nis.siswa_id', '=', 'siswa.id')
-            // ->where(function ($query) {
-            //     $query->where('nis.madrasah_diniyah', '=', 'wustho')
-            //         ->orWhereNull('nis.madrasah_diniyah');
-            // })
-            ->select('siswa.*')
-            // ->orderby('nis')
-        ;
+            ->select('siswa.*', 'nis.nis as nomor_nis')
+            ->orderBy('siswa.nama_siswa');
+
         if (request('cari')) {
-            $data->where('nama_siswa', 'like', '%' . request('cari') . '%');
-            $data->Orwhere('nis', 'like', '%' . request('cari') . '%');
+            $keyword = request('cari');
+
+            $data->where(function ($q) use ($keyword) {
+                $q->where('siswa.nama_siswa', 'like', "%$keyword%")
+                    ->orWhere('nis.nis', 'like', "%$keyword%");
+            });
         }
-        return view('siswa/siswa', ['dataSiswa' => $data->paginate(10)]);
+
+        return view('siswa.siswa', [
+            'dataSiswa' => $data->paginate(10)->withQueryString()
+        ]);
     }
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function create()
     {
         return view('siswa/addsiswa');

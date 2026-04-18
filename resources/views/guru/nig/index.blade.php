@@ -4,66 +4,113 @@
             {{ __('Dashboard Detail Guru') }}
         </h2>
     </x-slot>
-    <div class="">
-        <div class="bg-white overflow-hidden shadow-sm ">
-            <div class="p-2 bg-white border-b border-gray-200">
-                <div class=" p-4 grid grid-cols-4 gap-1 ">
-                    <div class=" ">Nama Lengkap</div>
-                    <div class=" ">: {{$guru->nama_guru}}</div>
-                    <div class=" ">Jenia Kelamin</div>
-                    <div class=" ">: {{$guru->jenis_kelamin}}</div>
+
+    <div class="p-4 space-y-4">
+
+        {{-- DETAIL GURU --}}
+        <div class="bg-white shadow-sm border rounded-lg">
+            <div class="p-4 grid grid-cols-1 md:grid-cols-4 gap-3 text-sm">
+
+                <div class="font-semibold">Nama Lengkap</div>
+                <div>: {{$guru->nama_guru}}</div>
+
+                <div class="font-semibold">Jenis Kelamin</div>
+                <div>: {{$guru->jenis_kelamin}}</div>
+
+            </div>
+        </div>
+
+        {{-- FORM + LIST --}}
+        <div class="bg-white shadow-sm border rounded-lg p-4 space-y-6">
+
+            {{-- NAV --}}
+            <div>
+                <a href="/guru/{{$guru->id}}"
+                    class="inline-flex items-center px-3 py-1 bg-sky-500 text-white rounded hover:bg-sky-600 transition">
+                    ← Kembali ke Detail
+                </a>
+            </div>
+
+            {{-- FORM --}}
+            <div>
+                <h3 class="font-semibold mb-2">Generate Nomor Induk Guru</h3>
+
+                <form action="/nig/{{$guru->id}}" method="POST"
+                    class="flex flex-col md:flex-row gap-2 md:items-center">
+
+                    @csrf
+
+                    <input type="hidden" name="guru_id" value="{{$guru->id}}">
+                    <input type="hidden" name="jenjang_id" value="2">
+
+                    <input type="text"
+                        name="nig"
+                        placeholder="Contoh: 2023010001"
+                        class="w-full md:w-64 px-3 py-2 border rounded focus:outline-none focus:ring focus:ring-blue-300"
+                        required>
+
+                    <button class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
+                        Generate NIG
+                    </button>
+                </form>
+            </div>
+
+            {{-- TABLE --}}
+            <div>
+                <h3 class="font-semibold mb-2">Daftar Nomor Induk Guru</h3>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full border text-sm">
+
+                        <thead class="bg-gray-100">
+                            <tr>
+                                <th class="border px-2 py-2 text-center">No</th>
+                                <th class="border px-2 py-2 text-center">Nomor Induk Guru</th>
+                                <th class="border px-2 py-2 text-center">Aksi</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @forelse($dataNIG as $nig)
+                            <tr class="hover:bg-gray-50 transition">
+
+                                <td class="border px-2 py-2 text-center">
+                                    {{$loop->iteration}}
+                                </td>
+
+                                <td class="border px-2 py-2 text-center font-mono">
+                                    {{$nig->nig}}
+                                </td>
+
+                                <td class="border px-2 py-2 text-center">
+
+                                    <form action="/nig/{{$nig->id}}" method="POST"
+                                        onsubmit="return confirm('Hapus NIG ini?')">
+                                        @method('DELETE')
+                                        @csrf
+
+                                        <button class="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition">
+                                            Delete
+                                        </button>
+                                    </form>
+
+                                </td>
+                            </tr>
+
+                            @empty
+                            <tr>
+                                <td colspan="3" class="text-center py-4 text-gray-500">
+                                    Belum ada Nomor Induk Guru
+                                </td>
+                            </tr>
+                            @endforelse
+                        </tbody>
+
+                    </table>
                 </div>
             </div>
 
         </div>
-        <div class="mt-2">
-            <div class="bg-white overflow-hidden shadow-sm">
-                <div class="p-2 bg-white border-b border-gray-200">
-                    <div class=" ">
-                        <div>
-                            <a href="/guru/{{$guru->id}}" class=" text-white px-1 py-1 bg-sky-400"> Kembali Ke Detail</a>
-                        </div>
-                        <span class=" py-1">Generate Nomor Induk Guru</span>
-                        <form action="/nig/{{$guru->id}}" method="post">
-                            @csrf
-                            <input type="hidden" name="guru_id" value="{{$guru->id}}" class=" py-1" required>
-                            <input type="text" name="nig" class=" py-1" placeholder="NIG : 2023010001" autofocus>
-                            <input type="hidden" name="jenjang_id" class=" py-1" placeholder="NIG : 2023010001" autofocus value="2">
-                            <button class=" bg-blue-600 py-1 px-2 text-white rounded-sm uppercase">Nomor Induk guru</button>
-                        </form>
-                    </div>
-                    <div>
-                        <span class=" py-1">Daftar Nomor Induk Guru</span>
-                        <table class=" w-1/2">
-                            <thead>
-                                <tr>
-                                    <th class=" px-1 border py-1">No</th>
-                                    <th class=" px-1 border py-1">Nomor Induk Guru</th>
-                                    <th class=" px-1 border py-1">Act</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($dataNIG as $nig)
-                                <tr>
-                                    <th class=" px-1 py-1 border text-center">
-                                        {{$loop->iteration}}
-                                    </th>
-                                    <td class=" px-1 py-1 border text-center">
-                                        {{$nig->nig}}
-                                    </td>
-                                    <td class=" px-1 py-1 border text-center">
-                                        <form action="/nig/{{$nig->id}}" method="post">
-                                            @method('delete')
-                                            @csrf
-                                            <button class=" py-1 px-2 bg-red-500 text-white">Delete</button>
-                                        </form>
-                                    </td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
+
+    </div>
 </x-app-layout>

@@ -9,4 +9,12 @@ class Periode extends Model
 {
     use HasFactory;
     protected $table = "periode";
+
+
+
+    public function semester()
+    {
+        return $this->belongsTo(Semester::class, 'semester_id');
+    }
 }
+

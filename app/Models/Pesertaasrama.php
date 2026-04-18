@@ -19,6 +19,10 @@ class Pesertaasrama extends Model
     {
         return $this->belongsTo(Asramasiswa::class, 'asramasiswa_id', 'id');
     }
+    public function pesertaasrama()
+    {
+        return $this->hasMany(Pesertaasrama::class, 'asramasiswa_id');
+    }
     public static function search($search)
     {
         // dd($search);

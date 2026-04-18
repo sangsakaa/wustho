@@ -22,166 +22,97 @@ class DashboardController extends Controller
      */
     public function index()
     {
+        $periodeId = session('periode_id');
 
-        
-        $dataAngkatan = Nis::select('madrasah_diniyah', 'tanggal_masuk')->get()->groupBy('madrasah_diniyah')->map(function ($item) {
-            return $item->groupBy('tanggal_masuk')->count();
-        });
-
-        $tglAwal = Sesikelas::query()
-            ->join('absensikelas', 'absensikelas.sesikelas_id', '=', 'sesikelas.id')
-            ->join('kelasmi', 'kelasmi.id', '=', 'sesikelas.kelasmi_id')
-            ->where('kelasmi.periode_id', session('periode_id'))
-            ->selectRaw('DISTINCT(tgl)')
-            ->orderByDesc('tgl')
-            ->take(15)
+        // ======================
+        // ANGKATAN
+        // ======================
+        $dataAngkatan = Nis::query()
+            ->selectRaw('madrasah_diniyah, YEAR(tanggal_masuk) as tahun, COUNT(*) as total')
+            ->groupBy('madrasah_diniyah', 'tahun')
             ->get()
-            ->last();
-        $pesertaasrama = Pesertaasrama::query()
-            ->join('siswa', 'siswa.id', '=', 'pesertaasrama.siswa_id')
-            ->join('asramasiswa', 'asramasiswa.id', '=', 'pesertaasrama.asramasiswa_id')
-            ->join('asrama', 'asrama.id', '=', 'asramasiswa.asrama_id')
-            ->select('siswa.id as siswa_id', 'asrama.nama_asrama')
-        ->where('asramasiswa.periode_id', session('periode_id'));
-        $dataAbsensi = Absensikelas::query()
-            ->join('sesikelas', 'sesikelas.id', '=', 'absensikelas.sesikelas_id')
-            ->join('pesertakelas', 'pesertakelas.id', '=', 'absensikelas.pesertakelas_id')
+            ->groupBy('madrasah_diniyah');
+
+        // ======================
+        // SISWA (GENDER & MADIN)
+        // ======================
+        $siswaStats = Siswa::query()
+            ->join('nis', 'siswa.id', '=', 'nis.siswa_id')
+            ->selectRaw("
+            COUNT(*) as total,
+            SUM(CASE WHEN jenis_kelamin = 'L' THEN 1 ELSE 0 END) as laki,
+            SUM(CASE WHEN jenis_kelamin = 'P' THEN 1 ELSE 0 END) as perempuan,
+            SUM(CASE WHEN madrasah_diniyah = 'Ula' THEN 1 ELSE 0 END) as ula,
+            SUM(CASE WHEN madrasah_diniyah = 'Wustho' THEN 1 ELSE 0 END) as wustho,
+            SUM(CASE WHEN madrasah_diniyah = 'Ulya' THEN 1 ELSE 0 END) as ulya
+        ")
+            ->first();
+
+        // ======================
+        // SISWA PER PERIODE
+        // ======================
+        $dataSiswaPeriode = Pesertakelas::query()
+            ->join('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
+            ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
+            ->join('semester', 'semester.id', '=', 'periode.semester_id')
+            ->where('kelasmi.periode_id', $periodeId)
+            ->selectRaw('periode.periode, semester.ket_semester, COUNT(*) as total')
+            ->groupBy('periode.periode', 'semester.ket_semester')
+            ->first();
+
+        // ======================
+        // SISWA PER KELAS
+        // ======================
+        $dataSiswaPerKelas = Pesertakelas::query()
+            ->join('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
+            ->join('kelas', 'kelas.id', '=', 'kelasmi.kelas_id')
+            ->where('kelasmi.periode_id', $periodeId)
+            ->selectRaw('kelas.kelas, COUNT(*) as total')
+            ->groupBy('kelas.kelas')
+            ->get();
+
+        // ======================
+        // JENIS KELAMIN PER KELAS
+        // ======================
+        $jenisKelamin = Pesertakelas::query()
             ->join('siswa', 'siswa.id', '=', 'pesertakelas.siswa_id')
             ->join('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
-            ->leftJoinSub($pesertaasrama, 'peserta_asrama', function ($join) {
-                $join->on('peserta_asrama.siswa_id', '=', 'siswa.id');
-            })
-            ->selectRaw(
-                "peserta_asrama.nama_asrama, sesikelas.tgl, COUNT(CASE WHEN keterangan = 'izin' OR keterangan = 'sakit' OR keterangan = 'alfa' THEN 1 END) / COUNT(absensikelas.id) * 100 AS tidak_hadir"
-            )
-            ->groupBy('peserta_asrama.nama_asrama', 'sesikelas.tgl')
-            ->orderBy('peserta_asrama.nama_asrama')
-            ->orderBy('sesikelas.tgl')
-            ->where('kelasmi.periode_id', session('periode_id'))
-            ->whereBetween('sesikelas.tgl', [$tglAwal?->tgl ?? now()->toDateString(), now()->toDateString()])
+            ->join('kelas', 'kelas.id', '=', 'kelasmi.kelas_id')
+            ->where('kelasmi.periode_id', $periodeId)
+            ->selectRaw("
+            kelas.kelas,
+            SUM(CASE WHEN jenis_kelamin = 'L' THEN 1 ELSE 0 END) as laki,
+            SUM(CASE WHEN jenis_kelamin = 'P' THEN 1 ELSE 0 END) as perempuan
+        ")
+            ->groupBy('kelas.kelas')
             ->get();
-        $dataAbsensi = $dataAbsensi->groupBy(function ($item) {
-                return $item->nama_asrama == null ? "1" : $item->nama_asrama;
-            });
-        $datasetsAbsensi = $dataAbsensi->map(function ($data, $nama_asrama) {
-            return [
-                'label' => $nama_asrama,
-                'data' => $data,
-                'borderColor' => fake()->rgbCssColor(),
-            ];
-        })->values();
-        $dataSiswa = DB::table('siswa')
-            ->select(DB::raw('count(*) as jumlah'), 'jenis_kelamin',)
-            ->groupBy('jenis_kelamin')
-            
-        ->get()
-        ->toArray();
-        // dd($dataSiswa);
-        $data = Siswa::query()
-            ->join('nis', 'siswa.id', '=', 'nis.siswa_id')
-            // ->whereNot('madrasah_diniyah', "Ula")
-            // ->whereNot('madrasah_diniyah', "Wustho")
+
+        // ======================
+        // TAHUN MASUK
+        // ======================
+        $tahunMasuk = Nis::query()
+            ->selectRaw('YEAR(tanggal_masuk) as tahun, COUNT(*) as total')
+            ->groupBy('tahun')
             ->get();
-        $countLakiLaki = 0;
-        $countPerempuan = 0;
-        foreach ($data as $item) {
-            if ($item->jenis_kelamin == 'L') {
-                $countLakiLaki++;
-            } elseif ($item->jenis_kelamin == 'P') {
-                $countPerempuan++;
-            }
-        }
-        $ula = 0;
-        $wustho = 0;
-        $ulya = 0;
-        foreach ($data as $item) {
-            if ($item->madrasah_diniyah == 'Ula') {
-                $ula++;
-            } elseif ($item->madrasah_diniyah == 'Wustho') {
-                $wustho++;
-            } elseif ($item->madrasah_diniyah == 'Ulya') {
-                $ulya++;
-            }
 
-        }
-        $dataSiswaPeriode = Pesertakelas::query()
-        ->join('siswa', 'siswa.id', '=', 'pesertakelas.siswa_id')
-        ->join('nis', 'siswa.id', '=', 'nis.siswa_id')
-        ->join('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
-        ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
-        ->join('semester', 'semester.id', '=', 'periode.semester_id')
-        // ->where('nis.madrasah_diniyah', 'wustho')
-        ->where('kelasmi.periode_id', session('periode_id'))
-            ->groupBy('kelasmi.periode_id', 'semester.semester', 'periode.periode', 'semester.ket_semester')
-            ->selectRaw('kelasmi.periode_id, semester.semester, semester.ket_semester,periode.periode, count(*) as total_siswa')
-        ->first();
-        $dataSiswaPerKelas = Pesertakelas::query()
-        ->join('siswa', 'siswa.id', '=', 'pesertakelas.siswa_id')
-        ->join('nis', 'siswa.id', '=', 'nis.siswa_id')
-        ->join('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
-        ->join('kelas', 'kelas.id', '=', 'kelasmi.kelas_id')
-        ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
-        ->join('semester', 'semester.id', '=', 'periode.semester_id')
-        // ->where('nis.madrasah_diniyah', 'wustho')
-        ->where('kelasmi.periode_id', session('periode_id'))
-        ->groupBy('kelasmi.kelas_id', 'kelas.kelas', 'semester.semester', 'periode.periode', 'semester.ket_semester')
-        ->selectRaw('kelasmi.kelas_id,kelas.kelas,semester.semester,semester.ket_semester,periode.periode, count(*) as total_siswa')
-        ->get();
-        $TitleKelas = Pesertakelas::query()
-        ->join('siswa', 'siswa.id', '=', 'pesertakelas.siswa_id')
-        ->join('nis', 'siswa.id', '=', 'nis.siswa_id')
-        ->join('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
-        ->join('kelas', 'kelas.id', '=', 'kelasmi.kelas_id')
-        ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
-        ->join('semester', 'semester.id', '=', 'periode.semester_id')
-        // ->where('nis.madrasah_diniyah', 'wustho')
-        ->where('kelasmi.periode_id', session('periode_id'))
-        ->groupBy('kelasmi.kelas_id', 'kelas.kelas', 'semester.semester', 'kelasmi.nama_kelas', 'periode.periode', 'semester.ket_semester')
-            ->selectRaw('kelasmi.kelas_id,semester.semester,kelasmi.nama_kelas,semester.ket_semester,periode.periode, count(*) as total_siswa')
-        ->get();
-        $jenisKelamin = Pesertakelas::query()
-        ->join('siswa', 'siswa.id', '=', 'pesertakelas.siswa_id')
-        ->join('nis', 'siswa.id', '=', 'nis.siswa_id')
-        ->join('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
-        ->join('kelas', 'kelas.id', '=', 'kelasmi.kelas_id')
-        ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
-        ->join('semester', 'semester.id', '=', 'periode.semester_id')
-        // ->where('nis.madrasah_diniyah', 'wustho')
-        ->where('kelasmi.periode_id', session('periode_id'))
-        ->groupBy('kelasmi.kelas_id', 'kelas.kelas', 'semester.semester', 'siswa.jenis_kelamin', 'periode.periode', 'semester.ket_semester')
-        ->selectRaw('kelasmi.kelas_id,semester.semester,kelas.kelas,siswa.jenis_kelamin,semester.ket_semester,periode.periode, count(*) as total_siswa')
-        ->get();
-        $tahunMasuk = Siswa::query()
-            ->join('nis', 'siswa.id', '=', 'nis.siswa_id')
-            // ->where('nis.madrasah_diniyah', 'Wustho')
-            ->groupBy(DB::raw('YEAR(nis.tanggal_masuk)'))
-        ->selectRaw('YEAR(nis.tanggal_masuk) as tahun_masuk, count(*) as total_siswa')
-        ->get();
-
-        // dd($tahunMasuk);
+        // ======================
+        // TITLE MADRASAH
+        // ======================
         $TitleMadrasak = Kelasmi::query()
-        ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
-        ->join('semester', 'semester.id', '=', 'periode.semester_id')
-        ->select('periode', 'semester', 'ket_semester', 'jenjang', 'periode_id')
-        ->where('kelasmi.periode_id', session('periode_id'))
-        ->first();
+            ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
+            ->join('semester', 'semester.id', '=', 'periode.semester_id')
+            ->where('kelasmi.periode_id', $periodeId)
+            ->select('periode.periode', 'semester.ket_semester', 'kelasmi.jenjang')
+            ->first();
 
-        return view('dashboard', compact(
-            [
-                'datasetsAbsensi',
-                'dataSiswa',
-                'countLakiLaki',
-                'countPerempuan',
-                'ula', 'wustho', 'ulya',
-                'data',
-                'dataAngkatan',
-                'dataSiswaPeriode',
-                'dataSiswaPerKelas',
-                'TitleKelas',
-                'jenisKelamin',
-                'tahunMasuk',
-                'TitleMadrasak'
-            ]
-        ));
+        return view('dashboard', [
+            'dataAngkatan' => $dataAngkatan,
+            'siswaStats' => $siswaStats,
+            'dataSiswaPeriode' => $dataSiswaPeriode,
+            'dataSiswaPerKelas' => $dataSiswaPerKelas,
+            'jenisKelamin' => $jenisKelamin,
+            'tahunMasuk' => $tahunMasuk,
+            'TitleMadrasak' => $TitleMadrasak,
+        ]);
     }
 }

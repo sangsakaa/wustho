@@ -134,84 +134,58 @@ class LulusanCotroller
         );
     }
     public function storeLulusan(Request $request)
-    {  
-        $tahunHijrian = Periode::query()
-        ->where('periode.id', session('periode_id'))
-        ->first();
-        $hijri = $tahunHijrian->tahun_hijriyah;
-        // Mendapatkan nomor urut terakhir dari database untuk periode saat ini
-        $lastNumber = DB::table('daftar_lulusan')
-        ->max('nomor_ijazah');
-        // Jika tidak ada nomor urut untuk periode saat ini, mulai dari 1
+    {
+        $tahunHijrian = Periode::where('id', session('periode_id'))->first();
+        $hijriYear = $tahunHijrian->tahun_hijriyah;
+
+        // ambil nomor terakhir
+        $lastNumber = DB::table('daftar_lulusan')->max('nomor_ijazah');
+
         if (is_null($lastNumber)) {
             $newNumber = 1;
         } else {
-            // Mengambil 4 digit terakhir dari nomor urut terakhir
             $lastNumber = (int) substr($lastNumber, -4);
-
-            // Menambahkan 1 pada nomor urut terakhir
             $newNumber = $lastNumber + 1;
 
-            // Jika mencapai 999, kembali ke 1
             if ($newNumber > 999) {
                 $newNumber = 1;
             }
         }
 
-        $hijriYear = $hijri;
-        // Menambahkan leading zero pada nomor urut baru jika kurang dari 4 digit
-        $newNumber = str_pad($newNumber, 4, '0', STR_PAD_LEFT);
-        $jenjang = Kelasmi::first();
-        $jenjang = $jenjang->jenjang;
+        $jenjang = Kelasmi::first()->jenjang;
 
-        // Determine the code segment based on jenjang
-        $codeSegment = '';
-        if ($jenjang == 'Wustho') {
-            $codeSegment = 'II';
-        } elseif (
-            $jenjang == 'Ula'
-        ) {
-            $codeSegment = 'I';
-        }
+        // FIX: tambah Ulya
+        $codeSegment = match ($jenjang) {
+            'Wustho' => 'II',
+            'Ula'    => 'I',
+            'Ulya'   => 'III',
+            default  => '00',
+        };
 
-        // Menggabungkan komponen kode menjadi satu string
-        $code = 'MD-01-' . $codeSegment . '-' . $hijriYear . '-' . $newNumber;
         $pesertaKelas = $request->input('pesertakelas', []);
 
-        if (count($pesertaKelas) > 0) {
-            $daftarLulusan = [];
-            foreach ($pesertaKelas as $pesertaKelasId) {
-                $daftarLulusan[] = [
-                    'pesertakelas_id' => $pesertaKelasId,
-                    'lulusan_id' => $request->lulusan_id,
-                    'nomor_ijazah' => $code
-                ];
-                $jenjang = Kelasmi::first();
-                $jenjang = $jenjang->jenjang;
-
-                // Determine the code segment based on jenjang
-                $codeSegment = '';
-                if ($jenjang == 'Wustho') {
-                    $codeSegment = 'II';
-                } elseif (
-                    $jenjang == 'Ula'
-                ) {
-                    $codeSegment = 'I';
-                }
-                $newNumber++;
-                $code = 'MD-01-' . $codeSegment . '-' . $hijriYear . '-' . str_pad($newNumber, 4, '0', STR_PAD_LEFT);
-                // increment nomor urut untuk setiap peserta kelas
-                
-            }
-
-            // insert multiple data ke database
-            Daftar_lulusan::insert($daftarLulusan);
-        } else {
+        if (count($pesertaKelas) === 0) {
             return "Tidak ada inputan";
         }
 
-        return redirect()->back();
+        $daftarLulusan = [];
 
+        foreach ($pesertaKelas as $pesertaKelasId) {
+
+            $code = 'MD-01-' . $codeSegment . '-' . $hijriYear . '-' . str_pad($newNumber, 4, '0', STR_PAD_LEFT);
+
+            $daftarLulusan[] = [
+                'pesertakelas_id' => $pesertaKelasId,
+                'lulusan_id'      => $request->lulusan_id,
+                'nomor_ijazah'    => $code,
+            ];
+
+            $newNumber++;
+        }
+
+        Daftar_lulusan::insert($daftarLulusan);
+
+        return redirect()->back();
     }
     public function Destroy(Lulusan $lulusan)
     {

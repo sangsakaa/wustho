@@ -1,66 +1,102 @@
 <x-app-layout>
     <x-slot name="header">
-        @section('title','| NOMINASI : ' )
-        <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-            <h2 class="text-xl font-semibold leading-tight">
-                {{ __('Dashboard') }}
+        @section('title',' | NOMINASI')
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2">
+            <h2 class="text-xl font-semibold text-gray-800">
+                Dashboard Nominasi Peserta
             </h2>
-
         </div>
     </x-slot>
-    <div class=" bg-white   px-2 py-2 gap-2">
-        <div class=" grid grid-cols-4">
-            <div>Kelas</div>
-            <div> : {{$title->nama_kelas}}</div>
-            <div>Periode Seleksi</div>
-            <div> : {{$title->periode}} {{$title->ket_semester}}</div>
+
+    <div class="p-4 space-y-4">
+
+        <!-- INFO KELAS -->
+        <div class="bg-white shadow-sm rounded-lg p-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
+                <div>
+                    <span class="font-semibold">Kelas</span> :
+                    {{ $title->nama_kelas }}
+                </div>
+                <div>
+                    <span class="font-semibold">Periode Seleksi</span> :
+                    {{ $title->periode }} {{ $title->ket_semester }}
+                </div>
+            </div>
         </div>
 
-
-    </div>
-    <div class=" bg-white mt-2    px-2 py-2 gap-2">
-        <div class="flex grid-cols-2 gap-2">
-            <a href="/kolektif-daftar-nominasi/{{$title->id}}" class=" py-1 px-2 bg-red-600  text-white hover:bg-purple-500">
-                kolektif
+        <!-- ACTION BUTTON -->
+        <div class="flex flex-wrap gap-2">
+            <a href="/kolektif-daftar-nominasi/{{ $title->id }}"
+                class="px-3 py-1.5 bg-blue-600 text-white rounded-md hover:bg-blue-700 text-sm">
+                + Kolektif
             </a>
-            <a href="/daftar-seleksi" class=" py-1 px-2 bg-red-600  text-white hover:bg-purple-500">
-                Daftar Nominasi
+
+            <a href="/daftar-seleksi"
+                class="px-3 py-1.5 bg-gray-500 text-white rounded-md hover:bg-gray-600 text-sm">
+                Kembali
             </a>
         </div>
-        <table class=" mt-2 w-full">
-            <thead>
-                <tr>
-                    <th class=" border text-center px-1 ">No</th>
-                    <th class=" border text-center px-1 ">Nomor Ujian</th>
-                    <th class=" border text-center px-1 ">Nama Peserta Ujian</th>
-                    <th class=" border text-center px-1 ">Kelas</th>
-                    <th class=" border text-center px-1 ">Act</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach($daftarNominasi as $item)
-                <tr>
-                    <th class=" border px-1">{{$loop->iteration}}</th>
-                    <td class=" border px-1 text-center">{{$item->nomor_ujian}}</td>
-                    <td class=" border px-1 text-left capitalize">{{strtolower($item->nama_siswa)}}</td>
-                    <td class=" border px-1 text-center uppercase">{{strtolower($item->nama_kelas)}}</td>
-                    <td class=" border text-center">
 
-                        <form action="/daftar-nominasi/{{$item->id}}" method="post" class=" text-red-600">
-                            @csrf
-                            @method('delete')
-                            <button>
-                                <x-icons.hapus></x-icons>
-                            </button>
-                        </form>
-                    </td>
-                </tr>
-                @endforeach
-            </tbody>
-        </table>
+        <!-- TABLE -->
+        <div class="bg-white shadow-sm rounded-lg overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="min-w-full border border-gray-200 text-sm">
+                    <thead class="bg-gray-100 text-gray-600 uppercase text-xs">
+                        <tr>
+                            <th class="border px-2 py-2 w-10">No</th>
+                            <th class="border px-2 py-2 text-center">Nomor Ujian</th>
+                            <th class="border px-2 py-2 text-left">Nama Peserta</th>
+                            <th class="border px-2 py-2 text-center">Kelas</th>
+                            <th class="border px-2 py-2 text-center w-24">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($daftarNominasi as $item)
+                        <tr class="hover:bg-gray-50">
+                            <td class="border px-2 py-1 text-center">
+                                {{ $loop->iteration }}
+                            </td>
+
+                            <td class="border px-2 py-1 text-center">
+                                {{ $item->nomor_ujian ?? '-' }}
+                            </td>
+
+                            <td class="border px-2 py-1 capitalize">
+                                {{ strtolower($item->nama_siswa) }}
+                            </td>
+
+                            <td class="border px-2 py-1 text-center uppercase">
+                                {{ $item->nama_kelas }}
+                            </td>
+
+                            <td class="border px-2 py-1 text-center">
+                                <form action="/daftar-nominasi/{{ $item->id }}" method="POST"
+                                    onsubmit="return confirm('Hapus {{ $item->nama_siswa }} dari nominasi?')">
+                                    @csrf
+                                    @method('DELETE')
+
+                                    <button
+                                        class="px-2 py-1 bg-red-600 text-white rounded hover:bg-red-700 text-xs">
+                                        Hapus
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="5"
+                                class="text-center py-3 text-gray-500 italic">
+                                Data nominasi belum tersedia
+                            </td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- OPTIONAL PAGINATION -->
+
+        </div>
+
     </div>
-
-
-
-
 </x-app-layout>

@@ -1,145 +1,193 @@
 <x-app-layout>
     <x-slot name="header">
-        @section('title', ' | Guru' )
-        <h2 class="font-semibold text-xl  leading-tight">
-            {{ __('Dashboard Daftar Guru') }}
+        @section('title', ' | Guru')
+        <h2 class="font-semibold text-xl text-gray-800">
+            Dashboard Daftar Guru
         </h2>
     </x-slot>
 
-    <div class="bg-white dark:bg-dark-bg overflow-hidden shadow-sm">
-        <div class="p-2">
-            @if (session('delete'))
-            <div class=" py-2 capitalize">
-                <div class=" bg-red-500 px-2 py-1 text-white">
-                    {{ session('delete') }}
-                </div>
+    <div class="px-4 py-4 space-y-4">
+
+        <!-- ALERT -->
+        @foreach (['delete' => 'red', 'success' => 'green', 'update' => 'blue'] as $key => $color)
+        @if (session($key))
+        <div class="px-4 py-2 rounded-lg bg-{{ $color }}-100 text-{{ $color }}-700 text-sm">
+            {{ session($key) }}
+        </div>
+        @endif
+        @endforeach
+
+        <!-- ACTION & SEARCH -->
+        <div class="flex flex-col sm:flex-row justify-between gap-3">
+
+            <!-- BUTTON -->
+            <a href="/addGuru"
+                class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm rounded-lg shadow">
+                <x-icons.adduser />
+                Tambah Guru
+            </a>
+
+            <!-- SEARCH -->
+            <form action="/guru" method="get" class="flex gap-2 w-full sm:w-auto">
+                <input type="text" name="cari" value="{{ request('cari') }}"
+                    placeholder="Cari nama / NIG..."
+                    class="w-full sm:w-64 px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+
+                <button type="submit"
+                    class="px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white text-sm rounded-lg">
+                    Cari
+                </button>
+            </form>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
+
+            <div class="bg-white border rounded-xl p-4 shadow-sm">
+                <p class="text-sm text-gray-500">Total Guru</p>
+                <p class="text-2xl font-bold">{{ $totalGuru }}</p>
             </div>
-            @endif
-            @if (session('success'))
-            <div class=" py-2 capitalize">
-                <div class=" bg-green-500 px-2 py-1 text-white">
-                    {{ session('success') }}
-                </div>
+
+            <div class="bg-white border rounded-xl p-4 shadow-sm">
+                <p class="text-sm text-gray-500">Aktif</p>
+                <p class="text-2xl font-bold text-green-600">{{ $aktif }}</p>
             </div>
-            @endif
-            @if (session('update'))
-            <div class=" py-2 capitalize">
-                <div class=" bg-blue-500 px-2 py-1 text-white">
-                    {{ session('update') }}
-                </div>
+
+            <div class="bg-white border rounded-xl p-4 shadow-sm">
+                <p class="text-sm text-gray-500">Non Aktif</p>
+                <p class="text-2xl font-bold text-red-600">{{ $nonaktif }}</p>
             </div>
-            @endif
-            <div class=" grid gap-2  grid-cols-2   sm:grid-cols-2 w-full ">
-                <div class=" sm:w-20 w-20    ">
-                    <a href="/addGuru" class=" flex py-1 hover:bg-blue-600    bg-blue-500 text-white   text-center">
-                        <span class=" px-1 ">
-                            <x-icons.adduser></x-icons.adduser>
-                        </span>
-                        <span class=" ">
-                            Guru
-                        </span>
-                    </a>
-                </div>
-                <div class=" flex grid-cols-1 justify-end">
-                    <form action="/guru" method="get" class="  gap-1">
-                        <div class=" flex gap-2  w-full  ">
-                            <input type="text" name="cari" value="{{ request('cari') }}" class=" dark:bg-dark-bg border text-green-800 rounded-sm py-1 w-full  sm:w-full " placeholder=" Cari ...">
-                            <button type="submit" class=" px-2 py-1 w-20     bg-blue-500  rounded-sm text-white">
-                                Cari </button>
-                        </div>
-                    </form>
-                </div>
+
+            <div class="bg-white border rounded-xl p-4 shadow-sm">
+                <p class="text-sm text-gray-500">Cuti</p>
+                <p class="text-2xl font-bold text-yellow-600">{{ $cuti }}</p>
             </div>
-            <div class=" overflow-auto rounded-md">
-                <Table class=" sm:w-full w-full  mt-2">
-                    <thead class=" bg-gray-50 dark:bg-purple-600">
-                        <tr class=" border  ">
-                            <th class="px-2 border py-1">No</th>
-                            <th class="px-2 border text-center ">NIG</th>
-                            <th class="px-2 border text-center w-1/2 sm:w-1/4">Nama Guru</th>
-                            <th class="px-2 border text-center">JK</th>
-                            <th class="px-2 border text-center w-10">Agama</th>
-                            <th class="px-2 border text-center">Tempat Lahir</th>
-                            <th class="px-2 border text-center w-50">Tanggal Lahir</th>
-                            <th class="px-2 border text-center">Tanggal Masuk</th>
-                            <th class="px-2 border text-center">Status</th>
-                            <th class="px-2 border text-center">Aksi</th>
+
+        </div>
+
+        <!-- TABLE CARD -->
+        <div class="bg-white border border-gray-200 rounded-xl shadow-sm">
+
+            <div class="overflow-auto">
+                <table class="w-full text-sm">
+
+                    <!-- HEADER -->
+                    <thead class="bg-gray-100 text-gray-600 uppercase text-xs">
+                        <tr>
+                            <th class="py-2 border text-center">No</th>
+                            <th class="border text-center">NIG</th>
+                            <th class="border text-left px-3">Nama Guru</th>
+                            <th class="border text-center">JK</th>
+                            <th class="border text-center">Agama</th>
+                            <th class="border text-center">TTL</th>
+                            <th class="border text-center">Masuk</th>
+                            <th class="border text-center">Status</th>
+                            <th class="border text-center">Aksi</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        @if($dataGuru->count() != null)
-                        @foreach ($dataGuru as $item)
-                        <tr class=" border hover:bg-green-100">
-                            <th class=" text-center border">{{$loop->iteration}}</th>
 
-                            <td class=" px-2 border text-center capitalize">
-                                <a href="guru/{{$item->id}}">
-                                    @if($item->NigTerakhir != null)
-                                    {{$item->NigTerakhir->nig}}
-                                    @else
-                                    <span class=" text-xs text-red-600 ">belum ada nig</span>
-                                    @endif
+                    <!-- BODY -->
+                    <tbody>
+                        @forelse ($dataGuru as $item)
+                        <tr class="hover:bg-gray-50">
+
+                            <td class="border text-center py-2">
+                                {{ $loop->iteration }}
+                            </td>
+
+                            <td class="border text-center">
+                                <a href="/guru/{{ $item->id }}" class="text-blue-600 hover:underline">
+                                    {{ $item->NigTerakhir->nig ?? '—' }}
                                 </a>
                             </td>
-                            <td class=" px-2">
-                                <a href="guru/{{$item->id}}">
-                                    {{$item->nama_guru}}
-                                </a>
+
+                            <td class="border px-3 font-medium">
+                                {{ $item->nama_guru }}
                             </td>
-                            <td class=" border px-2 text-center w-10"> {{$item->jenis_kelamin}}</td>
-                            <td class=" border px-2 text-center"> {{$item->agama}}</td>
-                            <td class=" border px-2 text-center capitalize"> {{$item->tempat_lahir}}</td>
-                            <td class=" border px-2 text-center">
+
+                            <td class="border text-center">
+                                {{ $item->jenis_kelamin }}
+                            </td>
+
+                            <td class="border text-center">
+                                {{ $item->agama }}
+                            </td>
+
+                            <td class="border text-center text-xs">
+                                {{ $item->tempat_lahir }},
+                                <br>
                                 {{ \Carbon\Carbon::parse($item->tanggal_lahir)->isoFormat('D MMM Y') }}
                             </td>
-                            <td class=" border px-2 text-center">{{ \Carbon\Carbon::parse($item->tanggal_masuk)->isoFormat('D/M/Y') }} </td>
-                            <td class=" border px-2 text-center">{{ $item->status }} </td>
-                            <td class="  text-center flex justify-center gap-1 p-1">
-                                <form action="/guru/{{$item->id}}" method="post">
-                                    @csrf
-                                    @method('delete')
-                                    <button class=" bg-red-500 text-white p-1  rounded-md flex" onclick=" return confirm('apakah anda yakin menghapus data ini: {{$item->nama_guru}}')"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                        </svg></button>
-                                </form>
-                                <a href="/guru/{{$item->id}}/edit" class=" bg-yellow-500 rounded p-1 flex ">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                    </svg></a>
-                                <a href="guru/{{$item->id}}" class=" text-white bg-sky-400 py-0 hover:bg-purple-600  px-2 rounded-sm">
-                                    Detail
-                                </a>
+
+                            <td class="border text-center text-xs">
+                                {{ \Carbon\Carbon::parse($item->tanggal_masuk)->isoFormat('D MMM Y') }}
+                            </td>
+
+                            <!-- STATUS -->
+                            <td class="border text-center">
+                                @if($item->status == 'Aktif')
+                                <span class="px-2 py-1 text-xs bg-green-100 text-green-700 rounded-full">
+                                    Aktif
+                                </span>
+                                @else
+                                <span class="px-2 py-1 text-xs bg-red-100 text-red-700 rounded-full">
+                                    Nonaktif
+                                </span>
+                                @endif
+                            </td>
+
+                            <!-- AKSI -->
+                            <td class="border">
+                                <div class="flex justify-center gap-2 py-1">
+
+                                    <a href="/guru/{{ $item->id }}"
+                                        class="px-2 py-1 text-xs bg-sky-500 hover:bg-sky-600 text-white rounded-md">
+                                        Detail
+                                    </a>
+
+                                    <a href="/guru/{{ $item->id }}/edit"
+                                        class="px-2 py-1 text-xs bg-yellow-400 hover:bg-yellow-500 text-black rounded-md">
+                                        Edit
+                                    </a>
+
+                                    <form action="/guru/{{ $item->id }}" method="post">
+                                        @csrf
+                                        @method('delete')
+                                        <button
+                                            onclick="return confirm('Yakin hapus: {{ $item->nama_guru }}?')"
+                                            class="px-2 py-1 text-xs bg-red-500 hover:bg-red-600 text-white rounded-md">
+                                            Hapus
+                                        </button>
+                                    </form>
+
+                                </div>
                             </td>
 
                         </tr>
-                        @endforeach
-                        @else
+                        @empty
                         <tr>
-                            <td>
-                                Data Tidak ditemukan
+                            <td colspan="9" class="text-center py-4 text-gray-500">
+                                Data guru tidak ditemukan
                             </td>
                         </tr>
-                        @endif
-                        <tr>
-                            <td colspan="10">
-                                {{$dataGuru->links()}}
-                            </td>
-                        </tr>
+                        @endforelse
                     </tbody>
-                </Table>
+
+                </table>
+            </div>
+
+            <!-- PAGINATION -->
+            <div class="p-3 border-t">
+
             </div>
         </div>
-    </div>
-    <div class="bg-white overflow-hidden shadow-sm ">
-        <div class="p-2 bg-blue-200 dark:bg-dark-bg ">
-            <div class="flex justify-items-end grid-cols-1 gap-2  py-1">
-                <div class=" grid grid-cols-1">
-                    <span class=" text-bold">Keterangan :</span>
-                    <div class=" px-2">
-                        <p>1. guru yang berstatus <b>Aktif</b> adalah guru masih melaksakan pembelajaran</p>
-                    </div>
-                </div>
-            </div>
+
+        <!-- INFO -->
+        <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 text-sm text-gray-700">
+            <p class="font-semibold mb-1">Keterangan:</p>
+            <ul class="list-disc ml-5 space-y-1">
+                <li><span class="text-green-600 font-medium">Aktif</span> = Guru masih mengajar</li>
+                <li><span class="text-red-600 font-medium">Nonaktif</span> = Guru tidak aktif</li>
+            </ul>
         </div>
+
     </div>
 </x-app-layout>
