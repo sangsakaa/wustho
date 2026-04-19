@@ -4,52 +4,67 @@
             {{ __('Jabatan') }}
         </h2>
     </x-slot>
-    <div class="p-4">
-        <div class=" mx-auto ">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-2 bg-white border-b border-gray-200">
-                    <a href="/data-perangkat">
-                        <button class=" bg-blue-600 text-white rounded-sm px-2 py-1"> Perangkat</button>
+
+    <div class="p-6">
+        <div class="max-w-5xl mx-auto space-y-6">
+
+            <!-- CARD FORM -->
+            <div class="bg-white shadow-sm rounded-lg p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-semibold text-gray-700">Tambah Jabatan</h3>
+                    <a href="/data-perangkat"
+                        class="px-3 py-1 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+                        Perangkat
                     </a>
-                    <div class=" grid grid-cols-1 py-6 px-4">
-                        <form action="/jabatan" method="post">
-                            @csrf
-                            <input type="text" name="nama_jabatan" class=" w-1/4 py-1 " placeholder=" nama_jabatan : 1">
-                            <button class=" bg-blue-600 text-white rounded-md px-2 py-1"> simpan</button>
-                            <a href="/jabatan" class=" bg-blue-600 text-white rounded-md px-2 py-1">Kembali</a>
-                        </form>
-                    </div>
+                </div>
+
+                <form action="/jabatan" method="post" class="flex gap-3 items-center">
+                    @csrf
+                    <input type="text" name="nama_jabatan"
+                        class="flex-1 px-3 py-2 border rounded-md focus:ring focus:ring-blue-200"
+                        placeholder="Masukkan nama jabatan">
+
+                    <button class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+                        Simpan
+                    </button>
+
+                    <a href="/jabatan"
+                        class="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600">
+                        Reset
+                    </a>
+                </form>
+            </div>
+
+            <!-- CARD TABLE -->
+            <div class="bg-white shadow-sm rounded-lg p-6">
+                <h3 class="text-lg font-semibold text-gray-700 mb-4">Daftar Jabatan</h3>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full border border-gray-200 rounded-md">
+                        <thead class="bg-gray-100 text-gray-700">
+                            <tr>
+                                <th class="px-4 py-2 text-left">No</th>
+                                <th class="px-4 py-2 text-left">Nama Jabatan</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse($dataJab as $index => $list)
+                            <tr class="border-t hover:bg-gray-50">
+                                <td class="px-4 py-2">{{ $index + 1 }}</td>
+                                <td class="px-4 py-2">{{ $list->nama_jabatan }}</td>
+                            </tr>
+                            @empty
+                            <tr>
+                                <td colspan="2" class="text-center py-4 text-gray-500">
+                                    Data jabatan belum tersedia
+                                </td>
+                            </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
                 </div>
             </div>
-        </div>
-    </div>
-    <div class="p-4">
-        <div class=" mx-auto ">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-2 bg-white border-b border-gray-200">
-                    <a href="/siswa">
-                        <!-- <button class=" bg-blue-600 text-white rounded-sm px-2 py-1"> siswa</button> -->
-                    </a>
-                    <div class=" grid grid-cols-1 py-6 px-4">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($dataJab as $list)
-                                <tr>
-                                    <td>
-                                        {{$list->nama_jabatan}}
-                                    </td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
+
         </div>
     </div>
 </x-app-layout>

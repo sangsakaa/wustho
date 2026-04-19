@@ -177,7 +177,7 @@
         <table class=" kop">
             <tr class="h1 ">
                 <td class="logo">
-                    <img src="img/logo.png" alt="Public Image" class="logo-img">
+                    <img src="{{ asset('asset/images/logo_ulya.jpeg') }}" alt="Logo Ulya" class="logo-img">
                 </td>
                 <td>
                     <div class="logo-text">
