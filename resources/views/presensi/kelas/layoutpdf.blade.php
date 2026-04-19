@@ -199,22 +199,24 @@
                 </td>
 
                 <td style="vertical-align: middle; padding-left:10px;">
-                    <div class="logo-text">
-                        <span class="kop_lap">
-                            MADRASAH DINIYAH {{$dataKelasMi->jenjang}} WAHIDIYAH
-                        </span><br>
+                    <center>
+                        <div class="logo-text">
+                            <span class="kop_lap">
+                                MADRASAH DINIYAH {{$dataKelasMi->jenjang}} WAHIDIYAH
+                            </span><br>
 
-                        <span class="kop_lap">
-                            TAHUN PELAJARAN {{$dataKelasMi->periode}} {{$dataKelasMi->ket_semester}}
-                        </span>
+                            <span class="kop_lap">
+                                TAHUN PELAJARAN {{$dataKelasMi->periode}} {{$dataKelasMi->ket_semester}}
+                            </span>
 
-                        <hr class="custom-hr">
+                            <hr class="custom-hr">
 
-                        <span>
-                            Laporan Harian <br>
-                            Hari, tanggal : {{ $tgl->isoFormat('dddd, D MMMM YYYY') }}
-                        </span>
-                    </div>
+                            <span>
+                                Laporan Harian <br>
+                                Hari, tanggal : {{ $tgl->isoFormat('dddd, D MMMM YYYY') }}
+                            </span>
+                        </div>
+                    </center>
                 </td>
             </tr>
         </table>
