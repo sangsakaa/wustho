@@ -174,15 +174,40 @@
             </table>
         </div>
         @elseif($dataKelasMi->jenjang === "Ulya")
-        <table class=" kop">
-            <tr class="h1 ">
+        <style>
+            .logo {
+                width: 80px;
+                text-align: center;
+                vertical-align: middle;
+            }
+
+            .logo-img {
+                height: 65px;
+                /* ukuran ideal */
+                width: auto;
+                object-fit: contain;
+                display: block;
+                margin: 0 auto;
+            }
+        </style>
+        <table class="kop">
+            <tr>
                 <td class="logo">
-                    <img src="{{ asset('asset/images/logo_ulya.jpeg') }}" alt="Logo Ulya" class="logo-img">
+                    <img src="{{ asset('asset/images/logo_ulya.jpeg') }}"
+                        alt="Logo Ulya"
+                        class="logo-img">
                 </td>
-                <td>
+
+                <td style="vertical-align: middle; padding-left:10px;">
                     <div class="logo-text">
-                        <span class="kop_lap">MADRASAH DINIYAH {{$dataKelasMi->jenjang}} WAHIDIYAH</span><br>
-                        <span class="kop_lap">TAHUN PELAJARAN {{$dataKelasMi->periode}} {{$dataKelasMi->ket_semester}}</span>
+                        <span class="kop_lap">
+                            MADRASAH DINIYAH {{$dataKelasMi->jenjang}} WAHIDIYAH
+                        </span><br>
+
+                        <span class="kop_lap">
+                            TAHUN PELAJARAN {{$dataKelasMi->periode}} {{$dataKelasMi->ket_semester}}
+                        </span>
+
                         <hr class="custom-hr">
 
                         <span>
