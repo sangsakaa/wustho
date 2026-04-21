@@ -196,7 +196,7 @@ class LulusanCotroller
     public function DeletePeserta(Daftar_lulusan $daftar_lulusan)
     {
         Daftar_lulusan::destroy($daftar_lulusan->id);
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Data berhasil dihapus');
     }
 
     public function edit(Daftar_lulusan $daftar_lulusan, Pesertakelas $pesertakelas,)

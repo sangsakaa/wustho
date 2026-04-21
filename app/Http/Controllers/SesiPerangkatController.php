@@ -56,6 +56,7 @@ class SesiPerangkatController
         }
         $sesi = SesiPerangkat::where('tanggal', $tanggal)
             ->where('periode_id', $dataPeriode->id)
+            // ->where('status', 'Aktif')
             ->where('sesi_perangkat.tanggal', $request->tanggal)
             ->first();
         if (!$sesi) {
@@ -81,6 +82,7 @@ class SesiPerangkatController
             })
             
             ->select('perangkat.id', 'nama_perangkat', 'keterangan', 'alasan')
+            ->where('status', 'Aktif')
             ->get();
         return view('perangkat.absensi.daftarsesi', compact('dataPerangkat', 'sesiPerangkat'));
     }

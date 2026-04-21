@@ -1,110 +1,117 @@
-<div>
-    <div class="p-2">
-        <div class=" mx-auto ">
-            <div class="bg-white overflow-hidden shadow-sm ">
-                <div class=" bg-white border-b border-gray-200">
-                    <div class=" flex gap-2 ">
-                        <div>
-                            <a href="/pesertaasrama/{{$asramasiswa}}">
-                                <button class=" flex bg-blue-600 text-white rounded-sm px-2 py-1"> <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
-                                    </svg>
-                                </button>
-                            </a>
-                        </div>
-                        <div class="">
-                            <div>
-                                <input type="search" wire:model="search" class=" py-1 " placeholder=" cari nama siswa">
-                                <select wire:model="perPage" class=" py-1">
-                                    <option>10</option>
-                                    <option>15</option>
-                                    <option>25</option>
-                                    <option>50</option>
-                                    <option>100</option>
-                                    <option>500</option>
-                                </select>
-                                <select wire:model="jenis_kelamin" class=" py-1">
-                                    <option>L</option>
-                                    <option>P</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class=" py-1">
-        <form action="/kolektifasrama" method="post" enctype="multipart/form-data">
-            @csrf
-            <div class="  flex   gap-2  sm:w-1/2 w-full">
-                <select name="asramasiswa_id" class="py-1 w-full capitalize" required>
-                    @foreach($kelas as $asrama)
-                    <option value="{{$asrama->id}}" @if($asrama->id == $asramasiswa) selected @endif>
-                        {{$asrama->type_asrama}} | {{$asrama->nama_asrama}}
-                    </option>
-                    @endforeach
-                </select>
-                <button type="submit" class="  bg-blue-600 text-white rounded-sm px-2 py-1"> Kolektif</button>
-            </div>
-            <div class=" overflow-auto mt-2">
-                <table class=" w-full">
-                    <thead>
-                        <tr class=" border  bg-gray-100 uppercase text-sm">
-                            <th class=" py-2 border px-2"><input type="checkbox" name="" id=""></th>
-                            <th class=" border px-2">No</th>
-                            <th class=" border px-2" class=" text-center"> NIM</th>
-                            <th class=" border px-2">Nama Siswa</th>
-                            <th class=" border px-2"> JK</th>
-                            <th class=" border px-2 ">jenjang</th>
-                            <th class=" border px-2">Angkatan</th>
+<div class="p-4">
 
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if($Datasiswa->count())
-                        @foreach ($Datasiswa as $item)
-                        <tr class=" border hover:bg-green-200">
-                            <td class=" border text-center">
-                                <input type="checkbox" name="siswa[]" value="{{$item->id}}" multiple>
-                            </td>
-                            <td class=" border px-2 text-center">
-                                {{$loop->iteration}}
-                            </td>
-                            <td class=" border px-2 text-center">
-                                <label for="">{{ $item->nis }}</label>
-                            </td>
-                            <td class=" border px-2 text-left capitalize">
-                                <label for="">{{ strtolower($item->nama_siswa )}}</label>
-                            </td>
-                            <td class=" border px-2 text-center">
-                                <label for="">{{ $item->jenis_kelamin}}</label>
-                            </td>
-                            <td class=" border px-2 text-center">
-                                <label for="">{{ $item->madrasah_diniyah}}</label>
-                            </td>
-                            <td class=" border px-2  text-center ">
-                                <?php
-                                $date = date_create($item->tanggal_masuk);
-                                echo date_format($date, "Y");
-                                ?>
-                            </td>
-                        </tr>
-                        @endforeach
-                        @else
-                        <tr>
-                            <td class=" border text-center" colspan="7">
-                                Tidak ada data yang ditemukan
-                            </td>
-                        </tr>
-                        @endif
-                        <tr>
-                            <td class=" py-1 " colspan="7">
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </form>
+    <!-- FILTER -->
+    <div class="flex flex-wrap gap-2 mb-3">
+
+        <input type="search"
+            wire:model.debounce.500ms="search"
+            placeholder="Cari nama siswa..."
+            class="border rounded-md px-3 py-2">
+
+        <select wire:model="perPage" class="border rounded-md px-2 py-2">
+            <option>10</option>
+            <option>25</option>
+            <option>50</option>
+            <option>100</option>
+        </select>
+
+        <select wire:model="jenis_kelamin" class="border rounded-md px-2 py-2">
+            <option value="">Semua JK</option>
+            <option value="L">L</option>
+            <option value="P">P</option>
+        </select>
+
+        <select wire:model="angkatan" class="border rounded-md px-2 py-2">
+            <option value="">Semua Angkatan</option>
+            @foreach($angkatanList as $tahun)
+            <option value="{{ $tahun }}">{{ $tahun }}</option>
+            @endforeach
+        </select>
+
     </div>
+
+
+    <div class="flex justify-between items-center mb-3">
+
+        <div class="text-sm text-gray-600">
+            @if(count($selected))
+            {{ count($selected) }} siswa dipilih
+            @endif
+        </div>
+
+        <button
+            wire:click="kolektif"
+            class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded shadow disabled:opacity-50"
+            {{ count($selected) == 0 ? 'disabled' : '' }}>
+            Kolektif
+        </button>
+
+    </div>
+
+    <!-- TABLE -->
+    <div class="bg-white shadow rounded-lg overflow-hidden">
+        <table class="w-full text-sm">
+            <thead class="bg-gray-100 text-xs uppercase">
+                <tr>
+                    <th class="p-2 text-center">
+                        <input type="checkbox" wire:model="selectAll">
+                    </th>
+                    <th>No</th>
+                    <th>NIM</th>
+                    <th>Nama</th>
+                    <th>JK</th>
+                    <th>Jenjang</th>
+                    <th>Angkatan</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @forelse ($Datasiswa as $item)
+                <tr class="border-t hover:bg-green-50">
+
+                    <td class="text-center">
+                        <input type="checkbox"
+                            value="{{ $item->id }}"
+                            wire:model="selected">
+                    </td>
+
+                    <td class="text-center">
+                        {{ ($Datasiswa->currentPage()-1)*$Datasiswa->perPage()+$loop->iteration }}
+                    </td>
+
+                    <td>{{ $item->nis }}</td>
+
+                    <td class="capitalize">
+                        {{ ($item->nama_siswa) }}
+                    </td>
+
+                    <td class="text-center">
+                        {{ $item->jenis_kelamin }}
+                    </td>
+
+                    <td class="text-center">
+                        {{ $item->madrasah_diniyah }}
+                    </td>
+
+                    <td class="text-center">
+                        {{ date('Y', strtotime($item->tanggal_masuk)) }}
+                    </td>
+
+                </tr>
+                @empty
+                <tr>
+                    <td colspan="7" class="text-center py-4">
+                        Tidak ada data
+                    </td>
+                </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
+
+    <!-- PAGINATION -->
+    <div class="mt-3">
+        {{ $Datasiswa->links() }}
+    </div>
+
 </div>

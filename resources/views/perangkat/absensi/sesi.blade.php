@@ -1,96 +1,132 @@
 <x-app-layout>
     <x-slot name="header">
-        @section('title', ' |Sesi Perangkat '.\Carbon\Carbon::parse($hariIni)->isoFormat(' dddd ,DD MMMM Y') )
-        <h2 class="font-semibold sm:text-xl  text-sm leading-tight">
-            {{ __('Sesi Perangkat : '.\Carbon\Carbon::parse($hariIni)->isoFormat(' dddd ,DD MMMM Y')) }}
+        @section('title', ' | Sesi Perangkat '.\Carbon\Carbon::parse($hariIni)->isoFormat('dddd, DD MMMM Y'))
+        <h2 class="font-semibold text-lg sm:text-xl text-gray-800 leading-tight">
+            Sesi Perangkat : {{ \Carbon\Carbon::parse($hariIni)->isoFormat('dddd, DD MMMM Y') }}
         </h2>
     </x-slot>
-    <div class=" bg-white p-2 sm:p-2  ">
-        <div class=" flex  grid-cols-1 gap-2 px-2  mt-2">
-            <div>
-                <form action="/sesi-perangkat" method="get" class=" flex gap-1">
-                    <input type="date" name="tanggal" value="{{ $tanggal->toDateString() }}" class=" border border-green-800 text-green-800 rounded-md py-1 dark:bg-dark-bg " placeholder=" Cari ..">
-                    <button type="submit" class=" px-2   bg-blue-500  rounded-md text-white">
-                        Tanggal </button>
-                </form>
-            </div>
-            <div>
-                <form action="/sesi-perangkat" method="post">
-                    <input type="hidden" name="tanggal" value="{{ $tanggal->toDateString() }}" class=" border border-green-800 text-green-800 rounded-md py-1 dark:bg-dark-bg " placeholder=" Cari ..">
-                    @csrf
-                    <button class=" bg-blue-600 text-white rounded-md px-2 py-1">buat Sesi</button>
-                </form>
-            </div>
-            <a href="/laporan-harian-perangkat" class=" hidden sm:block bg-blue-600 text-white rounded-md px-2 py-1">Laporan Harian</a>
-            <a href="/laporan-Bulanan-perangkat" class="hidden sm:block bg-blue-600 text-white rounded-md px-2 py-1">Laporan Bulanan</a>
-            <a href="/rekap-Bulanan" class="hidden sm:block bg-blue-600 text-white rounded-md px-2 py-1">Rekap Sesi</a>
+
+    <div class="p-4 space-y-4">
+
+        {{-- TOAST NOTIF --}}
+        @foreach (['success' => 'green', 'delete' => 'red', 'update' => 'blue'] as $type => $color)
+        @if(session($type))
+        <div
+            x-data="{ show: true }"
+            x-init="setTimeout(() => show = false, 3000)"
+            x-show="show"
+            x-transition
+            class="fixed top-5 right-5 bg-{{ $color }}-600 text-white px-5 py-3 rounded-lg shadow z-50">
+            {{ session($type) }}
         </div>
-        <div class="bg-white dark:bg-dark-bg overflow-hidden shadow-sm ">
+        @endif
+        @endforeach
 
-            <div class=" mt-2 bg-white p-2 sm:p-2  ">
-                <div>
-                    @if (session('delete'))
-                    <div class="py-2">
-                        <div class="bg-red-500 px-2 py-1 text-white">
-                            {{ session('delete') }}
-                        </div>
-                    </div>
-                    @endif
-                    @if (session('success'))
-                    <div class="py-2">
-                        <div class="bg-green-500 px-2 py-1 text-white">
-                            {{ session('success') }}
-                        </div>
-                    </div>
-                    @endif
-                    @if (session('update'))
-                    <div class="py-2">
-                        <div class="bg-blue-500 px-2 py-1 text-white">
-                            {{ session('update') }}
-                        </div>
-                    </div>
-                    @endif
-                </div>
-                <div class=" overflow-auto">
-                    <table class=" w-full">
-                        <thead>
-                            <tr class=" border border-green-800 px-1 bg-gray-100 ">
-                                <th class=" border border-green-800 px-1 ">No</th>
-                                <th class=" border border-green-800 px-1 ">Tanggal</th>
-                                <th class=" border border-green-800 px-1 ">Periode</th>
-                                <th class=" border border-green-800 px-1 ">Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($dataSesiPerangkat as $org)
-                            <tr class=" border border-green-800 text-xs sm:text-sm px-1 text-center">
-                                <td class=" border border-green-800 px-1 text-center">{{$loop->iteration}}</td>
-                                <td class=" border border-green-800 px-1 text-center"><a href="/daftar-sesi-perangkat/{{$org->id}}">
-                                        {{ \Carbon\Carbon::parse($org->tanggal)->isoFormat(' dddd ,DD MMMM Y') }}
+        {{-- FILTER & ACTION --}}
+        <div class="bg-white shadow rounded-xl p-4 flex flex-wrap gap-2 items-center justify-between">
 
-                                    </a>
-                                </td>
-                                <td class=" border border-green-800 px-1 text-center sm:text-sm  text-xs">
-                                    {{$org->periode}}
-                                    {{$org->ket_semester}}
-                                </td>
-                                <td class=" border  px-1 sm:text-center justify-items-center grid ">
-                                    @if($org->SesiP !== null)
-                                    <span class=" hidden sm:block">sudah di absen</span>
-                                    <span class="  block  sm:hidden text-center"> <x-icons.check class="w-5 h-5 text-green-600" aria-hidden="true" /></span>
+            <div class="flex flex-wrap gap-2">
+                {{-- FILTER TANGGAL --}}
+                <form action="/sesi-perangkat" method="GET" class="flex gap-2">
+                    <input type="date"
+                        name="tanggal"
+                        value="{{ $tanggal->toDateString() }}"
+                        class="border rounded-md px-3 py-1 text-sm focus:ring focus:ring-blue-200">
+                    <button class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded-md text-sm">
+                        Filter
+                    </button>
+                </form>
 
-                                    @else
-                                    <span class=" hidden sm:block">Belum di absensi</span>
-                                    <span class="  block  sm:hidden text-center"><x-icons.x-mark class="w-5 h-5 text-red-600" aria-hidden="true" /></span>
-
-                                    @endif
-
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-
+                {{-- BUAT SESI --}}
+                <form action="/sesi-perangkat" method="POST">
+                    @csrf
+                    <input type="hidden" name="tanggal" value="{{ $tanggal->toDateString() }}">
+                    <button class="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded-md text-sm">
+                        + Buat Sesi
+                    </button>
+                </form>
             </div>
+
+            {{-- LINK LAPORAN --}}
+            <div class="flex flex-wrap gap-2 text-sm">
+                <a href="/laporan-harian-perangkat" class="bg-gray-600 hover:bg-gray-700 text-white px-3 py-1 rounded-md">
+                    Harian
+                </a>
+                <a href="/laporan-Bulanan-perangkat" class="bg-gray-600 hover:bg-gray-700 text-white px-3 py-1 rounded-md">
+                    Bulanan
+                </a>
+                <a href="/rekap-Bulanan" class="bg-gray-600 hover:bg-gray-700 text-white px-3 py-1 rounded-md">
+                    Rekap
+                </a>
+            </div>
+        </div>
+
+        {{-- TABLE --}}
+        <div class="bg-white shadow rounded-xl overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+
+                    {{-- HEADER --}}
+                    <thead class="bg-gray-100 text-xs uppercase text-gray-600">
+                        <tr>
+                            <th class="px-3 py-2 text-center w-10">No</th>
+                            <th class="px-3 py-2 text-center">Tanggal</th>
+                            <th class="px-3 py-2 text-center">Periode</th>
+                            <th class="px-3 py-2 text-center">Status</th>
+                        </tr>
+                    </thead>
+
+                    {{-- BODY --}}
+                    <tbody>
+                        @forelse($dataSesiPerangkat as $org)
+                        <tr class="border-t hover:bg-gray-50 text-center">
+
+                            <td class="px-3 py-2">
+                                {{ $loop->iteration }}
+                            </td>
+
+                            <td class="px-3 py-2">
+                                <a href="/daftar-sesi-perangkat/{{ $org->id }}"
+                                    class="text-blue-600 hover:underline font-medium">
+                                    {{ \Carbon\Carbon::parse($org->tanggal)->isoFormat('dddd, DD MMMM Y') }}
+                                </a>
+                            </td>
+
+                            <td class="px-3 py-2">
+                                <div class="font-semibold">
+                                    {{ $org->periode }}
+                                </div>
+                                <div class="text-xs text-gray-500">
+                                    {{ $org->ket_semester }}
+                                </div>
+                            </td>
+
+                            {{-- STATUS --}}
+                            <td class="px-3 py-2">
+                                @if($org->SesiP !== null)
+                                <span class="bg-green-600 text-white px-3 py-1 rounded-full text-xs">
+                                    Sudah Absen
+                                </span>
+                                @else
+                                <span class="bg-red-500 text-white px-3 py-1 rounded-full text-xs">
+                                    Belum Absen
+                                </span>
+                                @endif
+                            </td>
+
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="4" class="text-center py-4 text-gray-500 italic">
+                                Data sesi belum tersedia
+                            </td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+
+    </div>
 </x-app-layout>
