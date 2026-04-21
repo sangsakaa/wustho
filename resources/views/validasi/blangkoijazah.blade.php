@@ -181,7 +181,7 @@
                         </p>
 
                         <p class="text-sm text-justify mt-3">
-                            Pemegang ijazah ini, terakhir tercatat sebagai murid Mad÷÷rasah Diniyah Takmiliyah
+                            Pemegang ijazah ini, terakhir tercatat sebagai murid Madrasah Diniyah Takmiliyah
                             {{$jenjang}} Wahidiyah Kedunglo Kediri dengan
                             <b>Nomor Induk Murid: <span class="nomor-ijazah">{{$ijazah->nis}}</span></b>
                         </p>
