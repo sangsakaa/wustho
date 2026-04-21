@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Absensiguru;
+
 use App\Models\Kelas;
 use App\Models\Siswa;
 use App\Models\Kelasmi;
@@ -19,58 +19,63 @@ class KelasmiController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Kelasmi $kelasmi)
-    {
-        $dataJumlahPeserta = Kelasmi::query()
-            ->select(['kelasmi.id', DB::raw('count(pesertakelas.id) as jumlah_peserta_asrama')])
-            ->join('pesertakelas', 'pesertakelas.kelasmi_id', '=', 'kelasmi.id')
-            ->groupBy('kelasmi.id');
 
-        $dataPeriode = Periode::query()
-            ->join('semester', 'semester.id', '=', 'periode.semester_id')
-            ->select('periode.id', 'periode.periode', 'semester.ket_semester')
-            ->orderBy('periode')->get();
-        $dataKelas = Kelas::query()
-            ->select('kelas.kelas', 'kelas.id')
-            ->get();
-        $kelasMI = Kelasmi::query()
+
+    public function index()
+    {
+        // 🔹 Subquery jumlah peserta
+        $dataJumlahPeserta = DB::table('pesertakelas')
+            ->select('kelasmi_id', DB::raw('COUNT(*) as jumlah_peserta'))
+            ->groupBy('kelasmi_id');
+
+        // 🔹 Data Kelas MI
+        $kelasMI = DB::table('kelasmi')
             ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
             ->join('semester', 'semester.id', '=', 'periode.semester_id')
             ->join('kelas', 'kelas.id', '=', 'kelasmi.kelas_id')
-            ->leftjoin('pesertakelas', 'pesertakelas.kelasmi_id', '=', 'kelasmi.id')
-            ->leftjoinSub(
-                $dataJumlahPeserta,
-                'datajumlahpeserta',
-                function ($join) {
-                    $join->on('kelasmi.id', '=', 'datajumlahpeserta.id');
-                }
-            )
-            ->selectRaw('kelasmi.id,nama_kelas,jenjang,ket_semester,kelas,periode,kuota,count(pesertakelas.siswa_id) as jumlah_nilai_ujian, jumlah_peserta_asrama')
-            ->where('kelasmi.periode_id', session('periode_id'))
-            ->groupBy(
+            ->leftJoinSub($dataJumlahPeserta, 'jp', function ($join) {
+                $join->on('kelasmi.id', '=', 'jp.kelasmi_id');
+            })
+            ->select(
                 'kelasmi.id',
-                'nama_kelas',
-                'kelas',
-                'kuota',
-                'ket_semester',
-                'periode',
-            'jumlah_peserta_asrama',
-            'jenjang'
-            )
+                'kelasmi.nama_kelas',
+                'kelasmi.jenjang',
+                'kelas.kelas',
+                'periode.periode',
+                'semester.ket_semester',
+                'kelasmi.kuota',
+                DB::raw('COALESCE(jp.jumlah_peserta,0) as jumlah_peserta')
+        )
+            ->where('kelasmi.periode_id', session('periode_id'))
             ->orderBy('periode')
             ->orderBy('ket_semester')
             ->orderBy('nama_kelas')
             ->get();
-        // dd($kelasMI);
-        return view(
-            'kelas_mi/kelas_mi',
-            [
-                'kelasMI' => $kelasMI,
-                'dataKelas' => $dataKelas,
-                'dataPeriode' => $dataPeriode,
 
-            ]
-        );
+        // 🔹 Data tambahan
+        $dataKelas = Kelas::select('id', 'kelas')->get();
+
+        $dataPeriode = Periode::join('semester', 'semester.id', '=', 'periode.semester_id')
+            ->select('periode.id', 'periode.periode', 'semester.ket_semester')
+            ->orderBy('periode')
+            ->get();
+
+        // 🔥 Dashboard Data
+        $totalKelas = $kelasMI->count();
+        $totalSiswa = DB::table('pesertakelas')
+            ->join('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
+            ->where('kelasmi.periode_id', session('periode_id'))
+            ->count();
+        $totalGuru  = DB::table('guru')->count(); // pastikan tabel ada
+
+        return view('kelas_mi.kelas_mi', compact(
+            'kelasMI',
+            'dataKelas',
+            'dataPeriode',
+            'totalKelas',
+            'totalSiswa',
+            'totalGuru'
+        ));
     }
 
     /**

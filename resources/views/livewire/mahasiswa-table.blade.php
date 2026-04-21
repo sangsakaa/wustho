@@ -5,6 +5,11 @@
 
         {{-- LEFT --}}
         <div class="flex flex-wrap items-center gap-2">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-2 text-xs">
+
+
+
+            </div>
 
             {{-- ADD --}}
             <a href="/addsiswa"

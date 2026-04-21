@@ -18,37 +18,7 @@
             </div>
 
             {{-- DASHBOARD STAT --}}
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-2 text-xs">
 
-                <div class="bg-white dark:bg-gray-900 border rounded-lg p-3">
-                    <p class="text-gray-400">Total</p>
-                    <p class="text-lg font-bold text-gray-700 dark:text-white">
-                        {{ $total ?? 0 }}
-                    </p>
-                </div>
-
-                <div class="bg-white dark:bg-gray-900 border rounded-lg p-3">
-                    <p class="text-gray-400">Aktif</p>
-                    <p class="text-lg font-bold text-green-600">
-                        {{ $aktif ?? 0 }}
-                    </p>
-                </div>
-
-                <div class="bg-white dark:bg-gray-900 border rounded-lg p-3">
-                    <p class="text-gray-400">Lulus</p>
-                    <p class="text-lg font-bold text-blue-600">
-                        {{ $lulus ?? 0 }}
-                    </p>
-                </div>
-
-                <div class="bg-white dark:bg-gray-900 border rounded-lg p-3">
-                    <p class="text-gray-400">Boyong</p>
-                    <p class="text-lg font-bold text-red-600">
-                        {{ $boyong ?? 0 }}
-                    </p>
-                </div>
-
-            </div>
 
         </div>
 
@@ -57,7 +27,7 @@
     <div class="space-y-4">
 
         {{-- TABLE --}}
-        <div class="bg-white dark:bg-gray-900 shadow-sm rounded-xl p-4 border border-gray-200 dark:border-gray-700">
+        <div class=" dark:bg-gray-900 shadow-sm rounded-xl p-4 border border-gray-200 dark:border-gray-700">
             <livewire:mahasiswa-table />
         </div>
 

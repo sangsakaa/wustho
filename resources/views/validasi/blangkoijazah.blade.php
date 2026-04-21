@@ -165,23 +165,23 @@
                             Ulya
                             @endif
 
-                            Wahidiyah Kedunglo Kediri Nomor Statistik
+                            Wahidiyah Kedunglo Kediri
 
                             @if ($jenjang == 'Wustho')
-                            <span class="nomor-ijazah">321235710006</span>
+                            <span class="nomor-ijazah"> Nomor Statistik 321235710006</span>
 
                             @elseif ($jenjang == 'Ula')
-                            <span class="nomor-ijazah">311235710013</span>
+                            <span class="nomor-ijazah"> Nomor Statistik 311235710013</span>
 
                             @elseif ($jenjang == 'Ulya')
-                            <span class="nomor-ijazah">-</span>
+                            <span class="nomor-ijazah"></span>
                             @endif
 
                             berdasarkan penilaian sebagaimana ketentuan yang berlaku.
                         </p>
 
                         <p class="text-sm text-justify mt-3">
-                            Pemegang ijazah ini, terakhir tercatat sebagai murid Madrasah Diniyah Takmiliyah
+                            Pemegang ijazah ini, terakhir tercatat sebagai murid Mad÷÷rasah Diniyah Takmiliyah
                             {{$jenjang}} Wahidiyah Kedunglo Kediri dengan
                             <b>Nomor Induk Murid: <span class="nomor-ijazah">{{$ijazah->nis}}</span></b>
                         </p>

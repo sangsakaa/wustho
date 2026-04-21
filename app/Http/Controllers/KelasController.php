@@ -74,41 +74,45 @@ class KelasController extends Controller
             ->join('semester', 'semester.id', '=', 'periode.semester_id')
             ->join('kelas', 'kelas.id', '=', 'kelasmi.kelas_id')
             ->where('kelasmi.periode_id', $kelasmi->periode_id)
-            ->select('kelasmi.id', 'nama_kelas', 'kelas.kelas', 'kelasmi.kuota', 'periode.periode', 'semester.ket_semester')
-        ->get();
-        $pesertaKelasPeriodeTerpilih = Pesertakelas::query()
+            ->select(
+                'kelasmi.id',
+                'kelasmi.nama_kelas', // ✅ FIX DI SINI
+                'kelasmi.kuota',
+                'periode.periode',
+                'semester.ket_semester'
+            )
+            ->get();
+
+        // 🔥 siswa yang sudah masuk kelas di periode ini
+        $pesertaKelas = Pesertakelas::query()
             ->join('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
             ->where('kelasmi.periode_id', $kelasmi->periode_id)
-            ->select('pesertakelas.siswa_id');
+            ->pluck('pesertakelas.siswa_id');
+
         $Datasiswa = Siswa::query()
             ->join('nis', 'siswa.id', '=', 'nis.siswa_id')
             ->join('pesertaasrama', 'siswa.id', '=', 'pesertaasrama.siswa_id')
             ->join('asramasiswa', 'asramasiswa.id', '=', 'pesertaasrama.asramasiswa_id')
             ->join('asrama', 'asrama.id', '=', 'asramasiswa.asrama_id')
-            ->leftJoinSub($pesertaKelasPeriodeTerpilih, 'peserta_kelas_periode_terpilih', function ($join) {
-                $join->on('peserta_kelas_periode_terpilih.siswa_id', '=', 'siswa.id');
-            })
-            ->where('peserta_kelas_periode_terpilih.siswa_id', null)
+            ->whereNotIn('siswa.id', $pesertaKelas)
             ->where('asramasiswa.periode_id', session('periode_id'))
-            ->orderBy('jenis_kelamin')
-            ->select('siswa.*', 'nis.nis', 'nis.tanggal_masuk', 'asrama.nama_asrama')
-            ->orderBy('nis');
-        if (request('cari')) {
-            $Datasiswa->where(
-                'nama_siswa',
-                'like',
-                '%' . request('cari') . '%'
-            );
-            
-        };
-        return view(
-            'kelas_mi/pesertakolektif',
-            [
-                'Datasiswa' => $Datasiswa->get(),
-                'kelas' => $kelas,
-                'kelasmi' => $kelasmi
-            ]
-        );
+            ->when(request('search'), function ($query) {
+                $query->where('nama_siswa', 'like', '%' . request('search') . '%');
+            })
+            ->orderBy('nis.nis')
+            ->select(
+                'siswa.*',
+                'nis.nis',
+                'nis.tanggal_masuk',
+                'asrama.nama_asrama'
+            )
+            ->get();
+
+        return view('kelas_mi/pesertakolektif', [
+            'Datasiswa' => $Datasiswa,
+            'kelas' => $kelas,
+            'kelasmi' => $kelasmi
+        ]);
     }
     public function StoreKolektif(Request $request)
     {

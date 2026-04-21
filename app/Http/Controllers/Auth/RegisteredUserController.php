@@ -75,26 +75,35 @@ class RegisteredUserController extends Controller
     }
     public function HasRole()
     {
+        $users = User::select('id', 'name')->get();
+        $roles = Roles::select('id', 'name')->get();
 
-        $User = User::all();
-        $roles = Roles::all();
-        $permissions = Hasrole::query()
+        $query = Hasrole::query()
             ->join('roles', 'roles.id', '=', 'model_has_roles.role_id')
             ->join('users', 'users.id', '=', 'model_has_roles.model_id')
-            ->select('users.name', 'model_id', 'role_id', 'roles.name as role_name', 'email',);
-        if (request('cari')) {
-            $permissions->where('users.name', 'like', '%' . request('cari') . '%');
+            ->select([
+                'users.id as user_id',
+                'users.name as user_name',
+                'users.email',
+                'roles.name as role_name',
+                'model_has_roles.role_id',
+
+            ]);
+
+        if (request()->filled('cari')) {
+            $query->where('users.name', 'like', '%' . request('cari') . '%');
         }
 
-        $data = $permissions->get();
-        return view(
-            'admin/HasRole',
-            [
-                'hasRole' => $data,
-                'roles' => $roles,
-                'User' => $User
-            ]
-        );
+        $hasRoles = $query
+            ->orderBy('users.name', 'asc')
+            ->paginate(10)
+            ->withQueryString();
+
+        return view('admin.HasRole', [
+            'hasRole' => $hasRoles,
+            'roles'   => $roles,
+            'User'    => $users,
+        ]);
     }
     public function create()
     {

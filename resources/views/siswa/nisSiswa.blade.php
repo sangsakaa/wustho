@@ -1,161 +1,174 @@
 <x-app-layout>
     <x-slot name="header">
         @section('title', ' | Detail : '.$siswa->nama_siswa )
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard Nomor Induk Siswa ') }}
+        <h2 class="font-semibold text-xl text-gray-800">
+            Detail Siswa
         </h2>
     </x-slot>
-    <div class="py-2 px-4">
-        <div class="mx-auto">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-4 bg-white border-b border-gray-200">
-                    <div class=" grid  sm:grid-cols-2 grid-cols-2 ">
-                        <div class=" flex w-full">
-                            <div class="grid w-36  ">Nama </div>
-                            <div class=" px-4 grid uppercase font-semibold   text-sm ">: {{$siswa->nama_siswa}}</div>
-                        </div>
-                        <div class=" flex w-full">
-                            <div class="grid w-36 ">Tanggal Lahir </div>
-                            <div class=" px-4">: {{$siswa->tempat_lahir}} , {{ \Carbon\Carbon::parse($siswa->tanggal_lahir)->isoFormat(' DD MMMM Y') }}</div>
-                        </div>
 
-                        <div class=" flex w-full">
-                            <div class=" grid  w-36 ">Jenis Kelamin </div>
-                            <div class=" px-4"> : {{$siswa->jenis_kelamin}}</div>
-                        </div>
-                        <div class=" flex w-full">
-                            <div class="  grid w-36    ">Status Asrama </div>
-                            <div class=" px-4    "> :
-                                @if($siswa->asramaTerkhir?->asramaSiswa->asrama->nama_asrama !== null)
-                                {{$siswa->asramaTerkhir?->asramaSiswa->asrama->nama_asrama}}
-                                @else
-                                <span class=" text-red-600 ">Belum Memiliki Asrama</span>
-                                @endif
-                            </div>
-                        </div>
+    <div class="p-4 space-y-4">
 
-                    </div>
+        {{-- 🔹 CARD BIODATA --}}
+        <div class="bg-white shadow rounded-xl p-5">
+            <h3 class="font-semibold text-lg mb-3">Informasi Siswa</h3>
+
+            <div class="grid md:grid-cols-2 gap-3 text-sm">
+
+                <div class="flex justify-between">
+                    <span class="text-gray-500">Nama</span>
+                    <span class="font-semibold uppercase">{{ $siswa->nama_siswa }}</span>
                 </div>
+
+                <div class="flex justify-between">
+                    <span class="text-gray-500">Tanggal Lahir</span>
+                    <span>
+                        {{ $siswa->tempat_lahir }},
+                        {{ \Carbon\Carbon::parse($siswa->tanggal_lahir)->isoFormat('DD MMMM Y') }}
+                    </span>
+                </div>
+
+                <div class="flex justify-between">
+                    <span class="text-gray-500">Jenis Kelamin</span>
+                    <span>{{ $siswa->jenis_kelamin }}</span>
+                </div>
+
+                <div class="flex justify-between">
+                    <span class="text-gray-500">Asrama</span>
+                    <span>
+                        {{ optional($siswa->asramaTerkhir?->asramaSiswa?->asrama)->nama_asrama ?? 'Belum ada' }}
+                    </span>
+                </div>
+
             </div>
         </div>
-    </div>
-    <div class=" px-4">
-        <div class="mx-auto">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-4 bg-white border-b border-gray-200">
-                    <div class=" flex grid-cols-1 justify-items-end">
-                        <a href="/siswa/{{$siswa->id}}" class=" bg-blue-500 px-2 py-1  hover:bg-purple-500 text-white">Kembali</a>
-                        @role('super admin')
-                        <div class=" grid grid-cols-1 justify-items-end">
-                            <a href="/nis/{{$siswa->id}}" class=" bg-blue-500 px-2 py-1 hover:bg-purple-500 text-white">Nomor Induk siswa</a>
-                        </div>
-                        <div class=" grid grid-cols-1 justify-items-end">
-                            <a href="/biodata/{{$siswa->id}}" class=" bg-blue-500 px-2 py-1 hover:bg-purple-500 text-white">Biodata Lengkap</a>
-                        </div>
-                        @endrole
-                    </div>
-                    <div class=" grid grid-cols-1 sm:grid-cols-1 gap-2">
-                        <div class=" py-1">
 
-                            <form action="/nis/{{$siswa->id}}" method="post">
-                                @csrf
-                                <input type="hidden" name="siswa_id" value="{{$siswa->id}}" class=" py-1" required>
-                                <input type="text" name="nis" class=" py-1" placeholder="NIS : 2023010001" autofocus>
-                                <select name="madrasah_diniyah" id="" class=" py-1">
-                                    <option value="Ula">--Ula--</option>
-                                    <option value="Wustho">--Wustho--</option>
-                                    <option value="Ulya">--Ulya--</option>
-                                </select>
-                                <select name="nama_lembaga" id="" class=" py-1">
-                                    <option value="Wahidiyah">--Wahidiyah--</option>
-                                </select>
-                                <input type="date" name="tanggal_masuk" id="" class=" py-1" required>
-                                <button class=" bg-blue-600 py-1 px-2 text-white rounded-sm">Create NIS</button>
-                            </form>
+        {{-- 🔹 ACTION --}}
+        <div class="flex flex-wrap gap-2">
+            <a href="/siswa/{{ $siswa->id }}"
+                class="bg-gray-500 hover:bg-gray-600 text-white px-3 py-2 rounded-lg text-sm">
+                ← Kembali
+            </a>
 
-                        </div>
-                    </div>
-                    <div>
-                        @if (session('update'))
-                        <script>
-                            Toastify({
-                                text: "data NIM berhasil di update",
-                                className: "update",
-                                style: {
-                                    background: "linear-gradient(to right, #00b09b, #96c93d)",
-                                }
-                            }).showToast();
-                        </script>
-                        @endif
-                        <span>Detail Nomor Induk Siswa</span>
-                        <table class=" w-full">
-                            <thead>
-                                <tr class=" border bg-gray-100">
-                                    <th class=" py-1 border">No</th>
-                                    <th class=" py-1 border">Nomor Induk Siswa</th>
-                                    <th class=" py-1 boder">Nama Lembaga</th>
-                                    <th class=" py-1 boder">Madrasah</th>
-                                    <th class=" py-1 boder">Tanggal Masuk</th>
-                                    <th class=" py-1 boder"> Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @if($nis->count())
-                                @foreach($nis as $nomor)
-                                <tr class=" border">
-                                    <td class=" px-2 py-1 text-center border">{{$loop->iteration}}</td>
-                                    <td class=" px-2 text-center border">{{$nomor->nis}}</td>
-                                    <td class=" px-2 text-center border">{{$nomor->nama_lembaga}}</td>
-                                    <td class=" px-2 text-center border">{{$nomor->madrasah_diniyah}}</td>
-                                    <td class=" px-2 text-center border">{{$nomor->tanggal_masuk}}</td>
-                                    <td class="flex justify-center p-1  gap-1">
-                                        @role('super admin')
-                                        <form action="/nis/{{$nomor->id}}" method="post">
-                                            @csrf
-                                            @method('delete')
-                                            <button class=" flex p-1  text-center text-white bg-red-600 rounded">
-                                                <x-icons.hapus></x-icons.hapus>
-                                            </button>
-                                        </form>
+            @role('super admin')
+            <a href="/nis/{{ $siswa->id }}"
+                class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg text-sm">
+                NIS
+            </a>
 
-                                        @endrole
-                                        <a href="/nis/{{$nomor->id}}/edit" class=" bg-yellow-500 rounded p-1">
-                                            <x-icons.edit></x-icons.edit>
-                                        </a>
-                                    </td>
-                                </tr>
-                                @endforeach
-                                @else
-                                <tr>
-                                    <td colspan="6" class=" border text-center font-semibold text-red-600"> Belum memiliki NIS : Nomor induk Siswa</td>
-                                </tr>
-                                @endif
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+            <a href="/biodata/{{ $siswa->id }}"
+                class="bg-indigo-500 hover:bg-indigo-600 text-white px-3 py-2 rounded-lg text-sm">
+                Biodata
+            </a>
+            @endrole
+        </div>
+
+        {{-- 🔹 FORM NIS --}}
+        <div class="bg-white shadow rounded-xl p-5">
+            <h3 class="font-semibold mb-3">Tambah Nomor Induk Siswa</h3>
+
+            <form action="/nis/{{$siswa->id}}" method="POST" class="grid md:grid-cols-5 gap-2">
+                @csrf
+
+                <input type="hidden" name="siswa_id" value="{{$siswa->id}}">
+
+                <input type="text" name="nis"
+                    placeholder="Contoh: 2023010001"
+                    class="border rounded-lg px-3 py-2 text-sm col-span-2">
+
+                <select name="madrasah_diniyah"
+                    class="border rounded-lg px-2 py-2 text-sm">
+                    <option value="">Jenjang</option>
+                    <option value="Ula">Ula</option>
+                    <option value="Wustho">Wustho</option>
+                    <option value="Ulya">Ulya</option>
+                </select>
+
+                <select name="nama_lembaga"
+                    class="border rounded-lg px-2 py-2 text-sm">
+                    <option value="Wahidiyah">Wahidiyah</option>
+                </select>
+
+                <input type="date" name="tanggal_masuk"
+                    class="border rounded-lg px-2 py-2 text-sm">
+
+                <button
+                    class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-2 rounded-lg text-sm">
+                    Simpan
+                </button>
+            </form>
+        </div>
+
+        {{-- 🔹 TABLE NIS --}}
+        <div class="bg-white shadow rounded-xl p-5">
+            <h3 class="font-semibold mb-3">Riwayat NIS</h3>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm border rounded-lg overflow-hidden">
+
+                    <thead class="bg-gray-100 text-xs uppercase">
+                        <tr>
+                            <th class="border px-2 py-2">No</th>
+                            <th class="border px-2">NIS</th>
+                            <th class="border px-2">Lembaga</th>
+                            <th class="border px-2">Madrasah</th>
+                            <th class="border px-2">Masuk</th>
+                            <th class="border px-2 text-center">Aksi</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @forelse($nis as $i => $nomor)
+                        <tr class="hover:bg-gray-50 even:bg-gray-100">
+
+                            <td class="border text-center">{{ $i+1 }}</td>
+                            <td class="border text-center">{{ $nomor->nis }}</td>
+                            <td class="border text-center">{{ $nomor->nama_lembaga }}</td>
+                            <td class="border text-center">{{ $nomor->madrasah_diniyah }}</td>
+                            <td class="border text-center">{{ $nomor->tanggal_masuk }}</td>
+
+                            <td class="border text-center">
+                                <div class="flex justify-center gap-1">
+
+                                    @role('super admin')
+                                    <form action="/nis/{{$nomor->id}}" method="POST"
+                                        onsubmit="return confirm('Hapus data ini?')">
+                                        @csrf
+                                        @method('delete')
+                                        <button class="bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded text-xs">
+                                            Hapus
+                                        </button>
+                                    </form>
+                                    @endrole
+
+                                    <a href="/nis/{{$nomor->id}}/edit"
+                                        class="bg-yellow-500 hover:bg-yellow-600 text-white px-2 py-1 rounded text-xs">
+                                        Edit
+                                    </a>
+
+                                </div>
+                            </td>
+
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="6" class="text-center py-4 text-red-600">
+                                Belum memiliki NIS
+                            </td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+
+                </table>
             </div>
         </div>
-    </div>
 
-    <div class=" px-4 py-2">
-        <div class="mx-auto">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-4 bg-blue-200 border-b border-gray-200">
-                    <div class=" ">
-                        <p class=" font-semibold"> Keterangan :</p>
-                        <p class=" font-semibold"> Mekanisme Pembuatan Nomor Induk Siswa</p>
-                        <p class="px-2">
-                            1.TAHUN MASUK-KODE MADRASAH-NOMOR URUT SISWA
-                        </p>
-                        <p class=" px-5">Contoh : 202002001</p>
-                    </div>
-                </div>
-            </div>
+        {{-- 🔹 INFO --}}
+        <div class="bg-blue-50 border border-blue-200 rounded-xl p-4 text-sm">
+            <p class="font-semibold mb-1">Keterangan</p>
+            <p>Mekanisme NIS:</p>
+            <p class="ml-3">TAHUN MASUK - KODE MADRASAH - NOMOR URUT</p>
+            <p class="ml-3 text-gray-500">Contoh: 202002001</p>
         </div>
+
     </div>
-    </div>
-
-
-
 </x-app-layout>
