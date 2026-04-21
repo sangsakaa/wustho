@@ -60,7 +60,7 @@
             <img src="{{ asset('asset/images/logoUla.png') }}" class="absolute opacity-25 w-1/3 p-2 mt-3 black-and-white">
 
             @elseif ($jenjang == 'Ulya')
-            <img src="{{ asset('asset/images/logo_kop.png') }}" class="absolute opacity-25 w-1/3 p-2 mt-3 black-and-white">
+            <img src="{{ asset('asset/images/logo_ulya.jpeg') }}" class="absolute opacity-25 w-1/3 p-2 mt-3 black-and-white">
             @endif
 
             <div class="font-serif text-center rounded gap-4">
