@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Guru;
 use App\Models\Nig;
 use App\Models\Nilaimapel;
+use App\Models\Periode;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
@@ -56,29 +57,44 @@ class GuruController extends Controller
         return redirect('guru')->with('success', 'data berhasil ditambahkan');
     }
 
-    
-    public function show(Guru $guru)
+
+    public function show(Request $request, Guru $guru)
     {
-        $riwayat_mengajara = Nilaimapel::query()
-            ->leftjoin('kelasmi', 'kelasmi.id', '=', 'nilaimapel.kelasmi_id')
-            ->leftjoin('periode', 'periode.id', '=', 'kelasmi.periode_id')
-            ->leftjoin('semester', 'semester.id', '=', 'periode.semester_id')
-            ->leftjoin('kelas', 'kelas.id', '=', 'kelasmi.kelas_id')
-            ->leftjoin('mapel', 'mapel.id', '=', 'nilaimapel.mapel_id')
-            ->leftjoin('guru', 'guru.id', '=', 'nilaimapel.guru_id')
-            // ->leftjoin('nilai', 'nilai.nilaimapel_id', '=', 'nilaimapel.id')
-            ->selectRaw('nilaimapel.id, kelas.kelas, nama_kelas, semester.semester, semester.ket_semester, guru.nama_guru, mapel.mapel,mapel.nama_kitab, kelasmi.periode_id, periode.periode,nilaimapel.guru_id')
-            ->where('nilaimapel.guru_id', $guru->id, session('periode_id'))
-            ->where('kelasmi.periode_id', session('periode_id'))
-            ->orderBy('nama_kelas')
+        $periodeId = $request->get('periode_id') ?? session('periode_id');
+
+        // 🔥 ambil daftar periode untuk filter
+        $daftarPeriode = Periode::orderBy('periode', 'desc')->get();
+
+        $riwayatMengajar = Nilaimapel::query()
+            ->leftJoin('kelasmi', 'kelasmi.id', '=', 'nilaimapel.kelasmi_id')
+            ->leftJoin('periode', 'periode.id', '=', 'kelasmi.periode_id')
+            ->leftJoin('semester', 'semester.id', '=', 'periode.semester_id')
+            ->leftJoin('kelas', 'kelas.id', '=', 'kelasmi.kelas_id')
+            ->leftJoin('mapel', 'mapel.id', '=', 'nilaimapel.mapel_id')
+            ->leftJoin('guru', 'guru.id', '=', 'nilaimapel.guru_id')
+            ->select([
+                'nilaimapel.id',
+                'kelasmi.nama_kelas',
+                'periode.periode',
+                'semester.ket_semester',
+                'guru.nama_guru',
+                'mapel.mapel',
+                'mapel.nama_kitab',
+            ])
+            ->where('nilaimapel.guru_id', $guru->id)
+            ->when($periodeId, function ($q) use ($periodeId) {
+                $q->where('kelasmi.periode_id', $periodeId);
+            })
+            ->orderBy('periode.periode', 'desc')
+            ->orderBy('kelasmi.nama_kelas')
             ->get();
-        return view(
-            'guru/detail',
-            [
-                'guru' => $guru,
-                'riwayatMengajar' => $riwayat_mengajara,
-            ]
-        );
+
+        return view('guru.detail', [
+            'guru' => $guru,
+            'riwayatMengajar' => $riwayatMengajar,
+            'daftarPeriode' => $daftarPeriode,
+            'periodeAktif' => $periodeId
+        ]);
     }
 
    

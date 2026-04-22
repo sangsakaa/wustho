@@ -10,6 +10,8 @@ class ListPesertaKelas extends Component
 {
     public $search = '';
     public $kelasmi;
+    public $selected = [];
+    public $selectAll = false;
     public function mount($kelasmi)
     {
         // Inisialisasi data kolektif kelas
@@ -52,5 +54,26 @@ class ListPesertaKelas extends Component
             'lk' => $lk,
             'pr' => $pr
         ]);
+    }
+    public function updatedSelectAll($value)
+    {
+        if ($value) {
+            $this->selected = Pesertakelas::where('kelasmi_id', $this->kelasmi)
+                ->pluck('id')
+                ->toArray();
+        } else {
+            $this->selected = [];
+        }
+    }
+    public function deleteSelected()
+    {
+        if (count($this->selected) > 0) {
+            Pesertakelas::whereIn('id', $this->selected)->delete();
+
+            $this->selected = [];
+            $this->selectAll = false;
+
+            session()->flash('message', 'Data berhasil dihapus!');
+        }
     }
 }

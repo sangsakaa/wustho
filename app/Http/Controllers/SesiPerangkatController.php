@@ -131,66 +131,105 @@ class SesiPerangkatController
             ->where('periode.id', session('periode_id'))
             ->first();
 
-        
+
         $laporanBulanan = AbsensiPerangkat::query()
             ->leftJoin('perangkat', 'absensi_perangkat.perangkat_id', '=', 'perangkat.id')
+
+            ->leftJoin('jabatan_perangkat', 'jabatan_perangkat.perangkat_id', '=', 'perangkat.id') // ✅ pivot benar
+
+            ->leftJoin('jabatan', 'jabatan.id', '=', 'jabatan_perangkat.jabatan_id') // ✅ ambil jabatan
+
             ->leftJoin('sesi_perangkat', 'absensi_perangkat.sesi_perangkat_id', '=', 'sesi_perangkat.id')
             ->select(
-                'tanggal',
-                'nama_perangkat',
-                DB::raw('COUNT(*) as total'),
-                DB::raw('SUM(CASE WHEN keterangan = "alfa" THEN 1 ELSE 0 END) as jumlah_alfa'),
-                DB::raw('SUM(CASE WHEN keterangan = "hadir" THEN 1 ELSE 0 END) as jumlah_hadir'),
-                DB::raw('SUM(CASE WHEN keterangan = "izin" THEN 1 ELSE 0 END) as jumlah_izin'),
-                DB::raw('SUM(CASE WHEN keterangan = "sakit" THEN 1 ELSE 0 END) as jumlah_sakit')
+            'sesi_perangkat.tanggal',
+            'perangkat.nama_perangkat',
+            'jabatan.nama_jabatan', // ✅ ambil jabatan
+
+            DB::raw('COUNT(*) as total'),
+
+            DB::raw('SUM(CASE WHEN absensi_perangkat.keterangan = "alfa" THEN 1 ELSE 0 END) as jumlah_alfa'),
+            DB::raw('SUM(CASE WHEN absensi_perangkat.keterangan = "hadir" THEN 1 ELSE 0 END) as jumlah_hadir'),
+            DB::raw('SUM(CASE WHEN absensi_perangkat.keterangan = "izin" THEN 1 ELSE 0 END) as jumlah_izin'),
+            DB::raw('SUM(CASE WHEN absensi_perangkat.keterangan = "sakit" THEN 1 ELSE 0 END) as jumlah_sakit')
             )
-            ->groupBy('nama_perangkat', 'tanggal')
-            ->whereBetween('sesi_perangkat.tanggal', [$periodeBulan->first()->toDateString(), $periodeBulan->last()->toDateString()])
-        ->get();
-        return view('perangkat.absensi.laporanBulanan', compact('laporanBulanan', 'tanggal', 'bulan', 'periodeBulan', 'periode', 'kelasmi'));
+            ->whereBetween('sesi_perangkat.tanggal', [
+                $periodeBulan->first()->toDateString(),
+                $periodeBulan->last()->toDateString()
+            ])
+            ->groupBy(
+                'sesi_perangkat.tanggal',
+                'perangkat.nama_perangkat',
+                'jabatan.nama_jabatan' // ✅ WAJIB masuk groupBy
+            )
+            ->orderBy('jabatan.nama_jabatan') // opsional: urut berdasarkan jabatan
+            ->orderBy('perangkat.nama_perangkat')
+            ->get();
+        $kepalaSekolah = $laporanBulanan
+            ->where('nama_jabatan', 'Kepala Sekolah')
+            ->first();
+        return view('perangkat.absensi.laporanBulanan', compact('laporanBulanan', 'tanggal', 'bulan', 'periodeBulan', 'periode', 'kelasmi', 'kepalaSekolah'));
     }
     public function rekapSesiPerangkat(Request $request)
     {
         $bulan = $request->bulan ? Carbon::parse($request->bulan) : now();
-        $periodeBulan = $bulan->startOfMonth()->daysUntil($bulan->copy()->endOfMonth());
+
+        // Ambil range tanggal 1 bulan
+        $start = $bulan->copy()->startOfMonth();
+        $end   = $bulan->copy()->endOfMonth();
+        $periodeBulan = $start->daysUntil($end);
+
+        // Ambil semua perangkat
         $datakelasmi = Perangkat::query()
-            ->select('perangkat.*')
+            ->where('status', 'Aktif')
             ->get();
+
+        // Ambil data sesi + absensi
         $dataSesikelasguru = SesiPerangkat::query()
             ->leftJoin('absensi_perangkat', 'absensi_perangkat.sesi_perangkat_id', '=', 'sesi_perangkat.id')
-            ->join('perangkat', 'perangkat.id', 'absensi_perangkat.perangkat_id')
-            ->select('sesi_perangkat.*', 'nama_perangkat', 'absensi_perangkat.keterangan', 'perangkat_id')
+            ->leftJoin('perangkat', 'perangkat.id', '=', 'absensi_perangkat.perangkat_id') // 🔥 ubah jadi leftJoin
+            ->select(
+                'sesi_perangkat.tanggal',
+                'absensi_perangkat.perangkat_id',
+                'absensi_perangkat.keterangan'
+            )
             ->where('sesi_perangkat.periode_id', session('periode_id'))
-            ->whereBetween('sesi_perangkat.tanggal', [$periodeBulan->first()->toDateString(), $periodeBulan->last()->toDateString()])
-            ->get()->groupBy('perangkat_id');
+            ->whereBetween('sesi_perangkat.tanggal', [$start->toDateString(), $end->toDateString()])
+            ->get()
+            ->groupBy('perangkat_id')
+            ->map(function ($items) {
+                return $items->keyBy('tanggal'); // 🔥 biar cepat lookup
+            });
+
+        // Mapping rekap
         $dataRekapSesi = $datakelasmi
             ->keyBy('id')
             ->map(function ($perangkat, $perangkat_id) use ($dataSesikelasguru, $periodeBulan) {
-                // dd($perangkat);
-                // dd($dataSesikelasguru);
-                foreach ($periodeBulan as $hari) {
-                    // dd($dataSesikelasguru);
-                    $sesiPerBulan[] = [
-                        'hari' => $hari,
-                        'data' => $dataSesikelasguru->count() ? $dataSesikelasguru[$perangkat_id]->firstWhere('tanggal', $hari->toDateString()) : null
-                    ];
-                }
-                return [
-                    'sesiPerBulan' => $sesiPerBulan,
-                    'perangkat' => $perangkat,
+
+            $sesiPerBulan = []; // ✅ reset tiap perangkat
+
+            foreach ($periodeBulan as $hari) {
+                $tanggal = $hari->toDateString();
+
+                $data = $dataSesikelasguru
+                    ->get($perangkat_id) // aman
+                    ?->get($tanggal);      // cepat (tanpa firstWhere)
+
+                $sesiPerBulan[] = [
+                    'hari' => $hari,
+                    'data' => $data
+                ];
+            }
+
+            return [
+                'perangkat' => $perangkat,
+                'sesiPerBulan' => $sesiPerBulan,
                 ];
             });
 
-
-
         return view('perangkat.absensi.rekap-sesi', [
-
-
             'dataRekapSesi' => $dataRekapSesi,
-            'periodeBulan' => $periodeBulan,
-            'bulan' => $bulan,
-
-
+            'periodeBulan'  => $periodeBulan,
+            'bulan'         => $bulan,
         ]);
     }
 }

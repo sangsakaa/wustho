@@ -8,25 +8,44 @@
             placeholder="Cari nama siswa..."
             class="border rounded-md px-3 py-2">
 
-        <select wire:model="perPage" class="border rounded-md px-2 py-2">
+        <select wire:model="perPage" class="border rounded-md px-2 py-2  w-30">
             <option>10</option>
             <option>25</option>
             <option>50</option>
             <option>100</option>
         </select>
 
-        <select wire:model="jenis_kelamin" class="border rounded-md px-2 py-2">
+        <select wire:model="jenis_kelamin" class="border rounded-md px-2 py-2 w-52">
             <option value="">Semua JK</option>
             <option value="L">L</option>
             <option value="P">P</option>
         </select>
 
-        <select wire:model="angkatan" class="border rounded-md px-2 py-2">
+        <select wire:model="angkatan" class="border rounded-md px-2 py-2 w-52">
             <option value="">Semua Angkatan</option>
             @foreach($angkatanList as $tahun)
             <option value="{{ $tahun }}">{{ $tahun }}</option>
             @endforeach
         </select>
+        <div class="mb-3">
+            <a href="/pesertaasrama/{{$asramasiswa}}"
+                class="inline-flex items-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded-md shadow-sm transition">
+
+                <!-- Icon panah kiri -->
+                <svg xmlns="http://www.w3.org/2000/svg"
+                    class="w-4 h-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M15 19l-7-7 7-7" />
+                </svg>
+
+                <span>Kembali</span>
+            </a>
+        </div>
 
     </div>
 
@@ -69,7 +88,7 @@
                 @forelse ($Datasiswa as $item)
                 <tr class="border-t hover:bg-green-50">
 
-                    <td class="text-center">
+                    <td class="text-center py-2">
                         <input type="checkbox"
                             value="{{ $item->id }}"
                             wire:model="selected">

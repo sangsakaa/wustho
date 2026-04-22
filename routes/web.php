@@ -211,6 +211,7 @@ Route::get('sesiasrama/{sesiasrama}', [SesiasramaController::class, 'show'])->mi
 Route::post('sesiasrama', [SesiasramaController::class, 'store'])->middleware(['auth']);
 Route::post('sesiasrama/presensi', [SesiasramaController::class, 'simpanpresensi'])->middleware(['auth']);
 Route::delete('sesiasrama/{sesiasrama}', [SesiasramaController::class, 'destroy'])->middleware(['auth']);
+Route::post('/pesertaasrama/delete-selected', [AsramasiswaController::class, 'deleteSelected']);
 
 
 // Controller Kegiatan

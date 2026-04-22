@@ -1,66 +1,83 @@
 <x-app-layout>
     <x-slot name="header">
-        @section('title', ' | Daftar Jadwal' )
-        <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-            <h2 class="sm:text-xl font-semibold leading-tight text-sm">
-                {{ __('Ploting Jadwal Guru') }}
-            </h2>
+        @section('title', ' | Daftar Jadwal')
+
+        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
+            <div>
+                <h2 class="text-xl font-semibold text-gray-800">
+                    Ploting Jadwal Guru
+                </h2>
+                <p class="text-sm text-gray-500">
+                    Kelola jadwal mengajar guru per periode
+                </p>
+            </div>
+
+            <!-- ACTION -->
+            <div class="flex gap-2">
+                <a href="#"
+                    class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl text-sm shadow transition">
+                    + Tambah Jadwal
+                </a>
+            </div>
         </div>
     </x-slot>
-    <div class=" hidden">
-        <form action="/Daftar-Jadwal" method="post">
-            <div class=" bg-white grid sm:grid-cols-4 grid-cols-1 px-2 py-2 gap-2">
-                @csrf
-                <label for="hari">Pilih Hari</label>
-                <select id="hari" name="hari" class=" py-1">
-                    <option value="jumat">Jumat</option>
-                    <option value="sabtu">Sabtu</option>
-                    <option value="minggu">Minggu</option>
-                    <option value="senin">Senin</option>
-                    <option value="selasa">Selasa</option>
-                    <option value="rabu">Rabu</option>
-                </select>
-                <label for="hari">Pilih Periode </label>
-                <select id="hari" name="periode_id" class=" py-1">
-                    @foreach($daftarPeriode as $periode)
-                    <option value="{{$periode->id}}">{{$periode->periode}} {{$periode->ket_semester}}</option>
-                    @endforeach
-                </select>
-                <label for="hari">Pilih Kelas </label>
-                <select id="hari" name="kelasmi_id" class=" py-1">
-                    @foreach($daftarKelas as $kelas)
-                    <option value="{{$kelas->id}}">{{$kelas->nama_kelas}} {{$kelas->periode}} {{$kelas->ket_semester}}</option>
-                    @endforeach
-                </select>
-                <div class=" w-full   flex   grid-cols-6   gap-2">
-                    <button class=" bg-red-600 px-2 py-1 text-white">Simpan</button>
-                </div>
-            </div>
-        </form>
-    </div>
-    <div class=" px-4 py-2  ">
-        <div class="  mt-2 bg-white grid sm:grid-cols-1 grid-cols-1 px-4 py-4 gap-2">
-            <div class="  overflow-auto">
-                @if (session('update'))
-                <div class="py-2">
-                    <div class="bg-blue-500 px-2 py-1 text-white">
-                        {{ session('update') }}
-                    </div>
-                </div>
-                <meta http-equiv="refresh" content="5">
-                @endif
-                <livewire:list-jadwal-guru></livewire:list-jadwal-guru>
-            </div>
+
+    <!-- CONTENT -->
+    <div class="p-4 space-y-5">
+
+        <!-- ALERT -->
+        @if (session('update'))
+        <div class="flex items-center gap-2 bg-blue-50 border border-blue-200 text-blue-700 px-4 py-3 rounded-xl text-sm shadow-sm">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M13 16h-1v-4h-1m1-4h.01M12 2a10 10 0 100 20 10 10 0 000-20z" />
+            </svg>
+            {{ session('update') }}
         </div>
-    </div>
-    <div class="  px-4 ">
-        <div class=" bg-blue-200 p-4">
-            <p class=" font-semibold">Keterangan : </p>
-            <p class=" px-4">- Fitur ini di gunakan untuk menyimpan jadwal madrasah yang di buka, guru pengajar, serta kelas pengajar setiap periode
-            </p>
-            <p class=" px-4">- Sebelum memasukkan dosen mengajar , pastikan dosen tersebut sudah tercatat penugasannya pada tahun ajaran yang berlaku</p>
+        <meta http-equiv="refresh" content="5">
+        @endif
+
+        <!-- CARD TABLE -->
+        <div class="bg-white rounded-2xl shadow-md border border-gray-100">
+
+            <!-- HEADER CARD -->
+            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 p-4 border-b">
+                <div>
+                    <h3 class="font-semibold text-gray-800">
+                        Daftar Jadwal Guru
+                    </h3>
+                    <p class="text-xs text-gray-500">
+                        Data jadwal aktif yang telah dibuat
+                    </p>
+                </div>
+
+                <!-- OPTIONAL ACTION -->
+                <div class="flex gap-2">
+                    <button class="px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded-lg text-sm">
+                        Refresh
+                    </button>
+                </div>
+            </div>
+
+            <!-- BODY -->
+            <div class="p-4">
+                <div class="overflow-x-auto rounded-xl border">
+                    <livewire:list-jadwal-guru />
+                </div>
+            </div>
 
         </div>
+
+        <!-- INFO -->
+        <div class="bg-gradient-to-r from-yellow-50 to-yellow-100 border border-yellow-200 rounded-2xl p-5 text-sm text-gray-700 shadow-sm">
+            <p class="font-semibold mb-2 text-yellow-800">Keterangan:</p>
+            <ul class="list-disc ml-5 space-y-1">
+                <li>Digunakan untuk mengatur jadwal mengajar guru setiap periode.</li>
+                <li>Pastikan guru sudah memiliki penugasan aktif.</li>
+                <li>Data ini akan digunakan dalam sistem presensi dan laporan.</li>
+            </ul>
+        </div>
+
     </div>
 
 </x-app-layout>

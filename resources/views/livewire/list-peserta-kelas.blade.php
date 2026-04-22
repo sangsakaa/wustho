@@ -51,12 +51,12 @@
 
         <div class="flex gap-2">
             <a href="/pesertakolektif/{{ $kelasmi }}"
-                class="bg-blue-600 hover:bg-blue-700 text-white px-2 py-1 rounded text-xs">
+                class="bg-blue-600 hover:bg-blue-700 text-white px-2 py-2 rounded text-xs">
                 Kolektif
             </a>
 
             <a href="/kelas_mi"
-                class="bg-gray-500 hover:bg-gray-600 text-white px-2 py-1 rounded text-xs">
+                class="bg-gray-500 hover:bg-gray-600 text-white px-2 py-2 rounded text-xs">
                 Kembali
             </a>
 
@@ -64,15 +64,26 @@
                 class="hidden sm:flex items-center gap-1 bg-green-600 hover:bg-green-700 text-white px-2 py-1 rounded text-xs">
                 <x-icons.print />
             </button>
+            @if(count($selected) > 0)
+            <button wire:click="deleteSelected"
+                onclick="confirm('Hapus data terpilih?') || event.stopImmediatePropagation()"
+                class="bg-red-600 hover:bg-red-700 text-white px-2 py-1 rounded text-xs">
+                Hapus ({{ count($selected) }})
+            </button>
+            @endif
         </div>
     </div>
 
     {{-- 📋 TABLE DENSE --}}
     <div id="print-area" class="bg-white dark:bg-dark-bg p-2 rounded-lg shadow overflow-x-auto">
 
-        <table class="w-full text-xs border border-gray-200">
+        <table class="w-full text-xs border border-gray-200 rounded-lg overflow-hidden">
             <thead class="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200">
                 <tr>
+                    {{-- CHECK ALL --}}
+                    <th class="border px-2 py-2 text-center w-8">
+                        <input type="checkbox" wire:model="selectAll">
+                    </th>
                     <th class="border px-1 py-1 w-8 text-center">No</th>
                     <th class="border px-1 py-1 text-center">NIS</th>
                     <th class="border px-1 py-1 text-left">Nama</th>
@@ -85,19 +96,30 @@
             <tbody>
                 @forelse($dataKelas as $list)
                 <tr class="hover:bg-gray-50 even:bg-gray-100 dark:even:bg-gray-800">
+
+                    {{-- CHECKBOX --}}
+                    <td class="border px-2 text-center py-2">
+                        <input type="checkbox" value="{{ $list->id }}" wire:model="selected">
+                    </td>
+
                     <td class="border px-1 text-center">{{ $loop->iteration }}</td>
                     <td class="border px-1 text-center">{{ $list->nis }}</td>
+
                     <td class="border px-1 capitalize truncate max-w-[150px]">
                         {{ strtolower($list->nama_siswa) }}
                     </td>
+
                     <td class="border px-1 text-center capitalize">
-                        {{ strtolower($list->jenis_kelamin) }}
+                        <span class="{{ $list->jenis_kelamin == 'L' ? 'text-blue-600' : 'text-pink-600' }}">
+                            {{ strtolower($list->jenis_kelamin) }}
+                        </span>
                     </td>
+
                     <td class="border px-1 text-center">
                         {{ $list->nama_kelas }}
                     </td>
 
-                    {{-- Aksi --}}
+                    {{-- AKSI --}}
                     <td class="border px-1 text-center print:hidden">
                         <div class="flex justify-center gap-1">
                             <a href="/pesertakelas/{{ $list->id }}/edit"
@@ -115,10 +137,11 @@
                             </form>
                         </div>
                     </td>
+
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="6" class="text-center py-3 text-xs">
+                    <td colspan="7" class="text-center py-3 text-xs">
                         Tidak ada data
                     </td>
                 </tr>

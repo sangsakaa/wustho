@@ -2,16 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Periode;
-use App\Models\Kegiatan;
-use App\Models\Sesiasrama;
 use App\Models\Asramasiswa;
-use Illuminate\Http\Request;
+use App\Models\Kegiatan;
+use App\Models\Periode;
 use App\Models\Pesertaasrama;
 use App\Models\Presensiasrama;
-use Illuminate\Support\Carbon;
-use Illuminate\Routing\Controller;
+use App\Models\Sesiasrama;
 use Carbon\Exceptions\InvalidFormatException;
+use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class SesiasramaController extends Controller
 {
@@ -92,16 +94,36 @@ class SesiasramaController extends Controller
         );
     }
 
-    
+
     public function store(Request $request)
     {
-        $sesiasrama = new Sesiasrama();
-        $sesiasrama->tanggal = $request->tanggal;
-        $sesiasrama->periode_id = $request->periode_id;
-        $sesiasrama->asramasiswa_id = $request->asramasiswa_id;
-        $sesiasrama->kegiatan_id = $request->kegiatan_id;
-        $sesiasrama->save();
-        return redirect('sesiasrama');
+        // ✅ VALIDASI
+
+        $validated = $request->validate([
+            'tanggal' => 'required|date',
+            'periode_id' => 'required|exists:periode,id',
+            'asramasiswa_id' => 'required|exists:asramasiswa,id',
+            'kegiatan_id' => 'required|exists:kegiatan,id',
+        ]);
+
+        try {
+            $sesiasrama = new Sesiasrama();
+            $sesiasrama->tanggal = $validated['tanggal'];
+            $sesiasrama->periode_id = $validated['periode_id'];
+            $sesiasrama->asramasiswa_id = $validated['asramasiswa_id'];
+            $sesiasrama->kegiatan_id = $validated['kegiatan_id'];
+            $sesiasrama->save();
+
+            // ✅ NOTIF SUKSES
+            return redirect('sesiasrama')->with('success', 'Data berhasil disimpan!');
+        } catch (\Throwable $e) {
+
+            // ✅ SIMPAN LOG ERROR (penting untuk debug)
+            Log::error('Error simpan sesi asrama: ' . $e->getMessage());
+
+            // ❌ NOTIF ERROR
+            return back()->with('error', 'Terjadi kesalahan saat menyimpan data!')->withInput();
+        }
     }
 
     
@@ -157,6 +179,7 @@ class SesiasramaController extends Controller
     }
     public function destroy(Sesiasrama $sesiasrama)
     {
+
         Sesiasrama::destroy($sesiasrama->id);
         // Presensiasrama::where('asramasiswa_id', $sesiasrama->id)->delete();
         return redirect()->back();
@@ -164,15 +187,50 @@ class SesiasramaController extends Controller
 
     public function simpanpresensi(Request $request)
     {
-        foreach ($request->pesertaasrama_id as $pesertaasrama_id) {
-            $presensiasrama_id = $request->presensiasrama_id[$pesertaasrama_id];
-            $presensiasrama = $presensiasrama_id ? Presensiasrama::find($presensiasrama_id) : new Presensiasrama();
-            $presensiasrama->sesiasrama_id = $request->sesiasrama_id;
-            $presensiasrama->pesertaasrama_id = $pesertaasrama_id;
-            $presensiasrama->keterangan = $request->keterangan[$pesertaasrama_id];
-            $presensiasrama->alasan = $request->alasan[$pesertaasrama_id];
-            $presensiasrama->save();
+        // ❌ HAPUS dd('ok') karena bikin proses berhenti
+
+        // ✅ VALIDASI
+        $request->validate([
+            'sesiasrama_id' => 'required|exists:sesiasrama,id',
+            'keterangan' => 'required|array',
+        ]);
+
+        try {
+
+            DB::beginTransaction();
+
+            foreach ($request->keterangan as $pesertaasrama_id => $keterangan) {
+
+                // ✅ DEFAULT AMAN
+                $keterangan = in_array($keterangan, ['hadir', 'izin', 'sakit', 'alfa'])
+                    ? $keterangan
+                    : 'hadir';
+
+                $alasan = $request->alasan[$pesertaasrama_id] ?? null;
+
+                // ✅ LANGSUNG UPDATE ATAU INSERT (tanpa hidden id)
+                Presensiasrama::updateOrCreate(
+                    [
+                        'sesiasrama_id' => $request->sesiasrama_id,
+                        'pesertaasrama_id' => $pesertaasrama_id,
+                    ],
+                    [
+                        'keterangan' => $keterangan,
+                        'alasan' => $alasan,
+                    ]
+                );
+            }
+
+            DB::commit();
+
+            return back()->with('success', '✅ Presensi berhasil disimpan!');
+        } catch (\Throwable $e) {
+
+            DB::rollBack();
+
+            Log::error('Error simpan presensi: ' . $e->getMessage());
+
+            return back()->with('error', '❌ Gagal menyimpan presensi!')->withInput();
         }
-        return redirect()->back();
     }
 }

@@ -1,81 +1,104 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard Detail Guru') }}
+        <h2 class="font-semibold text-xl text-gray-800">
+            Detail Guru
         </h2>
     </x-slot>
 
-    <div class="p-2 space-y-2">
+    <div class="p-4 space-y-4">
 
-        {{-- DETAIL GURU --}}
-        <div class="bg-white shadow-sm border rounded">
-            <div class="p-4 grid grid-cols-1 md:grid-cols-4 gap-2">
-
-                <div class="font-semibold">Nama Lengkap</div>
-                <div>: {{$guru->nama_guru}}</div>
-
-                <div class="font-semibold">Jenis Kelamin</div>
-                <div>: {{$guru->jenis_kelamin}}</div>
-
+        {{-- CARD GURU --}}
+        <div class="bg-white shadow rounded-xl p-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <p class="text-gray-500 text-sm">Nama Lengkap</p>
+                    <p class="font-semibold text-lg">{{ $guru->nama_guru }}</p>
+                </div>
+                <div>
+                    <p class="text-gray-500 text-sm">Jenis Kelamin</p>
+                    <p class="font-semibold">{{ $guru->jenis_kelamin }}</p>
+                </div>
             </div>
         </div>
 
-        {{-- RIWAYAT MENGAJAR --}}
-        <div class="bg-white shadow-sm border rounded p-2">
+        {{-- ACTION + FILTER --}}
+        <div class="bg-white shadow rounded-xl p-4 flex flex-col md:flex-row gap-3 md:items-center md:justify-between">
 
-            {{-- BUTTON --}}
-            <div class="mb-2 flex gap-2">
-                <a href="/guru" class="text-white px-2 py-1 bg-sky-500 rounded">
-                    Kembali
+            <div class="flex gap-2">
+                <a href="/guru" class="bg-gray-500 hover:bg-gray-600 text-white px-3 py-1 rounded">
+                    ← Kembali
                 </a>
 
-                <a href="/nig/{{$guru->id}}" class="text-white px-2 py-1 bg-sky-500 rounded">
-                    Nomor Induk Guru
+                <a href="/nig/{{$guru->id}}" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded">
+                    NIG
                 </a>
             </div>
 
-            <h3 class="font-semibold mb-2">Riwayat Mengajar</h3>
+            {{-- FILTER PERIODE --}}
+            <form method="GET" class="flex gap-2">
+                <select name="periode_id" class="border rounded px-2 py-1 text-sm">
+                    <option value="">Semua Periode</option>
+                    @foreach($daftarPeriode as $periode)
+                    <option value="{{ $periode->id }}"
+                        {{ $periodeAktif == $periode->id ? 'selected' : '' }}>
+                        {{ $periode->periode }}
+                    </option>
+                    @endforeach
+                </select>
+
+                <button class="bg-green-600 hover:bg-green-700 text-white px-3 rounded text-sm">
+                    Filter
+                </button>
+            </form>
+
+        </div>
+
+        {{-- TABLE --}}
+        <div class="bg-white shadow rounded-xl p-4">
+
+            <h3 class="font-semibold mb-3">Riwayat Mengajar</h3>
 
             <div class="overflow-x-auto">
-                <table class="w-full border text-sm">
+                <table class="w-full text-sm border border-gray-200">
 
-                    <thead class="bg-gray-100">
+                    <thead class="bg-gray-100 text-xs uppercase">
                         <tr>
-                            <th class="border px-2 py-1 text-center">No</th>
-                            <th class="border px-2 py-1 text-center">Periode</th>
-                            <th class="border px-2 py-1 text-center">Nama Guru</th>
-                            <th class="border px-2 py-1 text-center">Kelas</th>
-                            <th class="border px-2 py-1 text-center">Mata Pelajaran</th>
-                            <th class="border px-2 py-1 text-center">Kitab</th>
+                            <th class="border px-2 py-2">No</th>
+                            <th class="border px-2 py-2">Periode</th>
+                            <th class="border px-2 py-2">Kelas</th>
+                            <th class="border px-2 py-2">Mapel</th>
+                            <th class="border px-2 py-2">Kitab</th>
                         </tr>
                     </thead>
 
                     <tbody>
-                        @forelse($riwayatMengajar as $ngajar)
+                        @forelse($riwayatMengajar as $i => $data)
                         <tr class="hover:bg-gray-50">
+                            <td class="border px-2 py-1 text-center">{{ $i+1 }}</td>
+
                             <td class="border px-2 py-1 text-center">
-                                {{$loop->iteration}}
+                                {{ $data->periode }} <br>
+                                <span class="text-xs text-gray-500">
+                                    {{ $data->ket_semester }}
+                                </span>
                             </td>
+
                             <td class="border px-2 py-1 text-center">
-                                {{$ngajar->periode}} {{$ngajar->ket_semester}}
+                                {{ $data->nama_kelas }}
                             </td>
+
                             <td class="border px-2 py-1 text-center">
-                                {{$ngajar->nama_guru}}
+                                {{ $data->mapel }}
                             </td>
+
                             <td class="border px-2 py-1 text-center">
-                                {{$ngajar->nama_kelas}}
-                            </td>
-                            <td class="border px-2 py-1 text-center">
-                                {{$ngajar->mapel}}
-                            </td>
-                            <td class="border px-2 py-1 text-center">
-                                {{$ngajar->nama_kitab}}
+                                {{ $data->nama_kitab ?? '-' }}
                             </td>
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="6" class="text-center py-3 text-gray-500">
-                                Tidak ada riwayat mengajar
+                            <td colspan="5" class="text-center py-4 text-gray-400">
+                                Tidak ada data mengajar
                             </td>
                         </tr>
                         @endforelse

@@ -14,10 +14,10 @@ class ListKolektifKelas extends Component
 
     protected $paginationTheme = 'tailwind';
 
-
     public $kelasmi;
     public $search = '';
     public $perPage = 10;
+    public $angkatan = '';
 
     public $selected = [];
     public $selectAll = false;
@@ -27,34 +27,56 @@ class ListKolektifKelas extends Component
         $this->kelasmi = $kelasmi;
     }
 
-    // ✅ reset page saat filter berubah
+    // =============================
+    // FILTER RESET
+    // =============================
     public function updatingSearch()
     {
         $this->resetPage();
+        $this->selectAll = false;
     }
 
     public function updatingPerPage()
     {
         $this->resetPage();
+        $this->selectAll = false;
     }
 
-    // ✅ select all otomatis (hanya halaman aktif)
+    public function updatingAngkatan()
+    {
+        $this->resetPage();
+        $this->selectAll = false;
+    }
+
+    // =============================
+    // SELECT ALL (AMAN)
+    // =============================
     public function updatedSelectAll($value)
     {
+        $ids = $this->getCurrentPageIds();
+
         if ($value) {
-            $this->selected = $this->getCurrentPageIds();
+            $this->selected = array_unique(array_merge($this->selected, $ids));
         } else {
-            $this->selected = [];
+            $this->selected = array_diff($this->selected, $ids);
         }
     }
 
     private function getCurrentPageIds()
     {
+        $page = $this->page ?? 1;
+
         return $this->baseQuery()
+            ->select('siswa.id')
+            ->orderBy('siswa.nama_siswa')
+            ->forPage($page, $this->perPage)
             ->pluck('siswa.id')
             ->toArray();
     }
 
+    // =============================
+    // BASE QUERY (FIX TOTAL)
+    // =============================
     private function baseQuery()
     {
         $pesertaKelas = Pesertakelas::query()
@@ -63,9 +85,6 @@ class ListKolektifKelas extends Component
             ->select('pesertakelas.siswa_id');
 
         return Siswa::query()
-            ->when($this->search, function ($q) {
-                $q->where('siswa.nama_siswa', 'like', '%' . $this->search . '%');
-            })
             ->join('nis', 'siswa.id', '=', 'nis.siswa_id')
             ->join('pesertaasrama', 'siswa.id', '=', 'pesertaasrama.siswa_id')
             ->join('asramasiswa', 'asramasiswa.id', '=', 'pesertaasrama.asramasiswa_id')
@@ -74,7 +93,17 @@ class ListKolektifKelas extends Component
                 $join->on('peserta_kelas.siswa_id', '=', 'siswa.id');
             })
             ->whereNull('peserta_kelas.siswa_id')
-            ->where('asramasiswa.periode_id', session('periode_id'));
+            ->where('asramasiswa.periode_id', session('periode_id'))
+
+            // 🔍 SEARCH
+            ->when($this->search, function ($q) {
+                $q->where('siswa.nama_siswa', 'like', '%' . $this->search . '%');
+            })
+
+            // 🎓 FILTER ANGKATAN
+            ->when($this->angkatan, function ($q) {
+                $q->whereYear('nis.tanggal_masuk', $this->angkatan);
+            });
     }
 
     public function render()
@@ -94,6 +123,14 @@ class ListKolektifKelas extends Component
             )
             ->get();
 
+        // 🎓 LIST ANGKATAN
+        $listAngkatan = Siswa::query()
+            ->join('nis', 'siswa.id', '=', 'nis.siswa_id')
+            ->selectRaw('YEAR(nis.tanggal_masuk) as tahun')
+            ->distinct()
+            ->orderByDesc('tahun')
+            ->pluck('tahun');
+
         $Datasiswa = $this->baseQuery()
             ->select(
                 'siswa.id',
@@ -109,7 +146,8 @@ class ListKolektifKelas extends Component
         return view('livewire.list-kolektif-kelas', [
             'Datasiswa' => $Datasiswa,
             'kelas' => $kelas,
-            'kelasmi' => $kelasmi
+            'kelasmi' => $kelasmi,
+            'listAngkatan' => $listAngkatan
         ]);
     }
 }

@@ -1,104 +1,126 @@
 <x-app-layout>
     <x-slot name="header">
-
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard Presensi Guru') }}
+        <h2 class="font-semibold text-lg sm:text-xl text-gray-800">
+            Dashboard Presensi Guru
         </h2>
     </x-slot>
 
-    <div class="">
-        <div class="py-4">
-            <div class="">
-                <div class="bg-white overflow-hidden shadow-sm ">
-                    <div class=" bg-white border-b border-gray-200">
-                        <div class=" px-4 py-1">
-                            <span class=" text-2xl  text-blue-400">Presensi Guru</span>
-                        </div>
-                        <hr>
-                        <div class=" grid sm:grid-cols-4 grid-cols-2  px-4 py-2">
+    <!-- HEADER INFO -->
+    <div class="p-4">
+        <div class="bg-white rounded-2xl shadow-sm border p-4">
 
-                            <div>
-                                Hari / Tanggal
-                            </div>
-                            <div>
-                                :{{ \Carbon\Carbon::parse($title->tanggal)->translatedFormat('l, j F Y') }}
+            <h3 class="text-lg font-semibold text-blue-600 mb-3">
+                Presensi Guru
+            </h3>
 
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm">
+                <div class="text-gray-500">Hari / Tanggal</div>
+                <div class="font-medium">
+                    {{ \Carbon\Carbon::parse($title->tanggal)->translatedFormat('l, j F Y') }}
+                </div>
 
-                            </div>
-                            <div>
-                                Kelas
-                            </div>
-                            <div>
-                                : {{$title->nama_kelas}}
-                            </div>
-                        </div>
-                    </div>
+                <div class="text-gray-500">Kelas</div>
+                <div class="font-medium">
+                    {{ $title->nama_kelas }}
                 </div>
             </div>
+
         </div>
     </div>
 
-    <div class="">
-        <div class="">
-            <div class="bg-white overflow-hidden shadow-sm ">
-                <div class="p-2 bg-white border-b border-gray-200">
-                    <form action="/sesi-presensi-guru/{{$sesi_Kelas_Guru->id}}" method="post">
-                        <button class=" bg-red-600 py-1 rounded-md text-white px-4">simpan presensi</button>
-                        <a href="/sesi-presensi-guru" class=" bg-red-600 py-1 rounded-md text-white px-4">Kembali</a>
+    <!-- FORM -->
+    <div class="p-4">
+        <div class="bg-white rounded-2xl shadow-sm border p-4">
 
-                        @if (session('status'))
-                        <div class="alert alert-success w-full text-sm">
-                            {{ session('status') }}
-                        </div>
-                        @endif
-                        @csrf
-                        <input type="hidden" name="sesi_kelas_guru_id" value="{{ $sesi_Kelas_Guru->id }}">
-                        <div class=" w-full sm:overflow-auto overflow-auto ">
-                            <table class=" mt-2 w-full sm:w-full text-xs sm:text-sm">
-                                <thead>
-                                    <tr class="border">
-                                        <th class=" border ">No</th>
-                                        <th class=" border px-1 ">NAMA SISWA</th>
-                                        <th class=" border px-1">KET</th>
-                                        <th class=" border px-1">ALASAN</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($dataGuru as $item)
+            <form action="/sesi-presensi-guru/{{$sesi_Kelas_Guru->id}}" method="post">
+                @csrf
+                <input type="hidden" name="sesi_kelas_guru_id" value="{{ $sesi_Kelas_Guru->id }}">
 
-                                    <tr class=" border hover:bg-gray-100">
-                                        <td class=" px-1 border text-center">
-                                            {{ $loop->iteration }}
-                                        </td>
-                                        <td class=" px-2 border sm:text-sm text-xs w-1/3 capitalize ">
+                <!-- ACTION BUTTON -->
+                <div class="flex flex-wrap gap-2 mb-4">
+                    <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm shadow">
+                        Simpan Presensi
+                    </button>
 
-                                            {{ strtolower($item->nama_guru) }}
-                                            <input type="hidden" name="daftar_jadwal_id" value="{{ $item->id }}">
-                                        </td>
-                                        <td class=" justify-center text-center w-1/3 ">
-                                            <input type="radio" id="hadir[{{ $item->id }}]" value="hadir" name="keterangan[{{ $item->id }}]" {{ $item->keterangan === "hadir" || $item->keterangan === null ? "checked" : "" }}>
-                                            <label for="hadir[{{ $item->id }}]">H</label>
-                                            <input type="radio" id="izin[{{ $item->id }}]" value="izin" name="keterangan[{{ $item->id }}]" {{ $item->keterangan === "izin" ? "checked" : "" }}>
-                                            <label for="izin[{{ $item->id }}]">I</label>
-                                            <input type="radio" id="sakit[{{ $item->id }}]" value="sakit" name="keterangan[{{ $item->id }}]" {{ $item->keterangan === "sakit" ? "checked" : "" }}>
-                                            <label for="sakit[{{ $item->id }}]">S</label>
-                                            <input type="radio" id="alfa[{{ $item->id }}]" value="alfa" name="keterangan[{{ $item->id }}]" {{ $item->keterangan === "alfa" ? "checked" : "" }}>
-                                            <label for="alfa[{{ $item->id }}]">A</label>
-                                        </td>
-                                        <td class="  border text-center  px-1">
-                                            <input value="{{ $item->alasan }}" class=" border py-1 w-full text-center border-blue-600" name="alasan[{{ $item->id }}]" placeholder=" isi alasan">
-                                        </td>
-
-                                    </tr>
-                                    @endforeach
-
-                                </tbody>
-                            </table>
-                        </div>
-                    </form>
+                    <a href="/sesi-presensi-guru"
+                        class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-lg text-sm">
+                        Kembali
+                    </a>
                 </div>
-            </div>
+
+                <!-- ALERT -->
+                @if (session('status'))
+                <div class="mb-3 text-sm text-green-700 bg-green-100 px-3 py-2 rounded-lg">
+                    {{ session('status') }}
+                </div>
+                @endif
+
+                <!-- TABLE -->
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm border rounded-xl overflow-hidden">
+
+                        <!-- HEADER -->
+                        <thead class="bg-gray-50 text-gray-600 text-xs uppercase">
+                            <tr>
+                                <th class="px-3 py-2 text-center">No</th>
+                                <th class="px-3 py-2 text-left">Nama Guru</th>
+                                <th class="px-3 py-2 text-center">Keterangan</th>
+                                <th class="px-3 py-2 text-center">Alasan</th>
+                            </tr>
+                        </thead>
+
+                        <!-- BODY -->
+                        <tbody class="divide-y">
+                            @foreach ($dataGuru as $item)
+                            <tr class="hover:bg-gray-50 transition">
+
+                                <!-- NO -->
+                                <td class="px-3 py-2 text-center">
+                                    {{ $loop->iteration }}
+                                </td>
+
+                                <!-- NAMA -->
+                                <td class="px-3 py-2 capitalize">
+                                    {{ strtolower($item->nama_guru) }}
+                                    <input type="hidden" name="daftar_jadwal_id[]" value="{{ $item->id }}">
+                                </td>
+
+                                <!-- RADIO -->
+                                <td class="px-3 py-2 text-center">
+                                    <div class="flex justify-center gap-3 text-xs">
+
+                                        @foreach (['hadir'=>'H', 'izin'=>'I', 'sakit'=>'S', 'alfa'=>'A'] as $val => $label)
+                                        <label class="flex items-center gap-1 cursor-pointer">
+                                            <input type="radio"
+                                                name="keterangan[{{ $item->id }}]"
+                                                value="{{ $val }}"
+                                                class="text-blue-600 focus:ring-blue-500"
+                                                {{ $item->keterangan === $val || ($val === 'hadir' && $item->keterangan === null) ? 'checked' : '' }}>
+                                            <span>{{ $label }}</span>
+                                        </label>
+                                        @endforeach
+
+                                    </div>
+                                </td>
+
+                                <!-- ALASAN -->
+                                <td class="px-3 py-2">
+                                    <input type="text"
+                                        name="alasan[{{ $item->id }}]"
+                                        value="{{ $item->alasan }}"
+                                        placeholder="Isi alasan..."
+                                        class="w-full border rounded-lg px-3 py-1 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                                </td>
+
+                            </tr>
+                            @endforeach
+                        </tbody>
+
+                    </table>
+                </div>
+
+            </form>
         </div>
     </div>
-    </div>
+
 </x-app-layout>

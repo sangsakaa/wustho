@@ -170,8 +170,14 @@
                         </tr>
                         @endforelse
                     </tbody>
-
                 </table>
+                <div class=" px-2">
+                    <tr>
+                        <td colspan="9 px-2">
+                            {{$dataGuru->links()}}
+                        </td>
+                    </tr>
+                </div>
             </div>
 
             <!-- PAGINATION -->

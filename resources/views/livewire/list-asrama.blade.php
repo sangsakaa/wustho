@@ -1,30 +1,63 @@
-<div class="bg-white p-3 rounded shadow-sm">
+<div class="bg-white p-4 rounded shadow-sm space-y-4">
 
-    <!-- TOP BAR -->
-    <div class="flex flex-col sm:flex-row justify-between gap-2 mb-3">
+    <!-- HEADER -->
+    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
+        <div>
+            <h2 class="text-lg font-semibold text-gray-700">
+                Dashboard Asrama
+            </h2>
+            <p class="text-xs text-gray-500">
+                Monitoring kuota dan penghuni asrama
+            </p>
+        </div>
 
         <!-- BUTTON -->
         <div class="flex gap-2">
-            <a href="/addasramasiswa">
-                <button class="px-3 py-1 text-xs uppercase bg-blue-500 dark:bg-green-700 text-white rounded-md">
-                    asrama siswa
-                </button>
+            <a href="/addasramasiswa"
+                class="px-3 py-1 text-xs uppercase bg-blue-500 hover:bg-blue-600 text-white rounded-md shadow">
+                + Asrama Siswa
             </a>
 
-            <a href="/asrama">
-                <button class="px-3 py-1 text-xs uppercase bg-blue-500 dark:bg-green-700 text-white rounded-md">
-                    asrama
-                </button>
+            <a href="/asrama"
+                class="px-3 py-1 text-xs uppercase bg-green-600 hover:bg-green-700 text-white rounded-md shadow">
+                Data Asrama
             </a>
         </div>
+    </div>
 
-        <!-- SEARCH -->
-        <div>
-            <input type="search"
-                wire:model="search"
-                class="border rounded px-2 py-1 text-sm w-full sm:w-64"
-                placeholder="Cari nama asrama...">
+    <!-- DASHBOARD INFO -->
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+
+        <div class="bg-blue-100 text-blue-700 p-3 rounded shadow-sm">
+            <p class="text-xs">Total Asrama</p>
+            <h3 class="text-lg font-bold">{{ $data->count() }}</h3>
         </div>
+
+        <div class="bg-green-100 text-green-700 p-3 rounded shadow-sm">
+            <p class="text-xs">Total Kuota</p>
+            <h3 class="text-lg font-bold">{{ $data->sum('kuota') }}</h3>
+        </div>
+
+        <div class="bg-yellow-100 text-yellow-700 p-3 rounded shadow-sm">
+            <p class="text-xs">Total Terisi</p>
+            <h3 class="text-lg font-bold">{{ $data->sum('pesertaasrama_count') }}</h3>
+        </div>
+
+        <div class="bg-purple-100 text-purple-700 p-3 rounded shadow-sm">
+            <p class="text-xs">Sisa Kuota</p>
+            <h3 class="text-lg font-bold">
+                {{ $data->sum('kuota') - $data->sum('pesertaasrama_count') }}
+            </h3>
+        </div>
+
+    </div>
+
+    <!-- SEARCH -->
+    <div class="flex justify-end">
+        <input type="search"
+            wire:model="search"
+            class="border rounded px-3 py-1 text-sm w-full sm:w-64 focus:ring focus:ring-blue-200"
+            placeholder="Cari nama asrama...">
     </div>
 
     <!-- TOAST -->
@@ -40,9 +73,8 @@
     </script>
     @endif
 
-    <!-- TABLE WRAPPER (ANTI MELEBAR) -->
+    <!-- TABLE -->
     <div class="overflow-x-auto">
-
         <table class="w-full text-xs border">
 
             <thead class="bg-gray-100 dark:bg-purple-600 uppercase">
@@ -53,13 +85,14 @@
                     <th class="border px-2 py-1">Periode</th>
                     @endrole
 
-                    <th class="border px-2 py-3">Daftar Asrama</th>
-                    <th class="border px-2 py-3">Asrama</th>
-                    <th class="border px-2 py-3">Kuota</th>
-                    <th class="border px-2 py-3">Total</th>
-                    <th class="border px-2 py-3">Status</th>
-                    <th class="border px-2 py-3">Keterangan</th>
-                    <th class="border px-2 py-3">Aksi</th>
+                    <th class="border px-2 py-2">Daftar Asrama</th>
+                    <th class="border px-2 py-2">Tipe</th>
+                    <th class="border px-2 py-2">Kuota</th>
+                    <th class="border px-2 py-2">Terisi</th>
+                    <th class="border px-2 py-2">Progress</th>
+                    <th class="border px-2 py-2">Status</th>
+                    <th class="border px-2 py-2">Keterangan</th>
+                    <th class="border px-2 py-2">Aksi</th>
                 </tr>
             </thead>
 
@@ -80,35 +113,57 @@
                     <!-- NAMA -->
                     <td class="border text-center font-semibold">
                         <a href="pesertaasrama/{{$item->id}}"
-                            class="{{ $item->type_asrama == 'Putra' ? 'text-blue-600' : 'text-pink-600' }}">
+                            class="{{ $item->asrama->type_asrama == 'Putra' ? 'text-blue-600' : 'text-pink-600' }}">
                             {{$item->asrama->nama_asrama}}
                         </a>
                     </td>
 
-                    <td class="border text-center">{{$item->asrama->type_asrama}}</td>
-                    <td class="border text-center">{{$item->kuota}} Org</td>
-                    <td class="border text-center">{{$item->jumlah_nilai_ujian}} Org</td>
+                    <td class="border text-center">
+                        {{$item->asrama->type_asrama}}
+                    </td>
+
+                    <td class="border text-center">
+                        {{$item->kuota}}
+                    </td>
+
+                    <td class="border text-center">
+                        {{$item->pesertaasrama_count}}
+                    </td>
+
+                    <!-- PROGRESS BAR -->
+                    <td class="border px-2 py-1">
+                        <div class="w-full bg-gray-200 rounded h-2">
+                            <div class="bg-blue-500 h-2 rounded"
+                                style="width: {{ $item->kuota > 0 ? ($item->pesertaasrama_count / $item->kuota) * 100 : 0 }}%">
+                            </div>
+                        </div>
+                        <p class="text-[10px] text-center mt-1">
+                            {{ $item->pesertaasrama_count }} / {{ $item->kuota }}
+                        </p>
+                    </td>
 
                     <!-- STATUS -->
                     <td class="border text-center">
-                        @if($item->kuota == $item->jumlah_nilai_ujian)
-                        <span class="text-red-600">Penuh</span>
-                        @elseif($item->kuota < $item->jumlah_nilai_ujian)
-                            <span class="text-red-500">Over</span>
-                            @else
-                            <span class="text-green-600">Tersedia</span>
-                            @endif
+                        @if($item->pesertaasrama_count >= $item->kuota)
+                        <span class="px-2 py-1 text-xs bg-red-100 text-red-600 rounded">
+                            Penuh
+                        </span>
+                        @else
+                        <span class="px-2 py-1 text-xs bg-green-100 text-green-600 rounded">
+                            Tersedia
+                        </span>
+                        @endif
                     </td>
 
                     <!-- KETERANGAN -->
-                    <td class="border text-center">
-                        @if($item->kuota == $item->jumlah_nilai_ujian)
-                        Sesuai Kuota
-                        @elseif($item->kuota < $item->jumlah_nilai_ujian)
-                            Over {{ $item->jumlah_nilai_ujian - $item->kuota }} org
-                            @else
-                            Sisa {{ $item->kuota - $item->jumlah_nilai_ujian }} org
-                            @endif
+                    <td class="border text-center text-xs">
+                        @if($item->pesertaasrama_count >= $item->kuota)
+                        <span class="text-red-600">Kuota penuh</span>
+                        @else
+                        <span class="text-green-600">
+                            Sisa {{ $item->kuota - $item->pesertaasrama_count }}
+                        </span>
+                        @endif
                     </td>
 
                     <!-- AKSI -->
@@ -119,19 +174,21 @@
                             <form action="/asramasiswa/{{$item->id}}" method="post">
                                 @csrf
                                 @method('delete')
-                                <button onclick="return confirm('Yakin hapus {{$item->nama_asrama}}?')"
-                                    class="bg-red-500 text-white p-1 rounded">
+                                <button onclick="return confirm('Yakin hapus?')"
+                                    class="bg-red-500 text-white px-2 py-1 rounded">
                                     ✕
                                 </button>
                             </form>
                             @endrole
 
-                            <a href="asramasiswa/{{$item->id}}/edit">
-                                <button class="bg-yellow-400 p-1 rounded">✎</button>
+                            <a href="asramasiswa/{{$item->id}}/edit"
+                                class="bg-yellow-400 px-2 py-1 rounded">
+                                ✎
                             </a>
 
-                            <a href="pesertaasrama/{{$item->id}}">
-                                <button class="bg-sky-400 p-1 rounded">👁</button>
+                            <a href="pesertaasrama/{{$item->id}}"
+                                class="bg-sky-400 px-2 py-1 rounded">
+                                👁
                             </a>
 
                         </div>
@@ -140,7 +197,7 @@
 
                 @empty
                 <tr>
-                    <td colspan="9" class="text-center py-3">
+                    <td colspan="10" class="text-center py-3 text-gray-500">
                         Data tidak ditemukan
                     </td>
                 </tr>

@@ -1,148 +1,147 @@
 <x-app-layout>
     <x-slot name="header">
         @section('title', ' | Presensi Kelas')
-        <h2 class="font-semibold sm:text-xl leading-tight text-sm">
-            {{ __('Presensi Kelas (' . $tgl->isoFormat('dddd, D MMMM YYYY')) . ')' }}
-        </h2>
+        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
+            <h2 class="font-semibold text-lg sm:text-xl">
+                Presensi Kelas
+            </h2>
+            <span class="text-sm text-gray-500">
+                {{ $tgl->isoFormat('dddd, D MMMM YYYY') }}
+            </span>
+        </div>
     </x-slot>
-    <div class="">
-        <div class="">
-            <div class=" bg-white dark:bg-dark-bg px-2 shadow-sm ">
-                <div class="px-2 sm:grid grid-cols-1 w-full border-gray-200">
-                    <form action="/sesikelas" method="get" class="mr-auto">
-                        <input type="date" name="tgl" class="py-1 dark:bg-dark-bg" value="{{ $tgl->toDateString() }}">
-                        <button class=" bg-red-600 py-1 dark:bg-purple-600 mt-1 my-1 rounded-sm hover:bg-purple-600 text-white px-4 ">
-                            Pilih Tanggal
-                        </button>
-                    </form>
-                    <form action="/sesikelas" method="post">
-                        @csrf
-                        <input type="hidden" name="tgl" value="{{ $tgl->toDateString() }}">
-                        <a href="/sesikelas/rekap" class="inline-block bg-red-600 py-1 dark:bg-purple-600 mt-1 my-1 rounded-sm hover:bg-purple-600 text-white px-4">Rekap</a>
-                        <button class=" bg-red-600 py-1 dark:bg-purple-600 mt-1 my-1 rounded-sm hover:bg-purple-600 text-white px-4 ">
-                            Buat Sesi
-                        </button>
-                    </form>
-                </div>
-            </div>
+
+    {{-- ACTION BAR --}}
+    <div class="bg-white shadow-sm rounded p-3 mb-3 flex flex-wrap gap-2 justify-between items-center">
+
+        {{-- FILTER --}}
+        <form action="/sesikelas" method="get" class="flex gap-2 items-center">
+            <input type="date" name="tgl"
+                value="{{ $tgl->format('Y-m-d') }}"
+                class="border px-2 py-1 rounded focus:ring focus:ring-blue-200">
+
+            <button class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded">
+                Filter
+            </button>
+        </form>
+
+        {{-- ACTION --}}
+        <div class="flex gap-2">
+            <a href="/sesikelas/rekap"
+                class="bg-gray-600 hover:bg-gray-700 text-white px-3 py-1 rounded">
+                Rekap
+            </a>
+
+            <form action="/sesikelas" method="post">
+                @csrf
+                <input type="hidden" name="tgl" value="{{ $tgl->format('Y-m-d') }}">
+                <button class="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded">
+                    + Buat Sesi
+                </button>
+            </form>
         </div>
     </div>
-    <div class="pb-1 pt-2">
-        <div class="">
-            <div class="bg-white dark:bg-dark-bg overflow-hidden shadow-sm ">
-                <div class="p-4 ">
-                    {{-- <div class=" grid grid-cols-1 sm:grid-cols-1">
-                        <div class=" flex grid-cols-1 justify-end">
-                            <form action="/sesikelas" method="get" class=" flex gap-1">
-                                <input type="date" name="cari" value="{{ $tgl->toDateString() }}" class=" border border-green-800 text-green-800 rounded-md py-1 dark:bg-dark-bg " placeholder=" Cari ..">
-                    <button type="submit" class=" px-2   bg-blue-500  rounded-md text-white">
-                        Cari By Tanggal </button>
-                    </form>
-                </div>
-            </div> --}}
-            <div class=" overflow-auto bg-white dark:bg-dark-bg mt-1 ">
-                @if (session('delete'))
-                <div class="py-2">
-                    <div class="bg-red-500 px-2 py-1 text-white">
-                        {{ session('delete') }}
-                    </div>
-                </div>
-                @endif
-                @if (session('success'))
-                <div class="py-2">
-                    <div class="bg-green-500 px-2 py-1 text-white">
-                        {{ session('success') }}
-                    </div>
-                </div>
-                @endif
-                @if (session('update'))
-                <div class="py-2">
-                    <div class="bg-blue-500 px-2 py-1 text-white">
-                        {{ session('update') }}
-                    </div>
-                </div>
-                @endif
-                <!-- <meta http-equiv="refresh" content="5"> -->
-                <div class=" overflow-auto">
-                    <table class=" w-full">
-                        <thead>
-                            <tr class="border bg-gray-200 dark:bg-purple-600 text-xs sm:text-sm">
-                                <th class=" border px-1  py-1">No</th>
-                                <th class=" border px-1 ">Tanggal</th>
-                                <th class=" border px-1 ">Kelas</th>
-                                <th class=" border px-1 ">Periode</th>
-                                <th class=" border px-1 ">Status</th>
-                                <th class=" border px-1">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if ($Datasesikelas->count())
-                            @foreach ($Datasesikelas as $sesi)
-                            <tr class=" border hover:bg-gray-100  dark:hover:bg-purple-600 text-xs sm:text-sm ">
-                                <th class=" border px-1">{{ $loop->iteration }}</th>
-                                <th class=" border text-center px-1">
-                                    {{ \Carbon\Carbon::parse($sesi->tgl)->isoFormat(' DD MMMM') }}
-                                </th>
-                                <th class=" border text-center px-1 w-11">
-                                    <a href="/absensikelas/{{ $sesi->id }}" class=" bg-blue-600 rounded-md px-1 py-1 text-white dark:text-purple-600  dark:bg-dark-bg text-xs">
-                                        {{ $sesi->nama_kelas }}
-                                    </a>
-                                </th>
-                                <th class=" border text-center px-1">
-                                    <a href="/absensikelas/{{ $sesi->id }}">
-                                        {{ $sesi->periode }} {{ $sesi->ket_semester }}
-                                    </a>
-                                </th>
-                                <th class=" border px-1">
-                                    <div class="grid justify-items-center">
-                                        @if ($sesi->absensi->count())
-                                        <x-icons.check class="w-5 h-5 text-green-600" aria-hidden="true" />
-                                        @else
-                                        <x-icons.x-mark class="w-5 h-5 text-red-600" aria-hidden="true" />
-                                        @endif
-                                    </div>
 
-                                </th>
-                                <td class=" grid justify-items-center py-1 ">
-                                    <form action="/sesikelas/{{ $sesi->id }}" method="post">
+    {{-- ALERT --}}
+    @foreach (['success' => 'green', 'delete' => 'red', 'update' => 'blue'] as $key => $color)
+    @if (session($key))
+    <div class="mb-2 px-3 py-2 rounded bg-{{ $color }}-500 text-white shadow">
+        {{ session($key) }}
+    </div>
+    @endif
+    @endforeach
 
-                                        @csrf
-                                        @method('delete')
-                                        <button class=" bg-red-500 text-white p-1 rounded-md" onclick=" return confirm ('apakah hapus yakin  sesi ini : {{ $sesi->nama_kelas }} Tanggal : {{ \Carbon\Carbon::parse($sesi->tgl)->isoFormat(' DD MMMM Y') }} ')"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                            </svg></button>
-                                    </form>
-                                </td>
-                            </tr>
-                            @endforeach
+    {{-- TABLE CARD --}}
+    <div class=" p-4 bg-white shadow-sm rounded overflow-hidden">
+
+        <div class="p-3 border-b font-semibold text-gray-700">
+            Daftar Sesi Kelas
+        </div>
+
+        <div class="overflow-auto">
+            <table class="w-full text-sm border-collapse">
+                <thead>
+                    <tr class="bg-gray-100 text-center">
+                        <th class="border px-2 py-2 w-12">No</th>
+                        <th class="border px-2 py-2">Tanggal</th>
+                        <th class="border px-2 py-2">Kelas</th>
+                        <th class="border px-2 py-2">Periode</th>
+                        <th class="border px-2 py-2">Status</th>
+                        <th class="border px-2 py-2 w-20">Aksi</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @forelse ($Datasesikelas as $sesi)
+                    <tr class="hover:bg-gray-50 text-center">
+                        <td class="border px-2 py-2">
+                            {{ $loop->iteration }}
+                        </td>
+
+                        <td class="border px-2 py-2">
+                            {{ \Carbon\Carbon::parse($sesi->tgl)->isoFormat('DD MMM YYYY') }}
+                        </td>
+
+                        <td class="border px-2 py-2">
+                            <a href="/absensikelas/{{ $sesi->id }}"
+                                class="text-blue-600 hover:underline font-medium">
+                                {{ $sesi->nama_kelas }}
+                            </a>
+                        </td>
+
+                        <td class="border px-2 py-2">
+                            {{ $sesi->periode }} {{ $sesi->ket_semester }}
+                        </td>
+
+                        {{-- STATUS --}}
+                        <td class="border px-2 py-2">
+                            @if ($sesi->absensi->count())
+                            <span class="px-2 py-1 text-xs bg-green-100 text-green-700 rounded">
+                                ✔ Sudah Diisi
+                            </span>
                             @else
-                            <tr class="  border">
-                                <td colspan="11" class=" text-md text-red-600  border text-center">
-                                    Tidak ada data yang ditemukan
-                                </td>
-                            </tr>
+                            <span class="px-2 py-1 text-xs bg-red-100 text-red-700 rounded">
+                                ✖ Belum
+                            </span>
                             @endif
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+                        </td>
+
+                        {{-- AKSI --}}
+                        <td class="border px-2 py-2">
+                            <form action="/sesikelas/{{ $sesi->id }}" method="post">
+                                @csrf
+                                @method('delete')
+
+                                <button
+                                    onclick="return confirm('Hapus sesi {{ $sesi->nama_kelas }} tanggal {{ \Carbon\Carbon::parse($sesi->tgl)->isoFormat('DD MMMM Y') }} ?')"
+                                    class="bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded text-xs">
+                                    Hapus
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+
+                    @empty
+                    <tr>
+                        <td colspan="6" class="text-center py-6 text-gray-500">
+                            Tidak ada data sesi pada tanggal ini
+                        </td>
+                    </tr>
+                    @endforelse
+                </tbody>
+            </table>
         </div>
     </div>
-    </div>
-    </div>
-    <div class="my-1">
-        <div class="  text-xs sm:text-sm">
-            <div class=" bg-sky-200 dark:bg-dark-bg overflow-hidden shadow-sm">
-                <div class="p-6  ">
-                    <p class=" font-semibold">Keterangan : </p>
-                    <p class=" px-2">1. Nilai diambail dari <b class=" underline">Ulangan Harian dan Ujian Akhir
-                            Semester</b></p>
-                    <p class=" px-2 capitalize">2. Untuk pengisian nilai jika tidak ada harap kosongkan form penilaian
-                    </p>
-                    <p class=" px-2 capitalize">3. Untuk pengisinan nilai <b><u>harus</u></b> memasukan peserta kelas
-                        terlebih dahulu di menu kelas</p>
-                </div>
-            </div>
+
+    {{-- INFO --}}
+    <div class=" px-4">
+        <div class=" mt-3 bg-blue-50 border-l-4 border-blue-400 p-4 text-sm text-gray-700 rounded">
+            <p class="font-semibold mb-1">Informasi:</p>
+            <ul class="list-disc pl-5 space-y-1">
+                <li>Data presensi digunakan untuk rekap kehadiran siswa.</li>
+                <li>Pastikan absensi diisi setelah sesi dibuat.</li>
+                <li>Jika belum ada siswa, tambahkan di menu kelas terlebih dahulu.</li>
+            </ul>
         </div>
     </div>
 

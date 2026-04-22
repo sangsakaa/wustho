@@ -291,4 +291,21 @@ class AsramasiswaController extends Controller
         }
         return redirect()->back();
     }
+    public function deleteSelected(Request $request)
+    {
+        try {
+            Pesertaasrama::whereIn('id', $request->ids)->delete();
+
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Data berhasil dihapus!'
+            ]);
+        } catch (\Throwable $e) {
+
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Gagal menghapus data!'
+            ]);
+        }
+    }
 }

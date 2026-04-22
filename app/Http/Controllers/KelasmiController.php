@@ -167,15 +167,12 @@ class KelasmiController extends Controller
         return redirect('/pesertakelas/' . $pesertakelas->kelasmi_id);
     }
 
-    
+
     public function edit(Kelasmi $kelasmi)
     {
-        return view(
-            'kelas_mi/editkelasmi',
-            [
-                'kelasmi' => $kelasmi
-            ]
-        );
+        return view('kelas_mi/editkelasmi', [
+            'kelasmi' => $kelasmi
+        ]);
     }
 
     /**

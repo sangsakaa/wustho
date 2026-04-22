@@ -1,105 +1,154 @@
-<div>
-    <script>
-        function printContent(el) {
-            var fullbody = document.body.innerHTML;
-            var printContent = document.getElementById(el).innerHTML;
-            document.body.innerHTML = printContent;
-            window.print();
-            document.body.innerHTML = fullbody;
+<div x-data="{
+    selected: [],
+    toggleAll(event) {
+        let checked = event.target.checked;
+        this.selected = checked ? [...document.querySelectorAll('.checkItem')].map(el => el.value) : [];
+        document.querySelectorAll('.checkItem').forEach(cb => cb.checked = checked);
+    },
+    toggleItem(id, el) {
+        if (el.checked) {
+            this.selected.push(id);
+        } else {
+            this.selected = this.selected.filter(i => i != id);
         }
-    </script>
-    <div class=" flex grid-cols-3 gap-2">
-        <a href="/asramasiswa" class=" flex justify-end">
-            <button class=" flex bg-blue-500 text-white p-1 rounded-md"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
-                </svg>
-            </button>
-        </a>
-        <a href="/kolektifasrama/{{ $asramasiswa }}" class=" flex justify-end">
-            <div class="">
-                <button class=" flex bg-blue-500 text-white py-1 px-2 rounded-md d-inline-block">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M18 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zM3 19.235v-.11a6.375 6.375 0 0112.75 0v.109A12.318 12.318 0 019.374 21c-2.331 0-4.512-.645-6.374-1.766z" />
-                    </svg>
+    },
+    deleteSelected() {
+        if (this.selected.length === 0) {
+            this.toast('Pilih data dulu!', 'error');
+            return;
+        }
 
-                </button>
-            </div>
+        if (!confirm('Yakin hapus data terpilih?')) return;
+
+        fetch('/pesertaasrama/delete-selected', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: JSON.stringify({ ids: this.selected })
+        })
+        .then(res => res.json())
+        .then(res => {
+            this.toast(res.message, 'success');
+            setTimeout(() => location.reload(), 1000);
+        })
+        .catch(() => {
+            this.toast('Terjadi kesalahan!', 'error');
+        });
+    },
+    toast(message, type='success') {
+        let bg = type === 'success' ? 'bg-green-500' : 'bg-red-500';
+
+        let el = document.createElement('div');
+        el.className = `${bg} fixed top-5 right-5 text-white px-4 py-2 rounded shadow-lg z-50`;
+        el.innerText = message;
+
+        document.body.appendChild(el);
+        setTimeout(() => el.remove(), 2000);
+    }
+}">
+
+    <!-- 🔹 ACTION BAR -->
+    <div class="flex flex-wrap items-center gap-2 mb-3">
+        <a href="/asramasiswa" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded-md">⬅ Kembali</a>
+
+        <a href="/kolektifasrama/{{ $asramasiswa }}" class="bg-indigo-500 hover:bg-indigo-600 text-white px-3 py-1 rounded-md">
+            + Tambah
         </a>
-        <button class="flex text-white rounded-md  bg-green-800 px-2 py-1 " onclick="printContent('div1')">
-            <x-icons.print></x-icons.print>
+
+        <button onclick="printContent('div1')" class="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded-md">
+            🖨 Print
         </button>
-        <input type="search" wire:model="search" class=" py-1 " placeholder=" cari nama siswa">
+
+        <input type="search" wire:model.debounce.500ms="search"
+            class="border rounded px-2 py-1 text-sm"
+            placeholder="Cari nama siswa...">
+
+        <button @click="deleteSelected"
+            class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-md">
+            🗑 Hapus
+        </button>
     </div>
 
-    <div id="div1">
-        <Table class=" mt-1 w-full">
-            <thead>
-                <tr class=" border ">
-                    <th class=" border py-1">#</th>
+    <!-- 🔹 TABLE -->
+    <div id="div1" class="overflow-x-auto">
+        <table class="w-full border text-sm">
+            <thead class="bg-gray-100">
+                <tr>
+                    <th class="border p-1">
+                        <input type="checkbox" @change="toggleAll">
+                    </th>
+                    <th class="border p-1">No</th>
+
                     @role('super admin')
-                    <th class="  text-center text-sm sm:flex justify-center py-1  gap-1  ">NIS</th>
+                    <th class="border p-1">NIS</th>
                     @endrole
-                    <th class=" border text-left px-2"> Daftar Peserta</th>
-                    <th class=" border text-center w-1">JK</th>
-                    <th class=" border text-center px-2"> Asrama</th>
-                    <th class=" border text-center">Kota Asal</th>
+
+                    <th class="border p-1 text-left">Nama</th>
+                    <th class="border p-1 text-center">JK</th>
+                    <th class="border p-1 text-center">Asrama</th>
+                    <th class="border p-1 text-center">Kota</th>
+
                     @role('super admin')
-                    <th class="  text-sm sm:flex justify-center py-1  gap-1  hidden">Aksi</th>
+                    <th class="border p-1 text-center">Aksi</th>
                     @endrole
                 </tr>
             </thead>
+
             <tbody>
                 @foreach($datapeserta as $siswa)
-                <tr class="  hover:bg-gray-100">
-                    <td class=" border px-2 text-center">
-                        {{$loop->iteration}}
-                    </td>
-                    @role('super admin')
-                    <td class=" border px-2 w-20">
-                        {{$siswa->nis}}
+                <tr class="hover:bg-gray-50 transition"
+                    :class="selected.includes('{{ $siswa->id }}') ? 'bg-red-50' : ''">
 
+                    <td class="border text-center">
+                        <input type="checkbox"
+                            class="checkItem"
+                            value="{{ $siswa->id }}"
+                            @change="toggleItem('{{ $siswa->id }}', $event.target)">
                     </td>
-                    @endrole
-                    <td class=" border px-2 capitalize">
-                        {{strtolower($siswa->nama_siswa)}}
-                    </td>
-                    <td class=" border px-2">
-                        {{$siswa->jenis_kelamin}}
-                    </td>
-                    <td class=" border px-2 text-center">
-                        {{$siswa->nama_asrama}}
-                    </td>
-                    <td class=" border px-2">
-                        {{$siswa->kota_asal}}
-                    </td>
+
+                    <td class="border text-center">{{ $loop->iteration }}</td>
+
                     @role('super admin')
-                    <td class=" text-sm  py-1  gap-1  border    ">
-                        <div class="  justify-center gap-2   flex">
-                            <form action="/pesertaasrama/{{$siswa->id}}" method="post">
+                    <td class="border text-center">{{ $siswa->nis }}</td>
+                    @endrole
+
+                    <td class="border px-2 capitalize">
+                        {{ strtolower($siswa->nama_siswa) }}
+                    </td>
+
+                    <td class="border text-center">{{ $siswa->jenis_kelamin }}</td>
+                    <td class="border text-center">{{ $siswa->nama_asrama }}</td>
+                    <td class="border text-center">{{ $siswa->kota_asal }}</td>
+
+                    @role('super admin')
+                    <td class="border text-center">
+                        <div class="flex justify-center gap-2">
+
+                            <!-- DELETE -->
+                            <form action="/pesertaasrama/{{$siswa->id}}" method="POST"
+                                onsubmit="return confirm('Yakin hapus?')">
                                 @csrf
-                                @method('delete')
-                                <button class=" bg-red-500 text-white p-1 rounded-md flex"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    </svg></button>
+                                @method('DELETE')
+                                <button class="bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded">
+                                    ❌
+                                </button>
                             </form>
-                            <a href="/pesertaasrama/{{$siswa->id}}/edit" class=" bg-yellow-500 rounded p-1 flex ">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                </svg></a>
-                        </div>
 
+                            <!-- EDIT -->
+                            <a href="/pesertaasrama/{{$siswa->id}}/edit"
+                                class="bg-yellow-400 hover:bg-yellow-500 text-white px-2 py-1 rounded">
+                                ✏
+                            </a>
+
+                        </div>
                     </td>
                     @endrole
+
                 </tr>
                 @endforeach
-                <tr>
-                    <td colspan="6">
-
-                    </td>
-                </tr>
-
             </tbody>
-        </Table>
+        </table>
     </div>
-
 </div>

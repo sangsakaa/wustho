@@ -1,90 +1,176 @@
 <x-app-layout>
     <x-slot name="header">
-        @section('title', ' | Laporan' )
+        @section('title', ' | Laporan')
 
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Dashboard kegiatan') }}
         </h2>
     </x-slot>
-    <div class="px-4 py-2">
-        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-            <div class=" p-2 gap-2  flex  bg-white border-b border-gray-200">
-                <div>
-                    <a href="/Daftar-Jadwal" class=" py-1 px-2 bg-red-600 text-white ">Jadwal</a>
 
-                </div>
-                <div>
-                    <button class=" bg-red-600  dark:bg-purple-600 w-full rounded-sm hover:bg-purple-600 text-white px-4 " onclick="printContent('blanko')">
-                        Cetak
-                    </button>
-                </div>
+    <!-- STYLE -->
+    <style>
+        /* ================= SCREEN ================= */
+        table {
+            border-collapse: collapse;
+        }
+
+        /* ================= PRINT ================= */
+        @media print {
+
+            body * {
+                visibility: hidden;
+            }
+
+            #blanko,
+            #blanko * {
+                visibility: visible;
+            }
+
+            #blanko {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                padding: 10px;
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+
+            th,
+            td {
+                border: 1px solid #000;
+                padding: 5px;
+                font-size: 12px;
+            }
+
+            th {
+                background: #f3f3f3;
+            }
+
+            button,
+            a {
+                display: none !important;
+            }
+
+            @page {
+                size: A4 portrait;
+                margin: 12mm;
+            }
+        }
+    </style>
+
+    <!-- ACTION -->
+    <div class="px-4 py-2">
+        <div class="bg-white shadow-sm sm:rounded-lg">
+            <div class="p-2 flex gap-2 border-b">
+
+                <a href="/Daftar-Jadwal"
+                    class="py-1 px-3 bg-red-600 hover:bg-red-700 text-white rounded">
+                    Jadwal
+                </a>
+
+                <button onclick="printContent()"
+                    class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-1 rounded">
+                    Cetak
+                </button>
+
             </div>
         </div>
     </div>
+
+    <!-- SCRIPT -->
     <script>
-        function printContent(el) {
-            var fullbody = document.body.innerHTML;
-            var printContent = document.getElementById(el).innerHTML;
-            document.body.innerHTML = printContent;
+        function printContent() {
             window.print();
-            document.body.innerHTML = fullbody;
         }
     </script>
-    <div id="blanko" class="p-4">
-        <div class=" mx-auto ">
-            <div class="bg-white overflow-hidden  sm:rounded-lg text-sm sm:text-sm">
-                <div class="p-2 bg-white  border-gray-200 ">
-                    <center>
-                        <div class=" block sm:hidden">
-                            <p class=" font-semibold text-xs  sm:text-2xl text-green-800">
-                                MADRASAH DINIYAH WUSTHO WAHIDIYAH
-                            </p>
-                            <p class=" font-semibold text-xs  sm:text-md text-green-800">
-                                LAPORAN PLOTING JADWAL PELAJARAN
-                            </p>
-                            <p class=" font-semibold text-xs  sm:text-md uppercase text-green-800">
-                                TAHUN PELAJARAN
 
-                            </p>
-                        </div>
-                    </center>
-                    <hr class=" border-b-2   border-b-green-700">
-                    <div class=" overflow-auto ">
-                        <table class=" w-full mb-10 ">
-                            <thead>
-                                <tr class=" border font-semibold border-green-800">
-                                    <th class="text-xs  sm:text-sm border font-semibold border-green-800">No</th>
-                                    <th class="text-xs  sm:text-sm border font-semibold border-green-800 w-1/4 sm:w-1/4">Nama Guru</th>
-                                    <th class="text-xs  sm:text-sm border font-semibold border-green-800">Periode</th>
-                                    <th class="text-xs  sm:text-sm border font-semibold border-green-800">Semester</th>
-                                    <th class="text-xs  sm:text-sm border font-semibold border-green-800">Jumlah Mapel</th>
-                                    <th class="text-xs  sm:text-sm border font-semibold border-green-800">Jumlah Soal</th>
-                                    <th class="text-xs  sm:text-sm border font-semibold border-green-800">HR</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($laporan as $data)
-                                @if($data->jumlah_kelas >= 1)
-                                <tr class="border text-xs  sm:text-sm border-green-800 text-center">
-                                    <td class="px-1 border text-xs  sm:text-sm border-green-800 text-center">{{ $loop->iteration }}</td>
-                                    <td class="px-1 border text-xs  sm:text-sm border-green-800 text-left {{ $data->jumlah_kelas+1 <= 1 ? 'text-red-600 font-semibold' : '' }}">{{ $data->nama_guru }}</td>
-                                    <td class="px-1 border text-xs  sm:text-sm border-green-800 text-center">{{ $data->periode }}</td>
-                                    <td class="px-1 border text-xs  sm:text-sm border-green-800 text-center">{{ $data->ket_semester }}</td>
-                                    <td class="px-1 border text-xs  sm:text-sm border-green-800 text-center {{ $data->jumlah_kelas+1 <= 1 ? 'text-red-600' : '' }}">{{ $data->jumlah_kelas*2 }}</td>
-                                    <td class="px-1 border text-xs  sm:text-sm border-green-800 text-center">{{ $data->jumlah_mapel }}</td>
-                                    <td class="px-1 border text-xs  sm:text-sm border-green-800 text-center">{{ 'Rp.' . number_format($data->jumlah_kelas * 30000) }}</td>
-                                </tr>
-                                @endif
-                                @endforeach
-                                <tr>
-                                    <td colspan="6" class=" border border-green-800 text-center">Total HR</td>
-                                    <td class=" border border-green-800 text-center">{{'Rp.'.number_format($laporan->sum('jumlah_kelas')*30000)}}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+    <!-- AREA CETAK -->
+    <div id="blanko" class="p-4">
+        <div class="mx-auto">
+
+            <div class="bg-white text-sm">
+
+                <!-- HEADER -->
+                <div class="text-center mb-2">
+                    <p class="font-bold text-sm sm:text-lg text-green-800">
+                        MADRASAH DINIYAH WUSTHO WAHIDIYAH
+                    </p>
+                    <p class="font-semibold text-xs sm:text-md text-green-800">
+                        LAPORAN PLOTING JADWAL PELAJARAN
+                    </p>
+                    <p class="font-semibold text-xs sm:text-md uppercase text-green-800">
+                        TAHUN PELAJARAN
+                    </p>
                 </div>
+
+                <hr class="border-b-2 border-green-700 mb-2">
+
+                <!-- TABLE -->
+                <div class="overflow-x-auto">
+                    <table class="w-full border border-green-800 text-xs sm:text-sm">
+
+                        <thead>
+                            <tr class="border border-green-800 bg-gray-100">
+                                <th>No</th>
+                                <th class="w-1/4 text-left">Nama Guru</th>
+                                <th>Periode</th>
+                                <th>Semester</th>
+                                <th>Jumlah Mapel</th>
+                                <th>Jumlah Soal</th>
+                                <th>HR</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @foreach($laporan as $data)
+                            @if($data->jumlah_kelas >= 1)
+                            <tr class="text-center border border-green-800">
+
+                                <td>{{ $loop->iteration }}</td>
+
+                                <td class="text-left px-2 
+                                            {{ $data->jumlah_kelas <= 1 ? 'text-red-600 font-semibold' : '' }}">
+                                    {{ $data->nama_guru }}
+                                </td>
+
+                                <td>{{ $data->periode }}</td>
+                                <td>{{ $data->ket_semester }}</td>
+
+                                <td class="{{ $data->jumlah_kelas <= 1 ? 'text-red-600' : '' }}">
+                                    {{ $data->jumlah_kelas * 2 }}
+                                </td>
+
+                                <td>{{ $data->jumlah_mapel }}</td>
+
+                                <td>
+                                    {{ 'Rp.' . number_format($data->jumlah_kelas * 30000) }}
+                                </td>
+
+                            </tr>
+                            @endif
+                            @endforeach
+
+                            <!-- TOTAL -->
+                            <tr class="font-bold">
+                                <td colspan="6" class="text-center border border-green-800">
+                                    Total HR
+                                </td>
+                                <td class="text-center border border-green-800">
+                                    {{ 'Rp.' . number_format($laporan->sum('jumlah_kelas') * 30000) }}
+                                </td>
+                            </tr>
+
+                        </tbody>
+
+                    </table>
+                </div>
+
             </div>
         </div>
     </div>
+
 </x-app-layout>
