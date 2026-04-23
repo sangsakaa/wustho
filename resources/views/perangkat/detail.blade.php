@@ -49,9 +49,9 @@
                         class="w-full md:w-1/2 px-3 py-2 border rounded-md focus:ring focus:ring-blue-200">
                         <option value="">-- Pilih Jabatan --</option>
                         @foreach($jabatan as $jab)
-                        <option value="{{$jab->id}}"
-                            {{ optional($perangkat->jabatan)->jabatan_id == $jab->id ? 'selected' : '' }}>
-                            {{$jab->nama_jabatan}}
+                        <option value="{{ $jab->id }}"
+                            {{ $perangkat->jabatan->contains('id', $jab->id) ? 'selected' : '' }}>
+                            {{ $jab->nama_jabatan }}
                         </option>
                         @endforeach
                     </select>

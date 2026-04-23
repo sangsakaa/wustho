@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Carbon\Carbon;
 use App\Models\Nis;
+use App\Models\Perangkat;
 use App\Models\Siswa;
 use App\Models\Statusanak;
 use App\Models\Pesertakelas;
@@ -166,6 +167,12 @@ class SiswaController extends Controller
     }
     public function biodata(Siswa $siswa)
     {
+        $perangkat = Perangkat::with('jabatanPerangkat.jabatan')
+            ->where('status', 'Aktif')
+            ->whereHas('jabatanPerangkat.jabatan', function ($q) {
+                $q->where('nama_jabatan', 'Kepala Sekolah');
+            })
+            ->get();
         $biodata = $siswa->query()
             ->leftjoin('nis', 'nis.siswa_id', '=', 'siswa.id')
             ->leftjoin('statusanak', 'statusanak.siswa_id', '=', 'siswa.id')
@@ -176,7 +183,8 @@ class SiswaController extends Controller
             'siswa/biodata',
             [
                 'siswa' => $siswa,
-                'biodata' => $biodata
+                'biodata' => $biodata,
+                'perangkat' => $perangkat
             ]
         );
     }

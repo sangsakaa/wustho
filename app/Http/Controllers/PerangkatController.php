@@ -5,24 +5,22 @@ namespace App\Http\Controllers;
 use App\Models\Jabatan;
 use App\Models\JabatanPerangkat;
 use App\Models\Perangkat;
+
 use Illuminate\Http\Request;
 
 class PerangkatController
 {
     public function index()
     {
-        // $dataPerangkat = Perangkat::all();
-        $dataPerangkat = Perangkat::query()
-            ->leftJoin('jabatan_perangkat', 'jabatan_perangkat.perangkat_id', '=', 'perangkat.id')
-            ->leftJoin('jabatan', 'jabatan.id', '=', 'jabatan_perangkat.jabatan_id')
-            ->select('jabatan.id as Jab', 'perangkat.id', 'nama_perangkat', 'status', 'jenis_kelamin', 'agama', 'tanggal_lahir', 'tempat_lahir')
-            ->orderBy('jabatan_id', 'asc')
-            ->orderBy('perangkat.id', 'asc')
+        $aktif = Perangkat::with(['jabatan'])
+            ->where('status', 'aktif')
             ->get();
 
+        $nonAktif = Perangkat::with(['jabatan'])
+            ->where('status', '!=', 'aktif')
+            ->get();
 
-
-        return view('perangkat.index', compact('dataPerangkat'));
+        return view('perangkat.index', compact('aktif', 'nonAktif'));
     }
     public function create()
     {

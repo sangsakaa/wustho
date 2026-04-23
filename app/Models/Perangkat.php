@@ -2,19 +2,26 @@
 
 namespace App\Models;
 
-use App\Models\JabatanPerangkat;
-
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Perangkat extends Model
 {
-    use HasFactory;
+    protected $table = 'perangkat';
 
-    public $guarded = [];
-    protected $table = "perangkat";
-    public function Jabatan()
+    protected $fillable = [
+        'nama_perangkat',
+        'jenis_kelamin',
+        'agama',
+        'tempat_lahir',
+        'tanggal_lahir',
+        'tanggal_masuk',
+        'status'
+    ];
+
+    // RELASI ke jabatan (many to many)
+    public function jabatan()
     {
-        return $this->belongsTo(JabatanPerangkat::class, 'id', 'perangkat_id');
+        return $this->belongsToMany(Jabatan::class, 'jabatan_perangkat')
+            ->withTimestamps();
     }
 }
