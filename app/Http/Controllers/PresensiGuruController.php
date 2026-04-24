@@ -39,10 +39,43 @@ class PresensiGuruController
             ->where('sesi_kelas_guru.periode_id', session('periode_id'))
             ->where('sesi_kelas_guru.tanggal', $tanggal->toDateString())
             ->get();
-        return view('presensi.guru.sesikelas', [
+        // Ambil semua absensi hari ini
+        $absensiHariIni = Absensiguru::query()
+            ->join('sesi_kelas_guru', 'absensiguru.sesi_kelas_guru_id', '=', 'sesi_kelas_guru.id')
+            ->where('sesi_kelas_guru.tanggal', $tanggal->toDateString())
+            ->where('sesi_kelas_guru.periode_id', session('periode_id'))
+            ->get();
 
+        // Hitung total
+        $totalAbsen = $absensiHariIni->count();
+
+        // Breakdown keterangan
+        $rekap = $absensiHariIni->groupBy('keterangan')->map->count();
+
+        $hadir = $rekap->get('hadir', 0);
+        $izin  = $rekap->get('izin', 0);
+        $sakit = $rekap->get('sakit', 0);
+        $alfa  = $rekap->get('alfa', 0);
+
+        // Hitung sesi
+        $totalSesi = $sesikelas->count();
+
+        // Estimasi belum absen
+        $belumAbsen = max($totalSesi - $totalAbsen, 0);
+        return view('presensi.guru.sesikelas', [
             'sesikelas' => $sesikelas,
             'tanggal' => $tanggal,
+
+            // tambahan
+            'summary' => [
+                'total_sesi' => $totalSesi,
+                'total_absen' => $totalAbsen,
+                'belum_absen' => $belumAbsen,
+                'hadir' => $hadir,
+                'izin' => $izin,
+                'sakit' => $sakit,
+                'alfa' => $alfa,
+            ]
         ]);
     }
     public function store(Request $request)
