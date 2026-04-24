@@ -1,105 +1,139 @@
 <x-app-layout>
     <x-slot name="header">
         @section('title', ' | Pengaturan')
-        <h2 class="font-semibold text-xl  leading-tight">
-            {{ __('Dashboard Pengaturan') }}
+        <h2 class="font-semibold text-xl">
+            Dashboard Pengaturan
         </h2>
     </x-slot>
-    <div class=" grid grid-cols-1 sm:grid-cols-1 gap-2 px-2 py-1">
-        <div class="">
-            <div class=" mx-auto ">
-                <div class="bg-white dark:bg-dark-bg overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class=" ">
-                        <div class=" text-xs overflow-auto p-2 sm:p-2 grid sm:flex grid-cols-2 text-center uppercase gap-1">
-                            <a href="/periode" class=" py-1 px-2 bg-blue-600 rounded-md text-white hover:bg-purple-500">
-                                periode
-                            </a>
-                            <a href="/semester" class=" py-1 px-2 bg-blue-600 rounded-md text-white hover:bg-purple-500">
-                                semester
-                            </a>
-                            <a href="/raportkelas" class=" py-1 px-2 bg-blue-600 rounded-md text-white hover:bg-purple-500">
-                                raport
-                            </a>
 
-                            <a href="/presensikelas" class=" py-1 px-2 bg-blue-600 rounded-md text-white hover:bg-purple-500">
-                                Presensi
-                            </a>
-                            <a href="/plotingkelas" class=" py-1 px-2 bg-blue-600 rounded-md text-white hover:bg-purple-500">
-                                Ploting Kelas
-                            </a>
-                            <a href="/validasi-data" class=" py-1 px-2 bg-blue-600 rounded-md text-white hover:bg-purple-500">
-                                Validasi Data
-                            </a>
-                        </div>
+    <div class="p-3 space-y-4">
 
-                    </div>
-                </div>
+        {{-- MENU --}}
+        <div class="bg-white dark:bg-dark-bg shadow rounded-xl p-3">
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2 text-xs uppercase">
+
+                @php
+                $menus = [
+                ['url' => '/periode', 'label' => 'Periode'],
+                ['url' => '/semester', 'label' => 'Semester'],
+                ['url' => '/raportkelas', 'label' => 'Raport'],
+                ['url' => '/presensikelas', 'label' => 'Presensi'],
+                ['url' => '/plotingkelas', 'label' => 'Ploting'],
+                ['url' => '/validasi-data', 'label' => 'Validasi'],
+                ];
+                @endphp
+
+                @foreach ($menus as $menu)
+                <a href="{{ $menu['url'] }}"
+                    class="text-center py-2 rounded-lg bg-blue-600 text-white hover:bg-purple-600 transition">
+                    {{ $menu['label'] }}
+                </a>
+                @endforeach
+
             </div>
         </div>
-        <div class="bg-white dark:bg-dark-bg overflow-hidden shadow-sm sm:rounded-lg">
-            <div class=" ">
-                <div class=" p-2 sm:p-2 grid grid-cols-1">
-                    <span class=" text-center font-semibold ">LIST CETAK RAPORT</span>
-                    <hr class=" py-2">
-                    <div class=" grid grid-cols-2">
-                        <form action="/pengaturan" method="get" class=" flex gap-1">
-                            <input type="text" name="cari" value="{{ request('cari') }}" class=" dark:bg-dark-bg border border-green-800 text-green-800 rounded-md py-1 " placeholder=" Cari .." autofocus>
 
-                            <button type="submit" class=" px-2   bg-blue-500  rounded-md text-white">
-                                Cari Raport </button>
+        {{-- CARD --}}
+        <div class="bg-white dark:bg-dark-bg shadow rounded-xl p-4 space-y-3">
 
-                        </form>
-                        <form action="/delete-records" method="post">
-                            @csrf
-                            <input type="text" name="idsql" class="py-1">
-                            <button class="py-1 px-2 bg-blue-600 rounded-md text-white hover:bg-purple-500">Hapus SQL</button>
-                        </form>
-                    </div>
-
-                    <table class=" border mt-2">
-                        <thead class=" border">
-                            <tr class=" uppercase bg-gray-100 dark:bg-purple-600 tex-xs sm:text-xs">
-                                <th class=" border px-2 py-1 ">No</th>
-                                <th class=" border px-2 text-center">Daftar Raport</th>
-                                <th class=" border px-2 text-center">Periode</th>
-                                <th class=" border px-2 text-center">KLS</th>
-                                <th class=" border px-2 text-center">NAMA KELAS</th>
-                                <th class=" border px-2 text-center">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($raport as $list)
-                            <tr class=" hover:bg-gray-100 dark:hover:bg-purple-600">
-                                <th class=" border text-sm w-1">
-                                    <a href="/report/{{ $list->id }}"> {{ $loop->iteration }}</a>
-                                </th>
-                                <td class=" border text-xs sm:text-sm px-2 text-left uppercase">
-                                    {{ $list->nama_siswa }}
-                                </td>
-                                <td class=" border text-xs sm:text-sm px-2 text-center ">
-                                    {{ $list->periode }} {{ $list->ket_semester }}
-                                </td>
-                                <td class=" border text-sm px-2 text-center">
-                                    {{ $list->kelas }}
-                                </td>
-                                <td class=" border text-sm px-2 text-center">
-                                    {{ $list->nama_kelas }}
-                                </td>
-                                <td class=" border text-sm px-1 text-center py-1 ">
-                                    <a href="/report/{{ $list->id }}" class=" justify-center bg-sky-300 rounded-md p-1 text-black flex text-center hover:bg-purple-600 hover:text-white">
-                                        CETAK
-
-                                    </a>
-                                </td>
-
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
+            {{-- HEADER --}}
+            <div>
+                <h3 class="font-semibold text-center text-sm tracking-wide">
+                    LIST CETAK RAPORT
+                </h3>
+                <hr class="mt-2">
             </div>
+
+            {{-- FILTER --}}
+            <div class="flex flex-col md:flex-row gap-2 justify-between">
+
+                {{-- SEARCH --}}
+                <form action="/pengaturan" method="get" class="flex gap-2 w-full md:w-1/2">
+                    <input type="text" name="cari" value="{{ request('cari') }}"
+                        class="w-full border rounded-lg px-3 py-1 text-sm focus:ring focus:ring-blue-300 dark:bg-dark-bg"
+                        placeholder="Cari siswa...">
+
+                    <button type="submit"
+                        class="px-3 py-1 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition">
+                        Cari
+                    </button>
+                </form>
+
+                {{-- DELETE --}}
+                <form action="/delete-records" method="post" class="flex gap-2">
+                    @csrf
+                    <input type="text" name="idsql"
+                        class="border rounded-lg px-2 py-1 text-sm dark:bg-dark-bg"
+                        placeholder="ID SQL">
+
+                    <button
+                        class="px-3 py-1 bg-red-500 text-white rounded-lg hover:bg-red-600 transition">
+                        Hapus
+                    </button>
+                </form>
+
+            </div>
+
+            {{-- TABLE --}}
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm border rounded-lg overflow-hidden">
+
+                    <thead class="bg-gray-100 dark:bg-purple-700 text-xs uppercase">
+                        <tr>
+                            <th class="p-2 border">No</th>
+                            <th class="p-2 border text-left">Nama</th>
+                            <th class="p-2 border">Periode</th>
+                            <th class="p-2 border">Kelas</th>
+                            <th class="p-2 border">Nama Kelas</th>
+                            <th class="p-2 border">Aksi</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @forelse ($raport as $list)
+                        <tr class="hover:bg-gray-50 dark:hover:bg-purple-800 transition">
+
+                            <td class="border text-center">
+                                {{ $loop->iteration }}
+                            </td>
+
+                            <td class="border px-2 uppercase">
+                                {{ $list->nama_siswa }}
+                            </td>
+
+                            <td class="border text-center">
+                                {{ $list->periode }} {{ $list->ket_semester }}
+                            </td>
+
+                            <td class="border text-center">
+                                {{ $list->kelas }}
+                            </td>
+
+                            <td class="border text-center">
+                                {{ $list->nama_kelas }}
+                            </td>
+
+                            <td class="border text-center p-1">
+                                <a href="/report/{{ $list->id }}"
+                                    class="inline-block px-3 py-1 bg-sky-500 text-white rounded-lg hover:bg-purple-600 transition">
+                                    Cetak
+                                </a>
+                            </td>
+
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="6" class="text-center py-3 text-gray-500">
+                                Data tidak ditemukan
+                            </td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+
+                </table>
+            </div>
+
         </div>
 
     </div>
-
 </x-app-layout>

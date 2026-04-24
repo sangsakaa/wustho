@@ -1,52 +1,105 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Edit Asrama Peserta Asrama ') }}
+            Edit Asrama Peserta Asrama
         </h2>
     </x-slot>
+
     <div class="p-4">
-        <div class=" mx-auto ">
-            <div class=" p-4 bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <form action="/pesertaasrama/{{$pesertaasrama->id}}" method="post">
+        <div class="mx-auto max-w-2xl">
+            <div class="p-6 bg-white overflow-hidden shadow-sm sm:rounded-lg">
+
+                {{-- Flash Message --}}
+                @if(session('success'))
+                <div class="mb-3 p-2 bg-green-100 text-green-700 rounded">
+                    {{ session('success') }}
+                </div>
+                @endif
+
+                <form action="/pesertaasrama/{{$pesertaasrama->id}}" method="POST">
                     @csrf
-                    @method('patch')
-                    <div class=" grid grid-cols-1 w-1/2 gap-2">
-                        <input type="hidden" name="siswa_id" class=" py-1  " value="{{$anggota->id}}" readonly>
-                        <input type="text" placeholder="{{$anggota->nama_siswa}}" class=" py-1" readonly>
-                        <select name="asramasiswa_id" id="" class=" py-1  uppercase">
+                    @method('PATCH')
 
-                            @foreach($dataasrama as $asrama)
-                            <option value="{{$asrama->id}}" {{ $pesertaasrama->asramasiswa_id == $asrama->id ? "selected" : "" }}>{{$loop->iteration}} | {{$asrama->nama_asrama}} </option>
-                            @endforeach
-                        </select>
-                        <div class=" flex gap-2">
-                            <div>
-                                <button class=" bg-blue-600 text-white rounded-md px-4 py-1"> Update Asrama</button>
-                            </div>
+                    <div class="grid grid-cols-1 gap-4">
 
+                        {{-- Hidden siswa_id --}}
+                        <input type="hidden" name="siswa_id" value="{{ $anggota->id }}">
 
+                        {{-- Nama siswa --}}
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Nama Siswa</label>
+                            <input type="text"
+                                value="{{ $anggota->nama_siswa }}"
+                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm bg-gray-100"
+                                readonly>
+
+                            {{-- Info tambahan --}}
+                            <p class="text-sm text-gray-500 mt-1">
+                                Jenis Kelamin:
+                                <span class="font-semibold">
+                                    {{ $anggota->jenis_kelamin == 'L' ? 'Laki-laki' : 'Perempuan' }}
+                                </span>
+                            </p>
                         </div>
+
+                        {{-- Select Asrama --}}
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Pilih Asrama</label>
+
+                            <select name="asramasiswa_id"
+                                class="mt-1 block w-full border-gray-300 rounded-md shadow-sm uppercase"
+                                required>
+
+                                @forelse($dataasrama as $asrama)
+                                <option value="{{ $asrama->id }}"
+                                    {{ $pesertaasrama->asramasiswa_id == $asrama->id ? 'selected' : '' }}>
+                                    {{ $loop->iteration }} | {{ $asrama->nama_asrama }}
+                                </option>
+                                @empty
+                                <option disabled selected>
+                                    Tidak ada asrama tersedia
+                                </option>
+                                @endforelse
+
+                            </select>
+
+                            {{-- Error --}}
+                            @error('asramasiswa_id')
+                            <span class="text-red-500 text-sm">{{ $message }}</span>
+                            @enderror
+                        </div>
+
+                        {{-- Button --}}
+                        <div class="flex gap-2 mt-3">
+                            <button type="submit"
+                                class="bg-blue-600 hover:bg-blue-700 text-white rounded-md px-4 py-2">
+                                Update Asrama
+                            </button>
+                        </div>
+
                     </div>
                 </form>
+
             </div>
         </div>
     </div>
-    <div class=" px-4 py-2">
-        <div class=" mx-auto ">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-md">
-                <div class="p-2 bg-blue-200 border-b border-gray-200">
-                    <div class="flex justify-items-end grid-cols-1 gap-2  py-1">
-                        <div class=" grid grid-cols-1">
-                            <span class=" text-bold">Keterangan :</span>
-                            <div class=" px-2">
-                                <p class=" capitalize">1. Untuk penambahan <b>anggota asrama </b> <u>wajib</u> memiliki <b><u>NIS (nomor induk siswa)</u></b> </p>
-                                <p class=" capitalize">2. jika tidak memili harap <b>NIS (nomor induk siswa)</b> konfimasi ke pihak madin bagian <b>kesiswaan & kepala sekolah</b> </p>
 
-                            </div>
-                        </div>
+    {{-- Keterangan --}}
+    <div class="px-4 py-2">
+        <div class="mx-auto max-w-2xl">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-md">
+                <div class="p-4 bg-blue-100 border-b border-gray-200">
+
+                    <span class="font-semibold">Keterangan:</span>
+
+                    <div class="px-2 mt-2 text-sm text-gray-700">
+                        <p>1. Untuk penambahan <b>anggota asrama</b> <u>wajib</u> memiliki <b>NIS (Nomor Induk Siswa)</b>.</p>
+                        <p>2. Jika tidak memiliki NIS, harap konfirmasi ke pihak <b>kesiswaan</b> atau <b>kepala sekolah</b>.</p>
                     </div>
+
                 </div>
             </div>
         </div>
     </div>
+
 </x-app-layout>

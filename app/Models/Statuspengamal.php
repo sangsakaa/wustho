@@ -9,4 +9,8 @@ class Statuspengamal extends Model
 {
     use HasFactory;
     protected $table = "statuspengamal";
+    protected $fillable = [
+        'siswa_id',
+        'status_pengamal',
+    ];
 }

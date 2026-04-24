@@ -1,177 +1,188 @@
 <x-app-layout>
+    {{-- HEADER --}}
     <x-slot name="header">
-        @section('title', ' | Laporan Akumulasi Semester' )
-        <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-            <h2 class="text-xl font-semibold leading-tight">
-                {{ __('Laporan Kehadiran') }}
+        @section('title', ' | Laporan Akumulasi Semester')
+
+        <div class="flex justify-between items-center">
+            <h2 class="text-xl font-semibold">
+                Laporan Kehadiran
             </h2>
         </div>
     </x-slot>
-    <div class=" px-4 py-1  w-full bg-white ">
-        <div class=" flex  grid-cols-2  gap-1 ">
-            <div class=" mt-1">
-                <button class="  w-10 justify-center text-white   bg-green-800 px-2 py-1 " onclick="printContent('div1')">
-                    <x-icons.print></x-icons.print>
-                </button>
-            </div>
-            <div class=" grid sm:justify-end justify-start">
-                <form action="/Laporan-Kehadiran" method="get" class="w-full">
-                    <input type="month" name="bulan" class=" py-1 dark:bg-dark-bg" value="{{ $bulan->format('Y-m') }}">
-                    <button class=" bg-red-600 py-1 dark:bg-purple-600 mt-1 my-1 sm:w-40 rounded-sm hover:bg-purple-600 text-white px-4 ">
-                        Pilih Bulan
-                    </button>
-                </form>
+
+    {{-- FILTER & ACTION --}}
+    <div class="px-4 py-3 bg-white flex flex-col md:flex-row justify-between gap-3 md:items-center">
+
+        {{-- PRINT --}}
+        <button onclick="window.print()"
+            class="flex items-center gap-2 bg-green-700 hover:bg-green-800 text-white px-4 py-2 rounded shadow">
+            <x-icons.print />
+            Print
+        </button>
+
+        {{-- FILTER BULAN --}}
+        <form action="/Laporan-Kehadiran" method="GET" class="flex gap-2">
+            <input type="month" name="bulan"
+                class="border rounded px-3 py-2"
+                value="{{ $bulan->format('Y-m') }}">
+            <button class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded shadow">
+                Pilih
+            </button>
+        </form>
+    </div>
+
+    {{-- SUMMARY --}}
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 p-4">
+
+        <div class="bg-green-100 p-4 rounded shadow">
+            <p class="text-sm">Total Hadir</p>
+            <h2 class="text-xl font-bold">{{ $summary['total_hadir'] }}</h2>
+        </div>
+
+        <div class="bg-yellow-100 p-4 rounded shadow">
+            <p class="text-sm">Sakit</p>
+            <h2 class="text-xl font-bold">{{ $summary['total_sakit'] }}</h2>
+        </div>
+
+        <div class="bg-blue-100 p-4 rounded shadow">
+            <p class="text-sm">Izin</p>
+            <h2 class="text-xl font-bold">{{ $summary['total_izin'] }}</h2>
+        </div>
+
+        <div class="bg-red-100 p-4 rounded shadow">
+            <p class="text-sm">Alfa</p>
+            <h2 class="text-xl font-bold">{{ $summary['total_alfa'] }}</h2>
+        </div>
+    </div>
+
+    {{-- INFO TAMBAHAN --}}
+    <div class="px-4 pb-4">
+        <div class="bg-gray-100 p-4 rounded shadow text-sm">
+
+            <div class="space-y-1 text-left">
+                <div class="flex gap-2">
+                    <span class="w-48">Rata-rata Kehadiran</span>
+                    <span>:</span>
+                    <span class="font-semibold">{{ $summary['rata_kehadiran'] }}%</span>
+                </div>
+
+                <div class="flex gap-2">
+                    <span class="w-48">Kelas Terbaik</span>
+                    <span>:</span>
+                    <span class="font-semibold">{{ $summary['kelas_terbaik'] }}</span>
+                </div>
+
+                <div class="flex gap-2">
+                    <span class="w-48">Kelas Terburuk</span>
+                    <span>:</span>
+                    <span class="font-semibold">{{ $summary['kelas_terburuk'] }}</span>
+                </div>
             </div>
 
         </div>
-        <script>
-            function printContent(el) {
-                var fullbody = document.body.innerHTML;
-                var printContent = document.getElementById(el).innerHTML;
-                document.body.innerHTML = printContent;
-                window.print();
-                document.body.innerHTML = fullbody;
-            }
-        </script>
     </div>
 
-    <div id="div1">
-        <style>
-            .page-break {
-                page-break-after: always;
-            }
-        </style>
-        <div class=" p-4 bg-white px-2 grid grid-cols-1 ">
-            <div id="kop" class="   ">
-                <div class=" text-center text-green-700 sm:hidden   hidden   ">
-                    <div class=" flex">
-                        <div><img src={{ asset("asset/images/logo.png") }} alt="" width="105" class="py-1"></div>
-                        <div class=" w-full  ml-5 justify-items-center ">
-                            <p class="  font-serif text-lg uppercase">pondok pesantren kedunglo al munadhdhoroh</p>
-                            <p class="  uppercase font-serif text-lg font-semibold text-monospace ">madrasah diniyah {{$kelasmi->jenjang}}
-                                Wahidiyah</p>
-                            <p class=" capitalize font-serif text-xs">Alamat : Jl.KH. Wachid Hasyim Kota Kediri 64114 Jawa Timur</p>
-                            <p class=" uppercase font-semibold  text-green-700 border-green-800 text-md">Semester {{$periode = $kelasmi->ket_semester ?? ' ';}} Tahun Pelajaran {{$periode = $kelasmi->periode ?? ' ';}} </p>
-                        </div>
-                    </div>
-                    <div class=" w-full ">
-                        <hr class=" border-b-2 border-green-700 mb-1">
-                        <hr class=" border-b-1 border-green-700 mb-1">
-                        <p class=" uppercase font-semibold ">laporan presentasi kelas : Bulan {{ \Carbon\Carbon::parse(  $bulan)->isoFormat('  MMMM ') }} </p>
-                    </div>
+    {{-- PRINT AREA --}}
+    <div id="print-area" class="p-6 bg-white">
 
-                </div>
-            </div>
-            <div>
+        {{-- KOP --}}
+        <div class="text-center text-green-700 mb-4">
+            <p class="font-serif text-lg uppercase">
+                Pondok Pesantren Kedunglo Al Munadhdhoroh
+            </p>
 
-                <table class=" w-full mt-1 ">
-                    <thead>
-                        <tr class=" text-sm text-green-800">
-                            <th rowspan="2" class=" border border-green-800 px-1">No</th>
-                            <th rowspan="2" class=" border border-green-800 px-1">Nama Kelas</th>
-                            <th rowspan="2" class=" border border-green-800 px-1">Total Peserta Kelas</th>
-                            <th rowspan="2" class=" border border-green-800 px-1">Total Sesi</th>
-                            <th colspan="4" class=" border border-green-800 px-1">Keterangan</th>
+            <p class="uppercase font-semibold">
+                Madrasah Diniyah {{ $kelasmi->jenjang }} Wahidiyah
+            </p>
 
-                            <th rowspan="2" class=" border border-green-800 px-1">Presentasi Kehadiran</th>
-                        </tr>
-                        <tr class=" text-sm text-green-800">
-                            <th class=" border border-green-800 px-1">Total Hadir</th>
-                            <th class=" border border-green-800 px-1">Total Sakit</th>
-                            <th class=" border border-green-800 px-1">Total Izin</th>
-                            <th class=" border border-green-800 px-1">Total Alfa</th>
+            <p class="text-sm">
+                Semester {{ $kelasmi->ket_semester ?? '-' }}
+                Tahun {{ $kelasmi->periode ?? '-' }}
+            </p>
 
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @php
-                        $currentKelas = null;
-                        @endphp
-                        @foreach($data as $item)
-                        <tr class=" text-sm text-green-800 even:bg-gray-200">
-                            @if($currentKelas !== $item->nama_kelas)
-                            @php
-                            $currentKelas = $item->nama_kelas;
-                            $rowCount = $data->where('nama_kelas', $item->nama_kelas)->count();
-                            @endphp
-                            <td class="border border-green-800 text-center px-1 py-1" rowspan="{{ $rowCount }}">
-                                {{ $loop->iteration}}
-                            </td>
-                            <td class="border border-green-800 text-center px-1 py-1" rowspan="{{ $rowCount }}">
-                                {{ $item->nama_kelas }}
-                            </td>
-                            <td class="border border-green-800 text-center px-1 py-1" rowspan="{{ $rowCount }}">
-                                {{$item->total_peserta_kelas}}
-                            </td>
-                            <td class="border border-green-800 text-center px-1 py-1" rowspan="{{ $rowCount }}">
-                                {{$item->total_sesikelas}}
-                            </td>
-                            @endif
-                            <td class="border border-green-800 text-center px-1 py-1">{{ $item->total_kehadiran}}</td>
-                            <td class="border border-green-800 text-center px-1 py-1">{{ $item->total_sakit}}</td>
-                            <td class="border border-green-800 text-center px-1 py-1">{{ $item->total_izin }}</td>
-                            <td class="border border-green-800 text-center px-1 py-1">{{ $item->total_alfa}}</td>
-                            <td class="border border-green-800 text-center px-1 py-1">{{ number_format($item->total_kehadiran *100/$item->total_peserta_kelas / $item->total_sesikelas   ,0,2)}} % </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-                <div class=" justify-items-center text-center py-2 hidden">
-                    <p class=" uppercase font-semibold text-green-700 ">laporan presentasi Asrama : Bulan {{ \Carbon\Carbon::parse(  $bulan)->isoFormat('  MMMM ') }} </p>
-                </div>
-                <table class=" w-full mt-1">
-                    <thead>
-                        <tr class=" text-sm text-green-800">
-                            <th rowspan="2" class=" border border-green-800 px-1">No</th>
-                            <th rowspan="2" class=" border border-green-800 px-1 w-1/4">Nama Asrama</th>
-                            <th rowspan="2" class=" border border-green-800 px-1">Peserta Asrama</th>
-                            <th rowspan="2" class=" border border-green-800 px-1">Total Sesi</th>
-                            <th colspan="4" class=" border border-green-800 px-1">Keterangan</th>
+            <hr class="border-green-700 my-2">
 
-                            <th rowspan="2" class=" border border-green-800 px-1 w-1/4">% Alfa</th>
-                        </tr>
-                        <tr class=" text-sm text-green-800">
-                            <th class=" border border-green-800 px-1">Total Hadir</th>
-                            <th class=" border border-green-800 px-1">Total Sakit</th>
-                            <th class=" border border-green-800 px-1">Total Izin</th>
-                            <th class=" border border-green-800 px-1 ">Total Alfa</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($dataDetail as $result)
-                        <tr class="text-green-800  even:bg-gray-200">
-                            <td class="border border-green-800 text-center px-1">{{ $loop->iteration }}</td>
-                            <td class="border border-green-800 text-center px-1">{{ $result->nama_asrama }}</td>
-                            <td class="border border-green-800 text-center px-1">{{ $result->total_peserta_kelas }}</td>
-                            <td class="border border-green-800 text-center px-1">{{ $result->total_sesikelas }}</td>
-                            <td class="border border-green-800 text-center px-1">{{ $result->total_kehadiran }}</td>
-                            <td class="border border-green-800 text-center px-1">{{ $result->total_sakit }}</td>
-                            <td class="border border-green-800 text-center px-1">{{ $result->total_izin }}</td>
-                            <td class="border border-green-800 text-center px-1">{{ $result->total_alfa }}</td>
-                            <td class="border border-green-800 text-center px-1">{{ number_format($result->presentase_alfa, 0) }}%</td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-            <div class=" mt-1  flex grid-cols-2 text-right hidden sm:hidden">
-                <div class=" w-2/3"></div>
-                <div class="  text-left text-sm">
-                    @if($kelasmi->jenjang == "Ula")
-                    {{-- Kode untuk jenjang Ula --}}
-                    @elseif($kelasmi->jenjang == "Wustho")
-                    Kedunglo, <?php
-                                $date = date_create(now());
-                                echo \Carbon\Carbon::parse($date)->isoFormat(' DD MMMM Y');
-                                ?></p>
-                    Al Mudir / Kepala <br><br><br><br>
-                    Muh. Bahrul Ulum, S.H
-                    @else
-                    {{-- Kode untuk kasus lainnya --}}
-                    @endif
-                </div>
-            </div>
+            <p class="font-semibold">
+                Laporan Kehadiran Bulan
+                {{ \Carbon\Carbon::parse($bulan)->isoFormat('MMMM') }}
+            </p>
+        </div>
+
+        {{-- TABEL KELAS --}}
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm border border-green-800">
+                <thead class="bg-green-100 text-center">
+                    <tr>
+                        <th class="p-2">No</th>
+                        <th>Kelas</th>
+                        <th>Peserta</th>
+                        <th>Sesi</th>
+                        <th>Hadir</th>
+                        <th>Sakit</th>
+                        <th>Izin</th>
+                        <th>Alfa</th>
+                        <th>% Hadir</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($data as $item)
+                    <tr class="even:bg-gray-100 text-center">
+                        <td class="p-1">{{ $loop->iteration }}</td>
+                        <td>{{ $item->nama_kelas }}</td>
+                        <td>{{ $item->total_peserta_kelas }}</td>
+                        <td>{{ $item->total_sesikelas }}</td>
+                        <td>{{ $item->total_kehadiran }}</td>
+                        <td>{{ $item->total_sakit }}</td>
+                        <td>{{ $item->total_izin }}</td>
+                        <td>{{ $item->total_alfa }}</td>
+                        <td>{{ $item->presentase_hadir ?? 0 }}%</td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+
+        {{-- TABEL ASRAMA --}}
+        <div class="mt-6 overflow-x-auto">
+            <table class="w-full text-sm border border-green-800">
+                <thead class="bg-green-100 text-center">
+                    <tr>
+                        <th class="p-2">No</th>
+                        <th>Asrama</th>
+                        <th>Peserta</th>
+                        <th>Hadir</th>
+                        <th>Sakit</th>
+                        <th>Izin</th>
+                        <th>Alfa</th>
+                        <th>% Alfa</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($dataDetail as $result)
+                    <tr class="even:bg-gray-100 text-center">
+                        <td class="p-1">{{ $loop->iteration }}</td>
+                        <td>{{ $result->nama_asrama }}</td>
+                        <td>{{ $result->total_peserta }}</td>
+                        <td>{{ $result->total_kehadiran }}</td>
+                        <td>{{ $result->total_sakit }}</td>
+                        <td>{{ $result->total_izin }}</td>
+                        <td>{{ $result->total_alfa }}</td>
+                        <td>{{ $result->presentase_alfa ?? 0 }}%</td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+
+        {{-- TTD --}}
+        <div class="mt-8 text-right text-sm">
+            Kedunglo,
+            {{ \Carbon\Carbon::now()->isoFormat('DD MMMM Y') }}
+            <br><br>
+            Kepala Madrasah
+            <br><br><br>
+            <b>Muh. Bahrul Ulum, S.H</b>
         </div>
     </div>
-    <div class="page-break"></div>
+
 </x-app-layout>

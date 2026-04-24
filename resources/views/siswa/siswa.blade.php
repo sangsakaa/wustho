@@ -18,7 +18,39 @@
             </div>
 
             {{-- DASHBOARD STAT --}}
+            @if (session('import_result'))
+            <script>
+                document.addEventListener("DOMContentLoaded", function() {
 
+                    const result = @json(session('import_result'));
+
+                    let message = `
+Total: ${result.summary.total} data
+✅ Berhasil: ${result.summary.success}
+⚠️ Dilewati: ${result.summary.skipped}
+❌ Error: ${result.summary.errors}
+        `;
+
+                    if (result.detail.errors.length > 0) {
+                        message += `\n\nContoh Error:\n${result.detail.errors[0]}`;
+                    }
+
+                    Toastify({
+                        text: message,
+                        duration: 5000,
+                        gravity: "top",
+                        position: "right",
+                        close: true,
+                        stopOnFocus: true,
+                        style: {
+                            background: result.summary.errors > 0 ?
+                                "linear-gradient(to right, #ff5f6d, #ffc371)" : "linear-gradient(to right, #00b09b, #96c93d)",
+                        }
+                    }).showToast();
+
+                });
+            </script>
+            @endif
 
         </div>
 

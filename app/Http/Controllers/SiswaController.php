@@ -334,39 +334,49 @@ class SiswaController extends Controller
      */
     public function update(Request $request, Siswa $siswa)
     {
-        
-        Siswa::where('id', $siswa->id)
-        ->update([
-            'nama_siswa' => $request->nama_siswa,
-            'jenis_kelamin' => $request->jenis_kelamin,
-            'agama' => $request->agama,
-            'tempat_lahir' => $request->tempat_lahir,
-            'tanggal_lahir' => $request->tanggal_lahir,
-            'kota_asal' => $request->kota_asal,
+        $data = $request->only([
+            'nama_siswa',
+            'jenis_kelamin',
+            'agama',
+            'tempat_lahir',
+            'tanggal_lahir',
+            'kota_asal',
         ]);
-        Statuspengamal::where('siswa_id', $siswa->id)
-        ->update([
-            'status_pengamal' => $request->status_pengamal,
-        ]);
-        Statusanak::where('siswa_id', $siswa->id)
-        ->update([
-            'status_anak' => $request->status_anak,
-            'anak_ke' => $request->anak_ke,
-            'nama_ayah' => $request->nama_ayah,
-            'nama_ibu' => $request->nama_ibu,
-            'pekerjaan_ayah' => $request->pekerjaan_ayah,
-            'pekerjaan_ibu' => $request->pekerjaan_ibu,
-            'nomor_hp_ayah' => $request->nomor_hp_ayah,
-            'nomor_hp_ibu' => $request->nomor_hp_ibu,
-        ]);
+
+        // Hapus field yang kosong
+        $data = array_filter($data, function ($value) {
+            return $value !== null && $value !== '';
+        });
+
+        // Update hanya yang terisi
+        $siswa->update($data);
+
+        // Status Pengamal
+        if ($request->filled('status_pengamal')) {
+            Statuspengamal::updateOrCreate(
+                ['siswa_id' => $siswa->id],
+                ['status_pengamal' => $request->status_pengamal]
+            );
+        }
+
+        // Status Anak
+        Statusanak::updateOrCreate(
+            ['siswa_id' => $siswa->id],
+            array_filter([
+                'status_anak' => $request->status_anak,
+                'anak_ke' => $request->anak_ke,
+                'nama_ayah' => $request->nama_ayah,
+                'nama_ibu' => $request->nama_ibu,
+                'pekerjaan_ayah' => $request->pekerjaan_ayah,
+                'pekerjaan_ibu' => $request->pekerjaan_ibu,
+                'nomor_hp_ayah' => $request->nomor_hp_ayah,
+                'nomor_hp_ibu' => $request->nomor_hp_ibu,
+            ], fn($v) => $v !== null && $v !== '')
+        );
+
         return redirect()->back()->with('update', 'pembaharuan data berhasil');
     }
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Siswa  $siswa
-     * @return \Illuminate\Http\Response
-     */
+
     public function destroy(Siswa $siswa)
     {
         Siswa::destroy($siswa->id);

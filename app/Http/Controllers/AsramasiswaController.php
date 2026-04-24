@@ -151,26 +151,30 @@ class AsramasiswaController extends Controller
     }
     public function editpeserta(Pesertaasrama $pesertaasrama, Asramasiswa $asramasiswa)
     {
-       
         $anggota = Pesertaasrama::query()
             ->join('siswa', 'siswa.id', '=', 'pesertaasrama.siswa_id')
-            ->where('pesertaasrama.id', $pesertaasrama->id)->first();
+            ->where('pesertaasrama.id', $pesertaasrama->id)
+            ->select('pesertaasrama.*', 'siswa.*') // penting!
+            ->first();
+
+        // tentukan tipe asrama
+        $type = $anggota->jenis_kelamin == 'L' ? 'putra' : 'putri';
+
         $dataasrama = Asramasiswa::query()
             ->join('asrama', 'asrama.id', '=', 'asramasiswa.asrama_id')
-            ->select('nama_asrama', 'asramasiswa.id')
+            ->select('asrama.nama_asrama', 'asramasiswa.id')
             ->where('asramasiswa.periode_id', session('periode_id'))
-            ->orderby('type_asrama')
-            ->orderby('nama_asrama')
+            ->where('asrama.type_asrama', $type) // 🔥 filter utama
+            ->orderBy('asrama.type_asrama')
+            ->orderBy('asrama.nama_asrama')
             ->get();
-        return view(
-            'asrama/editpeserta',
-            [
-                'anggota' => $anggota,
-                'pesertaasrama' => $pesertaasrama,
-                'asramasiswa' => $asramasiswa,
-                'dataasrama' => $dataasrama,
-            ]
-        );
+
+        return view('asrama/editpeserta', [
+            'anggota' => $anggota,
+            'pesertaasrama' => $pesertaasrama,
+            'asramasiswa' => $asramasiswa,
+            'dataasrama' => $dataasrama,
+        ]);
     }
 
     /**

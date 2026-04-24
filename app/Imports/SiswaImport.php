@@ -16,98 +16,104 @@ class SiswaImport implements ToCollection
     {
         $headers = $data[0]->toArray();
 
+        $success = [];
+        $errors = [];
+        $skipped = [];
+
         function excelDateToDate($excelDate)
         {
-            // Check if $excelDate is numeric and greater than 0
             if (!is_numeric($excelDate) || $excelDate <= 0) {
-                return null; // Return null for invalid or empty Excel dates
+                return null;
             }
 
-            return \Carbon\Carbon::createFromDate(1899, 12, 30)->addDays($excelDate)->format('Y/m/d');
-
+            return \Carbon\Carbon::createFromDate(1899, 12, 30)
+                ->addDays($excelDate)
+                ->format('Y-m-d');
         }
 
         foreach ($data as $index => $rowData) {
-            if ($index === 0) {
-                // Skip the headers row
-                continue;
-            }
+            if ($index === 0) continue;
 
-            $values = $rowData->toArray();
-            $row = array_combine($headers, $values);
+            try {
+                $values = $rowData->toArray();
+                $row = array_combine($headers, $values);
 
-            // Validate and convert tanggal_lahir
-            $tanggal_lahir = excelDateToDate($row['tanggal_lahir']);
-            if ($tanggal_lahir === null) {
-                // Handle error or skip this row if necessary
-                continue;
-            }
-            // Check if Siswa already exists by id
-            $existingSiswa = Siswa::where('id', $row['id'])->first();
-            if ($existingSiswa) {
-                // If Siswa exists, skip this row
-                continue;
-            }
-            
+                // Validasi tanggal lahir
+                $tanggal_lahir = excelDateToDate($row['tanggal_lahir']);
+                if ($tanggal_lahir === null) {
+                    $errors[] = "Baris ke-" . ($index + 1) . " : Tanggal lahir tidak valid";
+                    continue;
+                }
 
-            // Create new Siswa
-            $siswa = Siswa::create([
-                'id' => $row['id'],
-                'nama_siswa' => $row['nama_siswa'],
-                'jenis_kelamin' => $row['jenis_kelamin'],
-                'agama' => $row['agama'],
-                'tempat_lahir' => $row['tempat_lahir'],
-                'tanggal_lahir' => $tanggal_lahir,
-                'kota_asal' => $row['kota_asal'],
-                'created_at' => $row['created_at'],
-                'updated_at' => $row['updated_at'],
-            ]);
+                // Cek duplikat
+                $existingSiswa = Siswa::where('id', $row['id'])->first();
+                if ($existingSiswa) {
+                    $skipped[] = "Baris ke-" . ($index + 1) . " : ID {$row['id']} sudah ada";
+                    continue;
+                }
 
-            // Save or update StatusAnak
-            Statusanak::updateOrCreate(
-                ['siswa_id' => $siswa->id],
-                [
-                    'status_anak' => $row['status_anak'],
-                    'jumlah_saudara' => $row['jumlah_saudara'],
-                    'anak_ke' => $row['anak_ke'],
+                // Insert siswa
+                $siswa = Siswa::create([
+                    'id' => $row['id'],
+                    'nama_siswa' => $row['nama_siswa'],
+                    'jenis_kelamin' => $row['jenis_kelamin'],
+                    'agama' => $row['agama'],
+                    'tempat_lahir' => $row['tempat_lahir'],
+                    'tanggal_lahir' => $tanggal_lahir,
+                    'kota_asal' => $row['kota_asal'],
                     'created_at' => $row['created_at'],
                     'updated_at' => $row['updated_at'],
-                    'nama_ayah' => $row['nama_ayah'],
-                    'pekerjaan_ayah' => $row['pekerjaan_ayah'],
-                    'pekerjaan_ibu' => $row['pekerjaan_ibu'],
-                    'nomor_hp_ayah' => $row['nomor_hp_ayah'],
-                    'nama_ibu' => $row['nama_ibu'],
-                    'nomor_hp_ibu' => $row['nomor_hp_ibu'],
-                ]
-            );
+                ]);
 
-            // Save or update Nis
-            // Nis::updateOrCreate(
-            //     ['siswa_id' => $siswa->id],
-            //     [
-            //         'nis' => $row['nis'],
-            //         'madrasah_diniyah' => $row['madrasah_diniyah'],
-            //         'nama_lembaga' => $row['nama_lembaga'],
-            //         'tanggal_masuk' => excelDateToDate($row['tanggal_masuk']),
-            //         'created_at' => $row['created_at'],
-            //         'updated_at' => $row['updated_at'],
-            //     ]
-            // );
-            Nis::updateOrCreate(
-                ['siswa_id' => $siswa->id], // Kriteria pencarian
-                [
-                    'nis' => $row['nis'], // Nilai yang akan diupdate atau dibuat baru
-                    'madrasah_diniyah' => $row['madrasah_diniyah'],
-                    'nama_lembaga' => $row['nama_lembaga'],
-                    'tanggal_masuk' => excelDateToDate($row['tanggal_masuk']),
-                    'created_at' => $row['created_at'],
-                    'updated_at' => $row['updated_at'],
-                ],
-                ['nis'] // Field-field yang tidak boleh diubah saat update
-            );
+                // Status anak
+                Statusanak::updateOrCreate(
+                    ['siswa_id' => $siswa->id],
+                    [
+                        'status_anak' => $row['status_anak'],
+                        'jumlah_saudara' => $row['jumlah_saudara'],
+                        'anak_ke' => $row['anak_ke'],
+                        'nama_ayah' => $row['nama_ayah'],
+                        'pekerjaan_ayah' => $row['pekerjaan_ayah'],
+                        'pekerjaan_ibu' => $row['pekerjaan_ibu'],
+                        'nomor_hp_ayah' => $row['nomor_hp_ayah'],
+                        'nama_ibu' => $row['nama_ibu'],
+                        'nomor_hp_ibu' => $row['nomor_hp_ibu'],
+                        'created_at' => $row['created_at'],
+                        'updated_at' => $row['updated_at'],
+                    ]
+                );
 
+                // NIS
+                Nis::updateOrCreate(
+                    ['siswa_id' => $siswa->id],
+                    [
+                        'nis' => $row['nis'],
+                        'madrasah_diniyah' => $row['madrasah_diniyah'],
+                        'nama_lembaga' => $row['nama_lembaga'],
+                        'tanggal_masuk' => excelDateToDate($row['tanggal_masuk']),
+                        'created_at' => $row['created_at'],
+                        'updated_at' => $row['updated_at'],
+                    ]
+                );
+
+                $success[] = "Baris ke-" . ($index + 1) . " : {$row['nama_siswa']} berhasil diimport";
+            } catch (\Exception $e) {
+                $errors[] = "Baris ke-" . ($index + 1) . " : " . $e->getMessage();
+            }
         }
 
-        return response()->json(['message' => 'Data processed successfully']);
+        return redirect()->back()->with('import_result', [
+            'summary' => [
+                'total' => count($data) - 1,
+                'success' => count($success),
+                'skipped' => count($skipped),
+                'errors' => count($errors),
+            ],
+            'detail' => [
+                'success' => $success,
+                'skipped' => $skipped,
+                'errors' => $errors,
+            ]
+        ]);
     }
 }
