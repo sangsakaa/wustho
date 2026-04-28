@@ -15,26 +15,34 @@ class GuruController extends Controller
 
     public function index()
     {
+        $tab = request('tab', 'aktif'); // default aktif
+
         $query = Guru::query()->orderBy('nama_guru');
 
+        // TAB FILTER
+        if ($tab == 'aktif') {
+            $query->where('status', 'Aktif');
+        } elseif ($tab == 'nonaktif') {
+            $query->where('status', 'Non Aktif');
+        } elseif ($tab == 'cuti') {
+            $query->where('status', 'Cuti');
+        }
+
+        // SEARCH
         if (request('cari')) {
             $query->where('nama_guru', 'like', '%' . request('cari') . '%');
         }
 
         $dataGuru = $query->paginate(10)->withQueryString();
 
-        $totalGuru = Guru::count();
-        $aktif = Guru::where('status', 'Aktif')->count();
-        $nonaktif = Guru::where('status', 'Non Aktif')->count();
-        $cuti = Guru::where('status', 'Cuti')->count();
-
-        return view('guru.guru', compact(
-            'dataGuru',
-            'totalGuru',
-            'aktif',
-            'nonaktif',
-            'cuti'
-        ));
+        return view('guru.guru', [
+            'dataGuru' => $dataGuru,
+            'totalGuru' => Guru::count(),
+            'aktif' => Guru::where('status', 'Aktif')->count(),
+            'nonaktif' => Guru::where('status', 'Non Aktif')->count(),
+            'cuti' => Guru::where('status', 'Cuti')->count(),
+            'tab' => $tab,
+        ]);
     }
     
     public function create()
