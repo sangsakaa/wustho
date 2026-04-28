@@ -119,7 +119,7 @@
                     </td>
 
                     <td class="border text-center">
-                        {{$item->asrama->type_asrama}}
+                        {{ optional($item->asrama)->nama_asrama ?? '-' }}
                     </td>
 
                     <td class="border text-center">
