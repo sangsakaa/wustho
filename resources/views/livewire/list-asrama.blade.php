@@ -113,8 +113,9 @@
                     <!-- NAMA -->
                     <td class="border text-center font-semibold">
                         <a href="pesertaasrama/{{$item->id}}"
-                            class="{{ $item->asrama->type_asrama == 'Putra' ? 'text-blue-600' : 'text-pink-600' }}">
-                            {{$item->asrama->nama_asrama}}
+                            class="{{ optional($item->asrama)->type_asrama == 'Putra' ? 'text-blue-600' : 'text-pink-600' }}">
+
+                            {{ optional($item->asrama)->nama_asrama ?? 'Asrama tidak ditemukan' }}
                         </a>
                     </td>
 
