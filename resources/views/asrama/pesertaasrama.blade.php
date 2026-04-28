@@ -15,7 +15,7 @@
                         : {{ $tittle?->nama_asrama ?? 'Asrama tidak ditemukan' }}
                     </div>
                     <div>Kuota Asrama</div>
-                    <div> : {{$tittle->kuota}} org </div>
+                    <div> : {{$tittle->kuota}} ?? 'kuota kosong' org </div>
                 </div>
             </div>
         </div>
