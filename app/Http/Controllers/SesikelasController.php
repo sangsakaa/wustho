@@ -20,7 +20,9 @@ class SesikelasController
             $tgl = $request->tgl ? Carbon::parse($request->tgl) : now();
         } catch (InvalidFormatException $ex) {
             $tgl = now();
+            dd($tgl);
         }
+
 
         $dataKelasMi = Kelasmi::query()
             ->join('periode', 'periode.id', 'kelasmi.periode_id')

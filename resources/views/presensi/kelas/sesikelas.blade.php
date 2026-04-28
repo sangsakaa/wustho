@@ -60,9 +60,7 @@
 
             {{-- FILTER --}}
             <form action="/sesikelas" method="get" class="flex gap-2 items-center">
-                <input type="date" name="tgl"
-                    value="{{ $tgl->format('Y-m-d') }}"
-                    class="border px-2 py-1 rounded focus:ring focus:ring-blue-200">
+                <input type="date" name="tgl" class="py-1 dark:bg-dark-bg" value="{{ $tgl->toDateString() }}">
 
                 <button class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded">
                     Filter
