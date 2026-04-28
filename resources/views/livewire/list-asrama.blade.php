@@ -84,7 +84,6 @@
                     @role('super admin')
                     <th class="border px-2 py-1">Periode</th>
                     @endrole
-
                     <th class="border px-2 py-2">Daftar Asrama</th>
                     <th class="border px-2 py-2">Tipe</th>
                     <th class="border px-2 py-2">Kuota</th>
@@ -120,7 +119,8 @@
                     </td>
 
                     <td class="border text-center">
-                        {{ optional($item->asrama)->nama_asrama ?? '-' }}
+                        {{ optional($item->asrama)->type_asrama ?? '-' }}
+
                     </td>
 
                     <td class="border text-center">
