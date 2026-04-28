@@ -119,7 +119,7 @@
                     </td>
 
                     <td class="border text-center">{{ $siswa->jenis_kelamin }}</td>
-                    <td class="border text-center">{{ $siswa->nama_asrama }}</td>
+                    <td class="border text-center">{{ $siswa->nama_asrama ??'nama Asrama tidak ditemukan' }}</td>
                     <td class="border text-center">{{ $siswa->kota_asal }}</td>
 
                     @role('super admin')
