@@ -1,144 +1,119 @@
 <x-app-layout>
     <x-slot name="header">
         @section('title', ' | Laporan Guru')
-        <h2 class="font-semibold sm:text-xl leading-tight text-sm">
-
-            {{ __(' Laporan Presensi Guru (' . $tanggal->isoFormat('dddd, D MMMM YYYY')) . ')' }}
+        <h2 class="font-semibold text-lg sm:text-xl leading-tight">
+            Laporan Presensi Guru ({{ $tanggal->isoFormat('dddd, D MMMM YYYY') }})
         </h2>
     </x-slot>
-    <div class="pb-1 pt-2">
 
-        <div class="">
-            <div class="bg-white dark:bg-dark-bg overflow-hidden shadow-sm ">
-                <div class=" overflow-auto bg-white dark:bg-dark-bg mt-1 ">
-                    <div class=" px-2 grid grid-cols-2">
+    <div class="py-4 px-2 space-y-4">
 
-                        <div>
-                            <form action="/laporan-harian-guru" method="get" class="mr-auto">
-                                <input type="date" name="tanggal" class="py-1 dark:bg-dark-bg" value="{{ $tanggal->toDateString() }}">
-                                <button class=" bg-red-600 py-1 dark:bg-purple-600 mt-1 my-1 rounded-sm hover:bg-purple-600 text-white px-4 ">
-                                    Pilih Tanggal
-                                </button>
-                            </form>
-                        </div>
-                        <div class=" py-1 flex gap-2  justify-end ">
-                            <a href="/sesi-presensi-guru" class=" bg-red-600 py-1 dark:bg-purple-600 mt-2 my-1 rounded-sm hover:bg-purple-600 text-white px-4 ">
-                                Kembali
-                            </a>
-                            <a href="/laporan-harian-guru" class=" bg-red-600 py-1 dark:bg-purple-600 mt-2 my-1 rounded-sm hover:bg-purple-600 text-white px-4 ">
-                                refresh
-                            </a>
+        {{-- FILTER --}}
+        <div class="flex flex-col sm:flex-row justify-between gap-2">
+            <form action="/laporan-harian-guru" method="get" class="flex gap-2">
+                <input type="date" name="tanggal"
+                    class="border rounded px-2 py-1 dark:bg-dark-bg"
+                    value="{{ $tanggal->toDateString() }}">
+                <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-1 rounded">
+                    Pilih
+                </button>
+            </form>
 
-
-                        </div>
-                    </div>
-                    <div class=" grid grid-cols-1  justify-items-end">
-
-                        <table class=" w-1/2">
-                            <thead>
-                                <tr class=" border border-green-800 px-1 text-center">
-                                    <th class=" border border-green-800 px-1 text-center" colspan="5">Keterangan</th>
-
-                                </tr>
-                                <tr class=" border border-green-800 px-1 text-center">
-                                    <th class=" border border-green-800 px-1 text-center">Hadir</th>
-                                    <th class=" border border-green-800 px-1 text-center">Sakit</th>
-                                    <th class=" border border-green-800 px-1 text-center">Izin</th>
-                                    <th class=" border border-green-800 px-1 text-center">Alfa</th>
-
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr class=" border border-green-800 text-center">
-                                    <td class=" border border-green-800 text-center">{{ $Hadir}}</td>
-                                    <td class=" border border-green-800 text-center">{{ $Sakit}}</td>
-                                    <td class=" border border-green-800 text-center">{{ $Izin}}</td>
-                                    <td class=" border border-green-800 text-center">{{ $Alfa}}</td>
-                                </tr>
-                                <tr class=" border border-green-800 px-1 text-center">
-                                    <th class=" border border-green-800 px-1 text-center">Hadir</th>
-                                    <th class=" border border-green-800 px-1 text-center">Sakit</th>
-                                    <th class=" border border-green-800 px-1 text-center">Izin</th>
-                                    <th class=" border border-green-800 px-1 text-center">Alfa</th>
-                                </tr>
-                                <tr class=" border border-green-800 px-1 text-center">
-                                    <td class=" border border-green-800 px-1 text-center">{{ number_format($presentasiHadir, 2) }}%</td>
-                                    <td class=" border border-green-800 px-1 text-center">{{ number_format($presentasiSakit, 2) }}%</td>
-                                    <td class=" border border-green-800 px-1 text-center">{{ number_format($presentasiIzin, 2) }}%</td>
-                                    <td class=" border border-green-800 px-1 text-center">{{ number_format($presentasiAlfa, 2) }}%</td>
-                                </tr>
-
-                            </tbody>
-                        </table>
-
-
-
-                    </div>
-                    <table class=" mt-2 px-2 w-full">
-                        <thead>
-                            <tr class="border border-black bg-gray-200 dark:bg-purple-600 text-xs sm:text-sm">
-                                <th class=" border border-black px-1  py-1">No</th>
-                                <th class=" border border-black px-1 ">Tanggal</th>
-                                <th class=" border border-black px-1 ">Daftar Guru Yang Terjadwal</th>
-                                <th class=" border border-black px-1 ">Kelas</th>
-                                <th class=" border border-black px-1 ">Keterangan</th>
-                                <th class=" border border-black px-1 ">Alasan</th>
-
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($laporanGuru as $list)
-                            <tr class=" border border-black even:bg-gray-100">
-                                <th class=" border border-black px-1 text-center">{{$loop->iteration}}</th>
-                                <td class=" text-center {{ $list->keterangan == 'alfa' ? 'bg-red-600 text-white' : ($list->keterangan == 'sakit' ? 'bg-orange-500 text-white' : ($list->keterangan == 'izin' ? 'bg-yellow-400' : ($list->keterangan == 'hadir' ? 'bg-green-500' : ''))) }} px-1 border border-black text-left">
-
-
-                                    {{ \Carbon\Carbon::parse($list->tanggal)->isoFormat(' dddd ,DD MMMM Y') }}
-                                </td>
-                                <td class="{{ $list->keterangan == 'alfa' ? 'bg-red-600 text-white' : ($list->keterangan == 'sakit' ? 'bg-orange-500 text-white' : ($list->keterangan == 'izin' ? 'bg-yellow-400' : ($list->keterangan == 'hadir' ? 'bg-green-500' : ''))) }} px-1 border border-black text-left">
-
-
-                                    {{ $list->nama_guru}}
-                                </td>
-                                <td class=" text-center {{ $list->keterangan == 'alfa' ? 'bg-red-600 text-white' : ($list->keterangan == 'sakit' ? 'bg-orange-500 text-white' : ($list->keterangan == 'izin' ? 'bg-yellow-400' : ($list->keterangan == 'hadir' ? 'bg-green-500' : ''))) }} px-1 border border-black text-left">
-
-                                    {{ $list->nama_kelas}}
-                                </td>
-                                <td class=" text-center {{ $list->keterangan == 'alfa' ? 'bg-red-600 text-white' : ($list->keterangan == 'sakit' ? 'bg-orange-500 text-white' : ($list->keterangan == 'izin' ? 'bg-yellow-400' : ($list->keterangan == 'hadir' ? 'bg-green-500' : ''))) }} px-1 border border-black text-left">
-
-                                    {{ $list->keterangan}}
-                                </td>
-                                <td class=" text-center {{ $list->keterangan == 'alfa' ? 'bg-red-600 text-white' : ($list->keterangan == 'sakit' ? 'bg-orange-500 text-white' : ($list->keterangan == 'izin' ? 'bg-yellow-400' : ($list->keterangan == 'hadir' ? 'bg-green-500' : ''))) }} px-1 border border-black text-left">
-
-                                    {{ $list->alasan}}
-                                </td>
-
-                            </tr>
-                            @endforeach
-
-
-
-                        </tbody>
-                    </table>
-                </div>
+            <div class="flex gap-2">
+                <a href="/sesi-presensi-guru"
+                    class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-1 rounded">
+                    Kembali
+                </a>
+                <a href="/laporan-harian-guru"
+                    class="bg-green-600 hover:bg-green-700 text-white px-4 py-1 rounded">
+                    Refresh
+                </a>
             </div>
         </div>
-    </div>
 
-    <div class="my-1">
-        <div class="">
-            <div class=" bg-sky-200 dark:bg-dark-bg overflow-hidden shadow-sm">
-                <div class="p-6  ">
-                    <p class=" font-semibold">Keterangan : </p>
-                    <p class=" px-2">1. Nilai diambail dari <b class=" underline">Ulangan Harian dan Ujian Akhir
-                            Semester</b></p>
-                    <p class=" px-2 capitalize">2. Untuk pengisian nilai jika tidak ada harap kosongkan form penilaian
-                    </p>
-                    <p class=" px-2 capitalize">3. Untuk pengisinan nilai <b><u>harus</u></b> memasukan peserta kelas
-                        terlebih dahulu di menu kelas</p>
-                </div>
+        {{-- SUMMARY --}}
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
+            <div class="bg-green-100 p-3 rounded shadow">
+                <p class="text-sm">Hadir</p>
+                <p class="text-xl font-bold">{{ $Hadir }}</p>
+                <p class="text-xs">{{ number_format($presentasiHadir,2) }}%</p>
+            </div>
+            <div class="bg-orange-100 p-3 rounded shadow">
+                <p class="text-sm">Sakit</p>
+                <p class="text-xl font-bold">{{ $Sakit }}</p>
+                <p class="text-xs">{{ number_format($presentasiSakit,2) }}%</p>
+            </div>
+            <div class="bg-yellow-100 p-3 rounded shadow">
+                <p class="text-sm">Izin</p>
+                <p class="text-xl font-bold">{{ $Izin }}</p>
+                <p class="text-xs">{{ number_format($presentasiIzin,2) }}%</p>
+            </div>
+            <div class="bg-red-100 p-3 rounded shadow">
+                <p class="text-sm">Alfa</p>
+                <p class="text-xl font-bold">{{ $Alfa }}</p>
+                <p class="text-xs">{{ number_format($presentasiAlfa,2) }}%</p>
             </div>
         </div>
-    </div>
 
+        {{-- TABLE --}}
+        <div class="overflow-auto bg-white dark:bg-dark-bg shadow rounded">
+            <table class="w-full text-sm">
+                <thead>
+                    <tr class="bg-gray-200 dark:bg-purple-600 text-left">
+                        <th class="px-2 py-2">No</th>
+                        <th class="px-2">Tanggal</th>
+                        <th class="px-2">Guru</th>
+                        <th class="px-2">Kelas</th>
+                        <th class="px-2">Status</th>
+                        <th class="px-2">Alasan</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse($laporanGuru as $list)
+                    <tr class="border-b">
+                        <td class="px-2 py-2 text-center">{{ $loop->iteration }}</td>
+                        <td class="px-2">
+                            {{ \Carbon\Carbon::parse($list->tanggal)->isoFormat('dddd, DD MMMM Y') }}
+                        </td>
+                        <td class="px-2">{{ $list->nama_guru }}</td>
+                        <td class="px-2">{{ $list->nama_kelas }}</td>
+
+                        {{-- STATUS BADGE --}}
+                        <td class="px-2">
+                            @if($list->keterangan == 'hadir')
+                            <span class="bg-green-500 text-white px-2 py-1 rounded text-xs">Hadir</span>
+                            @elseif($list->keterangan == 'sakit')
+                            <span class="bg-orange-500 text-white px-2 py-1 rounded text-xs">Sakit</span>
+                            @elseif($list->keterangan == 'izin')
+                            <span class="bg-yellow-400 px-2 py-1 rounded text-xs">Izin</span>
+                            @else
+                            <span class="bg-red-600 text-white px-2 py-1 rounded text-xs">Alfa</span>
+                            @endif
+                        </td>
+
+                        <td class="px-2">{{ $list->alasan ?? '-' }}</td>
+                    </tr>
+                    @empty
+                    <tr>
+                        <td colspan="6" class="text-center py-4 text-gray-500">
+                            Tidak ada data presensi
+                        </td>
+                    </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+
+        {{-- NOTE --}}
+        <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded">
+            <h3 class="font-semibold mb-2">Catatan:</h3>
+            <ul class="list-disc ml-5 text-sm space-y-1">
+                <li>Data presensi ditampilkan berdasarkan tanggal yang dipilih.</li>
+                <li>Status presensi terdiri dari: Hadir, Sakit, Izin, dan Alfa.</li>
+                <li>Persentase dihitung dari total guru yang terjadwal pada hari tersebut.</li>
+                <li>Jika alasan kosong, berarti tidak ada keterangan tambahan dari guru.</li>
+            </ul>
+        </div>
+
+    </div>
 </x-app-layout>

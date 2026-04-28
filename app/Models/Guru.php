@@ -16,8 +16,9 @@ class Guru extends Model
 
         return $this->hasOne(Nig::class)->latestOfMany();
     }
-    public function daftar_guru()
+
+    public function daftar_jadwal()
     {
-        return $this->belongsTo(Daftar_Jadwal::class);
+        return $this->hasMany(Daftar_Jadwal::class, 'guru_id'); // ✅ WAJIB
     }
 }

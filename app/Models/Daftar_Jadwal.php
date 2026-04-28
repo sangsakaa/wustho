@@ -20,6 +20,14 @@ class Daftar_Jadwal extends Model
 
     public function guru()
     {
-        return $this->hasMany(Guru::class);
+        return $this->belongsTo(Guru::class, 'guru_id'); // ✅ FIX
+    }
+    public function jadwal()
+    {
+        return $this->belongsTo(Jadwal::class, 'jadwal_id');
+    }
+    public function mapel()
+    {
+        return $this->belongsTo(Mapel::class, 'mapel_id');
     }
 }

@@ -131,7 +131,7 @@
                                 onsubmit="return confirm('Yakin hapus?')">
                                 @csrf
                                 @method('DELETE')
-                                <button class="bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded">
+                                <button class="  bg-yellow-300 hover:bg-red-200 text-white px-2 py-1 rounded">
                                     ❌
                                 </button>
                             </form>

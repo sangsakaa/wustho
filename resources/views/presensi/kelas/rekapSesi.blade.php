@@ -1,69 +1,116 @@
 <x-app-layout>
     <x-slot name="header">
         @section('title', '| Rekap Sesi')
-        <h2 class="font-semibold text-xl leading-tight">
-            {{ __('Presensi Sesi PerKelas')}}
-        </h2>
-    </x-slot>
-    <div class="my-1">
-        <div class="">
-            <div class=" bg-white dark:bg-dark-bg overflow-hidden shadow-sm ">
-                <div class="mx-2 px-2 border-gray-200 grid grid-cols-1 w-full sm:grid-cols-1  gap-2">
-                    <form action="/sesikelas/rekap" method="get" class="w-full">
-                        <input type="month" name="bulan" class=" py-1 dark:bg-dark-bg" value="{{ $bulan->format('Y-m') }}">
-                        <button class=" bg-red-600 py-1 dark:bg-purple-600 mt-1 my-1 w-full sm:w-40 rounded-sm hover:bg-purple-600 text-white px-4 ">
-                            Pilih Bulan
-                        </button>
-                    </form>
-                </div>
+        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
+
+            <!-- Judul -->
+            <h2 class="font-semibold text-xl leading-tight">
+                {{ __('Presensi Sesi Per Kelas')}}
+            </h2>
+
+            <!-- Grup kanan -->
+            <div class="flex flex-col sm:flex-row sm:items-center gap-2 w-full sm:w-auto">
+
+                <!-- Form -->
+                <form action="/sesikelas/rekap" method="get"
+                    class="flex gap-2 items-center w-full sm:w-auto">
+
+                    <input type="month" name="bulan"
+                        class="border rounded px-2 py-1 dark:bg-dark-bg w-full sm:w-auto"
+                        value="{{ $bulan->format('Y-m') }}">
+
+                    <button
+                        class="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded w-full sm:w-auto">
+                        Pilih
+                    </button>
+                </form>
+
+                <!-- Tombol Kembali -->
+                <a href="/sesikelas"
+                    class="bg-gray-500 hover:bg-gray-600 text-white px-3 py-1 rounded text-center w-full sm:w-auto">
+                    Kembali
+                </a>
+
             </div>
         </div>
+    </x-slot>
+
+    <!-- DASHBOARD -->
+    <div class="p-2 grid grid-cols-1 sm:grid-cols-3 gap-2">
+        <div class="bg-white dark:bg-dark-bg shadow rounded p-3">
+            <p class="text-xs text-gray-500">Total Kelas</p>
+            <h3 class="text-xl font-bold">
+                {{ count($dataRekapSesi) }}
+            </h3>
+        </div>
+
+        <div class="bg-white dark:bg-dark-bg shadow rounded p-3">
+            <p class="text-xs text-gray-500">Total Hari</p>
+            <h3 class="text-xl font-bold">
+                {{ $periodeBulan->count() }}
+            </h3>
+        </div>
+
+        <div class="bg-white dark:bg-dark-bg shadow rounded p-3">
+            <p class="text-xs text-gray-500">Bulan</p>
+            <h3 class="text-xl font-bold">
+                {{ $bulan->isoFormat('MMMM YYYY') }}
+            </h3>
+        </div>
     </div>
-    <div class="py-1">
-        <div class="bg-white dark:bg-dark-bg overflow-hidden shadow-sm " id="blanko">
-            <div class=" p-1 ">
-                <div class="  overflow-scroll bg-white dark:bg-dark-bg">
-                    <table class="table-fixed w-full border border-green-800">
-                        <thead>
-                            <tr class="border bg-green-200  text-black dark:bg-purple-600 text-xs sm:text-sm">
-                                <th class="border border-green-800 px-1 w-14" rowspan="2">Kelas</th>
-                                <th class="border border-green-800 px-1  uppercase  text-black " colspan="{{ $periodeBulan->count() }}">
-                                    {{$bulan->isoFormat('MMMM YYYY')}}
-                                </th>
-                            </tr>
-                            <tr class="border border-green-800 bg-green-200  text-black dark:bg-purple-600 text-xs sm:text-sm">
-                                @foreach ($periodeBulan as $hari)
-                                <th class="border border-green-800 {{ $hari->isThursday() ? " border-green-800 bg-green-200 text-black "
-                                    : "" }}">{{ $hari->day }}</th>
-                                @endforeach
-                            </tr>
-                        </thead>
-                        <tbody class=" text-sm border border-green-800">
-                            @foreach ($dataRekapSesi as $rekapSesi)
-                            <tr class=" border border-green-800 text-xs sm:text-sm even:bg-green-100 hover:bg-gray-200">
-                                <th class="border border-green-800 text-center ">{{ $rekapSesi['kelasmi']->nama_kelas }}</th>
-                                @foreach ($rekapSesi['sesiPerBulan'] as $sesi)
-                                <td class="border border-green-800 {{ $sesi['hari']->isThursday() ? " bg-green-800 text-white" : "" }}">
-                                    <div class="grid justify-items-center">
-                                        @if (!$sesi['data'])
-                                        @elseif ($sesi['data']->absensi->count())
-                                        <a target="_blank" href="/absensikelas/{{ $sesi['data']->id }}">
-                                            <x-icons.check class=" font-semibold uppercase w-4 h-4 text-green-800" aria-hidden="true" />
-                                        </a>
-                                        @else
-                                        <a target="_blank" href="/absensikelas/{{ $sesi['data']->id }}">
-                                            <x-icons.x-mark class="w-4 h-4 text-red-600" aria-hidden="true" />
-                                        </a>
-                                        @endif
-                                    </div>
-                                </td>
-                                @endforeach
-                            </tr>
+
+    <!-- TABLE -->
+    <div class="p-2">
+        <div class="bg-white dark:bg-dark-bg shadow rounded overflow-hidden">
+
+            <div class="overflow-auto">
+                <table class="min-w-full border border-green-800 text-xs sm:text-sm">
+                    <thead>
+                        <tr class="bg-green-200 dark:bg-purple-600 text-black">
+                            <th class="border px-2 py-2 w-20" rowspan="2">Kelas</th>
+                            <th class="border px-2 py-2 text-center"
+                                colspan="{{ $periodeBulan->count() }}">
+                                {{ $bulan->isoFormat('MMMM YYYY') }}
+                            </th>
+                        </tr>
+                        <tr class="bg-green-200 dark:bg-purple-600 text-black">
+                            @foreach ($periodeBulan as $hari)
+                            <th class="border px-1 py-1 text-center
+                                    {{ $hari->isThursday() ? 'bg-green-300 font-bold' : '' }}">
+                                {{ $hari->day }}
+                            </th>
                             @endforeach
-                        </tbody>
-                    </table>
-                </div>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach ($dataRekapSesi as $rekapSesi)
+                        <tr class="even:bg-green-100 hover:bg-gray-100">
+                            <th class="border text-center px-2 py-1">
+                                {{ $rekapSesi['kelasmi']->nama_kelas }}
+                            </th>
+
+                            @foreach ($rekapSesi['sesiPerBulan'] as $sesi)
+                            <td class="border text-center
+                                        {{ $sesi['hari']->isThursday() ? 'bg-green-800 text-white' : '' }}">
+                                @if ($sesi['data'])
+                                <a target="_blank" href="/absensikelas/{{ $sesi['data']->id }}">
+                                    @if ($sesi['data']->absensi->count())
+                                    <x-icons.check class="w-4 h-4 text-green-700 mx-auto" />
+                                    @else
+                                    <x-icons.x-mark class="w-4 h-4 text-red-600 mx-auto" />
+                                    @endif
+                                </a>
+                                @endif
+                            </td>
+                            @endforeach
+
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
+
         </div>
     </div>
 </x-app-layout>

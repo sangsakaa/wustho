@@ -69,7 +69,14 @@ class AuthenticatedSessionController extends Controller
 
     public function setPeriode(Request $request)
     {
-        $request->session()->put('periode_id', $request->periode_id);
-        return redirect()->back();
+        $periode = Periode::find($request->periode_id);
+
+        if (!$periode) {
+            return back()->with('error', 'Periode tidak valid');
+        }
+
+        session(['periode_id' => $periode->id]);
+
+        return back();
     }
 }

@@ -13,28 +13,50 @@
 
         <x-dropdown align="top" width="48">
             <x-slot name="trigger">
-                <button class="flex items-center p-2 text-sm font-medium text-gray-500 rounded-md transition duration-150 ease-in-out hover:text-gray-700 focus:outline-none focus:ring focus:ring-purple-500 focus:ring-offset-1 focus:ring-offset-white dark:focus:ring-offset-dark-eval-1 dark:text-gray-400 dark:hover:text-gray-200">
+                <button class="flex items-center p-2 text-sm font-medium text-gray-500 rounded-md hover:text-gray-700">
+
                     @php
-                    $periode = $dataperiode->find(session('periode_id'));
+                    $periodeAktif = $dataperiode->firstWhere('id', session('periode_id'))
+                    ?? $dataperiode->firstWhere('is_active', true)
+                    ?? $dataperiode->first();
                     @endphp
-                    <div>{{ $periode->periode }} {{ $periode->ket_semester }}</div>
+
+                    <div>
+                        {{ $periodeAktif->periode ?? '-' }}
+                        {{ $periodeAktif->ket_semester ?? '' }}
+                    </div>
+
                     <div class="ml-1">
-                        <svg class="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                        <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                            <path d="M5.293 7.293L10 12l4.707-4.707" />
                         </svg>
                     </div>
                 </button>
             </x-slot>
+
             <x-slot name="content">
 
-                @foreach ($dataperiode as $periode)
+                @foreach ($dataperiode as $list)
                 <form method="POST" action="{{ route('setperiode') }}">
-                    <input type="hidden" name="periode_id" value="{{ $periode->id }}">
                     @csrf
-                    <x-dropdown-link :href="route('setperiode')" onclick="event.preventDefault();
-                                            this.closest('form').submit();">
-                        {{ $periode->periode }} {{ $periode->ket_semester }}
-                    </x-dropdown-link>
+                    <input type="hidden" name="periode_id" value="{{ $list->id }}">
+
+                    <button type="submit"
+                        class="w-full text-left px-4 py-2 text-sm hover:bg-gray-100 flex justify-between">
+
+                        <span>
+                            {{ $list->periode }} {{ $list->ket_semester }}
+                        </span>
+
+                        <span>
+                            @if(session('periode_id') == $list->id)
+                            <span class="text-blue-500 text-xs">(Dipilih)</span>
+                            @elseif($list->is_active)
+                            <span class="text-green-500 text-xs">(Aktif)</span>
+                            @endif
+                        </span>
+
+                    </button>
                 </form>
                 @endforeach
 

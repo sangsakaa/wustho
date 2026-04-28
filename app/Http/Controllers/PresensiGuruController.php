@@ -16,6 +16,8 @@ use Carbon\Exceptions\InvalidFormatException;
 
 class PresensiGuruController
 {
+
+
     public function index(Request $request)
     {
         try {
@@ -24,32 +26,55 @@ class PresensiGuruController
             $tanggal = now();
         }
 
+        // ✅ DATA SESI + REKAP PER SESI
         $sesikelas = Sesi_Kelas_Guru::query()
             ->join('kelasmi', 'kelasmi.id', '=', 'sesi_kelas_guru.kelasmi_id')
-            ->join('periode', 'periode.id', 'sesi_kelas_guru.periode_id')
-            ->join('semester', 'semester.id', 'periode.semester_id')
-            ->leftjoin('absensiguru', 'absensiguru.sesi_kelas_guru_id', 'sesi_kelas_guru.id')
-            ->leftjoin('daftar_jadwal', 'daftar_jadwal.id', 'absensiguru.daftar_jadwal_id')
-            ->leftjoin('guru', 'guru.id', 'daftar_jadwal.guru_id')
+            ->join('periode', 'periode.id', '=', 'sesi_kelas_guru.periode_id')
+            ->join('semester', 'semester.id', '=', 'periode.semester_id')
+
+            ->leftJoin('absensiguru', 'absensiguru.sesi_kelas_guru_id', '=', 'sesi_kelas_guru.id')
+            ->leftJoin('daftar_jadwal', 'daftar_jadwal.id', '=', 'absensiguru.daftar_jadwal_id')
+            ->leftJoin('guru', 'guru.id', '=', 'daftar_jadwal.guru_id')
+
             ->select(
-                [
-                    'sesi_kelas_guru.*', 'periode.periode', 'semester.ket_semester', 'nama_kelas', 'guru_id', 'nama_guru'
-                ]
+            'sesi_kelas_guru.id',
+            'sesi_kelas_guru.tanggal',
+            'sesi_kelas_guru.kelasmi_id',
+            'periode.periode',
+            'semester.ket_semester',
+            'kelasmi.nama_kelas',
+
+            DB::raw("GROUP_CONCAT(DISTINCT guru.nama_guru SEPARATOR ', ') as nama_guru"),
+
+            DB::raw('COUNT(absensiguru.id) as total_absen'),
+            DB::raw("SUM(CASE WHEN absensiguru.keterangan = 'hadir' THEN 1 ELSE 0 END) as hadir"),
+            DB::raw("SUM(CASE WHEN absensiguru.keterangan = 'izin' THEN 1 ELSE 0 END) as izin"),
+            DB::raw("SUM(CASE WHEN absensiguru.keterangan = 'sakit' THEN 1 ELSE 0 END) as sakit"),
+            DB::raw("SUM(CASE WHEN absensiguru.keterangan = 'alfa' THEN 1 ELSE 0 END) as alfa")
             )
+
             ->where('sesi_kelas_guru.periode_id', session('periode_id'))
             ->where('sesi_kelas_guru.tanggal', $tanggal->toDateString())
+
+            ->groupBy(
+                'sesi_kelas_guru.id',
+                'sesi_kelas_guru.tanggal',
+                'sesi_kelas_guru.kelasmi_id',
+                'periode.periode',
+                'semester.ket_semester',
+                'kelasmi.nama_kelas'
+            )
             ->get();
-        // Ambil semua absensi hari ini
+
+        // ✅ REKAP GLOBAL HARI INI
         $absensiHariIni = Absensiguru::query()
             ->join('sesi_kelas_guru', 'absensiguru.sesi_kelas_guru_id', '=', 'sesi_kelas_guru.id')
             ->where('sesi_kelas_guru.tanggal', $tanggal->toDateString())
             ->where('sesi_kelas_guru.periode_id', session('periode_id'))
             ->get();
 
-        // Hitung total
         $totalAbsen = $absensiHariIni->count();
 
-        // Breakdown keterangan
         $rekap = $absensiHariIni->groupBy('keterangan')->map->count();
 
         $hadir = $rekap->get('hadir', 0);
@@ -57,16 +82,13 @@ class PresensiGuruController
         $sakit = $rekap->get('sakit', 0);
         $alfa  = $rekap->get('alfa', 0);
 
-        // Hitung sesi
         $totalSesi = $sesikelas->count();
 
-        // Estimasi belum absen
         $belumAbsen = max($totalSesi - $totalAbsen, 0);
+
         return view('presensi.guru.sesikelas', [
             'sesikelas' => $sesikelas,
             'tanggal' => $tanggal,
-
-            // tambahan
             'summary' => [
                 'total_sesi' => $totalSesi,
                 'total_absen' => $totalAbsen,
@@ -233,6 +255,12 @@ class PresensiGuruController
             'Izin',
             'Alfa',
         ));
+    }
+    public function bulkDelete(Request $request)
+    {
+        Sesi_Kelas_Guru::whereIn('id', $request->ids)->delete();
+
+        return back()->with('success', 'Data berhasil dihapus!');
     }
     public function laporanSemester(Request $request)
     {

@@ -184,11 +184,13 @@ Route::post('peringkat', [RaportController::class, 'peringkat'])->middleware(['a
 
 // Controller Mata Pelajaran
 Route::get('mapel', [MapelController::class, 'index'])->middleware(['auth'])->name('mapel');
+Route::get('/mapel/{mapel}', [MapelController::class, 'show'])->name('mapel.show');
 Route::get('edit-mapel/{mapel}', [MapelController::class, 'edit'])->middleware(['auth']);
 Route::get('addmapel', [MapelController::class, 'create'])->middleware(['auth']);
 Route::post('mapel', [MapelController::class, 'store'])->middleware(['auth']);
 Route::patch('mapel/{mapel}', [MapelController::class, 'update']);
 Route::delete('mapel/{mapel}', [MapelController::class, 'destroy'])->middleware(['auth']);
+Route::get('/mapel/laporan/pdf', [MapelController::class, 'laporanPdf']);
 
 // Controller Pengaturan
 Route::get('pengaturan', [PengaturanController::class, 'pengaturan'])->middleware(['auth'])->name('pengaturan');
@@ -197,6 +199,7 @@ Route::get('cardlogin', [PengaturanController::class, 'cardlogin'])->middleware(
 Route::get('periode', [PengaturanController::class, 'periode'])->middleware(['auth'])->name('periode');
 Route::post('periode', [PengaturanController::class, 'storeperiode'])->middleware(['auth']);
 Route::delete('periode/{periode}', [PengaturanController::class, 'deleteperiode'])->middleware(['auth']);
+Route::post('/periode/aktifkan/{id}', [PengaturanController::class, 'aktifkan']);
 Route::get('sap', [PengaturanController::class, 'sap'])->middleware(['auth'])->name('sap');
 
 // Ploting Kelas
@@ -241,6 +244,7 @@ Route::get('sesikelas', [SesikelasController::class, 'index'])->middleware(['aut
 Route::post('sesikelas', [SesikelasController::class, 'store'])->middleware(['auth']);
 Route::delete('sesikelas/{sesikelas}', [SesikelasController::class, 'destroy'])->where('sesikelas', '[0-9]+')->middleware(['auth']);
 Route::get('sesikelas/rekap', [SesikelasController::class, 'rekapSesi'])->middleware(['auth']);
+Route::delete('/sesi-presensi-guru', [PresensiGuruController::class, 'bulkDelete']);
 
 // Controller Absensikelas
 Route::get('absensikelas/{sesikelas}', [AbsensikelasController::class, 'index'])->where('sesikelas', '[0-9]+')->middleware(['auth']);

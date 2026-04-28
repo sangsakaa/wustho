@@ -54,19 +54,26 @@ class PengaturanController extends Controller
     // Controller Periode
     public function periode()
     {
-        $semester = Semester::query()
-            ->get();
-        $periode = Periode::query()
-            ->join('semester', 'semester.id', '=', 'periode.semester_id')
-            ->select('periode.id', 'periode.periode', 'semester.semester', 'semester.ket_semester', 'tahun_hijriyah')
-            ->get();
-        return view(
-            'pengaturan/periode',
-            [
-                'periode' => $periode,
-                'semester' => $semester
-            ]
-        );
+        return view('pengaturan/periode', [
+            'periode' => Periode::getDataPeriode(),
+            'semester' => Semester::all()
+        ]);
+    }
+    public function aktifkan($id)
+    {
+        $periode = Periode::find($id);
+
+        if (!$periode) {
+            return back()->with('error', 'Periode tidak ditemukan');
+        }
+
+        DB::transaction(function () use ($periode, $id) {
+            Periode::query()->update(['is_active' => false]);
+            $periode->update(['is_active' => true]);
+            session(['periode_id' => $id]);
+        });
+
+        return back()->with('success', 'Periode berhasil diaktifkan');
     }
     public function storeperiode(Request $request)
     {

@@ -24,4 +24,8 @@ class Jadwal extends Model
             ->where('nama_kelas', 'like', '%' . $search . '%')
             ->Orwhere('nama_guru', 'like', '%' . $search . '%');
     }
+    public function kelasmi()
+    {
+        return $this->belongsTo(Kelasmi::class, 'kelasmi_id');
+    }
 }

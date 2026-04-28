@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Kelas;
 use App\Models\Mapel;
 use App\Models\Periode;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\DB;
 
 
 class MapelController extends Controller
@@ -81,9 +83,23 @@ class MapelController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Mapel $mapel)
     {
-        //
+        $periode_id = session('periode_id');
+
+        $mapel = Mapel::with([
+            'kelas',
+            'periode.semester',
+            'daftar_jadwal' => function ($q) use ($periode_id) {
+                $q->whereHas('jadwal', function ($q2) use ($periode_id) {
+                    $q2->where('periode_id', $periode_id);
+                });
+            },
+            'daftar_jadwal.guru',
+            'daftar_jadwal.jadwal.kelasmi'
+        ])->findOrFail($mapel->id);
+
+        return view('mapel.show', compact('mapel'));
     }
 
     /**
@@ -133,5 +149,37 @@ class MapelController extends Controller
     {
         Mapel::destroy($mapel->id);
         return redirect()->back()->with('delete', 'berhasil menghapus data ini');
+    }
+    public function laporanPdf(Request $request)
+    {
+        $periode_id = $request->periode_id ?? session('periode_id');
+
+        $mapel = Mapel::with([
+            'kelas',
+            'periode.semester',
+            'daftar_jadwal' => function ($q) use ($periode_id) {
+                $q->whereHas('jadwal', function ($q2) use ($periode_id) {
+                    $q2->where('periode_id', $periode_id);
+                });
+            },
+            'daftar_jadwal.guru',
+            'daftar_jadwal.jadwal.kelasmi'
+        ])
+            ->where('periode_id', $periode_id)
+            ->get();
+
+        // 🔥 GROUP BY KELAS (seperti laporan sebelumnya)
+        $grouped = $mapel->groupBy(function ($item) {
+            return $item->kelas->kelas ?? 'Tanpa Kelas';
+        });
+
+        $periode = Periode::with('semester')->find($periode_id);
+
+        $pdf = Pdf::loadView('mapel.laporan_pdf', [
+            'data' => $grouped,
+            'periode' => $periode
+        ])->setPaper('A4', 'potrait');
+
+        return $pdf->stream('laporan-kurikulum.pdf');
     }
 }
