@@ -11,7 +11,9 @@
             <div class="p-2 dark:bg-dark-bg bg-white  dark:text-purple-600 ">
                 <div class=" sm:grid-cols-4 grid grid-cols-2">
                     <div>Nama Asrama</div>
-                    <div class=" uppercase  font-semibold"> : {{$tittle->nama_asrama}} </div>
+                    <div class="uppercase font-semibold">
+                        : {{ $tittle?->nama_asrama ?? 'Asrama tidak ditemukan' }}
+                    </div>
                     <div>Kuota Asrama</div>
                     <div> : {{$tittle->kuota}} org </div>
                 </div>
