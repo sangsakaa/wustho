@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        @section('title', ' | Asrama : '.$tittle->nama_asrama??'asrama tidak ditemukan' )
+        @section('title', ' | Asrama : ' . (optional($tittle)->nama_asrama ?? 'asrama tidak ditemukan'))
         <h2 class="font-semibold text-xl dark:bg-dark-bg dark:text-purple-600 text-gray-800 leading-tight">
             Peserta Asrama : {{$tittle->nama_asrama}}
         </h2>
