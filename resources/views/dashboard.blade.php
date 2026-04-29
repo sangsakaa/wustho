@@ -15,14 +15,16 @@
             <h3 class="text-xl font-bold text-gray-800 dark:text-white">
                 Madrasah Diniyah Takmiliyah {{ $TitleMadrasak->jenjang ?? '-' }}
             </h3>
+
             <p class="text-sm text-gray-500 dark:text-gray-300 mt-1">
                 {{ $TitleMadrasak->periode ?? '-' }} • {{ $TitleMadrasak->ket_semester ?? '-' }}
             </p>
         </div>
 
-        {{-- SUMMARY CARD --}}
+        {{-- SUMMARY --}}
         <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-5">
 
+            {{-- TOTAL --}}
             <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-md p-5 border">
                 <p class="text-sm text-gray-500">Total Siswa</p>
                 <h2 class="text-3xl font-bold text-gray-800 dark:text-white mt-2">
@@ -30,6 +32,7 @@
                 </h2>
             </div>
 
+            {{-- LAKI --}}
             <div class="bg-blue-50 dark:bg-blue-900/30 rounded-2xl shadow-md p-5 border">
                 <p class="text-sm text-blue-700 dark:text-blue-300">Laki-laki</p>
                 <h2 class="text-3xl font-bold text-blue-800 dark:text-white mt-2">
@@ -37,6 +40,7 @@
                 </h2>
             </div>
 
+            {{-- PEREMPUAN --}}
             <div class="bg-pink-50 dark:bg-pink-900/30 rounded-2xl shadow-md p-5 border">
                 <p class="text-sm text-pink-700 dark:text-pink-300">Perempuan</p>
                 <h2 class="text-3xl font-bold text-pink-800 dark:text-white mt-2">
@@ -44,13 +48,18 @@
                 </h2>
             </div>
 
+            {{-- JENJANG --}}
+            {{-- JENJANG --}}
             <div class="bg-green-50 dark:bg-green-900/30 rounded-2xl shadow-md p-5 border">
                 <p class="text-sm text-green-700 dark:text-green-300">Jenjang</p>
-                <div class="mt-3 space-y-1 text-sm font-semibold text-gray-700 dark:text-white">
-                    <p>Ula: {{ $siswaStats->ula ?? 0 }}</p>
-                    <p>Wustho: {{ $siswaStats->wustho ?? 0 }}</p>
-                    <p>Ulya: {{ $siswaStats->ulya ?? 0 }}</p>
-                </div>
+
+                <h2 class="text-3xl font-bold text-gray-800 dark:text-white mt-2">
+                    {{ ($siswaStats->ula ?? 0) + ($siswaStats->wustho ?? 0) + ($siswaStats->ulya ?? 0) }}
+                </h2>
+
+                <p class="text-xs text-gray-500 mt-1">
+                    Total semua jenjang
+                </p>
             </div>
 
         </div>
@@ -88,6 +97,7 @@
         </div>
     </div>
 
+    {{-- DATA --}}
     @php
     $kelasLabels = $dataSiswaPerKelas->pluck('kelas');
     $kelasData = $dataSiswaPerKelas->pluck('total');
@@ -103,7 +113,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     <script>
-        const commonOptions = {
+        const options = {
             responsive: true,
             maintainAspectRatio: false
         };
@@ -119,7 +129,7 @@
                 }]
             },
             options: {
-                ...commonOptions,
+                ...options,
                 plugins: {
                     legend: {
                         display: false
@@ -142,7 +152,7 @@
                     }
                 ]
             },
-            options: commonOptions
+            options: options
         });
 
         new Chart(document.getElementById('chartTahun'), {
@@ -156,7 +166,7 @@
                     fill: true
                 }]
             },
-            options: commonOptions
+            options: options
         });
     </script>
 </x-app-layout>

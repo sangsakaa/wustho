@@ -17,82 +17,96 @@ class ApiSiswaController
 {
     public function dataAsrama(Request $request)
     {
-        $periode = Periode::query()
-            ->join('semester', 'semester.id', '=', 'periode.semester_id')
-            ->select('periode.id', 'ket_semester', 'periode.periode')
-            ->latest('periode.created_at')
+        $periode = Periode::select('id')
+            ->latest('created_at')
             ->first();
+
+        if (!$periode) {
+            return response()->json([
+                'dataAbsensiKelas' => [],
+                'tgl' => now(),
+            ]);
+        }
+
         $tgl = $request->tgl ? Carbon::parse($request->tgl) : now();
-        $pesertaasrama = Pesertaasrama::query()
-            ->join('siswa', 'siswa.id', '=', 'pesertaasrama.siswa_id')
-            ->join('asramasiswa', 'asramasiswa.id', '=', 'pesertaasrama.asramasiswa_id')
-            ->join('asrama', 'asrama.id', '=', 'asramasiswa.asrama_id')
-            ->select('siswa.id as siswa_id', 'asrama.nama_asrama')
-        ->where('asramasiswa.periode_id', $periode->id)
-            
-            // ->where('asramasiswa.periode_id', session('periode_id'))
-        ;
+
+        // 🔥 PRELOAD PESERTA ASRAMA (lebih ringan)
+        $pesertaAsrama = Pesertaasrama::query()
+            ->whereHas('asramasiswa', function ($q) use ($periode) {
+                $q->where('periode_id', $periode->id);
+            })
+            ->with([
+                'siswa:id,nama_siswa',
+                'asramasiswa.asrama:id,nama_asrama'
+            ])
+            ->get()
+            ->keyBy('siswa_id');
+
+        // 🔥 ABSENSI QUERY (MINIMAL JOIN)
         $dataAbsensiKelas = Absensikelas::query()
             ->join('sesikelas', 'sesikelas.id', '=', 'absensikelas.sesikelas_id')
             ->join('pesertakelas', 'pesertakelas.id', '=', 'absensikelas.pesertakelas_id')
             ->join('siswa', 'siswa.id', '=', 'pesertakelas.siswa_id')
             ->join('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
-            ->joinSub($pesertaasrama, 'peserta_asrama', function ($join) {
-                $join->on('peserta_asrama.siswa_id', '=', 'siswa.id');
-            })
-            ->select('kelasmi.jenjang',  'peserta_asrama.nama_asrama', 'absensikelas.id As id_sesi_kelas', 'siswa.nama_siswa', 'absensikelas.keterangan', 'nama_kelas', 'tgl')
-            ->whereIn('keterangan', ['sakit', 'izin', 'alfa', 'hadir'])
-            ->orderBy('peserta_asrama.nama_asrama')
-            ->orderBy('kelasmi.nama_kelas')
-            ->orderBy('absensikelas.keterangan')
-            ->orderBy('siswa.nama_siswa')
+            ->select([
+                'siswa.id as siswa_id',
+                'siswa.nama_siswa',
+                'kelasmi.nama_kelas',
+                'kelasmi.jenjang',
+                'absensikelas.keterangan',
+                'absensikelas.tgl',
+                'absensikelas.id as absensi_id',
+            ])
             ->where('kelasmi.periode_id', $periode->id)
-            ->groupby('nama_siswa', 'jenjang', 'keterangan', 'nama_kelas', 'tgl', 'absensikelas.id',)
-        ->get();
-        return response()->json(
-            [
+            ->whereIn('absensikelas.keterangan', ['sakit', 'izin', 'alfa', 'hadir'])
+            ->orderBy('kelasmi.nama_kelas')
+            ->orderBy('siswa.nama_siswa')
+            ->get()
+            ->map(function ($item) use ($pesertaAsrama) {
+                $asrama = $pesertaAsrama[$item->siswa_id] ?? null;
+                $item->nama_asrama = $asrama?->asramasiswa?->asrama?->nama_asrama;
+                return $item;
+            });
 
-                'dataAbsensiKelas' => $dataAbsensiKelas,
-                'tgl' => $tgl,
-            ]
-        );
+        return response()->json([
+            'dataAbsensiKelas' => $dataAbsensiKelas,
+            'tgl' => $tgl,
+        ]);
     }
     public function getDataSiswa()
     {
-        // Mengambil semua peserta asrama untuk seorang siswa
-        $periode = Periode::query()
-            ->join('semester', 'semester.id', '=', 'periode.semester_id')
-            ->select('periode.id', 'ket_semester', 'periode.periode')
-            ->latest('periode.created_at')
+        $periode = Periode::select('id')
+            ->latest('created_at')
             ->first();
+
+        if (!$periode) {
+            return response()->json(['siswa' => []]);
+        }
+
         $siswa = Siswa::query()
-            ->join('nis', 'nis.siswa_id', '=', 'siswa.id')
-            ->join('pesertaasrama', 'pesertaasrama.siswa_id', '=', 'siswa.id')
-            ->join('asramasiswa', 'asramasiswa.id', '=', 'pesertaasrama.asramasiswa_id')
-            ->join('asrama', 'asrama.id', '=', 'asramasiswa.asrama_id')
-            ->join('pesertakelas', 'pesertakelas.siswa_id', '=', 'siswa.id')
-            ->join('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
             ->select([
+            'siswa.id',
                 'nis.nis',
-                'siswa.nama_siswa',
-                'nis.tanggal_masuk',
-                'nis.madrasah_diniyah',
-                'nis.nama_lembaga',
-                'siswa.jenis_kelamin',
-                'siswa.agama',
-                'siswa.tempat_lahir',
-                'siswa.tanggal_lahir',
-                'siswa.kota_asal',
-                'asrama.nama_asrama',
+            'siswa.nama_siswa',
+            'siswa.jenis_kelamin',
                 'kelasmi.nama_kelas',
-            'asramasiswa.periode_id',
+            'asrama.nama_asrama'
             ])
-            ->where('asramasiswa.periode_id', $periode->id)
+            ->join('nis', 'nis.siswa_id', '=', 'siswa.id')
+            ->join('pesertakelas', function ($q) use ($periode) {
+                $q->on('pesertakelas.siswa_id', '=', 'siswa.id')
+                    ->where('pesertakelas.periode_id', $periode->id);
+            })
+            ->join('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
+            ->leftJoin('pesertaasrama', 'pesertaasrama.siswa_id', '=', 'siswa.id')
+            ->leftJoin('asramasiswa', function ($q) use ($periode) {
+                $q->on('asramasiswa.id', '=', 'pesertaasrama.asramasiswa_id')
+                    ->where('asramasiswa.periode_id', $periode->id);
+            })
+            ->leftJoin('asrama', 'asrama.id', '=', 'asramasiswa.asrama_id')
             ->where('kelasmi.periode_id', $periode->id)
-            // Mengubah ini menjadi 'nis.nis'
             ->get();
+
         return response()->json(['siswa' => $siswa]);
-        // Mengambil siswa yang terkait dengan suatu entri peserta asrama
-        
     }
 }

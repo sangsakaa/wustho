@@ -45,7 +45,7 @@
                         class="w-full text-left px-4 py-2 text-sm hover:bg-gray-100 flex justify-between">
 
                         <span>
-                            {{ $list->periode }} {{ $list->ket_semester }}
+                            {{ $list->periode }} {{ $list->semester->ket_semester }}
                         </span>
 
                         <span>
