@@ -54,17 +54,18 @@ class PengaturanController extends Controller
     // Controller Periode
     public function periode()
     {
-        $periode = Periode::withCount([
-            'kelasmi',
-            'asramasiswa',
-            'lulusan',
-            'nominasi'
-        ])
-            ->join('semester', 'periode.semester_id', '=', 'semester.id')
-            ->orderBy('periode.periode', 'asc')
-            ->orderBy('semester.semester', 'asc')
-            ->select('periode.*')
-            ->get();
+        $periode = Periode::with('semester')
+            ->withCount([
+                'kelasmi',
+                'asramasiswa',
+                'lulusan',
+                'nominasi'
+            ])
+            ->orderBy('periode', 'asc')
+            ->get()
+            ->sortBy(function ($item) {
+                return $item->semester->semester;
+            });
 
         return view('pengaturan.periode', [
             'periode' => $periode,
@@ -86,6 +87,36 @@ class PengaturanController extends Controller
         ]);
     }
 
+
+    public function deleteperiode($id)
+    {
+        $periode = Periode::withCount([
+            'kelasmi',
+            'asramasiswa',
+            'lulusan',
+            'nominasi'
+        ])->findOrFail($id);
+
+        $totalRelasi =
+            $periode->kelasmi_count +
+            $periode->asramasiswa_count +
+            $periode->lulusan_count +
+            $periode->nominasi_count;
+
+        if ($totalRelasi > 0) {
+            return back()->with(
+                'error',
+                'Periode tidak bisa dihapus karena masih dipakai data lain'
+            );
+        }
+
+        $periode->delete();
+
+        return back()->with(
+            'success',
+            'Data periode berhasil dihapus'
+        );
+    }
     public function storeperiode(Request $request)
     {
         // 🔥 VALIDASI (WAJIB)
@@ -108,26 +139,6 @@ class PengaturanController extends Controller
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Gagal menyimpan data: ' . $e->getMessage());
         }
-    }
-    public function deleteperiode($id)
-    {
-        $periode = Periode::findOrFail($id);
-
-        // cek apakah periode masih dipakai relasi lain
-        $dipakai =
-            $periode->kelasmi()->exists() ||
-            $periode->asramasiswa()->exists() ||
-            $periode->lulusan()->exists()
-            // $periode->nominal()->exists()
-        ;
-
-        if ($dipakai) {
-            return redirect()->back()->with('error', 'Periode tidak bisa dihapus karena masih dipakai data lain');
-        }
-
-        $periode->delete();
-
-        return redirect()->back()->with('delete', 'Data periode berhasil dihapus');
     }
     public function aktifkan($id)
     {

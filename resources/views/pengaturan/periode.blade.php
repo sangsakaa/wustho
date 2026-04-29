@@ -166,18 +166,18 @@
                                     </a>
 
                                     @php
-                                    $dipakai =
-                                    $list->kelasmi_count > 0 ||
-                                    $list->asramasiswa_count > 0 ||
-                                    $list->lulusan_count > 0 ||
-                                    $list->nominasi_count > 0;
+                                    $totalRelasi =
+                                    $list->kelasmi_count +
+                                    $list->asramasiswa_count +
+                                    $list->lulusan_count +
+                                    $list->nominasi_count;
                                     @endphp
 
-                                    @if($dipakai)
+                                    @if($totalRelasi > 0)
                                     <button disabled
                                         title="Periode sudah dipakai di data lain"
-                                        class="px-3 py-1 bg-gray-400 text-white rounded-md text-xs cursor-not-allowed">
-                                        Dipakai
+                                        class="px-3 py-1 bg-gray-400 text-white rounded-md text-xs cursor-not-allowed opacity-70">
+                                        Dipakai ({{ $totalRelasi }})
                                     </button>
                                     @else
                                     <form action="{{ url('/periode/' . $list->id) }}" method="POST"
