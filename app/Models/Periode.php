@@ -17,33 +17,44 @@ class Periode extends Model
         'is_active', // 🔥 tambahkan ini
     ];
 
-
-
     public function semester()
     {
         return $this->belongsTo(Semester::class, 'semester_id');
     }
     public static function getDataPeriode()
     {
-        $tahunSekarang = now()->year;
-        $batas = $tahunSekarang - 3;
-
-        return self::query()
-            ->join('semester', 'semester.id', '=', 'periode.semester_id')
-            ->select(
-                'periode.id',
-                'periode.periode',
-                'semester.ket_semester',
-                'periode.is_active',
-                'periode.tanggal_mulai'
-            )
-            ->where(function ($query) use ($batas) {
-                $query->whereYear('periode.tanggal_mulai', '>=', $batas)
-                    ->orWhere('periode.is_active', true);
-            })
-            // ->orderBy('periode.is_active', 'desc')
-            ->orderBy('periode.periode', 'asc')
+        return self::with('semester')
+            ->withCount([
+                'kelasmi',
+                'asramasiswa',
+                'lulusan',
+                'nominasi'
+            ])
             ->get();
+    }
+
+
+    // relasi ke kelasmi
+    public function kelasmi()
+    {
+        return $this->hasMany(Kelasmi::class, 'periode_id');
+    }
+
+    // relasi ke asrama siswa
+    public function asramasiswa()
+    {
+        return $this->hasMany(Asramasiswa::class, 'periode_id');
+    }
+
+    // kalau ada tabel lain tinggal tambah
+    public function lulusan()
+    {
+        return $this->hasMany(Lulusan::class, 'periode_id');
+    }
+
+    public function nominasi()
+    {
+        return $this->hasMany(Nominasi::class, 'periode_id');
     }
 }
 

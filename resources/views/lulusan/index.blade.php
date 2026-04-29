@@ -1,172 +1,254 @@
 <x-app-layout>
     <x-slot name="header">
         @section('title', ' | Data Lulusan')
-        <h2 class="font-semibold text-xl text-gray-800">
-            Manajemen Data Lulusan
-        </h2>
+
+        <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+            <div>
+                <h2 class="text-2xl font-bold text-slate-800">
+                    Manajemen Data Lulusan
+                </h2>
+                <p class="text-sm text-slate-500 mt-1">
+                    Kelola periode kelulusan, tanggal sidang, dan administrasi lulusan siswa.
+                </p>
+            </div>
+
+            <div class="flex flex-wrap gap-2">
+                <a href="/periode"
+                    class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg shadow-sm text-sm font-medium transition">
+                    Periode
+                </a>
+
+                <a href="/daftar-transkip"
+                    class="inline-flex items-center px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg shadow-sm text-sm font-medium transition">
+                    Daftar Transkrip
+                </a>
+            </div>
+        </div>
     </x-slot>
 
-    <div class="p-4 space-y-4">
+    <div class="p-4 lg:p-6 space-y-6">
 
-        <!-- NAVIGATION -->
-        <div class="flex gap-2">
-            <a href="/periode"
-                class="px-3 py-1.5 bg-blue-600 text-white rounded-md hover:bg-blue-700 text-sm">
-                Periode
-            </a>
+        {{-- SUCCESS --}}
+        @if(session('success'))
+        <div class="rounded-xl border border-green-200 bg-green-50 p-4 text-green-700 shadow-sm">
+            {{ session('success') }}
+        </div>
+        @endif
 
-            <a href="/daftar-transkip"
-                class="px-3 py-1.5 bg-green-600 text-white rounded-md hover:bg-green-700 text-sm capitalize">
-                Daftar Transkrip
-            </a>
+        {{-- ERROR VALIDATION --}}
+        @if ($errors->any())
+        <div class="rounded-xl border border-red-200 bg-red-50 p-4 shadow-sm">
+            <h3 class="font-semibold text-red-700 mb-2">
+                Terjadi kesalahan:
+            </h3>
+            <ul class="list-disc pl-5 text-sm text-red-600 space-y-1">
+                @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+        @endif
+
+        {{-- ALERT SEMESTER --}}
+        @if(!$bolehLulus)
+        <div class="rounded-xl border border-amber-200 bg-amber-50 p-4 shadow-sm">
+            <div class="flex gap-3">
+                <div class="text-xl">⚠️</div>
+                <div>
+                    <h3 class="font-semibold text-amber-700">
+                        Input Ditutup
+                    </h3>
+                    <p class="text-sm text-amber-600 mt-1">
+                        Data kelulusan hanya dapat diinput pada
+                        <span class="font-semibold">kelas 3 semester genap</span>.
+                    </p>
+                </div>
+            </div>
+        </div>
+        @endif
+
+        {{-- SUMMARY --}}
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="bg-white rounded-xl border shadow-sm p-5">
+                <p class="text-sm text-slate-500">Total Data Lulusan</p>
+                <h3 class="text-3xl font-bold text-blue-600 mt-2">
+                    {{ count($dataLulusan) }}
+                </h3>
+            </div>
+
+            <div class="bg-white rounded-xl border shadow-sm p-5">
+                <p class="text-sm text-slate-500">Status Input</p>
+                <h3 class="text-xl font-bold mt-2 {{ $bolehLulus ? 'text-green-600' : 'text-red-600' }}">
+                    {{ $bolehLulus ? 'Aktif' : 'Nonaktif' }}
+                </h3>
+            </div>
+
+            <div class="bg-white rounded-xl border shadow-sm p-5">
+                <p class="text-sm text-slate-500">Periode Aktif</p>
+                <h3 class="text-xl font-bold text-slate-700 mt-2">
+                    {{ session('periode_id') }}
+                </h3>
+            </div>
         </div>
 
-        <!-- FORM -->
-        <div class="bg-white shadow-sm rounded-lg p-4">
-            <h3 class="text-sm font-semibold text-gray-600 uppercase mb-3">
-                Tambah Data Lulusan
-            </h3>
+        {{-- FORM --}}
+        <div class="bg-white rounded-xl border shadow-sm overflow-hidden">
+            <div class="px-6 py-4 border-b bg-slate-50">
+                <h3 class="font-semibold text-slate-700">
+                    Form Input Data Lulusan
+                </h3>
+            </div>
 
-            <form action="/lulusan" method="POST">
+            <form action="/lulusan" method="POST" class="p-6">
                 @csrf
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                <fieldset {{ !$bolehLulus ? 'disabled' : '' }}>
+                    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
 
-                    <!-- PERIODE -->
-                    <div>
-                        <label class="text-sm font-medium">Periode Lulusan</label>
-                        <select name="periode_id"
-                            class="w-full mt-1 border-gray-300 rounded-md text-sm">
-                            @foreach($dataPeriode as $item)
-                            <option value="{{ $item->id }}">
-                                {{ $item->periode }} {{ $item->ket_semester }}
-                            </option>
-                            @endforeach
-                        </select>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">
+                                Periode Lulusan
+                            </label>
+                            <select name="periode_id"
+                                class="w-full rounded-lg border-slate-300 focus:border-blue-500 focus:ring-blue-500 text-sm">
+                                @foreach($dataPeriode as $item)
+                                <option value="{{ $item->id }}">
+                                    {{ $item->periode }} {{ $item->ket_semester }}
+                                </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">
+                                Kelas
+                            </label>
+                            <select name="kelasmi_id"
+                                class="w-full rounded-lg border-slate-300 focus:border-blue-500 focus:ring-blue-500 text-sm">
+                                @foreach($kelasMi as $item)
+                                <option value="{{ $item->id }}">
+                                    {{ $item->nama_kelas }} - {{ $item->periode }} {{ $item->ket_semester }}
+                                </option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">
+                                Tanggal Mulai
+                            </label>
+                            <input type="date" name="tanggal_mulai"
+                                class="w-full rounded-lg border-slate-300 text-sm">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">
+                                Tanggal Selesai
+                            </label>
+                            <input type="date" name="tanggal_selesai"
+                                class="w-full rounded-lg border-slate-300 text-sm">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">
+                                Tanggal Kelulusan
+                            </label>
+                            <input type="date" name="tanggal_kelulusan"
+                                class="w-full rounded-lg border-slate-300 text-sm">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">
+                                Tanggal Hijriyah
+                            </label>
+                            <input type="text"
+                                name="tanggal_lulus_hijriyah"
+                                placeholder="12 Rabi'ul Awwal 1444 H"
+                                class="w-full rounded-lg border-slate-300 text-sm">
+                        </div>
                     </div>
+                </fieldset>
 
-                    <!-- KELAS -->
-                    <div>
-                        <label class="text-sm font-medium">Kelas</label>
-                        <select name="kelasmi_id"
-                            class="w-full mt-1 border-gray-300 rounded-md text-sm">
-                            @foreach($kelasMi as $item)
-                            <option value="{{ $item->id }}">
-                                {{ $item->nama_kelas }} - {{ $item->periode }} {{ $item->ket_semester }}
-                            </option>
-                            @endforeach
-                        </select>
-                    </div>
+                <div class="mt-5 flex items-center justify-between flex-wrap gap-3">
+                    <p class="text-xs text-slate-500">
+                        Data bersumber dari bagian kurikulum sekolah.
+                    </p>
 
-                    <!-- TANGGAL MULAI -->
-                    <div>
-                        <label class="text-sm font-medium">Tanggal Mulai</label>
-                        <input type="date" name="tanggal_mulai"
-                            class="w-full mt-1 border-gray-300 rounded-md text-sm">
-                    </div>
-
-                    <!-- TANGGAL SELESAI -->
-                    <div>
-                        <label class="text-sm font-medium">Tanggal Selesai</label>
-                        <input type="date" name="tanggal_selesai"
-                            class="w-full mt-1 border-gray-300 rounded-md text-sm">
-                    </div>
-
-                    <!-- TANGGAL KELULUSAN -->
-                    <div>
-                        <label class="text-sm font-medium">Tanggal Kelulusan</label>
-                        <input type="date" name="tanggal_kelulusan"
-                            class="w-full mt-1 border-gray-300 rounded-md text-sm">
-                    </div>
-
-                    <!-- HIJRIYAH -->
-                    <div>
-                        <label class="text-sm font-medium">Tanggal Hijriyah</label>
-                        <input type="text" name="tanggal_lulus_hijriyah"
-                            placeholder="12 Rabi'ul Awwal 1444 H"
-                            class="w-full mt-1 border-gray-300 rounded-md text-sm">
-                    </div>
-
-                </div>
-
-                <!-- INFO -->
-                <div class="mt-3 text-xs text-red-600">
-                    * Data ini diambil dari bagian kurikulum
-                </div>
-
-                <!-- BUTTON -->
-                <div class="mt-3">
-                    <button
-                        class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 text-sm">
-                        Simpan
+                    @if($bolehLulus)
+                    <button type="submit"
+                        class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg shadow-sm text-sm font-medium transition">
+                        Simpan Data
                     </button>
+                    @else
+                    <button disabled
+                        class="px-5 py-2.5 bg-slate-400 text-white rounded-lg cursor-not-allowed text-sm font-medium">
+                        Input Dinonaktifkan
+                    </button>
+                    @endif
                 </div>
             </form>
         </div>
 
-        <!-- TABLE -->
-        <div class="bg-white shadow-sm rounded-lg overflow-hidden">
-            <div class="p-3 border-b">
-                <h3 class="text-sm font-semibold text-gray-600 uppercase">
+        {{-- TABLE --}}
+        <div class="bg-white rounded-xl border shadow-sm overflow-hidden">
+            <div class="px-6 py-4 border-b bg-slate-50">
+                <h3 class="font-semibold text-slate-700">
                     Daftar Data Lulusan
                 </h3>
             </div>
 
             <div class="overflow-x-auto">
-                <table class="min-w-full border text-sm">
-                    <thead class="bg-gray-100 text-gray-600 uppercase text-xs">
+                <table class="min-w-full text-sm">
+                    <thead class="bg-slate-100 text-slate-600 uppercase text-xs">
                         <tr>
-                            <th class="border px-2 py-2 w-10">No</th>
-                            <th class="border px-2 py-2 text-center">Periode</th>
-                            <th class="border px-2 py-2 text-center">Kelas</th>
-                            <th class="border px-2 py-2 text-center">Mulai</th>
-                            <th class="border px-2 py-2 text-center">Selesai</th>
-                            <th class="border px-2 py-2 text-center">Kelulusan</th>
-                            <th class="border px-2 py-2 text-center w-24">Aksi</th>
+                            <th class="px-4 py-3 border">No</th>
+                            <th class="px-4 py-3 border">Periode</th>
+                            <th class="px-4 py-3 border">Kelas</th>
+                            <th class="px-4 py-3 border">Mulai</th>
+                            <th class="px-4 py-3 border">Selesai</th>
+                            <th class="px-4 py-3 border">Kelulusan</th>
+                            <th class="px-4 py-3 border">Aksi</th>
                         </tr>
                     </thead>
 
-                    <tbody>
+                    <tbody class="divide-y divide-slate-200">
                         @forelse($dataLulusan as $list)
-                        <tr class="hover:bg-gray-50">
-                            <td class="border px-2 py-1 text-center">
-                                {{ $loop->iteration }}
-                            </td>
+                        <tr class="hover:bg-slate-50 transition">
+                            <td class="px-4 py-3 text-center">{{ $loop->iteration }}</td>
 
-                            <td class="border px-2 py-1 text-center">
+                            <td class="px-4 py-3 text-center">
                                 <a href="/daftar-lulusan/{{ $list->id }}"
-                                    class="text-blue-600 hover:underline">
+                                    class="text-blue-600 font-medium hover:underline">
                                     {{ $list->periode }} {{ $list->ket_semester }}
                                 </a>
                             </td>
 
-                            <td class="border px-2 py-1 text-center">
-                                {{ $list->nama_kelas }}
-                            </td>
+                            <td class="px-4 py-3 text-center">{{ $list->nama_kelas }}</td>
 
-                            <td class="border px-2 py-1 text-center">
+                            <td class="px-4 py-3 text-center">
                                 {{ \Carbon\Carbon::parse($list->tanggal_mulai)->isoFormat('D MMM Y') }}
                             </td>
 
-                            <td class="border px-2 py-1 text-center">
+                            <td class="px-4 py-3 text-center">
                                 {{ \Carbon\Carbon::parse($list->tanggal_selesai)->isoFormat('D MMM Y') }}
                             </td>
 
-                            <td class="border px-2 py-1 text-center">
-                                {{ \Carbon\Carbon::parse($list->tanggal_kelulusan)->isoFormat('D MMMM Y') }}
-                                <div class="text-xs text-gray-500">
-                                    {{ $list->tanggal_lulus_hijriyah }}
+                            <td class="px-4 py-3 text-center">
+                                <div>
+                                    {{ \Carbon\Carbon::parse($list->tanggal_kelulusan)->isoFormat('D MMMM Y') }}
                                 </div>
+                                <small class="text-slate-500">
+                                    {{ $list->tanggal_lulus_hijriyah }}
+                                </small>
                             </td>
 
-                            <td class="border px-2 py-1 text-center">
+                            <td class="px-4 py-3 text-center">
                                 <form action="/lulusan/{{ $list->id }}" method="POST"
                                     onsubmit="return confirm('Hapus data lulusan ini?')">
                                     @csrf
                                     @method('DELETE')
-
                                     <button
-                                        class="px-2 py-1 bg-red-600 text-white rounded hover:bg-red-700 text-xs">
+                                        class="px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white rounded-lg text-xs shadow-sm transition">
                                         Hapus
                                     </button>
                                 </form>
@@ -174,18 +256,14 @@
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="7"
-                                class="text-center py-3 text-gray-500 italic">
-                                Belum ada data lulusan
+                            <td colspan="7" class="py-10 text-center text-slate-400">
+                                Belum ada data lulusan tersedia
                             </td>
                         </tr>
                         @endforelse
                     </tbody>
                 </table>
             </div>
-
-            <!-- PAGINATION -->
-
         </div>
 
     </div>

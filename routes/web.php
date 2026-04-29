@@ -118,6 +118,8 @@ Route::patch('pesertakelas/{pesertakelas}', [KelasmiController::class, 'storepes
 Route::get('nilaimapel', [NilaiController::class, 'index'])->middleware(['auth'])->name('nilaimapel');
 Route::get('progress-nilai', [NilaiController::class, 'progress'])->middleware(['auth'])->name('progress-nilai');
 
+Route::post('/nilai/generate', [NilaiController::class, 'generateNilaiMapelFromJadwal']);
+
 Route::get('nilai/{nilaimapel}', [NilaiController::class, 'show'])->middleware(['auth']);
 Route::post('nilai', [NilaiController::class, 'store'])->middleware(['auth'])->name('nilai');
 Route::get('nilai', [NilaiController::class, 'nilaipersiswa'])->middleware(['auth'])->name('nilaipersiswa');
@@ -307,7 +309,8 @@ Route::delete('daftar-seleksi/{nominasi}', [SeleksiController::class, 'destroy']
 Route::delete('daftar-nominasi/{daftar_Nominasi}', [SeleksiController::class, 'destroyNominasi']);
 
 
-
+Route::get('/periode/{id}', [PengaturanController::class, 'detailPeriode']);
+Route::delete('/periode/{id}', [PengaturanController::class, 'deleteperiode']);
 
 // Controller Pararel
 // 3

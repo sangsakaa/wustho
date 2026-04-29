@@ -39,12 +39,21 @@ class SeleksiController
             ->select('nominasi.id', 'periode.periode', 'semester.ket_semester', 'nama_kelas', 'nominasi.tanggal_mulai', 'nominasi.tanggal_selesai')
             ->where('kelasmi.periode_id', session('periode_id'))
             ->get();
+        $periodeAktif = Periode::query()
+            ->join('semester', 'semester.id', '=', 'periode.semester_id')
+            ->where('periode.id', session('periode_id'))
+            ->select('semester.ket_semester')
+            ->first();
+
+        $bolehNominasi = $periodeAktif &&
+            strtolower(trim($periodeAktif->ket_semester)) === 'genap';
         return view(
             'seleksi.index',
             [
                 'daftarKelas' => $daftarKelas,
                 'dataPeriode' => $dataPeriode,
-                'nominasi' => $nominasi
+                'nominasi' => $nominasi,
+                'bolehNominasi' => $bolehNominasi
             ]
         );
     }
@@ -106,14 +115,52 @@ class SeleksiController
     }
     public function store(Request $request)
     {
+        try {
+            $validated = $request->validate([
+                'kelasmi_id' => 'required|exists:kelasmi,id',
+                'periode_id' => 'required|exists:periode,id',
+                'tanggal_mulai' => 'required|date',
+                'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
+            ], [
+                'kelasmi_id.required' => 'Kelas wajib dipilih',
+                'kelasmi_id.exists' => 'Data kelas tidak valid',
 
-        $nominasi = new Nominasi();
-        $nominasi->kelasmi_id = $request->kelasmi_id;
-        $nominasi->periode_id = $request->periode_id;
-        $nominasi->tanggal_mulai = $request->tanggal_mulai;
-        $nominasi->tanggal_selesai = $request->tanggal_selesai;
-        $nominasi->save();
-        return redirect()->back();
+                'periode_id.required' => 'Periode wajib dipilih',
+                'periode_id.exists' => 'Data periode tidak valid',
+
+                'tanggal_mulai.required' => 'Tanggal mulai wajib diisi',
+                'tanggal_mulai.date' => 'Format tanggal mulai tidak valid',
+
+                'tanggal_selesai.required' => 'Tanggal selesai wajib diisi',
+                'tanggal_selesai.date' => 'Format tanggal selesai tidak valid',
+                'tanggal_selesai.after_or_equal' => 'Tanggal selesai harus setelah atau sama dengan tanggal mulai',
+            ]);
+
+            // cek data duplikat
+            $cek = Nominasi::where('kelasmi_id', $validated['kelasmi_id'])
+                ->where('periode_id', $validated['periode_id'])
+                ->first();
+
+            if ($cek) {
+                return redirect()->back()
+                    ->withInput()
+                    ->with('error', 'Data nominasi untuk kelas dan periode ini sudah ada');
+            }
+
+            Nominasi::create([
+                'kelasmi_id' => $validated['kelasmi_id'],
+                'periode_id' => $validated['periode_id'],
+                'tanggal_mulai' => $validated['tanggal_mulai'],
+                'tanggal_selesai' => $validated['tanggal_selesai'],
+            ]);
+
+            return redirect()->back()
+                ->with('success', 'Data nominasi berhasil disimpan');
+        } catch (\Exception $e) {
+            return redirect()->back()
+                ->withInput()
+                ->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
     public function StoreNominasi(Request $request, $nominasi)
     {

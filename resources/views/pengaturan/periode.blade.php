@@ -6,6 +6,9 @@
         </h2>
     </x-slot>
 
+    {{-- 🔥 TOAST CONTAINER --}}
+    <div id="toast" class="fixed top-5 right-5 z-50 space-y-2"></div>
+
     <div class="p-3 space-y-4">
 
         {{-- NAV --}}
@@ -22,73 +25,77 @@
             </div>
         </div>
 
-        {{-- ALERT --}}
-        @if(session('success'))
-        <div class="bg-green-100 text-green-700 px-3 py-2 rounded">
-            {{ session('success') }}
-        </div>
-        @endif
-
-        @if(session('error'))
-        <div class="bg-red-100 text-red-700 px-3 py-2 rounded">
-            {{ session('error') }}
-        </div>
-        @endif
-
-        {{-- FORM + TABLE --}}
+        {{-- FORM --}}
         <div class="bg-white shadow rounded-xl p-4 space-y-4">
 
-            {{-- FORM --}}
-            <form action="{{ url('/periode') }}" method="post" class="space-y-3">
+            <form action="{{ url('/periode') }}" method="post" class="space-y-4">
                 @csrf
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
 
+                    {{-- PERIODE --}}
                     <div>
                         <label class="text-xs text-gray-500">Periode</label>
                         <input name="periode" type="text"
                             value="{{ old('periode') }}"
-                            class="w-full border rounded-lg px-3 py-1 text-sm"
+                            class="w-full border rounded-lg px-3 py-2 text-sm focus:ring focus:ring-blue-200 @error('periode') border-red-500 @enderror"
                             placeholder="2025/2026">
+
+                        @error('periode')
+                        <div class="text-xs text-red-500 mt-1">{{ $message }}</div>
+                        @enderror
                     </div>
 
+                    {{-- SEMESTER --}}
                     <div>
                         <label class="text-xs text-gray-500">Semester</label>
                         <select name="semester_id"
-                            class="w-full border rounded-lg px-2 py-1 text-sm">
+                            class="w-full border rounded-lg px-3 py-2 text-sm @error('semester_id') border-red-500 @enderror">
+
+                            <option value="">-- Pilih Semester --</option>
+
                             @foreach($semester as $s)
-                            <option value="{{ $s->id }}">
+                            <option value="{{ $s->id }}"
+                                {{ old('semester_id') == $s->id ? 'selected' : '' }}>
                                 {{ $s->ket_semester }}
                             </option>
                             @endforeach
+
                         </select>
+
+                        @error('semester_id')
+                        <div class="text-xs text-red-500 mt-1">{{ $message }}</div>
+                        @enderror
                     </div>
 
+                    {{-- TANGGAL --}}
                     <div>
                         <label class="text-xs text-gray-500">Tanggal Mulai</label>
                         <input type="date" name="tanggal_mulai"
                             value="{{ old('tanggal_mulai') }}"
-                            class="w-full border rounded-lg px-2 py-1 text-sm">
+                            class="w-full border rounded-lg px-3 py-2 text-sm">
                     </div>
 
+                    {{-- HIJRIYAH --}}
                     <div>
                         <label class="text-xs text-gray-500">Tahun Hijriyah</label>
                         <input type="text" name="tahun_hijriyah"
                             value="{{ old('tahun_hijriyah') }}"
-                            class="w-full border rounded-lg px-3 py-1 text-sm"
+                            class="w-full border rounded-lg px-3 py-2 text-sm"
                             placeholder="1446">
                     </div>
 
                 </div>
 
+                {{-- BUTTON --}}
                 <div class="flex gap-2">
                     <button type="submit"
-                        class="px-4 py-1 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                        class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm">
                         Simpan
                     </button>
 
                     <a href="{{ url('/siswa') }}"
-                        class="px-4 py-1 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400">
+                        class="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 text-sm">
                         Batal
                     </a>
                 </div>
@@ -114,20 +121,19 @@
                         @forelse($periode as $list)
                         <tr class="hover:bg-gray-50">
 
-                            <td class="border text-center">
-                                {{ $loop->iteration }}
-                            </td>
+                            <td class="border text-center">{{ $loop->iteration }}</td>
 
                             <td class="border text-center font-medium">
                                 {{ $list->periode }}
                             </td>
 
                             <td class="border text-center">
-                                {{ $list->semester }}
+                                {{ $list->semester->semester }}
                             </td>
 
+
                             <td class="border text-center">
-                                {{ $list->ket_semester }}
+                                {{ $list->semester->ket_semester }}
                             </td>
 
                             <td class="border text-center">
@@ -143,8 +149,7 @@
                                 @else
                                 <form action="{{ url('/periode/aktifkan/'.$list->id) }}" method="post">
                                     @csrf
-                                    <button
-                                        class="px-2 py-1 bg-gray-400 text-white rounded text-xs hover:bg-blue-500">
+                                    <button class="px-2 py-1 bg-gray-400 text-white rounded text-xs hover:bg-blue-500">
                                         Aktifkan
                                     </button>
                                 </form>
@@ -152,17 +157,42 @@
                             </td>
 
                             {{-- HAPUS --}}
-                            <td class="border text-center">
-                                <form action="{{ url('/periode/'.$list->id) }}" method="post"
-                                    onsubmit="return confirm('Hapus data ini?')">
-                                    @csrf
-                                    @method('delete')
+                            <td class="border px-3 py-2">
+                                <div class="flex items-center justify-center gap-2">
 
-                                    <button
-                                        class="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600">
-                                        Hapus
+                                    <a href="{{ url('/periode/' . $list->id) }}"
+                                        class="px-3 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600 text-xs transition">
+                                        Detail
+                                    </a>
+
+                                    @php
+                                    $dipakai =
+                                    $list->kelasmi_count > 0 ||
+                                    $list->asramasiswa_count > 0 ||
+                                    $list->lulusan_count > 0 ||
+                                    $list->nominasi_count > 0;
+                                    @endphp
+
+                                    @if($dipakai)
+                                    <button disabled
+                                        title="Periode sudah dipakai di data lain"
+                                        class="px-3 py-1 bg-gray-400 text-white rounded-md text-xs cursor-not-allowed">
+                                        Dipakai
                                     </button>
-                                </form>
+                                    @else
+                                    <form action="{{ url('/periode/' . $list->id) }}" method="POST"
+                                        onsubmit="return confirm('Hapus data ini?')">
+                                        @csrf
+                                        @method('DELETE')
+
+                                        <button type="submit"
+                                            class="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 text-xs transition">
+                                            Hapus
+                                        </button>
+                                    </form>
+                                    @endif
+
+                                </div>
                             </td>
 
                         </tr>
@@ -181,4 +211,64 @@
         </div>
 
     </div>
+
+    {{-- 🔥 TOAST SCRIPT --}}
+    @if(session('success'))
+    <script>
+        showToast("{{ session('success') }}", "success");
+    </script>
+    @endif
+
+    @if(session('error'))
+    <script>
+        showToast("{{ session('error') }}", "error");
+    </script>
+    @endif
+
+    <script>
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+
+            const colors = {
+                success: 'bg-green-500',
+                error: 'bg-red-500'
+            };
+
+            const el = document.createElement('div');
+            el.className = `
+                ${colors[type]}
+                text-white px-4 py-2 rounded-lg shadow-lg text-sm
+                animate-slide-in
+            `;
+
+            el.innerText = message;
+
+            toast.appendChild(el);
+
+            setTimeout(() => {
+                el.style.opacity = '0';
+                el.style.transition = '0.5s';
+                setTimeout(() => el.remove(), 500);
+            }, 3000);
+        }
+    </script>
+
+    <style>
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .animate-slide-in {
+            animation: slideIn 0.3s ease-out;
+        }
+    </style>
+
 </x-app-layout>

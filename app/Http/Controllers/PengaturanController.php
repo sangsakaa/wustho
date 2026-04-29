@@ -10,7 +10,7 @@ use App\Models\Periode;
 use App\Models\Semester;
 use App\Models\Nilaimapel;
 use App\Models\Pesertakelas;
-use App\Models\Siswa;
+
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
@@ -54,10 +54,75 @@ class PengaturanController extends Controller
     // Controller Periode
     public function periode()
     {
-        return view('pengaturan/periode', [
-            'periode' => Periode::getDataPeriode(),
+        $periode = Periode::withCount([
+            'kelasmi',
+            'asramasiswa',
+            'lulusan',
+            'nominasi'
+        ])->get();
+
+        return view('pengaturan.periode', [
+            'periode' => $periode,
             'semester' => Semester::all()
         ]);
+    }
+    public function detailPeriode($id)
+    {
+        $periode = Periode::with([
+            'semester',
+            'kelasmi',
+            'asramasiswa',
+            'lulusan',
+            'nominasi'
+        ])->findOrFail($id);
+
+        return view('pengaturan.detail-periode', [
+            'periode' => $periode
+        ]);
+    }
+
+    public function storeperiode(Request $request)
+    {
+        // 🔥 VALIDASI (WAJIB)
+        $request->validate([
+            'periode' => 'required|string',
+            'semester_id' => 'required|exists:semester,id',
+            'tanggal_mulai' => 'required|date',
+            'tahun_hijriyah' => 'required|string',
+        ]);
+
+        try {
+            $periode = new Periode();
+            $periode->periode = $request->periode;
+            $periode->semester_id = $request->semester_id;
+            $periode->tanggal_mulai = $request->tanggal_mulai;
+            $periode->tahun_hijriyah = $request->tahun_hijriyah;
+            $periode->save();
+
+            return redirect()->back()->with('success', 'Data periode berhasil disimpan!');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Gagal menyimpan data: ' . $e->getMessage());
+        }
+    }
+    public function deleteperiode($id)
+    {
+        $periode = Periode::findOrFail($id);
+
+        // cek apakah periode masih dipakai relasi lain
+        $dipakai =
+            $periode->kelasmi()->exists() ||
+            $periode->asramasiswa()->exists() ||
+            $periode->lulusan()->exists()
+            // $periode->nominal()->exists()
+        ;
+
+        if ($dipakai) {
+            return redirect()->back()->with('error', 'Periode tidak bisa dihapus karena masih dipakai data lain');
+        }
+
+        $periode->delete();
+
+        return redirect()->back()->with('delete', 'Data periode berhasil dihapus');
     }
     public function aktifkan($id)
     {
@@ -74,22 +139,6 @@ class PengaturanController extends Controller
         });
 
         return back()->with('success', 'Periode berhasil diaktifkan');
-    }
-    public function storeperiode(Request $request)
-    {
-        // dd($request->all());
-        $periode = new Periode();
-        $periode->periode = $request->periode;
-        $periode->semester_id = $request->semester_id;
-        $periode->tanggal_mulai = $request->tanggal_mulai;
-        $periode->tahun_hijriyah = $request->tahun_hijriyah;
-        $periode->save();
-        return redirect()->back();
-    }
-    public function deleteperiode(Periode $periode)
-    {
-        Periode::destroy($periode->id);
-        return redirect()->back();
     }
 
     public function semester()

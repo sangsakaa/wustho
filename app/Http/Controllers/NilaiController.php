@@ -3,15 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Guru;
-use App\Models\Kelas;
+
+use App\Models\Kelasmi;
 use App\Models\Mapel;
 use App\Models\Nilai;
-use App\Models\Kelasmi;
-use App\Models\Semester;
 use App\Models\Nilaimapel;
 use App\Models\Pesertakelas;
+use App\Models\Semester;
 use App\Models\Siswa;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -26,6 +25,25 @@ class NilaiController extends Controller
      */
     public function index()
     {
+        $periodeId = session('periode_id');
+
+        $jumlahJadwal = DB::table('jadwal')
+            ->where('periode_id', $periodeId)
+            ->count();
+
+        $jadwalBelumLengkap = DB::table('jadwal')
+            ->leftJoin('daftar_jadwal', 'daftar_jadwal.jadwal_id', '=', 'jadwal.id')
+            ->where('jadwal.periode_id', $periodeId)
+            ->whereNull('daftar_jadwal.id')
+            ->count();
+
+        $note = null;
+
+        if ($jumlahJadwal == 0) {
+            $note = 'Jadwal untuk periode ini belum dibuat.';
+        } elseif ($jadwalBelumLengkap > 0) {
+            $note = "Masih ada {$jadwalBelumLengkap} jadwal yang belum memiliki guru/mapel.";
+        }
         $dataMapel = Mapel::query()
             ->join('kelas', 'kelas.id', '=', 'mapel.kelas_id')
             ->select('mapel.id', 'mapel.mapel', 'kelas.kelas', 'mapel.nama_kitab')
@@ -56,14 +74,27 @@ class NilaiController extends Controller
             ->leftjoin('mapel', 'mapel.id', '=', 'nilaimapel.mapel_id')
             ->leftjoin('guru', 'guru.id', '=', 'nilaimapel.guru_id')
             ->leftjoin('nilai', 'nilai.nilaimapel_id', '=', 'nilaimapel.id')
-            ->joinSub(
+            ->leftJoinSub(
                 $dataJumlahPeserta,
                 'datajumlahpeserta',
                 function ($join) {
                     $join->on('kelasmi.id', '=', 'datajumlahpeserta.id');
                 }
             )
-            ->selectRaw('nilaimapel.id, kelas.kelas, nama_kelas, semester.semester, semester.ket_semester, guru.nama_guru, mapel.mapel, kelasmi.periode_id, periode.periode, count(nilai.nilai_harian) as jumlah_nilai_harian, count(nilai.nilai_ujian) as jumlah_nilai_ujian, jumlah_peserta_kelas')
+            ->selectRaw('
+    nilaimapel.id,
+    kelas.kelas,
+    nama_kelas,
+    semester.semester,
+    semester.ket_semester,
+    guru.nama_guru,
+    mapel.mapel,
+    kelasmi.periode_id,
+    periode.periode,
+    count(nilai.nilai_harian) as jumlah_nilai_harian,
+    count(nilai.nilai_ujian) as jumlah_nilai_ujian,
+    COALESCE(jumlah_peserta_kelas, 0) as jumlah_peserta_kelas
+')
             ->where('kelasmi.periode_id', session('periode_id'))
             ->groupBy(
                 'nilaimapel.id',
@@ -95,7 +126,8 @@ class NilaiController extends Controller
                 'dataGuru' => $dataGuru,
                 'dataKelas' => $dataKelas,
                 'dataSmt' => $datSmt,
-                'dataMapel' => $dataMapel
+                'dataMapel' => $dataMapel,
+                'note' => $note
             ]
         );
     }
@@ -178,7 +210,7 @@ class NilaiController extends Controller
     public function storeNilaimapel(Request $request)
 
     {
-        // dd($request);
+
         $kelas = new Nilaimapel();
         $kelas->kelasmi_id = $request->kelasmi_id;
         $kelas->guru_id = $request->guru_id;
@@ -305,5 +337,62 @@ class NilaiController extends Controller
                 'dataMapel' => $dataMapel
             ]
         );
+    }
+
+    public function generateNilaiMapelFromJadwal()
+    {
+        $periodeId = session('periode_id');
+
+        // cek periode
+        if (!$periodeId) {
+            return redirect()->back()
+                ->with('error', 'Periode belum dipilih.');
+        }
+
+        $data = DB::table('jadwal')
+            ->join('daftar_jadwal', 'daftar_jadwal.jadwal_id', '=', 'jadwal.id')
+            ->select(
+                'jadwal.kelasmi_id',
+                'jadwal.periode_id',
+                'daftar_jadwal.guru_id',
+                'daftar_jadwal.mapel_id'
+            )
+            ->where('jadwal.periode_id', $periodeId)
+            ->get();
+
+        // kalau jadwal kosong
+        if ($data->isEmpty()) {
+            return redirect()->back()
+                ->with('error', 'Data jadwal belum tersedia untuk generate nilai.');
+        }
+
+        $created = 0;
+
+        foreach ($data as $row) {
+            $exists = Nilaimapel::where([
+                'kelasmi_id' => $row->kelasmi_id,
+                'guru_id'    => $row->guru_id,
+                'mapel_id'   => $row->mapel_id,
+            ])->exists();
+
+            if (!$exists) {
+                Nilaimapel::create([
+                    'kelasmi_id' => $row->kelasmi_id,
+                    'guru_id'    => $row->guru_id,
+                    'mapel_id'   => $row->mapel_id,
+                ]);
+
+                $created++;
+            }
+        }
+
+        // kalau tidak ada data baru
+        if ($created == 0) {
+            return redirect()->back()
+                ->with('error', 'Semua data Nilai Mapel sudah tergenerate.');
+        }
+
+        return redirect()->back()
+            ->with('success', "Generate berhasil. {$created} data Nilai Mapel ditambahkan.");
     }
 }

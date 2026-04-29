@@ -22,44 +22,75 @@ class LulusanCotroller
             ->where('kelasmi.periode_id', session('periode_id'))
             ->select('kelasmi.id', 'kelas', 'nama_kelas', 'ket_semester', 'periode')
             ->where('kelas.kelas', 3)
+            ->orderBy('nama_kelas')
+            ->get();
 
-            ->orderby('nama_kelas')->get();
         $dataPeriode = Periode::query()
             ->join('semester', 'semester.id', '=', 'periode.semester_id')
             ->select('periode.id', 'periode.periode', 'semester.ket_semester')
             ->where('periode.id', session('periode_id'))
-            ->orderby('ket_semester', 'desc')
+            ->orderBy('ket_semester', 'desc')
             ->get();
+
         $dataLulusan = Lulusan::query()
             ->join('periode', 'periode.id', '=', 'lulusan.periode_id')
             ->join('kelasmi', 'kelasmi.id', '=', 'lulusan.kelasmi_id')
             ->join('semester', 'semester.id', '=', 'periode.semester_id')
             ->where('lulusan.periode_id', session('periode_id'))
-            ->select(
-                [
+            ->select([
                 'kelasmi.nama_kelas',
-                    'lulusan.id',
-                    'periode',
-                    'ket_semester',
-                    'lulusan.tanggal_mulai',
-                    'lulusan.tanggal_selesai',
-                    'lulusan.tanggal_kelulusan',
+            'lulusan.id',
+            'periode',
+            'ket_semester',
+            'lulusan.tanggal_mulai',
+            'lulusan.tanggal_selesai',
+            'lulusan.tanggal_kelulusan',
                 'tanggal_lulus_hijriyah'
-                ]
-            )
-            ->orderby('kelasmi.nama_kelas')
+            ])
+            ->orderBy('kelasmi.nama_kelas')
             ->get();
-        return view(
-            'lulusan.index',
-            [
-                'dataLulusan' => $dataLulusan,
-                'dataPeriode' => $dataPeriode,
-                'kelasMi' => $kelasMi,
-            ]
-        );
+
+        // cek apakah periode aktif semester genap
+        $periodeAktif = Periode::query()
+            ->join('semester', 'semester.id', '=', 'periode.semester_id')
+            ->where('periode.id', session('periode_id'))
+            ->select('semester.ket_semester')
+            ->first();
+
+        $bolehLulus = $periodeAktif && strtolower($periodeAktif->ket_semester) == 'genap';
+
+        return view('lulusan.index', [
+            'dataLulusan' => $dataLulusan,
+            'dataPeriode' => $dataPeriode,
+            'kelasMi' => $kelasMi,
+            'bolehLulus' => $bolehLulus,
+        ]);
     }
     public function store(Request $request)
     {
+        $request->validate([
+            'periode_id' => 'required',
+            'kelasmi_id' => 'required',
+            'tanggal_mulai' => 'required|date',
+            'tanggal_selesai' => 'required|date|after_or_equal:tanggal_mulai',
+            'tanggal_kelulusan' => 'required|date',
+            'tanggal_lulus_hijriyah' => 'required|string|max:255',
+        ], [
+            'periode_id.required' => 'Periode wajib dipilih',
+            'kelasmi_id.required' => 'Kelas wajib dipilih',
+            'tanggal_mulai.required' => 'Tanggal mulai wajib diisi',
+            'tanggal_mulai.date' => 'Format tanggal mulai tidak valid',
+
+            'tanggal_selesai.required' => 'Tanggal selesai wajib diisi',
+            'tanggal_selesai.date' => 'Format tanggal selesai tidak valid',
+            'tanggal_selesai.after_or_equal' => 'Tanggal selesai harus setelah atau sama dengan tanggal mulai',
+
+            'tanggal_kelulusan.required' => 'Tanggal kelulusan wajib diisi',
+            'tanggal_kelulusan.date' => 'Format tanggal kelulusan tidak valid',
+
+            'tanggal_lulus_hijriyah.required' => 'Tanggal hijriyah wajib diisi',
+        ]);
+
         $lulusan = new Lulusan();
         $lulusan->periode_id = $request->periode_id;
         $lulusan->kelasmi_id = $request->kelasmi_id;
@@ -68,7 +99,8 @@ class LulusanCotroller
         $lulusan->tanggal_kelulusan = $request->tanggal_kelulusan;
         $lulusan->tanggal_lulus_hijriyah = $request->tanggal_lulus_hijriyah;
         $lulusan->save();
-        return redirect()->back();
+
+        return redirect()->back()->with('success', 'Data lulusan berhasil disimpan');
     }
     public function daftarLulusan(Lulusan $lulusan, Daftar_lulusan $daftar_lulusan)
     {

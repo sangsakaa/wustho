@@ -9,4 +9,9 @@ class Nilaimapel extends Model
 {
     use HasFactory;
     protected $table = "nilaimapel";
+    protected $fillable = [
+        'kelasmi_id',
+        'guru_id',
+        'mapel_id',
+    ];
 }

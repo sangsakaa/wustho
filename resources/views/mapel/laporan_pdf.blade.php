@@ -12,43 +12,47 @@
 
     .center {
       text-align: center;
+      margin-bottom: 10px;
     }
 
     h2 {
       margin: 0;
-      font-size: 16px;
-      letter-spacing: 0.5px;
+      font-size: 17px;
+      font-weight: bold;
     }
 
     .subtitle {
-      margin-top: 2px;
+      margin-top: 4px;
       font-size: 11px;
       color: #555;
     }
 
     h3 {
-      margin-top: 18px;
-      margin-bottom: 6px;
+      margin: 12px 0 8px;
       font-size: 12px;
-      border-bottom: 1px solid #bbb;
-      padding-bottom: 3px;
+      border-left: 4px solid #333;
+      padding-left: 8px;
+    }
 
-      /* 🔥 pindah halaman per kelas */
-      page-break-before: auto;
+    /* 🔥 1 KELAS = 1 HALAMAN */
+    .kelas-page {
+      page-break-after: always;
+    }
+
+    .kelas-page:last-child {
+      page-break-after: auto;
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
       table-layout: fixed;
-      margin-top: 6px;
-      page-break-inside: auto;
     }
 
     th {
-      background: #f3f3f3;
-      border: 1px solid #ccc;
-      padding: 6px;
+      background: #e9ecef;
+      border: 1px solid #bbb;
+      padding: 8px;
       text-align: center;
       font-size: 11px;
     }
@@ -57,10 +61,11 @@
       border: 1px solid #ddd;
       padding: 6px;
       vertical-align: top;
-
-      /* 🔥 anti pecah */
-      page-break-inside: avoid;
       word-wrap: break-word;
+    }
+
+    tbody tr:nth-child(even) {
+      background: #fafafa;
     }
 
     thead {
@@ -68,16 +73,6 @@
     }
 
     tr {
-      page-break-inside: avoid;
-      page-break-after: auto;
-    }
-
-    tbody {
-      page-break-inside: auto;
-    }
-
-    /* 🔥 blok per mapel (kunci utama) */
-    .mapel-group {
       page-break-inside: avoid;
     }
 
@@ -88,17 +83,17 @@
     }
 
     .mapel {
-      width: 20%;
+      width: 22%;
       font-weight: bold;
     }
 
     .kitab {
-      width: 20%;
+      width: 18%;
       color: #444;
     }
 
     .guru {
-      width: 20%;
+      width: 25%;
     }
 
     .kelas {
@@ -107,15 +102,14 @@
     }
 
     .hari {
-      width: 10%;
+      width: 15%;
       text-align: center;
       text-transform: capitalize;
     }
 
     .muted {
-      color: #777;
       font-size: 10px;
-      margin-top: 2px;
+      color: #777;
     }
 
     .empty {
@@ -127,7 +121,6 @@
 
 <body>
 
-  {{-- HEADER --}}
   <div class="center">
     <h2>LAPORAN KURIKULUM</h2>
     <div class="subtitle">
@@ -139,82 +132,81 @@
   {{-- LOOP KELAS --}}
   @forelse($data as $kelas => $mapels)
 
-  <h3>Kelas: {{ $kelas }}</h3>
+  <div class="kelas-page">
 
-  <table>
-    <thead>
-      <tr>
-        <th class="no">No</th>
-        <th class="mapel">Mata Pelajaran</th>
-        <th class="kitab">Kitab</th>
-        <th class="guru">Guru</th>
-        <th class="kelas">Kelas</th>
-        <th class="hari">Hari</th>
-      </tr>
-    </thead>
+    <h3>Kelas: {{ $kelas }}</h3>
 
-    <tbody>
+    {{-- 🔥 SATU TABEL UNTUK SEMUA MAPEL --}}
+    <table>
 
-      @forelse($mapels as $mapel)
+      <thead>
+        <tr>
+          <th class="no">No</th>
+          <th class="mapel">Mata Pelajaran</th>
+          <th class="kitab">Kitab</th>
+          <th class="guru">Guru Pengampu</th>
+          <th class="kelas">Kelas</th>
+          <th class="hari">Hari</th>
+        </tr>
+      </thead>
 
-      @php
-      $rows = [];
+      <tbody>
 
-      foreach ($mapel->daftar_jadwal as $dj) {
-      $key = ($dj->guru_id ?? '') . '-' .
-      ($dj->jadwal->kelasmi_id ?? '') . '-' .
-      ($dj->jadwal->hari ?? '');
+        @php $no = 1; @endphp
 
-      $rows[$key] = [
-      'guru' => $dj->guru->nama_guru ?? '-',
-      'kelas' => $dj->jadwal->kelasmi->nama_kelas ?? '-',
-      'hari' => $dj->jadwal->hari ?? '-',
-      ];
-      }
+        @foreach($mapels as $mapel)
 
-      $rows = array_values($rows);
-      $rowspan = count($rows) ?: 1;
-      @endphp
+        @php
+        $rows = [];
 
-      {{-- 🔥 GROUP PER MAPEL --}}
-      @forelse($rows as $index => $r)
-      <tr class="mapel-group">
+        foreach ($mapel->daftar_jadwal as $dj) {
+        $rows[] = [
+        'guru' => $dj->guru->nama_guru ?? '-',
+        'kelas' => $dj->jadwal->kelasmi->nama_kelas ?? '-',
+        'hari' => $dj->jadwal->hari ?? '-',
+        ];
+        }
 
-        {{-- ROWSPAN --}}
-        @if($index == 0)
-        <td class="no" rowspan="{{ $rowspan }}">
-          {{ $loop->parent->iteration }}
-        </td>
+        $rowspan = count($rows) ?: 1;
+        @endphp
 
-        <td class="mapel" rowspan="{{ $rowspan }}">
-          {{ $mapel->mapel }}
-          <div class="muted">{{ $mapel->nama_kitab ?? '-' }}</div>
-        </td>
+        @forelse($rows as $index => $r)
+        <tr>
 
-        <td class="kitab" rowspan="{{ $rowspan }}">
-          {{ $mapel->nama_kitab ?? '-' }}
-        </td>
-        @endif
+          @if($index == 0)
+          <td class="no" rowspan="{{ $rowspan }}">{{ $no++ }}</td>
 
-        {{-- DETAIL --}}
-        <td class="guru">{{ $r['guru'] }}</td>
-        <td class="kelas">{{ $r['kelas'] }}</td>
-        <td class="hari">{{ $r['hari'] }}</td>
+          <td class="mapel" rowspan="{{ $rowspan }}">
+            {{ $mapel->mapel }}
+            <div class="muted">{{ $mapel->nama_kitab ?? '-' }}</div>
+          </td>
 
-      </tr>
-      @empty
-      <tr>
-        <td class="no">{{ $loop->iteration }}</td>
-        <td class="mapel">{{ $mapel->mapel }}</td>
-        <td class="kitab">{{ $mapel->nama_kitab ?? '-' }}</td>
-        <td colspan="3" class="empty">Tidak ada jadwal</td>
-      </tr>
-      @endforelse
+          <td class="kitab" rowspan="{{ $rowspan }}">
+            {{ $mapel->nama_kitab ?? '-' }}
+          </td>
+          @endif
 
-      @endforeach
+          <td class="guru">{{ $r['guru'] }}</td>
+          <td class="kelas">{{ $r['kelas'] }}</td>
+          <td class="hari">{{ $r['hari'] }}</td>
 
-    </tbody>
-  </table>
+        </tr>
+        @empty
+        <tr>
+          <td class="no">{{ $no++ }}</td>
+          <td class="mapel">{{ $mapel->mapel }}</td>
+          <td class="kitab">{{ $mapel->nama_kitab ?? '-' }}</td>
+          <td colspan="3" class="empty">Tidak ada jadwal</td>
+        </tr>
+        @endforelse
+
+        @endforeach
+
+      </tbody>
+
+    </table>
+
+  </div>
 
   @empty
   <p class="center empty">Tidak ada data laporan</p>

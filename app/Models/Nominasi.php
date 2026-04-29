@@ -12,4 +12,10 @@ class Nominasi extends Model
 
     public $guarded = [];
     protected $table = "nominasi";
+    protected $fillable = [
+        'kelasmi_id',
+        'periode_id',
+        'tanggal_mulai',
+        'tanggal_selesai',
+    ];
 }

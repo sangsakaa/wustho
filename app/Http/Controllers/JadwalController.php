@@ -72,7 +72,9 @@ class JadwalController
     {
         // dd($jadwal);
         $jadwal = Jadwal::find($jadwal->id);
-        $daftarGuru = Guru::orderby('nama_guru')->get();
+        $daftarGuru = Guru::where('status', 'Aktif')
+            ->orderBy('nama_guru')
+            ->get();
         $daftarMapel = Mapel::query()
             ->join('kelas', 'kelas.id', '=', 'mapel.kelas_id')
             ->join('kelasmi', 'kelasmi.kelas_id', '=', 'kelas.id')
@@ -227,27 +229,37 @@ class JadwalController
     {
         $periodeId = session('periode_id');
 
+        // cek session periode
+        if (!$periodeId) {
+            return back()->with('error', 'Periode belum dipilih.');
+        }
+
+        // cek periode tersedia
         $daftarPeriode = Periode::query()
-            ->join('semester', 'semester.id', '=', 'periode.semester_id')
-            ->select('periode.id')
-            ->where('periode.id', $periodeId)
+            ->where('id', $periodeId)
             ->first();
 
         if (!$daftarPeriode) {
-            return back()->with('error', 'Periode tidak ditemukan');
+            return back()->with('error', 'Periode tidak ditemukan.');
         }
 
+        // ambil kelas pada periode aktif
         $dataKelasMi = Kelasmi::query()
             ->where('periode_id', $periodeId)
             ->orderBy('nama_kelas')
             ->get();
 
+        if ($dataKelasMi->isEmpty()) {
+            return back()->with('error', 'Belum ada data kelas pada periode ini.');
+        }
+
         $hari_array = ['jumat', 'sabtu', 'minggu', 'senin', 'selasa', 'rabu'];
+
+        $created = 0;
 
         foreach ($dataKelasMi as $kelasmi) {
             foreach ($hari_array as $hari) {
 
-                // 🔥 cek langsung ke DB (bukan collection)
                 $exists = Jadwal::where('periode_id', $periodeId)
                     ->where('kelasmi_id', $kelasmi->id)
                     ->where('hari', $hari)
@@ -257,13 +269,23 @@ class JadwalController
                     Jadwal::create([
                         'periode_id' => $periodeId,
                         'kelasmi_id' => $kelasmi->id,
-                        'hari' => $hari,
+                        'hari'       => $hari,
                     ]);
+
+                    $created++;
                 }
             }
         }
 
-        return back()->with('success', 'Jadwal kolektif berhasil dibuat');
+        // jika tidak ada data baru
+        if ($created == 0) {
+            return back()->with('error', 'Semua jadwal kolektif sudah dibuat sebelumnya.');
+        }
+
+        return back()->with(
+            'success',
+            "Jadwal kolektif berhasil dibuat. {$created} jadwal baru ditambahkan."
+        );
     }
     public function LaporanPloting()
     {
@@ -337,8 +359,12 @@ class JadwalController
     }
     public function destroy(Jadwal $jadwal)
     {
-        Jadwal::destroy('id', $jadwal->id);
-        Daftar_Jadwal::where('jadwal_id', $jadwal->id);
-        return redirect()->back();
+        // hapus relasi daftar jadwal dulu
+        Daftar_Jadwal::where('jadwal_id', $jadwal->id)->delete();
+
+        // hapus jadwal
+        $jadwal->delete();
+
+        return redirect()->back()->with('delete', 'Jadwal berhasil dihapus.');
     }
 }

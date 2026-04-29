@@ -2,82 +2,122 @@
     <x-slot name="header">
         @section('title', ' | Daftar Jadwal')
 
-        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
             <div>
-                <h2 class="text-xl font-semibold text-gray-800">
+                <h2 class="text-2xl font-bold text-gray-800 dark:text-white">
                     Ploting Jadwal Guru
                 </h2>
-                <p class="text-sm text-gray-500">
-                    Kelola jadwal mengajar guru per periode
+                <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                    Kelola pembagian jadwal mengajar guru per periode akademik
                 </p>
             </div>
 
-            <!-- ACTION -->
             <div class="flex gap-2">
                 <a href="#"
-                    class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl text-sm shadow transition">
-                    + Tambah Jadwal
+                    class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl shadow-sm transition text-sm font-medium">
+                    <span>+</span>
+                    Tambah Jadwal
+                </a>
+
+                <a href="{{ url()->current() }}"
+                    class="inline-flex items-center gap-2 px-4 py-2 bg-white border hover:bg-gray-50 text-gray-700 rounded-xl shadow-sm transition text-sm font-medium">
+                    Refresh
                 </a>
             </div>
         </div>
     </x-slot>
 
-    <!-- CONTENT -->
-    <div class="p-4 space-y-5">
+    <div class="p-4 space-y-6">
 
-        <!-- ALERT -->
+        {{-- ALERT --}}
         @if (session('update'))
-        <div class="flex items-center gap-2 bg-blue-50 border border-blue-200 text-blue-700 px-4 py-3 rounded-xl text-sm shadow-sm">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M13 16h-1v-4h-1m1-4h.01M12 2a10 10 0 100 20 10 10 0 000-20z" />
-            </svg>
-            {{ session('update') }}
+        <div class="flex items-start gap-3 bg-blue-50 border border-blue-200 text-blue-800 px-4 py-3 rounded-xl shadow-sm">
+            <div class="mt-0.5">
+                ✅
+            </div>
+            <div>
+                <p class="font-medium">Berhasil</p>
+                <p class="text-sm">{{ session('update') }}</p>
+            </div>
         </div>
-        <meta http-equiv="refresh" content="5">
+        <meta http-equiv="refresh" content="4">
         @endif
 
-        <!-- CARD TABLE -->
-        <div class="bg-white rounded-2xl shadow-md border border-gray-100">
+        {{-- SUMMARY CARD --}}
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
 
-            <!-- HEADER CARD -->
-            <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 p-4 border-b">
-                <div>
-                    <h3 class="font-semibold text-gray-800">
-                        Daftar Jadwal Guru
-                    </h3>
-                    <p class="text-xs text-gray-500">
-                        Data jadwal aktif yang telah dibuat
-                    </p>
-                </div>
+            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border p-5">
+                <p class="text-sm text-gray-500">Status</p>
+                <h3 class="text-lg font-semibold text-gray-800 dark:text-white mt-1">
+                    Jadwal Aktif
+                </h3>
+                <p class="text-xs text-green-600 mt-2">
+                    Periode berjalan sedang aktif
+                </p>
+            </div>
 
-                <!-- OPTIONAL ACTION -->
-                <div class="flex gap-2">
-                    <button class="px-3 py-2 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded-lg text-sm">
-                        Refresh
-                    </button>
+            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border p-5">
+                <p class="text-sm text-gray-500">Manajemen</p>
+                <h3 class="text-lg font-semibold text-gray-800 dark:text-white mt-1">
+                    Guru & Mata Pelajaran
+                </h3>
+                <p class="text-xs text-gray-500 mt-2">
+                    Pastikan semua guru sudah diplot
+                </p>
+            </div>
+
+            <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border p-5">
+                <p class="text-sm text-gray-500">Integrasi</p>
+                <h3 class="text-lg font-semibold text-gray-800 dark:text-white mt-1">
+                    Presensi & Laporan
+                </h3>
+                <p class="text-xs text-gray-500 mt-2">
+                    Digunakan untuk laporan akademik
+                </p>
+            </div>
+        </div>
+
+        {{-- TABLE CARD --}}
+        <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-sm border overflow-hidden">
+
+            <div class="px-5 py-4 border-b bg-gray-50 dark:bg-gray-900">
+                <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+                    <div>
+                        <h3 class="font-semibold text-gray-800 dark:text-white">
+                            Daftar Jadwal Guru
+                        </h3>
+                        <p class="text-sm text-gray-500 dark:text-gray-400">
+                            Jadwal yang sudah dibuat dan aktif pada periode ini
+                        </p>
+                    </div>
+
+                    <div class="text-xs px-3 py-1 bg-green-100 text-green-700 rounded-full w-fit">
+                        Data aktif
+                    </div>
                 </div>
             </div>
 
-            <!-- BODY -->
             <div class="p-4">
-                <div class="overflow-x-auto rounded-xl border">
+                <div class="overflow-x-auto rounded-xl border border-gray-200 dark:border-gray-700">
                     <livewire:list-jadwal-guru />
                 </div>
             </div>
-
         </div>
 
-        <!-- INFO -->
-        <div class="bg-gradient-to-r from-yellow-50 to-yellow-100 border border-yellow-200 rounded-2xl p-5 text-sm text-gray-700 shadow-sm">
-            <p class="font-semibold mb-2 text-yellow-800">Keterangan:</p>
-            <ul class="list-disc ml-5 space-y-1">
-                <li>Digunakan untuk mengatur jadwal mengajar guru setiap periode.</li>
-                <li>Pastikan guru sudah memiliki penugasan aktif.</li>
-                <li>Data ini akan digunakan dalam sistem presensi dan laporan.</li>
+        {{-- INFORMATION --}}
+        <div
+            class="bg-gradient-to-r from-amber-50 to-yellow-50 border border-yellow-200 rounded-2xl p-5 shadow-sm">
+
+            <h4 class="font-semibold text-yellow-800 mb-3">
+                Informasi Sistem
+            </h4>
+
+            <ul class="space-y-2 text-sm text-gray-700">
+                <li>• Digunakan untuk mengatur jadwal mengajar guru setiap periode akademik.</li>
+                <li>• Pastikan guru, kelas, dan mata pelajaran sudah lengkap sebelum generate nilai.</li>
+                <li>• Data jadwal akan digunakan untuk presensi, nilai, dan laporan akademik.</li>
             </ul>
         </div>
 
     </div>
-
 </x-app-layout>

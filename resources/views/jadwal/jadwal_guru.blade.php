@@ -5,7 +5,7 @@
         <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
             <div>
                 <h2 class="text-xl font-semibold text-gray-800">
-                    Edit Jadwal Guru
+                    Tambah Jadwal Guru
                 </h2>
                 <p class="text-sm text-gray-500">
                     Atur pengajar dan mata pelajaran
