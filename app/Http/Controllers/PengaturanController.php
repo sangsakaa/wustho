@@ -60,12 +60,12 @@ class PengaturanController extends Controller
                 'asramasiswa',
                 'lulusan',
                 'nominasi'
-            ])
-            ->orderBy('periode', 'asc')
+        ])
             ->get()
-            ->sortBy(function ($item) {
-                return $item->semester->semester;
-            });
+            ->sortBy([
+                ['periode', 'desc'],
+                fn($item) => $item->semester->semester
+            ]);
 
         return view('pengaturan.periode', [
             'periode' => $periode,
@@ -416,5 +416,52 @@ class PengaturanController extends Controller
         // Redirect back after deletion
         return redirect()->back()->with('success', 'Records deleted successfully');
     }
-    
+    public function generatePeriode()
+    {
+        // 🔥 ambil periode terakhir
+        $lastPeriode = Periode::orderByDesc('periode')->first();
+
+        if (!$lastPeriode) {
+            return back()->with('error', 'Data periode belum ada');
+        }
+
+        // ambil tahun dari periode terakhir
+        $lastYear = (int) substr($lastPeriode->periode, 0, 4);
+
+        // 🔥 ambil hijriyah terakhir
+        $lastHijriyah = (int) $lastPeriode->tahun_hijriyah;
+
+        // 🔥 next tahun akademik (1 saja)
+        $tahun = $lastYear + 1;
+
+        $periodeText = $tahun . '/' . ($tahun + 1);
+
+        // 🔥 hijriyah naik 1 dari data terakhir
+        $tahunHijriyah = $lastHijriyah + 1;
+
+        $semesterList = Semester::whereIn('ket_semester', ['Ganjil', 'Genap'])->get();
+
+        DB::transaction(function () use ($periodeText, $tahunHijriyah, $semesterList) {
+
+            foreach ($semesterList as $semester) {
+
+                $exists = Periode::where('periode', $periodeText)
+                    ->where('semester_id', $semester->id)
+                    ->exists();
+
+                if (!$exists) {
+
+                    Periode::create([
+                        'periode' => $periodeText,
+                        'semester_id' => $semester->id,
+                        'tanggal_mulai' => now(),
+                        'tahun_hijriyah' => $tahunHijriyah,
+                        'is_active' => 0,
+                    ]);
+                }
+            }
+        });
+
+        return back()->with('success', 'Periode + Hijriyah berhasil naik 1 tahun!');
+    }
 }

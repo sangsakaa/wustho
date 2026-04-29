@@ -22,13 +22,14 @@
                     class="px-3 py-1 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300">
                     Pengaturan
                 </a>
+
             </div>
         </div>
 
         {{-- FORM --}}
         <div class="bg-white shadow rounded-xl p-4 space-y-4">
 
-            <form action="{{ url('/periode') }}" method="post" class="space-y-4">
+            <!-- <form action="{{ url('/periode') }}" method="post" class="space-y-4">
                 @csrf
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
@@ -99,7 +100,16 @@
                         Batal
                     </a>
                 </div>
-            </form>
+            </form> -->
+            <div class="bg-white shadow rounded-xl p-4 mb-3">
+                <form action="{{ url('/periode/generate') }}" method="POST">
+                    @csrf
+                    <button type="submit"
+                        class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm">
+                        Generate Periode Otomatis
+                    </button>
+                </form>
+            </div>
 
             {{-- TABLE --}}
             <div class="overflow-x-auto">
@@ -110,7 +120,7 @@
                             <th class="p-2 border">No</th>
                             <th class="p-2 border">Periode</th>
                             <th class="p-2 border">Semester</th>
-                            <th class="p-2 border">Keterangan</th>
+
                             <th class="p-2 border">Hijriyah</th>
                             <th class="p-2 border">Status</th>
                             <th class="p-2 border">Hapus</th>
@@ -124,7 +134,19 @@
                             <td class="border text-center">{{ $loop->iteration }}</td>
 
                             <td class="border text-center font-medium">
-                                {{ $list->periode }}
+                                <div class="flex items-center justify-center gap-2">
+                                    <span>{{ $list->periode }}</span>
+
+                                    @if(strtolower($list->semester->ket_semester) == 'ganjil')
+                                    <span class="px-2 py-1 text-xs rounded-full bg-blue-100 text-blue-700 font-medium">
+                                        Ganjil
+                                    </span>
+                                    @else
+                                    <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-700 font-medium">
+                                        Genap
+                                    </span>
+                                    @endif
+                                </div>
                             </td>
 
                             <td class="border text-center">
@@ -132,9 +154,7 @@
                             </td>
 
 
-                            <td class="border text-center">
-                                {{ $list->semester->ket_semester }}
-                            </td>
+
 
                             <td class="border text-center">
                                 {{ $list->tahun_hijriyah }}

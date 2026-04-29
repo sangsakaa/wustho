@@ -311,6 +311,7 @@ Route::delete('daftar-nominasi/{daftar_Nominasi}', [SeleksiController::class, 'd
 
 Route::get('/periode/{id}', [PengaturanController::class, 'detailPeriode']);
 Route::delete('/periode/{id}', [PengaturanController::class, 'deleteperiode']);
+Route::post('/periode/generate', [PengaturanController::class, 'generatePeriode']);
 
 // Controller Pararel
 // 3
