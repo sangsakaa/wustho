@@ -59,7 +59,12 @@ class PengaturanController extends Controller
             'asramasiswa',
             'lulusan',
             'nominasi'
-        ])->get();
+        ])
+            ->join('semester', 'periode.semester_id', '=', 'semester.id')
+            ->orderBy('periode.periode', 'asc')
+            ->orderBy('semester.semester', 'asc')
+            ->select('periode.*')
+            ->get();
 
         return view('pengaturan.periode', [
             'periode' => $periode,
