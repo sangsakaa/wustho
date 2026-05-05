@@ -38,6 +38,7 @@
                     Cari
                 </button>
             </form>
+
         </div>
 
         <!-- STAT CARD -->
@@ -87,7 +88,14 @@
                 class="px-4 py-2 rounded-lg {{ $tab == 'semua' ? 'bg-blue-600 text-white' : 'bg-gray-200' }}">
                 Semua
             </a>
-
+            <form action="/guru/generate-kolektif-nig" method="POST">
+                @csrf
+                <button type="submit"
+                    onclick="return confirm('Generate semua NIG guru yang belum punya?')"
+                    class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg shadow">
+                    Generate Kolektif NIG
+                </button>
+            </form>
         </div>
 
         <!-- TABLE -->

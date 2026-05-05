@@ -15,7 +15,9 @@
             <a href="/manajemen-user" class=" bg-sky-400 py-1 px-4 rounded-md text-white hover:bg-purple-500">ListUsers</a>
             <a href="/HasRole" class=" bg-sky-400 py-1 px-4 rounded-md text-white hover:bg-purple-500">Has Role</a>
             <button class=" text-white rounded-md  bg-green-800 px-2 py-1 " onclick="printContent('div1')">Cetak Akun Guru</button>
+
           </div>
+
           <script>
             function printContent(el) {
               var fullbody = document.body.innerHTML;

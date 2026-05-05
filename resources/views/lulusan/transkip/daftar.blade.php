@@ -1,126 +1,175 @@
 <x-app-layout>
     <x-slot name="header">
         @section('title', ' | Data Nilai Transkip')
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            Dashboard Data Nilai Transkip
-        </h2>
+        <div>
+            <h2 class="text-2xl font-bold text-gray-800">
+                Dashboard Nilai Transkip
+            </h2>
+            <p class="text-sm text-gray-500">
+                Input dan pengelolaan nilai akhir peserta lulusan
+            </p>
+        </div>
     </x-slot>
 
-    <div class="px-3 py-3 space-y-3">
+    <div class="max-w-7xl mx-auto px-4 py-6 space-y-6">
 
-        <!-- MENU -->
-        <div class="bg-white shadow-sm rounded-lg p-3 flex flex-wrap gap-2">
-            <a href="/periode" class="px-3 py-1 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+        {{-- NAVIGATION --}}
+        <div class="bg-white border border-gray-100 rounded-2xl shadow-sm p-4 flex flex-wrap gap-3">
+            <a href="/periode"
+                class="px-4 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition font-medium">
                 Periode
             </a>
-            <a href="/pengaturan" class="px-3 py-1 bg-gray-600 text-white rounded-md hover:bg-gray-700">
+
+            <a href="/pengaturan"
+                class="px-4 py-2 bg-slate-600 text-white rounded-xl hover:bg-slate-700 transition font-medium">
                 Pengaturan
             </a>
-            <a href="/daftar-transkip" class="px-3 py-1 bg-green-600 text-white rounded-md hover:bg-green-700">
+
+            <a href="/daftar-transkip"
+                class="px-4 py-2 bg-emerald-600 text-white rounded-xl hover:bg-emerald-700 transition font-medium">
                 Daftar Transkip
             </a>
         </div>
 
-        <!-- INFO -->
-        <div class="bg-white shadow-sm rounded-lg p-4 grid grid-cols-1 md:grid-cols-2 gap-3">
-            <div>
+        {{-- INFO CARD --}}
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="bg-white border border-gray-100 rounded-2xl shadow-sm p-5">
                 <p class="text-sm text-gray-500">Mata Pelajaran</p>
-                <p class="font-semibold text-lg text-gray-800">
+                <h3 class="text-xl font-bold text-gray-800 mt-1">
                     {{ $dataTranskip->mapel }}
-                </p>
-            </div>
-            <div>
-                <p class="text-sm text-gray-500">Jenis Ujian</p>
-                <p class="font-semibold text-lg text-gray-800">
-                    {{ $dataTranskip->nama_ujian }}
-                </p>
-            </div>
-        </div>
-
-        <!-- FORM NILAI -->
-        <div class="bg-white shadow-sm rounded-lg">
-            <div class="p-4 border-b">
-                <h3 class="font-semibold text-gray-700">
-                    Input Nilai Peserta
                 </h3>
             </div>
 
-            <div class="p-4 overflow-x-auto">
+            <div class="bg-white border border-gray-100 rounded-2xl shadow-sm p-5">
+                <p class="text-sm text-gray-500">Jenis Ujian</p>
+                <h3 class="text-xl font-bold text-gray-800 mt-1">
+                    {{ $dataTranskip->nama_ujian }}
+                </h3>
+            </div>
+        </div>
 
-                <form action="/nilai_transkip/{{ $transkip->id }}" method="POST">
-                    @csrf
+        {{-- ALERT --}}
+        <div class="bg-amber-50 border border-amber-200 rounded-2xl p-4">
+            <div class="flex gap-3">
+                <span class="text-xl">📌</span>
+                <div>
+                    <h4 class="font-semibold text-amber-800">
+                        Ketentuan Input Nilai
+                    </h4>
+                    <p class="text-sm text-amber-700 mt-1">
+                        Nilai hanya diperbolehkan pada rentang
+                        <span class="font-bold">50 - 100</span>.
+                        Nilai di luar rentang akan ditolak sistem.
+                    </p>
+                </div>
+            </div>
+        </div>
 
-                    <!-- ACTION -->
-                    <div class="flex justify-between mb-3">
-                        <div class="text-sm text-gray-500">
-                            Isi nilai dengan rentang <span class="font-semibold text-red-500">65 - 100</span>
-                        </div>
-                        <div class="flex gap-2">
-                            <a href="/daftar-transkip"
-                                class="px-3 py-1 bg-gray-500 text-white rounded-md hover:bg-gray-600">
-                                Kembali
-                            </a>
-                            <button type="submit"
-                                class="px-4 py-1 bg-blue-600 text-white rounded-md hover:bg-blue-700">
-                                Simpan
-                            </button>
-                        </div>
+        {{-- ERROR / SUCCESS --}}
+        @if(session('success'))
+        <div class="bg-green-50 border border-green-200 text-green-700 rounded-xl p-4">
+            {{ session('success') }}
+        </div>
+        @endif
+
+        @if($errors->any())
+        <div class="bg-red-50 border border-red-200 text-red-700 rounded-xl p-4">
+            <ul class="list-disc ml-5 text-sm space-y-1">
+                @foreach($errors->all() as $error)
+                <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+        @endif
+
+        {{-- FORM --}}
+        <form action="/nilai_transkip/{{ $transkip->id }}" method="POST">
+            @csrf
+            <input type="hidden" name="transkip_id" value="{{ $transkip->id }}">
+
+            <div class="bg-white border border-gray-100 rounded-2xl shadow-sm overflow-hidden">
+
+                <div class="px-5 py-4 border-b flex justify-between items-center">
+                    <h3 class="font-semibold text-gray-800">
+                        Input Nilai Peserta
+                    </h3>
+
+                    <div class="flex gap-2">
+                        <a href="/daftar-transkip"
+                            class="px-4 py-2 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200 font-medium">
+                            Kembali
+                        </a>
+
+                        <button type="submit"
+                            class="px-5 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 font-medium shadow-sm">
+                            Simpan Nilai
+                        </button>
                     </div>
+                </div>
 
-                    <input type="hidden" name="transkip_id" value="{{ $transkip->id }}">
-
-                    <!-- TABLE -->
-                    <table class="w-full border text-sm">
-                        <thead class="bg-gray-100 text-gray-700 uppercase text-xs">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+                        <thead class="bg-slate-50 text-slate-600 uppercase text-xs">
                             <tr>
-                                <th class="border px-2 py-2 w-10">No</th>
-                                <th class="border px-2 py-2 text-left">Nama Peserta</th>
-                                <th class="border px-2 py-2 text-center w-20">Kelas</th>
-                                <th class="border px-2 py-2 text-center w-32">Nilai Akhir</th>
+                                <th class="px-4 py-1 text-center">No</th>
+                                <th class="px-4 py-1 text-left">Nama Peserta</th>
+                                <th class="px-4 py-1 text-center">Kelas</th>
+                                <th class="px-4 py-1 text-center">Nilai Akhir</th>
                             </tr>
                         </thead>
-                        <tbody>
+
+                        <tbody class="divide-y divide-gray-100">
                             @forelse($dataLulusan as $item)
                             <tr class="hover:bg-gray-50">
-                                <td class="border px-2 py-1 text-center">
+                                <td class="px-4 py-1 text-center">
                                     {{ $loop->iteration }}
                                 </td>
 
-                                <td class="border px-2 py-1 capitalize">
+                                <td class="px-4 py-1">
                                     <input type="hidden" name="daftar_lulusan_id[]" value="{{ $item->id }}">
-                                    <input type="hidden" name="nilai_transkip_id[{{ $item->id }}]" value="{{ $item->nilai_transkip_id }}">
-                                    {{ strtolower($item->nama_siswa) }}
+                                    <input type="hidden"
+                                        name="nilai_transkip_id[{{ $item->id }}]"
+                                        value="{{ $item->nilai_transkip_id }}">
+
+                                    <span class="capitalize font-medium text-gray-700">
+                                        {{ strtolower($item->nama_siswa) }}
+                                    </span>
                                 </td>
 
-                                <td class="border px-2 py-1 text-center">
+                                <td class="px-4 py-1 text-center">
                                     {{ $item->nama_kelas }}
                                 </td>
 
-                                <td class="border px-2 py-1">
+                                <td class="px-4 py-1">
                                     <input
                                         type="number"
                                         name="nilai_akhir[{{ $item->id }}]"
-                                        value="{{ $item->nilai_akhir }}"
-                                        min="65"
+                                        value="{{ old('nilai_akhir.' . $item->id, $item->nilai_akhir) }}"
+                                        min="50"
                                         max="100"
-                                        class="w-full border rounded px-2 py-1 text-center focus:ring focus:ring-blue-200"
-                                        placeholder="65 - 100"
-                                        required>
+                                        placeholder="50 - 100"
+                                        class="w-28 mx-auto block rounded-xl border-gray-300 text-center
+                                        focus:border-blue-500 focus:ring-blue-500
+                                        @error('nilai_akhir.' . $item->id) border-red-500 @enderror">
+
+                                    @error('nilai_akhir.' . $item->id)
+                                    <p class="text-xs text-red-500 text-center mt-1">
+                                        {{ $message }}
+                                    </p>
+                                    @enderror
                                 </td>
                             </tr>
                             @empty
                             <tr>
-                                <td colspan="4" class="text-center py-4 text-red-500 font-semibold">
+                                <td colspan="4" class="py-8 text-center text-gray-400">
                                     Belum ada data peserta lulusan
                                 </td>
                             </tr>
                             @endforelse
                         </tbody>
                     </table>
-
-                </form>
+                </div>
             </div>
-        </div>
-
+        </form>
     </div>
 </x-app-layout>

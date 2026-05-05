@@ -16,6 +16,14 @@ class TranskipController
 {
     public function index()
     {
+        $periodeAktif = Periode::query()
+            ->join('semester', 'semester.id', '=', 'periode.semester_id')
+            ->where('periode.id', session('periode_id'))
+            ->select('periode.id', 'periode.periode', 'semester.ket_semester')
+            ->first();
+
+        $isGenap = strtolower($periodeAktif->ket_semester ?? '') === 'genap';
+
         $kelasMi = Kelasmi::query()
             ->join('kelas', 'kelas.id', '=', 'kelasmi.kelas_id')
             ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
@@ -23,65 +31,61 @@ class TranskipController
             ->where('kelasmi.periode_id', session('periode_id'))
             ->select('kelasmi.id', 'kelas', 'nama_kelas', 'ket_semester', 'periode')
             ->where('kelas.kelas', 3)
+            ->orderBy('nama_kelas')
+            ->get();
 
-            ->orderby('nama_kelas')->get();
         $dataPeriode = Periode::query()
             ->join('semester', 'semester.id', '=', 'periode.semester_id')
             ->select('periode.periode', 'ket_semester', 'periode.id')
             ->where('periode.id', session('periode_id'))
-            ->orderby('ket_semester', 'desc')
-        ->get();
+            ->get();
+
         $dataMapel = Mapel::query()
             ->join('kelas', 'kelas.id', '=', 'mapel.kelas_id')
-            // ->join('kelasmi', 'kelas.id', '=', 'kelasmi.kelas_id')
             ->join('periode', 'periode.id', '=', 'mapel.periode_id')
             ->join('semester', 'semester.id', '=', 'periode.semester_id')
+            ->where('periode.id', session('periode_id'))
             ->select(
                 'kelas.kelas',
                 'mapel.mapel',
                 'mapel.id',
                 'periode.periode',
-                'ket_semester',
-            // 'nama_kelas'
-            )
-            // ->where('mapel.periode_id', session('periode_id'))
+            'ket_semester',
+        )
             ->where('kelas.kelas', 3)
-            ->orderby('mapel.mapel')
-            // ->orderby('kelasmi.nama_kelas')
+            ->orderBy('mapel.mapel')
             ->get();
+
         $dataJenisUjian = Jenis_Ujian::all();
+
         $dataTranskip = Transkip::query()
             ->join('periode', 'periode.id', '=', 'transkip.periode_id')
             ->join('semester', 'semester.id', '=', 'periode.semester_id')
             ->join('jenis_ujian', 'jenis_ujian.id', '=', 'transkip.jenis_ujian_id')
             ->join('mapel', 'mapel.id', '=', 'transkip.mapel_id')
-            ->leftjoin('kelasmi', 'kelasmi.id', '=', 'transkip.kelasmi_id')
+            ->leftJoin('kelasmi', 'kelasmi.id', '=', 'transkip.kelasmi_id')
             ->join('kelas', 'kelas.id', '=', 'mapel.kelas_id')
-            ->select(
-                [
-                    'periode.periode',
-                    'ket_semester',
-                    'nama_ujian',
-                    'mapel', 'kelas',
-                    'transkip.id',
-                    'kelasmi.nama_kelas',
-                ]
-            )
+            ->select([
+                'periode.periode',
+                'ket_semester',
+                'nama_ujian',
+            'mapel',
+            'kelas',
+            'transkip.id',
+            'kelasmi.nama_kelas',
+        ])
             ->where('transkip.periode_id', session('periode_id'))
-            // ->orderby('nama_ujian')
-            ->orderby('kelasmi.nama_kelas')
-        ->paginate(8);
-        return view(
-            'lulusan.transkip.index',
-            [
-                'dataPeriode' => $dataPeriode,
-                'dataMapel' => $dataMapel,
-                'dataJenisUjian' => $dataJenisUjian,
-                'dataTranskip' => $dataTranskip,
-                'kelasMi' => $kelasMi,
+            ->orderBy('kelasmi.nama_kelas')
+            ->paginate(8);
 
-            ]
-        );
+        return view('lulusan.transkip.index', [
+            'dataPeriode' => $dataPeriode,
+            'dataMapel' => $dataMapel,
+            'dataJenisUjian' => $dataJenisUjian,
+            'dataTranskip' => $dataTranskip,
+            'kelasMi' => $kelasMi,
+            'isGenap' => $isGenap,
+        ]);
     }
     public function store(Request $request)
     {

@@ -38,64 +38,77 @@ class NilaiController extends Controller
             ->count();
 
         $note = null;
+        $canProcess = true;
 
         if ($jumlahJadwal == 0) {
-            $note = 'Jadwal untuk periode ini belum dibuat.';
+            $note = 'Jadwal untuk periode ini belum dibuat. Silakan buat jadwal terlebih dahulu.';
+            $canProcess = false;
         } elseif ($jadwalBelumLengkap > 0) {
             $note = "Masih ada {$jadwalBelumLengkap} jadwal yang belum memiliki guru/mapel.";
+            $canProcess = false;
         }
+
         $dataMapel = Mapel::query()
             ->join('kelas', 'kelas.id', '=', 'mapel.kelas_id')
             ->select('mapel.id', 'mapel.mapel', 'kelas.kelas', 'mapel.nama_kitab')
-            ->where('mapel.periode_id', session('periode_id'))
+            ->where('mapel.periode_id', $periodeId)
             ->orderBy('kelas.kelas')
             ->orderBy('mapel.mapel')
-        ->get();
-        $datSmt = Semester::query()
-            // ->join('periode', 'periode.id', '=', 'semester.periode_id')
             ->get();
-        $dataGuru = Guru::orderBy('nama_guru')->where('status', 'aktif')->get();
+
+        $datSmt = Semester::all();
+
+        $dataGuru = Guru::orderBy('nama_guru')
+            ->where('status', 'Aktif')
+            ->get();
+
         $dataKelas = Kelasmi::query()
             ->join('periode', 'periode.id', 'kelasmi.periode_id')
             ->join('semester', 'semester.id', 'periode.semester_id')
-            ->select('kelasmi.id', 'kelasmi.nama_kelas', 'periode.periode', 'semester.ket_semester')
-            ->where('kelasmi.periode_id', session('periode_id'))
+            ->select(
+                'kelasmi.id',
+                'kelasmi.nama_kelas',
+                'periode.periode',
+                'semester.ket_semester'
+            )
+            ->where('kelasmi.periode_id', $periodeId)
             ->orderBy('kelasmi.nama_kelas')
             ->get();
+
         $dataJumlahPeserta = Kelasmi::query()
-            ->select(['kelasmi.id', DB::raw('count(pesertakelas.id) as jumlah_peserta_kelas')])
+            ->select([
+                'kelasmi.id',
+                DB::raw('count(pesertakelas.id) as jumlah_peserta_kelas')
+            ])
             ->join('pesertakelas', 'pesertakelas.kelasmi_id', '=', 'kelasmi.id')
             ->groupBy('kelasmi.id');
+
         $data = Nilaimapel::query()
-            ->leftjoin('kelasmi', 'kelasmi.id', '=', 'nilaimapel.kelasmi_id')
-            ->leftjoin('periode', 'periode.id', '=', 'kelasmi.periode_id')
-            ->leftjoin('semester', 'semester.id', '=', 'periode.semester_id')
-            ->leftjoin('kelas', 'kelas.id', '=', 'kelasmi.kelas_id')
-            ->leftjoin('mapel', 'mapel.id', '=', 'nilaimapel.mapel_id')
-            ->leftjoin('guru', 'guru.id', '=', 'nilaimapel.guru_id')
-            ->leftjoin('nilai', 'nilai.nilaimapel_id', '=', 'nilaimapel.id')
-            ->leftJoinSub(
-                $dataJumlahPeserta,
-                'datajumlahpeserta',
-                function ($join) {
-                    $join->on('kelasmi.id', '=', 'datajumlahpeserta.id');
-                }
-            )
+            ->leftJoin('kelasmi', 'kelasmi.id', '=', 'nilaimapel.kelasmi_id')
+            ->leftJoin('periode', 'periode.id', '=', 'kelasmi.periode_id')
+            ->leftJoin('semester', 'semester.id', '=', 'periode.semester_id')
+            ->leftJoin('kelas', 'kelas.id', '=', 'kelasmi.kelas_id')
+            ->leftJoin('mapel', 'mapel.id', '=', 'nilaimapel.mapel_id')
+            ->leftJoin('guru', 'guru.id', '=', 'nilaimapel.guru_id')
+            ->leftJoin('nilai', 'nilai.nilaimapel_id', '=', 'nilaimapel.id')
+            ->leftJoinSub($dataJumlahPeserta, 'datajumlahpeserta', function ($join) {
+                $join->on('kelasmi.id', '=', 'datajumlahpeserta.id');
+        })
             ->selectRaw('
-    nilaimapel.id,
-    kelas.kelas,
-    nama_kelas,
-    semester.semester,
-    semester.ket_semester,
-    guru.nama_guru,
-    mapel.mapel,
-    kelasmi.periode_id,
-    periode.periode,
-    count(nilai.nilai_harian) as jumlah_nilai_harian,
-    count(nilai.nilai_ujian) as jumlah_nilai_ujian,
-    COALESCE(jumlah_peserta_kelas, 0) as jumlah_peserta_kelas
-')
-            ->where('kelasmi.periode_id', session('periode_id'))
+            nilaimapel.id,
+            kelas.kelas,
+            nama_kelas,
+            semester.semester,
+            semester.ket_semester,
+            guru.nama_guru,
+            mapel.mapel,
+            kelasmi.periode_id,
+            periode.periode,
+            count(nilai.nilai_harian) as jumlah_nilai_harian,
+            count(nilai.nilai_ujian) as jumlah_nilai_ujian,
+            COALESCE(jumlah_peserta_kelas, 0) as jumlah_peserta_kelas
+        ')
+            ->where('kelasmi.periode_id', $periodeId)
             ->groupBy(
                 'nilaimapel.id',
                 'kelas.kelas',
@@ -109,27 +122,25 @@ class NilaiController extends Controller
                 'jumlah_peserta_kelas'
             )
             ->orderBy('nama_kelas');
+
         if (request('cari')) {
             $data->where(function ($query) {
                 $query->where('nama_kelas', 'like', '%' . request('cari') . '%')
-                ->orWhere('ket_semester', 'like', '%' . request('cari') . '%')
-                ->orWhere('nama_kelas', 'like', '%' . request('cari') . '%')
-                ->orWhere('nama_guru', 'like', '%' . request('cari') . '%')
-                ->orWhere('mapel', 'like', '%' . request('cari') . '%');});
-
+                    ->orWhere('ket_semester', 'like', '%' . request('cari') . '%')
+                    ->orWhere('nama_guru', 'like', '%' . request('cari') . '%')
+                    ->orWhere('mapel', 'like', '%' . request('cari') . '%');
+            });
         }
-        // dd($data);
-        return view(
-            'nilai/nilaimapel',
-            [
-                'data' => $data->paginate(6),
-                'dataGuru' => $dataGuru,
-                'dataKelas' => $dataKelas,
-                'dataSmt' => $datSmt,
-                'dataMapel' => $dataMapel,
-                'note' => $note
-            ]
-        );
+
+        return view('nilai.nilaimapel', [
+            'data' => $data->paginate(6),
+            'dataGuru' => $dataGuru,
+            'dataKelas' => $dataKelas,
+            'dataSmt' => $datSmt,
+            'dataMapel' => $dataMapel,
+            'note' => $note,
+            'canProcess' => $canProcess,
+        ]);
     }
 
     

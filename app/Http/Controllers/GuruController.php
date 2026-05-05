@@ -9,26 +9,24 @@ use App\Models\Periode;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
-
 class GuruController extends Controller
 {
-
     public function index()
     {
-        $tab = request('tab', 'aktif'); // default aktif
+        $tab = request('tab', 'aktif');
 
-        $query = Guru::query()->orderBy('nama_guru');
+        $query = Guru::with(['NigTerakhir'])
+            ->orderBy('nama_guru');
 
-        // TAB FILTER
-        if ($tab == 'aktif') {
-            $query->where('status', 'Aktif');
-        } elseif ($tab == 'nonaktif') {
-            $query->where('status', 'Non Aktif');
-        } elseif ($tab == 'cuti') {
-            $query->where('status', 'Cuti');
-        }
+        // filter status
+        match ($tab) {
+            'aktif' => $query->where('status', 'Aktif'),
+            'nonaktif' => $query->where('status', 'Non Aktif'),
+            'cuti' => $query->where('status', 'Cuti'),
+            default => null
+        };
 
-        // SEARCH
+        // search
         if (request('cari')) {
             $query->where('nama_guru', 'like', '%' . request('cari') . '%');
         }
@@ -44,33 +42,41 @@ class GuruController extends Controller
             'tab' => $tab,
         ]);
     }
-    
+
     public function create()
     {
-        return view('guru/addGuru');
+        return view('guru.addGuru');
     }
 
-    
     public function store(Request $request)
     {
-        $guru = new Guru();
-        $guru->nama_guru = $request->nama_guru;
-        $guru->jenis_kelamin = $request->jenis_kelamin;
-        $guru->agama = $request->agama;
-        $guru->tempat_lahir = $request->tempat_lahir;
-        $guru->tanggal_lahir = $request->tanggal_lahir;
-        $guru->tanggal_masuk = $request->tanggal_masuk;
-        $guru->status = $request->status;
-        $guru->save();
-        return redirect('guru')->with('success', 'data berhasil ditambahkan');
-    }
+        $request->validate([
+            'nama_guru' => 'required',
+            'jenis_kelamin' => 'required',
+            'agama' => 'required',
+            'tempat_lahir' => 'required',
+            'tanggal_lahir' => 'required',
+            'tanggal_masuk' => 'required',
+            'status' => 'required',
+        ]);
 
+        Guru::create([
+            'nama_guru' => $request->nama_guru,
+            'jenis_kelamin' => $request->jenis_kelamin,
+            'agama' => $request->agama,
+            'tempat_lahir' => $request->tempat_lahir,
+            'tanggal_lahir' => $request->tanggal_lahir,
+            'tanggal_masuk' => $request->tanggal_masuk,
+            'status' => $request->status,
+        ]);
+
+        return redirect('/guru')->with('success', 'Data guru berhasil ditambahkan');
+    }
 
     public function show(Request $request, Guru $guru)
     {
         $periodeId = $request->get('periode_id') ?? session('periode_id');
 
-        // 🔥 ambil daftar periode untuk filter
         $daftarPeriode = Periode::orderBy('periode', 'desc')->get();
 
         $riwayatMengajar = Nilaimapel::query()
@@ -79,13 +85,11 @@ class GuruController extends Controller
             ->leftJoin('semester', 'semester.id', '=', 'periode.semester_id')
             ->leftJoin('kelas', 'kelas.id', '=', 'kelasmi.kelas_id')
             ->leftJoin('mapel', 'mapel.id', '=', 'nilaimapel.mapel_id')
-            ->leftJoin('guru', 'guru.id', '=', 'nilaimapel.guru_id')
             ->select([
                 'nilaimapel.id',
                 'kelasmi.nama_kelas',
                 'periode.periode',
-                'semester.ket_semester',
-                'guru.nama_guru',
+            'semester.ket_semester',
                 'mapel.mapel',
                 'mapel.nama_kitab',
             ])
@@ -105,65 +109,123 @@ class GuruController extends Controller
         ]);
     }
 
-   
     public function edit(Guru $guru)
     {
-        return view('guru/edit', ['guru' => $guru]);
+        return view('guru.edit', compact('guru'));
+    }
+
+    public function update(Request $request, Guru $guru)
+    {
+        $guru->update([
+            'nama_guru' => $request->nama_guru,
+            'jenis_kelamin' => $request->jenis_kelamin,
+            'agama' => $request->agama,
+            'tempat_lahir' => $request->tempat_lahir,
+            'tanggal_lahir' => $request->tanggal_lahir,
+            'tanggal_masuk' => $request->tanggal_masuk,
+            'status' => $request->status,
+        ]);
+
+        return redirect('/guru')->with('update', 'Data berhasil diperbarui');
+    }
+
+    public function destroy(Guru $guru)
+    {
+        $guru->delete();
+
+        return redirect()->back()->with('delete', 'Data guru berhasil dihapus');
     }
 
     /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * halaman daftar NIG guru
      */
-    public function update(Request $request, Guru $guru)
-    {
-        Guru::where('id', $guru->id)
-            ->update([
-                'nama_guru' => $request->nama_guru,
-                'jenis_kelamin' => $request->jenis_kelamin,
-                'agama' => $request->agama,
-                'tempat_lahir' => $request->tempat_lahir,
-                'tanggal_lahir' => $request->tanggal_lahir,
-                'tanggal_masuk' => $request->tanggal_masuk,
-            'status' => $request->status,
-            ]);
-        return redirect('/guru')->with('update', 'pembaharuan data berhasil');
-    }
-    public function destroy(Guru $guru)
-    {
-        Guru::destroy($guru->id);
-        return redirect()->back()->with('delete', 'data guru berhasil dihapus');
-    }
-    // Nis
     public function NIS(Guru $guru)
     {
-        $dataGuru = Guru::find($guru->id)->first();
-        $NIG = Nig::where('guru_id', $guru->id)->get();
-        return view(
-            'guru.nig.index',
-            [
-                'guru' => $guru,
-                'dataGuru' => $dataGuru,
-                'dataNIG' => $NIG,
-            ]
-        );
-    }
-    public function nisGuru(Request $request)
-    {
-        $nig = new Nig();
-        $nig->nig = $request->nig;
-        $nig->guru_id = $request->guru_id;
-        $nig->jenjang_id = $request->jenjang_id;
-        $nig->save();
-        return redirect()->back();
-    }
-    public function destroyNig(Nig $nig)
-    {
-        Nig::destroy($nig->id);
-        return redirect()->back();
+        $dataNIG = Nig::where('guru_id', $guru->id)->latest()->get();
+
+        return view('guru.nig.index', [
+            'guru' => $guru,
+            'dataGuru' => $guru,
+            'dataNIG' => $dataNIG,
+        ]);
     }
 
+    /**
+     * simpan NIG otomatis
+     */
+    public function storeNig(Request $request)
+    {
+        $request->validate([
+            'guru_id' => 'required|exists:guru,id',
+            'jenjang_id' => 'required',
+        ]);
+
+        Nig::create([
+            'nig' => $this->generateNig($request->jenjang_id),
+            'guru_id' => $request->guru_id,
+            'jenjang_id' => $request->jenjang_id,
+        ]);
+
+        return redirect()->back()->with('success', 'NIG berhasil dibuat');
+    }
+
+    public function destroyNig(Nig $nig)
+    {
+        $nig->delete();
+
+        return redirect()->back()->with('delete', 'NIG berhasil dihapus');
+    }
+
+    /**
+     * generate otomatis NIG
+     * format: YYYYMM + kodeJenjang + urut
+     * contoh: 2026052001
+     */
+    private function generateNig($jenjangId)
+    {
+        $tahun = date('Y');
+        $bulan = date('m');
+
+        $kodeJenjang = match ((int) $jenjangId) {
+            1 => '10',
+            2 => '20',
+            3 => '30',
+            default => '00',
+        };
+
+        $prefix = $tahun . $bulan . $kodeJenjang;
+
+        $lastNig = Nig::where('nig', 'like', $prefix . '%')
+            ->orderBy('nig', 'desc')
+            ->first();
+
+        if ($lastNig) {
+            $lastNumber = (int) substr($lastNig->nig, -2);
+            $newNumber = $lastNumber + 1;
+        } else {
+            $newNumber = 1;
+        }
+
+        return $prefix . str_pad($newNumber, 2, '0', STR_PAD_LEFT);
+    }
+    public function generateKolektifNig()
+    {
+        // ambil semua guru yang belum punya NIG
+        $gurus = Guru::doesntHave('nig')
+            ->whereNotNull('jenjang')
+            ->get();
+
+        foreach ($gurus as $guru) {
+            Nig::create([
+                'nig' => $this->generateNig($guru->jenjang_id),
+                'guru_id' => $guru->id,
+                'jenjang_id' => $guru->jenjang_id,
+            ]);
+        }
+
+        return redirect()->back()->with(
+            'success',
+            $gurus->count() . ' NIG berhasil digenerate'
+        );
+    }
 }

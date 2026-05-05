@@ -1,50 +1,78 @@
 <?php
 
-use App\Models\Mapel;
-use App\Models\Siswa;
-use App\Models\Kelasmi;
-use App\Models\Absensikelas;
-use App\Models\Pesertaasrama;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AbsensikelasController;
+use App\Http\Controllers\Admin\BulkAccountController;
+use App\Http\Controllers\Admin\RoleManagementController;
+use App\Http\Controllers\Admin\UserManagementController;
+use App\Http\Controllers\Admin\UserPermissionController;
+use App\Http\Controllers\AsramaController;
+use App\Http\Controllers\AsramasiswaController;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ExportController;
 use App\Http\Controllers\GuruController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\JabatanController;
+use App\Http\Controllers\JadwalController;
+use App\Http\Controllers\KegiatanController;
 use App\Http\Controllers\KelasController;
+use App\Http\Controllers\KelasmiController;
+use App\Http\Controllers\LulusanCotroller;
 use App\Http\Controllers\MapelController;
 use App\Http\Controllers\NilaiController;
-use App\Http\Controllers\SiswaController;
-use App\Http\Controllers\AsramaController;
-use App\Http\Controllers\ExportController;
-use App\Http\Controllers\JadwalController;
-use App\Http\Controllers\LulusanCotroller;
-use App\Http\Controllers\QrcodeController;
-use App\Http\Controllers\RaportController;
-use App\Http\Controllers\ReportController;
-use App\Http\Controllers\JabatanController;
-use App\Http\Controllers\KelasmiController;
 use App\Http\Controllers\PararelController;
-use App\Http\Controllers\SeleksiController;
-use App\Http\Controllers\KegiatanController;
-use App\Http\Controllers\TranskipController;
-use App\Http\Controllers\UserguruController;
-use App\Http\Controllers\ValidasiController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\PerangkatController;
-use App\Http\Controllers\SesikelasController;
-use App\Http\Controllers\PengaturanController;
-use App\Http\Controllers\RekapAsamaController;
-use App\Http\Controllers\SesiasramaController;
-use App\Http\Controllers\AsramasiswaController;
 use App\Http\Controllers\PelanggaranController;
-use App\Http\Controllers\AbsensikelasController;
+use App\Http\Controllers\PengaturanController;
+use App\Http\Controllers\PerangkatController;
 use App\Http\Controllers\PresensiGuruController;
 use App\Http\Controllers\PresensikelasController;
+use App\Http\Controllers\QrcodeController;
+use App\Http\Controllers\RaportController;
+use App\Http\Controllers\RekapAsamaController;
+use App\Http\Controllers\ReportController;
+use App\Http\Controllers\SeleksiController;
+use App\Http\Controllers\SesiasramaController;
+use App\Http\Controllers\SesikelasController;
 use App\Http\Controllers\SesiPerangkatController;
-use App\Http\Controllers\Auth\RegisteredUserController;
-use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\SiswaController;
+use App\Http\Controllers\TranskipController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserguruController;
+use App\Http\Controllers\ValidasiController;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Route;
 
 // batas
+Route::get('/manajemen-user', [UserManagementController::class, 'index']);
+Route::get('/has-role', [RoleManagementController::class, 'index']);
+Route::post('/roles/assign', [RoleManagementController::class, 'assign']);
+Route::post('/bulk/siswa', [BulkAccountController::class, 'createStudentAccounts']);
+Route::post('/bulk/guru', [BulkAccountController::class, 'createTeacherAccounts']);
+
+Route::get('/register-list', [RegisteredUserController::class, 'index'])->name('register.index');
+Route::get('/register', [RegisteredUserController::class, 'create'])->name('register');
+Route::post('/register', [RegisteredUserController::class, 'store']);
+Route::delete('/register/{user}', [RegisteredUserController::class, 'destroy'])
+    ->name('register.destroy');
+
+Route::middleware(['auth', 'role:admin|super admin'])
+    ->prefix('admin')
+    ->name('admin.')
+    ->group(function () {
+        Route::get('/users', [UserManagementController::class, 'index'])->name('users.index');
+        Route::delete('/users/{user}', [UserManagementController::class, 'destroy'])->name('users.destroy');
+
+        Route::get('/roles', [RoleManagementController::class, 'index'])->name('roles.index');
+        Route::post('/roles/assign', [RoleManagementController::class, 'assign'])->name('roles.assign');
+
+        Route::post('/bulk/siswa', [BulkAccountController::class, 'createStudentAccounts'])->name('bulk.siswa');
+        Route::post('/bulk/guru', [BulkAccountController::class, 'createTeacherAccounts'])->name('bulk.guru');
+    });
+Route::post('/roles/assign', [RoleManagementController::class, 'assign'])
+    ->name('roles.assign');
+
+
+
 Route::get('/manajemen-user', [RegisteredUserController::class, 'index'])->middleware(['auth'])->name('admin');
 Route::get('/userdashboard', [UserController::class, 'DashboardUser'])->middleware(['auth'])->name('userdashboard');
 
@@ -56,11 +84,22 @@ Route::get('/gurudashboard', [UserguruController::class, 'DashboardGuru'])->midd
 Route::get('manajemen', [RegisteredUserController::class, 'manajemen'])->middleware(['auth'])->name('manajemen');
 Route::get('register', [RegisteredUserController::class, 'create'])->middleware(['auth'])->name('register');
 
-Route::get('HasRole', [RegisteredUserController::class, 'HasRole'])->middleware(['auth'])->name('HasRole');
-Route::post('HasRole', [RegisteredUserController::class, 'storeole']);
-Route::post('HasRole', [RegisteredUserController::class, 'storeHasRole']);
+Route::middleware(['auth'])->prefix('has-role')->name('has-role.')->group(function () {
 
-Route::post('admin', [RegisteredUserController::class, 'role_has_permission'])->middleware(['auth']);
+    // halaman utama has role
+    Route::get('/', [RegisteredUserController::class, 'HasRole'])
+        ->name('index');
+
+    // simpan role baru
+    Route::post('/store-role', [RegisteredUserController::class, 'storeRole'])
+        ->name('store-role');
+
+    // assign role ke user
+    Route::post('/assign', [RegisteredUserController::class, 'storeHasRole'])
+        ->name('assign');
+    Route::post('admin', [RegisteredUserController::class, 'role_has_permission'])->middleware(['auth']);
+});
+
 Route::delete('admin/{user}', [RegisteredUserController::class, 'destroy']);
 Route::get('/buatakunsiswa', [RegisteredUserController::class, 'buatAkunSiswa'])->middleware(['auth']);
 Route::get('/buatakunguru', [RegisteredUserController::class, 'buatAkunGuru'])->middleware(['auth']);
@@ -155,6 +194,15 @@ Route::get('guru/{guru}/edit', [GuruController::class, 'edit'])->middleware(['au
 Route::get('nig/{guru}', [GuruController::class, 'NIS'])->middleware(['auth'])->name('nis');
 Route::post('nig/{guru}', [GuruController::class, 'nisGuru'])->middleware(['auth']);
 Route::delete('nig/{nig}', [GuruController::class, 'destroyNig'])->middleware(['auth']);
+Route::post('/guru/nig', [GuruController::class, 'storeNig']);
+Route::post('/guru/generate-kolektif-nig', [GuruController::class, 'generateKolektifNig']);
+Route::get('/admin/user-permissions', [UserPermissionController::class, 'index']);
+Route::post('/admin/user-permissions/{user}', [UserPermissionController::class, 'update']);
+Route::get('/admin/user-permissions', [UserPermissionController::class, 'index'])
+    ->name('admin.permissions.index');
+
+Route::put('/admin/user-permissions/{user}', [UserPermissionController::class, 'update'])
+    ->name('admin.permissions.update');
 
 // sesi Presensi Guru
 Route::get('sesi-presensi-guru', [PresensiGuruController::class, 'index'])->middleware(['auth'])->name('sesi-presensi-guru');
@@ -317,9 +365,6 @@ Route::post('/periode/generate', [PengaturanController::class, 'generatePeriode'
 // 3
 Route::get('juara-pararel', [PararelController::class, 'index'])->middleware(['auth']);
 // 1
-
-
-
 // Laporan Siswa Kelas
 Route::get('Laporan-Kehadiran', [ReportController::class, 'LapKehadiran'])->middleware(['auth'])->name('Laporan-Kehadiran');
 

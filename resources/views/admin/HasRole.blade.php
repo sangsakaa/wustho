@@ -63,39 +63,90 @@
       </div>
 
       {{-- ASSIGN ROLE --}}
-      <div class="bg-white shadow rounded-xl p-5">
-        <h3 class="font-semibold text-lg mb-3 text-gray-700">Assign Role ke User</h3>
+      <div class="bg-white border border-slate-200 shadow-sm rounded-2xl p-6">
+        <div class="mb-6">
+          <h3 class="text-lg font-semibold text-slate-800">
+            Assign Role ke User
+          </h3>
+          <p class="text-sm text-slate-500 mt-1">
+            Pilih role dan user yang akan diberikan akses sistem.
+          </p>
+        </div>
 
-        <form action="/HasRole" method="post" class="space-y-3">
+        <form action="{{ route('has-role.assign') }}" method="POST" class="space-y-5">
           @csrf
 
+          {{-- ROLE --}}
           <div>
-            <label class="text-sm text-gray-600">Pilih Role</label>
-            <select name="role_id"
-              class="w-full border rounded-lg px-3 py-2 focus:ring focus:ring-blue-200">
+            <label for="role_id" class="block text-sm font-medium text-slate-700 mb-2">
+              Pilih Role
+            </label>
+
+            <select
+              id="role_id"
+              name="role_id"
+              class="w-full rounded-xl border-slate-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 text-sm"
+              required>
               <option value="">-- Pilih Role --</option>
-              @foreach($roles as $list)
-              <option value="{{$list->id}}">{{$list->name}}</option>
+              @foreach ($roles as $role)
+              <option value="{{ $role->id }}"
+                {{ old('role_id') == $role->id ? 'selected' : '' }}>
+                {{ $role->name }}
+              </option>
               @endforeach
             </select>
+
+            @error('role_id')
+            <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+            @enderror
           </div>
 
+          {{-- USER --}}
+          <link href="https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.css" rel="stylesheet">
+          <script src="https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js"></script>
           <div>
-            <label class="text-sm text-gray-600">Pilih User</label>
-            <select name="model_id"
-              class="w-full border rounded-lg px-3 py-2 focus:ring focus:ring-blue-200">
+            <label for="model_id" class="block text-sm font-medium text-slate-700 mb-2">
+              Pilih User
+            </label>
+
+            <select
+              id="model_id"
+              name="model_id"
+              class="w-full rounded-xl border-slate-300 shadow-sm"
+              required>
               <option value="">-- Pilih User --</option>
-              @foreach($User as $list)
-              <option value="{{$list->id}}">{{$list->name}}</option>
+              @foreach ($User as $user)
+              <option value="{{ $user->id }}"
+                {{ old('model_id') == $user->id ? 'selected' : '' }}>
+                {{ ucwords(strtolower($user->name)) }}
+              </option>
               @endforeach
             </select>
+
+            @error('model_id')
+            <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+            @enderror
           </div>
+          <script>
+            new TomSelect('#model_id', {
+              create: false,
+              sortField: {
+                field: "text",
+                direction: "asc"
+              },
+              placeholder: "Cari user..."
+            });
+          </script>
 
           <input type="hidden" name="model_type" value="App\Models\User">
 
-          <button class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg">
-            Assign Role
-          </button>
+          {{-- BUTTON --}}
+          <div class="pt-2">
+            <button type="submit"
+              class="inline-flex items-center justify-center px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium transition duration-200 shadow-sm">
+              Assign Role
+            </button>
+          </div>
         </form>
       </div>
     </div>

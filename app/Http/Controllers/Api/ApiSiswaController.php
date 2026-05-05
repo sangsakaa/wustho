@@ -2,16 +2,14 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\Nis;
+
 use App\Models\Siswa;
-use App\Models\Kelasmi;
 use App\Models\Periode;
-use App\Models\Asramasiswa;
 use App\Models\Absensikelas;
 use Illuminate\Http\Request;
 use App\Models\Pesertaasrama;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\DB;
+
 
 class ApiSiswaController
 {

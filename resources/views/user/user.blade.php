@@ -1,74 +1,114 @@
 <x-app-layout>
     <x-slot name="header">
-        @section('title', ' | Profil User' )
-        <h2 class="font-semibold text-xl leading-tight">
-            {{ __('Dashboard Profile User') }}
-        </h2>
-    </x-slot>
-    <div class=" p-2 sm:p-2 sm:flex grid sm:grid-cols-1  grid-cols-1 gap-2 ">
-        <div class=" text-center  sm:text-center    bg-white dark:bg-purple-600 ">
-            <center>
-                <img src={{ asset("asset/images/logo.png") }} alt="" width="200" class=" p-2">
-            </center>
+        @section('title', ' | Profil User')
+
+        <div class="flex flex-col gap-1">
+            <h2 class="text-xl font-bold text-slate-800 dark:text-white">
+                Dashboard Profile User
+            </h2>
+            <p class="text-sm text-slate-500 dark:text-slate-300">
+                Informasi lengkap data siswa
+            </p>
         </div>
-        <div class=" gap-4 bg-white w-full flex grid-cols-2  ">
-            <div class=" w-full grid grid-cols-2 px-2 py-1  ">
-                <div class=" px-1 text-xs sm:text-sm  ">NIM</div>
-                <div class=" px-1 text-xs sm:text-sm  ">: {{$siswa->nis}}</div>
-                <div class=" px-1 text-xs sm:text-sm  ">Nama </div>
-                <div class=" px-1 text-xs sm:text-sm "> : {{$siswa->nama_siswa}}</div>
-                <div class=" px-1 text-xs sm:text-sm  ">Agama </div>
-                <div class=" px-1 text-xs sm:text-sm "> : {{$siswa->agama}}</div>
-                <div class=" px-1 text-xs sm:text-sm ">TTL</div>
-                <div class=" px-1 capitalize text-xs sm:text-sm"> : {{strtolower($siswa->tempat_lahir)}},
-                    {{ \Carbon\Carbon::parse($siswa->tanggal_lahir)->isoFormat(' DD MMMM Y') }}
-                </div>
-                <div class=" px-1 text-xs sm:text-sm ">Asal Kota</div>
-                <div class=" px-1 text-xs sm:text-sm capitalize "> : {{$siswa->kota_asal}}</div>
-                <div class=" px-1 text-xs sm:text-sm ">Kelas</div>
-                <div class=" px-1 text-xs sm:text-sm capitalize "> : @if($siswa->kelasTerakhir)
-                    {{$siswa->kelasTerakhir->KelasMi->nama_kelas}}
-                    @else
-                    <span class=" text-red-600 font-semibold capitalize"> belum ada kelas </span>
-                    @endif
-                </div>
-                <div class=" px-1 text-xs sm:text-sm ">Asrama</div>
-                <div class=" px-1 text-xs sm:text-sm capitalize "> : @if($siswa->asramaTerkhir != null )
-                    {{$siswa->asramaTerkhir->asramaSiswa->asrama->nama_asrama}}
-                    @else
-                    <span class=" text-red-600 font-semibold capitalize"> belum ada asrama </span>
-                    @endif
+    </x-slot>
+
+    <div class="p-3 space-y-4">
+
+        {{-- PROFILE CARD --}}
+        <div class="bg-white dark:bg-dark-bg shadow rounded-2xl overflow-hidden">
+            <div class="p-6 flex flex-col lg:flex-row gap-6 items-center">
+
+                {{-- LOGO / AVATAR --}}
+                <div class="flex-shrink-0">
+                    <img src="{{ asset('asset/images/logo.png') }}"
+                        alt="Logo"
+                        class="w-36 h-36 object-contain mx-auto">
                 </div>
 
+                {{-- DATA SISWA --}}
+                <div class="w-full">
+                    <h1 class="text-xl font-bold text-slate-800 dark:text-white mb-4">
+                        {{ $siswa->nama_siswa }}
+                    </h1>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+
+                        <div class="flex justify-between border-b pb-2">
+                            <span class="font-medium text-slate-600 dark:text-slate-300">NIS</span>
+                            <span>{{ $siswa->nis }}</span>
+                        </div>
+
+                        <div class="flex justify-between border-b pb-2">
+                            <span class="font-medium text-slate-600 dark:text-slate-300">Agama</span>
+                            <span>{{ $siswa->agama }}</span>
+                        </div>
+
+                        <div class="flex justify-between border-b pb-2 sm:col-span-2">
+                            <span class="font-medium text-slate-600 dark:text-slate-300">TTL</span>
+                            <span class="text-right capitalize">
+                                {{ strtolower($siswa->tempat_lahir) }},
+                                {{ \Carbon\Carbon::parse($siswa->tanggal_lahir)->isoFormat('DD MMMM Y') }}
+                            </span>
+                        </div>
+
+                        <div class="flex justify-between border-b pb-2">
+                            <span class="font-medium text-slate-600 dark:text-slate-300">Asal Kota</span>
+                            <span class="capitalize">{{ $siswa->kota_asal }}</span>
+                        </div>
+
+                        <div class="flex justify-between border-b pb-2">
+                            <span class="font-medium text-slate-600 dark:text-slate-300">Kelas</span>
+                            <span class="capitalize">
+                                @if($siswa->kelasTerakhir)
+                                {{ $siswa->kelasTerakhir->KelasMi->nama_kelas }}
+                                @else
+                                <span class="text-red-500 font-semibold">
+                                    Belum ada kelas
+                                </span>
+                                @endif
+                            </span>
+                        </div>
+
+                        <div class="flex justify-between pb-2 sm:col-span-2">
+                            <span class="font-medium text-slate-600 dark:text-slate-300">Asrama</span>
+                            <span class="capitalize text-right">
+                                @if($siswa->asramaTerkhir)
+                                {{ $siswa->asramaTerkhir->asramaSiswa->asrama->nama_asrama }}
+                                @else
+                                <span class="text-red-500 font-semibold">
+                                    Belum ada asrama
+                                </span>
+                                @endif
+                            </span>
+                        </div>
+
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-    <div class=" p-2">
-        <div class=" bg-white p-2 px-2 w-full grid-cols-2 flex gap-2 justify-center sm:justify-start">
-            <div>
-                <a href="/siswa/{{$siswa->id}}/edit" class="     bg-yellow-500  px-2 py-1  text-center">
+
+        {{-- ACTION BUTTON --}}
+        <div class="bg-white dark:bg-dark-bg shadow rounded-2xl p-4">
+            <div class="flex flex-col sm:flex-row gap-3">
+
+                <a href="/siswa/{{ $siswa->id }}/edit"
+                    class="bg-amber-500 hover:bg-amber-600 text-white px-4 py-3 rounded-xl text-center font-medium transition">
                     Update Data Siswa
                 </a>
-            </div>
-            <!-- <div>
-                <a href="/statusanak/{{$siswa->id}}" class=" bg-blue-500 px-2 py-1 hover:bg-purple-500 text-white">
-                    Update
-                </a>
-            </div> -->
-            <div>
 
                 @if ($peserAsrama)
-                <a href="/pesertaasrama/{{$peserAsrama->id}}/edit" class="bg-blue-500 px-2 py-1 hover:bg-purple-500 text-white">
+                <a href="/pesertaasrama/{{ $peserAsrama->id }}/edit"
+                    class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-3 rounded-xl text-center font-medium transition">
                     Update Asrama
                 </a>
                 @else
-                <!-- Handle the case where $peserAsrama is null -->
-                <span class="text-red-500">Asrama information not available</span>
+                <div class="bg-red-50 text-red-600 px-4 py-3 rounded-xl text-center font-medium">
+                    Asrama information not available
+                </div>
                 @endif
-
-
 
             </div>
         </div>
+
     </div>
 </x-app-layout>

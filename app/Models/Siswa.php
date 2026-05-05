@@ -49,10 +49,14 @@ class Siswa extends Model
 
 
     ];
-    
-
-
-
+    public function user()
+    {
+        return $this->hasOne(User::class);
+    }
+    public function nis()
+    {
+        return $this->hasOne(Nis::class, 'siswa_id');
+    }
     public function kelasTerakhir()
     {
         return $this->hasOne(Pesertakelas::class)->latestOfMany();

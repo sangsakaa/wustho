@@ -2,275 +2,76 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Models\User;
-use App\Models\Siswa;
-use App\Models\Hasrole;
-use Illuminate\Http\Request;
-use Illuminate\Validation\Rules;
 use App\Http\Controllers\Controller;
-use App\Models\Guru;
-use App\Models\Permissions;
-use App\Models\Roles;
+use App\Models\Siswa;
+use App\Models\User;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Auth\Events\Registered;
-use App\Providers\RouteServiceProvider;
-use Spatie\Permission\Models\Permission;
-use Illuminate\Support\Facades\Session;
+use Illuminate\Validation\Rules;
 
 class RegisteredUserController extends Controller
 {
     /**
-     * Display the registration view.
-     *
-     * @return \Illuminate\View\View
+     * Halaman daftar siswa / user sementara
      */
-
-    public function index()
+    public function index(Request $request)
     {
-        $permissions = Permissions::all();
-        $hasrole = Roles::all();
-        $users = User::query()
-            ->leftjoin('siswa', 'users.siswa_id', '=', 'siswa.id')
-            ->leftjoin('guru', 'users.guru_id', '=', 'guru.id')
-            ->select(
-                [
-                    'users.id',
-                    'users.email',
-                    'siswa.nama_siswa',
-                    'users.name',
-                ]
-        )->orderby('nama_siswa');
-        
-        
-        if (request('cari')) {
-            $users->where('name', 'like', '%' . request('cari') . '%');
-            
-            
-        }
-        return view(
-            'admin/manajemen-user',
-            [
-                'users' => $users->paginate(10),
-                'permissions' => $permissions,
-                'hasrole' => $hasrole,
-                
-            ]
-        );
-    }
-    public function manajemen()
-    {
-
-        $UserGuru = Guru::query()
-            ->join('nig', 'nig.guru_id', '=', 'guru.id')
-            ->join('users', 'users.guru_id', '=', 'guru.id')->get();
-            
-        return view(
-            'admin/manajemen',
-            [
-                'UserGuru' => $UserGuru,
-                
-            ]
-        );
-    }
-    public function HasRole()
-    {
-        $users = User::select('id', 'name')->get();
-        $roles = Roles::select('id', 'name')->get();
-
-        $query = Hasrole::query()
-            ->join('roles', 'roles.id', '=', 'model_has_roles.role_id')
-            ->join('users', 'users.id', '=', 'model_has_roles.model_id')
-            ->select([
-                'users.id as user_id',
-                'users.name as user_name',
-                'users.email',
-                'roles.name as role_name',
-                'model_has_roles.role_id',
-
-            ]);
-
-        if (request()->filled('cari')) {
-            $query->where('users.name', 'like', '%' . request('cari') . '%');
-        }
-
-        $hasRoles = $query
-            ->orderBy('users.name', 'asc')
+        $siswa = Siswa::when($request->filled('search'), function ($query) use ($request) {
+            $query->where('nama_siswa', 'like', '%' . $request->search . '%');
+        })
+            ->latest()
             ->paginate(10)
             ->withQueryString();
 
-        return view('admin.HasRole', [
-            'hasRole' => $hasRoles,
-            'roles'   => $roles,
-            'User'    => $users,
-        ]);
-    }
-    public function create()
-    {
-        $siswa = Siswa::query()
-            ->leftJoin('users', 'users.siswa_id', '=', 'siswa.id')
-            ->where('users.siswa_id', null)
-            ->select('siswa.*')
-            ->get();
-        return view(
-            'auth.register',
-            [
-                'siswa' => $siswa
-            ]
-        );
+        return view('auth.index', compact('siswa'));
     }
 
     /**
-     * Handle an incoming registration request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\RedirectResponse
-     *
-     * @throws \Illuminate\Validation\ValidationException
+     * Form register
      */
-    public function role_has_permission(Request $request)
+    public function create()
     {
+        $siswa = Siswa::doesntHave('user')->get();
 
-        $role_has_permission = new Hasrole();
-        $role_has_permission->permission_id = $request->permission_id;
-        $role_has_permission->role_id = $request->role_id;
-        // dd($role_has_permission);
-        $role_has_permission->save();
-        return redirect()->back();
+        return view('auth.register', compact('siswa'));
     }
+
+    /**
+     * Simpan user baru
+     */
     public function store(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'email' => ['required', 'email', 'max:255', 'unique:users,email'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'siswa_id' => ['nullable', 'exists:siswa,id'],
         ]);
-
 
         $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'siswa_id' => $request->siswa_id,
-            'password' => Hash::make($request->password),
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'password' => Hash::make($validated['password']),
+            'siswa_id' => $validated['siswa_id'] ?? null,
         ]);
 
-        // if ($request->siswa_id) {
-        //     $user->assignRole('siswa');
-        // } else {
-        //     $user->assignRole('super admin');
-        // }
-
         event(new Registered($user));
-        Auth::login($user);
-        if (Auth::login($user)) {
-            return redirect(RouteServiceProvider::USER);
-        } else {
 
-            return redirect(RouteServiceProvider::HOME);
-        }
+        Auth::login($user);
+
+        return redirect()->route('dashboard')
+            ->with('success', 'Registrasi berhasil');
     }
+
+    /**
+     * Hapus user (opsional)
+     */
     public function destroy(User $user)
     {
-        User::destroy($user->id);
-        return redirect('admin');
+        $user->delete();
+
+        return back()->with('success', 'User berhasil dihapus');
     }
-
-    public function buatAkunSiswa()
-    {
-        $dataSiswa = Siswa::query()
-            ->join('nis', 'nis.siswa_id', '=', 'siswa.id')
-            ->leftJoin('users', 'users.siswa_id', '=', 'siswa.id')
-            ->select('siswa.id', 'siswa.nama_siswa', 'nis.nis')
-            ->where('users.siswa_id', null)
-            ->get();
-        // dd($siswa->toSql());
-
-        $jumlahUser = 0;
-        foreach ($dataSiswa as $siswa) {
-            $user = User::create([
-                'name' => $siswa->nama_siswa,
-                'email' => $siswa->nis . '@smedi.my.id',
-                'password' => Hash::make($siswa->nis),
-                'siswa_id' => $siswa->id
-            ]);
-            $user->assignRole('siswa');
-            $jumlahUser++;
-        }
-
-        return redirect()->back()->with('status', $jumlahUser . ' user untuk siswa telah dibuat');
-    }
-    public function buatAkunGuru()
-    {
-        $dataGuru = Guru::query()
-            ->join('nig', 'nig.guru_id', '=', 'guru.id')
-            ->leftJoin('users', 'users.guru_id', '=', 'guru.id')
-            ->select('guru.id', 'guru.nama_guru', 'nig.nig')
-            ->where('users.guru_id', null)
-            ->get();
-        // dd($siswa->toSql());
-
-        $jumlahUserGuru = 0;
-        foreach ($dataGuru as $guru) {
-            $user = User::create([
-                'name' => $guru->nama_guru,
-                'email' => $guru->nig . '@smedi.my.id',
-                'password' => Hash::make($guru->nig),
-                'guru_id' => $guru->id
-
-            ]);
-            $user->assignRole('guru');
-            $user->givePermissionTo('show post');
-            $jumlahUserGuru++;
-        }
-
-        return redirect()->back()->with('status', $jumlahUserGuru . ' user untuk guru telah dibuat');
-    }
-    public function storeole(Request $request)
-    {
-        $request->validate(
-            [
-                'name' => 'required'
-            ],
-            [
-                'name.required' => 'wajib ada isinya'
-            ]
-        );
-
-
-        $dataRole = Roles::all();
-        $existingRole = Roles::where('name', $request->name)->first();
-
-        if ($existingRole) {
-            // Role dengan nama yang sama sudah ada
-            Session::flash('message', 'Role dengan nama tersebut sudah ada!');
-            Session::flash('alert-class', 'alert-danger');
-
-            // Redirect kembali ke halaman sebelumnya atau halaman tertentu
-            return redirect()->back(); // atau return redirect()->route('nama_rute');
-        } else {
-            // Role dengan nama yang sama belum ada, maka simpan data baru
-            $role = new Roles();
-            $role->name = $request->name;
-            $role->guard_name = $request->guard_name;
-            $role->save();
-
-            // Set notifikasi sukses jika diperlukan
-            Session::flash('message', 'Role berhasil disimpan!');
-            Session::flash('alert-class', 'alert-success');
-
-            return redirect()->back(); // Ganti "nama_rute" dengan nama rute yang sesuai
-        }
-    }
-    public function storeHasRole(Request $request)
-    {
-        $hasRole = new Hasrole();
-        $hasRole->role_id = $request->role_id;
-        $hasRole->model_type = $request->model_type;
-        $hasRole->model_id = $request->model_id;
-        $hasRole->save();
-        // Show a success notification in the blade view
-        Session::flash('success', 'Role and Model ID combination created successfully.');
-        return redirect()->back();
-    }
-    
 }

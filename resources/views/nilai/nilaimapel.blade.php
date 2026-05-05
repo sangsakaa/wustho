@@ -7,7 +7,7 @@
                 <h2 class="text-2xl font-bold text-gray-800 dark:text-white">
                     Nilai Mata Pelajaran
                 </h2>
-                <p class="text-sm text-gray-500">
+                <p class="text-sm text-gray-500 dark:text-gray-400">
                     Kelola data nilai, guru, kelas dan progress pembelajaran
                 </p>
             </div>
@@ -16,7 +16,7 @@
 
     <div class="max-w-7xl mx-auto p-4 space-y-5">
 
-        {{-- TOAST NOTIFICATION --}}
+        {{-- TOAST SUCCESS --}}
         @if(session('success'))
         <script>
             Toastify({
@@ -33,11 +33,12 @@
         </script>
         @endif
 
+        {{-- TOAST ERROR --}}
         @if(session('error'))
         <script>
             Toastify({
                 text: "{{ session('error') }}",
-                duration: 4000,
+                duration: 3000,
                 gravity: "top",
                 position: "right",
                 close: true,
@@ -49,6 +50,7 @@
         </script>
         @endif
 
+        {{-- TOAST DELETE --}}
         @if(session('delete'))
         <script>
             Toastify({
@@ -68,12 +70,16 @@
 
         {{-- NOTE --}}
         @if($note)
-        <div class="bg-yellow-50 border border-yellow-200 rounded-2xl p-4 shadow-sm">
+        <div class="bg-red-50 border border-red-200 rounded-2xl p-4 shadow-sm">
             <div class="flex gap-3">
-                <span class="text-xl">⚠️</span>
+                <div class="text-2xl">⚠️</div>
                 <div>
-                    <h3 class="font-semibold text-yellow-800">Perhatian</h3>
-                    <p class="text-sm text-yellow-700">{{ $note }}</p>
+                    <h3 class="font-semibold text-red-700">
+                        Generate tidak dapat diproses
+                    </h3>
+                    <p class="text-sm text-red-600">
+                        {{ $note }}
+                    </p>
                 </div>
             </div>
         </div>
@@ -81,16 +87,17 @@
 
 
         {{-- FORM --}}
-        <div class="bg-white dark:bg-gray-800 shadow-sm border rounded-2xl p-5">
+        <div class="bg-white dark:bg-gray-800 shadow rounded-2xl border p-5">
             <h3 class="text-sm font-semibold uppercase tracking-wide text-blue-600 mb-4">
                 Form Tambah Nilai
             </h3>
 
-            <form action="/nilaimapel" method="post" class="grid md:grid-cols-4 gap-4">
+            <form action="/nilaimapel" method="POST" class="grid md:grid-cols-4 gap-4">
                 @csrf
 
-                <select name="mapel_id" required
-                    class="rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-900 text-sm">
+                <select name="mapel_id"
+                    class="rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-900"
+                    @disabled($note)>
                     <option value="">-- Mata Pelajaran --</option>
                     @foreach($dataMapel as $mapel)
                     <option value="{{ $mapel->id }}">
@@ -99,16 +106,18 @@
                     @endforeach
                 </select>
 
-                <select name="guru_id" required
-                    class="rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-900 text-sm">
-                    <option value="">-- Pendidik --</option>
+                <select name="guru_id"
+                    class="rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-900"
+                    @disabled($note)>
+                    <option value="">-- Guru --</option>
                     @foreach($dataGuru as $guru)
                     <option value="{{ $guru->id }}">{{ $guru->nama_guru }}</option>
                     @endforeach
                 </select>
 
-                <select name="kelasmi_id" required
-                    class="rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-900 text-sm">
+                <select name="kelasmi_id"
+                    class="rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-900"
+                    @disabled($note)>
                     <option value="">-- Kelas --</option>
                     @foreach($dataKelas as $kelas)
                     <option value="{{ $kelas->id }}">
@@ -118,7 +127,9 @@
                 </select>
 
                 <button
-                    class="bg-blue-600 hover:bg-blue-700 text-white rounded-xl px-4 py-2 font-medium transition">
+                    type="submit"
+                    @disabled($note)
+                    class="bg-blue-600 hover:bg-blue-700 disabled:bg-gray-400 text-white rounded-xl px-4 py-2 font-medium">
                     Simpan Data
                 </button>
             </form>
@@ -126,44 +137,35 @@
 
 
         {{-- TOOLBAR --}}
-        <div class="bg-white dark:bg-gray-800 shadow-sm border rounded-2xl p-4">
+        <div class="bg-white dark:bg-gray-800 shadow rounded-2xl border p-4">
             <div class="flex flex-col xl:flex-row justify-between gap-4">
 
                 <div class="flex flex-wrap gap-2">
-                    <a href="/mapel" class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-xl text-sm">
-                        Mata Pelajaran
-                    </a>
-
-                    <a href="/juara-pararel" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-sm">
-                        Laporan Nilai
-                    </a>
-
-                    <a href="/progress-nilai" class="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-xl text-sm">
-                        Progress
-                    </a>
-
-                    <a href="/Daftar-Jadwal" class="px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white rounded-xl text-sm">
-                        Jadwal Pelajaran
-                    </a>
+                    <a href="/mapel" class="px-4 py-2 bg-red-600 text-white rounded-xl text-sm">Mata Pelajaran</a>
+                    <a href="/juara-pararel" class="px-4 py-2 bg-blue-600 text-white rounded-xl text-sm">Laporan Nilai</a>
+                    <a href="/progress-nilai" class="px-4 py-2 bg-purple-600 text-white rounded-xl text-sm">Progress</a>
+                    <a href="/Daftar-Jadwal" class="px-4 py-2 bg-orange-600 text-white rounded-xl text-sm">Jadwal</a>
                 </div>
 
                 <div class="flex flex-col md:flex-row gap-2">
-                    <form action="/nilaimapel" method="get" class="flex gap-2">
+                    <form action="/nilaimapel" method="GET" class="flex gap-2">
                         <input type="text"
                             name="cari"
                             value="{{ request('cari') }}"
-                            placeholder="Cari data..."
-                            class="rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-900 text-sm">
+                            placeholder="Cari..."
+                            class="rounded-xl border-gray-300 dark:border-gray-600 dark:bg-gray-900">
 
-                        <button class="bg-gray-800 hover:bg-black text-white px-4 rounded-xl text-sm">
+                        <button class="bg-gray-800 text-white px-4 rounded-xl">
                             Cari
                         </button>
                     </form>
 
                     <form action="{{ url('/nilai/generate') }}" method="POST" class="form-generate">
                         @csrf
-                        <button type="submit"
-                            class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-xl text-sm font-medium">
+                        <button
+                            type="submit"
+                            @disabled($note)
+                            class="bg-green-600 hover:bg-green-700 disabled:bg-gray-400 text-white px-4 py-2 rounded-xl text-sm font-medium">
                             Generate
                         </button>
                     </form>
@@ -173,15 +175,15 @@
 
 
         {{-- TABLE --}}
-        <div class="bg-white dark:bg-gray-800 shadow-sm border rounded-2xl overflow-hidden">
+        <div class="bg-white dark:bg-gray-800 shadow rounded-2xl border overflow-hidden">
             <div class="overflow-x-auto">
                 <table class="w-full text-sm">
-                    <thead class="bg-gray-100 dark:bg-gray-700 uppercase text-xs text-gray-700 dark:text-gray-200">
+                    <thead class="bg-gray-100 dark:bg-gray-700 text-xs uppercase">
                         <tr>
                             <th class="px-4 py-3">No</th>
                             <th>Periode</th>
-                            <th>Smt</th>
-                            <th>Aksi</th>
+                            <th>Semester</th>
+                            <th>Input</th>
                             <th>Guru</th>
                             <th>Kelas</th>
                             <th>Mapel</th>
@@ -193,15 +195,15 @@
                     </thead>
 
                     <tbody class="divide-y">
-                        @forelse ($data as $nilai)
+                        @forelse($data as $nilai)
                         <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
                             <td class="px-4 py-3">{{ $loop->iteration }}</td>
-                            <td>{{ $nilai->periode }} {{ $nilai->ket_semester }}</td>
-                            <td>{{ $nilai->semester }}</td>
+                            <td>{{ $nilai->periode }}</td>
+                            <td>{{ $nilai->ket_semester }}</td>
 
                             <td>
                                 <a href="/nilai/{{ $nilai->id }}"
-                                    class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded-lg text-xs">
+                                    class="bg-blue-600 text-white px-3 py-1 rounded-lg text-xs">
                                     Input
                                 </a>
                             </td>
@@ -214,21 +216,17 @@
                             <td class="text-center">{{ $nilai->jumlah_nilai_ujian }}</td>
 
                             <td>
-                                <div class="flex justify-center gap-2">
-                                    <form action="/nilaimapel/{{ $nilai->id }}"
-                                        method="post"
-                                        class="form-delete">
+                                <div class="flex gap-2 justify-center">
+                                    <form action="/nilaimapel/{{ $nilai->id }}" method="POST" class="form-delete">
                                         @csrf
-                                        @method('delete')
-
-                                        <button type="submit"
-                                            class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-lg text-xs">
+                                        @method('DELETE')
+                                        <button class="bg-red-600 text-white px-3 py-1 rounded-lg text-xs">
                                             Hapus
                                         </button>
                                     </form>
 
                                     <a href="/nilaimapel/{{ $nilai->id }}/edit"
-                                        class="bg-yellow-400 hover:bg-yellow-500 px-3 py-1 rounded-lg text-xs">
+                                        class="bg-yellow-400 px-3 py-1 rounded-lg text-xs">
                                         Edit
                                     </a>
                                 </div>
@@ -246,68 +244,44 @@
             </div>
         </div>
 
-
-        {{-- PAGINATION --}}
         <div>
             {{ $data->links() }}
         </div>
-
     </div>
 </x-app-layout>
 
 
 <script>
-    // DELETE
     document.querySelectorAll('.form-delete').forEach(form => {
         form.addEventListener('submit', function(e) {
             e.preventDefault();
 
             Swal.fire({
                 title: 'Hapus Data?',
-                text: 'Data nilai yang dihapus tidak dapat dikembalikan.',
+                text: 'Data tidak bisa dikembalikan',
                 icon: 'warning',
                 showCancelButton: true,
-                confirmButtonText: 'Ya, Hapus',
-                cancelButtonText: 'Batal',
-                reverseButtons: true,
-                buttonsStyling: false,
-                customClass: {
-                    popup: 'rounded-2xl',
-                    confirmButton: 'bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-xl mx-2',
-                    cancelButton: 'bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-xl mx-2'
-                }
+                confirmButtonText: 'Ya, hapus',
+                cancelButtonText: 'Batal'
             }).then((result) => {
-                if (result.isConfirmed) {
-                    form.submit();
-                }
+                if (result.isConfirmed) form.submit();
             });
         });
     });
 
-
-    // GENERATE
     document.querySelectorAll('.form-generate').forEach(form => {
         form.addEventListener('submit', function(e) {
             e.preventDefault();
 
             Swal.fire({
                 title: 'Generate Nilai?',
-                text: 'Generate nilai mapel otomatis dari data jadwal?',
+                text: 'Generate otomatis dari jadwal pembelajaran?',
                 icon: 'question',
                 showCancelButton: true,
-                confirmButtonText: 'Ya, Generate',
-                cancelButtonText: 'Batal',
-                reverseButtons: true,
-                buttonsStyling: false,
-                customClass: {
-                    popup: 'rounded-2xl',
-                    confirmButton: 'bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-xl mx-2',
-                    cancelButton: 'bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-xl mx-2'
-                }
+                confirmButtonText: 'Ya, generate',
+                cancelButtonText: 'Batal'
             }).then((result) => {
-                if (result.isConfirmed) {
-                    form.submit();
-                }
+                if (result.isConfirmed) form.submit();
             });
         });
     });

@@ -1,116 +1,108 @@
 <x-app-layout>
     <x-slot name="header">
-        @section('title', ' | Detail Data ' )
-        <h2 class="font-semibold    leading-tight">
-            <span class=" uppercase">{{ __('Dashboard Guru ') }} </span><br>
+        @section('title', ' | Detail Data')
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            Dashboard Guru
         </h2>
     </x-slot>
-    <div class="p-2">
-        <div class=" dark:bg-dark-bg bg-white overflow-hidden shadow-sm sm:rounded-lg">
-            <div class="p-2 grid grid-cols-4 ">
-                <div>NIG</div>
-                <div>
-                    : {{$title->nig}}
-                </div>
-                <div>Jenjang</div>
-                <div>
-                    : {{$title->jenjang}}
-                </div>
-                <div>Nama</div>
-                <div>
-                    : {{$title->nama_guru}}
-                </div>
 
-            </div>
-        </div>
-        <div class=" mt-2 dark:bg-dark-bg bg-white overflow-hidden shadow-sm sm:rounded-lg">
-            <div class="p-4 ">
-                <div class="  ">
+    <div class="py-4 px-4 space-y-4">
+
+        <!-- INFO GURU -->
+        <div class="bg-white dark:bg-dark-bg shadow rounded-xl overflow-hidden">
+            <div class="p-6">
+                <h3 class="text-lg font-bold text-gray-800 mb-4">
+                    Informasi Guru
+                </h3>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                     <div>
-                        <p class=" font-semibold">Mata Pelajaran & Progress :</p>
+                        <span class="font-medium text-gray-500">NIG</span>
+                        <p class="font-semibold">{{ $title->nig }}</p>
+                    </div>
 
-                        <div class=" grid grid-cols-4">
-                            @if($mapelGuru->count() != null)
-                            @foreach($mapelGuru as $list)
-                            <div>
-                                <p class=" font-semibold"> {{$loop->iteration}} . {{$list->nama_kelas}} {{$list->mapel}} {{$list->periode}} {{$list->ket_semester}}</p>
-                                <div class=" grid grid-cols-2">
-                                    <div class=" px-5">
-                                        Nilai Harian
-                                    </div>
-                                    <div>
-                                        <div class=" ">
-                                            <span class=" flex ml-5">
-                                                : {{number_format($list->jumlah_nilai_harian/$list->jumlah_peserta_kelas * 100,0)}}% @if ($list->jumlah_nilai_harian == $list->jumlah_peserta_kelas )
-                                                <span class=" font-semibold text-green-600"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                                                    </svg>
-                                                </span>
-                                                @else
-                                                <span class=" text-red-600">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                                                    </svg>
+                    <div>
+                        <span class="font-medium text-gray-500">Jenjang</span>
+                        <p class="font-semibold">{{ $title->jenjang }}</p>
+                    </div>
 
-                                                    @endif
-                                                    </p>
-                                                </span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class=" grid grid-cols-2">
-                                    <div class=" px-5">
-                                        Nilai Ujian
-                                    </div>
-                                    <div>
-                                        <div class=" ">
-                                            <span class=" ml-5 flex">
-                                                : {{number_format($list->jumlah_nilai_ujian/$list->jumlah_peserta_kelas * 100,0)}}%
-                                                @if ($list->jumlah_nilai_ujian == $list->jumlah_peserta_kelas )
-                                                <span class=" font-semibold text-green-600"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                                                    </svg>
-                                                </span>
-                                                @else
-                                                <span class=" text-red-600">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                                                    </svg>
-
-                                                </span>
-                                                @endif
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            @endforeach
-                            @else
-                            <div>
-                                <span class=" text-red-600">Tidak ada Proses Penilain dan Pembelajaran</span>
-                            </div>
-                            @endif
-                            </p>
-                        </div>
+                    <div class="md:col-span-2">
+                        <span class="font-medium text-gray-500">Nama Guru</span>
+                        <p class="font-semibold">{{ $title->nama_guru }}</p>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class=" p-2">
-        <div class="bg-white dark:bg-dark-bg overflow-hidden shadow-sm sm:rounded-lg">
-            <div class="p-4">
 
+        <!-- MAPEL -->
+        <div class="bg-white dark:bg-dark-bg shadow rounded-xl overflow-hidden">
+            <div class="p-6">
+                <h3 class="text-lg font-bold text-gray-800 mb-4">
+                    Mata Pelajaran & Progress
+                </h3>
+
+                @forelse($mapelGuru as $list)
+                @php
+                $peserta = max($list->jumlah_peserta_kelas, 1);
+                $harian = number_format(($list->jumlah_nilai_harian / $peserta) * 100, 0);
+                $ujian = number_format(($list->jumlah_nilai_ujian / $peserta) * 100, 0);
+                @endphp
+
+                <div class="border rounded-xl p-4 mb-4">
+                    <h4 class="font-semibold text-gray-800 mb-3">
+                        {{ $loop->iteration }}.
+                        {{ $list->nama_kelas }} -
+                        {{ $list->mapel }}
+                        ({{ $list->periode }} {{ $list->ket_semester }})
+                    </h4>
+
+                    <!-- Nilai Harian -->
+                    <div class="flex justify-between items-center py-2 border-b">
+                        <span>Nilai Harian</span>
+                        <span class="flex items-center gap-2">
+                            {{ $harian }}%
+
+                            @if ($list->jumlah_nilai_harian == $list->jumlah_peserta_kelas)
+                            <span class="text-green-600">✔</span>
+                            @else
+                            <span class="text-red-600">✘</span>
+                            @endif
+                        </span>
+                    </div>
+
+                    <!-- Nilai Ujian -->
+                    <div class="flex justify-between items-center py-2">
+                        <span>Nilai Ujian</span>
+                        <span class="flex items-center gap-2">
+                            {{ $ujian }}%
+
+                            @if ($list->jumlah_nilai_ujian == $list->jumlah_peserta_kelas)
+                            <span class="text-green-600">✔</span>
+                            @else
+                            <span class="text-red-600">✘</span>
+                            @endif
+                        </span>
+                    </div>
+                </div>
+
+                @empty
+                <div class="p-4 rounded-lg bg-red-50 text-red-600">
+                    Tidak ada proses penilaian dan pembelajaran
+                </div>
+                @endforelse
             </div>
         </div>
-    </div>
-    <div class="py-2 px-2">
-        <div class=" overflow-hidden shadow-sm sm:rounded-lg">
-            <div class="p-2 bg-sky-300 dark:bg-purple-600  text-white">
-                <p class=" uppercase bold">keterangan : </p>
-                <p class=" capitalize px-2">1.MP : mata pelajaran</p>
-                <p class=" capitalize px-2">2.IPK: index predikat komulatif</p>
+
+        <!-- KETERANGAN -->
+        <div class="bg-sky-500 text-white rounded-xl shadow overflow-hidden">
+            <div class="p-4">
+                <h3 class="font-bold uppercase mb-2">Keterangan</h3>
+                <ul class="text-sm space-y-1">
+                    <li>1. MP : Mata Pelajaran</li>
+                    <li>2. IPK : Indeks Prestasi Kumulatif</li>
+                </ul>
             </div>
         </div>
+
     </div>
 </x-app-layout>
