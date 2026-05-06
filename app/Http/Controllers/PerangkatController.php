@@ -12,12 +12,22 @@ class PerangkatController
 {
     public function index()
     {
-        $aktif = Perangkat::with(['jabatan'])
-            ->where('status', 'aktif')
+        $aktif = Perangkat::with('jabatan')
+            ->join('jabatan_perangkat', 'perangkat.id', '=', 'jabatan_perangkat.perangkat_id')
+            ->join('jabatan', 'jabatan_perangkat.jabatan_id', '=', 'jabatan.id')
+            ->where('perangkat.status', 'aktif')
+            ->orderBy('jabatan.id', 'asc')
+            ->select('perangkat.*')
+            ->distinct()
             ->get();
 
-        $nonAktif = Perangkat::with(['jabatan'])
-            ->where('status', '!=', 'aktif')
+        $nonAktif = Perangkat::with('jabatan')
+            ->join('jabatan_perangkat', 'perangkat.id', '=', 'jabatan_perangkat.perangkat_id')
+            ->join('jabatan', 'jabatan_perangkat.jabatan_id', '=', 'jabatan.id')
+            ->where('perangkat.status', '!=', 'aktif')
+            ->orderBy('jabatan.id', 'asc')
+            ->select('perangkat.*')
+            ->distinct()
             ->get();
 
         return view('perangkat.index', compact('aktif', 'nonAktif'));

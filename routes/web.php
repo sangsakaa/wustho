@@ -54,6 +54,24 @@ Route::get('/register', [RegisteredUserController::class, 'create'])->name('regi
 Route::post('/register', [RegisteredUserController::class, 'store']);
 Route::delete('/register/{user}', [RegisteredUserController::class, 'destroy'])
     ->name('register.destroy');
+Route::middleware(['auth'])->group(function () {
+
+    Route::get('/registrasi-siswa', [RegisteredUserController::class, 'index'])
+        ->name('register.index');
+
+    Route::get('/registrasi-siswa/create', [RegisteredUserController::class, 'create'])
+        ->name('register.create');
+
+    Route::post('/registrasi-siswa/store', [RegisteredUserController::class, 'store'])
+        ->name('register.store');
+
+    Route::delete('/users/{user}', [RegisteredUserController::class, 'destroy'])
+        ->name('users.destroy');
+});
+Route::post(
+    '/registrasi-siswa/quick-create/{siswa}',
+    [RegisteredUserController::class, 'quickCreate']
+)->name('register.quick');
 
 Route::middleware(['auth', 'role:admin|super admin'])
     ->prefix('admin')
@@ -68,6 +86,10 @@ Route::middleware(['auth', 'role:admin|super admin'])
         Route::post('/bulk/siswa', [BulkAccountController::class, 'createStudentAccounts'])->name('bulk.siswa');
         Route::post('/bulk/guru', [BulkAccountController::class, 'createTeacherAccounts'])->name('bulk.guru');
     });
+Route::post(
+    '/admin/users/{user}/assign-role',
+    [UserManagementController::class, 'assignRole']
+)->name('admin.users.assign-role');
 Route::post('/roles/assign', [RoleManagementController::class, 'assign'])
     ->name('roles.assign');
 
@@ -75,7 +97,27 @@ Route::post('/roles/assign', [RoleManagementController::class, 'assign'])
 
 Route::get('/manajemen-user', [RegisteredUserController::class, 'index'])->middleware(['auth'])->name('admin');
 Route::get('/userdashboard', [UserController::class, 'DashboardUser'])->middleware(['auth'])->name('userdashboard');
+Route::get('/register-list', [RegisteredUserController::class, 'index'])
+    ->name('register.index');
 
+Route::get('/register', [RegisteredUserController::class, 'create'])
+    ->name('register');
+
+Route::post('/register', [RegisteredUserController::class, 'store']);
+Route::middleware(['auth'])->group(function () {
+
+    Route::get('/register-list', [RegisteredUserController::class, 'index'])
+        ->name('register.index');
+
+    Route::get('/register', [RegisteredUserController::class, 'create'])
+        ->name('register');
+
+    Route::post('/register', [RegisteredUserController::class, 'store'])
+        ->name('register.store');
+
+    Route::delete('/users/{user}', [RegisteredUserController::class, 'destroy'])
+        ->name('users.destroy');
+});
 
 // UserGuru Controller
 Route::get('/nilaiperguru', [UserguruController::class, 'UserGuru'])->middleware(['auth'])->name('nilaiperguru');
@@ -120,9 +162,12 @@ Route::get('statuspengamal/{siswa}', [SiswaController::class, 'statuspengamal'])
 
 Route::post('statuspengamal/{siswa}', [SiswaController::class, 'storeSP']);
 
+
 Route::post('statusanak/{siswa}', [SiswaController::class, 'storeSA']);
 Route::delete('statusanak/{statusanak}', [SiswaController::class, 'HapusStatusAnaka']);
-Route::delete('statuspengamal/{siswa}', [SiswaController::class, 'destroySP']);
+
+Route::delete('statuspengamal/{siswa}', [SiswaController::class, 'destroySP'])
+    ->name('statuspengamal.destroy');
 Route::get('statusanak/{siswa}', [SiswaController::class, 'statusanak']);
 Route::get('addsiswa', [SiswaController::class, 'create'])->middleware(['auth']);
 Route::post('siswa', [SiswaController::class, 'store']);
@@ -202,6 +247,11 @@ Route::get('/admin/user-permissions', [UserPermissionController::class, 'index']
     ->name('admin.permissions.index');
 
 Route::put('/admin/user-permissions/{user}', [UserPermissionController::class, 'update'])
+    ->name('admin.permissions.update');
+Route::get('/admin/permissions', [UserPermissionController::class, 'index'])
+    ->name('admin.permissions.index');
+
+Route::put('/admin/permissions/{role}', [UserPermissionController::class, 'update'])
     ->name('admin.permissions.update');
 
 // sesi Presensi Guru

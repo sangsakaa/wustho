@@ -1,105 +1,185 @@
 <x-app-layout>
     <x-slot name="header">
-        @section('title', ' | Status Pengamal' )
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard Status Pengamal ') }}
-        </h2>
+        @section('title', ' | Status Pengamal')
+
+        <div class="flex flex-col gap-1">
+            <h2 class="font-semibold text-lg sm:text-xl text-slate-800">
+                Dashboard Status Pengamal
+            </h2>
+            <p class="text-sm text-slate-500">
+                Kelola status pengamal siswa
+            </p>
+        </div>
     </x-slot>
-    <div class="py-2 px-4">
-        <div class="mx-auto">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-4 bg-white border-b border-gray-200">
-                    <div class=" grid sm:grid-cols-4 grid-cols-2">
-                        <div>Nama </div>
-                        <div class=" border-red-500 text-sm ">: {{$siswa->nama_siswa}}</div>
-                        <div>Tanggal Lahir </div>
-                        <div>: {{$siswa->tempat_lahir}}</div>
-                        <div>Jenis Kelamin </div>
-                        <div>: {{$siswa->jenis_kelamin}}</div>
-                        <div>Tempat Lahir </div>
-                        <div>: {{$siswa->tanggal_lahir}}</div>
+
+    <div class="p-3 sm:p-6 space-y-5">
+
+        {{-- INFO SISWA --}}
+        <div class="bg-white shadow-sm border rounded-2xl overflow-hidden">
+            <div class="px-5 py-4 border-b bg-slate-50">
+                <h3 class="font-semibold text-slate-700">Informasi Siswa</h3>
+            </div>
+
+            <div class="p-5">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+
+                    <div>
+                        <p class="text-slate-500">Nama</p>
+                        <p class="font-medium">{{ $siswa->nama_siswa }}</p>
                     </div>
+
+                    <div>
+                        <p class="text-slate-500">Jenis Kelamin</p>
+                        <p class="font-medium">{{ $siswa->jenis_kelamin }}</p>
+                    </div>
+
+                    <div>
+                        <p class="text-slate-500">Tempat Lahir</p>
+                        <p class="font-medium">{{ $siswa->tempat_lahir }}</p>
+                    </div>
+
+                    <div>
+                        <p class="text-slate-500">Tanggal Lahir</p>
+                        <p class="font-medium">{{ $siswa->tanggal_lahir }}</p>
+                    </div>
+
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class=" px-4">
-        <div class="mx-auto">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-4 bg-white border-b border-gray-200">
-                    <div class=" flex grid-cols-1 justify-items-end gap-1">
-                        <a href="/siswa" class=" bg-blue-500 px-2 py-1  hover:bg-purple-500 text-white">Kembali</a>
-                        @role('siswa')
-                        <div class=" grid grid-cols-1 justify-items-end">
-                            <a href="/nis/{{$siswa->id}}" class=" bg-blue-500 px-2 py-1 hover:bg-purple-500 text-white">Nomor Induk siswa</a>
-                        </div>
-                        @endrole
-                        @role('admin')
-                        <div class=" grid grid-cols-1 justify-items-end">
-                            <a href="/biodata/{{$siswa->id}}" class=" bg-blue-500 px-2 py-1 hover:bg-purple-500 text-white">Biodata Lengkap</a>
-                        </div>
+        {{-- ACTION MENU --}}
+        <div class="bg-white shadow-sm border rounded-2xl p-4">
+            <div class="flex flex-wrap gap-2">
 
-                        <div class=" grid grid-cols-1 justify-items-end">
-                            <a href="/nis/{{$siswa->id}}" class=" bg-blue-500 px-2 py-1 hover:bg-purple-500 text-white">Nomor Induk siswa</a>
-                        </div>
-                        <div class=" grid grid-cols-1 justify-items-end">
-                            <a href="/statuspengamal/{{$siswa->id}}" class=" bg-blue-500 px-2 py-1 hover:bg-purple-500 text-white">Status Pengamal</a>
-                        </div>
+                <a href="/siswa"
+                    class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl text-sm">
+                    Kembali
+                </a>
 
-                        @endrole
-                    </div>
-                    <div class=" grid grid-cols-1 sm:grid-cols-1 gap-2 py-1">
-                        <form action="/statuspengamal/{{$siswa->id}}" method="post">
-                            @csrf
-                            <input type="text" name="siswa_id" class=" py-1" placeholder="siswa" value="{{$siswa->id}}">
-                            <select name="status_pengamal" id="" class=" py-1">
-                                <option value="pengamal" class=" capitalize">pengamal</option>
-                                <option value="simpatisan" class=" capitalize">simpatisan</option>
-                            </select>
-                            <button class=" bg-green-600 py-1 px-2 rounded-sm text-white capitalize">create status pengamal</button>
-                        </form>
-                        <div>
-                            <span>Detail Status Pengamal</span>
-                            <table class=" w-1/2    ">
-                                <thead>
-                                    <tr class=" border-collapse">
-                                        <th class=" border text-center">#</th>
-                                        <th class=" border text-center"> Status Pengamal</th>
-                                        <th class=" border text-center"> Aksi</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach($sp as $org)
-                                    <tr class=" border">
-                                        <td class=" px-2 border ">{{$org->nama_siswa}}</td>
-                                        <td class=" px-2 border ">{{$org->status_pengamal}}</td>
-                                        <td class=" text-sm flex justify-center py-1  gap-1">
-                                            <form action="/statuspengamal/{{$org->id}}" method="post">
-                                                @csrf
-                                                @method('delete')
-                                                <button class=" bg-red-500 text-white p-1 rounded-md flex"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                                    </svg></button>
-                                            </form>
-                                            <a href="/statuspengamal/{{$org->id}}/edit" class=" bg-yellow-500 rounded p-1 flex ">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                                </svg></a>
+                @role('siswa')
+                <a href="/nis/{{ $siswa->id }}"
+                    class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-xl text-sm">
+                    Nomor Induk Siswa
+                </a>
+                @endrole
 
-                                        </td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
+                @role('admin')
+                <a href="/biodata/{{ $siswa->id }}"
+                    class="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl text-sm">
+                    Biodata Lengkap
+                </a>
 
-                            </table>
-                        </div>
-                    </div>
-                </div>
+                <a href="/nis/{{ $siswa->id }}"
+                    class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-xl text-sm">
+                    Nomor Induk Siswa
+                </a>
+
+                <a href="/statuspengamal/{{ $siswa->id }}"
+                    class="bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-xl text-sm">
+                    Status Pengamal
+                </a>
+                @endrole
             </div>
         </div>
+
+        {{-- FORM STATUS --}}
+        <div class="bg-white shadow-sm border rounded-2xl overflow-hidden">
+            <div class="px-5 py-4 border-b bg-slate-50">
+                <h3 class="font-semibold text-slate-700">Tambah Status Pengamal</h3>
+            </div>
+
+            <div class="p-5">
+                <form action="/statuspengamal/{{ $siswa->id }}" method="post"
+                    class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                    @csrf
+
+                    <input type="hidden" name="siswa_id" value="{{ $siswa->id }}">
+
+                    <input
+                        type="text"
+                        value="{{ $siswa->nama_siswa }}"
+                        disabled
+                        class="w-full border border-slate-300 rounded-xl px-3 py-2 text-sm bg-slate-50">
+
+                    <select
+                        name="status_pengamal"
+                        class="w-full border border-slate-300 rounded-xl px-3 py-2 text-sm">
+                        <option value="pengamal">Pengamal</option>
+                        <option value="simpatisan">Simpatisan</option>
+                    </select>
+
+                    <button
+                        class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-xl text-sm">
+                        Simpan Status
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        {{-- TABLE STATUS --}}
+        <div class="bg-white shadow-sm border rounded-2xl overflow-hidden">
+            <div class="px-5 py-4 border-b bg-slate-50">
+                <h3 class="font-semibold text-slate-700">Detail Status Pengamal</h3>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full min-w-[600px] text-sm">
+                    <thead class="bg-slate-100 text-slate-600 text-xs uppercase">
+                        <tr>
+                            <th class="px-4 py-3 text-left">Nama</th>
+                            <th class="px-4 py-3 text-center">Status</th>
+                            <th class="px-4 py-3 text-center">Aksi</th>
+                        </tr>
+                    </thead>
+
+                    <tbody class="divide-y divide-slate-100">
+                        @forelse($sp as $org)
+                        <tr class="hover:bg-slate-50">
+
+                            <td class="px-4 py-3">
+                                {{ $org->nama_siswa }}
+                            </td>
+
+                            <td class="px-4 py-3 text-center">
+                                <span class="px-3 py-1 rounded-full text-xs
+                                    {{ $org->status_pengamal == 'pengamal'
+                                        ? 'bg-green-100 text-green-700'
+                                        : 'bg-yellow-100 text-yellow-700' }}">
+                                    {{ ucfirst($org->status_pengamal) }}
+                                </span>
+                            </td>
+
+                            <td class="px-4 py-3">
+                                <div class="flex justify-center gap-2">
+
+                                    <a href="/statuspengamal/{{ $org->id }}/edit"
+                                        class="bg-yellow-500 hover:bg-yellow-600 text-white p-2 rounded-lg">
+                                        ✏️
+                                    </a>
+
+                                    <form action="{{ route('statuspengamal.destroy', $org->id) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button class="bg-red-500 hover:bg-red-600 text-white p-2 rounded-lg">
+                                            🗑️
+                                        </button>
+                                    </form>
+
+                                </div>
+                            </td>
+
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="3" class="text-center py-8 text-slate-400">
+                                Belum ada data status pengamal
+                            </td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
     </div>
-
-
-
 </x-app-layout>

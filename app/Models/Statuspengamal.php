@@ -8,9 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 class Statuspengamal extends Model
 {
     use HasFactory;
-    protected $table = "statuspengamal";
+
+    protected $table = 'statuspengamal';
+
     protected $fillable = [
         'siswa_id',
         'status_pengamal',
     ];
+
+    public function siswa()
+    {
+        return $this->belongsTo(Siswa::class, 'siswa_id');
+    }
 }

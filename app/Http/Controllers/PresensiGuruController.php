@@ -425,8 +425,13 @@ class PresensiGuruController
 
     public function rekapSesi(Request $request)
     {
-        $bulan = $request->bulan ? Carbon::parse($request->bulan) : now();
-        $periodeBulan = $bulan->startOfMonth()->daysUntil($bulan->copy()->endOfMonth());
+        $bulan = $request->bulan
+            ? Carbon::parse($request->bulan)
+            : now();
+
+        $startBulan = $bulan->copy()->startOfMonth();
+        $endBulan   = $bulan->copy()->endOfMonth();
+        $periodeBulan = $startBulan->daysUntil($endBulan->copy()->addDay());
 
         $periode = Periode::query()
             ->join('semester', 'semester.id', '=', 'periode.semester_id')
@@ -435,33 +440,53 @@ class PresensiGuruController
             ->first();
 
         $datakelasmi = Kelasmi::query()
-            ->join('periode', 'periode.id', 'kelasmi.periode_id')
-            ->join('semester', 'semester.id', 'periode.semester_id')
-            ->select('kelasmi.id', 'kelasmi.nama_kelas', 'periode.periode', 'semester.ket_semester')
+            ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
+            ->join('semester', 'semester.id', '=', 'periode.semester_id')
+            ->select(
+                'kelasmi.id',
+                'kelasmi.nama_kelas',
+                'periode.periode',
+                'semester.ket_semester'
+            )
             ->where('kelasmi.periode_id', session('periode_id'))
             ->orderBy('kelasmi.nama_kelas')
-        ->get();
+            ->get();
+
         $dataSesikelasguru = Sesi_Kelas_Guru::query()
             ->join('kelasmi', 'kelasmi.id', '=', 'sesi_kelas_guru.kelasmi_id')
             ->leftJoin('absensiguru', 'absensiguru.sesi_kelas_guru_id', '=', 'sesi_kelas_guru.id')
-            ->select('sesi_kelas_guru.*', 'kelasmi.nama_kelas', 'absensiguru.keterangan')
+            ->select(
+                'sesi_kelas_guru.*',
+                'kelasmi.nama_kelas',
+                'absensiguru.keterangan'
+            )
             ->where('kelasmi.periode_id', session('periode_id'))
-            ->whereBetween('sesi_kelas_guru.tanggal', [$periodeBulan->first()->toDateString(), $periodeBulan->last()->toDateString()])
+            ->whereBetween('sesi_kelas_guru.tanggal', [
+                $startBulan->toDateString(),
+                $endBulan->toDateString()
+            ])
             ->get()
             ->groupBy('kelasmi_id');
 
         $dataRekapSesi = $datakelasmi
             ->keyBy('id')
             ->map(function ($kelasmi, $kelasmi_id) use ($dataSesikelasguru, $periodeBulan) {
-            // dd($dataSesikelasguru);
-                foreach ($periodeBulan as $hari) {
-                    $sesiPerBulan[] = [
+
+            $sesiPerBulan = []; // reset setiap kelas
+
+            foreach ($periodeBulan as $hari) {
+                $dataKelas = $dataSesikelasguru->get($kelasmi_id, collect());
+
+                $sesiPerBulan[] = [
                         'hari' => $hari,
-                        'data' => $dataSesikelasguru->count() ? $dataSesikelasguru[$kelasmi_id]->firstWhere('tanggal', $hari->toDateString()) : null
-                        
+                    'data' => $dataKelas->firstWhere(
+                        'tanggal',
+                        $hari->toDateString()
+                    ),
                     ];
                 }
-                return [
+
+            return [
                     'sesiPerBulan' => $sesiPerBulan,
                     'kelasmi' => $kelasmi,
                 ];
@@ -469,9 +494,9 @@ class PresensiGuruController
 
         return view('presensi.guru.rekapSesi', [
             'dataRekapSesi' => $dataRekapSesi,
-            'periodeBulan' => $periodeBulan,
-            'periode' => $periode,
-            'bulan' => $bulan,
+            'periodeBulan'  => $periodeBulan,
+            'periode'       => $periode,
+            'bulan'         => $bulan,
         ]);
     }
 }

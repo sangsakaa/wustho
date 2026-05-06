@@ -73,7 +73,7 @@
         </div>
 
         <div class="flex gap-2">
-            <a href="{{ $prev_url }}"
+            <a href="/sesikelas"
                 class="bg-gray-500 hover:bg-gray-600 text-white px-3 py-1 rounded">
                 ← Kembali
             </a>

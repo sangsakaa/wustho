@@ -384,13 +384,17 @@ class SiswaController extends Controller
     }
     public function destroyNis(Nis $nis)
     {
-        // dd($nis);
         Nis::destroy($nis->id);
         return redirect()->back();
     }
-    public function destroySP(Statuspengamal $siswa)
+    public function destroySP(Statuspengamal $statuspengamal)
     {
-        Statuspengamal::destroy($siswa->id);
-        return redirect()->back();
+        try {
+            $statuspengamal->delete();
+
+            return back()->with('success', 'Status pengamal berhasil dihapus.');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Status pengamal gagal dihapus.');
+        }
     }
 }

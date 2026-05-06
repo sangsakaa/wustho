@@ -11,9 +11,11 @@ use Illuminate\Http\Request;
 
 class UserManagementController extends Controller
 {
+
+
     public function index(Request $request)
     {
-        $users = User::query()
+        $query = User::query()
             ->with([
                 'siswa:id,nama_siswa',
                 'guru:id,nama_guru',
@@ -32,13 +34,21 @@ class UserManagementController extends Controller
                             $guru->where('nama_guru', 'like', "%{$search}%");
                         });
                 });
-            })
+            });
+
+        $usersWithRole = (clone $query)
+            ->has('roles')
             ->latest()
-            ->paginate(10)
-            ->withQueryString();
+            ->paginate(10, ['*'], 'withRole');
+
+        $usersWithoutRole = (clone $query)
+            ->doesntHave('roles')
+            ->latest()
+            ->paginate(10, ['*'], 'withoutRole');
 
         return view('admin.manajemen-user', [
-            'users' => $users,
+            'usersWithRole' => $usersWithRole,
+            'usersWithoutRole' => $usersWithoutRole,
             'permissions' => Permissions::all(),
             'roles' => Roles::all(),
         ]);
@@ -49,5 +59,16 @@ class UserManagementController extends Controller
         $user->delete();
 
         return back()->with('success', 'User berhasil dihapus');
+    }
+    public function assignRole(Request $request, User $user)
+    {
+        $request->validate([
+            'role_id' => 'required|exists:roles,id',
+        ]);
+
+        // syncWithoutDetaching = tidak hapus role lama
+        $user->roles()->syncWithoutDetaching([$request->role_id]);
+
+        return back()->with('success', 'Role berhasil ditambahkan');
     }
 }

@@ -1,123 +1,169 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <h2 class="font-semibold text-lg sm:text-xl text-gray-800">
             Dashboard Presensi Perangkat
         </h2>
     </x-slot>
 
-    <div class="p-4 space-y-4">
+    <div class="p-3 sm:p-6">
+        <div class="max-w-6xl mx-auto space-y-5">
 
-        {{-- NOTIFIKASI --}}
-        @if (session('status'))
-        <div class="bg-green-600 text-white px-4 py-2 rounded-lg shadow">
-            {{ session('status') }}
-        </div>
-        @endif
+            {{-- NOTIFIKASI --}}
+            @if (session('status'))
+            <div class="bg-green-100 border border-green-200 text-green-700 px-4 py-3 rounded-xl shadow-sm">
+                {{ session('status') }}
+            </div>
+            @endif
 
-        {{-- HEADER INFO --}}
-        <div class="bg-white shadow rounded-xl p-4">
-            <h3 class="text-lg font-semibold text-blue-600 mb-2">
-                Presensi Perangkat
-            </h3>
+            {{-- HEADER INFO --}}
+            <div class="bg-white shadow-sm border rounded-2xl p-4 sm:p-6">
+                <h3 class="text-lg font-semibold text-blue-600 mb-4">
+                    Presensi Perangkat
+                </h3>
 
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-sm">
-                <div class="font-medium text-gray-600">Hari / Tanggal</div>
-                <div class="col-span-1 sm:col-span-3">
-                    :
-                    <span class="font-semibold text-gray-800">
-                        {{ \Carbon\Carbon::parse($sesiPerangkat->tanggal)->isoFormat('dddd, DD MMMM Y') }}
-                    </span>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+                    <div>
+                        <p class="text-gray-500">Hari / Tanggal</p>
+                        <p class="font-semibold text-gray-800">
+                            {{ \Carbon\Carbon::parse($sesiPerangkat->tanggal)->isoFormat('dddd, DD MMMM Y') }}
+                        </p>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        {{-- FORM --}}
-        <form action="/daftar-sesi-perangkat/{{ $sesiPerangkat->id }}" method="POST" class="space-y-3">
-            @csrf
-            <input type="hidden" name="sesi_perangkat_id" value="{{ $sesiPerangkat->id }}">
+            {{-- FORM --}}
+            <form action="/daftar-sesi-perangkat/{{ $sesiPerangkat->id }}" method="POST" class="space-y-4">
+                @csrf
+                <input type="hidden" name="sesi_perangkat_id" value="{{ $sesiPerangkat->id }}">
 
-            {{-- ACTION --}}
-            <div class="flex flex-wrap gap-2">
-                <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow text-sm">
-                    💾 Simpan Presensi
-                </button>
+                {{-- ACTION --}}
+                <div class="flex flex-col sm:flex-row gap-3">
+                    <button
+                        class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 sm:py-2 rounded-xl shadow text-sm">
+                        Simpan Presensi
+                    </button>
 
-                <a href="/sesi-perangkat"
-                    class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg shadow text-sm">
-                    ⬅ Kembali
-                </a>
-            </div>
+                    <a href="/sesi-perangkat"
+                        class="w-full sm:w-auto text-center bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-3 sm:py-2 rounded-xl text-sm">
+                        Kembali
+                    </a>
+                </div>
 
-            {{-- TABLE --}}
-            <div class="bg-white shadow rounded-xl overflow-hidden">
-                <div class="overflow-x-auto max-h-[500px]">
-                    <table class="w-full text-sm">
+                {{-- DESKTOP TABLE --}}
+                <div class="hidden md:block bg-white shadow-sm border rounded-2xl overflow-hidden">
+                    <div class="overflow-x-auto max-h-[550px]">
+                        <table class="w-full text-sm">
+                            <thead class="bg-slate-50 text-xs uppercase sticky top-0 z-10 text-slate-600">
+                                <tr>
+                                    <th class="px-3 py-3 text-center w-16">No</th>
+                                    <th class="px-3 py-3 text-left">Nama Perangkat</th>
+                                    <th class="px-3 py-3 text-center">Keterangan</th>
+                                    <th class="px-3 py-3 text-center">Alasan</th>
+                                </tr>
+                            </thead>
 
-                        {{-- HEADER --}}
-                        <thead class="bg-gray-100 text-xs uppercase sticky top-0 z-10">
-                            <tr>
-                                <th class="px-2 py-2 text-center w-10">No</th>
-                                <th class="px-2 py-2 text-left">Nama Perangkat</th>
-                                <th class="px-2 py-2 text-center">Keterangan</th>
-                                <th class="px-2 py-2 text-center">Alasan</th>
-                            </tr>
-                        </thead>
+                            <tbody class="divide-y divide-slate-100">
+                                @foreach ($dataPerangkat as $item)
+                                <tr class="hover:bg-slate-50">
 
-                        {{-- BODY --}}
-                        <tbody>
-                            @foreach ($dataPerangkat as $item)
-                            <tr class="border-t hover:bg-gray-50">
+                                    <td class="text-center py-3">
+                                        {{ $loop->iteration }}
+                                    </td>
 
-                                <td class="text-center py-2">
-                                    {{ $loop->iteration }}
-                                </td>
+                                    <td class="px-3 py-3 capitalize">
+                                        {{ strtolower($item->nama_perangkat) }}
+                                        <input type="hidden" name="perangkat_id[]" value="{{ $item->id }}">
+                                    </td>
 
-                                <td class="px-2 py-2 capitalize">
-                                    {{ strtolower($item->nama_perangkat) }}
-                                    <input type="hidden" name="perangkat_id[]" value="{{ $item->id }}">
-                                </td>
+                                    {{-- RADIO --}}
+                                    <td class="text-center">
+                                        <div class="flex justify-center gap-2 text-xs">
+                                            @foreach (['hadir' => 'H', 'izin' => 'I', 'sakit' => 'S', 'alfa' => 'A'] as $val => $label)
+                                            <label class="cursor-pointer">
+                                                <input
+                                                    type="radio"
+                                                    name="keterangan[{{ $item->id }}]"
+                                                    value="{{ $val }}"
+                                                    class="hidden peer"
+                                                    {{ $item->keterangan === $val || ($val === 'hadir' && $item->keterangan === null) ? 'checked' : '' }}>
 
-                                {{-- RADIO --}}
-                                <td class="text-center">
-                                    <div class="flex justify-center gap-2 text-xs">
+                                                <span class="px-3 py-1 rounded-lg border
+                                                            peer-checked:bg-blue-600
+                                                            peer-checked:text-white
+                                                            hover:bg-slate-100">
+                                                    {{ $label }}
+                                                </span>
+                                            </label>
+                                            @endforeach
+                                        </div>
+                                    </td>
 
-                                        @foreach (['hadir' => 'H', 'izin' => 'I', 'sakit' => 'S', 'alfa' => 'A'] as $val => $label)
-                                        <label class="cursor-pointer">
-                                            <input type="radio"
-                                                name="keterangan[{{ $item->id }}]"
-                                                value="{{ $val }}"
-                                                class="hidden peer"
-                                                {{ $item->keterangan === $val || ($val === 'hadir' && $item->keterangan === null) ? 'checked' : '' }}>
+                                    {{-- ALASAN --}}
+                                    <td class="px-3 py-3">
+                                        <input
+                                            value="{{ $item->alasan }}"
+                                            name="alasan[{{ $item->id }}]"
+                                            placeholder="Isi alasan..."
+                                            class="w-full border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
 
-                                            <span class="px-2 py-1 rounded-md border 
-                                                peer-checked:bg-blue-600 
-                                                peer-checked:text-white 
-                                                hover:bg-gray-200">
-                                                {{ $label }}
-                                            </span>
-                                        </label>
-                                        @endforeach
+                {{-- MOBILE CARD --}}
+                <div class="md:hidden space-y-4">
+                    @foreach ($dataPerangkat as $item)
+                    <div class="bg-white border shadow-sm rounded-2xl p-4 space-y-4">
 
-                                    </div>
-                                </td>
+                        <div>
+                            <h3 class="font-semibold text-slate-800 capitalize">
+                                {{ strtolower($item->nama_perangkat) }}
+                            </h3>
+                            <input type="hidden" name="perangkat_id[]" value="{{ $item->id }}">
+                        </div>
 
-                                {{-- ALASAN --}}
-                                <td class="px-2 py-2">
+                        {{-- RADIO MOBILE --}}
+                        <div>
+                            <p class="text-xs text-slate-500 mb-2">Keterangan</p>
+
+                            <div class="grid grid-cols-2 gap-2">
+                                @foreach (['hadir' => 'Hadir', 'izin' => 'Izin', 'sakit' => 'Sakit', 'alfa' => 'Alfa'] as $val => $label)
+                                <label class="cursor-pointer">
                                     <input
-                                        value="{{ $item->alasan }}"
-                                        name="alasan[{{ $item->id }}]"
-                                        placeholder="Isi alasan..."
-                                        class="w-full border rounded-md px-2 py-1 text-center focus:ring focus:ring-blue-200">
-                                </td>
+                                        type="radio"
+                                        name="keterangan[{{ $item->id }}]"
+                                        value="{{ $val }}"
+                                        class="hidden peer"
+                                        {{ $item->keterangan === $val || ($val === 'hadir' && $item->keterangan === null) ? 'checked' : '' }}>
 
-                            </tr>
-                            @endforeach
-                        </tbody>
+                                    <div class="border rounded-xl px-3 py-3 text-center text-sm
+                                                peer-checked:bg-blue-600
+                                                peer-checked:text-white
+                                                peer-checked:border-blue-600">
+                                        {{ $label }}
+                                    </div>
+                                </label>
+                                @endforeach
+                            </div>
+                        </div>
 
-                    </table>
+                        {{-- ALASAN --}}
+                        <div>
+                            <p class="text-xs text-slate-500 mb-2">Alasan</p>
+                            <input
+                                value="{{ $item->alasan }}"
+                                name="alasan[{{ $item->id }}]"
+                                placeholder="Isi alasan..."
+                                class="w-full border rounded-xl px-3 py-3 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                        </div>
+                    </div>
+                    @endforeach
                 </div>
-            </div>
 
-        </form>
+            </form>
+        </div>
     </div>
 </x-app-layout>

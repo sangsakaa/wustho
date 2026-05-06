@@ -103,7 +103,7 @@
 
                         @forelse($laporan->groupBy('nama_guru') as $laporanGuru)
                         @foreach($laporanGuru as $index => $data)
-                        <tr class="hover:bg-gray-50">
+                        <tr class="hover:bg-gray-50 border">
 
                             @if($index === 0)
                             <td rowspan="{{ $laporanGuru->count() }}"
@@ -129,19 +129,19 @@
                                 {{ $data->jumlah_sesi_kelas_guru }}
                             </td>
 
-                            <td class="border border-green-800 text-green-600 font-bold">
+                            <td class="border text-center border-green-800 text-green-600 font-bold">
                                 {{ $data->jumlah_hadir }}
                             </td>
 
-                            <td class="border border-green-800 text-yellow-600">
+                            <td class="border text-center border-green-800 text-yellow-600">
                                 {{ $data->jumlah_izin }}
                             </td>
 
-                            <td class="border border-green-800 text-orange-600">
+                            <td class="border text-center border-green-800 text-orange-600">
                                 {{ $data->jumlah_sakit }}
                             </td>
 
-                            <td class="border border-green-800 text-red-600">
+                            <td class="border text-center border-green-800 text-red-600">
                                 {{ $data->jumlah_alfa }}
                             </td>
 
@@ -150,36 +150,35 @@
                             ? ($data->jumlah_hadir * 100 / $data->jumlahHari)
                             : 0;
                             @endphp
-
-                            <td class="border border-green-800 font-semibold">
+                            <td class="border text-center border-green-800 font-semibold">
                                 <span class="{{ $persen >= 90 ? 'text-green-600' : ($persen >= 70 ? 'text-yellow-600' : 'text-red-600') }}">
                                     {{ number_format($persen, 0) }}%
                                 </span>
                             </td>
 
-                            <td class="border {{ $data->hari == 'jumat' ? '' : 'bg-red-100' }}">
+                            <td class="border text-center {{ $data->hari == 'jumat' ? '' : '' }}">
                                 {{ $data->hari == 'jumat' ? $data->total : '' }}
                             </td>
-                            <td class="border {{ $data->hari == 'sabtu' ? '' : 'bg-red-100' }}">
+                            <td class="border text-center {{ $data->hari == 'sabtu' ? '' : '' }}">
                                 {{ $data->hari == 'sabtu' ? $data->total : '' }}
                             </td>
-                            <td class="border {{ $data->hari == 'minggu' ? '' : 'bg-red-100' }}">
+                            <td class="border text-center {{ $data->hari == 'minggu' ? '' : '' }}">
                                 {{ $data->hari == 'minggu' ? $data->total : '' }}
                             </td>
-                            <td class="border {{ $data->hari == 'senin' ? '' : 'bg-red-100' }}">
+                            <td class="border text-center {{ $data->hari == 'senin' ? '' : '' }}">
                                 {{ $data->hari == 'senin' ? $data->total : '' }}
                             </td>
-                            <td class="border {{ $data->hari == 'selasa' ? '' : 'bg-red-100' }}">
+                            <td class="border text-center {{ $data->hari == 'selasa' ? '' : '' }}">
                                 {{ $data->hari == 'selasa' ? $data->total : '' }}
                             </td>
-                            <td class="border {{ $data->hari == 'rabu' ? '' : 'bg-red-100' }}">
+                            <td class="border text-center {{ $data->hari == 'rabu' ? '' : '' }}">
                                 {{ $data->hari == 'rabu' ? $data->total : '' }}
                             </td>
                         </tr>
                         @endforeach
                         @empty
                         <tr>
-                            <td colspan="15" class="text-center py-4 text-gray-500">
+                            <td colspan="15" class=" border text-center py-4 text-gray-500">
                                 Tidak ada data laporan
                             </td>
                         </tr>
