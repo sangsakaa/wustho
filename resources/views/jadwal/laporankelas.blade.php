@@ -1,117 +1,173 @@
 <x-app-layout>
     <x-slot name="header">
-        @section('title', ' | Laporan Kelas' )
+        @section('title', ' | Laporan Kelas')
 
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard kegiatan Kelas') }}
-        </h2>
-    </x-slot>
-    <div class="px-4 py-2">
-        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-            <div class=" p-2 gap-2  flex  bg-white border-b border-gray-200">
-                <div>
-                    <a href="/Daftar-Jadwal" class=" py-1 px-2 bg-red-600 text-white ">Jadwal</a>
-                </div>
-                <div>
-                    <button class=" bg-red-600  dark:bg-purple-600 w-full rounded-sm hover:bg-purple-600 text-white px-4 " onclick="printContent('blanko')">
-                        Cetak
-                    </button>
-                </div>
+        <div class="flex justify-between items-center">
+            <div>
+                <h2 class="font-bold text-2xl text-slate-800">
+                    Dashboard Kegiatan Kelas
+                </h2>
+                <p class="text-sm text-slate-500">
+                    Laporan plotting guru dan distribusi kelas
+                </p>
             </div>
         </div>
-    </div>
+    </x-slot>
+
+    <style>
+        @media print {
+            body {
+                background: white !important;
+                font-size: 11px;
+            }
+
+            .no-print {
+                display: none !important;
+            }
+
+            #print-area {
+                width: 100%;
+                margin: 0;
+                padding: 0;
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+            }
+
+            th,
+            td {
+                border: 1px solid #000 !important;
+                padding: 4px;
+            }
+        }
+    </style>
+
     <script>
-        function printContent(el) {
-            var fullbody = document.body.innerHTML;
-            var printContent = document.getElementById(el).innerHTML;
-            document.body.innerHTML = printContent;
+        function printContent() {
             window.print();
-            document.body.innerHTML = fullbody;
         }
     </script>
-    <div id="blanko" class="p-4">
-        <div class=" mx-auto ">
-            <div class="bg-white overflow-hidden  sm:rounded-lg text-sm sm:text-sm">
-                <div class="p-2 bg-white  border-gray-200 ">
-                    @if($Periode !== null )
-                    <center>
-                        <div class=" ">
-                            <p class=" font-semibold sm:text-xs  text-2xl text-green-800">
-                                MADRASAH DINIYAH WUSTHO WAHIDIYAH
-                            </p>
-                            <p class=" font-semibold sm:text-xs  text-lg text-green-800">
-                                LAPORAN PLOTING GURU
-                            </p>
-                            <p class=" font-semibold text-xs  sm:text-md uppercase text-green-800">
-                                TAHUN PELAJARAN
-                                @if($Periode !== null )
-                                {{$Periode->periode}} {{$Periode->ket_semester}}
-                                @else
 
-                                @endif
-                            </p>
-                        </div>
-                    </center>
-                    <hr class=" border-b-2   border-b-green-700">
-                    <div class=" overflow-auto ">
-                        <div class=" grid grid-cols-2">
-                            <div>Jumla Kelas</div>
-                            <div> : {{$Periode->jumlah_kelas}}</div>
-                            <div>Jumlah Mata Pelajaran</div>
-                            <div> : {{$Periode->jumlah_mapel}}</div>
-                        </div>
-                        <table class=" w-full ">
-                            <thead>
-                                <tr>
-                                    <th rowspan="2" class="border border-green-800 text-center py-1">No</th>
-                                    <th rowspan="2" class="border border-green-800 text-center py-1">Nama Guru</th>
-                                    <th colspan="{{$laporan->pluck('nama_kelas')->unique()->count();}}" class="border border-green-800 text-center py-1">Kelas</th>
-                                    <th rowspan="2" class="border border-green-800 py-1">Jumlah <br> Mapel</th>
-                                    <th rowspan="2" class="border border-green-800 py-1 ">Jumlah <br> Kelas</th>
-                                </tr>
-                                <tr>
-                                    @foreach ($laporan->pluck('nama_kelas')->unique()->sort() as $nama_kelas)
-                                    <th class="border border-green-800 py-1">{{ $nama_kelas }}</th>
-                                    @endforeach
+    {{-- Toolbar --}}
+    <div class="p-4 no-print">
+        <div class="bg-white shadow rounded-2xl p-4 flex gap-3">
+            <a href="/Daftar-Jadwal"
+                class="px-4 py-2 rounded-lg bg-slate-700 hover:bg-slate-800 text-white font-medium transition">
+                Jadwal
+            </a>
 
+            <a href="{{ route('laporan.ploting.pdf') }}" target="_blank"
+                class="px-4 py-2 rounded-lg bg-red-600 hover:bg-red-700 text-white font-medium transition">
+                Download PDF
+            </a>
+        </div>
+    </div>
 
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($laporan->pluck('nama_guru')->unique()->sort() as $nama_guru)
-                                <tr>
-                                    <td class="border border-green-800 text-center">{{ $loop->iteration }}</td>
-                                    <td class="border border-green-800 py-1 px-1">{{ $nama_guru }}</td>
-                                    @foreach ($laporan->pluck('nama_kelas')->unique()->sort() as $nama_kelas)
-                                    <td class="border  
-@if ($laporan->where('nama_guru', $nama_guru)->where('nama_kelas', $nama_kelas)->sum('jumlah_mapel') > 0)
-border-green-800 bg-green-200 
-@endif
- border-green-800
-text-center">
-                                        {{ $laporan->where('nama_guru', $nama_guru)->where('nama_kelas', $nama_kelas)->sum('jumlah_mapel') }}
-                                    </td>
-                                    @endforeach
-                                    <td class="border border-green-800 text-center">{{ $laporan->where('nama_guru', $nama_guru)->sum('jumlah_mapel') }}</td>
-                                    <td class="border border-green-800 text-center">{{ $laporan->where('nama_guru', $nama_guru)->count() }}</td>
-                                </tr>
-                                @endforeach
-                            </tbody>
+    {{-- Print Area --}}
+    <div id="print-area" class="p-4">
+        <div class="max-w-7xl mx-auto bg-white shadow-lg rounded-2xl p-6">
 
-                        </table>
+            @if($Periode)
+            {{-- Header laporan --}}
+            <div class="text-center mb-6">
+                <h1 class="text-2xl font-bold text-emerald-800">
+                    MADRASAH DINIYAH WUSTHO WAHIDIYAH
+                </h1>
+                <h2 class="text-lg font-semibold text-slate-700">
+                    LAPORAN PLOTING GURU
+                </h2>
+                <p class="text-sm uppercase text-slate-600 mt-1">
+                    Tahun Pelajaran {{ $Periode->periode }} {{ $Periode->ket_semester }}
+                </p>
+            </div>
 
+            <hr class="border-2 border-emerald-700 mb-4">
 
+            {{-- Info ringkas --}}
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6 text-sm">
+                <div class="bg-slate-50 p-3 rounded-xl border">
+                    <p class="text-slate-500">Jumlah Kelas</p>
+                    <p class="font-bold text-lg">{{ $Periode->jumlah_kelas }}</p>
+                </div>
 
-
-
-                    </div>
-                    @else
-                    <span>
-                        Tidak Ada Ploting Guru
-                    </span>
-                    @endif
+                <div class="bg-slate-50 p-3 rounded-xl border">
+                    <p class="text-slate-500">Jumlah Mapel</p>
+                    <p class="font-bold text-lg">{{ $Periode->jumlah_mapel }}</p>
                 </div>
             </div>
+
+            {{-- Table --}}
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm border border-slate-300">
+                    <thead class="bg-slate-100">
+                        <tr>
+                            <th rowspan="2" class="border px-2 py-2">No</th>
+                            <th rowspan="2" class="border px-2 py-2">Nama Guru</th>
+                            <th colspan="{{ $laporan->pluck('nama_kelas')->unique()->count() }}"
+                                class="border px-2 py-2">
+                                Kelas
+                            </th>
+                            <th rowspan="2" class="border px-2 py-2">
+                                Jumlah Mapel
+                            </th>
+                            <th rowspan="2" class="border px-2 py-2">
+                                Jumlah Kelas
+                            </th>
+                        </tr>
+                        <tr>
+                            @foreach ($laporan->pluck('nama_kelas')->unique()->sort() as $nama_kelas)
+                            <th class="border px-2 py-2">
+                                {{ $nama_kelas }}
+                            </th>
+                            @endforeach
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach ($laporan->pluck('nama_guru')->unique()->sort() as $nama_guru)
+                        <tr class="hover:bg-slate-50">
+                            <td class="border text-center px-2 py-1">
+                                {{ $loop->iteration }}
+                            </td>
+
+                            <td class="border px-2 py-1 font-medium">
+                                {{ $nama_guru }}
+                            </td>
+
+                            @foreach ($laporan->pluck('nama_kelas')->unique()->sort() as $nama_kelas)
+                            @php
+                            $jumlah = $laporan
+                            ->where('nama_guru', $nama_guru)
+                            ->where('nama_kelas', $nama_kelas)
+                            ->sum('jumlah_mapel');
+                            @endphp
+
+                            <td class="border text-center px-2 py-1 {{ $jumlah > 0 ? 'bg-emerald-100 font-semibold' : '' }}">
+                                {{ $jumlah }}
+                            </td>
+                            @endforeach
+
+                            <td class="border text-center font-bold">
+                                {{ $laporan->where('nama_guru', $nama_guru)->sum('jumlah_mapel') }}
+                            </td>
+
+                            <td class="border text-center font-bold">
+                                {{ $laporan->where('nama_guru', $nama_guru)->count() }}
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+            @else
+            <div class="text-center py-10">
+                <p class="text-slate-500 text-lg">
+                    Tidak ada plotting guru
+                </p>
+            </div>
+            @endif
         </div>
     </div>
 </x-app-layout>

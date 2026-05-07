@@ -418,50 +418,132 @@ class PengaturanController extends Controller
     }
     public function generatePeriode()
     {
-        // 🔥 ambil periode terakhir
-        $lastPeriode = Periode::orderByDesc('periode')->first();
+        $tahunSekarang = now()->year;
+
+        $lastPeriode = Periode::with('semester')
+            ->orderByDesc('periode')
+            ->orderByDesc('semester_id')
+            ->first();
 
         if (!$lastPeriode) {
-            return back()->with('error', 'Data periode belum ada');
+            return back()->with('error', 'Data periode terakhir belum ada.');
         }
 
-        // ambil tahun dari periode terakhir
-        $lastYear = (int) substr($lastPeriode->periode, 0, 4);
+        $tahunAwal = (int) substr($lastPeriode->periode, 0, 4);
+        $tahunAkhir = (int) substr($lastPeriode->periode, 5, 4);
+        $tahunHijriyah = (int) $lastPeriode->tahun_hijriyah;
 
-        // 🔥 ambil hijriyah terakhir
-        $lastHijriyah = (int) $lastPeriode->tahun_hijriyah;
+        $semesterGanjil = Semester::where('ket_semester', 'Ganjil')->first();
+        $semesterGenap = Semester::where('ket_semester', 'Genap')->first();
 
-        // 🔥 next tahun akademik (1 saja)
-        $tahun = $lastYear + 1;
+        if (!$semesterGanjil || !$semesterGenap) {
+            return back()->with('error', 'Data semester Ganjil/Genap belum tersedia.');
+        }
 
-        $periodeText = $tahun . '/' . ($tahun + 1);
+        /**
+         * Cek tahun:
+         * contoh sekarang 2026,
+         * hanya boleh generate 2026/2027
+         */
+        if ($tahunAwal > $tahunSekarang) {
+            return back()->with(
+                'error',
+                "Belum waktunya membuat periode {$tahunAwal}/{$tahunAkhir}"
+            );
+        }
 
-        // 🔥 hijriyah naik 1 dari data terakhir
-        $tahunHijriyah = $lastHijriyah + 1;
+        DB::beginTransaction();
 
-        $semesterList = Semester::whereIn('ket_semester', ['Ganjil', 'Genap'])->get();
+        try {
+            /**
+             * CASE 1:
+             * terakhir GANJIL -> buat GENAP periode yang sama
+             */
+            if (strtolower($lastPeriode->semester->ket_semester) === 'ganjil') {
 
-        DB::transaction(function () use ($periodeText, $tahunHijriyah, $semesterList) {
-
-            foreach ($semesterList as $semester) {
-
-                $exists = Periode::where('periode', $periodeText)
-                    ->where('semester_id', $semester->id)
+                $existsGenap = Periode::where('periode', $lastPeriode->periode)
+                    ->where('semester_id', $semesterGenap->id)
                     ->exists();
 
-                if (!$exists) {
-
-                    Periode::create([
-                        'periode' => $periodeText,
-                        'semester_id' => $semester->id,
-                        'tanggal_mulai' => now(),
-                        'tahun_hijriyah' => $tahunHijriyah,
-                        'is_active' => 0,
-                    ]);
+                if ($existsGenap) {
+                    DB::rollBack();
+                    return back()->with(
+                        'error',
+                        "Semester Genap {$lastPeriode->periode} sudah ada."
+                    );
                 }
-            }
-        });
 
-        return back()->with('success', 'Periode + Hijriyah berhasil naik 1 tahun!');
+                Periode::create([
+                    'periode' => $lastPeriode->periode,
+                    'semester_id' => $semesterGenap->id,
+                    'tanggal_mulai' => now(),
+                    'tahun_hijriyah' => $tahunHijriyah,
+                    'is_active' => 0,
+                ]);
+
+                DB::commit();
+                return back()->with(
+                    'success',
+                    "Berhasil membuat semester Genap {$lastPeriode->periode}"
+                );
+            }
+
+            /**
+             * CASE 2:
+             * terakhir GENAP -> buat tahun baru GANJIL
+             */
+            if (strtolower($lastPeriode->semester->ket_semester) === 'genap') {
+
+                $newTahunAwal = $tahunAwal + 1;
+                $newTahunAkhir = $tahunAkhir + 1;
+
+                /**
+                 * contoh:
+                 * sekarang 2026
+                 * tidak boleh buat 2027/2028
+                 */
+                if ($newTahunAwal > $tahunSekarang) {
+                    DB::rollBack();
+                    return back()->with(
+                        'error',
+                        "Belum waktunya membuat periode {$newTahunAwal}/{$newTahunAkhir}"
+                    );
+                }
+
+                $newPeriode = $newTahunAwal . '/' . $newTahunAkhir;
+
+                $existsGanjil = Periode::where('periode', $newPeriode)
+                    ->where('semester_id', $semesterGanjil->id)
+                    ->exists();
+
+                if ($existsGanjil) {
+                    DB::rollBack();
+                    return back()->with(
+                        'error',
+                        "Semester Ganjil {$newPeriode} sudah ada."
+                    );
+                }
+
+                Periode::create([
+                    'periode' => $newPeriode,
+                    'semester_id' => $semesterGanjil->id,
+                    'tanggal_mulai' => now(),
+                    'tahun_hijriyah' => $tahunHijriyah + 1,
+                    'is_active' => 0,
+                ]);
+
+                DB::commit();
+                return back()->with(
+                    'success',
+                    "Berhasil membuat semester Ganjil {$newPeriode}"
+                );
+            }
+
+            DB::rollBack();
+            return back()->with('error', 'Semester tidak valid.');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with('error', 'Gagal generate periode: ' . $e->getMessage());
+        }
     }
 }

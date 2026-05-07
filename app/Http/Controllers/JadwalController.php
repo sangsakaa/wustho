@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Daftar_Jadwal;
 use App\Models\Guru;
-use App\Models\Mapel;
 use App\Models\Jadwal;
 use App\Models\Kelasmi;
+use App\Models\Mapel;
 use App\Models\Periode;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
-use App\Models\Daftar_Jadwal;
 use Illuminate\Support\Facades\DB;
 
 class JadwalController
@@ -351,6 +352,61 @@ class JadwalController
                 'Periode' => $Periode
             ]
         );
+    }
+    public function LaporanPlotingKelasPDF()
+    {
+        $laporan = Jadwal::query()
+            ->leftJoin('kelasmi', 'kelasmi.id', '=', 'jadwal.kelasmi_id')
+            ->leftJoin('kelas', 'kelas.id', '=', 'kelasmi.kelas_id')
+            ->join('periode', 'periode.id', '=', 'jadwal.periode_id')
+            ->join('semester', 'semester.id', '=', 'periode.semester_id')
+            ->leftJoin('daftar_jadwal', 'daftar_jadwal.jadwal_id', '=', 'jadwal.id')
+            ->leftJoin('mapel', 'mapel.id', '=', 'daftar_jadwal.mapel_id')
+            ->leftJoin('guru', 'guru.id', '=', 'daftar_jadwal.guru_id')
+            ->where('kelasmi.periode_id', session('periode_id'))
+            ->whereNotNull('guru.nama_guru')
+            ->select(
+                'guru.id',
+                'guru.nama_guru',
+                'kelasmi.id as kelasmi_id',
+                'nama_kelas',
+                DB::raw('COUNT(DISTINCT CONCAT(kelasmi.id, "-", mapel.id)) as jumlah_mapel'),
+                DB::raw('COUNT(DISTINCT kelasmi.id) as jumlah_kelas')
+            )
+            ->groupBy(
+                'guru.id',
+                'guru.nama_guru',
+                'kelasmi.id',
+                'nama_kelas'
+            )
+            ->orderBy('nama_kelas')
+            ->orderBy('nama_guru')
+            ->get();
+
+        $Periode = Jadwal::query()
+            ->leftJoin('kelasmi', 'kelasmi.id', '=', 'jadwal.kelasmi_id')
+            ->join('periode', 'periode.id', '=', 'jadwal.periode_id')
+            ->join('semester', 'semester.id', '=', 'periode.semester_id')
+            ->leftJoin('daftar_jadwal', 'daftar_jadwal.jadwal_id', '=', 'jadwal.id')
+            ->leftJoin('mapel', 'mapel.id', '=', 'daftar_jadwal.mapel_id')
+            ->leftJoin('guru', 'guru.id', '=', 'daftar_jadwal.guru_id')
+            ->where('kelasmi.periode_id', session('periode_id'))
+            ->whereNotNull('guru.nama_guru')
+            ->select(
+                'periode.periode',
+                'semester.ket_semester'
+            )
+            ->selectRaw('COUNT(DISTINCT CONCAT(kelasmi.id, "-", mapel.id)) as jumlah_mapel')
+            ->selectRaw('COUNT(DISTINCT kelasmi.id) as jumlah_kelas')
+            ->groupBy('periode.periode', 'semester.ket_semester')
+            ->first();
+
+        $pdf = Pdf::loadView('jadwal.laporankelas-pdf', [
+            'laporan' => $laporan,
+            'Periode' => $Periode
+        ])->setPaper('a4', 'landscape');
+
+        return $pdf->stream('laporan-ploting-guru.pdf');
     }
     public function destroyGuru(Daftar_Jadwal $daftar_Jadwal)
     {

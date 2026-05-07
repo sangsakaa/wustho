@@ -78,6 +78,7 @@
         <x-sidebar.sublink title="Nomor Ujian" href="{{ route('daftar-seleksi') }}" :active="request()->routeIs('daftar-seleksi')" />
         <x-sidebar.sublink title=" Nomor Ijazah" href="{{ route('lulusan') }}" :active="request()->routeIs('lulusan')" />
         <x-sidebar.sublink title="Rapor" href="{{ route('raportkelas') }}" :active="request()->routeIs('raportkelas')" />
+        <x-sidebar.sublink title="Peringkat" href="{{ route('peringkat') }}" :active="request()->routeIs('peringkat')" />
     </x-sidebar.dropdown>
     <x-sidebar.dropdown title="PRESENSI" :active="Str::startsWith(request()->route()->uri(), 'buttons')">
         <x-slot name="icon">

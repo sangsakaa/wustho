@@ -279,7 +279,7 @@ Route::post('jabatan', [JabatanController::class, 'store']);
 Route::get('report/{pesertakelas}', [RaportController::class, 'show'])->middleware(['auth'])->name('report');
 Route::get('raportkelas', [RaportController::class, 'raportkelas'])->middleware(['auth'])->name('raportkelas');
 Route::post('raportkelas', [RaportController::class, 'raportkelas'])->middleware(['auth']);
-Route::get('peringkat', [RaportController::class, 'peringkat'])->middleware(['auth']);
+Route::get('peringkat', [RaportController::class, 'peringkat'])->middleware(['auth'])->name('peringkat');
 Route::post('peringkat', [RaportController::class, 'peringkat'])->middleware(['auth']);
 
 // Controller Mata Pelajaran
@@ -357,6 +357,7 @@ Route::get('absensikelas/rekap-per-bulan', [AbsensikelasController::class, 'reka
 Route::get('absensikelas/rekap-per-bulan-asrama', [AbsensikelasController::class, 'rekapPerBulanAsrama'])->middleware(['auth'])->name('absensikelas/rekap-per-bulan-asrama');
 Route::get('absensikelas/rekap-semester', [AbsensikelasController::class, 'rekapSemester'])->middleware(['auth'])->name('absensikelas/rekap-semester');
 Route::get('blanko-pernyataan', [AbsensikelasController::class, 'pernyataan'])->middleware(['auth'])->name('blanko-pernyataan');
+
 
 Route::get('rekap-harian', [RekapAsamaController::class, 'RekapHarian']);
 
@@ -451,6 +452,9 @@ Route::patch('edit-jadwal/{daftar_Jadwal}/edit', [JadwalController::class, 'upda
 
 Route::get('laporan-poling-guru', [JadwalController::class, 'LaporanPloting'])->middleware(['auth']);
 Route::get('laporan-poling-guru-kelas', [JadwalController::class, 'LaporanPlotingKelas'])->middleware(['auth']);
+// web.php
+Route::get('/laporan-ploting-pdf', [JadwalController::class, 'LaporanPlotingKelasPDF'])
+    ->name('laporan.ploting.pdf');
 Route::delete('jadwal-guru/{daftar_Jadwal}', [JadwalController::class, 'destroyGuru'])->middleware(['auth']);
 Route::delete('Daftar-Jadwal/{jadwal}', [JadwalController::class, 'destroy'])->middleware(['auth']);
 

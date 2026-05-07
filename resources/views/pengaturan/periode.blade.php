@@ -1,135 +1,103 @@
 <x-app-layout>
     <x-slot name="header">
         @section('title', ' | Periode')
-        <h2 class="font-semibold text-xl">
-            Pengaturan Periode
-        </h2>
+
+        <div class="flex items-center justify-between">
+            <div>
+                <h2 class="font-bold text-2xl text-slate-800">
+                    Pengaturan Periode
+                </h2>
+                <p class="text-sm text-slate-500">
+                    Manajemen periode akademik dan semester
+                </p>
+            </div>
+        </div>
     </x-slot>
 
-    {{-- 🔥 TOAST CONTAINER --}}
-    <div id="toast" class="fixed top-5 right-5 z-50 space-y-2"></div>
+    {{-- SWEET ALERT CDN --}}
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <div class="p-3 space-y-4">
+    <div class="p-4 space-y-4">
 
-        {{-- NAV --}}
-        <div class="bg-white shadow rounded-xl p-3">
+        {{-- NAVIGATION --}}
+        <div class="bg-white shadow-sm border border-slate-200 rounded-2xl p-4">
             <div class="flex gap-2 text-sm">
                 <a href="{{ url('/periode') }}"
-                    class="px-3 py-1 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                    class="px-4 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition">
                     Periode
                 </a>
+
                 <a href="{{ url('/pengaturan') }}"
-                    class="px-3 py-1 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300">
+                    class="px-4 py-2 bg-slate-100 text-slate-700 rounded-xl hover:bg-slate-200 transition">
                     Pengaturan
                 </a>
-
             </div>
         </div>
 
-        {{-- FORM --}}
-        <div class="bg-white shadow rounded-xl p-4 space-y-4">
+        {{-- MAIN CARD --}}
+        <div class="bg-white shadow-sm border border-slate-200 rounded-2xl p-5 space-y-5">
 
-            <!-- <form action="{{ url('/periode') }}" method="post" class="space-y-4">
-                @csrf
+            @php
+            $last = $periode->first();
+            @endphp
 
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
-
-                    {{-- PERIODE --}}
+            {{-- INFO --}}
+            @if($last)
+            <div class="rounded-xl border border-amber-300 bg-amber-50 p-4">
+                <div class="flex gap-3">
+                    <div class="text-xl">⚠️</div>
                     <div>
-                        <label class="text-xs text-gray-500">Periode</label>
-                        <input name="periode" type="text"
-                            value="{{ old('periode') }}"
-                            class="w-full border rounded-lg px-3 py-2 text-sm focus:ring focus:ring-blue-200 @error('periode') border-red-500 @enderror"
-                            placeholder="2025/2026">
+                        <h3 class="font-semibold text-amber-800">
+                            Informasi Generate Periode
+                        </h3>
 
-                        @error('periode')
-                        <div class="text-xs text-red-500 mt-1">{{ $message }}</div>
-                        @enderror
+                        <p class="text-sm text-amber-700 mt-1">
+                            Generate dilakukan berurutan:
+                            <span class="font-semibold">Ganjil → Genap → Tahun Baru</span>
+                        </p>
+
+                        <p class="text-sm text-amber-700 mt-1">
+                            Periode terakhir:
+                            <span class="font-semibold">
+                                {{ $last->periode }}
+                                ({{ $last->semester->ket_semester }})
+                            </span>
+                        </p>
                     </div>
-
-                    {{-- SEMESTER --}}
-                    <div>
-                        <label class="text-xs text-gray-500">Semester</label>
-                        <select name="semester_id"
-                            class="w-full border rounded-lg px-3 py-2 text-sm @error('semester_id') border-red-500 @enderror">
-
-                            <option value="">-- Pilih Semester --</option>
-
-                            @foreach($semester as $s)
-                            <option value="{{ $s->id }}"
-                                {{ old('semester_id') == $s->id ? 'selected' : '' }}>
-                                {{ $s->ket_semester }}
-                            </option>
-                            @endforeach
-
-                        </select>
-
-                        @error('semester_id')
-                        <div class="text-xs text-red-500 mt-1">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                    {{-- TANGGAL --}}
-                    <div>
-                        <label class="text-xs text-gray-500">Tanggal Mulai</label>
-                        <input type="date" name="tanggal_mulai"
-                            value="{{ old('tanggal_mulai') }}"
-                            class="w-full border rounded-lg px-3 py-2 text-sm">
-                    </div>
-
-                    {{-- HIJRIYAH --}}
-                    <div>
-                        <label class="text-xs text-gray-500">Tahun Hijriyah</label>
-                        <input type="text" name="tahun_hijriyah"
-                            value="{{ old('tahun_hijriyah') }}"
-                            class="w-full border rounded-lg px-3 py-2 text-sm"
-                            placeholder="1446">
-                    </div>
-
                 </div>
+            </div>
+            @endif
 
-                {{-- BUTTON --}}
-                <div class="flex gap-2">
-                    <button type="submit"
-                        class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 text-sm">
-                        Simpan
-                    </button>
-
-                    <a href="{{ url('/siswa') }}"
-                        class="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 text-sm">
-                        Batal
-                    </a>
-                </div>
-            </form> -->
-            <div class="bg-white shadow rounded-xl p-4 mb-3">
-                <form action="{{ url('/periode/generate') }}" method="POST">
+            {{-- BUTTON GENERATE --}}
+            <div class="bg-slate-50 rounded-xl border p-4">
+                <form id="generateForm" action="{{ url('/periode/generate') }}" method="POST">
                     @csrf
-                    <button type="submit"
-                        class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 text-sm">
-                        Generate Periode Otomatis
+
+                    <button type="button"
+                        onclick="confirmGenerate()"
+                        class="px-4 py-2 bg-emerald-600 text-white rounded-xl hover:bg-emerald-700 text-sm font-medium shadow">
+                        + Generate Periode Otomatis
                     </button>
                 </form>
             </div>
 
             {{-- TABLE --}}
             <div class="overflow-x-auto">
-                <table class="w-full text-sm border rounded-lg overflow-hidden">
-
-                    <thead class="bg-gray-100 text-xs uppercase">
+                <table class="w-full text-sm border border-slate-200 rounded-xl overflow-hidden">
+                    <thead class="bg-slate-100 text-slate-700 uppercase text-xs">
                         <tr>
-                            <th class="p-2 border">No</th>
-                            <th class="p-2 border">Periode</th>
-                            <th class="p-2 border">Semester</th>
-
-                            <th class="p-2 border">Hijriyah</th>
-                            <th class="p-2 border">Status</th>
-                            <th class="p-2 border">Hapus</th>
+                            <th class="p-3 border">No</th>
+                            <th class="p-3 border">Periode</th>
+                            <th class="p-3 border">Semester</th>
+                            <th class="p-3 border">Hijriyah</th>
+                            <th class="p-3 border">Status</th>
+                            <th class="p-3 border">Aksi</th>
                         </tr>
                     </thead>
 
                     <tbody>
                         @forelse($periode as $list)
-                        <tr class="hover:bg-gray-50">
+                        <tr class="hover:bg-slate-50">
 
                             <td class="border text-center">{{ $loop->iteration }}</td>
 
@@ -153,9 +121,6 @@
                                 {{ $list->semester->semester }}
                             </td>
 
-
-
-
                             <td class="border text-center">
                                 {{ $list->tahun_hijriyah }}
                             </td>
@@ -163,25 +128,26 @@
                             {{-- STATUS --}}
                             <td class="border text-center">
                                 @if($list->is_active)
-                                <span class="px-2 py-1 bg-green-500 text-white rounded text-xs">
+                                <span class="px-3 py-1 bg-green-500 text-white rounded-lg text-xs">
                                     Aktif
                                 </span>
                                 @else
-                                <form action="{{ url('/periode/aktifkan/'.$list->id) }}" method="post">
+                                <form action="{{ url('/periode/aktifkan/'.$list->id) }}" method="POST">
                                     @csrf
-                                    <button class="px-2 py-1 bg-gray-400 text-white rounded text-xs hover:bg-blue-500">
+                                    <button
+                                        class="px-3 py-1 bg-slate-400 text-white rounded-lg text-xs hover:bg-blue-500 transition">
                                         Aktifkan
                                     </button>
                                 </form>
                                 @endif
                             </td>
 
-                            {{-- HAPUS --}}
+                            {{-- AKSI --}}
                             <td class="border px-3 py-2">
-                                <div class="flex items-center justify-center gap-2">
+                                <div class="flex justify-center gap-2 flex-wrap">
 
                                     <a href="{{ url('/periode/' . $list->id) }}"
-                                        class="px-3 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600 text-xs transition">
+                                        class="px-3 py-1 bg-blue-500 text-white rounded-lg hover:bg-blue-600 text-xs transition">
                                         Detail
                                     </a>
 
@@ -195,100 +161,119 @@
 
                                     @if($totalRelasi > 0)
                                     <button disabled
-                                        title="Periode sudah dipakai di data lain"
-                                        class="px-3 py-1 bg-gray-400 text-white rounded-md text-xs cursor-not-allowed opacity-70">
+                                        class="px-3 py-1 bg-slate-400 text-white rounded-lg text-xs cursor-not-allowed opacity-70">
                                         Dipakai ({{ $totalRelasi }})
                                     </button>
                                     @else
-                                    <form action="{{ url('/periode/' . $list->id) }}" method="POST"
-                                        onsubmit="return confirm('Hapus data ini?')">
+                                    <form id="deleteForm{{ $list->id }}"
+                                        action="{{ url('/periode/' . $list->id) }}"
+                                        method="POST">
                                         @csrf
                                         @method('DELETE')
 
-                                        <button type="submit"
-                                            class="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600 text-xs transition">
+                                        <button type="button"
+                                            onclick="confirmDelete({{ $list->id }})"
+                                            class="px-3 py-1 bg-red-500 text-white rounded-lg hover:bg-red-600 text-xs transition">
                                             Hapus
                                         </button>
                                     </form>
                                     @endif
-
                                 </div>
                             </td>
-
                         </tr>
                         @empty
                         <tr>
-                            <td colspan="7" class="text-center py-3 text-gray-500">
+                            <td colspan="6" class="text-center py-6 text-slate-500">
                                 Belum ada data periode
                             </td>
                         </tr>
                         @endforelse
                     </tbody>
-
                 </table>
             </div>
-
         </div>
-
     </div>
 
-    {{-- 🔥 TOAST SCRIPT --}}
+    <script>
+        function confirmGenerate() {
+            Swal.fire({
+                title: 'Generate Periode?',
+                text: 'Periode baru akan dibuat sesuai urutan semester.',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, Generate',
+                cancelButtonText: 'Batal',
+
+                buttonsStyling: false,
+
+                customClass: {
+                    confirmButton: 'bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-4 py-2 rounded-lg mr-2',
+                    cancelButton: 'bg-slate-500 hover:bg-slate-600 text-white font-medium px-4 py-2 rounded-lg'
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('generateForm').submit();
+                }
+            });
+        }
+
+        function confirmDelete(id) {
+            Swal.fire({
+                title: 'Hapus Periode?',
+                text: 'Data yang dihapus tidak bisa dikembalikan.',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, Hapus',
+                cancelButtonText: 'Batal',
+
+                buttonsStyling: false,
+
+                customClass: {
+                    confirmButton: 'bg-red-600 hover:bg-red-700 text-white font-medium px-4 py-2 rounded-lg mr-2',
+                    cancelButton: 'bg-slate-500 hover:bg-slate-600 text-white font-medium px-4 py-2 rounded-lg'
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('deleteForm' + id).submit();
+                }
+            });
+        }
+    </script>
+
+    {{-- SUCCESS --}}
     @if(session('success'))
     <script>
-        showToast("{{ session('success') }}", "success");
+        Swal.fire({
+            toast: true,
+            position: 'top-end',
+            icon: 'success',
+            title: '{{ session("success") }}',
+            showConfirmButton: false,
+            timer: 4000,
+            timerProgressBar: true
+        });
     </script>
     @endif
 
+    {{-- ERROR --}}
     @if(session('error'))
     <script>
-        showToast("{{ session('error') }}", "error");
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: '{{ session("error") }}',
+
+            buttonsStyling: false,
+
+            customClass: {
+                popup: 'rounded-2xl shadow-xl',
+                title: 'text-red-600 text-xl font-bold',
+                htmlContainer: 'text-slate-600',
+                confirmButton: 'bg-red-600 hover:bg-red-700 text-white font-medium px-4 py-2 rounded-lg'
+            },
+
+            confirmButtonText: 'Tutup'
+        });
     </script>
     @endif
-
-    <script>
-        function showToast(message, type = 'success') {
-            const toast = document.getElementById('toast');
-
-            const colors = {
-                success: 'bg-green-500',
-                error: 'bg-red-500'
-            };
-
-            const el = document.createElement('div');
-            el.className = `
-                ${colors[type]}
-                text-white px-4 py-2 rounded-lg shadow-lg text-sm
-                animate-slide-in
-            `;
-
-            el.innerText = message;
-
-            toast.appendChild(el);
-
-            setTimeout(() => {
-                el.style.opacity = '0';
-                el.style.transition = '0.5s';
-                setTimeout(() => el.remove(), 500);
-            }, 3000);
-        }
-    </script>
-
-    <style>
-        @keyframes slideIn {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-
-        .animate-slide-in {
-            animation: slideIn 0.3s ease-out;
-        }
-    </style>
-
 </x-app-layout>
