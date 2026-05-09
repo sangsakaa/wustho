@@ -136,16 +136,20 @@ class AsramasiswaController extends Controller
      */
     public function edit(Asramasiswa $asramasiswa)
     {
-        $dataasrama = Asrama::query()
+        // ambil type asrama lama
+        $typeAsrama = $asramasiswa->asrama->type_asrama;
 
+        $dataasrama = Asrama::query()
+            ->where('type_asrama', $typeAsrama)
+            ->orderBy('nama_asrama')
             ->get();
 
-        // dd($dataasrama);
         return view(
             'asrama/editasramasiswa',
             [
                 'asramasiswa' => $asramasiswa,
-                'dataasrama' => $dataasrama
+                'dataasrama' => $dataasrama,
+                'typeAsrama' => $typeAsrama
             ]
         );
     }

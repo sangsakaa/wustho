@@ -3,15 +3,18 @@
 namespace App\Http\Controllers;
 
 
-use App\Models\Siswa;
+use App\Models\Daftar_lulusan;
 use App\Models\Kelasmi;
 use App\Models\Lulusan;
-use App\Models\Periode;
-use App\Models\Transkip;
-use App\Models\Perangkat;
-use App\Models\Pesertakelas;
-use App\Models\Daftar_lulusan;
 use App\Models\Nilai_Transkip;
+use App\Models\Nis;
+use App\Models\Perangkat;
+use App\Models\Periode;
+use App\Models\Pesertakelas;
+use App\Models\Siswa;
+use App\Models\Transkip;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Riskihajar\Terbilang\Facades\Terbilang;
 
 
@@ -226,5 +229,121 @@ class ValidasiController
                 'dataPeriode' => $dataPeriode
             ]
         );
+    }
+    public function ValidasiKelulusan(Request $request)
+    {
+        $tahun = $request->tahun;
+        $tab = $request->tab ?? 'all';
+        $tahunSekarang = Carbon::now()->year;
+
+        $listTahun = Nis::query()
+            ->selectRaw('YEAR(tanggal_masuk) as tahun')
+            ->groupByRaw('YEAR(tanggal_masuk)')
+            ->orderBy('tahun', 'desc')
+            ->pluck('tahun');
+
+        $query = Nis::query()
+            ->join('siswa', 'siswa.id', '=', 'nis.siswa_id')
+            ->leftJoin('pesertakelas', 'pesertakelas.siswa_id', '=', 'siswa.id')
+            ->leftJoin('daftar_lulusan', 'daftar_lulusan.pesertakelas_id', '=', 'pesertakelas.id')
+            ->leftJoin('lulusan', 'lulusan.id', '=', 'daftar_lulusan.lulusan_id')
+            ->selectRaw("
+            siswa.id as siswa_id,
+            siswa.nama_siswa,
+            nis.nis,
+            nis.madrasah_diniyah,
+            YEAR(nis.tanggal_masuk) as tahun_masuk,
+            MAX(YEAR(lulusan.tanggal_kelulusan)) as tahun_lulus,
+            MAX(daftar_lulusan.nomor_ijazah) as nomor_ijazah
+        ")
+            ->groupBy(
+                'siswa.id',
+                'siswa.nama_siswa',
+                'nis.nis',
+                'nis.madrasah_diniyah',
+                'nis.tanggal_masuk'
+            );
+
+        if ($tahun) {
+            $query->whereYear('nis.tanggal_masuk', $tahun);
+        }
+
+        $validasiKelulusan = $query
+            ->orderBy('tahun_masuk', 'desc')
+            ->get()
+            ->map(function ($item) use ($tahunSekarang) {
+
+                $minimalStudi = match ($item->madrasah_diniyah) {
+                    'Ula' => 6,
+                    'Wustho', 'Ulya' => 3,
+                    default => 3,
+                };
+
+                $item->minimal_studi = $minimalStudi;
+                $item->masa_berjalan = $tahunSekarang - $item->tahun_masuk;
+
+                $punyaIjazah = filled($item->nomor_ijazah);
+                $sudahLulus = filled($item->tahun_lulus);
+
+                $item->tahun_nis = substr($item->nis, 0, 4);
+                $nisValid = $item->tahun_nis == $item->tahun_masuk;
+
+                $item->lama_studi = null;
+                $layakLulus = $item->masa_berjalan >= $minimalStudi;
+
+                /*
+            |--------------------------------------------------------------------------
+            | VALID
+            |--------------------------------------------------------------------------
+            */
+                if ($sudahLulus && $punyaIjazah) {
+                    $item->lama_studi = $item->tahun_lulus - $item->tahun_masuk;
+
+                    if ($item->lama_studi < $minimalStudi) {
+                        $item->status = 'warning';
+                        $item->keterangan = 'Lulus terlalu cepat';
+                    } else {
+                        $item->status = 'valid';
+                        $item->keterangan = !$nisValid
+                            ? 'Valid (cek NIS)'
+                            : 'Valid';
+                    }
+
+                    return $item;
+                }
+
+                /*
+            |--------------------------------------------------------------------------
+            | WARNING
+            |--------------------------------------------------------------------------
+            */
+                if ($layakLulus && !$punyaIjazah) {
+                    $item->status = 'warning';
+                    $item->keterangan = !$nisValid
+                        ? 'NIS tidak sesuai & ijazah belum ada'
+                        : 'Sudah layak lulus, ijazah belum ada';
+
+                    return $item;
+                }
+
+                /*
+            |--------------------------------------------------------------------------
+            | PROSES
+            |--------------------------------------------------------------------------
+            */
+                $item->status = 'proses';
+                $item->keterangan = !$nisValid
+                    ? 'Cek tahun NIS'
+                    : 'Masih aktif';
+
+                return $item;
+            });
+
+        return view('validasi.kelulusan', compact(
+            'validasiKelulusan',
+            'listTahun',
+            'tahun',
+            'tab'
+        ));
     }
 }

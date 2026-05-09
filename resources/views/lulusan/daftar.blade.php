@@ -60,6 +60,7 @@
                             <tr>
                                 <th class="px-3 py-2 w-10 text-center">No</th>
                                 <th class="px-3 py-2 text-center">Nomor Ijazah</th>
+                                <th class="px-3 py-2 text-left">NIS</th>
                                 <th class="px-3 py-2 text-left">Nama Peserta</th>
                                 <th class="px-3 py-2 text-center">Kelas</th>
                                 <th class="px-3 py-2 text-center w-40">Aksi</th>
@@ -81,11 +82,17 @@
                                 </td>
 
                                 <td class="px-3 py-2 capitalize">
+
+                                    {{$item->nis}}
+                                </td>
+                                <td class="px-3 py-2 capitalize">
                                     {{ strtolower($item->nama_siswa) }}
+
                                 </td>
 
                                 <td class="px-3 py-2 text-center uppercase font-semibold">
                                     {{ $item->nama_kelas }}
+
                                 </td>
 
                                 <td class="px-3 py-2 text-center">

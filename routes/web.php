@@ -365,10 +365,15 @@ Route::get('download_file', [PengaturanController::class, 'download_file']);
 Route::patch('pesertaasrama/{pesertaasrama}', [AsramasiswaController::class, 'updatepeserta']);
 // Data Validasi
 Route::get('validasi-data', [ValidasiController::class, 'index'])->middleware(['auth']);
+Route::get('/validasi-data/pdf', [ValidasiController::class, 'pdf']);
 Route::get('blangko-ijazah/{lulusan}', [ValidasiController::class, 'blangkoijazah'])->middleware(['auth']);
 Route::get('blangko-transkip/{lulusan}', [ValidasiController::class, 'blangkoTranskip'])->middleware(['auth']);
 Route::get('live-siswa', [PengaturanController::class, 'testLive'])->middleware(['auth']);
 Route::get('kalender-pendidikan', [PengaturanController::class, 'kalender'])->middleware(['auth']);
+
+
+Route::get('/validasi-kelulusan', [ValidasiController::class, 'ValidasiKelulusan'])
+    ->name('validasi.kelulusan');
 
 // PDF
 Route::get('/generate-pdf/{tgl}', [AbsensikelasController::class, 'generatePdf']);
@@ -459,10 +464,14 @@ Route::delete('jadwal-guru/{daftar_Jadwal}', [JadwalController::class, 'destroyG
 Route::delete('Daftar-Jadwal/{jadwal}', [JadwalController::class, 'destroy'])->middleware(['auth']);
 
 // qrCode
+Route::get('/qr', [QrcodeController::class, 'index'])->name('qr.index');
+Route::post('/qr/generate/{id}', [QrcodeController::class, 'generate'])->name('qr.siswa');
+Route::post('/qr/generate-all', [QrcodeController::class, 'generateAll'])->name('qr.generate.all');
 
-Route::get('Qr-Scan', [QrcodeController::class, 'Scan'])->middleware(['auth'])->name('Qr-Scan');
-Route::get('generate-Scan', [QrcodeController::class, 'generateQRCode'])->middleware(['auth'])->name('generate-Scan');
-
+Route::get('/scan-qr', [QrcodeController::class, 'scan'])->name('qr.scan');
+Route::post('/scan-qr/store', [QrcodeController::class, 'store'])->name('qr.store');
+Route::get('/scan-qr', [QrcodeController::class, 'scan'])->name('qr.scan');
+Route::post('/scan-qr/store', [QrcodeController::class, 'store'])->name('qr.scan.store');
 
 // Route Export
 Route::get('Exports-data', [ExportController::class, 'Exports'])->middleware(['auth'])->name('Exports-data');
@@ -471,7 +480,7 @@ Route::get('Exports-data', [ExportController::class, 'Exports'])->middleware(['a
 Route::get('/export-siswa', [ExportController::class, 'export'])->name('export.siswa');
 Route::post('/import-siswa', [ExportController::class, 'importSiswa'])->name('import.siswa');
 
-
+Route::delete('/sesikelas/bulk-delete', [AbsensikelasController::class, 'bulkDelete']);
 
 // Hapus Sql
 Route::post('/delete-records', [PengaturanController::class, 'deleteRecordsById']);

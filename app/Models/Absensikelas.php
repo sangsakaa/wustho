@@ -11,6 +11,12 @@ class Absensikelas extends Model
     use HasFactory;
 
     protected $table = 'absensikelas';
+    protected $fillable = [
+        'sesikelas_id',
+        'pesertakelas_id',
+        'keterangan',
+        'alasan',
+    ];
 
     public $guarded = [];
 }

@@ -790,5 +790,17 @@ class AbsensikelasController
         // Output the PDF
         return $mpdf->Output('Laporan Hari ini - ' . $tgl->isoFormat('dddd, D MMMM YYYY') . '.pdf', Destination::INLINE);
     }
+    public function bulkDelete(Request $request)
+    {
+        $ids = $request->ids ?? [];
+
+        if (empty($ids)) {
+            return back()->with('error', 'Tidak ada data dipilih');
+        }
+
+        Sesikelas::whereIn('id', $ids)->delete();
+
+        return back()->with('success', count($ids) . ' data berhasil dihapus');
+    }
 
 }

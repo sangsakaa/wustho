@@ -23,9 +23,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // Api getDataSiswa
 Route::get('getDataSiswa', [ApiSiswaController::class, 'getDataSiswa'])->name('getDataSiswa');
 
-
-
-
 Route::get('data-asrama', [ApiSiswaController::class, 'dataAsrama'])->name('data-asrama');
 // Api guru
 Route::get('getDataGuru', [ApiGuruController::class, 'getDataGuru'])->name('getDataGuru');
