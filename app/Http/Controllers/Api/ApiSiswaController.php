@@ -2,22 +2,18 @@
 
 namespace App\Http\Controllers\Api;
 
-
 use App\Models\Siswa;
 use App\Models\Periode;
 use App\Models\Absensikelas;
-use Illuminate\Http\Request;
 use App\Models\Pesertaasrama;
+use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
-
 
 class ApiSiswaController
 {
     public function dataAsrama(Request $request)
     {
-        $periode = Periode::select('id')
-            ->latest('created_at')
-            ->first();
+        $periode = Periode::select('id')->latest('id')->first();
 
         if (!$periode) {
             return response()->json([
@@ -26,9 +22,11 @@ class ApiSiswaController
             ]);
         }
 
-        $tgl = $request->tgl ? Carbon::parse($request->tgl) : now();
+        $tgl = $request->tgl
+            ? Carbon::parse($request->tgl)->toDateString()
+            : now()->toDateString();
 
-        // 🔥 PRELOAD PESERTA ASRAMA (lebih ringan)
+        // preload asrama per siswa
         $pesertaAsrama = Pesertaasrama::query()
             ->whereHas('asramasiswa', function ($q) use ($periode) {
                 $q->where('periode_id', $periode->id);
@@ -40,9 +38,7 @@ class ApiSiswaController
             ->get()
             ->keyBy('siswa_id');
 
-        // 🔥 ABSENSI QUERY (MINIMAL JOIN)
         $dataAbsensiKelas = Absensikelas::query()
-            ->join('sesikelas', 'sesikelas.id', '=', 'absensikelas.sesikelas_id')
             ->join('pesertakelas', 'pesertakelas.id', '=', 'absensikelas.pesertakelas_id')
             ->join('siswa', 'siswa.id', '=', 'pesertakelas.siswa_id')
             ->join('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
@@ -56,12 +52,13 @@ class ApiSiswaController
                 'absensikelas.id as absensi_id',
             ])
             ->where('kelasmi.periode_id', $periode->id)
+            ->whereDate('absensikelas.tgl', $tgl)
             ->whereIn('absensikelas.keterangan', ['sakit', 'izin', 'alfa', 'hadir'])
             ->orderBy('kelasmi.nama_kelas')
             ->orderBy('siswa.nama_siswa')
             ->get()
             ->map(function ($item) use ($pesertaAsrama) {
-                $asrama = $pesertaAsrama[$item->siswa_id] ?? null;
+            $asrama = $pesertaAsrama->get($item->siswa_id);
                 $item->nama_asrama = $asrama?->asramasiswa?->asrama?->nama_asrama;
                 return $item;
             });
@@ -71,11 +68,10 @@ class ApiSiswaController
             'tgl' => $tgl,
         ]);
     }
+
     public function getDataSiswa()
     {
-        $periode = Periode::select('id')
-            ->latest('created_at')
-            ->first();
+        $periode = Periode::select('id')->latest('id')->first();
 
         if (!$periode) {
             return response()->json(['siswa' => []]);
@@ -88,13 +84,10 @@ class ApiSiswaController
             'siswa.nama_siswa',
             'siswa.jenis_kelamin',
                 'kelasmi.nama_kelas',
-            'asrama.nama_asrama'
+            'asrama.nama_asrama',
             ])
             ->join('nis', 'nis.siswa_id', '=', 'siswa.id')
-            ->join('pesertakelas', function ($q) use ($periode) {
-                $q->on('pesertakelas.siswa_id', '=', 'siswa.id')
-                    ->where('pesertakelas.periode_id', $periode->id);
-            })
+            ->join('pesertakelas', 'pesertakelas.siswa_id', '=', 'siswa.id')
             ->join('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
             ->leftJoin('pesertaasrama', 'pesertaasrama.siswa_id', '=', 'siswa.id')
             ->leftJoin('asramasiswa', function ($q) use ($periode) {
@@ -103,8 +96,13 @@ class ApiSiswaController
             })
             ->leftJoin('asrama', 'asrama.id', '=', 'asramasiswa.asrama_id')
             ->where('kelasmi.periode_id', $periode->id)
+            ->distinct()
+            ->orderBy('kelasmi.nama_kelas')
+            ->orderBy('siswa.nama_siswa')
             ->get();
 
-        return response()->json(['siswa' => $siswa]);
+        return response()->json([
+            'siswa' => $siswa
+        ]);
     }
 }
