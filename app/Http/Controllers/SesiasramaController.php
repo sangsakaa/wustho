@@ -192,19 +192,18 @@ class SesiasramaController extends Controller
         // ✅ VALIDASI
         $request->validate([
             'sesiasrama_id' => 'required|exists:sesiasrama,id',
-            'keterangan' => 'required|array',
+            'keterangan' => 'nullable|array',
         ]);
 
         try {
 
             DB::beginTransaction();
 
-            foreach ($request->keterangan as $pesertaasrama_id => $keterangan) {
+            foreach (($request->keterangan ?? []) as $pesertaasrama_id => $keterangan) {
 
-                // ✅ DEFAULT AMAN
                 $keterangan = in_array($keterangan, ['hadir', 'izin', 'sakit', 'alfa'])
                     ? $keterangan
-                    : 'hadir';
+                    : null;
 
                 $alasan = $request->alasan[$pesertaasrama_id] ?? null;
 

@@ -18,55 +18,35 @@ class SiswaController extends Controller
 {
     public function index()
     {
-        $data = Siswa::query()
-            ->leftJoin('nis', 'nis.siswa_id', '=', 'siswa.id')
-            ->select('siswa.*', 'nis.nis as nomor_nis')
-            ->orderBy('siswa.nama_siswa');
-
-        if (request('cari')) {
-            $keyword = request('cari');
-
-            $data->where(function ($q) use ($keyword) {
-                $q->where('siswa.nama_siswa', 'like', "%$keyword%")
-                    ->orWhere('nis.nis', 'like', "%$keyword%");
-            });
-        }
-
-        return view('siswa.siswa', [
-            'dataSiswa' => $data->paginate(10)->withQueryString()
-        ]);
+        return view('siswa.siswa');
     }
 
     public function create()
     {
         return view('siswa/addsiswa');
     }
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+
     public function store(Request $request)
     {
         $request->validate([
-            // 'nama_siswa' => 'required|min:5|max:50',
-        ], [
-            // 'nama_siswa.min' => 'tidak boleh kurang dari 5 karakter',
-            // 'nama_siswa.max' => 'tidak boleh lebih dari 60 karakter'
+            'nama_siswa' => 'required|min:3|max:100',
+            'jenis_kelamin' => 'required',
+            'agama' => 'required',
+            'tempat_lahir' => 'required',
+            'tanggal_lahir' => 'required|date',
+            'kota_asal' => 'required',
         ]);
-        $siswa = new Siswa();
-        $siswa->nama_siswa = $request->nama_siswa;
-        $siswa->jenis_kelamin = $request->jenis_kelamin;
-        $siswa->agama = $request->agama;
-        $siswa->tempat_lahir = $request->tempat_lahir;
-        $siswa->tanggal_lahir = $request->tanggal_lahir;
-        $siswa->kota_asal = $request->kota_asal;
-        $siswa->save();
-        
-        
-        
-        return redirect('siswa')->with('success', 'data berhasil ditambahkan');
+
+        Siswa::create($request->only([
+            'nama_siswa',
+            'jenis_kelamin',
+            'agama',
+            'tempat_lahir',
+            'tanggal_lahir',
+            'kota_asal',
+        ]));
+
+        return redirect('siswa')->with('success', 'Data siswa berhasil ditambahkan');
     }
     public function storeNis(Request $request)
     { 
@@ -111,8 +91,6 @@ class SiswaController extends Controller
      */
     public function show(Siswa $siswa, Request $request)
     {
-        $bulan = $request->bulan ? Carbon::parse($request->bulan) : now();
-        $periodeBulan = $bulan->startOfMonth()->daysUntil($bulan->copy()->endOfMonth());
         $pesertakelas = Pesertakelas::query()
             ->join('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
             ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
@@ -136,20 +114,29 @@ class SiswaController extends Controller
         ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
         ->join('semester', 'semester.id', '=', 'periode.semester_id')
         ->select(
-            'periode',
-            'ket_semester',
+            'periode.periode',
+            'semester.ket_semester',
             DB::raw('count(case when keterangan = "alfa" then 1 else null end) as alfa'),
             DB::raw('count(case when keterangan = "hadir" then 1 else null end) as hadir'),
             DB::raw('count(case when keterangan = "izin" then 1 else null end) as izin'),
             DB::raw('count(case when keterangan = "sakit" then 1 else null end) as sakit'),
-            DB::raw('count(distinct sesikelas.id) as count_sesikelas_id'), // Menggunakan DISTINCT untuk menghindari penghitungan ganda
-            DB::raw('COUNT(CASE WHEN keterangan = "hadir" THEN 1 END)/(COUNT(DISTINCT sesikelas.id)  ) * 100 as presentase_kehadiran')
-
+            DB::raw('count(distinct sesikelas.id) as count_sesikelas_id'),
+            DB::raw('COUNT(CASE WHEN keterangan = "hadir" THEN 1 END)/(COUNT(DISTINCT sesikelas.id)) * 100 as presentase_kehadiran')
         )
-        ->where('siswa_id', $siswa->id)
-        ->groupBy('periode', 'ket_semester')
-        ->get();
+            ->where('siswa_id', $siswa->id);
 
+        if ($request->filled('filter_periode')) {
+            $PresensiKelas->where('periode.periode', $request->filter_periode);
+        }
+
+        $PresensiKelas = $PresensiKelas->groupBy('periode.periode', 'semester.ket_semester')->get();
+
+        $daftarPeriode = Pesertakelas::query()
+            ->join('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
+            ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
+            ->where('pesertakelas.siswa_id', $siswa->id)
+            ->distinct()
+            ->pluck('periode.periode');
 
         return view(
             'siswa/detailSiswa',
@@ -157,36 +144,48 @@ class SiswaController extends Controller
                 'siswa' => $siswa,
                 'pesertakelas' => $pesertakelas,
                 'historiAsrama' => $historiAsrama,
-
                 'PresensiKelas' => $PresensiKelas,
-                'bulan' => $bulan,
-                'periodeBulan' => $periodeBulan,
-                
+                'daftarPeriode' => $daftarPeriode,
             ]
         );
     }
     public function biodata(Siswa $siswa)
     {
-        $perangkat = Perangkat::with('jabatanPerangkat.jabatan')
-            ->where('status', 'Aktif')
-            ->whereHas('jabatanPerangkat.jabatan', function ($q) {
-                $q->where('nama_jabatan', 'Kepala Sekolah');
-            })
-            ->get();
-        $biodata = $siswa->query()
-            ->leftjoin('nis', 'nis.siswa_id', '=', 'siswa.id')
-            ->leftjoin('statusanak', 'statusanak.siswa_id', '=', 'siswa.id')
-            ->leftjoin('statuspengamal', 'statuspengamal.siswa_id', '=', 'siswa.id')
-            ->where('nis.siswa_id', $siswa->id)
+        // $perangkat = Perangkat::with('jabatanPerangkat.jabatan')
+        //     ->where('status', 'Aktif')
+        //     ->whereHas('jabatanPerangkat.jabatan', function ($q) {
+        //         $q->where('nama_jabatan', 'Kepala Sekolah');
+        //     })
+        //     ->get();
+
+        $biodata = Siswa::query()
+            ->leftJoin('nis', 'nis.siswa_id', '=', 'siswa.id')
+            ->leftJoin('statusanak', 'statusanak.siswa_id', '=', 'siswa.id')
+            ->leftJoin('statuspengamal', 'statuspengamal.siswa_id', '=', 'siswa.id')
+            ->where('siswa.id', $siswa->id)
+            ->select(
+                'siswa.*',
+                'nis.nis',
+                'nis.madrasah_diniyah',
+                'nis.tanggal_masuk',
+                'statusanak.status_anak',
+                'statusanak.anak_ke',
+                'statusanak.jumlah_saudara',
+                'statusanak.nama_ayah',
+                'statusanak.nama_ibu',
+                'statusanak.pekerjaan_ayah',
+                'statusanak.pekerjaan_ibu',
+                'statusanak.nomor_hp_ayah',
+                'statusanak.nomor_hp_ibu',
+                'statuspengamal.status_pengamal'
+            )
             ->first();
-        return view(
-            'siswa/biodata',
-            [
-                'siswa' => $siswa,
-                'biodata' => $biodata,
-                'perangkat' => $perangkat
-            ]
-        );
+
+        return view('siswa/biodata', [
+            'siswa' => $siswa,
+            'biodata' => $biodata,
+
+        ]);
     }
     public function nis(Siswa $siswa)
     {
@@ -267,21 +266,38 @@ class SiswaController extends Controller
     }
     public function transkip(Request $request, Siswa $siswa)
     {
-        $nilai = Pesertakelas::query()
-            ->where('pesertakelas.siswa_id', $siswa->id);
-        
+        $nilai = DB::table('pesertakelas')
+            ->join('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
+            ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
+            ->join('semester', 'semester.id', '=', 'periode.semester_id')
+            ->join('nilaimapel', 'nilaimapel.kelasmi_id', '=', 'kelasmi.id')
+            ->leftJoin('mapel', 'mapel.id', '=', 'nilaimapel.mapel_id')
+            ->leftJoin('guru', 'guru.id', '=', 'nilaimapel.guru_id')
+            ->leftJoin('nilai', function ($join) {
+                $join->on('nilai.pesertakelas_id', '=', 'pesertakelas.id')
+                    ->on('nilai.nilaimapel_id', '=', 'nilaimapel.id');
+            })
+            ->where('pesertakelas.siswa_id', $siswa->id)
+            ->select(
+                'pesertakelas.id',
+                'kelasmi.nama_kelas',
+                'periode.periode',
+                'semester.ket_semester',
+                'guru.nama_guru',
+                'mapel.mapel',
+                'nilai.nilai_harian',
+                'nilai.nilai_ujian'
+            );
+
         if (request('cari')) {
-            $nilai->where('ket_semester', 'like', '%' . request('cari') . '%');
+            $nilai->where('semester.ket_semester', 'like', '%' . request('cari') . '%');
         }
-        $title = $siswa;
-        return view(
-            'siswa/transkip',
-            [
-                'siswa' => $siswa,
-                'title' => $title,
-                'nilai' => $nilai->get(),
-            ]
-        );
+
+        return view('siswa/transkip', [
+            'siswa' => $siswa,
+            'title' => $siswa,
+            'nilai' => $nilai->get(),
+        ]);
     }
     /**
      * Show the form for editing the specified resource.
@@ -289,69 +305,38 @@ class SiswaController extends Controller
      * @param  \App\Models\Siswa  $siswa
      * @return \Illuminate\Http\Response
      */
-    public function edit(Siswa $siswa, Request $request)
+    public function edit(Siswa $siswa)
     {
         $status_pengamal = Statuspengamal::where('siswa_id', $siswa->id)->first();
-
-        if (!$status_pengamal) {
-            // Jika tidak ditemukan, buat status pengamal baru
-            $status_pengamal = new Statuspengamal();
-            $status_pengamal->siswa_id = $siswa->id;
-            $status_pengamal->status_pengamal = 'pengamal';
-            $status_pengamal->save();
-        }
         $statusAnak = Statusanak::where('siswa_id', $siswa->id)->first();
-        // dd($statusAnak);
-        if (is_null($statusAnak)) {
-            $statusAnak = new Statusanak();
-            $statusAnak->siswa_id = $siswa->id;
-            $statusAnak->status_anak = $request->status_anak ?? 'kandung'; // Menggunakan nilai default 'kandung' jika tidak ada input
-            $statusAnak->anak_ke = $request->anak_ke ?? 1; // Menggunakan nilai default 1 jika tidak ada input
-            $statusAnak->jumlah_saudara = $request->jumlah_saudara ?? 1; // Menggunakan nilai default 1 jika tidak ada input
-            $statusAnak->nama_ayah = $request->nama_ayah;
-            $statusAnak->nama_ibu = $request->nama_ibu;
-            $statusAnak->pekerjaan_ayah = $request->pekerjaan_ayah;
-            $statusAnak->pekerjaan_ibu = $request->pekerjaan_ibu;
-            $statusAnak->nomor_hp_ayah = $request->nomor_hp_ayah;
-            $statusAnak->nomor_hp_ibu = $request->nomor_hp_ibu;
-            $statusAnak->save();
-        }
-        return view(
-            'siswa/editsiswa',
-            [
-                'siswa' => $siswa,
-                'status_pengamal' => $status_pengamal,
-                'statusAnak' => $statusAnak
-            ]
-        );
+
+        return view('siswa/editsiswa', [
+            'siswa' => $siswa,
+            'status_pengamal' => $status_pengamal,
+            'statusAnak' => $statusAnak,
+        ]);
     }
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Siswa  $siswa
-     * @return \Illuminate\Http\Response
-     */
+
     public function update(Request $request, Siswa $siswa)
     {
-        $data = $request->only([
+        $request->validate([
+            'nama_siswa' => 'required|min:3|max:100',
+            'jenis_kelamin' => 'required',
+            'agama' => 'required',
+            'tempat_lahir' => 'required',
+            'tanggal_lahir' => 'required|date',
+            'kota_asal' => 'required',
+        ]);
+
+        $siswa->update($request->only([
             'nama_siswa',
             'jenis_kelamin',
             'agama',
             'tempat_lahir',
             'tanggal_lahir',
             'kota_asal',
-        ]);
+        ]));
 
-        // Hapus field yang kosong
-        $data = array_filter($data, function ($value) {
-            return $value !== null && $value !== '';
-        });
-
-        // Update hanya yang terisi
-        $siswa->update($data);
-
-        // Status Pengamal
         if ($request->filled('status_pengamal')) {
             Statuspengamal::updateOrCreate(
                 ['siswa_id' => $siswa->id],
@@ -359,22 +344,26 @@ class SiswaController extends Controller
             );
         }
 
-        // Status Anak
-        Statusanak::updateOrCreate(
-            ['siswa_id' => $siswa->id],
-            array_filter([
-                'status_anak' => $request->status_anak,
-                'anak_ke' => $request->anak_ke,
-                'nama_ayah' => $request->nama_ayah,
-                'nama_ibu' => $request->nama_ibu,
-                'pekerjaan_ayah' => $request->pekerjaan_ayah,
-                'pekerjaan_ibu' => $request->pekerjaan_ibu,
-                'nomor_hp_ayah' => $request->nomor_hp_ayah,
-                'nomor_hp_ibu' => $request->nomor_hp_ibu,
-            ], fn($v) => $v !== null && $v !== '')
-        );
+        $saData = array_filter($request->only([
+            'status_anak',
+            'anak_ke',
+            'jumlah_saudara',
+            'nama_ayah',
+            'nama_ibu',
+            'pekerjaan_ayah',
+            'pekerjaan_ibu',
+            'nomor_hp_ayah',
+            'nomor_hp_ibu',
+        ]), fn($v) => $v !== null && $v !== '');
 
-        return redirect()->back()->with('update', 'pembaharuan data berhasil');
+        if (!empty($saData)) {
+            Statusanak::updateOrCreate(
+                ['siswa_id' => $siswa->id],
+                $saData
+            );
+        }
+
+        return redirect()->back()->with('update', 'Pembaharuan data berhasil');
     }
 
     public function destroy(Siswa $siswa)

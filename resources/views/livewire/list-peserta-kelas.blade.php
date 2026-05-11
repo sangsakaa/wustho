@@ -1,158 +1,196 @@
-<div class="space-y-3 text-sm">
+<div class="space-y-5">
 
-    {{-- 🔔 HEADER MINI CARD --}}
-    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
-
-        {{-- Kelas --}}
-        <div class="bg-blue-600 text-white px-3 py-2 rounded-lg flex justify-between items-center">
-            <div>
-                <p class="text-[11px] opacity-80">Kelas</p>
-                <p class="font-semibold text-sm leading-tight">{{ $datakelasmi->nama_kelas }}</p>
-            </div>
-            <span class="text-lg">📘</span>
-        </div>
-
-        {{-- Kuota --}}
-        <div class="bg-green-600 text-white px-3 py-2 rounded-lg flex justify-between items-center">
-            <div>
-                <p class="text-[11px] opacity-80">Kuota</p>
-                <p class="font-semibold text-sm">{{ $datakelasmi->kuota }}</p>
-            </div>
-            <span class="text-lg">👥</span>
-        </div>
-
-        {{-- Peserta --}}
-        <div class="bg-purple-600 text-white px-3 py-2 rounded-lg flex justify-between items-center">
-            <div>
-                <p class="text-[11px] opacity-80">Peserta</p>
-                <p class="font-semibold text-sm">{{ $hitung }}</p>
-            </div>
-            <span class="text-lg">📊</span>
-        </div>
-
-        {{-- JK --}}
-        <div class="bg-pink-600 text-white px-3 py-2 rounded-lg">
-            <p class="text-[11px] opacity-80 mb-1">JK</p>
-            <div class="flex justify-between text-xs">
-                <span>L: {{ $lk }}</span>
-                <span>P: {{ $pr }}</span>
-            </div>
-        </div>
-
+    {{-- NOTIFICATION --}}
+    @if (session()->has('success'))
+    <div class="p-4 rounded-2xl bg-green-100 border border-green-200 text-green-700">
+        {{ session('success') }}
     </div>
+    @endif
 
-    {{-- 🔎 ACTION BAR COMPACT --}}
-    <div class="bg-white dark:bg-dark-bg px-3 py-2 rounded-lg shadow flex flex-wrap gap-2 items-center justify-between">
+    @if (session()->has('error'))
+    <div class="p-4 rounded-2xl bg-red-100 border border-red-200 text-red-700">
+        {{ session('error') }}
+    </div>
+    @endif
 
-        <input type="search"
-            wire:model.debounce.500ms="search"
-            placeholder="Cari..."
-            class="border rounded-md px-2 py-1 text-xs w-full sm:w-52 focus:ring focus:ring-blue-200">
+    @if ($errors->any())
+    <div class="p-4 rounded-2xl bg-red-100 border border-red-200 text-red-700">
+        <ul class="list-disc list-inside">
+            @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
 
-        <div class="flex gap-2">
-            <a href="/pesertakolektif/{{ $kelasmi }}"
-                class="bg-blue-600 hover:bg-blue-700 text-white px-2 py-2 rounded text-xs">
-                Kolektif
-            </a>
 
-            <a href="/kelas_mi"
-                class="bg-gray-500 hover:bg-gray-600 text-white px-2 py-2 rounded text-xs">
-                Kembali
-            </a>
+    {{-- HEADER SUMMARY --}}
+    <div class="grid grid-cols-2 xl:grid-cols-4 gap-4">
 
-            <button onclick="window.print()"
-                class="hidden sm:flex items-center gap-1 bg-green-600 hover:bg-green-700 text-white px-2 py-1 rounded text-xs">
-                <x-icons.print />
-            </button>
-            @if(count($selected) > 0)
-            <button wire:click="deleteSelected"
-                onclick="confirm('Hapus data terpilih?') || event.stopImmediatePropagation()"
-                class="bg-red-600 hover:bg-red-700 text-white px-2 py-1 rounded text-xs">
-                Hapus ({{ count($selected) }})
-            </button>
-            @endif
+        <div class="bg-gradient-to-r from-blue-500 to-blue-600 text-white p-4 rounded-2xl shadow-sm">
+            <p class="text-xs opacity-80">Kelas</p>
+            <h3 class="text-lg font-bold mt-1">{{ $datakelasmi->nama_kelas }}</h3>
+        </div>
+
+        <div class="bg-gradient-to-r from-emerald-500 to-green-600 text-white p-4 rounded-2xl shadow-sm">
+            <p class="text-xs opacity-80">Kuota</p>
+            <h3 class="text-2xl font-bold mt-1">{{ $datakelasmi->kuota }}</h3>
+        </div>
+
+        <div class="bg-gradient-to-r from-violet-500 to-purple-600 text-white p-4 rounded-2xl shadow-sm">
+            <p class="text-xs opacity-80">Peserta</p>
+            <h3 class="text-2xl font-bold mt-1">{{ $hitung }}</h3>
+        </div>
+
+        <div class="bg-gradient-to-r from-pink-500 to-rose-500 text-white p-4 rounded-2xl shadow-sm">
+            <p class="text-xs opacity-80">Jenis Kelamin</p>
+            <div class="flex justify-between mt-2 text-sm font-semibold">
+                <span>Laki: {{ $lk }}</span>
+                <span>Per: {{ $pr }}</span>
+            </div>
         </div>
     </div>
 
-    {{-- 📋 TABLE DENSE --}}
-    <div id="print-area" class="bg-white dark:bg-dark-bg p-2 rounded-lg shadow overflow-x-auto">
 
-        <table class="w-full text-xs border border-gray-200 rounded-lg overflow-hidden">
-            <thead class="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200">
-                <tr>
-                    {{-- CHECK ALL --}}
-                    <th class="border px-2 py-2 text-center w-8">
-                        <input type="checkbox" wire:model="selectAll">
-                    </th>
-                    <th class="border px-1 py-1 w-8 text-center">No</th>
-                    <th class="border px-1 py-1 text-center">NIS</th>
-                    <th class="border px-1 py-1 text-left">Nama</th>
-                    <th class="border px-1 py-1 text-center w-10">JK</th>
-                    <th class="border px-1 py-1 text-center">Kelas</th>
-                    <th class="border px-1 py-1 text-center print:hidden w-16">Aksi</th>
-                </tr>
-            </thead>
+    {{-- ACTION BAR --}}
+    <div class="bg-white border border-slate-200 rounded-2xl shadow-sm p-4">
+        <div class="flex flex-col lg:flex-row gap-3 lg:items-center lg:justify-between">
 
-            <tbody>
-                @forelse($dataKelas as $list)
-                <tr class="hover:bg-gray-50 even:bg-gray-100 dark:even:bg-gray-800">
+            {{-- SEARCH --}}
+            <div class="relative w-full lg:w-72">
+                <input type="search"
+                    wire:model.live.debounce.500ms="search"
+                    placeholder="Cari nama / NIS..."
+                    class="w-full pl-10 pr-4 py-2.5 text-sm rounded-xl border border-slate-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
 
-                    {{-- CHECKBOX --}}
-                    <td class="border px-2 text-center py-2">
-                        <input type="checkbox" value="{{ $list->id }}" wire:model="selected">
-                    </td>
+                <svg xmlns="http://www.w3.org/2000/svg"
+                    class="w-5 h-5 text-slate-400 absolute left-3 top-3"
+                    fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        stroke-width="2"
+                        d="m21 21-4.35-4.35M11 18a7 7 0 1 1 0-14 7 7 0 0 1 0 14Z" />
+                </svg>
+            </div>
 
-                    <td class="border px-1 text-center">{{ $loop->iteration }}</td>
-                    <td class="border px-1 text-center">{{ $list->nis }}</td>
+            {{-- BUTTONS --}}
+            <div class="flex flex-wrap gap-2">
 
-                    <td class="border px-1 capitalize truncate max-w-[150px]">
-                        {{ strtolower($list->nama_siswa) }}
-                    </td>
+                <a href="/pesertakolektif/{{ $kelasmi }}"
+                    class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium transition">
+                    Input Kolektif
+                </a>
 
-                    <td class="border px-1 text-center capitalize">
-                        <span class="{{ $list->jenis_kelamin == 'L' ? 'text-blue-600' : 'text-pink-600' }}">
-                            {{ strtolower($list->jenis_kelamin) }}
-                        </span>
-                    </td>
+                <a href="/kelas_mi"
+                    class="px-4 py-2 rounded-xl bg-slate-500 hover:bg-slate-600 text-white text-sm font-medium transition">
+                    Kembali
+                </a>
 
-                    <td class="border px-1 text-center">
-                        {{ $list->nama_kelas }}
-                    </td>
+                <button onclick="window.print()"
+                    class="hidden sm:flex items-center gap-2 px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium transition">
+                    <x-icons.print />
+                    Print
+                </button>
 
-                    {{-- AKSI --}}
-                    <td class="border px-1 text-center print:hidden">
-                        <div class="flex justify-center gap-1">
-                            <a href="/pesertakelas/{{ $list->id }}/edit"
-                                class="bg-yellow-400 hover:bg-yellow-500 p-1 rounded">
-                                <x-icons.edit />
-                            </a>
+                @if(count($selected) > 0)
+                <button
+                    onclick="if(confirm('Hapus data terpilih?')) { @this.call('deleteSelected') }"
+                    class="px-4 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white text-sm font-medium transition">
+                    Hapus {{ count($selected) }}
+                </button>
+                @endif
+            </div>
+        </div>
+    </div>
 
-                            <form action="/pesertakelas/{{ $list->id }}" method="POST"
-                                onsubmit="return confirm('Yakin hapus?')">
-                                @csrf
-                                @method('DELETE')
-                                <button class="bg-red-600 hover:bg-red-700 text-white p-1 rounded">
-                                    <x-icons.hapus />
-                                </button>
-                            </form>
-                        </div>
-                    </td>
 
-                </tr>
-                @empty
-                <tr>
-                    <td colspan="7" class="text-center py-3 text-xs">
-                        Tidak ada data
-                    </td>
-                </tr>
-                @endforelse
-            </tbody>
-        </table>
+    {{-- TABLE --}}
+    <div id="print-area"
+        class="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
 
+        <div class="overflow-x-auto max-h-[650px]">
+            <table class="w-full text-sm">
+
+                <thead class="bg-slate-50 sticky top-0 z-10">
+                    <tr class="text-slate-600 uppercase text-xs tracking-wider">
+                        <th class="px-4 py-3 text-center">
+                            <input type="checkbox" wire:model="selectAll"
+                                class="rounded border-slate-300">
+                        </th>
+                        <th class="px-4 py-3 text-center">No</th>
+                        <th class="px-4 py-3 text-center">NIS</th>
+                        <th class="px-4 py-3 text-left">Nama</th>
+                        <th class="px-4 py-3 text-center">JK</th>
+                        <th class="px-4 py-3 text-center">Kelas</th>
+                        <th class="px-4 py-3 text-center print:hidden">Aksi</th>
+                    </tr>
+                </thead>
+
+                <tbody class="divide-y divide-slate-100">
+                    @forelse($dataKelas as $list)
+                    <tr class="hover:bg-slate-50 transition">
+
+                        <td class="px-4 py-3 text-center">
+                            <input type="checkbox"
+                                value="{{ $list->id }}"
+                                wire:model="selected"
+                                class="rounded border-slate-300">
+                        </td>
+
+                        <td class="px-4 py-3 text-center">{{ $loop->iteration }}</td>
+                        <td class="px-4 py-3 text-center font-medium">{{ $list->nis }}</td>
+
+                        <td class="px-4 py-3">
+                            <div class="font-medium text-slate-700 truncate max-w-[220px]">
+                                {{ ucwords(strtolower($list->nama_siswa)) }}
+                            </div>
+                        </td>
+
+                        <td class="px-4 py-3 text-center">
+                            <span class="px-2 py-1 rounded-full text-xs font-medium
+                                    {{ $list->jenis_kelamin == 'L'
+                                        ? 'bg-blue-100 text-blue-700'
+                                        : 'bg-pink-100 text-pink-700' }}">
+                                {{ $list->jenis_kelamin }}
+                            </span>
+                        </td>
+
+                        <td class="px-4 py-3 text-center">{{ $list->nama_kelas }}</td>
+
+                        <td class="px-4 py-3 text-center print:hidden">
+                            <div class="flex justify-center gap-2">
+
+                                <a href="/pesertakelas/{{ $list->id }}/edit"
+                                    class="w-9 h-9 flex items-center justify-center rounded-xl bg-yellow-100 text-yellow-600 hover:bg-yellow-200 transition">
+                                    <x-icons.edit />
+                                </a>
+
+                                <form action="/pesertakelas/{{ $list->id }}" method="POST"
+                                    onsubmit="return confirm('Yakin hapus data ini?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit"
+                                        class="w-9 h-9 flex items-center justify-center rounded-xl bg-red-100 text-red-600 hover:bg-red-200 transition">
+                                        <x-icons.hapus />
+                                    </button>
+                                </form>
+
+                            </div>
+                        </td>
+                    </tr>
+                    @empty
+                    <tr>
+                        <td colspan="7" class="py-8 text-center text-slate-400">
+                            Tidak ada data ditemukan
+                        </td>
+                    </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 
-{{-- 🖨️ PRINT --}}
+
 <style>
     @media print {
         body * {
@@ -169,6 +207,8 @@
             left: 0;
             top: 0;
             width: 100%;
+            box-shadow: none !important;
+            border: none !important;
         }
     }
 </style>

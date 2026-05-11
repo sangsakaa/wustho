@@ -345,7 +345,13 @@ Route::post('sesikelas', [SesikelasController::class, 'store'])->middleware(['au
 Route::delete('sesikelas/{sesikelas}', [SesikelasController::class, 'destroy'])->where('sesikelas', '[0-9]+')->middleware(['auth']);
 Route::get('sesikelas/rekap', [SesikelasController::class, 'rekapSesi'])->middleware(['auth']);
 Route::delete('/sesi-presensi-guru', [PresensiGuruController::class, 'bulkDelete']);
-
+Route::get('/absensi/monitor/{id}', [QrcodeController::class, 'monitor']);
+Route::post('/absensi/manual', [QrcodeController::class, 'manualAbsen'])
+    ->name('absen.manual');
+Route::post('/qr/scan', [QrcodeController::class, 'store'])->name('qr.scan.store');
+Route::delete('/qr/undo/{id}', [QrcodeController::class, 'undoAbsen']);
+Route::get('/qr/today-log', [QrcodeController::class, 'todayLog']);
+Route::get('/qr/today-log', [QrcodeController::class, 'todayLog']);
 // Controller Absensikelas
 Route::get('absensikelas/{sesikelas}', [AbsensikelasController::class, 'index'])->where('sesikelas', '[0-9]+')->middleware(['auth']);
 Route::post('absensikelas', [AbsensikelasController::class, 'store'])->middleware(['auth']);

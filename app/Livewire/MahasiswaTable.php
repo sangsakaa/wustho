@@ -3,7 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Siswa;
-use DB;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
 
@@ -14,12 +14,12 @@ class MahasiswaTable extends Component
     public $search = '';
     public $perPage = 10;
     public $angkatan = '';
-    public $sortcolumName = 'nama_siswa';
-    public $sortDerection = 'asc';
+    public $sortColumn = 'nama_siswa';
+    public $sortDirection = 'asc';
 
     protected $queryString = [
-        'search',
-        'angkatan'
+        'search' => ['except' => ''],
+        'angkatan' => ['except' => ''],
     ];
 
     public function updatingSearch()
@@ -32,36 +32,46 @@ class MahasiswaTable extends Component
         $this->resetPage();
     }
 
-    public function sortby($columName)
+    public function updatingPerPage()
     {
-        $this->sortDerection = $this->sortDerection === 'asc' ? 'desc' : 'asc';
-        $this->sortcolumName = $columName;
+        $this->resetPage();
+    }
+
+    public function sortBy($column)
+    {
+        $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
+        $this->sortColumn = $column;
     }
 
     public function render()
     {
         $query = Siswa::query()
-            ->leftJoin('nis', 'nis.siswa_id', '=', 'siswa.id')
-            ->select('siswa.*')
+            ->with('nis'); // ✅ gunakan relasi, bukan join
 
-            ->when($this->search, function ($q) {
-                $q->where(function ($sub) {
-                    $sub->where('siswa.nama_siswa', 'like', '%' . $this->search . '%')
-                        ->orWhere('nis.nis', 'like', '%' . $this->search . '%')
-                        ->orWhere('siswa.jenis_kelamin', 'like', '%' . $this->search . '%');
-                });
+        // 🔎 SEARCH
+        if ($this->search) {
+            $query->where(function ($q) {
+                $q->where('nama_siswa', 'like', '%' . $this->search . '%')
+                    ->orWhereHas('nis', function ($q2) {
+                        $q2->where('nis', 'like', '%' . $this->search . '%');
+                    });
             });
-
-        // filter angkatan
-        if ($this->angkatan) {
-            $query->whereYear('nis.tanggal_masuk', $this->angkatan);
         }
 
-        $data = $query
-            ->orderBy($this->sortcolumName, $this->sortDerection)
-            ->paginate($this->perPage);
+        // 📅 FILTER ANGKATAN
+        if ($this->angkatan) {
+            $query->whereHas('nis', function ($q) {
+                $q->whereYear('tanggal_masuk', $this->angkatan);
+            });
+        }
 
-        $angkatanList = \DB::table('nis')
+        // 📊 SORTING (aman)
+        $query->orderBy($this->sortColumn, $this->sortDirection);
+
+        $data = $query->paginate($this->perPage);
+
+        // 📅 LIST ANGKATAN
+        $angkatanList = DB::table('nis')
             ->selectRaw('YEAR(tanggal_masuk) as tahun')
             ->whereNotNull('tanggal_masuk')
             ->distinct()
@@ -70,7 +80,7 @@ class MahasiswaTable extends Component
 
         return view('livewire.mahasiswa-table', [
             'data' => $data,
-            'angkatanList' => $angkatanList
+            'angkatanList' => $angkatanList,
         ]);
     }
 }

@@ -18,4 +18,8 @@ class Sesikelas extends Model
     {
         return $this->hasMany(Absensikelas::class, 'sesikelas_id', 'id');
     }
+    public function kelasmi()
+    {
+        return $this->belongsTo(\App\Models\Kelasmi::class, 'kelasmi_id');
+    }
 }

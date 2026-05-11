@@ -90,7 +90,7 @@ class AbsensikelasController
             $absensikelas = $absensikelas_id ? Absensikelas::find($absensikelas_id) : new Absensikelas();
             $absensikelas->pesertakelas_id = $peserta;
             $absensikelas->sesikelas_id = $request->sesikelas;
-            $absensikelas->keterangan = $request->keterangan[$peserta];
+            $absensikelas->keterangan = $request->keterangan[$peserta] ?? null;
             $absensikelas->alasan = $request->alasan[$peserta];
             $absensikelas->save();
         }

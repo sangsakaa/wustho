@@ -2,95 +2,114 @@
     <x-slot name="header">
         @section('title', ' | Presensi Kelas')
 
-        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
-            <h2 class="font-semibold text-lg sm:text-xl">
-                Presensi Kelas
-            </h2>
+        @php
+        $first = $Datasesikelas->first();
 
-            <span class="text-sm text-gray-500">
-                {{ $tgl->isoFormat('dddd, D MMMM YYYY') }}
-            </span>
+        $total = $Datasesikelas->count();
+
+        $done = $Datasesikelas->filter(function ($item) {
+        return ($item->absensi_count ?? 0) >= ($item->peserta_count ?? 0)
+        && ($item->peserta_count ?? 0) > 0;
+        })->count();
+
+        $notDone = $total - $done;
+        $percent = $total ? round(($done / $total) * 100) : 0;
+        @endphp
+
+        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
+            <div>
+                <h2 class="font-semibold text-xl text-gray-800">
+                    Presensi Kelas
+                </h2>
+                <p class="text-sm text-gray-500">
+                    {{ $tgl?->isoFormat('dddd, D MMMM YYYY') }}
+                </p>
+            </div>
+
+            <div class="text-right">
+                <p class="text-xs text-gray-500">Periode Aktif</p>
+                <p class="font-semibold text-indigo-600">
+                    {{ $first->periode ?? '-' }}
+                    {{ $first->ket_semester ?? '' }}
+                </p>
+            </div>
         </div>
     </x-slot>
 
-    @php
-    $total = $Datasesikelas->count();
-    $done = $Datasesikelas->where('absensi_count', '>', 0)->count();
-    $notDone = $Datasesikelas->where('absensi_count', 0)->count();
-    $percent = $total ? round(($done / $total) * 100) : 0;
-    @endphp
-
     {{-- SUMMARY --}}
-    <div class="px-4 mt-2">
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-4">
+    <div class="px-4 mt-4">
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
 
-            <div class="bg-white p-4 rounded shadow-sm border text-center">
-                <div class="text-xs text-gray-500">Total Sesi</div>
-                <div class="text-xl font-bold text-blue-600">{{ $total }}</div>
+            <div class="bg-white rounded-xl shadow border p-4 text-center">
+                <p class="text-xs text-gray-500">Total Kelas</p>
+                <p class="text-2xl font-bold text-blue-600">{{ $total }}</p>
             </div>
 
-            <div class="bg-white p-4 rounded shadow-sm border text-center">
-                <div class="text-xs text-gray-500">Sudah Diisi</div>
-                <div class="text-xl font-bold text-green-600">{{ $done }}</div>
+            <div class="bg-white rounded-xl shadow border p-4 text-center">
+                <p class="text-xs text-gray-500">Selesai</p>
+                <p class="text-2xl font-bold text-green-600">{{ $done }}</p>
             </div>
 
-            <div class="bg-white p-4 rounded shadow-sm border text-center">
-                <div class="text-xs text-gray-500">Belum Diisi</div>
-                <div class="text-xl font-bold text-red-600">{{ $notDone }}</div>
+            <div class="bg-white rounded-xl shadow border p-4 text-center">
+                <p class="text-xs text-gray-500">Belum Selesai</p>
+                <p class="text-2xl font-bold text-red-600">{{ $notDone }}</p>
             </div>
 
-            <div class="bg-white p-4 rounded shadow-sm border text-center">
-                <div class="text-xs text-gray-500">Progress</div>
-                <div class="text-xl font-bold text-purple-600">{{ $percent }}%</div>
+            <div class="bg-white rounded-xl shadow border p-4 text-center">
+                <p class="text-xs text-gray-500">Progress</p>
+                <p class="text-2xl font-bold text-purple-600">{{ $percent }}%</p>
             </div>
 
         </div>
     </div>
 
-    {{-- ACTION BAR --}}
-    <div class="px-4">
-        <div class="bg-white shadow-sm rounded p-3 mb-3 flex flex-wrap gap-2 justify-between items-center">
+    {{-- ACTION --}}
+    <div class="px-4 mt-4">
+        <div class="bg-white shadow rounded-xl p-4 flex flex-col sm:flex-row justify-between gap-3">
 
-            <form action="/sesikelas" method="get" class="flex gap-2 items-center">
-                <input type="date"
+            <form action="/sesikelas" method="GET" class="flex gap-2 items-center">
+                <input
+                    type="date"
                     name="tgl"
-                    class="py-1 px-2 border rounded dark:bg-dark-bg"
-                    value="{{ $tgl->toDateString() }}">
+                    value="{{ $tgl?->toDateString() }}"
+                    class="border rounded-lg px-3 py-2 text-sm">
 
-                <button class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded">
+                <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm">
                     Filter
                 </button>
             </form>
 
-            <div class="flex gap-2 flex-wrap">
+            <div class="flex flex-wrap gap-2">
                 <a href="/sesikelas/rekap"
-                    class="bg-gray-600 hover:bg-gray-700 text-white px-3 py-1 rounded">
+                    class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg text-sm">
                     Rekap
                 </a>
 
-                <form action="/sesikelas" method="post">
+                <form action="/sesikelas" method="POST">
                     @csrf
-                    <input type="hidden" name="tgl" value="{{ $tgl->format('Y-m-d') }}">
+                    <input type="hidden" name="tgl" value="{{ $tgl?->toDateString() }}">
 
-                    <button class="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded">
+                    <button type="submit"
+                        class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm">
                         + Buat Sesi
                     </button>
                 </form>
 
-                <button type="button"
-                    id="bulkDeleteBtn"
-                    class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded">
-                    Hapus Terpilih
+                <button
+                    type="button"
+                    onclick="document.getElementById('bulkDeleteForm').submit()"
+                    class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm">
+                    Hapus
                 </button>
             </div>
         </div>
     </div>
 
     {{-- TABLE --}}
-    <div class="px-4">
-        <div class="bg-white shadow-sm rounded overflow-hidden">
+    <div class="px-4 mt-4">
+        <div class="bg-white shadow rounded-xl overflow-hidden">
 
-            <div class="p-3 border-b font-semibold text-gray-700">
+            <div class="px-4 py-3 border-b font-semibold text-gray-700">
                 Daftar Sesi Kelas
             </div>
 
@@ -98,182 +117,120 @@
                 @csrf
                 @method('DELETE')
 
-                <div class="overflow-auto">
-                    <table class="w-full text-sm border-collapse">
-                        <thead>
-                            <tr class="bg-gray-100 text-center">
-                                <th class="border px-2 py-2 w-10">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm">
+
+                        <thead class="bg-gray-100">
+                            <tr class="text-center">
+                                <th class="p-3 w-10">
                                     <input type="checkbox" id="checkAll">
                                 </th>
-                                <th class="border px-2 py-2 w-12">No</th>
-                                <th class="border px-2 py-2">Tanggal</th>
-                                <th class="border px-2 py-2">Kelas</th>
-                                <th class="border px-2 py-2">Periode</th>
-                                <th class="border px-2 py-2">Status</th>
-                                <th class="border px-2 py-2 w-20">Aksi</th>
+                                <th class="p-3">No</th>
+                                <th class="p-3 text-left">Kelas</th>
+                                <th class="p-3">Status</th>
+                                <th class="p-3">Aksi</th>
                             </tr>
                         </thead>
 
                         <tbody>
                             @forelse ($Datasesikelas as $sesi)
-                            <tr class="hover:bg-gray-50 text-center">
 
-                                <td class="border px-2 py-2">
-                                    <input type="checkbox"
-                                        class="row-check"
-                                        value="{{ $sesi->id }}">
+                            @php
+                            $absen = $sesi->absensi_count ?? 0;
+                            $peserta = $sesi->peserta_count ?? 0;
+                            $full = $peserta > 0 && $absen >= $peserta;
+                            @endphp
+
+                            <tr class="border-t hover:bg-gray-50">
+
+                                <td class="p-3 text-center">
+                                    <input type="checkbox" class="row-check" name="ids[]" value="{{ $sesi->id }}">
                                 </td>
 
-                                <td class="border px-2 py-2">
+                                <td class="p-3 text-center">
                                     {{ $loop->iteration }}
                                 </td>
 
-                                <td class="border px-2 py-2">
-                                    {{ \Carbon\Carbon::parse($sesi->tgl)->isoFormat('DD MMM YYYY') }}
-                                </td>
-
-                                <td class="border px-2 py-2">
-                                    <a href="/absensikelas/{{ $sesi->id }}"
+                                <td class="p-3">
+                                    <a href="{{ url('/absensikelas/' . $sesi->id) }}"
                                         class="text-blue-600 hover:underline font-medium">
                                         {{ $sesi->nama_kelas }}
                                     </a>
                                 </td>
 
-                                <td class="border px-2 py-2">
-                                    {{ $sesi->periode }} {{ $sesi->ket_semester }}
-                                </td>
+                                <td class="p-3 text-center">
 
-                                <td class="border px-2 py-2">
-                                    @if ($sesi->absensi_count > 0)
-                                    <span class="px-2 py-1 text-xs bg-green-100 text-green-700 rounded">
-                                        ✔ Sudah Diisi
+                                    @if($peserta == 0)
+                                    <span class="text-xs text-gray-500">Tidak ada peserta</span>
+
+                                    @elseif($absen == 0)
+                                    <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs bg-red-100 text-red-700">
+                                        ✖ Belum (0/{{ $peserta }})
                                     </span>
+
+                                    @elseif($full)
+                                    <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs bg-green-100 text-green-700">
+                                        ✔ Lengkap ({{ $absen }}/{{ $peserta }})
+                                    </span>
+
                                     @else
-                                    <span class="px-2 py-1 text-xs bg-red-100 text-red-700 rounded">
-                                        ✖ Belum
+                                    <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs bg-yellow-100 text-yellow-700">
+                                        ⏳ Progress ({{ $absen }}/{{ $peserta }})
                                     </span>
                                     @endif
+
                                 </td>
 
-                                <td class="border px-2 py-2">
-                                    <form action="/sesikelas/{{ $sesi->id }}"
-                                        method="post"
-                                        class="form-delete">
-                                        @csrf
-                                        @method('delete')
+                                <td class="p-3">
+                                    <div class="flex justify-center gap-2 flex-wrap">
 
-                                        <button type="button"
-                                            data-nama="{{ $sesi->nama_kelas }}"
-                                            data-tanggal="{{ \Carbon\Carbon::parse($sesi->tgl)->isoFormat('DD MMMM Y') }}"
-                                            class="btn-delete bg-red-500 hover:bg-red-600 text-white px-2 py-1 rounded text-xs">
-                                            Hapus
-                                        </button>
-                                    </form>
+                                        <form action="/sesikelas/{{ $sesi->id }}" method="POST"
+                                            onsubmit="return confirm('Hapus sesi ini?')">
+                                            @csrf
+                                            @method('DELETE')
+
+                                            <button type="submit"
+                                                class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs">
+                                                Hapus
+                                            </button>
+                                        </form>
+
+                                        <a href="/absensi/monitor/{{ $sesi->id }}"
+                                            class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-xs">
+                                            Monitor
+                                        </a>
+
+                                    </div>
                                 </td>
+
                             </tr>
+
                             @empty
                             <tr>
-                                <td colspan="7" class="text-center py-6 text-gray-500">
+                                <td colspan="5" class="text-center py-8 text-gray-500">
                                     Tidak ada data sesi
                                 </td>
                             </tr>
                             @endforelse
                         </tbody>
+
                     </table>
                 </div>
             </form>
-
-            {{-- NOTE --}}
-            <div class="p-4 border-t bg-yellow-50 text-sm text-yellow-800">
-                <b>Catatan:</b>
-                <ul class="list-disc ml-5 mt-2 space-y-1">
-                    <li>Klik nama kelas untuk masuk ke halaman absensi siswa.</li>
-                    <li>Status <b>Sudah Diisi</b> berarti minimal terdapat 1 data absensi pada sesi tersebut.</li>
-                    <li>Gunakan <b>Hapus Terpilih</b> untuk menghapus banyak sesi sekaligus.</li>
-                    <li>Data yang dihapus tidak dapat dikembalikan.</li>
-                </ul>
-            </div>
         </div>
     </div>
 
     {{-- SCRIPT --}}
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        const checkAll = document.getElementById('checkAll');
 
-            const checkAll = document.getElementById('checkAll');
-            const rowChecks = document.querySelectorAll('.row-check');
-
+        if (checkAll) {
             checkAll.addEventListener('change', function() {
-                rowChecks.forEach(cb => cb.checked = this.checked);
-            });
-
-            // BULK DELETE
-            document.getElementById('bulkDeleteBtn').addEventListener('click', function() {
-
-                let selected = [];
-
-                document.querySelectorAll('.row-check:checked').forEach(cb => {
-                    selected.push(cb.value);
-                });
-
-                if (selected.length === 0) {
-                    Swal.fire({
-                        icon: 'warning',
-                        title: 'Tidak ada data dipilih'
-                    });
-                    return;
-                }
-
-                Swal.fire({
-                    title: 'Hapus data terpilih?',
-                    text: `${selected.length} data akan dihapus`,
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonText: 'Ya, hapus',
-                    cancelButtonText: 'Batal'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-
-                        let form = document.getElementById('bulkDeleteForm');
-
-                        // hapus input lama
-                        form.querySelectorAll('input[name="ids[]"]').forEach(el => el.remove());
-
-                        selected.forEach(id => {
-                            let input = document.createElement('input');
-                            input.type = 'hidden';
-                            input.name = 'ids[]';
-                            input.value = id;
-                            form.appendChild(input);
-                        });
-
-                        form.submit();
-                    }
+                document.querySelectorAll('.row-check').forEach(item => {
+                    item.checked = this.checked;
                 });
             });
-
-            // SINGLE DELETE
-            document.querySelectorAll('.btn-delete').forEach(button => {
-                button.addEventListener('click', function() {
-
-                    let form = this.closest('form');
-
-                    Swal.fire({
-                        title: 'Yakin hapus?',
-                        html: `Sesi <b>${this.dataset.nama}</b><br>${this.dataset.tanggal}`,
-                        icon: 'warning',
-                        showCancelButton: true,
-                        confirmButtonText: 'Hapus',
-                        cancelButtonText: 'Batal',
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            form.submit();
-                        }
-                    });
-
-                });
-            });
-
-        });
+        }
     </script>
+
 </x-app-layout>

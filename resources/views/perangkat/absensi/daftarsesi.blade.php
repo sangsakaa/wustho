@@ -5,92 +5,94 @@
         </h2>
     </x-slot>
 
-    <div class="p-3 sm:p-6">
+    <div class="p-3 sm:p-5 bg-gradient-to-br from-slate-50 to-blue-50 min-h-screen">
         <div class="max-w-6xl mx-auto space-y-5">
 
             {{-- NOTIFIKASI --}}
             @if (session('status'))
-            <div class="bg-green-100 border border-green-200 text-green-700 px-4 py-3 rounded-xl shadow-sm">
+            <div class="bg-emerald-50 border border-emerald-200 text-emerald-700 px-4 py-3 rounded-xl">
                 {{ session('status') }}
             </div>
             @endif
 
-            {{-- HEADER INFO --}}
-            <div class="bg-white shadow-sm border rounded-2xl p-4 sm:p-6">
-                <h3 class="text-lg font-semibold text-blue-600 mb-4">
-                    Presensi Perangkat
-                </h3>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
-                    <div>
-                        <p class="text-gray-500">Hari / Tanggal</p>
-                        <p class="font-semibold text-gray-800">
-                            {{ \Carbon\Carbon::parse($sesiPerangkat->tanggal)->isoFormat('dddd, DD MMMM Y') }}
-                        </p>
-                    </div>
+            {{-- HEADER --}}
+            <div class="bg-white shadow rounded-2xl overflow-hidden">
+                <div class="bg-gradient-to-r from-blue-600 to-sky-500 px-6 py-5">
+                    <h3 class="text-lg font-semibold text-white">
+                        Presensi Perangkat
+                    </h3>
+                    <p class="text-blue-100 text-sm">
+                        {{ \Carbon\Carbon::parse($sesiPerangkat->tanggal)->isoFormat('dddd, DD MMMM Y') }}
+                    </p>
                 </div>
             </div>
 
-            {{-- FORM --}}
             <form action="/daftar-sesi-perangkat/{{ $sesiPerangkat->id }}" method="POST" class="space-y-4">
                 @csrf
                 <input type="hidden" name="sesi_perangkat_id" value="{{ $sesiPerangkat->id }}">
 
-                {{-- ACTION --}}
-                <div class="flex flex-col sm:flex-row gap-3">
-                    <button
-                        class="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white px-4 py-3 sm:py-2 rounded-xl shadow text-sm">
+                {{-- BUTTON --}}
+                <div class="flex gap-3 flex-col sm:flex-row">
+                    <button type="submit"
+                        class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl shadow">
                         Simpan Presensi
                     </button>
 
                     <a href="/sesi-perangkat"
-                        class="w-full sm:w-auto text-center bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-3 sm:py-2 rounded-xl text-sm">
+                        class="bg-white border border-gray-300 px-6 py-3 rounded-xl text-center hover:bg-gray-50">
                         Kembali
                     </a>
                 </div>
 
-                {{-- DESKTOP TABLE --}}
-                <div class="hidden md:block bg-white shadow-sm border rounded-2xl overflow-hidden">
-                    <div class="overflow-x-auto max-h-[550px]">
+                {{-- DESKTOP --}}
+                <div class="hidden md:block bg-white shadow rounded-2xl overflow-hidden">
+                    <div class="overflow-x-auto">
                         <table class="w-full text-sm">
-                            <thead class="bg-slate-50 text-xs uppercase sticky top-0 z-10 text-slate-600">
+                            <thead class="bg-slate-100 text-slate-600 uppercase text-xs">
                                 <tr>
-                                    <th class="px-3 py-3 text-center w-16">No</th>
-                                    <th class="px-3 py-3 text-left">Nama Perangkat</th>
-                                    <th class="px-3 py-3 text-center">Keterangan</th>
-                                    <th class="px-3 py-3 text-center">Alasan</th>
+                                    <th class="px-4 py-3 text-center">No</th>
+                                    <th class="px-4 py-3 text-left">Nama Perangkat</th>
+                                    <th class="px-4 py-3 text-center">Keterangan</th>
+                                    <th class="px-4 py-3 text-left">Alasan</th>
                                 </tr>
                             </thead>
 
-                            <tbody class="divide-y divide-slate-100">
+                            <tbody class="divide-y">
                                 @foreach ($dataPerangkat as $item)
-                                <tr class="hover:bg-slate-50">
+                                @php
+                                $selected = old(
+                                "keterangan.$item->id",
+                                $item->status_presensi ?? 'hadir'
+                                );
+                                @endphp
 
-                                    <td class="text-center py-3">
+                                <tr class="hover:bg-slate-50">
+                                    <td class="px-4 py-3 text-center">
                                         {{ $loop->iteration }}
                                     </td>
 
-                                    <td class="px-3 py-3 capitalize">
+                                    <td class="px-4 py-3">
                                         {{ strtolower($item->nama_perangkat) }}
                                         <input type="hidden" name="perangkat_id[]" value="{{ $item->id }}">
                                     </td>
 
-                                    {{-- RADIO --}}
-                                    <td class="text-center">
-                                        <div class="flex justify-center gap-2 text-xs">
+                                    <td class="px-4 py-3">
+                                        <div class="flex justify-center gap-2">
                                             @foreach (['hadir' => 'H', 'izin' => 'I', 'sakit' => 'S', 'alfa' => 'A'] as $val => $label)
                                             <label class="cursor-pointer">
                                                 <input
                                                     type="radio"
                                                     name="keterangan[{{ $item->id }}]"
                                                     value="{{ $val }}"
-                                                    class="hidden peer"
-                                                    {{ $item->keterangan === $val || ($val === 'hadir' && $item->keterangan === null) ? 'checked' : '' }}>
+                                                    class="sr-only peer"
+                                                    {{ $selected == $val ? 'checked' : '' }}>
 
-                                                <span class="px-3 py-1 rounded-lg border
+                                                <span class="inline-flex w-10 h-10 items-center justify-center rounded-lg border-2
+                                                            text-xs font-medium transition-all
+                                                            border-gray-300 text-gray-700 bg-white
                                                             peer-checked:bg-blue-600
                                                             peer-checked:text-white
-                                                            hover:bg-slate-100">
+                                                            peer-checked:border-blue-600">
                                                     {{ $label }}
                                                 </span>
                                             </label>
@@ -98,13 +100,13 @@
                                         </div>
                                     </td>
 
-                                    {{-- ALASAN --}}
-                                    <td class="px-3 py-3">
+                                    <td class="px-4 py-3">
                                         <input
-                                            value="{{ $item->alasan }}"
+                                            type="text"
                                             name="alasan[{{ $item->id }}]"
+                                            value="{{ old("alasan.$item->id", $item->alasan_presensi) }}"
                                             placeholder="Isi alasan..."
-                                            class="w-full border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                                            class="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm">
                                     </td>
                                 </tr>
                                 @endforeach
@@ -113,56 +115,80 @@
                     </div>
                 </div>
 
-                {{-- MOBILE CARD --}}
+                {{-- MOBILE --}}
                 <div class="md:hidden space-y-4">
                     @foreach ($dataPerangkat as $item)
-                    <div class="bg-white border shadow-sm rounded-2xl p-4 space-y-4">
+                    @php
+                    $selected = old(
+                    "keterangan.$item->id",
+                    $item->status_presensi ?? 'hadir'
+                    );
+                    @endphp
 
+                    <div class="bg-white shadow rounded-2xl p-5 space-y-4">
                         <div>
-                            <h3 class="font-semibold text-slate-800 capitalize">
-                                {{ strtolower($item->nama_perangkat) }}
+                            <h3 class="font-semibold ">
+                                {{ $item->nama_perangkat }}
                             </h3>
                             <input type="hidden" name="perangkat_id[]" value="{{ $item->id }}">
                         </div>
 
-                        {{-- RADIO MOBILE --}}
                         <div>
-                            <p class="text-xs text-slate-500 mb-2">Keterangan</p>
+                            <p class="text-xs text-slate-500 uppercase mb-2">
+                                Keterangan
+                            </p>
 
-                            <div class="grid grid-cols-2 gap-2">
-                                @foreach (['hadir' => 'Hadir', 'izin' => 'Izin', 'sakit' => 'Sakit', 'alfa' => 'Alfa'] as $val => $label)
+                            <div class="grid grid-cols-4 gap-2">
+                                @php
+                                $selected = $item->absensiHariIni?->keterangan;
+                                @endphp
+
+                                @foreach (['hadir' => 'H', 'izin' => 'I', 'sakit' => 'S', 'alfa' => 'A'] as $val => $label)
+                                @php
+                                $colorClass = match($val) {
+                                'hadir' => 'peer-checked:bg-green-600 peer-checked:border-green-600',
+                                'izin' => 'peer-checked:bg-yellow-500 peer-checked:border-yellow-500',
+                                'sakit' => 'peer-checked:bg-orange-500 peer-checked:border-orange-500',
+                                'alfa' => 'peer-checked:bg-red-600 peer-checked:border-red-600',
+                                default => 'peer-checked:bg-gray-600 peer-checked:border-gray-600',
+                                };
+                                @endphp
+
                                 <label class="cursor-pointer">
                                     <input
                                         type="radio"
                                         name="keterangan[{{ $item->id }}]"
                                         value="{{ $val }}"
-                                        class="hidden peer"
-                                        {{ $item->keterangan === $val || ($val === 'hadir' && $item->keterangan === null) ? 'checked' : '' }}>
+                                        class="peer hidden"
+                                        {{ old("keterangan.$item->id", $selected) == $val ? 'checked' : '' }}>
 
-                                    <div class="border rounded-xl px-3 py-3 text-center text-sm
-                                                peer-checked:bg-blue-600
-                                                peer-checked:text-white
-                                                peer-checked:border-blue-600">
+                                    <span class="inline-flex w-10 h-10 items-center justify-center rounded-lg border-2
+                text-xs font-medium transition-all
+                border-gray-300 text-gray-700 bg-white
+                peer-checked:text-white
+                {{ $colorClass }}">
                                         {{ $label }}
-                                    </div>
+                                    </span>
                                 </label>
                                 @endforeach
                             </div>
                         </div>
 
-                        {{-- ALASAN --}}
                         <div>
-                            <p class="text-xs text-slate-500 mb-2">Alasan</p>
+                            <p class="text-xs text-slate-500 uppercase mb-2">
+                                Alasan
+                            </p>
+
                             <input
-                                value="{{ $item->alasan }}"
+                                type="text"
                                 name="alasan[{{ $item->id }}]"
+                                value="{{ old("alasan.$item->id", $item->alasan_presensi) }}"
                                 placeholder="Isi alasan..."
-                                class="w-full border rounded-xl px-3 py-3 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                                class="w-full border border-gray-300 rounded-xl px-4 py-3 text-sm">
                         </div>
                     </div>
                     @endforeach
                 </div>
-
             </form>
         </div>
     </div>

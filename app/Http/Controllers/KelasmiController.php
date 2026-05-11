@@ -156,15 +156,18 @@ class KelasmiController extends Controller
     }
     public function storepesertakelas(Request $request, Pesertakelas $pesertakelas)
     {
+        $request->validate([
+            'siswa_id'   => 'required',
+            'kelasmi_id' => 'required',
+        ]);
 
-        Pesertakelas::where('id', $pesertakelas->id)
-            ->update([
-                'siswa_id' => $request->siswa_id,
-                'kelasmi_id' => $request->kelasmi_id,
-            ]);
+        $pesertakelas->update([
+            'siswa_id'   => $request->siswa_id,
+            'kelasmi_id' => $request->kelasmi_id,
+        ]);
 
-
-        return redirect('/pesertakelas/' . $pesertakelas->kelasmi_id);
+        return redirect('/pesertakelas/' . $request->kelasmi_id)
+            ->with('success', 'Data peserta kelas berhasil diperbarui');
     }
 
 

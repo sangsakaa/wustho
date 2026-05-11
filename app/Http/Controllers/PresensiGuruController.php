@@ -188,18 +188,21 @@ class PresensiGuruController
     }
     public function AbsenGuru(Request $request)
     {
-        foreach ($request->keterangan as $jadwal_id => $ket) {
+        foreach ($request->daftar_jadwal_id ?? [] as $jadwal_id) {
+            $ket = $request->keterangan[$jadwal_id] ?? null;
 
-            Absensiguru::updateOrCreate(
-                [
-                    'sesi_kelas_guru_id' => $request->sesi_kelas_guru_id,
-                    'daftar_jadwal_id' => $jadwal_id,
-                ],
-                [
-                    'keterangan' => $ket,
-                    'alasan' => $request->alasan[$jadwal_id] ?? null,
-                ]
-            );
+            if ($ket) {
+                Absensiguru::updateOrCreate(
+                    [
+                        'sesi_kelas_guru_id' => $request->sesi_kelas_guru_id,
+                        'daftar_jadwal_id' => $jadwal_id,
+                    ],
+                    [
+                        'keterangan' => $ket,
+                        'alasan' => $request->alasan[$jadwal_id] ?? null,
+                    ]
+                );
+            }
         }
 
         return redirect()->back()->with('status', 'Presensi berhasil disimpan');

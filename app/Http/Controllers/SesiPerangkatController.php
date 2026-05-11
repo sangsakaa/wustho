@@ -76,26 +76,42 @@ class SesiPerangkatController
     public function daftarSesi(SesiPerangkat $sesiPerangkat)
     {
         $dataPerangkat = Perangkat::query()
-            ->leftjoin('absensi_perangkat', function ($join) use ($sesiPerangkat) {
+            ->leftJoin('absensi_perangkat', function ($join) use ($sesiPerangkat) {
                 $join->on('absensi_perangkat.perangkat_id', '=', 'perangkat.id')
-                    ->where('absensi_perangkat.sesi_perangkat_id', '=', $sesiPerangkat->id);
+                ->where('absensi_perangkat.sesi_perangkat_id', $sesiPerangkat->id);
             })
-            
-            ->select('perangkat.id', 'nama_perangkat', 'keterangan', 'alasan')
-            ->where('status', 'Aktif')
+            ->select(
+                'perangkat.id',
+                'perangkat.nama_perangkat',
+                'absensi_perangkat.keterangan as status_presensi',
+                'absensi_perangkat.alasan as alasan_presensi'
+            )
+            ->where('perangkat.status', 'Aktif')
+            ->orderBy('perangkat.nama_perangkat')
             ->get();
-        return view('perangkat.absensi.daftarsesi', compact('dataPerangkat', 'sesiPerangkat'));
+
+        return view('perangkat.absensi.daftarsesi', compact(
+            'dataPerangkat',
+            'sesiPerangkat'
+        ));
     }
+
     public function StoredaftarSesi(Request $request)
     {
-        
-        foreach ($request->perangkat_id as $item) {
-            $presensiasrama = AbsensiPerangkat::updateOrCreate(
-                ['perangkat_id' => $item, 'sesi_perangkat_id' => $request->sesi_perangkat_id],
-                ['keterangan' => $request->keterangan[$item], 'alasan' => $request->alasan[$item]]
+        foreach ($request->perangkat_id as $id) {
+            AbsensiPerangkat::updateOrCreate(
+                [
+                    'perangkat_id' => $id,
+                    'sesi_perangkat_id' => $request->sesi_perangkat_id
+                ],
+                [
+                    'keterangan' => $request->keterangan[$id] ?? 'hadir',
+                    'alasan' => $request->alasan[$id] ?? null,
+                ]
             );
         }
-        return redirect()->back();
+
+        return redirect()->back()->with('status', 'Presensi berhasil disimpan');
     }
     public function LaporanHarian(Request $request)
     {

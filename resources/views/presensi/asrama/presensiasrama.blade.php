@@ -118,7 +118,7 @@
                         name="keterangan[{{ $item->id }}]"
                         value="{{ $key }}"
                         class="accent-blue-600"
-                        {{ $item->keterangan === $key || ($key=='hadir' && $item->keterangan==null) ? 'checked' : '' }}>
+                        {{ $item->keterangan === $key ? 'checked' : '' }}>
                       <span class="text-xs font-medium">{{ $label }}</span>
                     </label>
                     @endforeach

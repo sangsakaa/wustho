@@ -29,8 +29,23 @@ class Kelasmi extends Model
         return $this->belongsTo(Periode::class, 'periode_id');
     }
 
-    
-    
+    public function pesertakelas()
+    {
+        return $this->hasMany(Pesertakelas::class, 'kelasmi_id');
+    }
 
-    
+    public function sesikelas()
+    {
+        return $this->hasMany(Sesikelas::class, 'kelasmi_id');
+    }
+
+    public function absensikelas()
+    {
+        return $this->hasManyThrough(
+            Absensikelas::class,
+            Sesikelas::class,
+            'kelasmi_id',
+            'sesikelas_id'
+        );
+    }
 }
