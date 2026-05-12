@@ -444,6 +444,12 @@ Route::get('sesi-perangkat', [SesiPerangkatController::class, 'sesiPerangkat'])-
 Route::post('sesi-perangkat', [SesiPerangkatController::class, 'buatSesi']);
 Route::get('/daftar-sesi-perangkat/{sesiPerangkat}', [SesiPerangkatController::class, 'daftarSesi']);
 Route::post('/daftar-sesi-perangkat/{sesiPerangkat}', [SesiPerangkatController::class, 'StoredaftarSesi']);
+Route::get('/kartu-login/{id}', [QrcodeController::class, 'kartuLoginPdf'])
+    ->name('kartu.login.pdf');
+Route::get('/sesi/close/{id}', [QrcodeController::class, 'closeSession'])
+    ->name('sesi.close');
+Route::post('/sesikelas/bulk-close', [QrcodeController::class, 'bulkCloseSession'])
+    ->name('sesi.bulkClose');
 
 Route::get('laporan-harian-perangkat', [SesiPerangkatController::class, 'LaporanHarian']);
 Route::get('laporan-Bulanan-perangkat', [SesiPerangkatController::class, 'LaporanBulanan']);
@@ -460,7 +466,12 @@ Route::get('/cetak-jadwal-kolektif', [JadwalController::class, 'JadwalKolektif']
 Route::get('cetak-jadwal-1', [JadwalController::class, 'CetakJadwal1'])->middleware(['auth']);
 Route::get('edit-jadwal/{daftar_Jadwal}', [JadwalController::class, 'editJadwal'])->middleware(['auth']);
 Route::patch('edit-jadwal/{daftar_Jadwal}/edit', [JadwalController::class, 'updateJadwal'])->middleware(['auth']);
-
+Route::post('/mapel/{mapel}/pengampu', [MapelController::class, 'storePengampu'])
+    ->name('mapel.pengampu.store');
+Route::delete('/mapel/{mapel}/pengampu/{guru}', [MapelController::class, 'destroyPengampu'])
+    ->name('mapel.pengampu.destroy');
+Route::post('/mapel/{mapel}/generate-pengampu', [MapelController::class, 'generatePengampuFromJadwal'])
+    ->name('mapel.pengampu.generate');
 Route::get('laporan-poling-guru', [JadwalController::class, 'LaporanPloting'])->middleware(['auth']);
 Route::get('laporan-poling-guru-kelas', [JadwalController::class, 'LaporanPlotingKelas'])->middleware(['auth']);
 // web.php

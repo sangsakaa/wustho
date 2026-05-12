@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Guru;
 use App\Models\Kelas;
 use App\Models\Mapel;
 use App\Models\Periode;
@@ -87,9 +88,15 @@ class MapelController extends Controller
     {
         $periode_id = session('periode_id');
 
-        $mapel = Mapel::with([
+        $gurus = Guru::where('status', 'Aktif')
+            ->orderBy('nama_guru', 'asc')
+            ->get();
+
+        $mapel->load([
             'kelas',
             'periode.semester',
+            'gurus',
+
             'daftar_jadwal' => function ($q) use ($periode_id) {
                 $q->whereHas('jadwal', function ($q2) use ($periode_id) {
                     $q2->where('periode_id', $periode_id);
@@ -97,9 +104,28 @@ class MapelController extends Controller
             },
             'daftar_jadwal.guru',
             'daftar_jadwal.jadwal.kelasmi'
-        ])->findOrFail($mapel->id);
+        ]);
 
-        return view('mapel.show', compact('mapel'));
+        return view('mapel.show', compact('mapel', 'gurus'));
+    }
+    public function generatePengampuFromJadwal(Mapel $mapel)
+    {
+        $periode_id = session('periode_id');
+
+        // ambil semua guru dari jadwal aktif
+        $guruIds = $mapel->daftar_jadwal()
+            ->whereHas('jadwal', function ($q) use ($periode_id) {
+                $q->where('periode_id', $periode_id);
+            })
+            ->pluck('guru_id')
+            ->unique()
+            ->filter()
+            ->values();
+
+        // attach tanpa duplikat
+        $mapel->gurus()->syncWithoutDetaching($guruIds);
+
+        return back()->with('success', 'Pengampu berhasil digenerate dari jadwal');
     }
 
     /**
@@ -181,5 +207,23 @@ class MapelController extends Controller
         ])->setPaper('A4', 'potrait');
 
         return $pdf->stream('laporan-kurikulum.pdf');
+    }
+    public function storePengampu(Request $request, Mapel $mapel)
+    {
+        $request->validate([
+            'guru_id' => 'required|exists:guru,id',
+        ]);
+
+        // attach pengampu (hindari duplikat)
+        $mapel->gurus()->syncWithoutDetaching([$request->guru_id]);
+
+        return redirect()->back()->with('success', 'Pengampu berhasil ditambahkan');
+    }
+    public function destroyPengampu(Mapel $mapel, Guru $guru)
+    {
+        // detach pengampu
+        $mapel->gurus()->detach($guru->id);
+
+        return redirect()->back()->with('success', 'Pengampu berhasil dihapus');
     }
 }

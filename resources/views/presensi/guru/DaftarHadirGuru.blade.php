@@ -106,22 +106,32 @@
 
                                     {{-- RADIO --}}
                                     <td class="text-center py-3.5">
-                                        <div class="flex justify-center gap-1.5">
-                                            @foreach (['hadir' => 'H', 'izin' => 'I', 'sakit' => 'S', 'alfa' => 'A'] as $val => $label)
+                                        <div class="flex justify-center gap-2">
+                                            @foreach ([
+                                            'hadir' => ['H', 'bg-green-600'],
+                                            'izin' => ['I', 'bg-blue-600'],
+                                            'sakit' => ['S', 'bg-yellow-500'],
+                                            'alfa' => ['A', 'bg-red-600']
+                                            ] as $val => [$label, $color])
+
                                             <label class="cursor-pointer">
                                                 <input
                                                     type="radio"
                                                     name="keterangan[{{ $item->id }}]"
                                                     value="{{ $val }}"
-                                                    class="hidden peer"
+                                                    class="peer hidden"
                                                     {{ $item->keterangan === $val ? 'checked' : '' }}>
 
-                                                <span class="inline-flex items-center justify-center w-8 h-8 rounded-lg text-xs font-medium border-2 transition-all
-                                                            peer-checked:bg-emerald-600
-                                                            peer-checked:text-white
-                                                            peer-checked:border-emerald-600
-                                                            hover:bg-slate-100
-                                                            border-gray-200 text-gray-600">
+                                                <span
+                                                    class="w-8 h-8 flex items-center justify-center rounded-lg border-2
+                       text-xs font-bold transition-all duration-200
+                       border-slate-300 text-slate-600 bg-white
+                       peer-checked:text-white
+                       peer-checked:border-transparent
+                       {{ $val == 'hadir' ? 'peer-checked:bg-green-600' : '' }}
+                       {{ $val == 'izin' ? 'peer-checked:bg-blue-600' : '' }}
+                       {{ $val == 'sakit' ? 'peer-checked:bg-yellow-500' : '' }}
+                       {{ $val == 'alfa' ? 'peer-checked:bg-red-600' : '' }}">
                                                     {{ $label }}
                                                 </span>
                                             </label>

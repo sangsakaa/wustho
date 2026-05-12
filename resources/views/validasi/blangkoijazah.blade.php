@@ -20,10 +20,27 @@
     $jenjang = $dataKelas->first()->jenjang;
     @endphp
 
-    <div class=" p-2 bg-white">
-        <button class=" text-white bg-green-800 px-2 py-1" onclick="printContent('div1')">Cetak Ijazah</button>
-        <a href="/blangko-transkip/{{$kelasmi->id}}" class=" text-white bg-green-800 px-2 py-1">Transkip</a>
-        <a href="/lulusan" class=" text-white bg-green-800 px-2 py-1">Kembali</a>
+    <div class="bg-white border border-gray-200 rounded-xl shadow-sm p-3 flex flex-wrap items-center gap-2">
+
+        <!-- Cetak Ijazah -->
+        <button
+            onclick="printContent('div1')"
+            class="inline-flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-medium rounded-lg transition shadow-sm">
+            🖨 Cetak Ijazah
+        </button>
+
+        <!-- Transkip -->
+        <a href="/blangko-transkip/{{$kelasmi->id}}"
+            class="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium rounded-lg transition shadow-sm">
+            📄 Transkip
+        </a>
+
+        <!-- Kembali -->
+        <a href="/lulusan"
+            class="inline-flex items-center gap-2 px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white text-sm font-medium rounded-lg transition shadow-sm">
+            ← Kembali
+        </a>
+
     </div>
 
     <div class=" bg-white p-2 my-2 grid grid-cols-4 uppercase">
@@ -224,7 +241,6 @@
                 </div>
             </div>
         </div>
-
         <div class="page-break"></div>
 
         @endforeach

@@ -101,6 +101,15 @@
                     class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm">
                     Hapus
                 </button>
+                <form id="bulkCloseForm" action="{{ route('sesi.bulkClose') }}" method="POST">
+                    @csrf
+
+                    <button type="button"
+                        onclick="confirmBulkClose()"
+                        class="bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded-lg text-sm">
+                        Close Terpilih
+                    </button>
+                </form>
             </div>
         </div>
     </div>
@@ -128,6 +137,7 @@
                                 <th class="p-3">No</th>
                                 <th class="p-3 text-left">Kelas</th>
                                 <th class="p-3">Status</th>
+                                <th class="p-3">Progress</th>
                                 <th class="p-3">Aksi</th>
                             </tr>
                         </thead>
@@ -155,6 +165,12 @@
                                     <a href="{{ url('/absensikelas/' . $sesi->id) }}"
                                         class="text-blue-600 hover:underline font-medium">
                                         {{ $sesi->nama_kelas }}
+                                    </a>
+                                </td>
+                                <td class="p-3">
+                                    <a href="{{ url('/absensikelas/' . $sesi->id) }}"
+                                        class="text-blue-600 hover:underline font-medium">
+                                        {{ $sesi->status == 'close' ? 'Close' : 'Open' }}
                                     </a>
                                 </td>
 
@@ -199,6 +215,11 @@
                                             class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-xs">
                                             Monitor
                                         </a>
+                                        <a href="{{ route('sesi.close', $sesi->id) }}"
+                                            onclick="return confirm('Yakin ingin menutup sesi ini?')"
+                                            class="px-3 py-1 bg-red-600 text-white rounded">
+                                            Close Presensi
+                                        </a>
 
                                     </div>
                                 </td>
@@ -230,6 +251,36 @@
                     item.checked = this.checked;
                 });
             });
+        }
+    </script>
+    <script>
+        function confirmBulkClose() {
+            const checked = document.querySelectorAll('.row-check:checked');
+
+            if (checked.length === 0) {
+                alert('Pilih minimal 1 sesi');
+                return;
+            }
+
+            if (!confirm('Yakin ingin menutup sesi yang dipilih?')) {
+                return;
+            }
+
+            const form = document.getElementById('bulkCloseForm');
+
+            // hapus input lama kalau ada
+            form.querySelectorAll('input[name="ids[]"]').forEach(el => el.remove());
+
+            // tambah input baru dari checkbox
+            checked.forEach(cb => {
+                let input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'ids[]';
+                input.value = cb.value;
+                form.appendChild(input);
+            });
+
+            form.submit();
         }
     </script>
 

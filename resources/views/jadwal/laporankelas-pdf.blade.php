@@ -3,21 +3,40 @@
 
 <head>
   <style>
+    @page {
+      margin: 10px;
+      size: A4 landscape;
+    }
+
     body {
-      font-family: sans-serif;
-      font-size: 11px;
+      font-family: Arial, sans-serif;
+      font-size: 10px;
+      margin: 0;
+      padding: 0;
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
+      page-break-inside: auto;
     }
 
     th,
     td {
-      border: 1px solid black;
+      border: 1px solid #000;
       padding: 4px;
       text-align: center;
+      vertical-align: middle;
+    }
+
+    th {
+      font-weight: bold;
+      background: #f2f2f2;
+    }
+
+    .left {
+      text-align: left;
+      padding-left: 5px;
     }
 
     h1,
@@ -39,42 +58,113 @@
 
   <br>
 
+  @php
+  $kelasList = [
+  '1A','1B','1C','1D',
+  '2A','2B','2C','2D',
+  '3A','3B','3C','3D'
+  ];
+
+  function norm($val) {
+  return strtoupper(str_replace(' ', '', trim($val)));
+  }
+
+  // FIX: groupBy mapel
+  $data = $laporan->groupBy('nama_guru')->map(function ($items) {
+  return $items->groupBy('mapel');
+  });
+
+  $no = 1;
+  @endphp
+
   <table>
     <thead>
       <tr>
-        <th>No</th>
-        <th>Nama Guru</th>
-        @foreach ($laporan->pluck('nama_kelas')->unique()->sort() as $nama_kelas)
-        <th>{{ $nama_kelas }}</th>
+        <th rowspan="2">NO</th>
+        <th rowspan="2">NAMA GURU</th>
+        <th rowspan="2">PELAJARAN</th>
+        <th colspan="{{ count($kelasList) }}">KELAS</th>
+        <th rowspan="2">JUMLAH KELAS</th>
+        <th rowspan="2">JUMLAH JAM</th>
+      </tr>
+      <tr>
+        @foreach ($kelasList as $k)
+        <th>{{ $k }}</th>
         @endforeach
-        <th>Total Mapel</th>
-        <th>Total Kelas</th>
       </tr>
     </thead>
-    <tbody>
-      @foreach ($laporan->pluck('nama_guru')->unique()->sort() as $nama_guru)
-      <tr>
-        <td>{{ $loop->iteration }}</td>
-        <td style="text-align:left">{{ $nama_guru }}</td>
 
-        @foreach ($laporan->pluck('nama_kelas')->unique()->sort() as $nama_kelas)
+    <tbody>
+      @foreach ($data as $guru => $mapels)
+
+      @php
+      $rowspanGuru = $mapels->count();
+      $firstGuru = true;
+      @endphp
+
+      @foreach ($mapels as $mapel => $items)
+
+      @php
+      $kelasAktif = $items->pluck('nama_kelas')->toArray();
+      $jumlahKelas = count(array_unique($kelasAktif));
+      $jumlahJam = $jumlahKelas * 2;
+      @endphp
+
+      <tr>
+
+        @if ($firstGuru)
+        <td rowspan="{{ $rowspanGuru }}">{{ $no++ }}</td>
+        <td rowspan="{{ $rowspanGuru }}" class="left">
+          {{ $guru }}
+        </td>
+        @php $firstGuru = false; @endphp
+        @endif
+
+        <td class="left">
+          {{ ucwords(strtolower($mapel)) }}
+        </td>
+
+        @foreach ($kelasList as $kelas)
         @php
-        $jumlah = $laporan
-        ->where('nama_guru', $nama_guru)
-        ->where('nama_kelas', $nama_kelas)
-        ->sum('jumlah_mapel');
+        $ada = in_array($kelas, $kelasAktif);
         @endphp
-        <td>{{ $jumlah }}</td>
+
+        <td>
+          {{ $ada ? 2 : '' }}
+        </td>
         @endforeach
 
         <td>
-          {{ $laporan->where('nama_guru', $nama_guru)->sum('jumlah_mapel') }}
+          <b>{{ $jumlahKelas }}</b>
         </td>
+
         <td>
-          {{ $laporan->where('nama_guru', $nama_guru)->count() }}
+          <b>{{ $jumlahJam }}</b>
         </td>
       </tr>
+
       @endforeach
+      @endforeach
+
+      {{-- TOTAL --}}
+      <tr>
+        <td colspan="3"><b>TOTAL JAM</b></td>
+
+        @foreach ($kelasList as $kelas)
+        @php
+        $total = $laporan->where('nama_kelas', $kelas)->count() * 2;
+        @endphp
+        <td><b>{{ $total ?: '' }}</b></td>
+        @endforeach
+
+        <td>
+          <b>{{ $laporan->count() }}</b>
+        </td>
+
+        <td>
+          <b>{{ $laporan->count() * 2 }}</b>
+        </td>
+      </tr>
     </tbody>
   </table>
 

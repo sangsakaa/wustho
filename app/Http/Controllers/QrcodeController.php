@@ -4,14 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\Absensikelas;
 use App\Models\Nis;
+use App\Models\Periode;
 use App\Models\Pesertakelas;
 use App\Models\Sesikelas;
 use App\Models\Siswa;
-use App\Models\Periode;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\File;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class QrcodeController extends Controller
@@ -395,5 +396,62 @@ class QrcodeController extends Controller
                 'status' => 'open'
             ]);
         }
+    }
+    public function closeSession($id)
+    {
+
+        $sesi = Sesikelas::findOrFail($id);
+
+        if ($sesi->status === 'close') {
+            return back()->with('error', 'Sesi sudah ditutup');
+        }
+
+        $sesi->update([
+            'status' => 'close'
+        ]);
+
+        return back()->with('success', 'Sesi berhasil ditutup');
+    }
+    public function kartuLoginPdf($id)
+    {
+        $siswa = Siswa::with('NisTerakhir')->findOrFail($id);
+
+        if (!$siswa->NisTerakhir) {
+            return back()->with('error', 'NIS tidak ditemukan');
+        }
+
+        $nis = $siswa->NisTerakhir->nis;
+
+        // generate QR base64 (tanpa simpan file)
+        $qr = base64_encode(
+            QrCode::format('png')
+                ->size(200)
+                ->margin(1)
+                ->generate($nis)
+        );
+
+        $data = [
+            'siswa' => $siswa,
+            'nis' => $nis,
+            'qr' => $qr,
+        ];
+
+        $pdf = Pdf::loadView('kartu.login', $data)
+            ->setPaper('a4', 'portrait');
+
+        return $pdf->stream('kartu-login-' . $nis . '.pdf');
+    }
+    public function bulkCloseSession(Request $request)
+    {
+        $request->validate([
+            'ids' => 'required|array',
+        ]);
+
+        $updated = Sesikelas::whereIn('id', $request->ids)
+            ->update([
+                'status' => 'close'
+            ]);
+
+        return back()->with('success', $updated . ' sesi berhasil ditutup');
     }
 }

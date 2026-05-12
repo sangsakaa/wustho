@@ -40,4 +40,13 @@ class Guru extends Model
     {
         return $this->hasOne(User::class, 'guru_id');
     }
+    public function mapels()
+    {
+        return $this->belongsToMany(Mapel::class, 'pengampus');
+    }
+    public function gurus()
+    {
+        return $this->belongsToMany(Guru::class, 'pengampus')
+            ->withTimestamps();
+    }
 }

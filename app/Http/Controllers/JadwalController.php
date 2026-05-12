@@ -71,62 +71,83 @@ class JadwalController
     // Daftar_jadwal
     public function DaftarJadwal(Jadwal $jadwal)
     {
-        // dd($jadwal);
-        $jadwal = Jadwal::find($jadwal->id);
+        $periodeId = session('periode_id');
+
+        // 🔥 load relasi yang benar
+        $jadwal->load('kelasmi');
+
+        // 🔥 guru hanya pengampu sesuai kelasmi → kelas
         $daftarGuru = Guru::where('status', 'Aktif')
+            ->whereHas('mapels', function ($q) use ($periodeId, $jadwal) {
+
+                $q->where('periode_id', $periodeId)
+
+                    ->whereHas('kelas', function ($q2) use ($jadwal) {
+
+                        // 🔥 FIX: ambil kelas dari kelasmi
+                        $q2->where('id', $jadwal->kelasmi->kelas_id);
+                    });
+            })
             ->orderBy('nama_guru')
             ->get();
-        $daftarMapel = Mapel::query()
-            ->join('kelas', 'kelas.id', '=', 'mapel.kelas_id')
-            ->join('kelasmi', 'kelasmi.kelas_id', '=', 'kelas.id')
-            ->join('periode', 'periode.id', '=', 'mapel.periode_id')
-            ->join('semester', 'semester.id', '=', 'periode.semester_id')
-            ->select('mapel.id', 'kelas.kelas', 'mapel', 'nama_kitab', 'periode', 'ket_semester', 'kelasmi.periode_id')
-            ->where('kelasmi.id', $jadwal->kelasmi_id)
-            ->whereNotExists(function ($query) use ($jadwal) {
-                $query->select(DB::raw(1))
-                    ->from('daftar_jadwal')
-                    ->join('jadwal', 'jadwal.id', '=', 'daftar_jadwal.jadwal_id')
-                    ->whereColumn('daftar_jadwal.mapel_id', '=', 'mapel.id')
-            ->where('mapel.periode_id', session('periode_id'))
-            ->where('jadwal.kelasmi_id', $jadwal->kelasmi_id);
+
+        // 🔥 mapel sesuai kelas dari kelasmi
+        $daftarMapel = Mapel::where('periode_id', $periodeId)
+            ->whereHas('kelas', function ($q) use ($jadwal) {
+
+                $q->where('id', $jadwal->kelasmi->kelas_id);
             })
-            ->where('mapel.periode_id', session('periode_id'))
-            ->orderBy('kelas.kelas')
             ->orderBy('mapel')
             ->get();
-        // dd($daftarMapel);
-        $daftarJadwal = Daftar_Jadwal::query()
-            ->join('mapel', 'mapel.id', '=', 'daftar_jadwal.mapel_id')
-            ->join('guru', 'guru.id', '=', 'daftar_jadwal.guru_id')
-            ->join('jadwal', 'jadwal.id', '=', 'daftar_jadwal.jadwal_id')
-            ->select('daftar_jadwal.id', 'nama_guru', 'mapel', 'nama_kitab', 'jadwal.periode_id')
-            ->where('daftar_jadwal.jadwal_id', $jadwal->id)
-            
+        // 🔥 jadwal list
+        $daftarJadwal = Daftar_Jadwal::with(['guru', 'mapel'])
+            ->where('jadwal_id', $jadwal->id)
             ->get();
-        // dd($daftarJadwal);
+
         return view('jadwal.jadwal_guru', compact(
-            [
-                'daftarGuru',
-                'daftarMapel',
-                'jadwal',
-                'daftarJadwal'
-            ]
+            'daftarGuru',
+            'daftarMapel',
+            'jadwal',
+            'daftarJadwal'
         ));
     }
     public function editJadwal(Daftar_Jadwal $daftar_Jadwal)
     {
-        $jadwal = Jadwal::find($daftar_Jadwal->jadwal_id);
-        $daftarMapel = Mapel::query()
-            ->join('kelas', 'kelas.id', '=', 'mapel.kelas_id')
-            ->join('periode', 'periode.id', '=', 'mapel.periode_id')
-            ->join('semester', 'semester.id', '=', 'periode.semester_id')
-            ->select('mapel.id', 'kelas.kelas', 'mapel', 'nama_kitab', 'periode', 'ket_semester', 'mapel.periode_id')
-            ->where('mapel.periode_id', session('periode_id'))
-            ->get();
-        $dataGuru = Guru::orderby('nama_guru')->get();
+        $periodeId = session('periode_id');
 
-        return view('jadwal.edit_jadwal_guru', compact('daftar_Jadwal', 'daftarMapel', 'dataGuru', 'jadwal'));
+        // 🔥 ambil jadwal
+        $jadwal = Jadwal::with('kelasmi')->findOrFail($daftar_Jadwal->jadwal_id);
+
+        // =======================
+        // 🔥 GURU (HANYA PENGAMPU SESUAI MAPEL + KELAS + PERIODE)
+        // =======================
+        $dataGuru = Guru::where('status', 'Aktif')
+            ->whereHas('mapels', function ($q) use ($periodeId, $jadwal) {
+                $q->where('periode_id', $periodeId)
+                    ->whereHas('kelas', function ($q2) use ($jadwal) {
+                        $q2->where('id', $jadwal->kelasmi->kelas_id);
+                    });
+            })
+            ->orderBy('nama_guru')
+            ->get();
+
+        // =======================
+        // 🔥 MAPEL (HANYA SESUAI KELAS + PERIODE)
+        // =======================
+        $daftarMapel = Mapel::where('periode_id', $periodeId)
+            ->whereHas('kelas', function ($q) use ($jadwal) {
+                $q->where('id', $jadwal->kelasmi->kelas_id);
+            })
+            ->with(['kelas', 'periode.semester'])
+            ->orderBy('mapel')
+            ->get();
+
+        return view('jadwal.edit_jadwal_guru', compact(
+            'daftar_Jadwal',
+            'daftarMapel',
+            'dataGuru',
+            'jadwal'
+        ));
     }
     public function updateJadwal(Daftar_Jadwal $daftar_Jadwal, Request $request)
     {
@@ -323,8 +344,9 @@ class JadwalController
             ->leftJoin('guru', 'guru.id', '=', 'daftar_jadwal.guru_id')
             ->where('kelasmi.periode_id', session('periode_id'))
             ->whereNotNull('guru.nama_guru')
-            ->select('guru.nama_guru', 'nama_kelas', DB::raw('count(distinct mapel.id) as jumlah_mapel'), DB::raw('count(distinct kelasmi.id) as jumlah_kelas'))
-            ->groupBy('guru.id', 'guru.nama_guru', 'nama_kelas')
+            ->select('guru.nama_guru', 'nama_kelas', 'mapel.mapel', DB::raw('count(distinct mapel.id) as jumlah_mapel'), DB::raw('count(distinct kelasmi.id) as jumlah_kelas'))
+            ->groupBy('guru.id', 'guru.nama_guru', 'nama_kelas', 'mapel.mapel')
+            ->orderby('mapel.mapel')
             ->orderby('nama_kelas')
             ->orderby('nama_guru')
             ->get();
@@ -366,25 +388,26 @@ class JadwalController
             ->where('kelasmi.periode_id', session('periode_id'))
             ->whereNotNull('guru.nama_guru')
             ->select(
-                'guru.id',
-                'guru.nama_guru',
-                'kelasmi.id as kelasmi_id',
+            'guru.nama_guru',
                 'nama_kelas',
-                DB::raw('COUNT(DISTINCT CONCAT(kelasmi.id, "-", mapel.id)) as jumlah_mapel'),
-                DB::raw('COUNT(DISTINCT kelasmi.id) as jumlah_kelas')
+            'mapel.mapel'
             )
+            ->selectRaw('count(distinct mapel.id) as jumlah_mapel')
+            ->selectRaw('count(distinct kelasmi.id) as jumlah_kelas')
             ->groupBy(
                 'guru.id',
                 'guru.nama_guru',
-                'kelasmi.id',
-                'nama_kelas'
+            'nama_kelas',
+            'mapel.mapel'
             )
-            ->orderBy('nama_kelas')
+            ->orderBy('mapel.mapel')
+            // ->orderBy('nama_kelas')
             ->orderBy('nama_guru')
             ->get();
 
         $Periode = Jadwal::query()
             ->leftJoin('kelasmi', 'kelasmi.id', '=', 'jadwal.kelasmi_id')
+            ->leftJoin('kelas', 'kelas.id', '=', 'kelasmi.kelas_id')
             ->join('periode', 'periode.id', '=', 'jadwal.periode_id')
             ->join('semester', 'semester.id', '=', 'periode.semester_id')
             ->leftJoin('daftar_jadwal', 'daftar_jadwal.jadwal_id', '=', 'jadwal.id')
@@ -396,9 +419,12 @@ class JadwalController
                 'periode.periode',
                 'semester.ket_semester'
             )
-            ->selectRaw('COUNT(DISTINCT CONCAT(kelasmi.id, "-", mapel.id)) as jumlah_mapel')
-            ->selectRaw('COUNT(DISTINCT kelasmi.id) as jumlah_kelas')
-            ->groupBy('periode.periode', 'semester.ket_semester')
+            ->selectRaw('count(distinct mapel.id) as jumlah_mapel')
+            ->selectRaw('count(distinct kelasmi.id) as jumlah_kelas')
+            ->groupBy(
+                'periode.periode',
+                'semester.ket_semester'
+            )
             ->first();
 
         $pdf = Pdf::loadView('jadwal.laporankelas-pdf', [
@@ -406,7 +432,7 @@ class JadwalController
             'Periode' => $Periode
         ])->setPaper('a4', 'landscape');
 
-        return $pdf->stream('laporan-ploting-guru.pdf');
+        return $pdf->stream('laporan-ploting-kelas.pdf');
     }
     public function destroyGuru(Daftar_Jadwal $daftar_Jadwal)
     {

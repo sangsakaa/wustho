@@ -1,136 +1,168 @@
 <x-app-layout>
     <x-slot name="header">
-        @section('title', ' |Kalas : 1 Daftar Jadwal' )
+        @section('title', ' | Kelas 1 Daftar Jadwal')
 
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard kegiatan') }}
-        </h2>
-    </x-slot>
-    <div class="px-4 py-2">
-        <div class=" mx-auto ">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-2 bg-white border-b border-gray-200">
-                    <a href="/Daftar-Jadwal" class=" py-1 px-2 bg-red-600 text-white ">Daftar Jadwal</a>
-                    <button class=" bg-red-600 py-1 dark:bg-purple-600 mt-1 w-full sm:w-40 rounded-sm hover:bg-purple-600 text-white px-4 " onclick="printContent('blanko')">
-                        Cetak
-                    </button>
-                </div>
+        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
+            <h2 class="text-xl font-bold text-gray-800">
+                📅 Dashboard Kegiatan
+            </h2>
+
+            <div class="flex gap-2">
+                <a href="/Daftar-Jadwal"
+                    class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-xl text-sm">
+                    Daftar Jadwal
+                </a>
+
+                <button onclick="printContent('printArea')"
+                    class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-xl text-sm">
+                    🖨 Cetak
+                </button>
             </div>
         </div>
-    </div>
-    <script>
-        function printContent(el) {
-            var fullbody = document.body.innerHTML;
-            var printContent = document.getElementById(el).innerHTML;
-            document.body.innerHTML = printContent;
-            window.print();
-            document.body.innerHTML = fullbody;
-        }
-    </script>
-    <div id="blanko" class="p-4">
-        <style>
-            .page-break {
-                page-break-after: always;
-            }
-        </style>
-        <div class=" mx-auto ">
+    </x-slot>
+
+    <div class="px-4 py-6">
+
+        {{-- ================= PRINT AREA ================= --}}
+        <div id="printArea" class="max-w-6xl mx-auto bg-white p-6 rounded-xl">
+
             @if($datakelasmi)
-            <div class="bg-white overflow-hidden  sm:rounded-lg text-sm sm:text-sm">
-                <div class="p-2 bg-white border-b border-gray-200">
-                    <center>
-                        <p class=" font-semibold text-2xl text-green-800 uppercase">
-                            MADRASAH DINIYAH {{$kelasmi->jenjang}} WAHIDIYAH
-                        </p>
-                        <p class=" font-semibold text-3xl text-green-800">
-                            JADWAL PELAJARAN
-                        </p>
-                        <p class=" font-semibold uppercase text-green-800">
-                            TAHUN PELAJARAN
-                            {{$datakelasmi->periode}} {{$datakelasmi->ket_semester}}
 
-                        </p>
-                    </center>
-                    <hr class=" border-b-2   border-b-green-700">
-                    <hr class=" border-b  mt-0.5   border-b-green-700">
+            {{-- ================= HEADER ================= --}}
+            <div class="text-center mb-4">
+                <h1 class="text-xl font-bold uppercase text-green-800">
+                    MADRASAH DINIYAH {{ $kelasmi->jenjang }} WAHIDIYAH
+                </h1>
 
-                    @php
-                    $jadwalByKelas = [];
+                <h2 class="text-2xl font-bold text-green-700 mt-1">
+                    JADWAL PELAJARAN
+                </h2>
 
-                    foreach ($jadwalByDayMap as $hari => $jadwals) {
-                    foreach ($jadwals as $jadwal) {
-                    $nama_kelas = $jadwal->nama_kelas;
+                <p class="text-sm text-green-700 mt-1">
+                    TAHUN PELAJARAN {{ $datakelasmi->periode }} {{ $datakelasmi->ket_semester }}
+                </p>
 
-                    if (!isset($jadwalByKelas[$nama_kelas][$hari])) {
-                    $jadwalByKelas[$nama_kelas][$hari] = [];
-                    }
+                <div class="border-b-2 border-green-700 mt-3"></div>
+            </div>
 
-                    $jadwalByKelas[$nama_kelas][$hari][] = [
-                    'nama_guru' => $jadwal->nama_guru,
-                    'kelas' => $jadwal->kelas,
-                    'mapel' => $jadwal->mapel,
-                    ];
-                    }
-                    }
-                    @endphp
+            {{-- ================= GROUP DATA ================= --}}
+            @php
+            $jadwalByKelas = [];
 
-                    <table class="mb-4 mt-2 w-full">
-                        <thead>
-                            <tr>
-                                <th class="  border text-sm border-green-800 uppercase" rowspan="2">Kelas</th>
-                                <th class="  border text-sm border-green-800 uppercase" colspan="6">Hari</th>
-                            </tr>
-                            <tr class="border text-sm">
-                                <?php
-                                // Array asal
-                                // Ubah urutan hari
-                                $customOrder = ['jumat', 'sabtu', 'minggu', 'senin', 'selasa', 'rabu'];
-                                // Urutkan array sesuai urutan yang ditentukan
-                                $sortedJadwalByDayMap = [];
-                                foreach ($customOrder as $hari) {
-                                    if (isset($jadwalByDayMap[$hari])) {
-                                        $sortedJadwalByDayMap[$hari] = $jadwalByDayMap[$hari];
-                                    }
-                                }
+            foreach ($jadwalByDayMap as $hari => $jadwals) {
+            foreach ($jadwals as $jadwal) {
 
-                                // Sekarang Anda dapat melakukan iterasi dengan urutan yang diinginkan
-                                foreach ($sortedJadwalByDayMap as $hari => $jadwals) {
-                                    echo '<th class="border text-sm border-green-800 uppercase">' . $hari . '</th>';
-                                }
-                                ?>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($jadwalByKelas as $nama_kelas => $jadwalsByHari)
-                            <tr class=" even:bg-yellow-100 border text-sm border-green-800 capitalize text-center">
-                                <td class="border text-lg font-semibold border-green-800">{{ $nama_kelas }}</td>
-                                @foreach ($customOrder as $hari)
-                                <td class="border text-sm border-green-800">
-                                    @if (isset($jadwalsByHari[$hari]))
-                                    @foreach ($jadwalsByHari[$hari] as $jadwal)
-                                    <span class=" font-semibold  text-md-center uppercase">
-                                        {{ $jadwal['mapel'] }}
-                                    </span>
-                                    <br>
-                                    <span class=" text-sm ">{{ strtolower($jadwal['nama_guru']) }}
+            $kelas = $jadwal->nama_kelas;
 
-                                        @endforeach
-                                        @endif
-                                </td>
+            $jadwalByKelas[$kelas][$hari][] = [
+            'mapel' => $jadwal->mapel,
+            'kitab' => $jadwal->nama_kitab,
+            'guru' => $jadwal->nama_guru,
+            ];
+            }
+            }
+
+            $customOrder = ['senin','selasa','rabu','jumat','sabtu'];
+            @endphp
+
+            {{-- ================= TABLE ================= --}}
+            <div class="overflow-x-auto">
+
+                <table class="w-full border border-green-700 text-sm">
+
+                    <thead>
+                        <tr>
+                            <th class="border border-green-700 px-2 py-1 w-24 uppercase">
+                                Kelas
+                            </th>
+
+                            @foreach ($customOrder as $hari)
+                            <th class="border border-green-700 px-2 py-1 uppercase">
+                                {{ $hari }}
+                            </th>
+                            @endforeach
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        @foreach ($jadwalByKelas as $kelas => $hariData)
+                        <tr class="text-center">
+
+                            {{-- KELAS --}}
+                            <td class="border border-green-700 font-semibold px-2 py-1 text-lg">
+                                {{ $kelas }}
+                            </td>
+
+                            {{-- HARI --}}
+                            @foreach ($customOrder as $hari)
+                            <td class="border border-green-700 px-2 py-1 align-top">
+
+                                @if(!empty($hariData[$hari]))
+
+                                @foreach ($hariData[$hari] as $item)
+
+                                <div class="mb-2 leading-tight">
+
+                                    {{-- MAPEL --}}
+                                    <div class="font-semibold uppercase text-green-800">
+                                        {{ $item['mapel'] }}
+                                    </div>
+
+                                    {{-- KITAB --}}
+                                    @if(!empty($item['kitab']))
+                                    <div class="text-xs text-blue-700">
+                                        📖 {{ $item['kitab'] }}
+                                    </div>
+                                    @endif
+
+                                    {{-- GURU --}}
+                                    <div class="text-xs text-gray-600">
+                                        {{ ucwords($item['guru']) }}
+                                    </div>
+
+                                </div>
+
                                 @endforeach
-                            </tr>
+
+                                @else
+                                <span class="text-gray-300">-</span>
+                                @endif
+
+                            </td>
                             @endforeach
 
-                        </tbody>
-                    </table>
+                        </tr>
+                        @endforeach
 
-                    <div class="page-break"></div>
-                </div>
+                    </tbody>
+
+                </table>
+
             </div>
+
             @else
-            <div class=" px-4 bg-blue-300">
-                <span>belum ada ploting guru dan mapel</span>
+
+            <div class="bg-yellow-100 text-yellow-700 p-4 rounded-xl text-sm">
+                ⚠ Belum ada ploting guru dan mapel
             </div>
+
             @endif
+
         </div>
     </div>
+
+    {{-- ================= PRINT SCRIPT ================= --}}
+    <script>
+        function printContent(id) {
+            const printArea = document.getElementById(id).innerHTML;
+            const original = document.body.innerHTML;
+
+            document.body.innerHTML = printArea;
+            window.print();
+            document.body.innerHTML = original;
+            location.reload();
+        }
+    </script>
+
 </x-app-layout>

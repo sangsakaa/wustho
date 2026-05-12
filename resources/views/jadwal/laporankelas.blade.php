@@ -50,7 +50,6 @@
         }
     </script>
 
-    {{-- Toolbar --}}
     <div class="p-4 no-print">
         <div class="bg-white shadow rounded-2xl p-4 flex gap-3">
             <a href="/Daftar-Jadwal"
@@ -62,112 +61,161 @@
                 class="px-4 py-2 rounded-lg bg-red-600 hover:bg-red-700 text-white font-medium transition">
                 Download PDF
             </a>
+
+            <button onclick="printContent()"
+                class="px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-medium transition">
+                Print
+            </button>
         </div>
     </div>
 
-    {{-- Print Area --}}
     <div id="print-area" class="p-4">
         <div class="max-w-7xl mx-auto bg-white shadow-lg rounded-2xl p-6">
 
             @if($Periode)
-            {{-- Header laporan --}}
-            <div class="text-center mb-6">
-                <h1 class="text-2xl font-bold text-emerald-800">
-                    MADRASAH DINIYAH WUSTHO WAHIDIYAH
-                </h1>
-                <h2 class="text-lg font-semibold text-slate-700">
-                    LAPORAN PLOTING GURU
-                </h2>
-                <p class="text-sm uppercase text-slate-600 mt-1">
-                    Tahun Pelajaran {{ $Periode->periode }} {{ $Periode->ket_semester }}
-                </p>
-            </div>
 
-            <hr class="border-2 border-emerald-700 mb-4">
+            @php
+            $kelasList = $laporan->pluck('nama_kelas')->unique()->sort()->values();
 
-            {{-- Info ringkas --}}
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6 text-sm">
-                <div class="bg-slate-50 p-3 rounded-xl border">
-                    <p class="text-slate-500">Jumlah Kelas</p>
-                    <p class="font-bold text-lg">{{ $Periode->jumlah_kelas }}</p>
+            // FIX DI SINI
+            $data = $laporan->groupBy('nama_guru')->map(function ($items) {
+            return $items->groupBy('mapel');
+            });
+            @endphp
+
+            <div id="print-area" class="p-4">
+                <div class="text-center mb-6">
+                    <h1 class="text-2xl font-bold text-emerald-800">
+                        MADRASAH DINIYAH WUSTHO WAHIDIYAH
+                    </h1>
+                    <h2 class="text-lg font-semibold text-slate-700">
+                        LAPORAN PLOTING GURU
+                    </h2>
+                    <p class="text-sm uppercase text-slate-600 mt-1">
+                        Tahun Pelajaran {{ $Periode->periode }} {{ $Periode->ket_semester }}
+                    </p>
                 </div>
 
-                <div class="bg-slate-50 p-3 rounded-xl border">
-                    <p class="text-slate-500">Jumlah Mapel</p>
-                    <p class="font-bold text-lg">{{ $Periode->jumlah_mapel }}</p>
-                </div>
-            </div>
+                <hr class="border-2 border-emerald-700 mb-4">
 
-            {{-- Table --}}
-            <div class="overflow-x-auto">
-                <table class="w-full text-sm border border-slate-300">
-                    <thead class="bg-slate-100">
-                        <tr>
-                            <th rowspan="2" class="border px-2 py-2">No</th>
-                            <th rowspan="2" class="border px-2 py-2">Nama Guru</th>
-                            <th colspan="{{ $laporan->pluck('nama_kelas')->unique()->count() }}"
-                                class="border px-2 py-2">
-                                Kelas
-                            </th>
-                            <th rowspan="2" class="border px-2 py-2">
-                                Jumlah Mapel
-                            </th>
-                            <th rowspan="2" class="border px-2 py-2">
-                                Jumlah Kelas
-                            </th>
-                        </tr>
-                        <tr>
-                            @foreach ($laporan->pluck('nama_kelas')->unique()->sort() as $nama_kelas)
-                            <th class="border px-2 py-2">
-                                {{ $nama_kelas }}
-                            </th>
-                            @endforeach
-                        </tr>
-                    </thead>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-sm border border-slate-300">
+                        <thead class="bg-slate-100">
+                            <tr>
+                                <th rowspan="2" class="border px-2 py-2">No</th>
+                                <th rowspan="2" class="border px-2 py-2">Nama Guru</th>
+                                <th rowspan="2" class="border px-2 py-2">Mapel</th>
 
-                    <tbody>
-                        @foreach ($laporan->pluck('nama_guru')->unique()->sort() as $nama_guru)
-                        <tr class="hover:bg-slate-50">
-                            <td class="border text-center px-2 py-1">
-                                {{ $loop->iteration }}
-                            </td>
+                                <th colspan="{{ $kelasList->count() }}"
+                                    class="border px-2 py-2">
+                                    Kelas
+                                </th>
 
-                            <td class="border px-2 py-1 font-medium">
-                                {{ $nama_guru }}
-                            </td>
+                                <th rowspan="2" class="border px-2 py-2">
+                                    Jumlah <br> Kelas
+                                </th>
 
-                            @foreach ($laporan->pluck('nama_kelas')->unique()->sort() as $nama_kelas)
+                                <th rowspan="2" class="border px-2 py-2">
+                                    Jumlah <br> Jam
+                                </th>
+                            </tr>
+
+                            <tr>
+                                @foreach ($kelasList as $kelas)
+                                <th class="border px-2 py-2">{{ $kelas }}</th>
+                                @endforeach
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @foreach ($data as $nama_guru => $mapels)
+
                             @php
-                            $jumlah = $laporan
-                            ->where('nama_guru', $nama_guru)
-                            ->where('nama_kelas', $nama_kelas)
-                            ->sum('jumlah_mapel');
+                            $rowspan = $mapels->count();
+                            $firstGuru = true;
                             @endphp
 
-                            <td class="border text-center px-2 py-1 {{ $jumlah > 0 ? 'bg-emerald-100 font-semibold' : '' }}">
-                                {{ $jumlah }}
-                            </td>
+                            @foreach ($mapels as $nama_mapel => $items)
+
+                            @php
+                            $kelasAktif = $items->pluck('nama_kelas')->toArray();
+                            $jumlahKelas = count(array_unique($kelasAktif));
+                            $jumlahJam = $jumlahKelas * 2;
+                            @endphp
+
+                            <tr>
+
+                                @if($firstGuru)
+                                <td rowspan="{{ $rowspan }}"
+                                    class="border text-center">
+                                    {{ $loop->parent->iteration }}
+                                </td>
+
+                                <td rowspan="{{ $rowspan }}"
+                                    class="border px-2">
+                                    {{ $nama_guru }}
+                                </td>
+
+                                @php $firstGuru = false; @endphp
+                                @endif
+
+                                <td class="border px-2 bg-slate-50">
+                                    {{ ucwords(strtolower($nama_mapel)) }}
+                                </td>
+
+                                @foreach ($kelasList as $kelas)
+                                @php
+                                $ada = in_array($kelas, $kelasAktif);
+                                @endphp
+
+                                <td class="border text-center {{ $ada ? 'bg-emerald-100 font-bold' : '' }}">
+                                    {{ $ada ? 2 : '' }}
+                                </td>
+                                @endforeach
+
+                                <td class="border text-center font-bold">
+                                    {{ $jumlahKelas }}
+                                </td>
+
+                                <td class="border text-center font-bold">
+                                    {{ $jumlahJam }}
+                                </td>
+                            </tr>
+
                             @endforeach
+                            @endforeach
+                        </tbody>
 
-                            <td class="border text-center font-bold">
-                                {{ $laporan->where('nama_guru', $nama_guru)->sum('jumlah_mapel') }}
-                            </td>
+                        <tfoot class="bg-slate-100 font-bold">
+                            <tr>
+                                <td colspan="3" class="border text-center">
+                                    TOTAL JAM
+                                </td>
 
-                            <td class="border text-center font-bold">
-                                {{ $laporan->where('nama_guru', $nama_guru)->count() }}
-                            </td>
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+                                @foreach ($kelasList as $kelas)
+                                @php
+                                $total = $laporan->where('nama_kelas', $kelas)->count() * 2;
+                                @endphp
+
+                                <td class="border text-center">
+                                    {{ $total }}
+                                </td>
+                                @endforeach
+
+                                <td class="border text-center">
+                                    {{ $laporan->count() }}
+                                </td>
+
+                                <td class="border text-center">
+                                    {{ $laporan->count() * 2 }}
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+
+                @endif
             </div>
-            @else
-            <div class="text-center py-10">
-                <p class="text-slate-500 text-lg">
-                    Tidak ada plotting guru
-                </p>
-            </div>
-            @endif
         </div>
     </div>
 </x-app-layout>

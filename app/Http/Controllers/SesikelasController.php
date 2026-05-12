@@ -42,6 +42,7 @@ class SesikelasController
                 'sesikelas.id',
                 'sesikelas.tgl',
                 'sesikelas.kelasmi_id',
+            'sesikelas.status',
                 'kelasmi.nama_kelas',
                 'periode.periode',
                 'semester.ket_semester'

@@ -32,6 +32,7 @@
             </p>
           </div>
 
+
           <form action="{{ route('qr.generate.all') }}" method="POST">
             @csrf
             <button
@@ -73,6 +74,11 @@
             </div>
             @endif
           </div>
+          <a href="{{ route('kartu.login.pdf', $siswa->id) }}"
+            target="_blank"
+            class="px-3 py-1 bg-blue-500 text-white rounded">
+            Cetak Kartu
+          </a>
 
           <form action="{{ route('qr.siswa', $siswa->id) }}" method="POST">
             @csrf
