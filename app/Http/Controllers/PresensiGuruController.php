@@ -2,17 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use DateTime;
-use IntlDateFormatter;
+use App\Models\Absensiguru;
+use App\Models\Daftar_Jadwal;
 use App\Models\Kelasmi;
 use App\Models\Periode;
-use App\Models\Absensiguru;
-use Illuminate\Http\Request;
-use App\Models\Daftar_Jadwal;
-use Illuminate\Support\Carbon;
 use App\Models\Sesi_Kelas_Guru;
-use Illuminate\Support\Facades\DB;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Exceptions\InvalidFormatException;
+use DateTime;
+use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
+use IntlDateFormatter;
 
 class PresensiGuruController
 {
@@ -267,156 +268,143 @@ class PresensiGuruController
     }
     public function laporanSemester(Request $request)
     {
-        $tanggal = $request->bulan ? Carbon::parse($request->bulan): now();
-        $startOfMonth = $tanggal->startOfMonth()->toDateString();
-        $endOfMonth = $tanggal->endOfMonth()->toDateString();
+        $mode = $request->mode ?? 'bulanan';
 
-        $kelasmi = Kelasmi::query()
-        ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
-        ->join('semester', 'semester.id', '=', 'periode.semester_id')
-        ->where('periode.id', session('periode_id'))
-        ->select('kelasmi.nama_kelas', 'periode.periode', 'semester.ket_semester', 'periode.id')
-        ->first();
-        $laporanQuery = Absensiguru::query()
-            ->leftJoin('sesi_kelas_guru', 'absensiguru.sesi_kelas_guru_id', 'sesi_kelas_guru.id')
-            ->leftJoin('daftar_jadwal', 'daftar_jadwal.id', 'absensiguru.daftar_jadwal_id')
-            ->leftJoin('jadwal', 'jadwal.id', 'daftar_jadwal.jadwal_id')
-            ->leftJoin('kelasmi', 'kelasmi.id', 'jadwal.kelasmi_id')
-            ->leftJoin('guru', 'guru.id', 'daftar_jadwal.guru_id')
+        $tanggal = $request->tanggal
+            ? Carbon::parse($request->tanggal)
+            : now();
+
+        $periodeId = $request->periode_id ?? session('periode_id');
+
+        $periode = Periode::with('semester')->find($periodeId);
+
+        if ($mode == 'harian') {
+            $start = $tanggal->copy()->startOfDay();
+            $end = $tanggal->copy()->endOfDay();
+        } elseif ($mode == 'semester') {
+            $start = null;
+            $end = null;
+        } else {
+            $start = $tanggal->copy()->startOfMonth();
+            $end = $tanggal->copy()->endOfMonth();
+        }
+
+        $laporan = Absensiguru::query()
+            ->leftJoin('sesi_kelas_guru', 'absensiguru.sesi_kelas_guru_id', '=', 'sesi_kelas_guru.id')
+            ->leftJoin('daftar_jadwal', 'daftar_jadwal.id', '=', 'absensiguru.daftar_jadwal_id')
+            ->leftJoin('jadwal', 'jadwal.id', '=', 'daftar_jadwal.jadwal_id')
+            ->leftJoin('guru', 'guru.id', '=', 'daftar_jadwal.guru_id')
+            ->leftJoin('kelasmi', 'kelasmi.id', '=', 'jadwal.kelasmi_id')
+
             ->select(
-            DB::raw("DATE_FORMAT(sesi_kelas_guru.tanggal, '%M') as bulan"),
-            'guru.nama_guru',
+                DB::raw("COALESCE(guru.nama_guru,'-') as nama_guru"),
+                DB::raw("GROUP_CONCAT(DISTINCT kelasmi.nama_kelas ORDER BY kelasmi.nama_kelas SEPARATOR ', ') as kelas"),
+
             DB::raw('COUNT(*) as total'),
-            DB::raw('COUNT(DISTINCT sesi_kelas_guru.id) as jumlah_sesi_kelas_guru'),
-            DB::raw("COUNT(CASE WHEN absensiguru.keterangan = 'hadir' THEN 1 END) as jumlah_hadir"),
-            DB::raw("COUNT(CASE WHEN absensiguru.keterangan = 'izin' THEN 1 END) as jumlah_izin"),
-            DB::raw("COUNT(CASE WHEN absensiguru.keterangan = 'sakit' THEN 1 END) as jumlah_sakit"),
-            DB::raw("COUNT(CASE WHEN absensiguru.keterangan = 'alfa' THEN 1 END) as jumlah_alfa"),
-            'hari',
-            'nama_kelas'
-        )
-            ->groupBy(DB::raw("DATE_FORMAT(sesi_kelas_guru.tanggal, '%M')"), 'guru.nama_guru', 'hari', 'nama_kelas')
-            ->where('sesi_kelas_guru.periode_id', session('periode_id'))
+            DB::raw('COUNT(DISTINCT sesi_kelas_guru.id) as sesi'),
 
-        ->orderBy('nama_guru');
+            DB::raw("SUM(CASE WHEN absensiguru.keterangan='hadir' THEN 1 ELSE 0 END) as hadir"),
+            DB::raw("SUM(CASE WHEN absensiguru.keterangan='izin' THEN 1 ELSE 0 END) as izin"),
+            DB::raw("SUM(CASE WHEN absensiguru.keterangan='sakit' THEN 1 ELSE 0 END) as sakit"),
+            DB::raw("SUM(CASE WHEN absensiguru.keterangan='alfa' THEN 1 ELSE 0 END) as alfa"),
 
-        $laporan = $laporanQuery->clone()->whereBetween('sesi_kelas_guru.tanggal', [$startOfMonth, $endOfMonth])->get();
-        // dd($laporan);
-        $periodeBulan = $tanggal->startOfMonth()->daysUntil($tanggal->copy()->endOfMonth());
-        $jumlahHari = ['jumat' => 0, 'sabtu' => 0, 'minggu' => 0, 'senin' => 0, 'selasa' => 0, 'rabu' => 0, 'kamis' => 0];
-        foreach ($periodeBulan as $hari) {
-            $dayOfWeek = $hari->dayOfWeek;
-            switch($dayOfWeek) {
-                case 0:
-                    $jumlahHari['minggu']++;
-                    break;
-                case 1:
-                    $jumlahHari['senin']++;
-                    break;
-                case 2:
-                    $jumlahHari['selasa']++;
-                    break;
-                case 3:
-                    $jumlahHari['rabu']++;
-                    break;
-                case 4:
-                    $jumlahHari['kamis']++;
-                    break;
-                case 5:
-                    $jumlahHari['jumat']++;
-                    break;
-                case 6:
-                    $jumlahHari['sabtu']++;
-                    break;
-            }
-        }
-        $laporan->append('jumlahHari');
-        foreach ($laporan as $absensiGuru) {
-            if (isset($jumlahHari[$absensiGuru->hari])) {
-                $absensiGuru->jumlahHari = $jumlahHari[$absensiGuru->hari];
-            } else {
-                // Tindakan jika kunci tidak ditemukan dalam array $jumlahHari
-                // Misalnya, Anda dapat memberikan nilai default ke $absensiGuru->jumlahHari
-            }
-        }
+                // 🔥 HARI DARI DATABASE JADWAL
+                DB::raw("SUM(CASE WHEN jadwal.hari='jumat' THEN 1 ELSE 0 END) as jumat"),
+                DB::raw("SUM(CASE WHEN jadwal.hari='sabtu' THEN 1 ELSE 0 END) as sabtu"),
+                DB::raw("SUM(CASE WHEN jadwal.hari='minggu' THEN 1 ELSE 0 END) as minggu"),
+                DB::raw("SUM(CASE WHEN jadwal.hari='senin' THEN 1 ELSE 0 END) as senin"),
+                DB::raw("SUM(CASE WHEN jadwal.hari='selasa' THEN 1 ELSE 0 END) as selasa"),
+                DB::raw("SUM(CASE WHEN jadwal.hari='rabu' THEN 1 ELSE 0 END) as rabu"),
+                DB::raw("SUM(CASE WHEN jadwal.hari='kamis' THEN 1 ELSE 0 END) as kamis"),
+            )
+            // 🔥 FILTER MODE
+            ->when($mode == 'semester', function ($q) use ($periodeId) {
+                return $q->where('sesi_kelas_guru.periode_id', $periodeId);
+            })
 
+            ->when($mode != 'semester', function ($q) use ($start, $end) {
+                return $q->whereBetween('sesi_kelas_guru.tanggal', [$start, $end]);
+            })
 
-        $laporanSemester = $laporanQuery->get();
+            // 🔥 IMPORTANT: GROUP ONLY BY GURU (NOT KELAS, NOT HARI)
+            ->groupBy('guru.nama_guru')
 
-        $laporan_per_bulan = null;
-        foreach ($laporanSemester as $data) {
-            if (isset($data->bulan) && isset($data->nama_guru)) {
-                $bulan = $data->bulan;
-                $nama_guru = $data->nama_guru;
+            // 🔥 NULL ALWAYS BOTTOM
+            ->orderByRaw("CASE WHEN guru.nama_guru IS NULL OR guru.nama_guru = '' THEN 1 ELSE 0 END")
+            ->orderBy('guru.nama_guru')
 
-                if (!isset($laporan_per_bulan[$bulan][$nama_guru])) {
-                    $laporan_per_bulan[$bulan][$nama_guru] = [
-                        'hadir' => 0,
-                        'izin' => 0,
-                        'sakit' => 0,
-                        'alfa' => 0,
-                    ];
-                }
+            ->get();
 
-                switch ($data->keterangan) {
-                    case 'hadir':
-                        $laporan_per_bulan[$bulan][$nama_guru]['hadir'] += $data->total;
-                        break;
-                    case 'izin':
-                        $laporan_per_bulan[$bulan][$nama_guru]['izin'] += $data->total;
-                        break;
-                    case 'sakit':
-                        $laporan_per_bulan[$bulan][$nama_guru]['sakit'] += $data->total;
-                        break;
-                    case 'alfa':
-                        $laporan_per_bulan[$bulan][$nama_guru]['alfa'] += $data->total;
-                        break;
-                }
-            }
-        }
-        try {
-            $tanggal = $request->tanggal ? Carbon::parse($request->tanggal) : now();
-            $tanggal = $tanggal->format('Y-m');
-        } catch (InvalidFormatException $ex) {
-            $tanggal = now()->format('Y-m');
+        return view('presensi.guru.laporan.laporanSemester', [
+            'laporan' => $laporan,
+            'mode' => $mode,
+            'tanggal' => $tanggal,
+            'periode' => $periode,
+        ]);
+    }
+    public function laporanSemesterPdf(Request $request)
+    {
+        $mode = $request->mode ?? 'bulanan';
+
+        $tanggal = $request->tanggal
+            ? Carbon::parse($request->tanggal)
+            : now();
+
+        $periodeId = $request->periode_id ?? session('periode_id');
+
+        $periode = Periode::with('semester')->find($periodeId);
+
+        if ($mode == 'harian') {
+            $start = $tanggal->copy()->startOfDay();
+            $end = $tanggal->copy()->endOfDay();
+        } elseif ($mode == 'semester') {
+            $start = null;
+            $end = null;
+        } else {
+            $start = $tanggal->copy()->startOfMonth();
+            $end = $tanggal->copy()->endOfMonth();
         }
 
-        $laporanDetail = Absensiguru::query()
-        ->leftJoin('sesi_kelas_guru', 'absensiguru.sesi_kelas_guru_id', 'sesi_kelas_guru.id')
-        ->leftJoin('daftar_jadwal', 'daftar_jadwal.id', 'absensiguru.daftar_jadwal_id')
+        $laporan = Absensiguru::query()
+            ->leftJoin('sesi_kelas_guru', 'absensiguru.sesi_kelas_guru_id', '=', 'sesi_kelas_guru.id')
+            ->leftJoin('daftar_jadwal', 'daftar_jadwal.id', '=', 'absensiguru.daftar_jadwal_id')
+            ->leftJoin('jadwal', 'jadwal.id', '=', 'daftar_jadwal.jadwal_id')
+            ->leftJoin('guru', 'guru.id', '=', 'daftar_jadwal.guru_id')
+            ->leftJoin('kelasmi', 'kelasmi.id', '=', 'jadwal.kelasmi_id')
+            ->select(
+                DB::raw("COALESCE(guru.nama_guru,'') as nama_guru"),
+                'kelasmi.nama_kelas',
+                'jadwal.hari as hari',
+                DB::raw('COUNT(*) as total'),
+                DB::raw('COUNT(DISTINCT sesi_kelas_guru.id) as sesi'),
+                DB::raw("SUM(CASE WHEN absensiguru.keterangan='hadir' THEN 1 ELSE 0 END) as hadir"),
+                DB::raw("SUM(CASE WHEN absensiguru.keterangan='izin' THEN 1 ELSE 0 END) as izin"),
+                DB::raw("SUM(CASE WHEN absensiguru.keterangan='sakit' THEN 1 ELSE 0 END) as sakit"),
+                DB::raw("SUM(CASE WHEN absensiguru.keterangan='alfa' THEN 1 ELSE 0 END) as alfa"),
+            )
+            ->when($mode == 'semester', function ($q) use ($periodeId) {
+                return $q->where('sesi_kelas_guru.periode_id', $periodeId);
+            })
+            ->when($mode != 'semester', function ($q) use ($start, $end) {
+                return $q->whereBetween('sesi_kelas_guru.tanggal', [$start, $end]);
+            })
+            ->groupBy(
+                'kelasmi.nama_kelas',
+                'jadwal.hari',
+                DB::raw("COALESCE(guru.nama_guru,'')")
+            )
+            ->orderByRaw("CASE WHEN guru.nama_guru = '' THEN 1 ELSE 0 END")
+            ->orderBy('guru.nama_guru')
+            ->get();
 
-        ->leftJoin('kelasmi', 'kelasmi.id', 'sesi_kelas_guru.kelasmi_id')
-        ->leftJoin('guru', 'guru.id', 'daftar_jadwal.guru_id')
-        ->select(
-            DB::raw("DATE_FORMAT(sesi_kelas_guru.tanggal,'%M') as bulan"),
-            'guru.nama_guru',
-            'kelasmi.nama_kelas',
-            'keterangan',
+        $pdf = Pdf::loadView('presensi.guru.laporan.laporanSemesterPdf', [
+            'laporan' => $laporan,
+            'mode' => $mode,
+            'tanggal' => $tanggal,
+            'periode' => $periode,
+        ])->setPaper('F4', 'landscape');
 
-            DB::raw('count(*) as total'),
-            DB::raw('count(DISTINCT sesi_kelas_guru.id) as jumlah_sesi_kelas_guru'),
-        )
-            ->groupBy(DB::raw("DATE_FORMAT(sesi_kelas_guru.tanggal,'%M')"),  'guru.nama_guru', 'nama_kelas', 'keterangan')
-        ->whereBetween('sesi_kelas_guru.tanggal', [$startOfMonth, $endOfMonth])
-            ->where('sesi_kelas_guru.periode_id', session('periode_id'))
-
-            ->orderBy('nama_kelas')
-            ->orderBy('nama_guru')
-        ->get();
-        return view(
-            'presensi.guru.laporan.laporanSemester',
-            [
-                'laporan' => $laporan,
-                'tanggal' => $tanggal,
-                'laporan_per_bulan' => $laporan_per_bulan,
-                'kelasmi' => $kelasmi,
-                'laporanDetail' => $laporanDetail,
-
-
-
-
-            ]
-        );
+        return $pdf->stream('laporan-presensi-guru.pdf');
     }
     public function DeleteSesi(Sesi_Kelas_Guru $sesi_Kelas_Guru)
 

@@ -57,31 +57,55 @@ $dbOnline = false;
                 </button>
             </x-slot>
 
-            <x-slot name="content">
-                @foreach ($dataperiode as $list)
-                <form method="POST" action="{{ route('setperiode') }}">
-                    @csrf
-                    <input type="hidden" name="periode_id" value="{{ $list->id }}">
+            <div class="relative">
 
-                    <button type="submit"
-                        class="w-full text-left px-4 py-2 text-sm hover:bg-gray-100 flex justify-between">
+                {{-- DROPDOWN CONTENT --}}
+                <div class="absolute right-0 mt-2 w-72 bg-white dark:bg-dark-bg shadow-lg rounded-md z-50 max-h-80 overflow-y-auto border border-slate-200 dark:border-slate-700">
 
-                        <span>
-                            {{ $list->periode }}
-                            {{ $list->semester->ket_semester ?? '' }}
-                        </span>
+                    <x-slot name="content">
 
-                        <span>
-                            @if(session('periode_id') == $list->id)
-                            <span class="text-blue-500 text-xs">(Dipilih)</span>
-                            @elseif($list->is_active)
-                            <span class="text-green-500 text-xs">(Aktif)</span>
-                            @endif
-                        </span>
-                    </button>
-                </form>
-                @endforeach
-            </x-slot>
+                        @php
+                        $sorted = $dataperiode->sortByDesc(function ($item) {
+                        if (session('periode_id') == $item->id) return 2;
+                        if ($item->is_active) return 1;
+                        return 0;
+                        });
+                        @endphp
+
+                        @foreach ($sorted as $list)
+
+                        <form method="POST" action="{{ route('setperiode') }}">
+                            @csrf
+                            <input type="hidden" name="periode_id" value="{{ $list->id }}">
+
+                            <button type="submit"
+                                class="w-full text-left px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-slate-700 flex justify-between items-center">
+
+                                {{-- LEFT --}}
+                                <span class="text-slate-700 dark:text-white">
+                                    {{ $list->periode }}
+                                    {{ $list->semester->ket_semester ?? '' }}
+                                </span>
+
+                                {{-- RIGHT STATUS --}}
+                                <span>
+                                    @if(session('periode_id') == $list->id)
+                                    <span class="text-blue-500 text-xs">(Dipilih)</span>
+                                    @elseif($list->is_active)
+                                    <span class="text-green-500 text-xs">(Aktif)</span>
+                                    @endif
+                                </span>
+
+                            </button>
+                        </form>
+
+                        @endforeach
+
+                    </x-slot>
+
+                </div>
+
+            </div>
         </x-dropdown>
         @else
         <div class="px-3 py-2 text-sm text-red-500 font-medium">

@@ -11,7 +11,7 @@ use App\Models\Siswa;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
+
 use Illuminate\Support\Facades\File;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
@@ -24,17 +24,60 @@ class QrcodeController extends Controller
     */
     public function index()
     {
-        $siswas = Siswa::with([
-            'NisTerakhir',
-            'kelasTerakhir.KelasMi.periode'
+        $kelasList = \App\Models\Kelasmi::withCount([
+            'pesertakelas as total_siswa'
         ])
-            ->whereHas('kelasTerakhir.KelasMi.periode', function ($q) {
+            ->whereHas('periode', function ($q) {
                 $q->where('is_active', 1);
             })
-            ->orderBy('nama_siswa')
-            ->paginate(20);
+            ->orderBy('nama_kelas')
+            ->get();
 
-        return view('qr.index', compact('siswas'));
+        return view('qr.index', compact('kelasList'));
+    }
+    public function monitor($sesiId)
+    {
+        $sesi = Sesikelas::with('kelasmi')->findOrFail($sesiId);
+
+        // semua peserta di kelas ini
+        $peserta = Pesertakelas::with('siswa.NisTerakhir')
+            ->where('kelasmi_id', $sesi->kelasmi_id)
+            ->orderBy('id')
+            ->get();
+
+        // ambil absensi terakhir per peserta untuk sesi ini
+        $absensi = Absensikelas::where('sesikelas_id', $sesiId)
+            ->orderBy('updated_at', 'desc')
+            ->get()
+            ->unique('pesertakelas_id')
+            ->keyBy('pesertakelas_id');
+
+        $data = $peserta->map(function ($item) use ($absensi) {
+            $absen = $absensi->get($item->id);
+
+            return [
+                'peserta_id' => $item->id,
+                'nama'       => $item->siswa->nama_siswa ?? '-',
+                'nis'        => optional($item->siswa->NisTerakhir)->nis ?? '-',
+                'status'     => $absen ? $absen->keterangan : 'belum',
+                'waktu'      => $absen?->updated_at?->format('H:i:s'),
+            ];
+        });
+
+        // urutan: belum -> hadir -> lainnya
+        $urutan = [
+            'belum' => 1,
+            'hadir' => 2,
+            'izin'  => 3,
+            'sakit' => 4,
+            'alfa'  => 5,
+        ];
+
+        $data = $data->sortBy(function ($row) use ($urutan) {
+            return $urutan[$row['status']] ?? 99;
+        })->values();
+
+        return view('presensi.monitor', compact('sesi', 'data'));
     }
 
     /*
@@ -78,15 +121,6 @@ class QrcodeController extends Controller
     */
     public function generateAll()
     {
-        $siswas = Siswa::with([
-            'NisTerakhir',
-            'kelasTerakhir.KelasMi.periode'
-        ])
-            ->whereHas('kelasTerakhir.KelasMi.periode', function ($q) {
-                $q->where('is_active', 1);
-            })
-            ->get();
-
         $folder = public_path('qrcodes');
 
         if (!File::exists($folder)) {
@@ -96,27 +130,38 @@ class QrcodeController extends Controller
         $generated = 0;
         $skipped = 0;
 
-        foreach ($siswas as $siswa) {
-            if (!$siswa->NisTerakhir) continue;
+        Siswa::with('NisTerakhir')
+            ->whereHas('NisTerakhir')
+            ->chunk(100, function ($siswas) use (
+                $folder,
+                &$generated,
+                &$skipped
+            ) {
+            foreach ($siswas as $siswa) {
+                $nis = $siswa->NisTerakhir->nis;
+                $filepath = "{$folder}/{$nis}.png";
 
-            $filename = $siswa->NisTerakhir->nis . '.png';
-            $filepath = $folder . '/' . $filename;
+                if (File::exists($filepath)) {
+                    $skipped++;
+                    continue;
+                }
 
-            if (File::exists($filepath)) {
-                $skipped++;
-                continue;
+                File::put(
+                    $filepath,
+                    QrCode::format('png')
+                        ->size(300)
+                        ->margin(2)
+                        ->generate($nis)
+                );
+
+                $generated++;
             }
+            });
 
-            $qr = QrCode::format('png')
-                ->size(300)
-                ->margin(2)
-                ->generate($siswa->NisTerakhir->nis);
-
-            File::put($filepath, $qr);
-            $generated++;
-        }
-
-        return back()->with('success', "Selesai. Baru: {$generated}, Skip: {$skipped}");
+        return back()->with(
+            'success',
+            "Selesai. Baru: {$generated}, Skip: {$skipped}"
+        );
     }
 
     /*
@@ -142,9 +187,10 @@ class QrcodeController extends Controller
                 'nis' => 'required|string'
             ]);
 
+            // ambil NIS + siswa
             $nis = Nis::with('siswa')->where('nis', $request->nis)->first();
 
-            if (!$nis) {
+            if (!$nis || !$nis->siswa) {
                 return response()->json([
                     'success' => false,
                     'message' => 'NIS tidak ditemukan'
@@ -153,8 +199,8 @@ class QrcodeController extends Controller
 
             $siswaId = $nis->siswa_id;
 
+            // periode aktif
             $periode = Periode::where('is_active', 1)->first();
-
             if (!$periode) {
                 return response()->json([
                     'success' => false,
@@ -162,11 +208,23 @@ class QrcodeController extends Controller
                 ], 404);
             }
 
-            $sesi = Sesikelas::query()
-                ->join('kelasmi', 'kelasmi.id', '=', 'sesikelas.kelasmi_id')
-                ->where('kelasmi.periode_id', $periode->id)
-                ->whereDate('sesikelas.tgl', Carbon::today())
-                ->select('sesikelas.*')
+            // peserta kelas (WAJIB join periode benar)
+            $peserta = Pesertakelas::where('siswa_id', $siswaId)
+                ->whereHas('kelasmi', function ($q) use ($periode) {
+                    $q->where('periode_id', $periode->id);
+                })
+                ->first();
+
+            if (!$peserta) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Siswa tidak terdaftar di kelas aktif'
+                ], 404);
+            }
+
+            // sesi hari ini berdasarkan kelas siswa
+            $sesi = Sesikelas::where('kelasmi_id', $peserta->kelasmi_id)
+                ->whereDate('tgl', now()->toDateString())
                 ->latest()
                 ->first();
 
@@ -184,61 +242,37 @@ class QrcodeController extends Controller
                 ], 403);
             }
 
-            $peserta = Pesertakelas::query()
-                ->join('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
-                ->where('pesertakelas.siswa_id', $siswaId)
-                ->where('kelasmi.periode_id', $periode->id)
-                ->select('pesertakelas.*')
-                ->first();
+            // cek sudah absen
+            $exists = Absensikelas::where('sesikelas_id', $sesi->id)
+                ->where('pesertakelas_id', $peserta->id)
+                ->exists();
 
-            if (!$peserta) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Siswa tidak terdaftar di kelas aktif'
-                ], 404);
-            }
-
-            /*
-        |--------------------------------------------------------------------------
-        | CEK SUDAH ABSEN
-        |--------------------------------------------------------------------------
-        */
-            $absen = Absensikelas::where([
-                'sesikelas_id' => $sesi->id,
-                'pesertakelas_id' => $peserta->id
-            ])->first();
-
-            if ($absen) {
+            if ($exists) {
                 return response()->json([
                     'success' => false,
                     'message' => '⚠️ Sudah absen hari ini',
                     'data' => [
-                        'nama' => $nis->siswa->nama_siswa ?? '-',
+                        'nama' => $nis->siswa->nama_siswa,
                         'nis'  => $nis->nis
                     ]
                 ], 409);
             }
-            /*
-        |--------------------------------------------------------------------------
-        | SIMPAN ABSEN
-        |--------------------------------------------------------------------------
-        */
-            $new = Absensikelas::create([
+
+            // simpan absen default HADIR
+            $absen = Absensikelas::create([
                 'pesertakelas_id' => $peserta->id,
                 'sesikelas_id'    => $sesi->id,
                 'keterangan'      => 'hadir',
-                'alasan'          => null,
             ]);
 
             return response()->json([
                 'success' => true,
                 'message' => 'Presensi berhasil dicatat',
                 'data' => [
-                    'nama' => $nis->siswa->nama_siswa ?? '-',
+                    'nama' => $nis->siswa->nama_siswa,
                     'nis'  => $nis->nis
                 ],
-                'canUndo' => true,
-                'absen_id' => $new->id
+                'absen_id' => $absen->id
             ], 201);
         } catch (\Throwable $e) {
             return response()->json([
@@ -296,91 +330,38 @@ class QrcodeController extends Controller
             return response()->json([]);
         }
 
-        $sesi = Sesikelas::whereHas('kelasmi', function ($q) use ($periode) {
+        // ambil semua sesi hari ini (jangan hanya 1)
+        $sesiIds = Sesikelas::whereHas('kelasmi', function ($q) use ($periode) {
             $q->where('periode_id', $periode->id);
         })
             ->whereDate('tgl', now()->toDateString())
-            ->latest()
-            ->first();
+            ->pluck('id');
 
-        if (!$sesi) {
+        if ($sesiIds->isEmpty()) {
             return response()->json([]);
         }
 
         $log = Absensikelas::with([
             'pesertakelas.siswa.NisTerakhir',
-            'pesertakelas.kelasmi' // penting
+            'pesertakelas.kelasmi'
         ])
-            ->where('sesikelas_id', $sesi->id)
+            ->whereIn('sesikelas_id', $sesiIds)
             ->latest()
             ->get()
-            ->unique('pesertakelas_id')
-            ->values()
-            ->map(function ($a) {
+            ->groupBy('pesertakelas_id') // pakai groupBy biar aman
+            ->map(function ($items) {
+                $a = $items->first(); // ambil absen terakhir
+
                 return [
                     'nama'  => $a->pesertakelas->siswa->nama_siswa ?? '-',
                     'nis'   => $a->pesertakelas->siswa->NisTerakhir->nis ?? '-',
-                    'kelas' => $a->pesertakelas->kelasmi->nama_kelas ?? '-',
+                'kelas' => optional(optional($a->pesertakelas)->kelasmi)->nama_kelas ?? '-',
                     'waktu' => $a->created_at->format('H:i:s'),
                 ];
-            });
+            })
+            ->values();
 
         return response()->json($log);
-    }
-    public function monitor($sesiId)
-    {
-        $sesi = Sesikelas::with('kelasmi')->findOrFail($sesiId);
-
-        $peserta = Pesertakelas::with('siswa.NisTerakhir')
-            ->where('kelasmi_id', $sesi->kelasmi_id)
-            ->get();
-
-        $absensi = Absensikelas::where('sesikelas_id', $sesiId)
-            ->get()
-            ->keyBy('pesertakelas_id');
-
-        $data = $peserta->map(function ($p) use ($absensi) {
-            $a = $absensi->get($p->id);
-
-            return [
-                'peserta_id' => $p->id,
-                'nama' => $p->siswa->nama_siswa ?? '-',
-                'nis' => $p->siswa->NisTerakhir->nis ?? '-',
-                'status' => $a ? $a->keterangan : 'belum',
-                'waktu' => $a ? $a->created_at : null,
-            ];
-        });
-
-        return view('presensi.monitor', [
-            'sesi' => $sesi,
-            'data' => $data
-        ]);
-    }
-    public function manualAbsen(Request $request)
-    {
-        $request->validate([
-            'pesertakelas_id' => 'required',
-            'sesikelas_id' => 'required',
-            'status' => 'required|in:hadir,izin,sakit,alfa'
-        ]);
-
-        $exists = Absensikelas::where('pesertakelas_id', $request->pesertakelas_id)
-            ->where('sesikelas_id', $request->sesikelas_id)
-            ->first();
-
-        if ($exists) {
-            $exists->update([
-                'keterangan' => $request->status
-            ]);
-        } else {
-            Absensikelas::create([
-                'pesertakelas_id' => $request->pesertakelas_id,
-                'sesikelas_id' => $request->sesikelas_id,
-                'keterangan' => $request->status
-            ]);
-        }
-
-        return back()->with('success', 'Absensi berhasil diperbarui');
     }
     public function ensureTodaySession()
     {
@@ -440,6 +421,55 @@ class QrcodeController extends Controller
             ->setPaper('a4', 'portrait');
 
         return $pdf->stream('kartu-login-' . $nis . '.pdf');
+    }
+    public function kartuLoginPdfAll()
+    {
+        $siswas = Siswa::with('NisTerakhir')
+            ->whereHas('kelasTerakhir.KelasMi.periode', function ($q) {
+                $q->where('is_active', 1);
+            })
+            ->whereHas('NisTerakhir')
+            ->get();
+    }
+    public function kartuLoginPdfKelas($kelas)
+    {
+        $siswas = Siswa::with([
+            'NisTerakhir',
+            'kelasTerakhir.KelasMi'
+        ])
+            ->whereHas('kelasTerakhir.KelasMi', function ($q) use ($kelas) {
+                $q->where('nama_kelas', $kelas);
+            })
+            ->whereHas('NisTerakhir')
+            ->get();
+
+        if ($siswas->isEmpty()) {
+            return back()->with('error', 'Data siswa tidak ditemukan');
+        }
+
+        $dataSiswa = $siswas->map(function ($siswa) {
+            $nis = $siswa->NisTerakhir->nis;
+
+            $qr = base64_encode(
+                QrCode::format('svg')
+                    ->size(120)
+                    ->margin(1)
+                    ->generate($nis)
+            );
+
+            return [
+                'siswa' => $siswa,
+                'nis'   => $nis,
+                'qr'    => $qr,
+            ];
+        });
+
+        $pdf = Pdf::loadView('kartu.login-kolektif', [
+            'dataSiswa' => $dataSiswa,
+            'kelas' => $kelas
+        ])->setPaper('a4', 'portrait');
+
+        return $pdf->stream('kartu-login-' . $kelas . '.pdf');
     }
     public function bulkCloseSession(Request $request)
     {

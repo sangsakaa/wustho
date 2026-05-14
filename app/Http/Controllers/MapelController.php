@@ -127,6 +127,30 @@ class MapelController extends Controller
 
         return back()->with('success', 'Pengampu berhasil digenerate dari jadwal');
     }
+    public function generateAllPengampuFromJadwal()
+    {
+        $periode_id = session('periode_id');
+
+        $mapels = Mapel::all();
+
+        foreach ($mapels as $mapel) {
+            $guruIds = $mapel->daftar_jadwal()
+                ->whereHas('jadwal', function ($q) use ($periode_id) {
+                    $q->where('periode_id', $periode_id);
+                })
+                ->pluck('guru_id')
+                ->unique()
+                ->filter()
+                ->values()
+                ->toArray();
+
+            if (!empty($guruIds)) {
+                $mapel->gurus()->syncWithoutDetaching($guruIds);
+            }
+        }
+
+        return back()->with('success', 'Semua pengampu berhasil digenerate dari jadwal');
+    }
 
     /**
      * Show the form for editing the specified resource.

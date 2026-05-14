@@ -4,23 +4,15 @@
 
         @php
         $first = $Datasesikelas->first();
-
         $total = $Datasesikelas->count();
-
-        $done = $Datasesikelas->filter(function ($item) {
-        return ($item->absensi_count ?? 0) >= ($item->peserta_count ?? 0)
-        && ($item->peserta_count ?? 0) > 0;
-        })->count();
-
+        $done = $Datasesikelas->where('status_ui', 'selesai')->count();
         $notDone = $total - $done;
         $percent = $total ? round(($done / $total) * 100) : 0;
         @endphp
 
-        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
+        <div class="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
             <div>
-                <h2 class="font-semibold text-xl text-gray-800">
-                    Presensi Kelas
-                </h2>
+                <h2 class="text-2xl font-bold text-gray-800">Presensi Kelas</h2>
                 <p class="text-sm text-gray-500">
                     {{ $tgl?->isoFormat('dddd, D MMMM YYYY') }}
                 </p>
@@ -37,44 +29,42 @@
     </x-slot>
 
     {{-- SUMMARY --}}
-    <div class="px-4 mt-4">
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-
-            <div class="bg-white rounded-xl shadow border p-4 text-center">
-                <p class="text-xs text-gray-500">Total Kelas</p>
-                <p class="text-2xl font-bold text-blue-600">{{ $total }}</p>
+    <div class="px-4 py-4">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="bg-white border shadow rounded-xl p-5">
+                <p class="text-sm text-gray-500">Total Kelas</p>
+                <h3 class="text-3xl font-bold text-blue-600">{{ $total }}</h3>
             </div>
 
-            <div class="bg-white rounded-xl shadow border p-4 text-center">
-                <p class="text-xs text-gray-500">Selesai</p>
-                <p class="text-2xl font-bold text-green-600">{{ $done }}</p>
+            <div class="bg-white border shadow rounded-xl p-5">
+                <p class="text-sm text-gray-500">Selesai</p>
+                <h3 class="text-3xl font-bold text-green-600">{{ $done }}</h3>
             </div>
 
-            <div class="bg-white rounded-xl shadow border p-4 text-center">
-                <p class="text-xs text-gray-500">Belum Selesai</p>
-                <p class="text-2xl font-bold text-red-600">{{ $notDone }}</p>
+            <div class="bg-white border shadow rounded-xl p-5">
+                <p class="text-sm text-gray-500">Belum Selesai</p>
+                <h3 class="text-3xl font-bold text-red-600">{{ $notDone }}</h3>
             </div>
 
-            <div class="bg-white rounded-xl shadow border p-4 text-center">
-                <p class="text-xs text-gray-500">Progress</p>
-                <p class="text-2xl font-bold text-purple-600">{{ $percent }}%</p>
+            <div class="bg-white border shadow rounded-xl p-5">
+                <p class="text-sm text-gray-500">Progress</p>
+                <h3 class="text-3xl font-bold text-purple-600">{{ $percent }}%</h3>
             </div>
-
         </div>
     </div>
 
     {{-- ACTION --}}
-    <div class="px-4 mt-4">
-        <div class="bg-white shadow rounded-xl p-4 flex flex-col sm:flex-row justify-between gap-3">
+    <div class="px-4">
+        <div class="bg-white shadow rounded-xl p-4 flex flex-col lg:flex-row justify-between gap-4">
 
-            <form action="/sesikelas" method="GET" class="flex gap-2 items-center">
+            <form action="/sesikelas" method="GET" class="flex gap-2">
                 <input
                     type="date"
                     name="tgl"
                     value="{{ $tgl?->toDateString() }}"
                     class="border rounded-lg px-3 py-2 text-sm">
 
-                <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm">
+                <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 rounded-lg text-sm">
                     Filter
                 </button>
             </form>
@@ -89,8 +79,7 @@
                     @csrf
                     <input type="hidden" name="tgl" value="{{ $tgl?->toDateString() }}">
 
-                    <button type="submit"
-                        class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm">
+                    <button class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm">
                         + Buat Sesi
                     </button>
                 </form>
@@ -101,12 +90,13 @@
                     class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm">
                     Hapus
                 </button>
+
                 <form id="bulkCloseForm" action="{{ route('sesi.bulkClose') }}" method="POST">
                     @csrf
-
-                    <button type="button"
+                    <button
+                        type="button"
                         onclick="confirmBulkClose()"
-                        class="bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded-lg text-sm">
+                        class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg text-sm">
                         Close Terpilih
                     </button>
                 </form>
@@ -115,7 +105,7 @@
     </div>
 
     {{-- TABLE --}}
-    <div class="px-4 mt-4">
+    <div class="px-4 py-4">
         <div class="bg-white shadow rounded-xl overflow-hidden">
 
             <div class="px-4 py-3 border-b font-semibold text-gray-700">
@@ -128,132 +118,126 @@
 
                 <div class="overflow-x-auto">
                     <table class="w-full text-sm">
-
-                        <thead class="bg-gray-100">
-                            <tr class="text-center">
-                                <th class="p-3 w-10">
+                        <thead class="bg-gray-100 text-gray-700">
+                            <tr>
+                                <th class="p-3 text-center">
                                     <input type="checkbox" id="checkAll">
                                 </th>
-                                <th class="p-3">No</th>
-                                <th class="p-3 text-left">Kelas</th>
-                                <th class="p-3">Status</th>
-                                <th class="p-3">Progress</th>
-                                <th class="p-3">Aksi</th>
+                                <th class="p-3 text-center">No</th>
+                                <th class="p-3">Kelas</th>
+                                <th class="p-3 text-center">Status</th>
+                                <th class="p-3 text-center">Progress</th>
+                                <th class="p-3 text-center">Aksi</th>
                             </tr>
                         </thead>
 
                         <tbody>
-                            @forelse ($Datasesikelas as $sesi)
-
-                            @php
-                            $absen = $sesi->absensi_count ?? 0;
-                            $peserta = $sesi->peserta_count ?? 0;
-                            $full = $peserta > 0 && $absen >= $peserta;
-                            @endphp
-
+                            @forelse($Datasesikelas as $sesi)
                             <tr class="border-t hover:bg-gray-50">
 
                                 <td class="p-3 text-center">
-                                    <input type="checkbox" class="row-check" name="ids[]" value="{{ $sesi->id }}">
+                                    <input
+                                        type="checkbox"
+                                        class="row-check"
+                                        name="ids[]"
+                                        value="{{ $sesi->id }}">
                                 </td>
 
-                                <td class="p-3 text-center">
-                                    {{ $loop->iteration }}
-                                </td>
+                                <td class="p-3 text-center">{{ $loop->iteration }}</td>
 
                                 <td class="p-3">
                                     <a href="{{ url('/absensikelas/' . $sesi->id) }}"
-                                        class="text-blue-600 hover:underline font-medium">
+                                        class="font-medium text-blue-600 hover:underline">
                                         {{ $sesi->nama_kelas }}
                                     </a>
                                 </td>
-                                <td class="p-3">
-                                    <a href="{{ url('/absensikelas/' . $sesi->id) }}"
-                                        class="text-blue-600 hover:underline font-medium">
-                                        {{ $sesi->status == 'close' ? 'Close' : 'Open' }}
-                                    </a>
-                                </td>
 
                                 <td class="p-3 text-center">
+                                    @switch($sesi->status_ui)
+                                    @case('close')
+                                    <span class="px-3 py-1 rounded-full text-xs font-medium bg-red-100 text-red-700">CLOSE</span>
+                                    @break
 
-                                    @if($peserta == 0)
-                                    <span class="text-xs text-gray-500">Tidak ada peserta</span>
+                                    @case('belum')
+                                    <span class="px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-700">BELUM MULAI</span>
+                                    @break
 
-                                    @elseif($absen == 0)
-                                    <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs bg-red-100 text-red-700">
-                                        ✖ Belum (0/{{ $peserta }})
-                                    </span>
+                                    @case('proses')
+                                    <span class="px-3 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-700">PROSES</span>
+                                    @break
 
-                                    @elseif($full)
-                                    <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs bg-green-100 text-green-700">
-                                        ✔ Lengkap ({{ $absen }}/{{ $peserta }})
-                                    </span>
+                                    @default
+                                    <span class="px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">SELESAI</span>
+                                    @endswitch
+                                </td>
 
-                                    @else
-                                    <span class="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs bg-yellow-100 text-yellow-700">
-                                        ⏳ Progress ({{ $absen }}/{{ $peserta }})
-                                    </span>
-                                    @endif
+                                <td class="p-3">
+                                    <div class="w-full bg-gray-200 rounded-full h-2">
+                                        <div
+                                            class="h-2 rounded-full
+                                                {{ $sesi->progress == 100
+                                                    ? 'bg-green-500'
+                                                    : ($sesi->progress > 0 ? 'bg-yellow-500' : 'bg-gray-400') }}"
+                                            style="width: {{ $sesi->progress }}%">
+                                        </div>
+                                    </div>
 
+                                    <div class="text-xs text-center text-gray-500 mt-1">
+                                        {{ $sesi->hadir_count }}/{{ $sesi->peserta_count }}
+                                        ({{ $sesi->progress }}%)
+                                    </div>
                                 </td>
 
                                 <td class="p-3">
                                     <div class="flex justify-center gap-2 flex-wrap">
 
-                                        <form action="/sesikelas/{{ $sesi->id }}" method="POST"
-                                            onsubmit="return confirm('Hapus sesi ini?')">
-                                            @csrf
-                                            @method('DELETE')
-
-                                            <button type="submit"
-                                                class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs">
-                                                Hapus
-                                            </button>
-                                        </form>
-
                                         <a href="/absensi/monitor/{{ $sesi->id }}"
                                             class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-xs">
                                             Monitor
                                         </a>
-                                        <a href="{{ route('sesi.close', $sesi->id) }}"
-                                            onclick="return confirm('Yakin ingin menutup sesi ini?')"
-                                            class="px-3 py-1 bg-red-600 text-white rounded">
-                                            Close Presensi
-                                        </a>
 
+                                        @if ($sesi->status != 'close')
+                                        <a href="{{ route('sesi.close', $sesi->id) }}"
+                                            onclick="return confirm('Tutup sesi ini?')"
+                                            class="bg-orange-500 hover:bg-orange-600 text-white px-3 py-1 rounded text-xs">
+                                            Close
+                                        </a>
+                                        @endif
+
+                                        <button type="submit" formaction="/sesikelas/{{ $sesi->id }}"
+                                            formmethod="POST"
+                                            onclick="return confirm('Hapus sesi ini?')"
+                                            class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs">
+                                            Hapus
+                                        </button>
                                     </div>
                                 </td>
-
                             </tr>
-
                             @empty
                             <tr>
-                                <td colspan="5" class="text-center py-8 text-gray-500">
+                                <td colspan="6" class="text-center py-10 text-gray-500">
                                     Tidak ada data sesi
                                 </td>
                             </tr>
                             @endforelse
                         </tbody>
-
                     </table>
                 </div>
             </form>
         </div>
     </div>
 
-    {{-- SCRIPT --}}
     <script>
         const checkAll = document.getElementById('checkAll');
 
         if (checkAll) {
             checkAll.addEventListener('change', function() {
-                document.querySelectorAll('.row-check').forEach(item => {
-                    item.checked = this.checked;
+                document.querySelectorAll('.row-check').forEach(cb => {
+                    cb.checked = this.checked;
                 });
             });
         }
-    </script>
-    <script>
+
         function confirmBulkClose() {
             const checked = document.querySelectorAll('.row-check:checked');
 
@@ -262,16 +246,11 @@
                 return;
             }
 
-            if (!confirm('Yakin ingin menutup sesi yang dipilih?')) {
-                return;
-            }
+            if (!confirm('Yakin close sesi terpilih?')) return;
 
             const form = document.getElementById('bulkCloseForm');
-
-            // hapus input lama kalau ada
             form.querySelectorAll('input[name="ids[]"]').forEach(el => el.remove());
 
-            // tambah input baru dari checkbox
             checked.forEach(cb => {
                 let input = document.createElement('input');
                 input.type = 'hidden';
@@ -283,5 +262,4 @@
             form.submit();
         }
     </script>
-
 </x-app-layout>

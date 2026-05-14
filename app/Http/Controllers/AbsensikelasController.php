@@ -23,21 +23,22 @@ class AbsensikelasController
     public function index(Sesikelas $sesikelas)
     {
         $prev_url = session('prev_url') ?? url()->previous();
+
         $dataKelas = Kelasmi::query()
             ->join('kelas', 'kelas.id', '=', 'kelasmi.kelas_id')
             ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
             ->join('semester', 'semester.id', '=', 'periode.semester_id')
             ->where('kelasmi.id', $sesikelas->kelasmi_id)
+            ->select(
+                'kelasmi.*',
+                'kelas.kelas',
+                'periode.periode',
+                'semester.ket_semester'
+            )
             ->first();
+
         $dataSiswa = Pesertakelas::query()
             ->join('siswa', 'siswa.id', '=', 'pesertakelas.siswa_id')
-            ->join('nis', 'siswa.id', '=', 'nis.siswa_id')
-            ->join('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
-            ->join('kelas', 'kelas.id', '=', 'kelasmi.kelas_id')
-            ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
-            ->join('semester', 'semester.id', '=', 'periode.semester_id')
-            ->leftjoin('asramasiswa', 'asramasiswa.id', '=', 'pesertakelas.siswa_id')
-            ->leftjoin('asrama', 'asrama.id', '=', 'asramasiswa.asrama_id')
             ->leftJoin('absensikelas', function ($join) use ($sesikelas) {
                 $join->on('absensikelas.pesertakelas_id', '=', 'pesertakelas.id')
                     ->where('absensikelas.sesikelas_id', '=', $sesikelas->id);
@@ -45,57 +46,64 @@ class AbsensikelasController
             ->where('pesertakelas.kelasmi_id', $sesikelas->kelasmi_id)
             ->select(
                 'pesertakelas.id',
-                'siswa.nama_siswa',
-                'nis.nis',
-                'kelas.kelas',
-                'kelasmi.nama_kelas',
+            'siswa.nama_siswa',
                 'absensikelas.id as absensikelas_id',
                 'absensikelas.keterangan',
-                'absensikelas.alasan',
-            'asrama.nama_asrama',
+            'absensikelas.alasan',
                 'absensikelas.updated_at as tglsimpan'
             )
             ->orderBy('siswa.nama_siswa')
-            ->get();
-        // $a = json_decode($dataSiswa);
-        // dd($a);
-        $jumlahAbsensi = $dataSiswa->countBy('keterangan');
-        if (!$jumlahAbsensi->has('hadir')) $jumlahAbsensi->put('hadir', 0);
-        if (!$jumlahAbsensi->has('izin')) $jumlahAbsensi->put('izin', 0);
-        if (!$jumlahAbsensi->has('sakit')) $jumlahAbsensi->put('sakit', 0);
-        if (!$jumlahAbsensi->has('alfa')) $jumlahAbsensi->put('alfa', 0);
+            ->get()
+            ->map(function ($item) {
+                $item->is_default = is_null($item->absensikelas_id);
+
+                if ($item->is_default) {
+                    $item->keterangan = 'hadir';
+                    $item->alasan = '';
+                }
+
+                return $item;
+            });
+
+        $jumlahAbsensi = collect([
+            'hadir' => $dataSiswa->where('keterangan', 'hadir')->count(),
+            'izin'  => $dataSiswa->where('keterangan', 'izin')->count(),
+            'sakit' => $dataSiswa->where('keterangan', 'sakit')->count(),
+            'alfa'  => $dataSiswa->where('keterangan', 'alfa')->count(),
+        ]);
 
         $diSimpanPada = $dataSiswa
+            ->whereNotNull('tglsimpan')
             ->sortByDesc('tglsimpan')
             ->value('tglsimpan');
 
-        return view(
-            'presensi.kelas.absensi',
-            [
-                'dataSiswa' => $dataSiswa,
-                'dataKelas' => $dataKelas,
-                'sesikelas' => $sesikelas,
-                'jumlahAbsensi' => $jumlahAbsensi,
-                'diSimpanPada' => $diSimpanPada,
-                'prev_url' => $prev_url,
-            ]
-        );
+        return view('presensi.kelas.absensi', compact(
+            'dataSiswa',
+            'dataKelas',
+            'sesikelas',
+            'jumlahAbsensi',
+            'diSimpanPada',
+            'prev_url'
+        ));
     }
 
     public function store(Request $request)
     {
-        
         foreach ($request->pesertakelas as $peserta) {
-            $absensikelas_id = $request->absensikelas[$peserta];
-            $absensikelas = $absensikelas_id ? Absensikelas::find($absensikelas_id) : new Absensikelas();
-            $absensikelas->pesertakelas_id = $peserta;
-            $absensikelas->sesikelas_id = $request->sesikelas;
-            $absensikelas->keterangan = $request->keterangan[$peserta] ?? null;
-            $absensikelas->alasan = $request->alasan[$peserta];
-            $absensikelas->save();
+            Absensikelas::updateOrCreate(
+                [
+                    'pesertakelas_id' => $peserta,
+                    'sesikelas_id' => $request->sesikelas,
+                ],
+                [
+                    'keterangan' => $request->keterangan[$peserta] ?? 'hadir',
+                    'alasan' => $request->alasan[$peserta] ?? null,
+                ]
+            );
         }
+
         return redirect()->back()->with([
-            'status' => 'Presensi berhasil disimpan pada ' . now(),
+            'status' => 'Presensi berhasil disimpan pada ' . now()->format('d-m-Y H:i'),
             'prev_url' => $request->prev_url,
         ]);
     }

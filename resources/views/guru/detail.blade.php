@@ -12,11 +12,15 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
                     <p class="text-gray-500 text-sm">Nama Lengkap</p>
-                    <p class="font-semibold text-lg">{{ $guru->nama_guru }}</p>
+                    <p class="font-semibold text-lg">
+                        {{ $guru->nama_guru ?? '-' }}
+                    </p>
                 </div>
                 <div>
                     <p class="text-gray-500 text-sm">Jenis Kelamin</p>
-                    <p class="font-semibold">{{ $guru->jenis_kelamin }}</p>
+                    <p class="font-semibold">
+                        {{ $guru->jenis_kelamin ?? '-' }}
+                    </p>
                 </div>
             </div>
         </div>
@@ -29,26 +33,31 @@
                     ← Kembali
                 </a>
 
-                <a href="/nig/{{$guru->id}}" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded">
+                <a href="/nig/{{ $guru->id }}" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded">
                     NIG
                 </a>
             </div>
 
             {{-- FILTER PERIODE --}}
             <form method="GET" class="flex gap-2">
+
                 <select name="periode_id" class="border rounded px-2 py-1 text-sm">
+
                     <option value="">Semua Periode</option>
-                    @foreach($daftarPeriode as $periode)
-                    <option value="{{ $periode->id }}"
-                        {{ $periodeAktif == $periode->id ? 'selected' : '' }}>
-                        {{ $periode->periode }}
+
+                    @foreach($daftarPeriode as $item)
+                    <option value="{{ $item->id }}"
+                        @selected((int)$periodeAktif===(int)$item->id)>
+                        {{ $item->periode }}
                     </option>
                     @endforeach
+
                 </select>
 
                 <button class="bg-green-600 hover:bg-green-700 text-white px-3 rounded text-sm">
                     Filter
                 </button>
+
             </form>
 
         </div>
@@ -74,26 +83,30 @@
                     <tbody>
                         @forelse($riwayatMengajar as $i => $data)
                         <tr class="hover:bg-gray-50">
-                            <td class="border px-2 py-1 text-center">{{ $i+1 }}</td>
 
                             <td class="border px-2 py-1 text-center">
-                                {{ $data->periode }} <br>
+                                {{ $i+1 }}
+                            </td>
+
+                            <td class="border px-2 py-1 text-center">
+                                {{ $data->periode ?? '-' }} <br>
                                 <span class="text-xs text-gray-500">
-                                    {{ $data->ket_semester }}
+                                    {{ $data->ket_semester ?? '-' }}
                                 </span>
                             </td>
 
                             <td class="border px-2 py-1 text-center">
-                                {{ $data->nama_kelas }}
+                                {{ $data->nama_kelas ?? '-' }}
                             </td>
 
                             <td class="border px-2 py-1 text-center">
-                                {{ $data->mapel }}
+                                {{ $data->mapel ?? '-' }}
                             </td>
 
                             <td class="border px-2 py-1 text-center">
                                 {{ $data->nama_kitab ?? '-' }}
                             </td>
+
                         </tr>
                         @empty
                         <tr>

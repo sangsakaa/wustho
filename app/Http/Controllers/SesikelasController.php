@@ -18,26 +18,14 @@ class SesikelasController
             $tgl = $request->filled('tgl')
                 ? Carbon::parse($request->tgl)
                 : now();
-        } catch (\Carbon\Exceptions\InvalidFormatException $e) {
+        } catch (\Exception $e) {
             $tgl = now();
         }
 
-        // =========================
-        // SUMMARY (PER KELAS)
-        // =========================
-        $kelasSummary = Kelasmi::query()
-            ->withCount(['pesertakelas', 'sesikelas'])
-            ->where('periode_id', session('periode_id'))
-            ->get();
-
-        // =========================
-        // DATA SESI (TABLE DETAIL)
-        // =========================
         $Datasesikelas = Sesikelas::query()
             ->join('kelasmi', 'kelasmi.id', '=', 'sesikelas.kelasmi_id')
             ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
             ->join('semester', 'semester.id', '=', 'periode.semester_id')
-
             ->select(
                 'sesikelas.id',
                 'sesikelas.tgl',
@@ -48,14 +36,14 @@ class SesikelasController
                 'semester.ket_semester'
             )
 
-            // absensi per sesi
+            // jumlah hadir per sesi
             ->selectSub(function ($q) {
                 $q->from('absensikelas')
-                    ->selectRaw('COUNT(*)')
+                ->selectRaw('COUNT(DISTINCT absensikelas.pesertakelas_id)')
                     ->whereColumn('absensikelas.sesikelas_id', 'sesikelas.id');
-            }, 'absensi_count')
+        }, 'hadir_count')
 
-            // peserta per kelas
+            // total peserta sesuai kelas sesi
             ->selectSub(function ($q) {
                 $q->from('pesertakelas')
                     ->selectRaw('COUNT(*)')
@@ -65,19 +53,45 @@ class SesikelasController
             ->where('kelasmi.periode_id', session('periode_id'))
             ->whereDate('sesikelas.tgl', $tgl->toDateString())
             ->orderBy('kelasmi.nama_kelas')
-            ->get();
+            ->get()
+            ->map(function ($item) {
+
+                $hadir = (int) $item->hadir_count;
+                $peserta = (int) $item->peserta_count;
+
+                $progress = $peserta > 0
+                    ? round(($hadir / $peserta) * 100)
+                    : 0;
+
+                if ($item->status === 'close') {
+                    $item->status_ui = 'close';
+                    $item->note = 'Close';
+                } elseif ($hadir === 0) {
+                    $item->status_ui = 'belum';
+                    $item->note = 'Belum Mulai';
+                } elseif ($hadir < $peserta) {
+                    $item->status_ui = 'proses';
+                    $item->note = 'Proses';
+                } else {
+                    $item->status_ui = 'selesai';
+                    $item->note = 'Selesai';
+                }
+
+                $item->progress = $progress;
+
+                return $item;
+            });
 
         return view('presensi.kelas.sesikelas', compact(
-            'kelasSummary',
             'Datasesikelas',
             'sesikelas',
             'tgl'
         ));
     }
-
     public function store(Request $request)
     {
-        // dd(1);
+        // dd($request->tgl, now()->toDateString());
+
         $request->validate([
             'tgl' => ['required', 'date', 'before_or_equal:today'],
         ]);

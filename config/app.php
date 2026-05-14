@@ -14,6 +14,7 @@ return [
     | any other location as required by the application or its packages.
     |
     */
+    'version' => trim(shell_exec('git describe --tags --always')) ?? 'dev',
 
     'name' => env('APP_NAME', 'Laravel'),
 

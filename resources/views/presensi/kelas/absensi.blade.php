@@ -2,8 +2,8 @@
     <x-slot name="header">
         @section('title', ' | Presensi Kelas : ' . $dataKelas->nama_kelas)
 
-        <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2">
-            <h2 class="font-semibold text-lg sm:text-xl">
+        <div class="flex justify-between items-center">
+            <h2 class="font-semibold text-xl text-gray-800">
                 Presensi Kelas
             </h2>
 
@@ -14,173 +14,202 @@
     </x-slot>
 
     @php
-    $hadir = $dataSiswa->where('keterangan', 'hadir')->count();
-    $izin = $dataSiswa->where('keterangan', 'izin')->count();
-    $sakit = $dataSiswa->where('keterangan', 'sakit')->count();
-    $alfa = $dataSiswa->where('keterangan', 'alfa')->count();
+    // hanya yang sudah disimpan
+    $savedData = $dataSiswa->whereNotNull('absensikelas_id');
+
+    $hadir = $savedData->where('keterangan', 'hadir')->count();
+    $izin = $savedData->where('keterangan', 'izin')->count();
+    $sakit = $savedData->where('keterangan', 'sakit')->count();
+    $alfa = $savedData->where('keterangan', 'alfa')->count();
+
     $total = $dataSiswa->count();
-    $progress = $hadir + $izin + $sakit + $alfa;
+    $tersimpan = $savedData->count();
     @endphp
 
-    {{-- INFO --}}
-    <div class="bg-white shadow rounded p-4 mb-4">
-        <div class="grid sm:grid-cols-2 gap-2 text-sm">
-            <div><b>Kelas :</b> {{ $dataKelas->nama_kelas }}</div>
-            <div><b>Semester :</b> {{ $dataKelas->semester }}</div>
-            <div><b>Periode :</b> {{ $dataKelas->periode }} {{ $dataKelas->ket_semester }}</div>
-            <div>
-                <b>Disimpan :</b>
-                {{ $diSimpanPada ? \Carbon\Carbon::parse($diSimpanPada)->isoFormat('D MMMM YYYY') : '-' }}
+    <div class="py-6">
+        <div class="max-w-7xl mx-auto px-4 space-y-6">
+
+            {{-- INFO --}}
+            <div class="bg-white shadow rounded-xl p-5">
+                <div class="grid sm:grid-cols-2 gap-3 text-sm">
+                    <div><b>Kelas:</b> {{ $dataKelas->nama_kelas }}</div>
+                    <div><b>Semester:</b> {{ $dataKelas->ket_semester }}</div>
+                    <div><b>Periode:</b> {{ $dataKelas->periode }}</div>
+                    <div>
+                        <b>Terakhir Disimpan:</b>
+                        {{ $diSimpanPada ? \Carbon\Carbon::parse($diSimpanPada)->isoFormat('D MMMM YYYY HH:mm') : '-' }}
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
 
-    {{-- STATISTIK --}}
-    <div class="grid grid-cols-2 sm:grid-cols-5 gap-3 mb-4 text-center text-sm">
-        <div class="bg-green-500 text-white rounded p-3 shadow">
-            <div class="text-xl font-bold">{{ $hadir }}</div>
-            <div>Hadir</div>
-        </div>
+            {{-- STAT --}}
+            <div class="grid grid-cols-2 md:grid-cols-6 gap-4">
 
-        <div class="bg-yellow-400 rounded p-3 shadow">
-            <div class="text-xl font-bold">{{ $izin }}</div>
-            <div>Izin</div>
-        </div>
+                <div class="bg-green-50 rounded-xl p-4 text-center">
+                    <div class="text-2xl font-bold text-green-600">{{ $hadir }}</div>
+                    <div class="text-sm">Hadir</div>
+                </div>
 
-        <div class="bg-orange-500 text-white rounded p-3 shadow">
-            <div class="text-xl font-bold">{{ $sakit }}</div>
-            <div>Sakit</div>
-        </div>
+                <div class="bg-blue-50 rounded-xl p-4 text-center">
+                    <div class="text-2xl font-bold text-blue-600">{{ $izin }}</div>
+                    <div class="text-sm">Izin</div>
+                </div>
 
-        <div class="bg-red-600 text-white rounded p-3 shadow">
-            <div class="text-xl font-bold">{{ $alfa }}</div>
-            <div>Alfa</div>
-        </div>
+                <div class="bg-yellow-50 rounded-xl p-4 text-center">
+                    <div class="text-2xl font-bold text-yellow-600">{{ $sakit }}</div>
+                    <div class="text-sm">Sakit</div>
+                </div>
 
-        <div class="bg-gray-700 text-white rounded p-3 shadow">
-            <div class="text-xl font-bold">{{ $total }}</div>
-            <div>Total</div>
-        </div>
-    </div>
+                <div class="bg-red-50 rounded-xl p-4 text-center">
+                    <div class="text-2xl font-bold text-red-600">{{ $alfa }}</div>
+                    <div class="text-sm">Alfa</div>
+                </div>
 
-    {{-- ACTION --}}
-    <div class="bg-white shadow rounded p-3 mb-4 flex justify-between items-center flex-wrap gap-2">
-        <div class="text-sm text-gray-600">
-            Progress:
-            <span class="font-bold">{{ $progress }}</span> / {{ $total }}
-        </div>
+                <div class="bg-indigo-50 rounded-xl p-4 text-center">
+                    <div class="text-2xl font-bold text-indigo-600">{{ $tersimpan }}</div>
+                    <div class="text-sm">Tersimpan</div>
+                </div>
 
-        <div class="flex gap-2">
-            <a href="/sesikelas"
-                class="bg-gray-500 hover:bg-gray-600 text-white px-3 py-2 rounded">
-                ← Kembali
-            </a>
+                <div class="bg-gray-50 rounded-xl p-4 text-center">
+                    <div class="text-2xl font-bold text-gray-700">{{ $total }}</div>
+                    <div class="text-sm">Total</div>
+                </div>
 
-            <button form="formPresensi"
-                class="bg-green-600 hover:bg-green-700 text-white px-3 py-2 rounded">
-                💾 Simpan
-            </button>
-        </div>
-    </div>
-
-    {{-- ALERT --}}
-    @if (session('status'))
-    <div class="mb-4 p-3 bg-green-500 text-white rounded shadow">
-        {{ session('status') }}
-    </div>
-    @endif
-
-    {{-- FORM --}}
-    <form id="formPresensi" action="/absensikelas" method="POST">
-        @csrf
-
-        <input type="hidden" name="prev_url" value="{{ $prev_url }}">
-        <input type="hidden" name="sesikelas" value="{{ $sesikelas->id }}">
-
-        <div class="bg-white shadow rounded overflow-hidden">
-            <div class="overflow-auto">
-                <table class="w-full text-sm border-collapse">
-                    <thead>
-                        <tr class="bg-gray-100 text-center">
-                            <th class="border px-2 py-2 w-14">No</th>
-                            <th class="border px-2 py-2 text-left">Nama Siswa</th>
-                            <th class="border px-2 py-2">Kehadiran</th>
-                            <th class="border px-2 py-2">Alasan</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        @foreach ($dataSiswa as $item)
-                        <tr class="hover:bg-gray-50">
-
-                            <td class="border px-2 py-2 text-center">
-                                {{ $loop->iteration }}
-
-                                <input type="hidden" name="pesertakelas[]" value="{{ $item->id }}">
-                                <input type="hidden"
-                                    name="absensikelas[{{ $item->id }}]"
-                                    value="{{ $item->absensikelas_id }}">
-
-                                {{-- fallback default hadir --}}
-                                <input type="hidden"
-                                    name="keterangan[{{ $item->id }}]"
-                                    value="hadir">
-                            </td>
-
-                            <td class="border px-2 py-2 capitalize">
-                                {{ strtolower($item->nama_siswa) }}
-                            </td>
-
-                            <td class="border px-2 py-2">
-                                <div class="flex justify-center gap-2 flex-wrap">
-
-                                    @foreach (['hadir'=>'H','izin'=>'I','sakit'=>'S','alfa'=>'A'] as $key => $label)
-                                    <label class="cursor-pointer">
-                                        <input type="radio"
-                                            name="keterangan[{{ $item->id }}]"
-                                            value="{{ $key }}"
-                                            class="hidden peer"
-                                            {{
-                                                        ($item->keterangan
-                                                            ? $item->keterangan === $key
-                                                            : $key === 'hadir')
-                                                        ? 'checked'
-                                                        : ''
-                                                    }}>
-
-                                        <span class="px-3 py-1 border rounded text-xs
-                                                    peer-checked:bg-blue-600
-                                                    peer-checked:text-white
-                                                    hover:bg-gray-100">
-                                            {{ $label }}
-                                        </span>
-                                    </label>
-                                    @endforeach
-
-                                </div>
-                            </td>
-
-                            <td class="border px-2 py-2">
-                                <input type="text"
-                                    name="alasan[{{ $item->id }}]"
-                                    value="{{ $item->alasan ?? '' }}"
-                                    placeholder="Opsional..."
-                                    class="w-full border rounded px-2 py-1 focus:ring focus:ring-blue-200">
-                            </td>
-
-                        </tr>
-                        @endforeach
-                    </tbody>
-                </table>
             </div>
-        </div>
-    </form>
 
-    {{-- LEGEND --}}
-    <div class="mt-4 bg-gray-50 border rounded p-3 text-sm flex gap-3 flex-wrap">
-        <span class="px-2 py-1 bg-green-500 text-white rounded">H = Hadir</span>
-        <span class="px-2 py-1 bg-yellow-400 rounded">I = Izin</span>
-        <span class="px-2 py-1 bg-orange-500 text-white rounded">S = Sakit</span>
-        <span class="px-2 py-1 bg-red-600 text-white rounded">A = Alfa</span>
+            {{-- ACTION --}}
+            <div class="flex justify-between">
+                <a href="/sesikelas"
+                    class="px-4 py-2 border rounded-lg hover:bg-gray-50">
+                    ← Kembali
+                </a>
+
+                <button form="formPresensi"
+                    class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg">
+                    Simpan Presensi
+                </button>
+            </div>
+
+            {{-- FORM --}}
+            <form id="formPresensi" action="/absensikelas" method="POST">
+                @csrf
+                <input type="hidden" name="prev_url" value="{{ $prev_url }}">
+                <input type="hidden" name="sesikelas" value="{{ $sesikelas->id }}">
+
+                <div class="bg-white shadow rounded-xl overflow-hidden">
+                    <table class="w-full text-sm">
+                        <thead class="bg-gray-50 border-b">
+                            <tr>
+                                <th class="p-3 text-center">No</th>
+                                <th class="p-3 text-left">Nama</th>
+                                <th class="p-3 text-center">Kehadiran</th>
+                                <th class="p-3">Alasan</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @foreach($dataSiswa as $item)
+
+                            @php
+                            $isSaved = !is_null($item->absensikelas_id);
+
+                            // kalau belum disimpan → default HADIR
+                            $current = $item->keterangan ?? 'hadir';
+                            @endphp
+
+                            <tr class="border-t hover:bg-gray-50">
+
+                                <td class="p-3 text-center">
+                                    {{ $loop->iteration }}
+
+                                    <input type="hidden" name="pesertakelas[]" value="{{ $item->id }}">
+                                    <input type="hidden" name="absensikelas[{{ $item->id }}]" value="{{ $item->absensikelas_id }}">
+                                </td>
+
+                                <td class="p-3">
+                                    {{ $item->nama_siswa }}
+                                </td>
+
+                                <td class="p-3">
+                                    <div class="flex justify-center gap-2">
+
+                                        @foreach([
+                                        'hadir' => 'H',
+                                        'izin' => 'I',
+                                        'sakit' => 'S',
+                                        'alfa' => 'A'
+                                        ] as $key => $label)
+
+                                        @php
+                                        $selected = old("keterangan.$item->id", $current) == $key;
+                                        @endphp
+
+                                        <label>
+                                            <input type="radio"
+                                                class="hidden peer"
+                                                name="keterangan[{{ $item->id }}]"
+                                                value="{{ $key }}"
+                                                {{ $selected ? 'checked' : '' }}>
+
+                                            <span class="px-3 py-2 text-xs rounded-lg border cursor-pointer
+                                                transition
+                                                {{ !$isSaved && $key == 'hadir'
+                                                    ? 'bg-red-100 text-red-700 border-red-300'
+                                                    : '' }}
+
+                                                {{ $isSaved && $key == 'hadir' && $selected
+                                                    ? 'bg-green-600 text-white border-green-600'
+                                                    : '' }}
+
+                                                {{ $selected && $key == 'izin'
+                                                    ? 'bg-blue-600 text-white border-blue-600'
+                                                    : '' }}
+
+                                                {{ $selected && $key == 'sakit'
+                                                    ? 'bg-yellow-500 text-white border-yellow-500'
+                                                    : '' }}
+
+                                                {{ $selected && $key == 'alfa'
+                                                    ? 'bg-red-600 text-white border-red-600'
+                                                    : '' }}
+
+                                                {{ !$selected
+                                                    ? 'border-gray-300 text-gray-600'
+                                                    : '' }}">
+                                                {{ $label }}
+                                            </span>
+                                        </label>
+
+                                        @endforeach
+
+                                    </div>
+                                </td>
+
+                                <td class="p-3">
+                                    <input type="text"
+                                        name="alasan[{{ $item->id }}]"
+                                        value="{{ old("alasan.$item->id", $item->alasan) }}"
+                                        class="w-full border rounded-lg text-sm"
+                                        placeholder="Opsional...">
+                                </td>
+
+                            </tr>
+                            @endforeach
+                        </tbody>
+
+                    </table>
+                </div>
+            </form>
+
+            {{-- NOTE / TUTORIAL --}}
+            <div class="bg-white border rounded-xl p-4 text-sm text-gray-700 space-y-1">
+                <b>📌 Cara Presensi:</b><br>
+                1. Default semua siswa = <b>Hadir (merah muda = belum disimpan)</b><br>
+                2. Klik status jika ingin ubah (Izin / Sakit / Alfa)<br>
+                3. Klik <b>Simpan Presensi</b> untuk menyimpan data<br>
+                4. Setelah disimpan → warna berubah jadi hijau / biru / kuning / merah<br>
+            </div>
+
+        </div>
     </div>
 </x-app-layout>

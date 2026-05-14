@@ -261,6 +261,7 @@ Route::get('sesi-presensi-guru/{sesi_Kelas_Guru}', [PresensiGuruController::clas
 Route::post('sesi-presensi-guru/{sesi_Kelas_Guru}', [PresensiGuruController::class, 'AbsenGuru'])->middleware(['auth']);
 Route::get('laporan-harian-guru', [PresensiGuruController::class, 'LaporanHarian'])->middleware(['auth'])->name('laporan-harian-guru');
 Route::get('laporan-semester-guru', [PresensiGuruController::class, 'laporanSemester'])->middleware(['auth'])->name('laporan-semester-guru');
+Route::get('/laporan-guru/pdf', [PresensiGuruController::class, 'laporanSemesterPdf']);
 Route::delete('sesi-presensi-guru/{sesi_Kelas_Guru}', [PresensiGuruController::class, 'DeleteSesi'])->middleware(['auth']);
 Route::get('sesi-presensi-guru/rekap', [PresensiGuruController::class, 'rekapSesi'])->middleware(['auth']);
 
@@ -477,6 +478,8 @@ Route::get('laporan-poling-guru-kelas', [JadwalController::class, 'LaporanPlotin
 // web.php
 Route::get('/laporan-ploting-pdf', [JadwalController::class, 'LaporanPlotingKelasPDF'])
     ->name('laporan.ploting.pdf');
+Route::post('/mapel/generate-pengampu', [MapelController::class, 'generateAllPengampuFromJadwal'])
+    ->name('mapel.generate-pengampu');
 Route::delete('jadwal-guru/{daftar_Jadwal}', [JadwalController::class, 'destroyGuru'])->middleware(['auth']);
 Route::delete('Daftar-Jadwal/{jadwal}', [JadwalController::class, 'destroy'])->middleware(['auth']);
 
@@ -484,6 +487,10 @@ Route::delete('Daftar-Jadwal/{jadwal}', [JadwalController::class, 'destroy'])->m
 Route::get('/qr', [QrcodeController::class, 'index'])->name('qr.index');
 Route::post('/qr/generate/{id}', [QrcodeController::class, 'generate'])->name('qr.siswa');
 Route::post('/qr/generate-all', [QrcodeController::class, 'generateAll'])->name('qr.generate.all');
+Route::get('/kartu-login/pdf/all', [QrcodeController::class, 'kartuLoginPdfAll'])
+    ->name('kartu.login.all');
+Route::get('/kartu-login/kelas/{kelas}', [QrcodeController::class, 'kartuLoginPdfKelas'])
+    ->name('kartu.login.kelas');
 
 Route::get('/scan-qr', [QrcodeController::class, 'scan'])->name('qr.scan');
 Route::post('/scan-qr/store', [QrcodeController::class, 'store'])->name('qr.store');
