@@ -2,178 +2,150 @@
     @section('title', ' | Kurikulum')
 
     <x-slot name="header">
-        <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+        <div class="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between px-2">
             <div>
-                <h2 class="text-2xl font-bold text-slate-800">
+                <h1 class="text-2xl md:text-3xl font-extrabold tracking-tight text-slate-900">
                     Kurikulum & Mata Pelajaran
-                </h2>
-                <p class="text-sm text-slate-500 mt-1">
-                    Kelola data mata pelajaran, pengampu, dan kurikulum sekolah.
+                </h1>
+                <p class="mt-1 text-sm text-slate-500">
+                    Kelola administrasi akademik, kitab, dan tenaga pengampu.
                 </p>
             </div>
 
-            <div class="flex flex-wrap gap-3">
-                <a href="/mapel/laporan/pdf"
-                    target="_blank"
-                    class="inline-flex items-center gap-2 rounded-xl bg-red-600 px-4 py-2.5 text-sm font-medium text-white shadow hover:bg-red-700 transition">
-                    📄 Export PDF
+            <div class="flex flex-col sm:flex-row gap-3">
+                <a href="/mapel/laporan/pdf" target="_blank"
+                    class="flex items-center justify-center gap-2 rounded-xl bg-white border border-slate-200 px-4 py-2.5 text-sm font-semibold text-slate-700 shadow-sm hover:bg-slate-50 transition-all active:scale-95">
+                    📄 Export
                 </a>
-
                 <a href="/addmapel"
-                    class="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-medium text-white shadow hover:bg-blue-700 transition">
-                    ➕ Tambah Mapel
+                    class="flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white shadow-md hover:bg-blue-700 transition-all active:scale-95">
+                    ➕ Mapel Baru
                 </a>
-
-                <form action="{{ route('mapel.generate-pengampu') }}" method="POST">
+                <form action="{{ route('mapel.generate-pengampu') }}" method="POST" class="w-full sm:w-auto">
                     @csrf
                     <button type="submit"
-                        class="inline-flex items-center gap-2 rounded-xl bg-emerald-600 px-4 py-2.5 text-sm font-medium text-white shadow hover:bg-emerald-700 transition">
-                        ⚡ Generate Pengampu
+                        class="flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-600 px-4 py-2.5 text-sm font-semibold text-white shadow-md hover:bg-emerald-700 transition-all active:scale-95">
+                        ⚡ Generate
                     </button>
                 </form>
             </div>
         </div>
     </x-slot>
 
-    <div class="space-y-6 px-4 py-6">
+    <div class="space-y-8 px-4 py-6 max-w-7xl mx-auto">
 
-        {{-- ALERT --}}
-        @foreach (['success' => 'green', 'delete' => 'red', 'update' => 'blue'] as $key => $color)
-        @if (session($key))
-        <div class="rounded-xl border border-{{ $color }}-200 bg-{{ $color }}-50 px-4 py-3 text-sm text-{{ $color }}-700 shadow-sm">
-            {{ session($key) }}
+        {{-- ALERTS: Menggunakan Animate Pulse untuk perhatian --}}
+        @foreach(['success' => 'green', 'delete' => 'red', 'update' => 'blue'] as $key => $color)
+        @if(session($key))
+        <div class="flex items-center gap-3 rounded-2xl border border-{{ $color }}-200 bg-{{ $color }}-50 px-4 py-3 text-sm text-{{ $color }}-700 shadow-sm animate-in fade-in slide-in-from-top-2">
+            <span class="flex-shrink-0 text-lg">🔔</span>
+            <p class="font-medium">{{ session($key) }}</p>
         </div>
         @endif
         @endforeach
 
-        {{-- INFO CARD --}}
-        <div class="rounded-2xl border border-blue-100 bg-gradient-to-r from-blue-50 to-indigo-50 p-5 shadow-sm">
-            <h3 class="font-semibold text-slate-800 mb-3">📌 Alur Pengisian Kurikulum</h3>
-
-            <div class="grid gap-2 md:grid-cols-2 text-sm text-slate-600">
-                <div>1. Pilih <b>Periode Aktif</b></div>
-                <div>2. Input data <b>Kelas</b></div>
-                <div>3. Tambah <b>Mata Pelajaran</b></div>
-                <div>4. Isi data <b>Kitab</b> (opsional)</div>
-                <div>5. Atur <b>Guru Pengampu</b></div>
-                <div>6. Gunakan <b>Generate dari Jadwal</b></div>
+        {{-- STATS GRID --}}
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+            @php
+            $stats = [
+            ['label' => 'Total Mapel', 'val' => $listmapel->count(), 'color' => 'text-blue-600', 'bg' => 'bg-blue-50'],
+            ['label' => 'Total Kelas', 'val' => $listmapel->groupBy('kelas')->count(), 'color' => 'text-emerald-600', 'bg' => 'bg-emerald-50'],
+            ['label' => 'Ganjil', 'val' => $listmapel->where('ket_semester', 'Ganjil')->count(), 'color' => 'text-amber-600', 'bg' => 'bg-amber-50'],
+            ['label' => 'Genap', 'val' => $listmapel->where('ket_semester', 'Genap')->count(), 'color' => 'text-purple-600', 'bg' => 'bg-purple-50'],
+            ];
+            @endphp
+            @foreach($stats as $stat)
+            <div class="rounded-3xl bg-white p-5 border border-slate-100 shadow-sm transition-hover hover:shadow-md">
+                <p class="text-xs md:text-sm font-medium text-slate-500 uppercase tracking-wider">{{ $stat['label'] }}</p>
+                <h3 class="mt-2 text-2xl md:text-3xl font-black {{ $stat['color'] }}">{{ $stat['val'] }}</h3>
             </div>
-
-            <p class="mt-3 text-xs text-blue-700">
-                Hindari duplikasi mapel pada kelas dan periode yang sama.
-            </p>
+            @endforeach
         </div>
 
-        {{-- STATS --}}
-        @php
-        $totalMapel = $listmapel->count();
-        $totalKelas = $listmapel->groupBy('kelas')->count();
-        $ganjil = $listmapel->where('ket_semester', 'Ganjil')->count();
-        $genap = $listmapel->where('ket_semester', 'Genap')->count();
-        @endphp
-
-        <div class="grid grid-cols-1 gap-5 md:grid-cols-4">
-            <div class="rounded-2xl bg-white p-5 shadow-sm border border-slate-100">
-                <p class="text-sm text-slate-500">Total Mapel</p>
-                <h3 class="mt-2 text-3xl font-bold text-blue-600">{{ $totalMapel }}</h3>
+        {{-- MAIN CONTENT --}}
+        <div class="rounded-3xl border border-slate-200 bg-white shadow-xl shadow-slate-200/50 overflow-hidden">
+            <div class="border-b border-slate-100 bg-slate-50/50 px-6 py-5">
+                <h3 class="font-bold text-slate-800 flex items-center gap-2">
+                    🗂️ Manajemen Kurikulum
+                </h3>
             </div>
 
-            <div class="rounded-2xl bg-white p-5 shadow-sm border border-slate-100">
-                <p class="text-sm text-slate-500">Total Kelas</p>
-                <h3 class="mt-2 text-3xl font-bold text-emerald-600">{{ $totalKelas }}</h3>
-            </div>
-
-            <div class="rounded-2xl bg-white p-5 shadow-sm border border-slate-100">
-                <p class="text-sm text-slate-500">Semester Ganjil</p>
-                <h3 class="mt-2 text-3xl font-bold text-amber-500">{{ $ganjil }}</h3>
-            </div>
-
-            <div class="rounded-2xl bg-white p-5 shadow-sm border border-slate-100">
-                <p class="text-sm text-slate-500">Semester Genap</p>
-                <h3 class="mt-2 text-3xl font-bold text-purple-600">{{ $genap }}</h3>
-            </div>
-        </div>
-
-        {{-- TABLE --}}
-        <div class="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-            <div class="flex items-center justify-between border-b px-6 py-4">
-                <div>
-                    <h3 class="font-semibold text-slate-800">Daftar Mata Pelajaran</h3>
-                    <p class="text-xs text-slate-500 mt-1">
-                        Total {{ $totalMapel }} mata pelajaran tersedia
-                    </p>
+            {{-- MOBILE VIEW: Card Layout (Hidden on Desktop) --}}
+            <div class="block lg:hidden divide-y divide-slate-100">
+                @forelse($listmapel as $list)
+                <div class="p-5 space-y-4">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <span class="inline-block px-2 py-1 rounded-lg bg-slate-100 text-[10px] font-bold text-slate-600 uppercase mb-1">
+                                {{ $list->periode }} | {{ $list->ket_semester }}
+                            </span>
+                            <h4 class="text-lg font-bold text-slate-900">{{ $list->mapel }}</h4>
+                            <p class="text-sm text-slate-500 italic">{{ $list->nama_kitab ?: 'Tanpa Kitab' }}</p>
+                        </div>
+                        <span class="px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-xs font-bold">
+                            Kls {{ $list->kelas }}
+                        </span>
+                    </div>
+                    <div class="flex gap-2 pt-2">
+                        <a href="/edit-mapel/{{ $list->id }}" class="flex-1 text-center py-2 bg-amber-50 text-amber-700 rounded-xl text-xs font-bold">Edit</a>
+                        <a href="/mapel/{{ $list->id }}" class="flex-1 text-center py-2 bg-blue-50 text-blue-700 rounded-xl text-xs font-bold">Pengampu</a>
+                        <form action="/mapel/{{ $list->id }}" method="POST" class="flex-1">
+                            @csrf @method('DELETE')
+                            <button onclick="return confirm('Hapus?')" class="w-full py-2 bg-red-50 text-red-600 rounded-xl text-xs font-bold">Hapus</button>
+                        </form>
+                    </div>
                 </div>
+                @empty
+                <div class="p-10 text-center text-slate-400">Data tidak ditemukan.</div>
+                @endforelse
             </div>
 
-            <div class="overflow-x-auto">
-                <table class="min-w-full text-sm">
-                    <thead class="bg-slate-50 text-xs uppercase text-slate-500">
+            {{-- DESKTOP VIEW: Table Layout (Hidden on Mobile) --}}
+            <div class="hidden lg:block overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead class="bg-slate-50/80 text-[11px] uppercase tracking-widest text-slate-500 font-bold">
                         <tr>
-                            <th class="px-4 py-4 text-center">No</th>
-                            <th class="px-4 py-4 text-center">Periode</th>
-                            <th class="px-4 py-4 text-left">Mapel</th>
-                            <th class="px-4 py-4 text-left">Kitab</th>
-                            <th class="px-4 py-4 text-center">Kelas</th>
-                            <th class="px-4 py-4 text-center">Aksi</th>
+                            <th class="px-6 py-4">Mata Pelajaran</th>
+                            <th class="px-6 py-4 text-center">Periode</th>
+                            <th class="px-6 py-4 text-center">Kelas</th>
+                            <th class="px-6 py-4 text-right">Opsi</th>
                         </tr>
                     </thead>
-
                     <tbody class="divide-y divide-slate-100">
-                        @forelse($listmapel as $list)
-                        <tr class="hover:bg-slate-50 transition">
-                            <td class="px-4 py-4 text-center">{{ $loop->iteration }}</td>
-
-                            <td class="px-4 py-4 text-center">
-                                <span class="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700">
-                                    {{ $list->periode }} {{ $list->ket_semester }}
+                        @foreach($listmapel as $list)
+                        <tr class="hover:bg-blue-50/30 transition-colors group">
+                            <td class="px-6 py-4">
+                                <div class="font-bold text-slate-800">{{ $list->mapel }}</div>
+                                <div class="text-xs text-slate-400">{{ $list->nama_kitab ?: '-' }}</div>
+                            </td>
+                            <td class="px-6 py-4 text-center">
+                                <span class="px-3 py-1 rounded-lg bg-slate-100 text-slate-600 text-xs font-semibold">
+                                    {{ $list->periode }} ({{ $list->ket_semester }})
                                 </span>
                             </td>
-
-                            <td class="px-4 py-4 font-semibold text-blue-600">
-                                {{ $list->mapel }}
-                            </td>
-
-                            <td class="px-4 py-4 text-slate-600">
-                                {{ $list->nama_kitab ?: '-' }}
-                            </td>
-
-                            <td class="px-4 py-4 text-center">
-                                <span class="rounded-full bg-blue-50 px-3 py-1 text-xs font-medium text-blue-700">
+                            <td class="px-6 py-4 text-center">
+                                <span class="px-3 py-1 rounded-lg bg-blue-50 text-blue-600 text-xs font-bold">
                                     {{ $list->kelas }}
                                 </span>
                             </td>
-
-                            <td class="px-4 py-4">
-                                <div class="flex justify-center gap-2">
-                                    <a href="/edit-mapel/{{ $list->id }}"
-                                        class="rounded-lg bg-amber-50 px-3 py-2 text-xs font-medium text-amber-700 hover:bg-amber-100">
-                                        Edit
+                            <td class="px-6 py-4">
+                                <div class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                    <a href="/edit-mapel/{{ $list->id }}" class="p-2 bg-amber-100 text-amber-700 rounded-lg hover:bg-amber-200 transition">
+                                        ✏️
                                     </a>
-
-                                    <a href="/mapel/{{ $list->id }}"
-                                        class="rounded-lg bg-blue-50 px-3 py-2 text-xs font-medium text-blue-700 hover:bg-blue-100">
+                                    <a href="/mapel/{{ $list->id }}" class="px-3 py-2 bg-blue-100 text-blue-700 rounded-lg text-xs font-bold hover:bg-blue-200 transition">
                                         Pengampu
                                     </a>
-
-                                    <form action="/mapel/{{ $list->id }}" method="POST">
-                                        @csrf
-                                        @method('DELETE')
-
-                                        <button onclick="return confirm('Hapus {{ $list->mapel }}?')"
-                                            class="rounded-lg bg-red-50 px-3 py-2 text-xs font-medium text-red-600 hover:bg-red-100">
-                                            Hapus
+                                    <form action="/mapel/{{ $list->id }}" method="POST" class="inline">
+                                        @csrf @method('DELETE')
+                                        <button onclick="return confirm('Hapus?')" class="p-2 bg-red-100 text-red-600 rounded-lg hover:bg-red-200 transition">
+                                            🗑️
                                         </button>
                                     </form>
                                 </div>
                             </td>
                         </tr>
-                        @empty
-                        <tr>
-                            <td colspan="6" class="py-12 text-center text-slate-400">
-                                Belum ada data mata pelajaran
-                            </td>
-                        </tr>
-                        @endforelse
+                        @endforeach
                     </tbody>
                 </table>
             </div>

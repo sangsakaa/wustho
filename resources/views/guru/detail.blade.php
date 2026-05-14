@@ -39,26 +39,7 @@
             </div>
 
             {{-- FILTER PERIODE --}}
-            <form method="GET" class="flex gap-2">
 
-                <select name="periode_id" class="border rounded px-2 py-1 text-sm">
-
-                    <option value="">Semua Periode</option>
-
-                    @foreach($daftarPeriode as $item)
-                    <option value="{{ $item->id }}"
-                        @selected((int)$periodeAktif===(int)$item->id)>
-                        {{ $item->periode }}
-                    </option>
-                    @endforeach
-
-                </select>
-
-                <button class="bg-green-600 hover:bg-green-700 text-white px-3 rounded text-sm">
-                    Filter
-                </button>
-
-            </form>
 
         </div>
 

@@ -75,9 +75,15 @@ class GuruController extends Controller
 
     public function show(Request $request, Guru $guru)
     {
-        $periodeId = $request->get('periode_id') ?? session('periode_id');
+        $periodeId = $request->periode_id ?? session('periode_id');
+
+        // jika session berisi model Periode
+        if (is_object($periodeId)) {
+            $periodeId = $periodeId->id ?? null;
+        }
 
         $daftarPeriode = Periode::orderBy('periode', 'desc')->get();
+
 
         $riwayatMengajar = Nilaimapel::query()
             ->leftJoin('kelasmi', 'kelasmi.id', '=', 'nilaimapel.kelasmi_id')
@@ -105,7 +111,7 @@ class GuruController extends Controller
             'guru' => $guru,
             'riwayatMengajar' => $riwayatMengajar,
             'daftarPeriode' => $daftarPeriode,
-            'periodeAktif' => $periodeId
+            'periodeAktif' => $periodeId,
         ]);
     }
 
