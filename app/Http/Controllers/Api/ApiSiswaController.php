@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
 use App\Models\Siswa;
 use App\Models\Periode;
 use App\Models\Absensikelas;
@@ -9,7 +10,7 @@ use App\Models\Pesertaasrama;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 
-class ApiSiswaController
+class ApiSiswaController extends Controller
 {
     public function dataAsrama(Request $request)
     {
@@ -18,7 +19,7 @@ class ApiSiswaController
         if (!$periode) {
             return response()->json([
                 'dataAbsensiKelas' => [],
-                'tgl' => now(),
+                'tgl' => now()->toDateString(),
             ]);
         }
 
@@ -26,14 +27,13 @@ class ApiSiswaController
             ? Carbon::parse($request->tgl)->toDateString()
             : now()->toDateString();
 
-        // preload asrama per siswa
         $pesertaAsrama = Pesertaasrama::query()
             ->whereHas('asramasiswa', function ($q) use ($periode) {
                 $q->where('periode_id', $periode->id);
             })
             ->with([
                 'siswa:id,nama_siswa',
-                'asramasiswa.asrama:id,nama_asrama'
+            'asramasiswa.asrama:id,nama_asrama',
             ])
             ->get()
             ->keyBy('siswa_id');
@@ -60,7 +60,8 @@ class ApiSiswaController
             ->map(function ($item) use ($pesertaAsrama) {
             $asrama = $pesertaAsrama->get($item->siswa_id);
                 $item->nama_asrama = $asrama?->asramasiswa?->asrama?->nama_asrama;
-                return $item;
+
+            return $item;
             });
 
         return response()->json([
@@ -74,13 +75,16 @@ class ApiSiswaController
         $periode = Periode::select('id')->latest('id')->first();
 
         if (!$periode) {
-            return response()->json(['siswa' => []]);
+            return response()->json([
+                'siswa' => [],
+            ]);
         }
 
         $siswa = Siswa::query()
             ->select([
                 'nis.nis',
             'nis.madrasah_diniyah',
+            'nis.tanggal_masuk',
             'siswa.nama_siswa',
             'siswa.jenis_kelamin',
             'siswa.agama',
@@ -106,12 +110,17 @@ class ApiSiswaController
             ->orderBy('siswa.nama_siswa')
             ->get()
             ->map(function ($item) {
-                return [
+
+            $tanggalMasuk = null;
+
+            if (!empty($item->tanggal_masuk) && strtotime($item->tanggal_masuk)) {
+                $tanggalMasuk = date('Y-m-d', strtotime($item->tanggal_masuk));
+            }
+
+            return [
                     'nis' => $item->nis,
                     'nama_siswa' => $item->nama_siswa,
-                'tanggal_masuk' => !empty($item->tanggal_masuk)
-                    ? substr($item->tanggal_masuk, 0, 4)
-                    : substr($item->nis, 0, 4),
+                'tanggal_masuk' => $tanggalMasuk,
                 'madrasah_diniyah' => $item->madrasah_diniyah,
                 'nama_lembaga' => 'Wahidiyah',
                     'jenis_kelamin' => $item->jenis_kelamin,
@@ -126,7 +135,7 @@ class ApiSiswaController
             });
 
         return response()->json([
-            'siswa' => $siswa
+            'siswa' => $siswa,
         ]);
     }
 }
