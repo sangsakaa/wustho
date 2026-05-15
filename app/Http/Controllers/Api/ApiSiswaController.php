@@ -113,7 +113,7 @@ class ApiSiswaController
                     ? substr($item->tanggal_masuk, 0, 4)
                     : substr($item->nis, 0, 4),
                 'madrasah_diniyah' => $item->madrasah_diniyah,
-                'nama_lembaga' => $item->nama_lembaga,
+                'nama_lembaga' => 'Wahidiyah',
                     'jenis_kelamin' => $item->jenis_kelamin,
                     'agama' => $item->agama,
                     'tempat_lahir' => $item->tempat_lahir,
