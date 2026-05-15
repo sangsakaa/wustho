@@ -79,20 +79,29 @@
                                     <td class="px-4 py-3">
                                         <div class="flex justify-center gap-2">
                                             @foreach (['hadir' => 'H', 'izin' => 'I', 'sakit' => 'S', 'alfa' => 'A'] as $val => $label)
+                                            @php
+                                            $colorClass = match($val) {
+                                            'hadir' => 'peer-checked:bg-green-600 peer-checked:border-green-600',
+                                            'izin' => 'peer-checked:bg-yellow-500 peer-checked:border-yellow-500',
+                                            'sakit' => 'peer-checked:bg-blue-600 peer-checked:border-blue-600',
+                                            'alfa' => 'peer-checked:bg-red-600 peer-checked:border-red-600',
+                                            default => 'peer-checked:bg-gray-600 peer-checked:border-gray-600',
+                                            };
+                                            @endphp
+
                                             <label class="cursor-pointer">
                                                 <input
                                                     type="radio"
                                                     name="keterangan[{{ $item->id }}]"
                                                     value="{{ $val }}"
-                                                    class="sr-only peer"
-                                                    {{ $selected == $val ? 'checked' : '' }}>
+                                                    class="peer hidden"
+                                                    {{ old("keterangan.$item->id", $selected) == $val ? 'checked' : '' }}>
 
                                                 <span class="inline-flex w-10 h-10 items-center justify-center rounded-lg border-2
-                                                            text-xs font-medium transition-all
-                                                            border-gray-300 text-gray-700 bg-white
-                                                            peer-checked:bg-blue-600
-                                                            peer-checked:text-white
-                                                            peer-checked:border-blue-600">
+                    text-xs font-medium transition-all duration-200
+                    border-gray-300 text-gray-700 bg-white
+                    peer-checked:text-white
+                    {{ $colorClass }}">
                                                     {{ $label }}
                                                 </span>
                                             </label>

@@ -79,12 +79,16 @@ class ApiSiswaController
 
         $siswa = Siswa::query()
             ->select([
-            'siswa.id',
                 'nis.nis',
             'siswa.nama_siswa',
             'siswa.jenis_kelamin',
+            'siswa.agama',
+            'siswa.tempat_lahir',
+            'siswa.tanggal_lahir',
+            'siswa.kota_asal',
                 'kelasmi.nama_kelas',
             'asrama.nama_asrama',
+            'kelasmi.periode_id',
             ])
             ->join('nis', 'nis.siswa_id', '=', 'siswa.id')
             ->join('pesertakelas', 'pesertakelas.siswa_id', '=', 'siswa.id')
@@ -99,7 +103,24 @@ class ApiSiswaController
             ->distinct()
             ->orderBy('kelasmi.nama_kelas')
             ->orderBy('siswa.nama_siswa')
-            ->get();
+            ->get()
+            ->map(function ($item) {
+                return [
+                    'nis' => $item->nis,
+                    'nama_siswa' => $item->nama_siswa,
+                    'tanggal_masuk' => substr($item->nis, 0, 4) . '-01-01',
+                    'madrasah_diniyah' => 'Wustho',
+                    'nama_lembaga' => 'Wahidiyah',
+                    'jenis_kelamin' => $item->jenis_kelamin,
+                    'agama' => $item->agama,
+                    'tempat_lahir' => $item->tempat_lahir,
+                    'tanggal_lahir' => $item->tanggal_lahir,
+                    'kota_asal' => $item->kota_asal,
+                    'nama_asrama' => $item->nama_asrama,
+                    'nama_kelas' => $item->nama_kelas,
+                    'periode_id' => $item->periode_id,
+                ];
+            });
 
         return response()->json([
             'siswa' => $siswa
