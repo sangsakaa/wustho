@@ -80,6 +80,7 @@ class ApiSiswaController
         $siswa = Siswa::query()
             ->select([
                 'nis.nis',
+            'nis.madrasah_diniyah',
             'siswa.nama_siswa',
             'siswa.jenis_kelamin',
             'siswa.agama',
@@ -108,9 +109,11 @@ class ApiSiswaController
                 return [
                     'nis' => $item->nis,
                     'nama_siswa' => $item->nama_siswa,
-                    'tanggal_masuk' => substr($item->nis, 0, 4) . '-01-01',
-                    'madrasah_diniyah' => 'Wustho',
-                    'nama_lembaga' => 'Wahidiyah',
+                'tanggal_masuk' => !empty($item->tanggal_masuk)
+                    ? substr($item->tanggal_masuk, 0, 4)
+                    : substr($item->nis, 0, 4),
+                'madrasah_diniyah' => $item->madrasah_diniyah,
+                'nama_lembaga' => $item->nama_lembaga,
                     'jenis_kelamin' => $item->jenis_kelamin,
                     'agama' => $item->agama,
                     'tempat_lahir' => $item->tempat_lahir,
