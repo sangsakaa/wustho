@@ -9,8 +9,6 @@ use App\Models\Periode;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\DB;
-
 
 class MapelController extends Controller
 {
@@ -19,26 +17,36 @@ class MapelController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $datakelas = Kelas::all();
-        $Pelajara = Mapel::query()
-            ->leftjoin('kelas', 'kelas.id', '=', 'mapel.kelas_id')
-            ->leftjoin('periode', 'periode.id', '=', 'mapel.periode_id')
-            ->leftjoin('semester', 'semester.id', '=', 'periode.semester_id')
-            ->select('mapel.*', 'kelas.kelas', 'periode', 'ket_semester')
-            ->where('mapel.periode_id', session('periode_id'))
-            ->OrderBy('kelas')
-            ->OrderBy('mapel')
-            ->get();
-        return view(
-            'mapel/mapel',
-            [
-                'listmapel' => $Pelajara,
-                'datakelas' => $datakelas,
-               
-            ]
-        );
+        if ($request->has('tab')) {
+            session(['active_tab' => $request->tab]);
+        }
+
+        $datakelas = Kelas::orderBy('kelas')->get();
+
+        $Pelajara = Mapel::with(['kelas', 'periode.semester'])
+            ->withCount('gurus')
+            ->where('periode_id', session('periode_id'))
+            ->orderBy('kelas_id')
+            ->orderBy('mapel')
+            ->get()
+            ->map(function ($item) {
+                return (object) [
+                    'id' => $item->id,
+                    'mapel' => $item->mapel,
+                    'nama_kitab' => $item->nama_kitab,
+                    'kelas' => $item->kelas->kelas ?? '-',
+                    'periode' => $item->periode->periode ?? '-',
+                    'ket_semester' => $item->periode->semester->ket_semester ?? '-',
+                    'gurus_count' => $item->gurus_count ?? 0,
+                ];
+            });
+
+        return view('mapel.mapel', [
+            'listmapel' => $Pelajara,
+            'datakelas' => $datakelas,
+        ]);
     }
 
     /**
@@ -197,8 +205,36 @@ class MapelController extends Controller
      */
     public function destroy(Mapel $mapel)
     {
-        Mapel::destroy($mapel->id);
-        return redirect()->back()->with('delete', 'berhasil menghapus data ini');
+        // cek apakah masih punya pengampu
+        if ($mapel->gurus()->count() > 0) {
+            return back()->with(
+                'delete',
+                'Mapel tidak bisa dihapus karena masih memiliki pengampu aktif'
+            );
+        }
+
+        // cek apakah masih dipakai jadwal
+        if ($mapel->daftar_jadwal()->count() > 0) {
+            return back()->with(
+                'delete',
+                'Mapel tidak bisa dihapus karena masih digunakan pada jadwal'
+            );
+        }
+
+        try {
+            // bersihkan relasi pivot kalau ada
+            $mapel->gurus()->detach();
+
+            // hapus data
+            $mapel->delete();
+
+            return back()->with('success', 'Berhasil menghapus mapel');
+        } catch (\Exception $e) {
+            return back()->with(
+                'delete',
+                'Gagal menghapus mapel: data masih berelasi dengan tabel lain'
+            );
+        }
     }
     public function laporanPdf(Request $request)
     {

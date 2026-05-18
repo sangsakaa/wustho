@@ -15,21 +15,59 @@
             document.body.innerHTML = fullbody;
         }
     </script>
-    <div class=" p-2">
-        <button class=" text-white rounded-md  bg-green-800 px-2 py-1 " onclick="printContent('div1')">Cetak Transkip</button>
-        <a href="/blangko-ijazah/{{$dataLulusan->id}}" class=" text-white rounded-md  bg-green-800 px-2 py-1 ">Ijazah</a>
-        <a href="/lulusan" class=" text-white rounded-md  bg-green-800 px-2 py-1 ">Kembali</a>
+    <div class="max-w-7xl mx-auto p-4 space-y-4">
 
-    </div>
-    <div class=" bg-white m-2 p-2">
+        {{-- Action Button --}}
+        <div class="flex flex-wrap gap-3">
+            <button
+                onclick="printContent('div1')"
+                class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg shadow text-sm font-medium transition">
+                🖨 Cetak Transkrip
+            </button>
 
-        <div class=" grid grid-cols-4">
-            <div>Kelas</div>
-            <div> : {{$dataLulusan->nama_kelas}}</div>
-            <div>Jumlah Transkip Nilai</div>
-            <div> : {{$data_lulusan->count()}}</div>
+            <a href="/blangko-ijazah/{{ $dataLulusan->id }}"
+                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow text-sm font-medium transition">
+                📄 Ijazah
+            </a>
 
+            <a href="/lulusan"
+                class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg shadow text-sm font-medium transition">
+                ← Kembali
+            </a>
         </div>
+
+        {{-- Info Card --}}
+        <div class="bg-white shadow-lg rounded-2xl border border-gray-100 overflow-hidden">
+            <div class="px-6 py-4 border-b bg-gray-50">
+                <h3 class="text-lg font-semibold text-gray-700">
+                    Informasi Transkrip Nilai
+                </h3>
+                <p class="text-sm text-gray-500">
+                    Detail data lulusan dan jumlah transkrip
+                </p>
+            </div>
+
+            <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                <div class="flex justify-between border-b pb-3">
+                    <span class="text-gray-500">Kelas</span>
+                    <span class="font-semibold text-gray-800">
+                        {{ $dataLulusan->nama_kelas }}
+                    </span>
+                </div>
+
+                <div class="flex justify-between border-b pb-3">
+                    <span class="text-gray-500">Jumlah Transkrip Nilai</span>
+                    <span class="font-semibold text-green-600 text-lg">
+                        <div>
+
+                        </div>
+                    </span>
+                </div>
+
+            </div>
+        </div>
+
     </div>
     <div id="div1" class="  bg-white   ">
         <style>
@@ -56,7 +94,7 @@
                 </p>
                 <!-- <p class="  font-serif text-lg uppercase">pondok pesantren kedunglo al munadhdhoroh</p> -->
                 <p class=" font-semibold  font-serif text-lg uppercase"> kedunglo al munadhdhoroh kediri</p>
-                <p class=" font-semibold font-serif ">TAHUN PELAJARAN <span class="nomor-ijazah ">2023/2024</span></p>
+                <p class=" font-semibold font-serif ">TAHUN PELAJARAN <span class="nomor-ijazah ">{{$dataPeriode->first()->periode}}</span></p>
             </center>
             <div class=" mt-4 uppercase grid grid-cols-1 font-semibold text-sm sm:text-sm">
                 <div class=" grid grid-cols-2 ">

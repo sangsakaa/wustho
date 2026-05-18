@@ -137,36 +137,40 @@ class ValidasiController
     }
     public function blangkoTranskip(Lulusan $lulusan)
     {
+        $periodeId = session('periode_id');
+
         $dataPeriode = Periode::query()
             ->join('semester', 'semester.id', '=', 'periode.semester_id')
             ->select('periode.id', 'periode.periode', 'semester.ket_semester')
-            ->where('periode.id', session('periode_id'))
-            ->orderby('ket_semester', 'desc')
+            ->where('periode.id', $periodeId)
+            ->orderBy('ket_semester', 'desc')
             ->get();
+
         $dataKelas = Kelasmi::query()
             ->join('kelas', 'kelas.id', '=', 'kelasmi.kelas_id')
-            ->where('kelasmi.periode_id', session('periode_id'))
+            ->where('kelasmi.periode_id', $periodeId)
             ->where('kelas.kelas', 3)
             ->select('kelasmi.id', 'nama_kelas', 'jenjang')
-            ->orderby('nama_kelas')
+            ->orderBy('nama_kelas')
             ->get();
+
         $kepalaSekolah = Perangkat::query()
-            ->join('jabatan_perangkat', 'jabatan_perangkat.perangkat_id', 'perangkat.id')
-            ->join('jabatan', 'jabatan.id', 'jabatan_perangkat.jabatan_id')
-            ->where('nama_jabatan', 'Kepala Sekolah')->first();
-        // dd($kepalaSekolah);
+            ->join('jabatan_perangkat', 'jabatan_perangkat.perangkat_id', '=', 'perangkat.id')
+            ->join('jabatan', 'jabatan.id', '=', 'jabatan_perangkat.jabatan_id')
+            ->where('nama_jabatan', 'Kepala Sekolah')
+            ->first();
+
         $dataLulusan = Lulusan::query()
             ->join('kelasmi', 'kelasmi.id', '=', 'lulusan.kelasmi_id')
             ->select(
-                [
-                    'lulusan.id',
-                    'nama_kelas',
-                    'tanggal_kelulusan',
-                    'tanggal_lulus_hijriyah'
-                ]
+            'lulusan.id',
+            'nama_kelas',
+            'tanggal_kelulusan',
+            'tanggal_lulus_hijriyah'
             )
-            ->where('lulusan.id', $lulusan->id)->first();
-    
+            ->where('lulusan.id', $lulusan->id)
+            ->first();
+
         $data_lulusan = Daftar_lulusan::query()
             ->join('lulusan', 'lulusan.id', '=', 'daftar_lulusan.lulusan_id')
             ->join('pesertakelas', 'pesertakelas.id', '=', 'daftar_lulusan.pesertakelas_id')
@@ -175,60 +179,72 @@ class ValidasiController
             ->join('siswa', 'siswa.id', '=', 'pesertakelas.siswa_id')
             ->join('nis', 'siswa.id', '=', 'nis.siswa_id')
             ->select(
-                [
-                    'daftar_lulusan.id',
+            'daftar_lulusan.id',
                 'daftar_lulusan.lulusan_id',
-                    'nama_siswa',
-                'nis',  
-                    'tanggal_kelulusan',
-                    'tanggal_selesai',
-                    'tanggal_mulai'
-                ]
+            'nama_siswa',
+            'nis',
+            'tanggal_kelulusan',
+            'tanggal_selesai',
+            'tanggal_mulai'
             )
             ->where('daftar_lulusan.lulusan_id', $lulusan->id)
+            ->distinct()
             ->get();
-        // dd($lulusan->id);
+
+        $daftarIds = $data_lulusan->pluck('id');
+
         $data_nilai_tulis = Nilai_Transkip::query()
             ->join('transkip', 'transkip.id', '=', 'nilai_transkip.transkip_id')
             ->join('mapel', 'mapel.id', '=', 'transkip.mapel_id')
             ->join('jenis_ujian', 'jenis_ujian.id', '=', 'transkip.jenis_ujian_id')
-            ->select('nilai_transkip.daftar_lulusan_id', 'nama_ujian', 'nilai_transkip.nilai_akhir', 'mapel')
+            ->select(
+                'nilai_transkip.daftar_lulusan_id',
+                'nama_ujian',
+                'nilai_transkip.nilai_akhir',
+                'mapel'
+            )
             ->where('jenis_ujian.nama_ujian', 'tulis')
+            ->whereIn('nilai_transkip.daftar_lulusan_id', $daftarIds)
             ->get();
+
         $data_nilai_praktek = Nilai_Transkip::query()
             ->join('transkip', 'transkip.id', '=', 'nilai_transkip.transkip_id')
             ->join('mapel', 'mapel.id', '=', 'transkip.mapel_id')
             ->join('jenis_ujian', 'jenis_ujian.id', '=', 'transkip.jenis_ujian_id')
-            ->select('nilai_transkip.daftar_lulusan_id', 'nama_ujian', 'nilai_akhir', 'mapel')
+            ->select(
+                'nilai_transkip.daftar_lulusan_id',
+                'nama_ujian',
+                'nilai_transkip.nilai_akhir',
+                'mapel'
+            )
             ->where('jenis_ujian.nama_ujian', 'praktek')
+            ->whereIn('nilai_transkip.daftar_lulusan_id', $daftarIds)
             ->get();
-        
+
         $data = [];
-        
-        foreach ($data_lulusan as $lulusan) {
-            $data[$lulusan->id] =
-                [
-                    'lulusan' => $lulusan,
-                    'nilai_tulis' => $data_nilai_tulis->where('daftar_lulusan_id', $lulusan->id),
-                'nilai_praktek' => $data_nilai_praktek->where('daftar_lulusan_id', $lulusan->id),
-                'tulis' => $data_nilai_tulis->where('daftar_lulusan_id', $lulusan->id)->count('nilai_akhir'),
-                'praktik' => $data_nilai_praktek->where('daftar_lulusan_id', $lulusan->id)->count('nilai_akhir'),
-                ];
-            
+
+        foreach ($data_lulusan as $item) {
+            $nilaiTulis = $data_nilai_tulis->where('daftar_lulusan_id', $item->id);
+            $nilaiPraktek = $data_nilai_praktek->where('daftar_lulusan_id', $item->id);
+
+            $data[$item->id] = [
+                'lulusan'        => $item,
+                'nilai_tulis'    => $nilaiTulis,
+                'nilai_praktek'  => $nilaiPraktek,
+                'tulis'          => $nilaiTulis->count(),
+                'praktik'        => $nilaiPraktek->count(),
+            ];
         }
-        
-        return view(
-            'validasi.blangko-transkip',
-            [
-                'data' => $data,
-                'lulusan' => $lulusan,
-                'data_lulusan' => $data_lulusan,
-                'dataLulusan' => $dataLulusan,
-                'kepalaSekolah' => $kepalaSekolah,
-                'dataKelas' => $dataKelas,
-                'dataPeriode' => $dataPeriode
-            ]
-        );
+
+        return view('validasi.blangko-transkip', [
+            'data'          => $data,
+            'lulusan'       => $lulusan,
+            'data_lulusan'  => $data_lulusan,
+            'dataLulusan'   => $dataLulusan,
+            'kepalaSekolah' => $kepalaSekolah,
+            'dataKelas'     => $dataKelas,
+            'dataPeriode'   => $dataPeriode,
+        ]);
     }
     public function ValidasiKelulusan(Request $request)
     {

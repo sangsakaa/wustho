@@ -24,12 +24,12 @@ class QrcodeController extends Controller
     */
     public function index()
     {
-        $kelasList = \App\Models\Kelasmi::withCount([
-            'pesertakelas as total_siswa'
-        ])
+        $kelasList = \App\Models\Kelasmi::query()
+            ->withCount('pesertakelas as total_siswa')
             ->whereHas('periode', function ($q) {
-                $q->where('is_active', 1);
+            $q->where('periode.is_active', 1);
             })
+            ->with(['periode']) // optional biar data siap dipakai di view
             ->orderBy('nama_kelas')
             ->get();
 
@@ -433,12 +433,13 @@ class QrcodeController extends Controller
     }
     public function kartuLoginPdfKelas($kelas)
     {
-        $siswas = Siswa::with([
-            'NisTerakhir',
-            'kelasTerakhir.KelasMi'
+        $siswas = Siswa::query()
+            ->with([
+                'NisTerakhir',
+            'kelasTerakhir.KelasMi',
         ])
-            ->whereHas('kelasTerakhir.KelasMi', function ($q) use ($kelas) {
-                $q->where('nama_kelas', $kelas);
+            ->whereHas('kelasTerakhir.KelasMi', function ($query) use ($kelas) {
+                $query->where('nama_kelas', $kelas);
             })
             ->whereHas('NisTerakhir')
             ->get();
@@ -466,10 +467,10 @@ class QrcodeController extends Controller
 
         $pdf = Pdf::loadView('kartu.login-kolektif', [
             'dataSiswa' => $dataSiswa,
-            'kelas' => $kelas
+            'kelas'     => $kelas,
         ])->setPaper('a4', 'portrait');
 
-        return $pdf->stream('kartu-login-' . $kelas . '.pdf');
+        return $pdf->stream("kartu-login-{$kelas}.pdf");
     }
     public function bulkCloseSession(Request $request)
     {

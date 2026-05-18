@@ -99,7 +99,7 @@
             <x-icons.academi class="w-5 h-5" />
         </x-slot>
 
-        <x-sidebar.sublink title="Mata Pelajaran" href="{{ route('mapel') }}" :active="request()->routeIs('mapel')" />
+        <x-sidebar.sublink title="Mata Pelajaran" href="{{ route('mapel.index') }}" :active="request()->routeIs('mapel.index')" />
         <x-sidebar.sublink title="Data Guru" href="{{ route('guru') }}" :active="request()->routeIs('guru')" />
         <x-sidebar.sublink title="Jadwal" href="{{ route('Daftar-Jadwal') }}" :active="request()->routeIs('Daftar-Jadwal')" />
         <x-sidebar.sublink title="Data Nilai" href="{{ route('nilaimapel') }}" :active="request()->routeIs('nilaimapel')" />

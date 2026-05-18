@@ -1,254 +1,209 @@
 <x-app-layout>
+    @section('title', ' | Presensi Kelas')
+
+    @php
+    $first = $Datasesikelas->first();
+    $total = $Datasesikelas->count();
+    $done = $Datasesikelas->where('status_ui', 'selesai')->count();
+    $notDone = $total - $done;
+    $percent = $total ? round(($done / $total) * 100) : 0;
+    @endphp
+
     <x-slot name="header">
-        @section('title', ' | Presensi Kelas')
-
-        @php
-        $first = $Datasesikelas->first();
-        $total = $Datasesikelas->count();
-        $done = $Datasesikelas->where('status_ui', 'selesai')->count();
-        $notDone = $total - $done;
-        $percent = $total ? round(($done / $total) * 100) : 0;
-        @endphp
-
         <div class="flex flex-col md:flex-row md:justify-between md:items-center gap-4">
             <div>
-                <h2 class="text-2xl font-bold text-gray-800">Presensi Kelas</h2>
-                <p class="text-sm text-gray-500">
+                <h2 class="text-2xl font-bold text-slate-800">Presensi Kelas</h2>
+                <p class="text-sm text-slate-500">
                     {{ $tgl?->isoFormat('dddd, D MMMM YYYY') }}
                 </p>
             </div>
 
             <div class="text-right">
-                <p class="text-xs text-gray-500">Periode Aktif</p>
+                <p class="text-xs text-slate-500">Periode Aktif</p>
                 <p class="font-semibold text-indigo-600">
-                    {{ $first->periode ?? '-' }}
-                    {{ $first->ket_semester ?? '' }}
+                    {{ $first->periode ?? '-' }} {{ $first->ket_semester ?? '' }}
                 </p>
             </div>
         </div>
     </x-slot>
 
-    {{-- SUMMARY --}}
-    <div class="px-4 py-4">
+    <div class="p-4 space-y-6">
+
+        {{-- SUMMARY --}}
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div class="bg-white border shadow rounded-xl p-5">
-                <p class="text-sm text-gray-500">Total Kelas</p>
-                <h3 class="text-3xl font-bold text-blue-600">{{ $total }}</h3>
-            </div>
-
-            <div class="bg-white border shadow rounded-xl p-5">
-                <p class="text-sm text-gray-500">Selesai</p>
-                <h3 class="text-3xl font-bold text-green-600">{{ $done }}</h3>
-            </div>
-
-            <div class="bg-white border shadow rounded-xl p-5">
-                <p class="text-sm text-gray-500">Belum Selesai</p>
-                <h3 class="text-3xl font-bold text-red-600">{{ $notDone }}</h3>
-            </div>
-
-            <div class="bg-white border shadow rounded-xl p-5">
-                <p class="text-sm text-gray-500">Progress</p>
-                <h3 class="text-3xl font-bold text-purple-600">{{ $percent }}%</h3>
-            </div>
+            <x-card title="Total Kelas" color="blue">{{ $total }}</x-card>
+            <x-card title="Selesai" color="green">{{ $done }}</x-card>
+            <x-card title="Belum Selesai" color="red">{{ $notDone }}</x-card>
+            <x-card title="Progress" color="purple">{{ $percent }}%</x-card>
         </div>
-    </div>
 
-    {{-- ACTION --}}
-    <div class="px-4">
-        <div class="bg-white shadow rounded-xl p-4 flex flex-col lg:flex-row justify-between gap-4">
-
+        {{-- ACTION --}}
+        <div class="bg-white border shadow rounded-2xl p-4 flex flex-col lg:flex-row justify-between gap-4">
             <form action="/sesikelas" method="GET" class="flex gap-2">
-                <input
-                    type="date"
-                    name="tgl"
+                <input type="date" name="tgl"
                     value="{{ $tgl?->toDateString() }}"
-                    class="border rounded-lg px-3 py-2 text-sm">
+                    class="border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500">
 
-                <button class="bg-blue-600 hover:bg-blue-700 text-white px-4 rounded-lg text-sm">
+                <button class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-sm">
                     Filter
                 </button>
             </form>
 
             <div class="flex flex-wrap gap-2">
                 <a href="/sesikelas/rekap"
-                    class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-lg text-sm">
+                    class="px-4 py-2 bg-slate-600 hover:bg-slate-700 text-white rounded-lg text-sm">
                     Rekap
                 </a>
 
-                <form action="/sesikelas" method="POST">
+                <form id="generateForm" action="/sesikelas" method="POST">
                     @csrf
                     <input type="hidden" name="tgl" value="{{ $tgl?->toDateString() }}">
-
-                    <button class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg text-sm">
+                    <button type="button" onclick="confirmGenerate()"
+                        class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-sm">
                         + Buat Sesi
                     </button>
                 </form>
 
-                <button
-                    type="button"
-                    onclick="document.getElementById('bulkDeleteForm').submit()"
-                    class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm">
-                    Hapus
-                </button>
+                <form id="bulkDeleteForm" action="/sesikelas/bulk-delete" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <button type="button" onclick="confirmBulkDelete()"
+                        class="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-lg text-sm">
+                        Hapus
+                    </button>
+                </form>
 
                 <form id="bulkCloseForm" action="{{ route('sesi.bulkClose') }}" method="POST">
                     @csrf
-                    <button
-                        type="button"
-                        onclick="confirmBulkClose()"
-                        class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg text-sm">
+                    <button type="button" onclick="confirmBulkClose()"
+                        class="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white rounded-lg text-sm">
                         Close Terpilih
                     </button>
                 </form>
             </div>
         </div>
-    </div>
 
-    {{-- TABLE --}}
-    <div class="px-4 py-4">
-        <div class="bg-white shadow rounded-xl overflow-hidden">
-
-            <div class="px-4 py-3 border-b font-semibold text-gray-700">
+        {{-- TABLE --}}
+        <div class="bg-white border shadow rounded-2xl overflow-hidden">
+            <div class="px-4 py-3 border-b font-semibold text-slate-700">
                 Daftar Sesi Kelas
             </div>
 
-            <form id="bulkDeleteForm" action="/sesikelas/bulk-delete" method="POST">
-                @csrf
-                @method('DELETE')
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+                    <thead class="bg-slate-100 text-slate-700">
+                        <tr>
+                            <th class="p-3"><input type="checkbox" id="checkAll"></th>
+                            <th class="p-3">No</th>
+                            <th class="p-3">Kelas</th>
+                            <th class="p-3">Status</th>
+                            <th class="p-3">Progress</th>
+                            <th class="p-3">Aksi</th>
+                        </tr>
+                    </thead>
 
-                <div class="overflow-x-auto">
-                    <table class="w-full text-sm">
-                        <thead class="bg-gray-100 text-gray-700">
-                            <tr>
-                                <th class="p-3 text-center">
-                                    <input type="checkbox" id="checkAll">
-                                </th>
-                                <th class="p-3 text-center">No</th>
-                                <th class="p-3">Kelas</th>
-                                <th class="p-3 text-center">Status</th>
-                                <th class="p-3 text-center">Progress</th>
-                                <th class="p-3 text-center">Aksi</th>
-                            </tr>
-                        </thead>
+                    <tbody>
+                        @forelse($Datasesikelas as $sesi)
+                        <tr class="border-t hover:bg-slate-50">
+                            <td class="p-3 text-center">
+                                <input type="checkbox" class="row-check" value="{{ $sesi->id }}">
+                            </td>
 
-                        <tbody>
-                            @forelse($Datasesikelas as $sesi)
-                            <tr class="border-t hover:bg-gray-50">
+                            <td class="p-3 text-center">{{ $loop->iteration }}</td>
 
-                                <td class="p-3 text-center">
-                                    <input
-                                        type="checkbox"
-                                        class="row-check"
-                                        name="ids[]"
-                                        value="{{ $sesi->id }}">
-                                </td>
+                            <td class="p-3">
+                                <a href="{{ url('/absensikelas/' . $sesi->id) }}"
+                                    class="text-indigo-600 hover:underline font-medium">
+                                    {{ $sesi->nama_kelas }}
+                                </a>
+                            </td>
 
-                                <td class="p-3 text-center">{{ $loop->iteration }}</td>
+                            <td class="p-3 text-center">
+                                @php
+                                $badge = match ($sesi->status_ui) {
+                                'close' => 'bg-rose-100 text-rose-700',
+                                'belum' => 'bg-slate-100 text-slate-700',
+                                'proses' => 'bg-amber-100 text-amber-700',
+                                default => 'bg-emerald-100 text-emerald-700',
+                                };
+                                @endphp
 
-                                <td class="p-3">
-                                    <a href="{{ url('/absensikelas/' . $sesi->id) }}"
-                                        class="font-medium text-blue-600 hover:underline">
-                                        {{ $sesi->nama_kelas }}
+                                <span class="px-3 py-1 rounded-full text-xs {{ $badge }}">
+                                    {{ strtoupper($sesi->status_ui) }}
+                                </span>
+                            </td>
+
+                            <td class="p-3">
+                                <div class="w-full bg-slate-200 rounded-full h-2">
+                                    <div class="h-2 rounded-full bg-indigo-500"
+                                        style="width: {{ $sesi->progress }}%">
+                                    </div>
+                                </div>
+                                <p class="text-xs text-center mt-1 text-slate-500">
+                                    {{ $sesi->hadir_count }}/{{ $sesi->peserta_count }}
+                                    ({{ $sesi->progress }}%)
+                                </p>
+                            </td>
+
+                            <td class="p-3">
+                                <div class="flex justify-center gap-2 flex-wrap">
+
+                                    <a href="/absensi/monitor/{{ $sesi->id }}"
+                                        class="px-3 py-1 rounded bg-blue-500 hover:bg-blue-600 text-white text-xs">
+                                        Monitor
                                     </a>
-                                </td>
 
-                                <td class="p-3 text-center">
-                                    @switch($sesi->status_ui)
-                                    @case('close')
-                                    <span class="px-3 py-1 rounded-full text-xs font-medium bg-red-100 text-red-700">CLOSE</span>
-                                    @break
+                                    @if ($sesi->status != 'close')
+                                    <button type="button"
+                                        onclick="confirmClose('{{ route('sesi.close', $sesi->id) }}')"
+                                        class="px-3 py-1 rounded bg-amber-500 hover:bg-amber-600 text-white text-xs">
+                                        Close
+                                    </button>
+                                    @endif
 
-                                    @case('belum')
-                                    <span class="px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-700">BELUM MULAI</span>
-                                    @break
+                                    <form id="delete-form-{{ $sesi->id }}"
+                                        action="/sesikelas/{{ $sesi->id }}"
+                                        method="POST">
+                                        @csrf
+                                        @method('DELETE')
 
-                                    @case('proses')
-                                    <span class="px-3 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-700">PROSES</span>
-                                    @break
-
-                                    @default
-                                    <span class="px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">SELESAI</span>
-                                    @endswitch
-                                </td>
-
-                                <td class="p-3">
-                                    <div class="w-full bg-gray-200 rounded-full h-2">
-                                        <div
-                                            class="h-2 rounded-full
-                                                {{ $sesi->progress == 100
-                                                    ? 'bg-green-500'
-                                                    : ($sesi->progress > 0 ? 'bg-yellow-500' : 'bg-gray-400') }}"
-                                            style="width: {{ $sesi->progress }}%">
-                                        </div>
-                                    </div>
-
-                                    <div class="text-xs text-center text-gray-500 mt-1">
-                                        {{ $sesi->hadir_count }}/{{ $sesi->peserta_count }}
-                                        ({{ $sesi->progress }}%)
-                                    </div>
-                                </td>
-
-                                <td class="p-3">
-                                    <div class="flex justify-center gap-2 flex-wrap">
-
-                                        <a href="/absensi/monitor/{{ $sesi->id }}"
-                                            class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-xs">
-                                            Monitor
-                                        </a>
-
-                                        @if ($sesi->status != 'close')
-                                        <a href="{{ route('sesi.close', $sesi->id) }}"
-                                            onclick="return confirm('Tutup sesi ini?')"
-                                            class="bg-orange-500 hover:bg-orange-600 text-white px-3 py-1 rounded text-xs">
-                                            Close
-                                        </a>
-                                        @endif
-
-                                        <button type="submit" formaction="/sesikelas/{{ $sesi->id }}"
-                                            formmethod="POST"
-                                            onclick="return confirm('Hapus sesi ini?')"
-                                            class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-xs">
+                                        <button type="button"
+                                            onclick="confirmDelete('{{ $sesi->id }}')"
+                                            class="px-3 py-1 rounded bg-rose-500 hover:bg-rose-600 text-white text-xs">
                                             Hapus
                                         </button>
-                                    </div>
-                                </td>
-                            </tr>
-                            @empty
-                            <tr>
-                                <td colspan="6" class="text-center py-10 text-gray-500">
-                                    Tidak ada data sesi
-                                </td>
-                            </tr>
-                            @endforelse
-                        </tbody>
-                    </table>
-                </div>
-            </form>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="6" class="text-center py-10 text-slate-500">
+                                Tidak ada data sesi
+                            </td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
-    <script>
-        const checkAll = document.getElementById('checkAll');
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-        if (checkAll) {
-            checkAll.addEventListener('change', function() {
-                document.querySelectorAll('.row-check').forEach(cb => {
-                    cb.checked = this.checked;
-                });
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('checkAll')?.addEventListener('change', function() {
+                document.querySelectorAll('.row-check').forEach(cb => cb.checked = this.checked);
             });
+        });
+
+        function checkedRows() {
+            return document.querySelectorAll('.row-check:checked');
         }
 
-        function confirmBulkClose() {
-            const checked = document.querySelectorAll('.row-check:checked');
-
-            if (checked.length === 0) {
-                alert('Pilih minimal 1 sesi');
-                return;
-            }
-
-            if (!confirm('Yakin close sesi terpilih?')) return;
-
-            const form = document.getElementById('bulkCloseForm');
+        function appendIds(formId, checked) {
+            let form = document.getElementById(formId);
             form.querySelectorAll('input[name="ids[]"]').forEach(el => el.remove());
 
             checked.forEach(cb => {
@@ -259,7 +214,72 @@
                 form.appendChild(input);
             });
 
-            form.submit();
+            return form;
+        }
+
+        function popup(title, text, icon, callback = null) {
+            Swal.fire({
+                title,
+                text,
+                icon,
+                showCancelButton: true,
+                confirmButtonText: 'Ya',
+                cancelButtonText: 'Batal'
+            }).then(result => {
+                if (result.isConfirmed && callback) callback();
+            });
+        }
+
+        function confirmGenerate() {
+            popup('Generate sesi?', 'Buat sesi kelas baru?', 'question', () => {
+                document.getElementById('generateForm').submit();
+            });
+        }
+
+        function confirmBulkDelete() {
+            let checked = checkedRows();
+            if (!checked.length) return Swal.fire('Oops', 'Pilih minimal 1 data', 'warning');
+
+            popup('Hapus data?', 'Data akan dihapus permanen', 'warning', () => {
+                appendIds('bulkDeleteForm', checked).submit();
+            });
+        }
+
+        function confirmBulkClose() {
+            let checked = checkedRows();
+            if (!checked.length) return Swal.fire('Oops', 'Pilih minimal 1 data', 'warning');
+
+            popup('Close sesi?', 'Sesi akan ditutup', 'warning', () => {
+                appendIds('bulkCloseForm', checked).submit();
+            });
+        }
+
+        function confirmDelete(id) {
+            popup('Hapus sesi?', 'Data tidak bisa dikembalikan', 'warning', () => {
+                document.getElementById('delete-form-' + id).submit();
+            });
+        }
+
+        function confirmClose(url) {
+            popup('Tutup sesi?', 'Sesi akan di-close', 'question', () => {
+                window.location.href = url;
+            });
         }
     </script>
+
+    {{-- NOTIFIKASI SUCCESS / ERROR --}}
+    @if(session('success'))
+    <script>
+        Swal.fire('Berhasil', '{{ session('
+            success ') }}', 'success')
+    </script>
+    @endif
+
+    @if(session('error'))
+    <script>
+        Swal.fire('Error', '{{ session('
+            error ') }}', 'error')
+    </script>
+    @endif
+
 </x-app-layout>

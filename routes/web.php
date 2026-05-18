@@ -285,6 +285,7 @@ Route::post('peringkat', [RaportController::class, 'peringkat'])->middleware(['a
 
 // Controller Mata Pelajaran
 Route::get('mapel', [MapelController::class, 'index'])->middleware(['auth'])->name('mapel');
+Route::get('/mapel', [MapelController::class, 'index'])->name('mapel.index');
 Route::get('/mapel/{mapel}', [MapelController::class, 'show'])->name('mapel.show');
 Route::get('edit-mapel/{mapel}', [MapelController::class, 'edit'])->middleware(['auth']);
 Route::get('addmapel', [MapelController::class, 'create'])->middleware(['auth']);
@@ -469,6 +470,9 @@ Route::get('edit-jadwal/{daftar_Jadwal}', [JadwalController::class, 'editJadwal'
 Route::patch('edit-jadwal/{daftar_Jadwal}/edit', [JadwalController::class, 'updateJadwal'])->middleware(['auth']);
 Route::post('/mapel/{mapel}/pengampu', [MapelController::class, 'storePengampu'])
     ->name('mapel.pengampu.store');
+Route::get('/get-guru-by-mapel', [JadwalController::class, 'getGuruByMapel']);
+
+
 Route::delete('/mapel/{mapel}/pengampu/{guru}', [MapelController::class, 'destroyPengampu'])
     ->name('mapel.pengampu.destroy');
 Route::post('/mapel/{mapel}/generate-pengampu', [MapelController::class, 'generatePengampuFromJadwal'])

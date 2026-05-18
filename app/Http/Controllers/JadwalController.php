@@ -69,37 +69,36 @@ class JadwalController
         return redirect()->back()->with('update', 'pembaharuan data berhasil');
     }
     // Daftar_jadwal
+
     public function DaftarJadwal(Jadwal $jadwal)
     {
         $periodeId = session('periode_id');
 
-        // 🔥 load relasi yang benar
         $jadwal->load('kelasmi');
 
-        // 🔥 guru hanya pengampu sesuai kelasmi → kelas
-        $daftarGuru = Guru::where('status', 'Aktif')
-            ->whereHas('mapels', function ($q) use ($periodeId, $jadwal) {
+        $kelasId = $jadwal->kelasmi->kelas_id;
 
-                $q->where('periode_id', $periodeId)
+        // ambil mapel yang sudah dipakai di jadwal ini
+        $usedMapelIds = Daftar_Jadwal::whereHas('jadwal', function ($q) use ($jadwal, $periodeId) {
+            $q->where('periode_id', $periodeId)
+                ->where('kelasmi_id', $jadwal->kelasmi_id);
+        })
+            ->pluck('mapel_id')
+            ->toArray();
 
-                    ->whereHas('kelas', function ($q2) use ($jadwal) {
-
-                        // 🔥 FIX: ambil kelas dari kelasmi
-                        $q2->where('id', $jadwal->kelasmi->kelas_id);
-                    });
-            })
-            ->orderBy('nama_guru')
-            ->get();
-
-        // 🔥 mapel sesuai kelas dari kelasmi
+        // MAPEL hanya sesuai kelas & belum dipakai
         $daftarMapel = Mapel::where('periode_id', $periodeId)
-            ->whereHas('kelas', function ($q) use ($jadwal) {
-
-                $q->where('id', $jadwal->kelasmi->kelas_id);
+            ->whereHas('kelas', function ($q) use ($kelasId) {
+                $q->where('kelas.id', $kelasId);
             })
+            ->whereNotIn('id', $usedMapelIds)
             ->orderBy('mapel')
             ->get();
-        // 🔥 jadwal list
+
+        // GURU dikosongkan dulu (akan di-load via AJAX setelah pilih mapel)
+        $daftarGuru = [];
+
+        // jadwal existing
         $daftarJadwal = Daftar_Jadwal::with(['guru', 'mapel'])
             ->where('jadwal_id', $jadwal->id)
             ->get();
@@ -110,6 +109,19 @@ class JadwalController
             'jadwal',
             'daftarJadwal'
         ));
+    }
+    public function getGuruByMapel(Request $request)
+    {
+        $mapelId = $request->mapel_id;
+
+        $guru = Guru::where('status', 'Aktif')
+            ->whereHas('mapel', function ($q) use ($mapelId) {
+                $q->where('mapel.id', $mapelId);
+            })
+            ->orderBy('nama_guru')
+            ->get();
+
+        return response()->json($guru);
     }
     public function editJadwal(Daftar_Jadwal $daftar_Jadwal)
     {

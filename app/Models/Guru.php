@@ -40,7 +40,7 @@ class Guru extends Model
     {
         return $this->hasOne(User::class, 'guru_id');
     }
-    public function mapels()
+    public function mapel()
     {
         return $this->belongsToMany(Mapel::class, 'pengampus');
     }

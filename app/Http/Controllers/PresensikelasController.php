@@ -12,48 +12,55 @@ class PresensikelasController
 {
     public function index()
     {
-        $dataJumlahPeserta = Kelasmi::query()
-            ->select(['kelasmi.id', DB::raw('count(pesertakelas.id) as jumlah_peserta_asrama')])
-            ->join('pesertakelas', 'pesertakelas.kelasmi_id', '=', 'kelasmi.id')
-            ->groupBy('kelasmi.id');
-
         $kelasMI = Kelasmi::query()
             ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
             ->join('semester', 'semester.id', '=', 'periode.semester_id')
             ->join('kelas', 'kelas.id', '=', 'kelasmi.kelas_id')
-            ->leftjoin('pesertakelas', 'pesertakelas.kelasmi_id', '=', 'kelasmi.id')
-            ->leftjoinSub(
-                $dataJumlahPeserta,
-                'datajumlahpeserta',
-                function ($join) {
-                    $join->on('kelasmi.id', '=', 'datajumlahpeserta.id');
-                }
-            )
-            ->selectRaw('kelasmi.id,nama_kelas,ket_semester,kelas,periode,kuota,count(pesertakelas.siswa_id) as jumlah_nilai_ujian, jumlah_peserta_asrama')
-            ->groupBy(
-            
-                'kelasmi.id',
-                'nama_kelas',
-                'kelas',
-                'kuota',
-                'ket_semester',
-                'periode',
-                'jumlah_peserta_asrama'
-            )
+
+            ->leftJoin('pesertakelas', 'pesertakelas.kelasmi_id', '=', 'kelasmi.id')
+            ->leftJoin('presensikelas', 'presensikelas.pesertakelas_id', '=', 'pesertakelas.id')
+
+            ->selectRaw("
+            kelasmi.id,
+            nama_kelas,
+            ket_semester,
+            kelas,
+            periode,
+            kuota,
+
+            COUNT(DISTINCT pesertakelas.id) as total_peserta,
+
+            COUNT(DISTINCT CASE 
+                WHEN presensikelas.id IS NOT NULL THEN pesertakelas.id 
+            END) as sudah_diisi,
+
+            COUNT(DISTINCT CASE 
+                WHEN presensikelas.id IS NULL THEN pesertakelas.id 
+            END) as belum_diisi,
+
+            COALESCE(SUM(presensikelas.izin),0) as total_izin,
+            COALESCE(SUM(presensikelas.sakit),0) as total_sakit,
+            COALESCE(SUM(presensikelas.alfa),0) as total_alfa
+        ")
+
             ->where('kelasmi.periode_id', session('periode_id'))
+
+            ->groupBy(
+                'kelasmi.id',
+            'nama_kelas',
+                'ket_semester',
+            'kelas',
+                'periode',
+            'kuota'
+            )
+
             ->orderBy('periode')
             ->orderBy('ket_semester')
             ->orderBy('nama_kelas')
             ->get();
-        // dd($kelasMI);
-        return view(
-            'presensi.kelas.kelas',
-            [
-                'kelasMI' => $kelasMI,
-            ]
-        );
-    }
 
+        return view('presensi.kelas.kelas', compact('kelasMI'));
+    }
     public function create()
     {
     }

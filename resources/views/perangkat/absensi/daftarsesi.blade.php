@@ -1,4 +1,4 @@
-<x-app-layout>
+td<x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-lg sm:text-xl text-gray-800">
             Dashboard Presensi Perangkat
@@ -8,14 +8,12 @@
     <div class="p-3 sm:p-5 bg-gradient-to-br from-slate-50 to-blue-50 min-h-screen">
         <div class="max-w-6xl mx-auto space-y-5">
 
-            {{-- NOTIFIKASI --}}
             @if (session('status'))
             <div class="bg-emerald-50 border border-emerald-200 text-emerald-700 px-4 py-3 rounded-xl">
                 {{ session('status') }}
             </div>
             @endif
 
-            {{-- HEADER --}}
             <div class="bg-white shadow rounded-2xl overflow-hidden">
                 <div class="bg-gradient-to-r from-blue-600 to-sky-500 px-6 py-5">
                     <h3 class="text-lg font-semibold text-white">
@@ -31,7 +29,6 @@
                 @csrf
                 <input type="hidden" name="sesi_perangkat_id" value="{{ $sesiPerangkat->id }}">
 
-                {{-- BUTTON --}}
                 <div class="flex gap-3 flex-col sm:flex-row">
                     <button type="submit"
                         class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl shadow">
@@ -62,46 +59,54 @@
                                 @php
                                 $selected = old(
                                 "keterangan.$item->id",
-                                $item->status_presensi ?? 'hadir'
+                                $item->absensiHariIni?->keterangan ?? 'hadir'
+                                );
+
+                                $alasan = old(
+                                "alasan.$item->id",
+                                $item->absensiHariIni?->alasan
                                 );
                                 @endphp
 
                                 <tr class="hover:bg-slate-50">
-                                    <td class="px-4 py-3 text-center">
-                                        {{ $loop->iteration }}
-                                    </td>
+                                    <td class="px-4 py-3 text-center">{{ $loop->iteration }}</td>
 
-                                    <td class="px-4 py-3">
+                                    <td class="px-4 py-3 capitalize">
                                         {{ strtolower($item->nama_perangkat) }}
                                         <input type="hidden" name="perangkat_id[]" value="{{ $item->id }}">
                                     </td>
 
                                     <td class="px-4 py-3">
                                         <div class="flex justify-center gap-2">
-                                            @foreach (['hadir' => 'H', 'izin' => 'I', 'sakit' => 'S', 'alfa' => 'A'] as $val => $label)
-                                            @php
-                                            $colorClass = match($val) {
-                                            'hadir' => 'peer-checked:bg-green-600 peer-checked:border-green-600',
-                                            'izin' => 'peer-checked:bg-yellow-500 peer-checked:border-yellow-500',
-                                            'sakit' => 'peer-checked:bg-blue-600 peer-checked:border-blue-600',
-                                            'alfa' => 'peer-checked:bg-red-600 peer-checked:border-red-600',
-                                            default => 'peer-checked:bg-gray-600 peer-checked:border-gray-600',
-                                            };
-                                            @endphp
+
+                                            @foreach([
+                                            'hadir' => ['H', 'green'],
+                                            'izin' => ['I', 'yellow'],
+                                            'sakit' => ['S', 'blue'],
+                                            'alfa' => ['A', 'red'],
+                                            ] as $value => [$label, $color])
 
                                             <label class="cursor-pointer">
                                                 <input
                                                     type="radio"
                                                     name="keterangan[{{ $item->id }}]"
-                                                    value="{{ $val }}"
-                                                    class="peer hidden"
-                                                    {{ old("keterangan.$item->id", $selected) == $val ? 'checked' : '' }}>
+                                                    value="{{ $value }}"
+                                                    class="peer sr-only"
+                                                    {{ $selected === $value ? 'checked' : '' }}>
 
-                                                <span class="inline-flex w-10 h-10 items-center justify-center rounded-lg border-2
-                    text-xs font-medium transition-all duration-200
-                    border-gray-300 text-gray-700 bg-white
-                    peer-checked:text-white
-                    {{ $colorClass }}">
+                                                <span class="
+                                                            inline-flex w-10 h-10 items-center justify-center
+                                                            rounded-lg border-2 border-gray-300
+                                                            bg-white text-gray-700 text-xs font-semibold
+                                                            transition-all duration-200
+                                                            peer-checked:text-white
+                                                            peer-checked:scale-110
+
+                                                            {{ $color === 'green' ? 'peer-checked:bg-green-600 peer-checked:border-green-600' : '' }}
+                                                            {{ $color === 'yellow' ? 'peer-checked:bg-yellow-500 peer-checked:border-yellow-500' : '' }}
+                                                            {{ $color === 'blue' ? 'peer-checked:bg-blue-600 peer-checked:border-blue-600' : '' }}
+                                                            {{ $color === 'red' ? 'peer-checked:bg-red-600 peer-checked:border-red-600' : '' }}
+                                                        ">
                                                     {{ $label }}
                                                 </span>
                                             </label>
@@ -113,7 +118,7 @@
                                         <input
                                             type="text"
                                             name="alasan[{{ $item->id }}]"
-                                            value="{{ old("alasan.$item->id", $item->alasan_presensi) }}"
+                                            value="{{ $alasan }}"
                                             placeholder="Isi alasan..."
                                             class="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm">
                                     </td>
@@ -130,71 +135,62 @@
                     @php
                     $selected = old(
                     "keterangan.$item->id",
-                    $item->status_presensi ?? 'hadir'
+                    $item->absensiHariIni?->keterangan ?? 'hadir'
+                    );
+
+                    $alasan = old(
+                    "alasan.$item->id",
+                    $item->absensiHariIni?->alasan
                     );
                     @endphp
 
                     <div class="bg-white shadow rounded-2xl p-5 space-y-4">
-                        <div>
-                            <h3 class="font-semibold ">
-                                {{ $item->nama_perangkat }}
-                            </h3>
-                            <input type="hidden" name="perangkat_id[]" value="{{ $item->id }}">
+                        <h3 class="font-semibold capitalize">{{ $item->nama_perangkat }}</h3>
+
+                        <input type="hidden" name="perangkat_id[]" value="{{ $item->id }}">
+
+                        <div class="grid grid-cols-4 gap-2">
+
+                            @foreach([
+                            'hadir' => ['H', 'green'],
+                            'izin' => ['I', 'yellow'],
+                            'sakit' => ['S', 'blue'],
+                            'alfa' => ['A', 'red'],
+                            ] as $value => [$label, $color])
+
+                            <label class="cursor-pointer">
+                                <input
+                                    type="radio"
+                                    name="keterangan[{{ $item->id }}]"
+                                    value="{{ $value }}"
+                                    class="peer sr-only"
+                                    {{ $selected === $value ? 'checked' : '' }}>
+
+                                <span class="
+                                            inline-flex w-full h-11 items-center justify-center
+                                            rounded-lg border-2 border-gray-300
+                                            bg-white text-gray-700 text-sm font-semibold
+                                            transition-all duration-200
+                                            peer-checked:text-white
+                                            peer-checked:scale-105
+
+                                            {{ $color === 'green' ? 'peer-checked:bg-green-600 peer-checked:border-green-600' : '' }}
+                                            {{ $color === 'yellow' ? 'peer-checked:bg-yellow-500 peer-checked:border-yellow-500' : '' }}
+                                            {{ $color === 'blue' ? 'peer-checked:bg-blue-600 peer-checked:border-blue-600' : '' }}
+                                            {{ $color === 'red' ? 'peer-checked:bg-red-600 peer-checked:border-red-600' : '' }}
+                                        ">
+                                    {{ $label }}
+                                </span>
+                            </label>
+                            @endforeach
                         </div>
 
-                        <div>
-                            <p class="text-xs text-slate-500 uppercase mb-2">
-                                Keterangan
-                            </p>
-
-                            <div class="grid grid-cols-4 gap-2">
-                                @php
-                                $selected = $item->absensiHariIni?->keterangan;
-                                @endphp
-
-                                @foreach (['hadir' => 'H', 'izin' => 'I', 'sakit' => 'S', 'alfa' => 'A'] as $val => $label)
-                                @php
-                                $colorClass = match($val) {
-                                'hadir' => 'peer-checked:bg-green-600 peer-checked:border-green-600',
-                                'izin' => 'peer-checked:bg-yellow-500 peer-checked:border-yellow-500',
-                                'sakit' => 'peer-checked:bg-orange-500 peer-checked:border-orange-500',
-                                'alfa' => 'peer-checked:bg-red-600 peer-checked:border-red-600',
-                                default => 'peer-checked:bg-gray-600 peer-checked:border-gray-600',
-                                };
-                                @endphp
-
-                                <label class="cursor-pointer">
-                                    <input
-                                        type="radio"
-                                        name="keterangan[{{ $item->id }}]"
-                                        value="{{ $val }}"
-                                        class="peer hidden"
-                                        {{ old("keterangan.$item->id", $selected) == $val ? 'checked' : '' }}>
-
-                                    <span class="inline-flex w-10 h-10 items-center justify-center rounded-lg border-2
-                text-xs font-medium transition-all
-                border-gray-300 text-gray-700 bg-white
-                peer-checked:text-white
-                {{ $colorClass }}">
-                                        {{ $label }}
-                                    </span>
-                                </label>
-                                @endforeach
-                            </div>
-                        </div>
-
-                        <div>
-                            <p class="text-xs text-slate-500 uppercase mb-2">
-                                Alasan
-                            </p>
-
-                            <input
-                                type="text"
-                                name="alasan[{{ $item->id }}]"
-                                value="{{ old("alasan.$item->id", $item->alasan_presensi) }}"
-                                placeholder="Isi alasan..."
-                                class="w-full border border-gray-300 rounded-xl px-4 py-3 text-sm">
-                        </div>
+                        <input
+                            type="text"
+                            name="alasan[{{ $item->id }}]"
+                            value="{{ $alasan }}"
+                            placeholder="Isi alasan..."
+                            class="w-full border border-gray-300 rounded-xl px-4 py-3 text-sm">
                     </div>
                     @endforeach
                 </div>

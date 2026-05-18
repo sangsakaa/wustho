@@ -48,4 +48,8 @@ class Kelasmi extends Model
             'sesikelas_id'
         );
     }
+    public function presensi()
+    {
+        return $this->hasManyThrough(Presensikelas::class, Pesertakelas::class);
+    }
 }
