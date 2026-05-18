@@ -57,9 +57,9 @@ class QrcodeController extends Controller
 
             return [
                 'peserta_id' => $item->id,
-                'nama'       => $item->siswa->nama_siswa ?? '-',
-                'nis'        => optional($item->siswa->NisTerakhir)->nis ?? '-',
-                'status'     => $absen ? $absen->keterangan : 'belum',
+                'nama'       => $item->siswa?->nama_siswa ?? '-',
+                'nis'        => $item->siswa?->NisTerakhir?->nis ?? '-',
+                'status'     => $absen?->keterangan ?? 'belum',
                 'waktu'      => $absen?->updated_at?->format('H:i:s'),
             ];
         });
