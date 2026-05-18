@@ -101,6 +101,7 @@
                         <thead class="bg-gray-50 border-b">
                             <tr>
                                 <th class="p-3 text-center">No</th>
+                                <th class="p-3 text-left">NIS</th>
                                 <th class="p-3 text-left">Nama</th>
                                 <th class="p-3 text-center">Kehadiran</th>
                                 <th class="p-3">Alasan</th>
@@ -126,6 +127,9 @@
                                     <input type="hidden" name="absensikelas[{{ $item->id }}]" value="{{ $item->absensikelas_id }}">
                                 </td>
 
+                                <td class="p-3">
+                                    {{ $item->nis??'-' }}
+                                </td>
                                 <td class="p-3">
                                     {{ $item->nama_siswa }}
                                 </td>

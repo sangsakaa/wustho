@@ -39,6 +39,7 @@ class AbsensikelasController
 
         $dataSiswa = Pesertakelas::query()
             ->join('siswa', 'siswa.id', '=', 'pesertakelas.siswa_id')
+            ->leftJoin('nis', 'nis.siswa_id', '=', 'siswa.id')
             ->leftJoin('absensikelas', function ($join) use ($sesikelas) {
                 $join->on('absensikelas.pesertakelas_id', '=', 'pesertakelas.id')
                     ->where('absensikelas.sesikelas_id', '=', $sesikelas->id);
@@ -46,6 +47,7 @@ class AbsensikelasController
             ->where('pesertakelas.kelasmi_id', $sesikelas->kelasmi_id)
             ->select(
                 'pesertakelas.id',
+            'nis.nis',
             'siswa.nama_siswa',
                 'absensikelas.id as absensikelas_id',
                 'absensikelas.keterangan',
