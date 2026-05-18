@@ -97,16 +97,13 @@
                             {{-- LOGO --}}
                             @if ($jenjang == 'Wustho')
                             <img src="{{ asset('asset/images/logo_wustho.png') }}" width="180" class="mt-3 p-2">
-
                             @elseif ($jenjang == 'Ula')
-                            <img src="{{ asset('asset/images/logo_ula.png') }}" width="180" class="mt-3 p-2">
-
+                            <img src="{{ asset('asset/images/logoUla.png') }}" width="180" class="mt-3 p-2">
                             @elseif ($jenjang == 'Ulya')
                             <img src="{{ asset('asset/images/logo_ulya.jpeg') }}" width="180" class="mt-3 p-2">
                             @else
                             <img src="{{ asset('asset/images/logo_kop.jpeg') }}" width="180" class="mt-3 p-2">
                             @endif
-
                             <p class="font-semibold">
                                 DEPARTEMEN PENDIDIKAN <br> DINIYAH WAHIDIYAH
                             </p>
