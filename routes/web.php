@@ -17,6 +17,7 @@ use App\Http\Controllers\JadwalController;
 use App\Http\Controllers\KegiatanController;
 use App\Http\Controllers\KelasController;
 use App\Http\Controllers\KelasmiController;
+use App\Http\Controllers\LembagaController;
 use App\Http\Controllers\LulusanCotroller;
 use App\Http\Controllers\MapelController;
 use App\Http\Controllers\NilaiController;
@@ -43,6 +44,11 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 // batas
+Route::middleware(['auth'])->group(function () {
+    Route::resource('lembaga', LembagaController::class);
+    Route::patch('lembaga/{lembaga}/toggle', [LembagaController::class, 'toggle'])
+        ->name('lembaga.toggle');
+});
 Route::get('/manajemen-user', [UserManagementController::class, 'index']);
 Route::get('/has-role', [RoleManagementController::class, 'index']);
 Route::post('/roles/assign', [RoleManagementController::class, 'assign']);
@@ -151,7 +157,7 @@ Route::get('/riwayatkelas', [UserController::class, 'Riwayatkelas'])->middleware
 Route::get('/riwayatkehadiran', [UserController::class, 'Riwayatkehadiran'])->middleware(['auth'])->name('riwayatkehadiran');
 // role
 Route::get('dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
-Route::get('siswa', [SiswaController::class, 'index'])->middleware(['auth',])->name('siswa');
+Route::get('siswa', [SiswaController::class, 'index'])->middleware(['auth',])->name('siswa.index');
 Route::get('siswa/{siswa}', [SiswaController::class, 'show']);
 Route::get('biodata/{siswa}', [SiswaController::class, 'biodata']);
 Route::get('transkip/{siswa}', [SiswaController::class, 'transkip']);
@@ -317,6 +323,8 @@ Route::post('sesiasrama', [SesiasramaController::class, 'store'])->middleware(['
 Route::post('sesiasrama/presensi', [SesiasramaController::class, 'simpanpresensi'])->middleware(['auth']);
 Route::delete('sesiasrama/{sesiasrama}', [SesiasramaController::class, 'destroy'])->middleware(['auth']);
 Route::post('/pesertaasrama/delete-selected', [AsramasiswaController::class, 'deleteSelected']);
+Route::post('/sesiasrama/generate', [SesiasramaController::class, 'generate'])
+    ->name('sesiasrama.generate');
 
 
 // Controller Kegiatan

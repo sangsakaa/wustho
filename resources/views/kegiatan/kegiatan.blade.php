@@ -1,86 +1,140 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard kegiatan') }}
-        </h2>
+        @section('title', ' | Dashboard Kegiatan')
+
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+            <div>
+                <h2 class="text-2xl font-bold text-gray-800">
+                    Dashboard Kegiatan
+                </h2>
+                <p class="text-sm text-gray-500">
+                    Kelola daftar kegiatan pondok dan sesi asrama
+                </p>
+            </div>
+        </div>
     </x-slot>
-    <div class="p-4">
-        <div class=" mx-auto ">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-2 bg-white border-b border-gray-200">
-                    <div class=" flex gap-1">
-                        <a href="/addkegiatan">
-                            <button class=" flex  bg-blue-500 text-white p-1 px-1 rounded-md"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                </svg>Tambah Kegiatan
-                            </button>
-                        </a>
-                        @can('show create')
-                        <a href="/kelas_mi">
-                            <div class=" ">
-                                <button class=" bg-blue-500 text-white py-1 px-2 rounded-md d-inline-block">
-                                    KELAS MADRASAH DINIYAH WUSTHA
-                                </button>
-                            </div>
-                        </a>
-                        @endcan
-                        <a href="/sesiasrama">
-                            <div class=" ">
-                                <button class=" bg-blue-500 text-white py-1 px-2 rounded-md d-inline-block">
-                                    Sesi Asrama
-                                </button>
-                            </div>
-                        </a>
-                    </div>
 
-                    <Table class=" w-full sm:w-full mt-1">
-                        <thead class=" bg-gray-100">
-                            <tr class=" border ">
-                                <th class=" py-1">#</th>
-                                <th class=" text-left"> Daftar Kegiatan Pondok</th>
-                                <th class=" text-center">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if($kegiatan->count() != null)
-                            @foreach ($kegiatan as $buah)
-                            <tr class=" border hover:bg-green-100">
-                                <th class=" text-center">{{$loop->iteration}}</th>
-                                <td> {{$buah->kegiatan}}</td>
-                                <td class=" flex justify-center gap-1 py-1">
-                                    @role('super admin')
-                                    <form action="/kegiatan/{{$buah->id}}" method="post">
-                                        @csrf
-                                        @method('delete')
-                                        <button class=" bg-red-500 text-white p-1 rounded-md"><svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                            </svg></button>
-                                    </form>
-                                    @endrole
-                                    <a href="kegiatan/{{$buah->id}}/edit">
-                                        <button class=" bg-yellow-400 p-1 rounded-md">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
-                                            </svg>
-                                        </button>
+    <div class="p-6 space-y-6">
 
-                                    </a>
-                                </td>
+        {{-- ACTION BUTTON --}}
+        <div class="bg-white border border-gray-100 shadow-sm rounded-2xl p-5">
+            <div class="flex flex-wrap gap-3">
 
-                            </tr>
-                            @endforeach
-                            @else
-                            <tr>
-                                <td>
-                                    Data Tidak ditemukan
-                                </td>
-                            </tr>
-                            @endif
-                        </tbody>
-                    </Table>
-                </div>
+                <a href="/addkegiatan"
+                    class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl font-medium shadow-sm transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+                        viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M12 4v16m8-8H4" />
+                    </svg>
+                    Tambah Kegiatan
+                </a>
+
+                @can('show create')
+                <a href="/kelas_mi"
+                    class="inline-flex items-center bg-slate-700 hover:bg-slate-800 text-white px-4 py-2 rounded-xl font-medium transition">
+                    Kelas Madrasah Diniyah
+                </a>
+                @endcan
+
+                <a href="/sesiasrama"
+                    class="inline-flex items-center bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-xl font-medium transition">
+                    Sesi Asrama
+                </a>
             </div>
         </div>
 
+        {{-- TABLE --}}
+        <div class="bg-white border border-gray-100 shadow-sm rounded-2xl overflow-hidden">
+
+            <div class="px-5 py-4 border-b border-gray-100 bg-gray-50">
+                <h3 class="font-semibold text-gray-700">
+                    Daftar Kegiatan Pondok
+                </h3>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm">
+
+                    <thead class="bg-slate-50 text-slate-600 uppercase text-xs">
+                        <tr>
+                            <th class="px-4 py-3 text-center w-16">No</th>
+                            <th class="px-4 py-3 text-left">Kegiatan</th>
+                            <th class="px-4 py-3 text-center w-40">Aksi</th>
+                        </tr>
+                    </thead>
+
+                    <tbody class="divide-y divide-gray-100">
+                        @forelse($kegiatan as $buah)
+                        <tr class="hover:bg-slate-50 transition">
+
+                            <td class="px-4 py-3 text-center font-medium">
+                                {{ $loop->iteration }}
+                            </td>
+
+                            <td class="px-4 py-3">
+                                <span class="font-medium text-gray-700">
+                                    {{ $buah->kegiatan }}
+                                </span>
+                            </td>
+
+                            <td class="px-4 py-3">
+                                <div class="flex justify-center gap-2">
+
+                                    <a href="/kegiatan/{{ $buah->id }}/edit"
+                                        class="bg-yellow-400 hover:bg-yellow-500 text-white p-2 rounded-lg transition">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                            class="w-4 h-4"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            stroke="currentColor">
+                                            <path stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                stroke-width="2"
+                                                d="M11 5h2m-1-1v2m6.364 1.636l-9.9 9.9L5 19l1.464-3.464 9.9-9.9a2 2 0 112.828 2.828z" />
+                                        </svg>
+                                    </a>
+
+                                    @role('super admin')
+                                    <form action="/kegiatan/{{ $buah->id }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+
+                                        <button
+                                            onclick="return confirm('Hapus kegiatan ini?')"
+                                            class="bg-red-500 hover:bg-red-600 text-white p-2 rounded-lg transition">
+                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                class="w-4 h-4"
+                                                fill="none"
+                                                viewBox="0 0 24 24"
+                                                stroke="currentColor">
+                                                <path stroke-linecap="round"
+                                                    stroke-linejoin="round"
+                                                    stroke-width="2"
+                                                    d="M6 18L18 6M6 6l12 12" />
+                                            </svg>
+                                        </button>
+                                    </form>
+                                    @endrole
+                                </div>
+                            </td>
+
+                        </tr>
+                        @empty
+                        <tr>
+                            <td colspan="3" class="text-center py-10 text-gray-400">
+                                <div class="flex flex-col items-center gap-2">
+                                    <span class="text-4xl">📂</span>
+                                    <p>Belum ada data kegiatan</p>
+                                </div>
+                            </td>
+                        </tr>
+                        @endforelse
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
     </div>
 </x-app-layout>

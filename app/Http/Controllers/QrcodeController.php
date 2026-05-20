@@ -485,4 +485,35 @@ class QrcodeController extends Controller
 
         return back()->with('success', $updated . ' sesi berhasil ditutup');
     }
+    public function manualAbsen(Request $request)
+    {
+        $request->validate([
+            'pesertakelas_id' => 'required',
+            'sesikelas_id'    => 'required',
+            'status'          => 'required|in:hadir,izin,sakit,alfa',
+        ]);
+
+        // cek apakah sudah ada absensi
+        $absen = Absensikelas::where('pesertakelas_id', $request->pesertakelas_id)
+            ->where('sesikelas_id', $request->sesikelas_id)
+            ->first();
+
+        if ($absen) {
+
+            // update status
+            $absen->update([
+                'keterangan' => $request->status,
+            ]);
+        } else {
+
+            // create baru
+            Absensikelas::create([
+                'pesertakelas_id' => $request->pesertakelas_id,
+                'sesikelas_id'    => $request->sesikelas_id,
+                'keterangan'      => $request->status,
+            ]);
+        }
+
+        return back()->with('success', 'Absensi berhasil diperbarui');
+    }
 }

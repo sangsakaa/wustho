@@ -232,4 +232,59 @@ class SesiasramaController extends Controller
             return back()->with('error', '❌ Gagal menyimpan presensi!')->withInput();
         }
     }
+    public function generate(Request $request)
+    {
+        $tanggal = $request->tanggal ?? now()->toDateString();
+        $periodeId = session('periode_id');
+
+        if (!$periodeId) {
+            return back()->with('error', 'Periode belum dipilih');
+        }
+
+        try {
+            DB::beginTransaction();
+
+            $asramasiswa = Asramasiswa::where('periode_id', $periodeId)->get();
+            $kegiatans = Kegiatan::all();
+
+            if ($asramasiswa->isEmpty()) {
+                return back()->with('error', 'Data asrama tidak ditemukan');
+            }
+
+            if ($kegiatans->isEmpty()) {
+                return back()->with('error', 'Data kegiatan kosong');
+            }
+
+            $totalGenerate = 0;
+
+            foreach ($asramasiswa as $asrama) {
+                foreach ($kegiatans as $kegiatan) {
+
+                    $data = Sesiasrama::firstOrCreate([
+                        'tanggal' => $tanggal,
+                        'periode_id' => $periodeId,
+                        'asramasiswa_id' => $asrama->id,
+                        'kegiatan_id' => $kegiatan->id,
+                    ]);
+
+                    if ($data->wasRecentlyCreated) {
+                        $totalGenerate++;
+                    }
+                }
+            }
+
+            DB::commit();
+
+            return back()->with(
+                'success',
+                "Berhasil generate {$totalGenerate} sesi"
+            );
+        } catch (\Throwable $e) {
+            DB::rollBack();
+
+            Log::error('Generate sesi error: ' . $e->getMessage());
+
+            return back()->with('error', $e->getMessage());
+        }
+    }
 }

@@ -2,6 +2,7 @@
 
     {{-- DASHBOARD --}}
     @role('super admin')
+
     <x-sidebar.link title="Dashboard" href="/dashboard" :isActive="request()->is('dashboard')">
         <x-slot name="icon">
             <x-icons.dashboard class="w-5 h-5" />
@@ -41,6 +42,15 @@
         Menu Utama
     </div>
 
+
+    <x-sidebar.link
+        title="Manajemen Lembaga"
+        href="{{ route('lembaga.index') }}"
+        :isActive="request()->routeIs('lembaga.*')">
+        <x-slot name="icon">
+            <x-icons.usercircle class="w-5 h-5" />
+        </x-slot>
+    </x-sidebar.link>
     <x-sidebar.link title="Manajemen User"
         href="/manajemen-user"
         :isActive="request()->is('manajemen-user')">
@@ -68,8 +78,8 @@
         </x-slot>
 
         <x-sidebar.sublink title="Data Siswa"
-            href="{{ route('siswa') }}"
-            :active="request()->routeIs('siswa')" />
+            href="{{ route('siswa.index') }}"
+            :active="request()->routeIs('siswa.index')" />
 
         <x-sidebar.sublink title="Data Asrama"
             href="{{ route('asramasiswa') }}"

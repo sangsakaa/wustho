@@ -134,7 +134,7 @@ class JadwalController
         // 🔥 GURU (HANYA PENGAMPU SESUAI MAPEL + KELAS + PERIODE)
         // =======================
         $dataGuru = Guru::where('status', 'Aktif')
-            ->whereHas('mapels', function ($q) use ($periodeId, $jadwal) {
+            ->whereHas('mapel', function ($q) use ($periodeId, $jadwal) {
                 $q->where('periode_id', $periodeId)
                     ->whereHas('kelas', function ($q2) use ($jadwal) {
                         $q2->where('id', $jadwal->kelasmi->kelas_id);

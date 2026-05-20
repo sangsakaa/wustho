@@ -25,10 +25,7 @@ class DashboardController extends Controller
             ->selectRaw("
                 COUNT(*) as total,
                 SUM(CASE WHEN siswa.jenis_kelamin = 'L' THEN 1 ELSE 0 END) as laki,
-                SUM(CASE WHEN siswa.jenis_kelamin = 'P' THEN 1 ELSE 0 END) as perempuan,
-                SUM(CASE WHEN nis.madrasah_diniyah = 'Ula' THEN 1 ELSE 0 END) as ula,
-                SUM(CASE WHEN nis.madrasah_diniyah = 'Wustho' THEN 1 ELSE 0 END) as wustho,
-                SUM(CASE WHEN nis.madrasah_diniyah = 'Ulya' THEN 1 ELSE 0 END) as ulya
+                SUM(CASE WHEN siswa.jenis_kelamin = 'P' THEN 1 ELSE 0 END) as perempuan
             ")
             ->first();
 
@@ -48,7 +45,7 @@ class DashboardController extends Controller
 
         /*
         |--------------------------------------------------------------------------
-        | JENIS KELAMIN PER KELAS
+        | JENIS KELAMIN
         |--------------------------------------------------------------------------
         */
         $jenisKelamin = Pesertakelas::query()
@@ -78,7 +75,7 @@ class DashboardController extends Controller
 
         /*
         |--------------------------------------------------------------------------
-        | DATA MASUK
+        | MASUK VS LULUS
         |--------------------------------------------------------------------------
         */
         $masukData = Nis::query()
@@ -88,72 +85,90 @@ class DashboardController extends Controller
             ->get()
             ->keyBy('tahun');
 
-        /*
-        |--------------------------------------------------------------------------
-        | DATA LULUS (PUNYA NOMOR IJAZAH)
-        |--------------------------------------------------------------------------
-        */
         $lulusData = Daftar_lulusan::query()
             ->join('pesertakelas', 'pesertakelas.id', '=', 'daftar_lulusan.pesertakelas_id')
             ->join('siswa', 'siswa.id', '=', 'pesertakelas.siswa_id')
             ->join('nis', 'nis.siswa_id', '=', 'siswa.id')
-            ->whereNotNull('daftar_lulusan.nomor_ijazah')
-            ->where('daftar_lulusan.nomor_ijazah', '!=', '')
+            ->whereNotNull('nomor_ijazah')
+            ->where('nomor_ijazah', '!=', '')
             ->selectRaw('YEAR(nis.tanggal_masuk) as tahun, COUNT(*) as lulus')
             ->groupBy('tahun')
             ->orderBy('tahun')
             ->get()
             ->keyBy('tahun');
 
-        /*
-        |--------------------------------------------------------------------------
-        | GABUNG DATA MASUK + LULUS + BELUM LULUS
-        |--------------------------------------------------------------------------
-        */
         $allYears = $masukData->keys()
             ->merge($lulusData->keys())
             ->unique()
-            ->sort()
-            ->values();
+            ->sort();
 
         $grafikMasukLulus = collect();
 
         foreach ($allYears as $tahun) {
             $masuk = $masukData[$tahun]->masuk ?? 0;
             $lulus = $lulusData[$tahun]->lulus ?? 0;
-            $belumLulus = max($masuk - $lulus, 0);
 
             $grafikMasukLulus->push([
                 'tahun' => $tahun,
                 'masuk' => $masuk,
                 'lulus' => $lulus,
-                'belum_lulus' => $belumLulus,
+                'belum_lulus' => max($masuk - $lulus, 0),
             ]);
         }
 
         /*
         |--------------------------------------------------------------------------
-        | TITLE DASHBOARD
+        | TIMELINE AKADEMIK
+        |--------------------------------------------------------------------------
+        */
+        $totalSiswa = Siswa::count();
+        $totalPeserta = Pesertakelas::count();
+        $totalLulus = Daftar_lulusan::whereNotNull('nomor_ijazah')->count();
+
+        $timeline = [
+            [
+                'icon' => '👤',
+                'title' => 'Registrasi',
+                'count' => $totalSiswa,
+                'progress' => 100,
+                'color' => 'blue',
+            ],
+            [
+                'icon' => '📚',
+                'title' => 'Kelas Aktif',
+                'count' => $totalPeserta,
+                'progress' => round(($totalPeserta / max($totalSiswa, 1)) * 100),
+                'color' => 'violet',
+            ],
+            [
+                'icon' => '🎓',
+                'title' => 'Kelulusan',
+                'count' => $totalLulus,
+                'progress' => round(($totalLulus / max($totalSiswa, 1)) * 100),
+                'color' => 'emerald',
+            ],
+        ];
+
+        /*
+        |--------------------------------------------------------------------------
+        | TITLE
         |--------------------------------------------------------------------------
         */
         $TitleMadrasak = Kelasmi::query()
             ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
             ->join('semester', 'semester.id', '=', 'periode.semester_id')
             ->where('kelasmi.periode_id', $periodeId)
-            ->select(
-                'periode.periode',
-                'semester.ket_semester',
-                'kelasmi.jenjang'
-            )
+            ->select('periode.periode', 'semester.ket_semester', 'kelasmi.jenjang')
             ->first();
 
-        return view('dashboard', [
-            'siswaStats' => $siswaStats,
-            'dataSiswaPerKelas' => $dataSiswaPerKelas,
-            'jenisKelamin' => $jenisKelamin,
-            'tahunMasuk' => $tahunMasuk,
-            'grafikMasukLulus' => $grafikMasukLulus,
-            'TitleMadrasak' => $TitleMadrasak,
-        ]);
+        return view('dashboard', compact(
+            'siswaStats',
+            'dataSiswaPerKelas',
+            'jenisKelamin',
+            'tahunMasuk',
+            'grafikMasukLulus',
+            'timeline',
+            'TitleMadrasak'
+        ));
     }
 }
