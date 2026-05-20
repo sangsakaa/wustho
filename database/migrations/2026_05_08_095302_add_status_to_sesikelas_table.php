@@ -8,17 +8,25 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::table('sesikelas', function (Blueprint $table) {
-            $table->enum('status', ['open', 'close'])
-                ->default('open')
-                ->after('tgl');
-        });
+        if (!Schema::hasColumn('sesikelas', 'status')) {
+
+            Schema::table('sesikelas', function (Blueprint $table) {
+
+                $table->enum('status', ['open', 'close'])
+                    ->default('open')
+                    ->after('tgl');
+            });
+        }
     }
 
     public function down(): void
     {
-        Schema::table('sesikelas', function (Blueprint $table) {
-            $table->dropColumn('status');
-        });
+        if (Schema::hasColumn('sesikelas', 'status')) {
+
+            Schema::table('sesikelas', function (Blueprint $table) {
+
+                $table->dropColumn('status');
+            });
+        }
     }
 };
