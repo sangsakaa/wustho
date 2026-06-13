@@ -472,19 +472,8 @@ class QrcodeController extends Controller
 
         return $pdf->stream("kartu-login-{$kelas}.pdf");
     }
-    public function bulkCloseSession(Request $request)
-    {
-        $request->validate([
-            'ids' => 'required|array',
-        ]);
 
-        $updated = Sesikelas::whereIn('id', $request->ids)
-            ->update([
-                'status' => 'close'
-            ]);
 
-        return back()->with('success', $updated . ' sesi berhasil ditutup');
-    }
     public function manualAbsen(Request $request)
     {
         $request->validate([

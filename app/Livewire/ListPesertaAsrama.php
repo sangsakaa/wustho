@@ -2,14 +2,17 @@
 
 namespace App\Livewire;
 
-use Livewire\Component;
 use App\Models\Asramasiswa;
 use App\Models\Pesertaasrama;
+use Illuminate\Support\Facades\DB;
+use Livewire\Component;
 
 class ListPesertaAsrama extends Component
 {
     public $asramasiswa;
     public $search = '';
+    public $selected = [];
+    public $selectAll = false;
 
     public function mount($asramasiswa)
     {
@@ -20,18 +23,16 @@ class ListPesertaAsrama extends Component
     {
         $asramasiswaId = $this->asramasiswa;
 
-        // 🔹 DATA ASRAMA
         $dataasramasiswa = Asramasiswa::query()
             ->join('asrama', 'asrama.id', '=', 'asramasiswa.asrama_id')
             ->select([
                 'asramasiswa.*',
                 'asrama.nama_asrama',
-                'asrama.type_asrama' // Putra / Putri
+            'asrama.type_asrama'
             ])
             ->find($asramasiswaId);
 
-        // 🔹 DATA PESERTA
-        $data = Pesertaasrama::search($this->search)
+        $data = Pesertaasrama::query()
             ->join('siswa', 'siswa.id', '=', 'pesertaasrama.siswa_id')
             ->join('asramasiswa', 'asramasiswa.id', '=', 'pesertaasrama.asramasiswa_id')
             ->join('asrama', 'asrama.id', '=', 'asramasiswa.asrama_id')
@@ -40,33 +41,51 @@ class ListPesertaAsrama extends Component
                 'pesertaasrama.id',
                 'siswa.nama_siswa',
                 'asrama.nama_asrama',
-            'asrama.type_asrama', // Putra / Putri
+            'asrama.type_asrama',
             'nis.nis',
             'siswa.jenis_kelamin',
             'siswa.kota_asal',
             ])
-            ->where('asramasiswa_id', $asramasiswaId)
+            ->where('pesertaasrama.asramasiswa_id', $asramasiswaId)
+
+            // GLOBAL SEARCH
+            ->when($this->search, function ($query) {
+                $search = trim($this->search);
+
+                $query->where(function ($q) use ($search) {
+                    $q->where('siswa.nama_siswa', 'like', "%{$search}%")
+                        ->orWhere('nis.nis', 'like', "%{$search}%")
+                        ->orWhere('siswa.kota_asal', 'like', "%{$search}%")
+                        ->orWhere('asrama.nama_asrama', 'like', "%{$search}%")
+                        ->orWhere('asrama.type_asrama', 'like', "%{$search}%");
+                });
+            })
+
             ->orderBy('siswa.nama_siswa')
-            ->orderBy('nis.nis')
-            ->get()
-            ->map(function ($item) {
+            ->get();
 
-                // 🔹 NORMALISASI DATA
-                $typeAsrama = strtolower($item->type_asrama ?? '');
-                $jk = strtolower($item->jenis_kelamin);
-
-                // 🔹 DETEKSI SALAH ASRAMA
-                $item->salah_asrama =
-                    ($typeAsrama === 'putra' && $jk === 'perempuan') ||
-                    ($typeAsrama === 'putri' && $jk === 'laki-laki');
-
-                return $item;
-            });
+        // auto sync selectAll checkbox
+        $this->selectAll =
+            count($this->selected) === $data->count() && $data->count() > 0;
 
         return view('livewire.list-peserta-asrama', [
             'asramasiswa' => $asramasiswaId,
             'dataasramasiswa' => $dataasramasiswa,
             'datapeserta' => $data
         ]);
+    }
+
+    // HIGHLIGHT SEARCH
+    public function highlight($text)
+    {
+        if (!$this->search) return e($text);
+
+        $text = e($text);
+
+        return preg_replace(
+            '/' . preg_quote($this->search, '/') . '/i',
+            '<mark class="bg-yellow-200 px-1 rounded">$0</mark>',
+            $text
+        );
     }
 }

@@ -12,7 +12,18 @@ class Kelasmi extends Model
 {
     use HasFactory;
     protected $table = "kelasmi";
+    protected $fillable = [
+        'kelas_id',
+        'nama_kelas',
+        'jenjang',
+        'kuota',
+        'periode_id'
+    ];
 
+    public function kelas()
+    {
+        return $this->belongsTo(Kelas::class);
+    }
 
     public function KelasMi()
     {

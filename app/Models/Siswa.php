@@ -55,6 +55,19 @@ class Siswa extends Model
     {
         return $this->belongsToMany(Kelasmi::class, 'pesertakelas', 'siswa_id', 'kelasmi_id');
     }
-    
-
+    public function riwayat()
+    {
+        return $this->hasMany(RiwayatSiswa::class);
+    }
+    public function kelas()
+    {
+        return $this->hasOneThrough(
+            Kelasmi::class,
+            Pesertakelas::class,
+            'siswa_id',
+            'id',
+            'id',
+            'kelasmi_id'
+        )->latestOfMany();
+    }
 }

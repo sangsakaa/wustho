@@ -9,6 +9,11 @@ class Asramasiswa extends Model
 {
     use HasFactory;
     protected $table = "asramasiswa";
+    protected $fillable = [
+        'asrama_id',
+        'kuota',
+        'periode_id',
+    ];
     public function asramaSiswa()
     {
         return $this->hasMany(Asramasiswa::class, 'id', 'asramasiswa_id');

@@ -1,103 +1,58 @@
-<div class="space-y-5">
+<div class="space-y-6">
 
-    {{-- MAIN CARD --}}
+    {{-- ================= MAIN CARD ================= --}}
     <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-200 dark:border-gray-800 overflow-hidden">
 
-        {{-- HEADER --}}
-        <div class="p-4 sm:p-5 border-b border-gray-100 dark:border-gray-800">
+        {{-- ================= HEADER ================= --}}
+        <div class="p-5 border-b border-gray-100 dark:border-gray-800">
 
             <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
 
                 {{-- TITLE --}}
                 <div>
-                    <h2 class="text-xl font-bold text-gray-800 dark:text-white">
+
+                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white">
                         Dashboard Asrama
                     </h2>
 
                     <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
                         Monitoring kuota dan penghuni asrama
                     </p>
+
                 </div>
 
-                {{-- ACTION --}}
-                <div class="flex flex-col sm:flex-row gap-2">
+                {{-- ACTION BUTTON --}}
+                <div class="flex flex-wrap gap-3">
 
                     <a href="/addasramasiswa"
-                        class="inline-flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl text-sm font-medium shadow-sm transition">
+                        class="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl text-sm font-medium transition shadow-sm">
 
-                        <span>+</span>
-                        <span>Asrama Siswa</span>
+                        + Asrama Siswa
 
                     </a>
 
                     <a href="/asrama"
-                        class="inline-flex items-center justify-center gap-2 bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-xl text-sm font-medium shadow-sm transition">
+                        class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-xl text-sm font-medium transition shadow-sm">
 
-                        <span>📋</span>
-                        <span>Data Asrama</span>
+                        Data Asrama
 
                     </a>
 
-                </div>
+                    <form id="generateForm"
+                        action="/generate-asrama-periode"
+                        method="POST">
 
-            </div>
+                        @csrf
 
-        </div>
+                        <button type="button"
+                            onclick="confirmGenerate()"
+                            class="inline-flex items-center gap-2 bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-xl text-sm font-medium transition shadow-sm">
 
-        {{-- STATISTIC --}}
-        <div class="p-4 sm:p-5">
+                            Generate Periode
 
-            <div class="grid grid-cols-2 xl:grid-cols-4 gap-4">
+                        </button>
 
-                {{-- TOTAL --}}
-                <div class="bg-blue-50 border border-blue-100 rounded-2xl p-4">
-
-                    <p class="text-sm text-blue-600 font-medium">
-                        Total Asrama
-                    </p>
-
-                    <h3 class="text-2xl font-bold text-blue-700 mt-1">
-                        {{ $data->count() }}
-                    </h3>
-
-                </div>
-
-                {{-- KUOTA --}}
-                <div class="bg-green-50 border border-green-100 rounded-2xl p-4">
-
-                    <p class="text-sm text-green-600 font-medium">
-                        Total Kuota
-                    </p>
-
-                    <h3 class="text-2xl font-bold text-green-700 mt-1">
-                        {{ $data->sum('kuota') }}
-                    </h3>
-
-                </div>
-
-                {{-- TERISI --}}
-                <div class="bg-yellow-50 border border-yellow-100 rounded-2xl p-4">
-
-                    <p class="text-sm text-yellow-600 font-medium">
-                        Total Terisi
-                    </p>
-
-                    <h3 class="text-2xl font-bold text-yellow-700 mt-1">
-                        {{ $data->sum('pesertaasrama_count') }}
-                    </h3>
-
-                </div>
-
-                {{-- SISA --}}
-                <div class="bg-purple-50 border border-purple-100 rounded-2xl p-4">
-
-                    <p class="text-sm text-purple-600 font-medium">
-                        Sisa Kuota
-                    </p>
-
-                    <h3 class="text-2xl font-bold text-purple-700 mt-1">
-                        {{ $data->sum('kuota') - $data->sum('pesertaasrama_count') }}
-                    </h3>
+                    </form>
 
                 </div>
 
@@ -105,307 +60,425 @@
 
         </div>
 
-        {{-- SEARCH --}}
-        <div class="px-4 sm:px-5 pb-4">
+        {{-- ================= INFORMASI GENERATE ================= --}}
+        <div class="px-5 pt-5">
 
-            <div class="flex justify-end">
+            <div class="rounded-2xl border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-900/20 overflow-hidden">
 
-                <input type="search"
-                    wire:model.live="search"
-                    placeholder="Cari nama asrama..."
-                    class="w-full sm:w-72 border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-white rounded-xl px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+                {{-- HEADER --}}
+                <div class="flex items-center gap-3 px-5 py-4 border-b border-amber-200 dark:border-amber-800">
+
+                    <div class="w-10 h-10 rounded-xl bg-amber-100 dark:bg-amber-800 flex items-center justify-center">
+
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                            class="w-5 h-5 text-amber-600 dark:text-amber-300"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor">
+
+                            <path stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+
+                        </svg>
+
+                    </div>
+
+                    <div>
+
+                        <h3 class="text-sm font-bold text-amber-800 dark:text-amber-200">
+                            Aturan Generate Periode
+                        </h3>
+
+                        <p class="text-xs text-amber-700 dark:text-amber-300 mt-1">
+                            Harap membaca informasi berikut sebelum melakukan generate periode baru.
+                        </p>
+
+                    </div>
+
+                </div>
+
+                {{-- CONTENT --}}
+                <div class="p-5 grid md:grid-cols-2 gap-4">
+
+                    {{-- LEFT --}}
+                    <div class="space-y-3">
+
+                        <div class="flex items-start gap-3">
+
+                            <div class="mt-1 w-2 h-2 rounded-full bg-amber-500"></div>
+
+                            <p class="text-sm text-amber-800 dark:text-amber-200 leading-relaxed">
+                                Generate periode akan membuat data periode asrama baru secara otomatis.
+                            </p>
+
+                        </div>
+
+                        <div class="flex items-start gap-3">
+
+                            <div class="mt-1 w-2 h-2 rounded-full bg-amber-500"></div>
+
+                            <p class="text-sm text-amber-800 dark:text-amber-200 leading-relaxed">
+                                Data periode sebelumnya tidak akan terhapus dari sistem.
+                            </p>
+
+                        </div>
+
+                        <div class="flex items-start gap-3">
+
+                            <div class="mt-1 w-2 h-2 rounded-full bg-amber-500"></div>
+
+                            <p class="text-sm text-amber-800 dark:text-amber-200 leading-relaxed">
+                                Sistem akan menyalin konfigurasi asrama dan kuota dari data aktif saat ini.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    {{-- RIGHT --}}
+                    <div class="space-y-3">
+
+                        <div class="flex items-start gap-3">
+
+                            <div class="mt-1 w-2 h-2 rounded-full bg-red-500"></div>
+
+                            <p class="text-sm text-amber-800 dark:text-amber-200 leading-relaxed">
+                                Jangan melakukan generate lebih dari satu kali untuk periode yang sama.
+                            </p>
+
+                        </div>
+
+                        <div class="flex items-start gap-3">
+
+                            <div class="mt-1 w-2 h-2 rounded-full bg-red-500"></div>
+
+                            <p class="text-sm text-amber-800 dark:text-amber-200 leading-relaxed">
+                                Pastikan data asrama dan kuota sudah benar sebelum generate dilakukan.
+                            </p>
+
+                        </div>
+
+                        <div class="flex items-start gap-3">
+
+                            <div class="mt-1 w-2 h-2 rounded-full bg-red-500"></div>
+
+                            <p class="text-sm text-amber-800 dark:text-amber-200 leading-relaxed">
+                                Setelah generate selesai, data periode baru akan langsung aktif digunakan.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
 
             </div>
 
         </div>
 
-        {{-- TOAST --}}
-        @if (session('update'))
-        <script>
-            Toastify({
-                text: "Data berhasil di update",
-                duration: 3000,
-                gravity: "top",
-                position: "right",
-                close: true,
-                style: {
-                    background: "linear-gradient(to right, #00b09b, #96c93d)",
-                }
-            }).showToast();
-        </script>
-        @endif
+        {{-- ================= STATISTIC ================= --}}
+        <div class="p-5 grid grid-cols-2 md:grid-cols-4 gap-4">
 
-        {{-- TABLE --}}
+            <div class="bg-blue-50 dark:bg-gray-800 rounded-2xl p-4">
+
+                <p class="text-xs text-gray-500 dark:text-gray-400">
+                    Total Asrama
+                </p>
+
+                <p class="text-2xl font-bold text-gray-900 dark:text-white">
+                    {{ $data->count() }}
+                </p>
+
+            </div>
+
+            <div class="bg-emerald-50 dark:bg-gray-800 rounded-2xl p-4">
+
+                <p class="text-xs text-gray-500 dark:text-gray-400">
+                    Total Kuota
+                </p>
+
+                <p class="text-2xl font-bold text-gray-900 dark:text-white">
+                    {{ $data->sum('kuota') }}
+                </p>
+
+            </div>
+
+            <div class="bg-amber-50 dark:bg-gray-800 rounded-2xl p-4">
+
+                <p class="text-xs text-gray-500 dark:text-gray-400">
+                    Terisi
+                </p>
+
+                <p class="text-2xl font-bold text-gray-900 dark:text-white">
+                    {{ $data->sum('jumlah_nilai_ujian') }}
+                </p>
+
+            </div>
+
+            <div class="bg-purple-50 dark:bg-gray-800 rounded-2xl p-4">
+
+                <p class="text-xs text-gray-500 dark:text-gray-400">
+                    Sisa
+                </p>
+
+                <p class="text-2xl font-bold text-gray-900 dark:text-white">
+                    {{ $data->sum('kuota') - $data->sum('jumlah_nilai_ujian') }}
+                </p>
+
+            </div>
+
+        </div>
+
+        {{-- ================= SEARCH + ACTION ================= --}}
+        <div class="px-5 pb-5 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+
+            <input type="search"
+                placeholder="Cari asrama..."
+                class="w-full md:w-80 border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 dark:text-white rounded-xl px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none">
+
+            <button type="button"
+                onclick="confirmBulkDelete()"
+                class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-xl text-sm font-medium transition shadow-sm">
+
+                Delete Selected
+
+            </button>
+
+        </div>
+
+        {{-- ================= TABLE ================= --}}
         <div class="overflow-x-auto">
 
-            <table class="min-w-[1100px] w-full text-sm">
+            <form id="bulkDeleteForm"
+                method="POST"
+                action="{{ route('bulk.delete.asrama') }}">
 
-                {{-- TABLE HEAD --}}
-                <thead class="bg-gray-50 dark:bg-gray-800 text-gray-600 dark:text-gray-300 uppercase text-xs">
+                @csrf
+                @method('DELETE')
 
-                    <tr>
+                <table class="min-w-full text-sm">
 
-                        <th class="px-4 py-3 text-center whitespace-nowrap">
-                            No
-                        </th>
+                    {{-- TABLE HEAD --}}
+                    <thead class="bg-gray-50 dark:bg-gray-800 text-xs uppercase text-gray-600 dark:text-gray-300">
 
-                        @role('super admin')
-                        <th class="px-4 py-3 text-center whitespace-nowrap">
-                            Periode
-                        </th>
-                        @endrole
+                        <tr>
 
-                        <th class="px-4 py-3 text-left whitespace-nowrap">
-                            Asrama
-                        </th>
+                            <th class="px-4 py-3 text-left w-10">
 
-                        <th class="px-4 py-3 text-center whitespace-nowrap">
-                            Tipe
-                        </th>
+                                <input type="checkbox"
+                                    onclick="toggleAll(this)">
 
-                        <th class="px-4 py-3 text-center whitespace-nowrap">
-                            Kuota
-                        </th>
+                            </th>
 
-                        <th class="px-4 py-3 text-center whitespace-nowrap">
-                            Terisi
-                        </th>
+                            <th class="px-4 py-3 text-left">No</th>
 
-                        <th class="px-4 py-3 text-center whitespace-nowrap">
-                            Progress
-                        </th>
+                            <th class="px-4 py-3 text-left">Asrama</th>
 
-                        <th class="px-4 py-3 text-center whitespace-nowrap">
-                            Status
-                        </th>
+                            <th class="px-4 py-3 text-center">Tipe</th>
 
-                        <th class="px-4 py-3 text-center whitespace-nowrap">
-                            Keterangan
-                        </th>
+                            <th class="px-4 py-3 text-center">Kuota</th>
 
-                        <th class="px-4 py-3 text-center whitespace-nowrap">
-                            Aksi
-                        </th>
+                            <th class="px-4 py-3 text-center">Terisi</th>
 
-                    </tr>
+                            <th class="px-4 py-3 text-center">Status</th>
 
-                </thead>
+                            <th class="px-4 py-3 text-center">Aksi</th>
 
-                {{-- TABLE BODY --}}
-                <tbody class="divide-y divide-gray-100 dark:divide-gray-800">
+                        </tr>
 
-                    @forelse ($data as $item)
+                    </thead>
 
-                    @php
-                    $persen = $item->kuota > 0
-                    ? ($item->pesertaasrama_count / $item->kuota) * 100
-                    : 0;
-                    @endphp
+                    {{-- TABLE BODY --}}
+                    <tbody class="divide-y divide-gray-100 dark:divide-gray-800">
 
-                    <tr class="hover:bg-gray-50 dark:hover:bg-gray-800/50 transition">
+                        @forelse ($data as $item)
 
-                        {{-- NO --}}
-                        <td class="px-4 py-4 text-center">
-                            {{ $loop->iteration }}
-                        </td>
+                        <tr class="hover:bg-gray-50 dark:hover:bg-gray-800 transition">
 
-                        {{-- PERIODE --}}
-                        @role('super admin')
-                        <td class="px-4 py-4 text-center whitespace-nowrap">
+                            <td class="px-4 py-3">
 
-                            <a href="pesertaasrama/{{$item->id}}"
-                                class="text-blue-600 hover:underline">
+                                <input type="checkbox"
+                                    class="rowCheckbox"
+                                    value="{{ $item->id }}">
 
-                                {{ $item->periode->periode }}
+                            </td>
 
-                            </a>
+                            <td class="px-4 py-3">
+                                {{ $loop->iteration }}
+                            </td>
 
-                        </td>
-                        @endrole
+                            <td class="px-4 py-3 font-medium text-gray-900 dark:text-white">
+                                {{ $item->asrama->nama_asrama }}
+                            </td>
 
-                        {{-- ASRAMA --}}
-                        <td class="px-4 py-4 whitespace-nowrap">
+                            <td class="px-4 py-3 text-center text-gray-600 dark:text-gray-300">
+                                {{ ucfirst($item->asrama->type_asrama) }}
+                            </td>
 
-                            <a href="pesertaasrama/{{$item->id}}"
-                                class="font-semibold hover:underline
-                                    {{ optional($item->asrama)->type_asrama == 'Putra'
-                                        ? 'text-blue-600'
-                                        : 'text-pink-600' }}">
+                            <td class="px-4 py-3 text-center">
+                                {{ $item->kuota }}
+                            </td>
 
-                                {{ optional($item->asrama)->nama_asrama ?? 'Asrama tidak ditemukan' }}
+                            <td class="px-4 py-3 text-center">
+                                {{ $item->pesertaasrama_count }}
+                            </td>
 
-                            </a>
+                            <td class="px-4 py-3 text-center">
 
-                        </td>
+                                @if($item->jumlah_nilai_ujian >= $item->kuota)
 
-                        {{-- TYPE --}}
-                        <td class="px-4 py-4 text-center">
+                                <span class="px-3 py-1 text-xs rounded-full bg-red-100 text-red-600">
+                                    Penuh
+                                </span>
 
-                            <span class="px-3 py-1 rounded-full text-xs font-medium
-                                {{ optional($item->asrama)->type_asrama == 'Putra'
-                                    ? 'bg-blue-100 text-blue-700'
-                                    : 'bg-pink-100 text-pink-700' }}">
+                                @else
 
-                                {{ optional($item->asrama)->type_asrama ?? '-' }}
+                                <span class="px-3 py-1 text-xs rounded-full bg-green-100 text-green-600">
+                                    Tersedia
+                                </span>
 
-                            </span>
+                                @endif
 
-                        </td>
+                            </td>
 
-                        {{-- KUOTA --}}
-                        <td class="px-4 py-4 text-center font-medium">
-                            {{ $item->kuota }}
-                        </td>
+                            <td class="px-4 py-3 text-center">
 
-                        {{-- TERISI --}}
-                        <td class="px-4 py-4 text-center font-medium">
-                            {{ $item->pesertaasrama_count }}
-                        </td>
+                                <div class="flex items-center justify-center gap-3">
 
-                        {{-- PROGRESS --}}
-                        <td class="px-4 py-4 min-w-[180px]">
+                                    <a href="/asramasiswa/{{ $item->id }}/edit"
+                                        class="text-blue-600 hover:underline">
 
-                            <div class="w-full bg-gray-200 rounded-full h-2.5 overflow-hidden">
+                                        Edit
 
-                                <div class="h-2.5 rounded-full
-                                    {{ $persen >= 100 ? 'bg-red-500' : 'bg-blue-500' }}"
-                                    style="width: {{ $persen }}%">
+                                    </a>
+
+                                    <a href="/pesertaasrama/{{ $item->id }}"
+                                        class="text-emerald-600 hover:underline">
+
+                                        Detail
+
+                                    </a>
 
                                 </div>
 
-                            </div>
+                            </td>
 
-                            <p class="text-xs text-gray-500 mt-1 text-center">
-                                {{ $item->pesertaasrama_count }} / {{ $item->kuota }}
-                            </p>
+                        </tr>
 
-                        </td>
+                        @empty
 
-                        {{-- STATUS --}}
-                        <td class="px-4 py-4 text-center">
+                        <tr>
 
-                            @if($item->pesertaasrama_count >= $item->kuota)
+                            <td colspan="8"
+                                class="text-center py-10 text-gray-500 dark:text-gray-400">
 
-                            <span class="px-3 py-1 rounded-full text-xs bg-red-100 text-red-700 font-medium">
-                                Penuh
-                            </span>
+                                Data tidak ditemukan
 
-                            @else
+                            </td>
 
-                            <span class="px-3 py-1 rounded-full text-xs bg-green-100 text-green-700 font-medium">
-                                Tersedia
-                            </span>
+                        </tr>
 
-                            @endif
+                        @endforelse
 
-                        </td>
+                    </tbody>
 
-                        {{-- KETERANGAN --}}
-                        <td class="px-4 py-4 text-center text-xs">
+                </table>
 
-                            @if($item->pesertaasrama_count >= $item->kuota)
-
-                            <span class="text-red-600 font-medium">
-                                Kuota penuh
-                            </span>
-
-                            @else
-
-                            <span class="text-green-600 font-medium">
-                                Sisa {{ $item->kuota - $item->pesertaasrama_count }}
-                            </span>
-
-                            @endif
-
-                        </td>
-
-                        {{-- AKSI --}}
-                        <td class="px-4 py-4">
-
-                            <div class="flex justify-center gap-2">
-
-                                @role('super admin')
-                                <form action="/asramasiswa/{{$item->id}}"
-                                    method="post">
-
-                                    @csrf
-                                    @method('delete')
-
-                                    <button
-                                        onclick="return confirm('Yakin hapus data ini?')"
-                                        class="bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 rounded-lg text-xs transition">
-
-                                        Hapus
-
-                                    </button>
-
-                                </form>
-                                @endrole
-
-                                <a href="asramasiswa/{{$item->id}}/edit"
-                                    class="bg-yellow-400 hover:bg-yellow-500 text-white px-3 py-1.5 rounded-lg text-xs transition">
-
-                                    Edit
-
-                                </a>
-
-                                <a href="pesertaasrama/{{$item->id}}"
-                                    class="bg-sky-500 hover:bg-sky-600 text-white px-3 py-1.5 rounded-lg text-xs transition">
-
-                                    Detail
-
-                                </a>
-
-                            </div>
-
-                        </td>
-
-                    </tr>
-
-                    @empty
-
-                    <tr>
-
-                        <td colspan="10"
-                            class="text-center py-10 text-gray-500">
-
-                            Data tidak ditemukan
-
-                        </td>
-
-                    </tr>
-
-                    @endforelse
-
-                </tbody>
-
-            </table>
+            </form>
 
         </div>
-
-    </div>
-
-    {{-- INFO --}}
-    <div class="bg-blue-50 border border-blue-200 rounded-2xl p-5">
-
-        <h4 class="font-semibold text-blue-700 mb-3">
-            Keterangan
-        </h4>
-
-        <ol class="list-decimal ml-5 space-y-2 text-sm text-gray-700">
-
-            <li>
-                Penambahan anggota asrama wajib memiliki
-                <b>NIM</b>
-            </li>
-
-            <li>
-                Jika belum memiliki NIM, silakan konfirmasi ke bagian
-                <b>kesiswaan / kepala sekolah</b>
-            </li>
-
-        </ol>
 
     </div>
 
 </div>
+
+{{-- ================= JAVASCRIPT ================= --}}
+<script>
+    const swalBase = {
+        background: 'rgb(17 24 39)',
+        color: '#fff'
+    };
+
+    function toggleAll(source) {
+
+        document.querySelectorAll('.rowCheckbox').forEach((checkbox) => {
+            checkbox.checked = source.checked;
+        });
+    }
+
+    function getSelectedIds() {
+
+        return [...document.querySelectorAll('.rowCheckbox:checked')]
+            .map((checkbox) => checkbox.value);
+    }
+
+    function confirmBulkDelete() {
+
+        const ids = getSelectedIds();
+
+        if (ids.length === 0) {
+
+            Swal.fire({
+                ...swalBase,
+                icon: 'warning',
+                title: 'Pilih data terlebih dahulu'
+            });
+
+            return;
+        }
+
+        Swal.fire({
+            ...swalBase,
+            title: 'Hapus Data?',
+            text: `${ids.length} data akan dihapus`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Ya, Hapus',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+
+            if (!result.isConfirmed) return;
+
+            const form = document.getElementById('bulkDeleteForm');
+
+            form.querySelectorAll('.dynamic-id').forEach((el) => {
+                el.remove();
+            });
+
+            ids.forEach((id) => {
+
+                const input = document.createElement('input');
+
+                input.type = 'hidden';
+                input.name = 'ids[]';
+                input.value = id;
+                input.classList.add('dynamic-id');
+
+                form.appendChild(input);
+            });
+
+            form.submit();
+        });
+    }
+
+    function confirmGenerate() {
+
+        Swal.fire({
+            ...swalBase,
+            title: 'Generate periode baru?',
+            text: 'Pastikan data asrama dan kuota sudah benar.',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Generate',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+
+            if (result.isConfirmed) {
+
+                document.getElementById('generateForm').submit();
+            }
+        });
+    }
+</script>

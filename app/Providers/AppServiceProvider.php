@@ -26,12 +26,16 @@ class AppServiceProvider extends ServiceProvider
         // ✅ GLOBAL VIEW COMPOSER (FIX UTAMA KAMU)
         View::composer('*', function ($view) {
 
-            $dataperiode = \App\Models\Periode::getDataPeriode();
+            $dataperiode = \App\Models\Periode::getNavbarPeriode();
 
-            $periodeAktif = $dataperiode->firstWhere('id', session('periode_id'))
-                ?? $dataperiode->firstWhere('is_active', 1);
+            $periodeAktif =
+                $dataperiode->firstWhere('id', session('periode_id'))
+                ?? $dataperiode->firstWhere('is_active', true);
 
-            $view->with('periodeAktif', $periodeAktif);
+            $view->with([
+                'dataperiode' => $dataperiode,
+                'periodeAktif' => $periodeAktif,
+            ]);
         });
 
         // ✅ tetap aman (tidak diubah)
@@ -40,7 +44,12 @@ class AppServiceProvider extends ServiceProvider
         Carbon::setLocale('id');
 
         Gate::before(function ($user, $ability) {
-            return $user->hasRole('admin') ? true : null;
+
+            if ($user->hasRole('super admin')) {
+                return true;
+            }
+
+            return null;
         });
     }
 }

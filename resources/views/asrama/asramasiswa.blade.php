@@ -1,16 +1,34 @@
 <x-app-layout>
+
     <x-slot name="header">
-        @section('title', ' | Asrama Siswa' )
-        <h2 class="font-semibold text-xl  leading-tight">
+
+        @section('title', ' | Asrama Siswa')
+
+        <h2 class="font-semibold text-xl leading-tight">
+
             @role('pengurus')
             {{ __('Asrama Santri') }}
             @endrole
+
             @role('super admin')
             {{ __('Asrama Siswa') }}
             @endrole
+
         </h2>
+
     </x-slot>
-    <div class=" p-2">
+
+    <div class="p-2 space-y-4">
+
+        {{-- BUTTON GENERATE --}}
+
+
+        {{-- LIVEWIRE --}}
         <livewire:list-asrama />
+
     </div>
+
+    {{-- SWEET ALERT --}}
+
+
 </x-app-layout>

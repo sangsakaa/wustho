@@ -18,75 +18,147 @@ class SesikelasController
             $tgl = $request->filled('tgl')
                 ? Carbon::parse($request->tgl)
                 : now();
-        } catch (\Exception $e) {
+        } catch (\Throwable $th) {
             $tgl = now();
         }
 
         $Datasesikelas = Sesikelas::query()
+
             ->join('kelasmi', 'kelasmi.id', '=', 'sesikelas.kelasmi_id')
             ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
             ->join('semester', 'semester.id', '=', 'periode.semester_id')
-            ->select(
+
+            ->select([
                 'sesikelas.id',
                 'sesikelas.tgl',
-                'sesikelas.kelasmi_id',
             'sesikelas.status',
-                'kelasmi.nama_kelas',
-                'periode.periode',
-                'semester.ket_semester'
-            )
+                'sesikelas.kelasmi_id',
 
-            // jumlah hadir per sesi
-            ->selectSub(function ($q) {
-                $q->from('absensikelas')
+            'kelasmi.nama_kelas',
+
+            'periode.periode',
+
+                'semester.ket_semester',
+            ])
+
+            // jumlah hadir
+            ->selectSub(function ($query) {
+
+                $query->from('absensikelas')
                 ->selectRaw('COUNT(DISTINCT absensikelas.pesertakelas_id)')
-                    ->whereColumn('absensikelas.sesikelas_id', 'sesikelas.id');
+                ->whereColumn(
+                    'absensikelas.sesikelas_id',
+                    'sesikelas.id'
+                );
         }, 'hadir_count')
 
-            // total peserta sesuai kelas sesi
-            ->selectSub(function ($q) {
-                $q->from('pesertakelas')
+            // jumlah peserta
+            ->selectSub(function ($query) {
+
+                $query->from('pesertakelas')
                     ->selectRaw('COUNT(*)')
-                    ->whereColumn('pesertakelas.kelasmi_id', 'sesikelas.kelasmi_id');
+                ->whereColumn(
+                    'pesertakelas.kelasmi_id',
+                    'sesikelas.kelasmi_id'
+                );
             }, 'peserta_count')
 
             ->where('kelasmi.periode_id', session('periode_id'))
-            ->whereDate('sesikelas.tgl', $tgl->toDateString())
+
+            ->whereDate(
+                'sesikelas.tgl',
+                $tgl->toDateString()
+            )
+
             ->orderBy('kelasmi.nama_kelas')
+
             ->get()
+
             ->map(function ($item) {
 
-                $hadir = (int) $item->hadir_count;
+            $hadir   = (int) $item->hadir_count;
                 $peserta = (int) $item->peserta_count;
 
-                $progress = $peserta > 0
+            $item->progress = $peserta > 0
                     ? round(($hadir / $peserta) * 100)
                     : 0;
 
-                if ($item->status === 'close') {
-                    $item->status_ui = 'close';
-                    $item->note = 'Close';
-                } elseif ($hadir === 0) {
-                    $item->status_ui = 'belum';
-                    $item->note = 'Belum Mulai';
-                } elseif ($hadir < $peserta) {
-                    $item->status_ui = 'proses';
-                    $item->note = 'Proses';
-                } else {
-                    $item->status_ui = 'selesai';
-                    $item->note = 'Selesai';
-                }
+            $status = match (true) {
 
-                $item->progress = $progress;
+                $item->status === 'close' => [
+                    'status_ui' => 'close',
+                    'note'      => 'Close',
+                ],
+
+                $hadir === 0 => [
+                    'status_ui' => 'belum',
+                    'note'      => 'Belum Mulai',
+                ],
+
+                $hadir < $peserta => [
+                    'status_ui' => 'proses',
+                    'note'      => 'Proses',
+                ],
+
+                default => [
+                    'status_ui' => 'selesai',
+                    'note'      => 'Selesai',
+                ],
+            };
+
+            $item->status_ui = $status['status_ui'];
+            $item->note      = $status['note'];
 
                 return $item;
             });
 
-        return view('presensi.kelas.sesikelas', compact(
-            'Datasesikelas',
-            'sesikelas',
-            'tgl'
-        ));
+        return view('presensi.kelas.sesikelas', [
+            'Datasesikelas' => $Datasesikelas,
+            'sesikelas'     => $sesikelas,
+            'tgl'           => $tgl,
+        ]);
+    }
+    public function toggle($id)
+    {
+        $sesi = Sesikelas::findOrFail($id);
+
+        $sesi->update([
+            'status' => $sesi->status === 'open'
+                ? 'close'
+                : 'open'
+        ]);
+
+        return back()->with(
+            'success',
+            'Status sesi berhasil diperbarui'
+        );
+    }
+    public function bulkToggleSession(Request $request)
+    {
+        $validated = $request->validate([
+            'ids'   => ['required', 'array'],
+            'ids.*' => ['exists:sesikelas,id'],
+        ]);
+
+        $sessions = Sesikelas::whereIn('id', $validated['ids'])->get();
+
+        if ($sessions->isEmpty()) {
+            return back()->with('error', 'Data sesi tidak ditemukan');
+        }
+
+        foreach ($sessions as $session) {
+
+            $session->update([
+                'status' => $session->status === 'open'
+                    ? 'close'
+                    : 'open'
+            ]);
+        }
+
+        return back()->with(
+            'success',
+            $sessions->count() . ' sesi berhasil diperbarui'
+        );
     }
     public function store(Request $request)
     {

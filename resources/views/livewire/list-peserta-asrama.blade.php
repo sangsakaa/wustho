@@ -1,191 +1,270 @@
-<div
-    x-data="{
-        selected: @entangle('selected').live ?? [],
+{{-- =========================
+    NOTIFIKASI
+========================= --}}
+@if (session('success'))
+<script>
+    Swal.fire({
+        icon: 'success',
+        title: 'Berhasil',
+        text: @json(session('success')),
+        timer: 2000,
+        showConfirmButton: false
+    });
+</script>
+@endif
 
-        toggleAll(event) {
-            const checked = event.target.checked;
+@if (session('error'))
+<script>
+    Swal.fire({
+        icon: 'error',
+        title: 'Gagal',
+        text: @json(session('error')),
+        timer: 2500,
+        showConfirmButton: false
+    });
+</script>
+@endif
 
-            this.selected = checked
-                ? Array.from(document.querySelectorAll('.checkItem')).map(el => el.value)
-                : [];
 
-            document.querySelectorAll('.checkItem').forEach(cb => cb.checked = checked);
-        },
+{{-- =========================
+    ACTION BAR
+========================= --}}
+<div class="bg-white border rounded-xl shadow-sm p-3 flex flex-wrap items-center gap-2">
 
-        toggleItem(id, el) {
-            id = id.toString();
+    <a href="/asramasiswa"
+        class="inline-flex items-center gap-2 px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm rounded-lg">
+        Kembali
+    </a>
 
-            if (el.checked) {
-                if (!this.selected.includes(id)) this.selected.push(id);
-            } else {
-                this.selected = this.selected.filter(i => i !== id);
-            }
-        },
+    <form method="GET" class="ml-auto">
+        <input type="text"
+            name="search"
+            value="{{ request('search') }}"
+            placeholder="Cari nama, NIS, kota..."
+            class="px-3 py-2 border rounded-lg text-sm focus:ring focus:ring-blue-200">
+    </form>
 
-        toast(message, type = 'success') {
-            const bg = type === 'success' ? 'bg-green-600' : 'bg-red-600';
+    <a href="/kolektifasrama/{{ $asramasiswa }}"
+        class="inline-flex items-center gap-2 px-3 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm rounded-lg">
+        Tambah
+    </a>
 
-            const el = document.createElement('div');
-            el.className = `${bg} fixed top-5 right-5 text-white px-4 py-2 rounded-lg shadow z-50`;
-            el.innerText = message;
+    <button onclick="printContent('div1')"
+        class="px-3 py-2 bg-green-600 hover:bg-green-700 text-white text-sm rounded-lg">
+        Print
+    </button>
 
-            document.body.appendChild(el);
-            setTimeout(() => el.remove(), 2000);
-        }
-    }"
-    class="space-y-4">
+    {{-- BULK DELETE --}}
+    <form action="/pesertaasrama/bulk-delete-peserata" method="POST" id="bulkDeleteForm">
+        @csrf
 
-    {{-- 🔥 ACTION BAR --}}
-    <div class="bg-white border rounded-xl shadow-sm p-3 flex flex-wrap items-center gap-2">
-
-        <a href="/asramasiswa"
-            class="px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm rounded-lg transition">
-            ⬅ Kembali
-        </a>
-
-        <a href="/kolektifasrama/{{ $asramasiswa }}"
-            class="px-3 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm rounded-lg transition">
-            + Tambah
-        </a>
-
-        <button onclick="printContent('div1')"
-            class="px-3 py-2 bg-green-600 hover:bg-green-700 text-white text-sm rounded-lg transition">
-            🖨 Print
+        <button type="button"
+            onclick="confirmBulkDelete()"
+            class="px-3 py-2 bg-red-600 hover:bg-red-700 text-white text-sm rounded-lg">
+            Hapus Terpilih
         </button>
-
-        <input type="search"
-            wire:model.debounce.500ms="search"
-            class="border rounded-lg px-3 py-2 text-sm focus:ring focus:ring-blue-200"
-            placeholder="Cari nama siswa...">
-
-        <button wire:click="deleteSelected"
-            class="px-3 py-2 bg-red-600 hover:bg-red-700 text-white text-sm rounded-lg transition">
-            🗑 Hapus
-        </button>
-
-    </div>
-
-    {{-- 📊 TABLE --}}
-    <div id="div1" class="bg-white border rounded-xl shadow-sm overflow-hidden">
-
-        <div class="p-3 border-b flex items-center justify-between">
-            <h2 class="font-semibold text-gray-700">Data Peserta Asrama</h2>
-
-            <span class="text-xs text-gray-500">
-                Total: {{ count($datapeserta) }}
-            </span>
-        </div>
-
-        <div class="overflow-x-auto">
-            <table class="w-full text-sm">
-
-                <thead class="bg-gray-50 text-gray-600">
-                    <tr>
-                        <th class="p-3">
-                            <input type="checkbox" @change="toggleAll($event)">
-                        </th>
-                        <th class="p-3">No</th>
-
-                        @role('super admin')
-                        <th class="p-3">NIS</th>
-                        @endrole
-
-                        <th class="p-3 text-left">Nama</th>
-                        <th class="p-3 text-center">JK</th>
-                        <th class="p-3 text-center">Asrama</th>
-                        <th class="p-3 text-center">Kota</th>
-
-                        @role('super admin')
-                        <th class="p-3 text-center">Aksi</th>
-                        @endrole
-                    </tr>
-                </thead>
-
-                <tbody class="divide-y">
-
-                    @foreach($datapeserta as $siswa)
-
-                    @php
-                    $asrama = strtolower($siswa->nama_asrama ?? '');
-                    $jk = strtolower($siswa->jenis_kelamin);
-
-                    $salahAsrama =
-                    (str_contains($asrama, 'putra') && $jk == 'perempuan') ||
-                    (str_contains($asrama, 'putri') && $jk == 'laki-laki');
-                    @endphp
-
-                    <tr
-                        class="hover:bg-gray-50 transition"
-                        :class="selected.includes('{{ (string) $siswa->id }}') ? 'bg-blue-50' : ''">
-
-                        <td class="p-3 text-center">
-                            <input type="checkbox"
-                                class="checkItem"
-                                value="{{ $siswa->id }}"
-                                @change="toggleItem('{{ $siswa->id }}', $event.target)">
-                        </td>
-
-                        <td class="p-3 text-center text-gray-500">
-                            {{ $loop->iteration }}
-                        </td>
-
-                        @role('super admin')
-                        <td class="p-3 text-center font-mono text-xs">
-                            {{ $siswa->nis }}
-                        </td>
-                        @endrole
-
-                        <td class="p-3 font-medium capitalize">
-                            {{ strtolower($siswa->nama_siswa) }}
-                        </td>
-
-                        <td class="p-3 text-center">
-                            <span class="px-2 py-1 text-xs rounded-full
-                                {{ $siswa->jenis_kelamin == 'laki-laki' ? 'bg-blue-100 text-blue-700' : 'bg-pink-100 text-pink-700' }}">
-                                {{ $siswa->jenis_kelamin }}
-                            </span>
-                        </td>
-
-                        <td class="p-3 text-center">
-                            <span class="text-sm">
-                                {{ $siswa->nama_asrama ?? '-' }}
-                            </span>
-                        </td>
-
-                        <td class="p-3 text-center text-gray-600">
-                            {{ $siswa->kota_asal }}
-                        </td>
-
-                        @role('super admin')
-                        <td class="p-3">
-                            <div class="flex justify-center gap-2">
-
-                                <form action="/pesertaasrama/{{$siswa->id}}" method="POST"
-                                    onsubmit="return confirm('Yakin hapus?')">
-                                    @csrf
-                                    @method('DELETE')
-
-                                    <button class="px-2 py-1 bg-red-500 hover:bg-red-600 text-white rounded-lg text-xs">
-                                        ❌
-                                    </button>
-                                </form>
-
-                                <a href="/pesertaasrama/{{$siswa->id}}/edit"
-                                    class="px-2 py-1 bg-yellow-400 hover:bg-yellow-500 text-white rounded-lg text-xs">
-                                    ✏
-                                </a>
-
-                            </div>
-                        </td>
-                        @endrole
-
-                    </tr>
-                    @endforeach
-
-                </tbody>
-
-            </table>
-        </div>
-    </div>
+    </form>
 
 </div>
+
+
+{{-- =========================
+    TABLE
+========================= --}}
+<div id="div1" class="bg-white border rounded-xl shadow-sm overflow-hidden">
+
+    <div class="p-3 border-b flex items-center justify-between">
+        <h2 class="font-semibold text-gray-700">
+            Data Peserta Asrama
+        </h2>
+
+        <span class="text-xs text-gray-500">
+            Total: {{ count($datapeserta) }}
+        </span>
+    </div>
+
+    <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+
+            <thead class="bg-gray-50 text-gray-600">
+                <tr>
+
+                    {{-- SELECT ALL --}}
+                    <th class="p-3 text-center">
+                        <input type="checkbox" id="checkAll">
+                    </th>
+
+                    <th class="p-3">No</th>
+
+                    @role('super admin')
+                    <th class="p-3">NIS</th>
+                    @endrole
+
+                    <th class="p-3 text-left">Nama</th>
+                    <th class="p-3 text-center">JK</th>
+                    <th class="p-3 text-center">Asrama</th>
+                    <th class="p-3 text-center">Kota</th>
+
+                    @role('super admin')
+                    <th class="p-3 text-center">Aksi</th>
+                    @endrole
+
+                </tr>
+            </thead>
+
+            <tbody class="divide-y">
+
+                @forelse($datapeserta as $siswa)
+                <tr class="hover:bg-gray-50 transition">
+
+                    {{-- CHECKBOX --}}
+                    <td class="p-3 text-center">
+                        <input type="checkbox"
+                            class="checkItem"
+                            value="{{ $siswa->id }}">
+                    </td>
+
+                    <td class="p-3 text-center text-gray-500">
+                        {{ $loop->iteration }}
+                    </td>
+
+                    {{-- NIS --}}
+                    @role('super admin')
+                    <td class="p-3 text-center font-mono text-xs">
+                        {!! $this->highlight($siswa->nis) !!}
+                    </td>
+                    @endrole
+
+                    {{-- NAMA --}}
+                    <td class="p-3 font-medium capitalize">
+                        {!! $this->highlight($siswa->nama_siswa) !!}
+                    </td>
+
+                    {{-- JK --}}
+                    <td class="p-3 text-center">
+                        <span class="px-2 py-1 text-xs rounded-full
+                            {{ $siswa->jenis_kelamin == 'laki-laki'
+                                ? 'bg-blue-100 text-blue-700'
+                                : 'bg-pink-100 text-pink-700' }}">
+                            {{ $siswa->jenis_kelamin }}
+                        </span>
+                    </td>
+
+                    {{-- ASRAMA --}}
+                    <td class="p-3 text-center">
+                        {!! $this->highlight($siswa->nama_asrama ?? '-') !!}
+                    </td>
+
+                    {{-- KOTA --}}
+                    <td class="p-3 text-center text-gray-600">
+                        {!! $this->highlight($siswa->kota_asal) !!}
+                    </td>
+
+                    {{-- AKSI --}}
+                    @role('super admin')
+                    <td class="p-3">
+                        <div class="flex justify-center gap-2">
+
+                            {{-- DELETE --}}
+                            <form action="/pesertaasrama/{{ $siswa->id }}" method="POST"
+                                onsubmit="event.preventDefault();
+                                Swal.fire({
+                                    title: 'Yakin hapus?',
+                                    text: 'Data peserta akan dihapus',
+                                    icon: 'warning',
+                                    showCancelButton: true,
+                                    confirmButtonColor: '#dc2626',
+                                    cancelButtonColor: '#6b7280',
+                                    confirmButtonText: 'Ya, hapus',
+                                    cancelButtonText: 'Batal'
+                                }).then((result) => {
+                                    if (result.isConfirmed) this.submit();
+                                });">
+
+                                @csrf
+                                @method('DELETE')
+
+                                <button type="submit"
+                                    class="inline-flex items-center justify-center w-8 h-8 bg-white border text-red-600 hover:bg-red-50 rounded-lg">
+                                    🗑
+                                </button>
+                            </form>
+
+                            {{-- EDIT --}}
+                            <a href="/pesertaasrama/{{ $siswa->id }}/edit"
+                                class="inline-flex items-center justify-center w-8 h-8 bg-yellow-400 hover:bg-yellow-500 text-white rounded-lg">
+                                ✏
+                            </a>
+
+                        </div>
+                    </td>
+                    @endrole
+
+                </tr>
+                @empty
+                <tr>
+                    <td colspan="8" class="p-6 text-center text-gray-500">
+                        Tidak ada data peserta.
+                    </td>
+                </tr>
+                @endforelse
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+{{-- =========================
+    SCRIPT BULK DELETE
+========================= --}}
+<script>
+    function confirmBulkDelete() {
+
+        let checked = document.querySelectorAll('.checkItem:checked');
+
+        if (!checked.length) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Tidak ada data dipilih'
+            });
+            return;
+        }
+
+        Swal.fire({
+            title: 'Hapus data terpilih?',
+            text: checked.length + ' data akan dihapus',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#dc2626',
+            cancelButtonColor: '#6b7280',
+            confirmButtonText: 'Ya, hapus'
+        }).then((result) => {
+
+            if (!result.isConfirmed) return;
+
+            let form = document.getElementById('bulkDeleteForm');
+
+            document.querySelectorAll('.hidden-id').forEach(e => e.remove());
+
+            checked.forEach(cb => {
+                let input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'ids[]';
+                input.value = cb.value;
+                input.classList.add('hidden-id');
+                form.appendChild(input);
+            });
+
+            form.submit();
+        });
+    }
+
+
+    // SELECT ALL
+    document.getElementById('checkAll')?.addEventListener('change', function() {
+        document.querySelectorAll('.checkItem').forEach(cb => {
+            cb.checked = this.checked;
+        });
+    });
+</script>

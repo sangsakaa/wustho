@@ -23,13 +23,7 @@
                                 }).showToast();
                             </script>
                             @endif
-                            @if (session('success'))
-                            <div class=" py-2">
-                                <div class=" bg-green-500 px-2 py-1 text-white">
-                                    {{ session('success') }}
-                                </div>
-                            </div>
-                            @endif
+
                             @if (session('update'))
                             <script>
                                 Toastify({

@@ -34,6 +34,15 @@ class Pesertaasrama extends Model
                 $query->where('periode_id', session('periode_id'));
             });
     }
+    public function scopeSearch($query, $keyword)
+    {
+        return $query->where(function ($q) use ($keyword) {
+            $q->where('siswa.nama_siswa', 'like', "%{$keyword}%")
+                ->orWhere('siswa.nis', 'like', "%{$keyword}%")
+                ->orWhere('siswa.kota_asal', 'like', "%{$keyword}%")
+                ->orWhere('asrama.nama_asrama', 'like', "%{$keyword}%");
+        });
+    }
     
     
 }

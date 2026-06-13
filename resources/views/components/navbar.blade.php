@@ -1,191 +1,239 @@
 @php
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-
-$dbOnline = true;
-$user = null;
-$periodeAktif = null;
-
-try {
-DB::connection()->getPdo();
 
 $user = Auth::user();
 
-if (isset($dataperiode) && $dataperiode->count()) {
-$periodeAktif = $dataperiode->firstWhere('id', session('periode_id'))
+try {
+
+if (
+session('periode_id') &&
+!$dataperiode->contains('id', session('periode_id'))
+) {
+session()->forget('periode_id');
+}
+
+$periodeAktif =
+$dataperiode->firstWhere('id', session('periode_id'))
 ?? $dataperiode->firstWhere('is_active', true)
 ?? $dataperiode->first();
-}
-} catch (\Exception $e) {
-$dbOnline = false;
+
+} catch (\Throwable $e) {
+
+$periodeAktif = null;
 }
 @endphp
 
-<nav aria-label="secondary"
-    x-data="{ open: false }"
-    class="sticky top-0 z-10 flex items-center justify-between px-4 py-2 sm:px-6 transition-transform duration-500 bg-white dark:bg-dark-eval-1"
-    :class="{
-        '-translate-y-full': scrollingDown,
-        'translate-y-0': scrollingUp,
-    }">
+{{-- SWEET ALERT --}}
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <div class="flex items-center gap-3">
-        <x-button type="button" class="md:hidden" iconOnly variant="secondary"
-            srText="Toggle dark mode" @click="toggleTheme">
-            <x-heroicon-o-moon x-show="!isDarkMode" class="w-6 h-6" />
-            <x-heroicon-o-sun x-show="isDarkMode" class="w-6 h-6" />
+<nav
+    class="sticky top-0 z-10 flex items-center justify-between px-4 py-2 bg-white border-b dark:bg-dark-eval-1 dark:border-slate-700">
+
+    {{-- LEFT --}}
+    <div class="flex items-center gap-2">
+
+        <x-button
+            type="button"
+            class="md:hidden"
+            iconOnly
+            variant="secondary"
+            srText="Toggle dark mode"
+            @click="toggleTheme">
+
+            <x-heroicon-o-moon
+                x-show="!isDarkMode"
+                class="w-5 h-5" />
+
+            <x-heroicon-o-sun
+                x-show="isDarkMode"
+                class="w-5 h-5" />
         </x-button>
+
     </div>
 
-    <div class="flex items-center gap-3">
+    {{-- RIGHT --}}
+    <div class="flex items-center gap-2">
 
-        {{-- DROPDOWN PERIODE --}}
-        @if($dbOnline && $periodeAktif)
-        <x-dropdown align="top" width="48">
+        {{-- PERIODE --}}
+        @if($periodeAktif)
+
+        <x-dropdown align="right" width="64">
+
+            {{-- TRIGGER --}}
             <x-slot name="trigger">
-                <button class="flex items-center p-2 text-sm font-medium text-gray-500 rounded-md hover:text-gray-700">
-                    <div>
-                        {{ $periodeAktif->periode ?? '-' }}
-                        {{ $periodeAktif->ket_semester ?? '' }}
+
+                <button
+                    class="flex items-center gap-2 px-3 py-2 text-sm border rounded-lg dark:border-slate-700">
+
+                    <div class="font-medium whitespace-nowrap">
+                        {{ $periodeAktif->periode }}
+                        -
+                        {{ $periodeAktif->semester->ket_semester ?? '-' }}
                     </div>
 
-                    <div class="ml-1">
-                        <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
-                            <path d="M5.293 7.293L10 12l4.707-4.707" />
-                        </svg>
-                    </div>
+                    <x-heroicon-o-chevron-down class="w-4 h-4" />
+
                 </button>
+
             </x-slot>
 
-            <div class="relative">
+            {{-- CONTENT --}}
+            <x-slot name="content">
 
-                {{-- DROPDOWN CONTENT --}}
-                <div class="absolute right-0 mt-2 w-72 bg-white dark:bg-dark-bg shadow-lg rounded-md z-50 max-h-80 overflow-y-auto border border-slate-200 dark:border-slate-700">
+                @foreach ($dataperiode as $list)
 
-                    <x-slot name="content">
+                <form
+                    method="POST"
+                    action="{{ route('setperiode') }}"
+                    class="form-periode">
+
+                    @csrf
+
+                    <input
+                        type="hidden"
+                        name="periode_id"
+                        value="{{ $list->id }}">
+
+                    <button
+                        type="submit"
+                        class="w-full flex items-center justify-between px-4 py-3 text-sm hover:bg-slate-100 dark:hover:bg-slate-700">
+
+                        <div class="flex items-center gap-2">
+
+                            <span>
+                                {{ $list->periode }}
+                                -
+                                {{ $list->semester->ket_semester ?? '-' }}
+                            </span>
+
+                        </div>
 
                         @php
-                        $sorted = $dataperiode->sortByDesc(function ($item) {
-                        if (session('periode_id') == $item->id) return 2;
-                        if ($item->is_active) return 1;
-                        return 0;
-                        });
+                        $isDipilih = session('periode_id') == $list->id;
+                        $isAktif = $list->is_active;
                         @endphp
 
-                        @foreach ($sorted as $list)
+                        @if($isAktif)
 
-                        <form method="POST" action="{{ route('setperiode') }}">
-                            @csrf
-                            <input type="hidden" name="periode_id" value="{{ $list->id }}">
+                        <span class="text-[10px] text-green-500 font-medium">
+                            Aktif Sistem
+                        </span>
 
-                            <button type="submit"
-                                class="w-full text-left px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-slate-700 flex justify-between items-center">
+                        @elseif($isDipilih)
 
-                                {{-- LEFT --}}
-                                <span class="text-slate-700 dark:text-white">
-                                    {{ $list->periode }}
-                                    {{ $list->semester->ket_semester ?? '' }}
-                                </span>
+                        <span class="text-[10px] text-blue-500 font-medium">
+                            Dipilih Sementara
+                        </span>
 
-                                {{-- RIGHT STATUS --}}
-                                <span>
-                                    @if(session('periode_id') == $list->id)
-                                    <span class="text-blue-500 text-xs">(Dipilih)</span>
-                                    @elseif($list->is_active)
-                                    <span class="text-green-500 text-xs">(Aktif)</span>
-                                    @endif
-                                </span>
+                        @endif
 
-                            </button>
-                        </form>
+                    </button>
 
-                        @endforeach
+                </form>
 
-                    </x-slot>
+                @endforeach
 
-                </div>
+            </x-slot>
 
-            </div>
         </x-dropdown>
-        @else
-        <div class="px-3 py-2 text-sm text-red-500 font-medium">
-            Database Offline
-        </div>
+
         @endif
 
-
         {{-- DARK MODE --}}
-        <x-button type="button" class="hidden md:inline-flex" iconOnly variant="secondary"
-            srText="Toggle dark mode" @click="toggleTheme">
-            <x-heroicon-o-moon x-show="!isDarkMode" class="w-6 h-6" />
-            <x-heroicon-o-sun x-show="isDarkMode" class="w-6 h-6" />
+        <x-button
+            type="button"
+            class="hidden md:inline-flex"
+            iconOnly
+            variant="secondary"
+            srText="Toggle dark mode"
+            @click="toggleTheme">
+
+            <x-heroicon-o-moon
+                x-show="!isDarkMode"
+                class="w-5 h-5" />
+
+            <x-heroicon-o-sun
+                x-show="isDarkMode"
+                class="w-5 h-5" />
         </x-button>
 
+        {{-- USER --}}
+        @if($user)
 
-        {{-- USER DROPDOWN --}}
-        @if($dbOnline && $user)
         <x-dropdown align="right" width="48">
+
             <x-slot name="trigger">
+
                 <button
-                    class="flex items-center p-2 text-sm font-medium text-gray-500 rounded-md hover:text-gray-700">
+                    class="flex items-center gap-2 px-3 py-2 text-sm border rounded-lg dark:border-slate-700">
 
-                    <div>{{ $user->name }}</div>
+                    {{ $user->name }}
 
-                    <div class="ml-1">
-                        <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd"
-                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                clip-rule="evenodd" />
-                        </svg>
-                    </div>
+                    <x-heroicon-o-chevron-down class="w-4 h-4" />
+
                 </button>
+
             </x-slot>
 
             <x-slot name="content">
-                <form method="POST" action="{{ route('logout') }}">
+
+                <form
+                    method="POST"
+                    action="{{ route('logout') }}">
+
                     @csrf
-                    <x-dropdown-link :href="route('logout')"
+
+                    <x-dropdown-link
+                        :href="route('logout')"
                         onclick="event.preventDefault(); this.closest('form').submit();">
+
                         Log Out
+
                     </x-dropdown-link>
+
                 </form>
+
             </x-slot>
+
         </x-dropdown>
+
         @endif
 
     </div>
+
 </nav>
 
+{{-- SWEET ALERT CONFIRM --}}
+<script>
+    document.querySelectorAll('.form-periode').forEach(form => {
 
-{{-- MOBILE BOTTOM BAR --}}
-<div class="fixed inset-x-0 bottom-0 flex items-center justify-between px-4 py-4 sm:px-6 transition-transform duration-500 bg-white md:hidden dark:bg-dark-eval-1"
-    :class="{
-        'translate-y-full': scrollingDown,
-        'translate-y-0': scrollingUp,
-    }">
+        form.addEventListener('submit', function(e) {
 
-    <x-button type="button" iconOnly variant="secondary" srText="Search">
-        <x-heroicon-o-search class="w-6 h-6" />
-    </x-button>
+            e.preventDefault();
 
-    @if($dbOnline && $user)
-    @role('super admin')
-    <a href="{{ route('dashboard') }}">
-        <x-application-logo class="w-10 h-10" />
-    </a>
-    @endrole
+            Swal.fire({
+                title: 'Ganti Periode?',
+                text: 'Pastikan periode yang dipilih sudah benar.',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, Pilih',
+                cancelButtonText: 'Batal',
+                reverseButtons: true,
+                customClass: {
+                    popup: 'rounded-2xl',
+                    confirmButton: 'bg-blue-600 text-white px-4 py-2 rounded-lg mx-1',
+                    cancelButton: 'bg-gray-200 text-gray-700 px-4 py-2 rounded-lg mx-1',
+                },
+                buttonsStyling: false
+            }).then((result) => {
 
-    @role('siswa')
-    <a href="{{ route('userdashboard') }}">
-        <x-application-logo class="w-10 h-10" />
-    </a>
-    @endrole
-    @endif
+                if (result.isConfirmed) {
+                    form.submit();
+                }
 
-    <x-button type="button" iconOnly variant="secondary"
-        srText="Open main menu"
-        @click="isSidebarOpen = !isSidebarOpen">
-        <x-heroicon-o-menu x-show="!isSidebarOpen" class="w-6 h-6" />
-        <x-heroicon-o-x x-show="isSidebarOpen" class="w-6 h-6" />
-    </x-button>
-</div>
+            });
+
+        });
+
+    });
+</script>

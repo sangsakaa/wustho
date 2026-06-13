@@ -2,246 +2,420 @@
     <x-slot name="header">
         @section('title', ' | Periode')
 
-        <div class="flex items-center justify-between">
-            <div>
-                <h2 class="font-bold text-2xl text-slate-800">
-                    Pengaturan Periode
-                </h2>
-                <p class="text-sm text-slate-500">
-                    Manajemen periode akademik dan semester
-                </p>
-            </div>
+        <div class="flex flex-col gap-1">
+            <h2 class="text-2xl font-bold text-slate-800 dark:text-white">
+                Pengaturan Periode
+            </h2>
+
+            <p class="text-sm text-slate-500 dark:text-slate-400">
+                Manajemen periode akademik dan semester sistem
+            </p>
         </div>
     </x-slot>
 
-    {{-- SWEET ALERT CDN --}}
+    {{-- SWEET ALERT --}}
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <div class="p-4 space-y-4">
+    <div class="p-4 space-y-5">
 
-        {{-- NAVIGATION --}}
-        <div class="bg-white shadow-sm border border-slate-200 rounded-2xl p-4">
-            <div class="flex gap-2 text-sm">
-                <a href="{{ url('/periode') }}"
-                    class="px-4 py-2 bg-blue-600 text-white rounded-xl hover:bg-blue-700 transition">
-                    Periode
-                </a>
+        {{-- TOP NAV --}}
 
-                <a href="{{ url('/pengaturan') }}"
-                    class="px-4 py-2 bg-slate-100 text-slate-700 rounded-xl hover:bg-slate-200 transition">
-                    Pengaturan
-                </a>
+
+        {{-- MAIN --}}
+        <div class="bg-white dark:bg-dark-eval-1 border border-slate-200 dark:border-slate-700 rounded-3xl shadow-sm overflow-hidden">
+
+            {{-- HEADER --}}
+            <div class="p-6 border-b border-slate-200 dark:border-slate-700">
+
+                <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+
+                    {{-- LEFT --}}
+                    <div>
+
+                        <h3 class="text-lg font-semibold text-slate-800 dark:text-white">
+                            Data Periode Akademik
+                        </h3>
+
+                        <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">
+                            Kelola periode aktif, generate otomatis, dan status semester.
+                        </p>
+
+                    </div>
+
+                    {{-- RIGHT --}}
+                    <form id="generateForm"
+                        action="{{ url('/periode/generate') }}"
+                        method="POST">
+
+                        @csrf
+
+                        <button
+                            type="button"
+                            onclick="confirmGenerate()"
+                            class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-medium shadow-sm transition">
+
+                            <span>+</span>
+
+                            <span>Generate Periode</span>
+
+                        </button>
+
+                    </form>
+
+                </div>
+
             </div>
-        </div>
 
-        {{-- MAIN CARD --}}
-        <div class="bg-white shadow-sm border border-slate-200 rounded-2xl p-5 space-y-5">
-
+            {{-- INFO --}}
             @php
             $last = $periode->first();
             @endphp
 
-            {{-- INFO --}}
             @if($last)
-            <div class="rounded-xl border border-amber-300 bg-amber-50 p-4">
-                <div class="flex gap-3">
-                    <div class="text-xl">⚠️</div>
-                    <div>
-                        <h3 class="font-semibold text-amber-800">
-                            Informasi Generate Periode
-                        </h3>
 
-                        <p class="text-sm text-amber-700 mt-1">
-                            Generate dilakukan berurutan:
-                            <span class="font-semibold">Ganjil → Genap → Tahun Baru</span>
-                        </p>
+            <div class="px-6 pt-5">
 
-                        <p class="text-sm text-amber-700 mt-1">
-                            Periode terakhir:
-                            <span class="font-semibold">
-                                {{ $last->periode }}
-                                ({{ $last->semester->ket_semester }})
-                            </span>
-                        </p>
+                <div class="rounded-2xl border border-amber-200 bg-amber-50 dark:bg-amber-500/10 dark:border-amber-500/20 p-4">
+
+                    <div class="flex items-start gap-3">
+
+                        <div class="text-xl">
+                            ⚠️
+                        </div>
+
+                        <div class="space-y-1">
+
+                            <h4 class="font-semibold text-amber-800 dark:text-amber-300">
+                                Informasi Generate
+                            </h4>
+
+                            <p class="text-sm text-amber-700 dark:text-amber-200">
+                                Urutan generate:
+                                <span class="font-semibold">
+                                    Ganjil → Genap → Tahun Baru
+                                </span>
+                            </p>
+
+                            <p class="text-sm text-amber-700 dark:text-amber-200">
+                                Periode terakhir:
+                                <span class="font-semibold">
+                                    {{ $last->periode }}
+                                    -
+                                    {{ $last->semester->ket_semester }}
+                                </span>
+                            </p>
+
+                        </div>
+
                     </div>
+
                 </div>
+
             </div>
+
             @endif
-
-            {{-- BUTTON GENERATE --}}
-            <div class="bg-slate-50 rounded-xl border p-4">
-                <form id="generateForm" action="{{ url('/periode/generate') }}" method="POST">
-                    @csrf
-
-                    <button type="button"
-                        onclick="confirmGenerate()"
-                        class="px-4 py-2 bg-emerald-600 text-white rounded-xl hover:bg-emerald-700 text-sm font-medium shadow">
-                        + Generate Periode Otomatis
-                    </button>
-                </form>
-            </div>
 
             {{-- TABLE --}}
             <div class="overflow-x-auto">
-                <table class="w-full text-sm border border-slate-200 rounded-xl overflow-hidden">
-                    <thead class="bg-slate-100 text-slate-700 uppercase text-xs">
-                        <tr>
-                            <th class="p-3 border">No</th>
-                            <th class="p-3 border">Periode</th>
-                            <th class="p-3 border">Semester</th>
-                            <th class="p-3 border">Hijriyah</th>
-                            <th class="p-3 border">Status</th>
-                            <th class="p-3 border">Aksi</th>
+
+                <table class="w-full">
+
+                    <thead class="bg-slate-50 dark:bg-slate-800/50">
+
+                        <tr class="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">
+
+                            <th class="px-6 py-4 text-left">
+                                Periode
+                            </th>
+
+                            <th class="px-6 py-4 text-center">
+                                Semester
+                            </th>
+
+                            <th class="px-6 py-4 text-center">
+                                Hijriyah
+                            </th>
+
+                            <th class="px-6 py-4 text-center">
+                                Status
+                            </th>
+
+                            <th class="px-6 py-4 text-center">
+                                Aksi
+                            </th>
+
                         </tr>
+
                     </thead>
 
-                    <tbody>
+                    <tbody class="divide-y divide-slate-100 dark:divide-slate-700">
+
                         @forelse($periode as $list)
-                        <tr class="hover:bg-slate-50">
 
-                            <td class="border text-center">{{ $loop->iteration }}</td>
+                        @php
+                        $semester = strtolower($list->semester->ket_semester ?? '');
 
-                            <td class="border text-center font-medium">
-                                <div class="flex items-center justify-center gap-2">
-                                    <span>{{ $list->periode }}</span>
+                        $badge = match($semester) {
+                        'ganjil' => 'bg-blue-100 text-blue-700 dark:bg-blue-500/20 dark:text-blue-300',
+                        'genap' => 'bg-green-100 text-green-700 dark:bg-green-500/20 dark:text-green-300',
+                        'pendek' => 'bg-orange-100 text-orange-700 dark:bg-orange-500/20 dark:text-orange-300',
+                        default => 'bg-slate-100 text-slate-700',
+                        };
 
-                                    @if(strtolower($list->semester->ket_semester) == 'ganjil')
-                                    <span class="px-2 py-1 text-xs rounded-full bg-blue-100 text-blue-700 font-medium">
-                                        Ganjil
-                                    </span>
-                                    @else
-                                    <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-700 font-medium">
-                                        Genap
-                                    </span>
-                                    @endif
+                        $totalRelasi =
+                        $list->kelasmi_count +
+                        $list->asramasiswa_count +
+                        $list->lulusan_count +
+                        $list->nominasi_count;
+                        @endphp
+
+                        <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition">
+
+                            {{-- PERIODE --}}
+                            <td class="px-6 py-4">
+
+                                <div class="flex items-center gap-3">
+
+                                    <div>
+
+                                        <div class="font-semibold text-slate-800 dark:text-white">
+                                            {{ $list->periode }}
+                                        </div>
+
+                                        <div class="mt-1">
+
+                                            <span class="px-2.5 py-1 rounded-full text-xs font-medium {{ $badge }}">
+                                                {{ $list->semester->ket_semester }}
+                                            </span>
+
+                                        </div>
+
+                                    </div>
+
                                 </div>
+
                             </td>
 
-                            <td class="border text-center">
-                                {{ $list->semester->semester }}
+                            {{-- SEMESTER --}}
+                            <td class="px-6 py-4 text-center">
+
+                                <span class="text-slate-700 dark:text-slate-200">
+                                    {{ $list->semester->semester }}
+                                </span>
+
                             </td>
 
-                            <td class="border text-center">
-                                {{ $list->tahun_hijriyah }}
+                            {{-- HIJRIYAH --}}
+                            <td class="px-6 py-4 text-center">
+
+                                <span class="text-slate-700 dark:text-slate-200">
+                                    {{ $list->tahun_hijriyah }}
+                                </span>
+
                             </td>
 
                             {{-- STATUS --}}
-                            <td class="border text-center">
+                            <td class="px-6 py-4 text-center">
+
                                 @if($list->is_active)
-                                <span class="px-3 py-1 bg-green-500 text-white rounded-lg text-xs">
+
+                                <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-100 text-green-700 dark:bg-green-500/20 dark:text-green-300 text-xs font-semibold">
+
+                                    <span class="w-2 h-2 rounded-full bg-green-500"></span>
+
                                     Aktif
+
                                 </span>
+
                                 @else
-                                <form action="{{ url('/periode/aktifkan/'.$list->id) }}" method="POST">
+
+                                <form
+                                    id="aktifForm{{ $list->id }}"
+                                    action="{{ url('/periode/aktifkan/'.$list->id) }}"
+                                    method="POST">
+
                                     @csrf
+
                                     <button
-                                        class="px-3 py-1 bg-slate-400 text-white rounded-lg text-xs hover:bg-blue-500 transition">
+                                        type="button"
+                                        onclick="confirmAktif({{ $list->id }})"
+                                        class="px-3 py-1.5 rounded-xl bg-slate-200 hover:bg-blue-500 hover:text-white text-slate-700 text-xs font-medium transition">
+
                                         Aktifkan
+
                                     </button>
+
                                 </form>
+
                                 @endif
+
                             </td>
 
                             {{-- AKSI --}}
-                            <td class="border px-3 py-2">
-                                <div class="flex justify-center gap-2 flex-wrap">
+                            <td class="px-6 py-4">
+
+                                <div class="flex items-center justify-center gap-2 flex-wrap">
 
                                     <a href="{{ url('/periode/' . $list->id) }}"
-                                        class="px-3 py-1 bg-blue-500 text-white rounded-lg hover:bg-blue-600 text-xs transition">
+                                        class="px-3 py-1.5 rounded-xl bg-blue-500 hover:bg-blue-600 text-white text-xs font-medium transition">
+
                                         Detail
+
                                     </a>
 
-                                    @php
-                                    $totalRelasi =
-                                    $list->kelasmi_count +
-                                    $list->asramasiswa_count +
-                                    $list->lulusan_count +
-                                    $list->nominasi_count;
-                                    @endphp
-
                                     @if($totalRelasi > 0)
-                                    <button disabled
-                                        class="px-3 py-1 bg-slate-400 text-white rounded-lg text-xs cursor-not-allowed opacity-70">
+
+                                    <span
+                                        class="px-3 py-1.5 rounded-xl bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 text-xs font-medium">
+
                                         Dipakai ({{ $totalRelasi }})
-                                    </button>
+
+                                    </span>
+
                                     @else
-                                    <form id="deleteForm{{ $list->id }}"
+
+                                    <form
+                                        id="deleteForm{{ $list->id }}"
                                         action="{{ url('/periode/' . $list->id) }}"
                                         method="POST">
+
                                         @csrf
                                         @method('DELETE')
 
-                                        <button type="button"
+                                        <button
+                                            type="button"
                                             onclick="confirmDelete({{ $list->id }})"
-                                            class="px-3 py-1 bg-red-500 text-white rounded-lg hover:bg-red-600 text-xs transition">
+                                            class="px-3 py-1.5 rounded-xl bg-red-500 hover:bg-red-600 text-white text-xs font-medium transition">
+
                                             Hapus
+
                                         </button>
+
                                     </form>
+
                                     @endif
+
                                 </div>
+
                             </td>
+
                         </tr>
+
                         @empty
+
                         <tr>
-                            <td colspan="6" class="text-center py-6 text-slate-500">
-                                Belum ada data periode
+
+                            <td colspan="5" class="py-14 text-center">
+
+                                <div class="space-y-2">
+
+                                    <div class="text-5xl">
+                                        📚
+                                    </div>
+
+                                    <div class="font-medium text-slate-700 dark:text-slate-200">
+                                        Belum ada data periode
+                                    </div>
+
+                                    <div class="text-sm text-slate-500">
+                                        Silakan generate periode terlebih dahulu
+                                    </div>
+
+                                </div>
+
                             </td>
+
                         </tr>
+
                         @endforelse
+
                     </tbody>
+
                 </table>
+
             </div>
+
         </div>
+
     </div>
 
+    {{-- SWEET ALERT --}}
     <script>
-        function confirmGenerate() {
-            Swal.fire({
-                title: 'Generate Periode?',
-                text: 'Periode baru akan dibuat sesuai urutan semester.',
-                icon: 'question',
-                showCancelButton: true,
-                confirmButtonText: 'Ya, Generate',
-                cancelButtonText: 'Batal',
+        function swalConfirm(config, callback) {
 
+            Swal.fire({
+                ...config,
+                showCancelButton: true,
+                reverseButtons: true,
                 buttonsStyling: false,
 
                 customClass: {
-                    confirmButton: 'bg-emerald-600 hover:bg-emerald-700 text-white font-medium px-4 py-2 rounded-lg mr-2',
-                    cancelButton: 'bg-slate-500 hover:bg-slate-600 text-white font-medium px-4 py-2 rounded-lg'
+                    popup: 'rounded-3xl',
+                    confirmButton: 'bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-xl font-medium mr-2',
+                    cancelButton: 'bg-slate-200 hover:bg-slate-300 text-slate-700 px-4 py-2 rounded-xl font-medium'
                 }
+
             }).then((result) => {
+
                 if (result.isConfirmed) {
-                    document.getElementById('generateForm').submit();
+                    callback();
                 }
+
             });
         }
 
+        function confirmGenerate() {
+
+            swalConfirm({
+                title: 'Generate Periode?',
+                text: 'Periode baru akan dibuat otomatis.',
+                icon: 'question',
+                confirmButtonText: 'Ya, Generate',
+                cancelButtonText: 'Batal',
+            }, () => {
+
+                document.getElementById('generateForm').submit();
+
+            });
+
+        }
+
         function confirmDelete(id) {
-            Swal.fire({
+
+            swalConfirm({
                 title: 'Hapus Periode?',
                 text: 'Data yang dihapus tidak bisa dikembalikan.',
                 icon: 'warning',
-                showCancelButton: true,
                 confirmButtonText: 'Ya, Hapus',
                 cancelButtonText: 'Batal',
+            }, () => {
 
-                buttonsStyling: false,
+                document.getElementById('deleteForm' + id).submit();
 
-                customClass: {
-                    confirmButton: 'bg-red-600 hover:bg-red-700 text-white font-medium px-4 py-2 rounded-lg mr-2',
-                    cancelButton: 'bg-slate-500 hover:bg-slate-600 text-white font-medium px-4 py-2 rounded-lg'
-                }
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    document.getElementById('deleteForm' + id).submit();
-                }
             });
+
+        }
+
+        function confirmAktif(id) {
+
+            swalConfirm({
+                title: 'Aktifkan Periode?',
+                text: 'Periode sistem akan diganti.',
+                icon: 'question',
+                confirmButtonText: 'Ya, Aktifkan',
+                cancelButtonText: 'Batal',
+            }, () => {
+
+                document.getElementById('aktifForm' + id).submit();
+
+            });
+
         }
     </script>
 
     {{-- SUCCESS --}}
     @if(session('success'))
+
     <script>
         Swal.fire({
             toast: true,
@@ -249,31 +423,32 @@
             icon: 'success',
             title: '{{ session("success") }}',
             showConfirmButton: false,
-            timer: 4000,
+            timer: 3500,
             timerProgressBar: true
         });
     </script>
+
     @endif
 
     {{-- ERROR --}}
     @if(session('error'))
+
     <script>
         Swal.fire({
             icon: 'error',
             title: 'Oops...',
             text: '{{ session("error") }}',
+            confirmButtonText: 'Tutup',
 
             buttonsStyling: false,
 
             customClass: {
-                popup: 'rounded-2xl shadow-xl',
-                title: 'text-red-600 text-xl font-bold',
-                htmlContainer: 'text-slate-600',
-                confirmButton: 'bg-red-600 hover:bg-red-700 text-white font-medium px-4 py-2 rounded-lg'
-            },
-
-            confirmButtonText: 'Tutup'
+                popup: 'rounded-3xl',
+                confirmButton: 'bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-xl font-medium'
+            }
         });
     </script>
+
     @endif
+
 </x-app-layout>

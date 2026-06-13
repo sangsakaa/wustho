@@ -219,4 +219,436 @@ class KelasmiController extends Controller
     {
         return view('kelas_mi.rekap_kelas_mi');
     }
+    public function generatePeriodeBerikutnya(Request $request)
+    {
+        try {
+
+            $totalKelas = 0;
+            $totalPeserta = 0;
+            $totalSudahAda = 0;
+            $totalLulus = 0;
+
+            $periodeTujuan = null;
+
+            DB::transaction(function () use (
+                $request,
+                &$periodeTujuan,
+                &$totalKelas,
+                &$totalPeserta,
+                &$totalSudahAda,
+                &$totalLulus
+            ) {
+
+                /*
+            |--------------------------------------------------------------------------
+            | PERIODE AKTIF
+            |--------------------------------------------------------------------------
+            */
+                $periodeAktif = Periode::where('is_active', 1)->first();
+
+                if (!$periodeAktif) {
+                    throw new \Exception('Periode aktif tidak ditemukan.');
+                }
+
+                /*
+            |--------------------------------------------------------------------------
+            | MODE GENERATE
+            |--------------------------------------------------------------------------
+            */
+                $mode = $request->mode ?? 'auto';
+
+                if ($mode === 'custom') {
+
+                    $periodeTujuan = Periode::find($request->periode_tujuan);
+                } else {
+
+                    /*
+                |--------------------------------------------------------------------------
+                | AUTO MODE
+                |--------------------------------------------------------------------------
+                */
+                    if ($periodeAktif->semester_id == 1) {
+
+                        $periodeTujuan = Periode::where('periode', $periodeAktif->periode)
+                            ->where('semester_id', 2)
+                            ->first();
+                    } else {
+
+                        [$tahunAwal, $tahunAkhir] = explode('/', $periodeAktif->periode);
+
+                        $periodeBaru =
+                            ((int)$tahunAwal + 1) .
+                            '/' .
+                            ((int)$tahunAkhir + 1);
+
+                        $periodeTujuan = Periode::where('periode', $periodeBaru)
+                            ->where('semester_id', 1)
+                            ->first();
+                    }
+                }
+
+                /*
+            |--------------------------------------------------------------------------
+            | VALIDASI PERIODE
+            |--------------------------------------------------------------------------
+            */
+                if (!$periodeTujuan) {
+                    throw new \Exception('Periode tujuan tidak ditemukan.');
+                }
+
+                if ($periodeAktif->id == $periodeTujuan->id) {
+                    throw new \Exception('Periode tujuan tidak boleh sama.');
+                }
+
+                /*
+            |--------------------------------------------------------------------------
+            | CEK GENERATE
+            |--------------------------------------------------------------------------
+            */
+                $kelasSudahAda = Kelasmi::where(
+                    'periode_id',
+                    $periodeTujuan->id
+                )->exists();
+
+                if ($kelasSudahAda) {
+                    throw new \Exception(
+                        'Generate sudah pernah dilakukan pada periode tujuan.'
+                    );
+                }
+
+                /*
+            |--------------------------------------------------------------------------
+            | DATA KELAS LAMA
+            |--------------------------------------------------------------------------
+            */
+                $kelasLamaList = Kelasmi::with([
+                    'pesertakelas',
+                    'kelas'
+                ])
+                    ->where('periode_id', $periodeAktif->id)
+                    ->get();
+
+                if ($kelasLamaList->isEmpty()) {
+                    throw new \Exception(
+                        'Data kelas periode aktif kosong.'
+                    );
+                }
+
+                /*
+            |--------------------------------------------------------------------------
+            | MAP KENAIKAN KELAS
+            |--------------------------------------------------------------------------
+            */
+                $mapKelas = [
+                    '1' => '2',
+                    '2' => '3',
+                    '3' => null,
+                ];
+
+                /*
+            |--------------------------------------------------------------------------
+            | LOOP KELAS
+            |--------------------------------------------------------------------------
+            */
+                foreach ($kelasLamaList as $kelasLama) {
+
+                    /*
+                |--------------------------------------------------------------------------
+                | VALIDASI RELASI KELAS
+                |--------------------------------------------------------------------------
+                */
+                    if (!$kelasLama->kelas) {
+                        continue;
+                    }
+
+                    $kelasSekarang = (string) $kelasLama->kelas->kelas;
+
+                    $kelasNaik = $mapKelas[$kelasSekarang] ?? null;
+
+                    /*
+                |--------------------------------------------------------------------------
+                | KELAS AKHIR = LULUS
+                |--------------------------------------------------------------------------
+                */
+                    if (!$kelasNaik) {
+
+                        $totalLulus += $kelasLama->pesertakelas->count();
+
+                        continue;
+                    }
+
+                    /*
+                |--------------------------------------------------------------------------
+                | MASTER KELAS TUJUAN
+                |--------------------------------------------------------------------------
+                */
+                    $kelasBaruMaster = Kelas::where(
+                        'kelas',
+                        $kelasNaik
+                    )->first();
+
+                    if (!$kelasBaruMaster) {
+                        continue;
+                    }
+
+                    /*
+                |--------------------------------------------------------------------------
+                | AMBIL ROMBEL
+                |--------------------------------------------------------------------------
+                */
+                    preg_match('/[A-Z]+$/', $kelasLama->nama_kelas, $match);
+
+                    $rombel = $match[0] ?? '';
+
+                    /*
+                |--------------------------------------------------------------------------
+                | NAMA KELAS BARU
+                |--------------------------------------------------------------------------
+                */
+                    $namaKelasBaru = $kelasNaik . $rombel;
+
+                    /*
+                |--------------------------------------------------------------------------
+                | CREATE KELAS BARU
+                |--------------------------------------------------------------------------
+                */
+                    $kelasBaru = Kelasmi::create([
+                        'kelas_id'   => $kelasBaruMaster->id,
+                        'nama_kelas' => $namaKelasBaru,
+                        'jenjang'    => $kelasLama->jenjang,
+                        'kuota'      => $kelasLama->kuota,
+                        'periode_id' => $periodeTujuan->id,
+                    ]);
+
+                    $totalKelas++;
+
+                    /*
+                |--------------------------------------------------------------------------
+                | COPY PESERTA
+                |--------------------------------------------------------------------------
+                */
+                    foreach ($kelasLama->pesertakelas as $peserta) {
+
+                        /*
+                    |--------------------------------------------------------------------------
+                    | CEK DUPLIKAT SISWA
+                    |--------------------------------------------------------------------------
+                    */
+                        $sudahAda = Pesertakelas::where(
+                            'siswa_id',
+                            $peserta->siswa_id
+                        )
+                            ->whereHas('kelasmi', function ($q) use ($periodeTujuan) {
+
+                                $q->where(
+                                    'periode_id',
+                                    $periodeTujuan->id
+                                );
+                            })
+                            ->exists();
+
+                        if ($sudahAda) {
+
+                            $totalSudahAda++;
+
+                            continue;
+                        }
+
+                        /*
+                    |--------------------------------------------------------------------------
+                    | INSERT PESERTA
+                    |--------------------------------------------------------------------------
+                    */
+                        Pesertakelas::create([
+                            'siswa_id'   => $peserta->siswa_id,
+                            'kelasmi_id' => $kelasBaru->id,
+                        ]);
+
+                        $totalPeserta++;
+                    }
+                }
+            });
+
+            /*
+        |--------------------------------------------------------------------------
+        | SUCCESS MESSAGE
+        |--------------------------------------------------------------------------
+        */
+            return back()->with(
+                'success',
+                'Generate berhasil ke periode ' .
+                    $periodeTujuan->periode .
+                    '. Kelas dibuat: ' . $totalKelas .
+                    ', Peserta dipindahkan: ' . $totalPeserta .
+                    ', Sudah ada: ' . $totalSudahAda .
+                    ', Lulus: ' . $totalLulus
+            );
+        } catch (\Throwable $e) {
+
+            return back()->with(
+                'error',
+                $e->getMessage()
+            );
+        }
+    }
+    public function generateKelasSatu(Request $request)
+    {
+        try {
+
+            $totalKelas = 0;
+
+            $periodeTujuan = null;
+
+            DB::transaction(function () use (
+                $request,
+                &$periodeTujuan,
+                &$totalKelas
+            ) {
+
+                /*
+            |--------------------------------------------------------------------------
+            | PERIODE AKTIF
+            |--------------------------------------------------------------------------
+            */
+                $periodeAktif = Periode::where('is_active', 1)->first();
+
+                if (!$periodeAktif) {
+                    throw new \Exception('Periode aktif tidak ditemukan.');
+                }
+
+                /*
+            |--------------------------------------------------------------------------
+            | MODE GENERATE
+            |--------------------------------------------------------------------------
+            */
+                $mode = $request->mode ?? 'auto';
+
+                if ($mode === 'custom') {
+
+                    $periodeTujuan = Periode::find($request->periode_tujuan);
+                } else {
+
+                    /*
+                |--------------------------------------------------------------------------
+                | AUTO MODE
+                |--------------------------------------------------------------------------
+                */
+                    if ($periodeAktif->semester_id == 1) {
+
+                        $periodeTujuan = Periode::where('periode', $periodeAktif->periode)
+                            ->where('semester_id', 2)
+                            ->first();
+                    } else {
+
+                        [$tahunAwal, $tahunAkhir] = explode('/', $periodeAktif->periode);
+
+                        $periodeBaru =
+                            ((int)$tahunAwal + 1) .
+                            '/' .
+                            ((int)$tahunAkhir + 1);
+
+                        $periodeTujuan = Periode::where('periode', $periodeBaru)
+                            ->where('semester_id', 1)
+                            ->first();
+                    }
+                }
+
+                /*
+            |--------------------------------------------------------------------------
+            | VALIDASI PERIODE
+            |--------------------------------------------------------------------------
+            */
+                if (!$periodeTujuan) {
+                    throw new \Exception('Periode tujuan tidak ditemukan.');
+                }
+
+                if ($periodeAktif->id == $periodeTujuan->id) {
+                    throw new \Exception('Periode tujuan tidak boleh sama.');
+                }
+
+                /*
+            |--------------------------------------------------------------------------
+            | AMBIL MASTER KELAS 1
+            |--------------------------------------------------------------------------
+            */
+                $kelasSatuMaster = Kelas::where('kelas', '1')->first();
+
+                if (!$kelasSatuMaster) {
+                    throw new \Exception('Master kelas 1 tidak ditemukan.');
+                }
+
+                /*
+            |--------------------------------------------------------------------------
+            | AMBIL KELAS 1 PERIODE LAMA
+            |--------------------------------------------------------------------------
+            */
+                $kelasSatuLama = Kelasmi::with('kelas')
+                    ->where('periode_id', $periodeAktif->id)
+                    ->whereHas('kelas', function ($q) {
+                        $q->where('kelas', '1');
+                    })
+                    ->get();
+
+                if ($kelasSatuLama->isEmpty()) {
+                    throw new \Exception('Kelas 1 periode aktif tidak ditemukan.');
+                }
+
+                /*
+            |--------------------------------------------------------------------------
+            | LOOP KELAS
+            |--------------------------------------------------------------------------
+            */
+                foreach ($kelasSatuLama as $kelasLama) {
+
+                    /*
+                |--------------------------------------------------------------------------
+                | CEK DUPLIKAT KELAS
+                |--------------------------------------------------------------------------
+                */
+                    $sudahAdaKelas = Kelasmi::where(
+                        'periode_id',
+                        $periodeTujuan->id
+                    )
+                        ->where('nama_kelas', $kelasLama->nama_kelas)
+                        ->exists();
+
+                    if ($sudahAdaKelas) {
+                        continue;
+                    }
+
+                    /*
+                |--------------------------------------------------------------------------
+                | CREATE KELAS BARU TANPA PESERTA
+                |--------------------------------------------------------------------------
+                */
+                    Kelasmi::create([
+                        'kelas_id'   => $kelasSatuMaster->id,
+                        'nama_kelas' => $kelasLama->nama_kelas,
+                        'jenjang'    => $kelasLama->jenjang,
+                        'kuota'      => $kelasLama->kuota,
+                        'periode_id' => $periodeTujuan->id,
+                    ]);
+
+                    $totalKelas++;
+                }
+            });
+
+            /*
+        |--------------------------------------------------------------------------
+        | SUCCESS
+        |--------------------------------------------------------------------------
+        */
+            return back()->with(
+                'success',
+                'Generate kelas 1 berhasil. Total kelas dibuat: ' .
+                    $totalKelas
+            );
+        } catch (\Throwable $e) {
+
+            return back()->with(
+                'error',
+                $e->getMessage()
+            );
+        }
+    }
 }

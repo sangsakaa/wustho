@@ -155,31 +155,38 @@
                                                 value="{{ $key }}"
                                                 {{ $selected ? 'checked' : '' }}>
 
-                                            <span class="px-3 py-2 text-xs rounded-lg border cursor-pointer
-                                                transition
-                                                {{ !$isSaved && $key == 'hadir'
-                                                    ? 'bg-red-100 text-red-700 border-red-300'
-                                                    : '' }}
+                                            <span class="
+    px-3 py-2 text-xs rounded-lg border cursor-pointer transition font-medium
 
-                                                {{ $isSaved && $key == 'hadir' && $selected
-                                                    ? 'bg-green-600 text-white border-green-600'
-                                                    : '' }}
+    border-gray-300 text-gray-600 bg-white
+    peer-checked:text-white
 
-                                                {{ $selected && $key == 'izin'
-                                                    ? 'bg-blue-600 text-white border-blue-600'
-                                                    : '' }}
+    {{-- WARNA BERDASARKAN STATUS --}}
+    {{ $key == 'hadir' ? '
+        peer-checked:bg-green-600
+        peer-checked:border-green-600
+    ' : '' }}
 
-                                                {{ $selected && $key == 'sakit'
-                                                    ? 'bg-yellow-500 text-white border-yellow-500'
-                                                    : '' }}
+    {{ $key == 'izin' ? '
+        peer-checked:bg-blue-600
+        peer-checked:border-blue-600
+    ' : '' }}
 
-                                                {{ $selected && $key == 'alfa'
-                                                    ? 'bg-red-600 text-white border-red-600'
-                                                    : '' }}
+    {{ $key == 'sakit' ? '
+        peer-checked:bg-yellow-500
+        peer-checked:border-yellow-500
+    ' : '' }}
 
-                                                {{ !$selected
-                                                    ? 'border-gray-300 text-gray-600'
-                                                    : '' }}">
+    {{ $key == 'alfa' ? '
+        peer-checked:bg-red-600
+        peer-checked:border-red-600
+    ' : '' }}
+
+    {{-- DEFAULT BELUM DISIMPAN --}}
+    {{ !$isSaved && $key == 'hadir' && $selected
+        ? 'bg-red-100 text-red-700 border-red-300'
+        : '' }}
+">
                                                 {{ $label }}
                                             </span>
                                         </label>

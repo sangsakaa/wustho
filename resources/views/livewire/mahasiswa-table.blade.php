@@ -157,6 +157,7 @@
                             </button>
                         </th>
                         <th class="px-4 py-3.5 text-center">JK</th>
+                        <th class="px-4 py-3.5 text-center">Status</th>
                         <th class="px-4 py-3.5 text-center">Asrama</th>
                         <th class="px-4 py-3.5 text-center">Kelas</th>
                         <th class="px-4 py-3.5 text-center">Jenjang</th>
@@ -192,6 +193,11 @@
                         <td class="px-4 py-3.5 text-center">
                             <span class="text-xs {{ $peserta->jenis_kelamin == 'L' ? 'text-blue-600' : 'text-pink-600' }}">
                                 {{ $peserta->jenis_kelamin }}
+                            </span>
+                        </td>
+                        <td class="px-4 py-3.5 text-center">
+                            <span class="text-xs text-slate-600">
+                                {{ $peserta->status_siswa }}
                             </span>
                         </td>
 

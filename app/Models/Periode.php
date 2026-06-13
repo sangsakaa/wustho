@@ -16,6 +16,10 @@ class Periode extends Model
         'tahun_hijriyah',
         'is_active', // 🔥 tambahkan ini
     ];
+    protected $casts = [
+        'is_active' => 'boolean',
+        'tanggal_mulai' => 'date',
+    ];
 
     public function semester()
     {
@@ -55,6 +59,34 @@ class Periode extends Model
     public function nominasi()
     {
         return $this->hasMany(Nominasi::class, 'periode_id');
+    }
+    public function scopeActive($query)
+    {
+        return $query->where('is_active', true);
+    }
+    protected static function booted()
+    {
+        static::saving(function ($model) {
+
+            if ($model->is_active) {
+
+                self::where('id', '!=', $model->id)
+                    ->update([
+                        'is_active' => false
+                    ]);
+            }
+        });
+    }
+    public static function getNavbarPeriode()
+    {
+        return self::with('semester')
+            ->select([
+                'id',
+                'periode',
+                'semester_id',
+                'is_active'
+            ])
+            ->get();
     }
 }
 
