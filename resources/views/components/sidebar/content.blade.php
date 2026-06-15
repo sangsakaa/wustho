@@ -38,6 +38,15 @@
             <x-icons.usercircle class="w-5 h-5" />
         </x-slot>
     </x-sidebar.link>
+    <x-sidebar.link
+        title="Nilai Per Guru"
+        href="/nilaiperguru"
+        :isActive="request()->is('nilaiperguru')">
+
+        <x-slot name="icon">
+            <x-icons.usercircle class="w-5 h-5" />
+        </x-slot>
+    </x-sidebar.link>
     @endrole
 
 
