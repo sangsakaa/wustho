@@ -12,10 +12,7 @@
                 </p>
             </div>
 
-            <button
-                class="px-4 py-2 rounded-xl bg-blue-600 text-white text-sm font-medium shadow-sm hover:bg-blue-700 transition">
-                Kelola Siswa
-            </button>
+
         </div>
     </x-slot>
 

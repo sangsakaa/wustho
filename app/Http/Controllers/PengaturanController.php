@@ -418,8 +418,6 @@ class PengaturanController extends Controller
     }
     public function generatePeriode()
     {
-        $tahunSekarang = now()->year;
-
         $lastPeriode = Periode::with('semester')
             ->orderByDesc('periode')
             ->orderByDesc('semester_id')
@@ -429,44 +427,39 @@ class PengaturanController extends Controller
             return back()->with('error', 'Data periode terakhir belum ada.');
         }
 
-        $tahunAwal = (int) substr($lastPeriode->periode, 0, 4);
-        $tahunAkhir = (int) substr($lastPeriode->periode, 5, 4);
-        $tahunHijriyah = (int) $lastPeriode->tahun_hijriyah;
-
         $semesterGanjil = Semester::where('ket_semester', 'Ganjil')->first();
-        $semesterGenap = Semester::where('ket_semester', 'Genap')->first();
+        $semesterGenap  = Semester::where('ket_semester', 'Genap')->first();
 
         if (!$semesterGanjil || !$semesterGenap) {
-            return back()->with('error', 'Data semester Ganjil/Genap belum tersedia.');
-        }
-
-        /**
-         * Cek tahun:
-         * contoh sekarang 2026,
-         * hanya boleh generate 2026/2027
-         */
-        if ($tahunAwal > $tahunSekarang) {
             return back()->with(
                 'error',
-                "Belum waktunya membuat periode {$tahunAwal}/{$tahunAkhir}"
+                'Data semester Ganjil/Genap belum tersedia.'
             );
         }
+
+        $tahunAwal  = (int) substr($lastPeriode->periode, 0, 4);
+        $tahunAkhir = (int) substr($lastPeriode->periode, 5, 4);
 
         DB::beginTransaction();
 
         try {
+
             /**
-             * CASE 1:
-             * terakhir GANJIL -> buat GENAP periode yang sama
+             * TERAKHIR GANJIL
+             * 2025/2026 Ganjil
+             * =>
+             * 2025/2026 Genap
+             * tanggal_mulai = 2026-01-01
              */
             if (strtolower($lastPeriode->semester->ket_semester) === 'ganjil') {
 
-                $existsGenap = Periode::where('periode', $lastPeriode->periode)
+                $exists = Periode::where('periode', $lastPeriode->periode)
                     ->where('semester_id', $semesterGenap->id)
                     ->exists();
 
-                if ($existsGenap) {
+                if ($exists) {
                     DB::rollBack();
+
                     return back()->with(
                         'error',
                         "Semester Genap {$lastPeriode->periode} sudah ada."
@@ -474,50 +467,42 @@ class PengaturanController extends Controller
                 }
 
                 Periode::create([
-                    'periode' => $lastPeriode->periode,
-                    'semester_id' => $semesterGenap->id,
-                    'tanggal_mulai' => now(),
-                    'tahun_hijriyah' => $tahunHijriyah,
-                    'is_active' => 0,
+                    'periode'         => $lastPeriode->periode,
+                    'semester_id'     => $semesterGenap->id,
+                    'tanggal_mulai'   => "{$tahunAkhir}-01-01",
+                    'tahun_hijriyah'  => $lastPeriode->tahun_hijriyah,
+                    'is_active'       => 0,
                 ]);
 
                 DB::commit();
+
                 return back()->with(
                     'success',
-                    "Berhasil membuat semester Genap {$lastPeriode->periode}"
+                    "Berhasil membuat Semester Genap {$lastPeriode->periode}"
                 );
             }
 
             /**
-             * CASE 2:
-             * terakhir GENAP -> buat tahun baru GANJIL
+             * TERAKHIR GENAP
+             * 2025/2026 Genap
+             * =>
+             * 2026/2027 Ganjil
+             * tanggal_mulai = 2026-07-01
              */
             if (strtolower($lastPeriode->semester->ket_semester) === 'genap') {
 
-                $newTahunAwal = $tahunAwal + 1;
+                $newTahunAwal  = $tahunAwal + 1;
                 $newTahunAkhir = $tahunAkhir + 1;
-
-                /**
-                 * contoh:
-                 * sekarang 2026
-                 * tidak boleh buat 2027/2028
-                 */
-                if ($newTahunAwal > $tahunSekarang) {
-                    DB::rollBack();
-                    return back()->with(
-                        'error',
-                        "Belum waktunya membuat periode {$newTahunAwal}/{$newTahunAkhir}"
-                    );
-                }
 
                 $newPeriode = $newTahunAwal . '/' . $newTahunAkhir;
 
-                $existsGanjil = Periode::where('periode', $newPeriode)
+                $exists = Periode::where('periode', $newPeriode)
                     ->where('semester_id', $semesterGanjil->id)
                     ->exists();
 
-                if ($existsGanjil) {
+                if ($exists) {
                     DB::rollBack();
+
                     return back()->with(
                         'error',
                         "Semester Ganjil {$newPeriode} sudah ada."
@@ -525,25 +510,32 @@ class PengaturanController extends Controller
                 }
 
                 Periode::create([
-                    'periode' => $newPeriode,
-                    'semester_id' => $semesterGanjil->id,
-                    'tanggal_mulai' => now(),
-                    'tahun_hijriyah' => $tahunHijriyah + 1,
-                    'is_active' => 0,
+                    'periode'         => $newPeriode,
+                    'semester_id'     => $semesterGanjil->id,
+                    'tanggal_mulai'   => "{$newTahunAwal}-07-01",
+                    'tahun_hijriyah'  => $lastPeriode->tahun_hijriyah + 1,
+                    'is_active'       => 0,
                 ]);
 
                 DB::commit();
+
                 return back()->with(
                     'success',
-                    "Berhasil membuat semester Ganjil {$newPeriode}"
+                    "Berhasil membuat Semester Ganjil {$newPeriode}"
                 );
             }
 
             DB::rollBack();
+
             return back()->with('error', 'Semester tidak valid.');
         } catch (\Exception $e) {
+
             DB::rollBack();
-            return back()->with('error', 'Gagal generate periode: ' . $e->getMessage());
+
+            return back()->with(
+                'error',
+                'Gagal generate periode: ' . $e->getMessage()
+            );
         }
     }
 }

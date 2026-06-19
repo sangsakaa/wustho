@@ -44,160 +44,265 @@
         </div>
 
         {{-- CONTENT --}}
-        <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
+        {{-- CONTENT --}}
+        <div
+            x-data="{ tab: 'putra' }"
+            class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl shadow-sm overflow-hidden">
 
-            {{-- PUTRA --}}
-            <div class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl shadow-sm overflow-hidden">
+            {{-- HEADER TAB --}}
+            <div class="p-5 border-b border-gray-200 dark:border-gray-800">
 
-                <div class="bg-blue-600 px-5 py-4 text-white">
-                    <h3 class="font-semibold text-lg">
-                        Asrama Putra
-                    </h3>
-                    <p class="text-sm text-blue-100 mt-1">
-                        Total: {{ $Putra->count() }} asrama
-                    </p>
+                <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+
+                    <div>
+                        <h3 class="text-lg font-bold text-gray-800 dark:text-white">
+                            Data Asrama
+                        </h3>
+
+                        <p class="text-sm text-gray-500 dark:text-gray-400">
+                            Kelola data asrama putra dan putri
+                        </p>
+                    </div>
+
+                    <div class="flex gap-2">
+
+                        <button
+                            @click="tab='putra'"
+                            :class="tab=='putra'
+                        ? 'bg-blue-600 text-white'
+                        : 'bg-gray-100 text-gray-600'"
+                            class="px-4 py-2 rounded-xl text-sm font-medium transition">
+
+                            👦 Putra
+                            <span class="font-bold">
+                                ({{ $Putra->count() }})
+                            </span>
+
+                        </button>
+
+                        <button
+                            @click="tab='putri'"
+                            :class="tab=='putri'
+                        ? 'bg-pink-600 text-white'
+                        : 'bg-gray-100 text-gray-600'"
+                            class="px-4 py-2 rounded-xl text-sm font-medium transition">
+
+                            👧 Putri
+                            <span class="font-bold">
+                                ({{ $Putri->count() }})
+                            </span>
+
+                        </button>
+
+                    </div>
+
                 </div>
 
-                <div class="overflow-x-auto">
-
-                    <table class="min-w-full text-sm">
-
-                        <thead class="bg-gray-50 dark:bg-gray-800 text-gray-600 dark:text-gray-300 uppercase text-xs">
-                            <tr>
-                                <th class="px-4 py-3 text-center">No</th>
-                                <th class="px-4 py-3 text-left">Nama Asrama</th>
-                                <th class="px-4 py-3 text-center">Type</th>
-
-                                @role('super admin')
-                                <th class="px-4 py-3 text-center">Aksi</th>
-                                @endrole
-                            </tr>
-                        </thead>
-
-                        <tbody class="divide-y divide-gray-100 dark:divide-gray-800">
-
-                            @forelse ($Putra as $buah)
-                            <tr class="hover:bg-blue-50 dark:hover:bg-gray-800/50 transition">
-
-                                <td class="px-4 py-4 text-center">
-                                    {{ $loop->iteration }}
-                                </td>
-
-                                <td class="px-4 py-4 font-medium text-gray-700 dark:text-white">
-                                    {{ $buah->nama_asrama }}
-                                </td>
-
-                                <td class="px-4 py-4 text-center">
-                                    <span class="px-3 py-1 text-xs rounded-full bg-blue-100 text-blue-700 font-medium">
-                                        {{ $buah->type_asrama }}
-                                    </span>
-                                </td>
-
-                                @role('super admin')
-                                <td class="px-4 py-4 text-center">
-                                    <form action="/asrama/{{ $buah->id }}"
-                                        method="POST"
-                                        onsubmit="return confirm('Hapus asrama ini?')">
-
-                                        @csrf
-                                        @method('DELETE')
-
-                                        <button class="bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 rounded-lg text-xs transition">
-                                            Hapus
-                                        </button>
-                                    </form>
-                                </td>
-                                @endrole
-
-                            </tr>
-                            @empty
-                            <tr>
-                                <td colspan="4" class="text-center py-8 text-gray-500">
-                                    Tidak ada data Asrama Putra
-                                </td>
-                            </tr>
-                            @endforelse
-
-                        </tbody>
-                    </table>
-                </div>
             </div>
 
-            {{-- PUTRI --}}
-            <div class="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl shadow-sm overflow-hidden">
-
-                <div class="bg-pink-600 px-5 py-4 text-white">
-                    <h3 class="font-semibold text-lg">
-                        Asrama Putri
-                    </h3>
-                    <p class="text-sm text-pink-100 mt-1">
-                        Total: {{ $Putri->count() }} asrama
-                    </p>
-                </div>
+            {{-- TAB PUTRA --}}
+            <div x-show="tab === 'putra'" x-transition>
 
                 <div class="overflow-x-auto">
 
                     <table class="min-w-full text-sm">
 
-                        <thead class="bg-gray-50 dark:bg-gray-800 text-gray-600 dark:text-gray-300 uppercase text-xs">
+                        <thead class="bg-blue-50 text-gray-700 uppercase text-xs">
+
                             <tr>
-                                <th class="px-4 py-3 text-center">No</th>
-                                <th class="px-4 py-3 text-left">Nama Asrama</th>
-                                <th class="px-4 py-3 text-center">Type</th>
+                                <th class="px-4 py-3 text-center w-16">
+                                    No
+                                </th>
+
+                                <th class="px-4 py-3 text-left">
+                                    Nama Asrama
+                                </th>
+
+                                <th class="px-4 py-3 text-center w-40">
+                                    Type
+                                </th>
 
                                 @role('super admin')
-                                <th class="px-4 py-3 text-center">Aksi</th>
+                                <th class="px-4 py-3 text-center w-32">
+                                    Aksi
+                                </th>
                                 @endrole
+
                             </tr>
+
                         </thead>
 
                         <tbody class="divide-y divide-gray-100 dark:divide-gray-800">
 
-                            @forelse ($Putri as $buah)
-                            <tr class="hover:bg-pink-50 dark:hover:bg-gray-800/50 transition">
+                            @forelse($Putra as $buah)
 
-                                <td class="px-4 py-4 text-center">
+                            <tr class="hover:bg-blue-50 dark:hover:bg-gray-800 transition">
+
+                                <td class="px-4 py-3 text-center">
                                     {{ $loop->iteration }}
                                 </td>
 
-                                <td class="px-4 py-4 font-medium text-gray-700 dark:text-white">
+                                <td class="px-4 py-3 font-medium">
                                     {{ $buah->nama_asrama }}
                                 </td>
 
-                                <td class="px-4 py-4 text-center">
-                                    <span class="px-3 py-1 text-xs rounded-full bg-pink-100 text-pink-700 font-medium">
+                                <td class="px-4 py-3 text-center">
+
+                                    <span class="px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-xs">
                                         {{ $buah->type_asrama }}
                                     </span>
+
                                 </td>
 
                                 @role('super admin')
-                                <td class="px-4 py-4 text-center">
-                                    <form action="/asrama/{{ $buah->id }}"
+                                <td class="px-4 py-3 text-center">
+
+                                    <form
+                                        action="/asrama/{{ $buah->id }}"
                                         method="POST"
                                         onsubmit="return confirm('Hapus asrama ini?')">
 
                                         @csrf
                                         @method('DELETE')
 
-                                        <button class="bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 rounded-lg text-xs transition">
+                                        <button
+                                            class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-lg text-xs">
+
                                             Hapus
+
                                         </button>
+
                                     </form>
+
                                 </td>
                                 @endrole
 
                             </tr>
+
                             @empty
+
                             <tr>
-                                <td colspan="4" class="text-center py-8 text-gray-500">
-                                    Tidak ada data Asrama Putri
+
+                                <td colspan="4"
+                                    class="text-center py-10 text-gray-500">
+
+                                    Tidak ada data Asrama Putra
+
                                 </td>
+
                             </tr>
+
                             @endforelse
 
                         </tbody>
+
                     </table>
+
                 </div>
+
+            </div>
+
+            {{-- TAB PUTRI --}}
+            <div x-show="tab === 'putri'" x-transition>
+
+                <div class="overflow-x-auto">
+
+                    <table class="min-w-full text-sm">
+
+                        <thead class="bg-pink-50 text-gray-700 uppercase text-xs">
+
+                            <tr>
+
+                                <th class="px-4 py-3 text-center w-16">
+                                    No
+                                </th>
+
+                                <th class="px-4 py-3 text-left">
+                                    Nama Asrama
+                                </th>
+
+                                <th class="px-4 py-3 text-center w-40">
+                                    Type
+                                </th>
+
+                                @role('super admin')
+                                <th class="px-4 py-3 text-center w-32">
+                                    Aksi
+                                </th>
+                                @endrole
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody class="divide-y divide-gray-100 dark:divide-gray-800">
+
+                            @forelse($Putri as $buah)
+
+                            <tr class="hover:bg-pink-50 dark:hover:bg-gray-800 transition">
+
+                                <td class="px-4 py-3 text-center">
+                                    {{ $loop->iteration }}
+                                </td>
+
+                                <td class="px-4 py-3 font-medium">
+                                    {{ $buah->nama_asrama }}
+                                </td>
+
+                                <td class="px-4 py-3 text-center">
+
+                                    <span class="px-3 py-1 rounded-full bg-pink-100 text-pink-700 text-xs">
+                                        {{ $buah->type_asrama }}
+                                    </span>
+
+                                </td>
+
+                                @role('super admin')
+                                <td class="px-4 py-3 text-center">
+
+                                    <form
+                                        action="/asrama/{{ $buah->id }}"
+                                        method="POST"
+                                        onsubmit="return confirm('Hapus asrama ini?')">
+
+                                        @csrf
+                                        @method('DELETE')
+
+                                        <button
+                                            class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-lg text-xs">
+
+                                            Hapus
+
+                                        </button>
+
+                                    </form>
+
+                                </td>
+                                @endrole
+
+                            </tr>
+
+                            @empty
+
+                            <tr>
+
+                                <td colspan="4"
+                                    class="text-center py-10 text-gray-500">
+
+                                    Tidak ada data Asrama Putri
+
+                                </td>
+
+                            </tr>
+
+                            @endforelse
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
             </div>
 
         </div>

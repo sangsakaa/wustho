@@ -14,11 +14,13 @@ use App\Http\Controllers\ExportController;
 use App\Http\Controllers\GuruController;
 use App\Http\Controllers\JabatanController;
 use App\Http\Controllers\JadwalController;
+use App\Http\Controllers\KalenderPendidikanController;
 use App\Http\Controllers\KegiatanController;
 use App\Http\Controllers\KelasController;
 use App\Http\Controllers\KelasmiController;
 use App\Http\Controllers\KenaikanKelasController;
 use App\Http\Controllers\LembagaController;
+use App\Http\Controllers\LogController;
 use App\Http\Controllers\LulusanCotroller;
 use App\Http\Controllers\MapelController;
 use App\Http\Controllers\NilaiController;
@@ -117,7 +119,53 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/nilaiperguru', [UserguruController::class, 'UserGuru'])->name('nilaiperguru');
 });
 
+// KELENDER PENDIDIKAN
+Route::middleware(['auth'])->group(function () {
 
+    // =========================
+    // KALENDER PENDIDIKAN
+    // =========================
+
+    Route::get(
+        '/kalender-pendidikan/pdf',
+        [KalenderPendidikanController::class, 'pdf']
+    )->name('kalender-pendidikan.pdf');
+
+    Route::get(
+        '/kalender-pendidikan',
+        [KalenderPendidikanController::class, 'index']
+    )->name('kalender-pendidikan.index');
+
+    Route::get(
+        '/kalender-pendidikan/create',
+        [KalenderPendidikanController::class, 'create']
+    )->name('kalender-pendidikan.create');
+
+    Route::post(
+        '/kalender-pendidikan',
+        [KalenderPendidikanController::class, 'store']
+    )->name('kalender-pendidikan.store');
+
+    Route::get(
+        '/kalender-pendidikan/{kalenderPendidikan}',
+        [KalenderPendidikanController::class, 'show']
+    )->name('kalender-pendidikan.show');
+
+    Route::get(
+        '/kalender-pendidikan/{kalenderPendidikan}/edit',
+        [KalenderPendidikanController::class, 'edit']
+    )->name('kalender-pendidikan.edit');
+
+    Route::put(
+        '/kalender-pendidikan/{kalenderPendidikan}',
+        [KalenderPendidikanController::class, 'update']
+    )->name('kalender-pendidikan.update');
+
+    Route::delete(
+        '/kalender-pendidikan/{kalenderPendidikan}',
+        [KalenderPendidikanController::class, 'destroy']
+    )->name('kalender-pendidikan.destroy');
+});
 /*
 |--------------------------------------------------------------------------
 | 4. MANAJEMEN GRUP AUTHENTICATED (UMUM / REGISTER / ROLE-MANAGEMENT)
@@ -353,11 +401,17 @@ Route::middleware(['auth'])->group(function () {
     Route::get('edit-form-perangkat/{perangkat}/edit', [PerangkatController::class, 'edit']);
     Route::patch('edit-form-perangkat/{perangkat}/edit', [PerangkatController::class, 'update']);
     Route::post('data-perangkat', [PerangkatController::class, 'store'])->name('form-perangkat');
+    Route::post('/perangkat/{perangkat}/update-jabatan', [PerangkatController::class, 'updateJabatan'])
+        ->name('perangkat.update-jabatan');
 });
 
 // Jabatan (Luar middleware auth asli)
-Route::get('jabatan', [JabatanController::class, 'index']);
-Route::post('jabatan', [JabatanController::class, 'store']);
+Route::get('/jabatan', [JabatanController::class, 'index']);
+Route::post('/jabatan', [JabatanController::class, 'store']);
+Route::get('/jabatan/{id}/edit', [JabatanController::class, 'edit']);
+Route::put('/jabatan/{id}', [JabatanController::class, 'update']);
+Route::delete('/jabatan/{id}', [JabatanController::class, 'destroy']);
+
 
 
 /*
@@ -457,6 +511,8 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/bulk-delete-asrama', [AsramasiswaController::class, 'bulkDeleteasrama'])
         ->name('bulk.delete.asrama');
 
+    Route::post('/asrama/transfer', [AsramasiswaController::class, 'transferAsrama'])
+        ->name('asrama.transfer');
 
     // Penempatan Siswa di Asrama
     Route::get('asramasiswa', [AsramasiswaController::class, 'index'])->name('asramasiswa');
@@ -591,7 +647,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('cardlogin', [PengaturanController::class, 'cardlogin'])->name('cardlogin');
     Route::get('sap', [PengaturanController::class, 'sap'])->name('sap');
     Route::get('live-siswa', [PengaturanController::class, 'testLive']);
-    Route::get('kalender-pendidikan', [PengaturanController::class, 'kalender']);
+    // Route::get('kalender-pendidikan', [PengaturanController::class, 'kalender']);
 
     // Ploting Konfigurasi
     Route::get('plotingkelas', [PengaturanController::class, 'plotingkelas']);
@@ -620,6 +676,13 @@ Route::post('/delete-records', [PengaturanController::class, 'deleteRecordsById'
 // Ekstraksi PDF Bebas Hambatan Middleware
 Route::get('/generate-pdf/{tgl}', [AbsensikelasController::class, 'generatePdf']);
 Route::get('/layout-pdf', [AbsensikelasController::class, 'layoutPDF']);
+
+
+// log
+Route::middleware(['auth'])->group(function () {
+    Route::get('/activity-logs', [LogController::class, 'index'])
+        ->name('activity.logs');
+});
 
 
 require __DIR__ . '/auth.php';

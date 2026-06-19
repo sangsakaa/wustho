@@ -687,4 +687,59 @@ class AsramasiswaController extends Controller
             );
         }
     }
+    public function transferAsrama()
+    {
+        DB::beginTransaction();
+
+        try {
+
+            $periodeAktif = Periode::where('is_active', 1)->first();
+
+            if (!$periodeAktif) {
+                return back()->with('error', 'Periode aktif tidak ditemukan');
+            }
+
+            $periodeLama = Periode::where('id', '<', $periodeAktif->id)
+                ->orderByDesc('id')
+                ->first();
+
+            if (!$periodeLama) {
+                return back()->with('error', 'Periode sebelumnya tidak ditemukan');
+            }
+
+            $dataLama = Asramasiswa::where('periode_id', $periodeLama->id)->get();
+
+            $jumlah = 0;
+
+            foreach ($dataLama as $item) {
+
+                $exists = Asramasiswa::where('periode_id', $periodeAktif->id)
+                    ->where('asrama_id', $item->asrama_id)
+                    ->exists();
+
+                if (!$exists) {
+
+                    Asramasiswa::create([
+                        'asrama_id'  => $item->asrama_id,
+                        'periode_id' => $periodeAktif->id,
+                        'kuota'      => $item->kuota,
+                    ]);
+
+                    $jumlah++;
+                }
+            }
+
+            DB::commit();
+
+            return back()->with(
+                'success',
+                "{$jumlah} data asrama berhasil ditransfer dari {$periodeLama->periode} ke {$periodeAktif->periode}"
+            );
+        } catch (\Exception $e) {
+
+            DB::rollBack();
+
+            return back()->with('error', $e->getMessage());
+        }
+    }
 }

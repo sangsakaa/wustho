@@ -120,8 +120,8 @@
                         <tbody class=" text-md">
                             <tr>
                                 <th class=" px-2 border border-black">{{ $loop->iteration }}</th>
-                                <td class=" px-2 border border-black">{{ $item->mapel }}</td>
-                                <td class=" px-2 border border-black text-center"> {{ $item->nama_guru }}</td>
+                                <td class=" px-2 border border-black">{{ ucwords(strtolower($item->mapel)) }}</td>
+                                <td class=" px-2 border border-black "> {{ $item->nama_guru }}</td>
                                 <td class=" px-2 border border-black text-center">{{ $item->nilai_harian }}</td>
                                 <td class=" px-2 border border-black text-center">{{ $item->nilai_ujian }}</td>
                             </tr>

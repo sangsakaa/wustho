@@ -3,14 +3,16 @@
 namespace App\Models;
 
 use App\Models\Nis;
-use App\Models\Pesertakelas;
 use App\Models\Pesertaasrama;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\Pesertakelas;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Siswa extends Model
 {
-    use HasFactory;
+    use HasFactory, LogsActivity;
 
     protected $table = "siswa";
 
@@ -22,6 +24,16 @@ class Siswa extends Model
         'tanggal_lahir',
         'kota_asal',
     ];
+
+
+    protected $guarded = [];
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logAll()
+            ->logOnlyDirty();
+    }
     public function user()
     {
         return $this->hasOne(User::class);

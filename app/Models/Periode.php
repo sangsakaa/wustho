@@ -88,5 +88,11 @@ class Periode extends Model
             ])
             ->get();
     }
+
+
+    public function kalender()
+    {
+        return $this->hasMany(KalenderPendidikan::class);
+    }
 }
 

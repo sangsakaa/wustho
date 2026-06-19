@@ -34,8 +34,10 @@
     },
     "require-dev": {
         "kamona/kui-laravel-breeze": "^0.3.0",
+        "laramint/laravel-brain": "^2.3",
         "laravel/breeze": "^1.11",
         "laravel/sail": "^1.0.1",
+        "laravel/telescope": "^5.20",
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^6.1",
         "phpunit/phpunit": "^9.5.10",

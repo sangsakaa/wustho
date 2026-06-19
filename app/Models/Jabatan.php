@@ -11,7 +11,6 @@ class Jabatan extends Model
     protected $fillable = [
         'nama_jabatan'
     ];
-
     // RELASI ke perangkat
     public function perangkat()
     {

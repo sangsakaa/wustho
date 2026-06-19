@@ -170,21 +170,65 @@ $dbOnline = false;
             </main>
 
             {{-- FOOTER --}}
-            <footer
-                class="bg-white dark:bg-dark-eval-1 border-t border-slate-200 dark:border-slate-700 px-4 py-2">
+            <footer class="bg-white dark:bg-dark-eval-1 border-t border-slate-200 dark:border-slate-700 px-4 py-3">
 
-                <div class="flex flex-col sm:flex-row items-center justify-between gap-1">
+                <div class="flex flex-col md:flex-row items-center justify-between gap-2">
 
-                    <p class="text-xs text-slate-500 dark:text-slate-400">
+                    {{-- Kiri --}}
+                    <div class="text-xs text-slate-500 dark:text-slate-400 text-center md:text-left">
                         © {{ date('Y') }}
-                        SMEDI - Sistem Madrasah Diniyah
-                    </p>
+                        <span class="font-medium">SMEDI - Sistem Madrasah Diniyah</span>
+                    </div>
 
-                    <p class="text-xs text-slate-400 dark:text-slate-500">
-                        Powered by Laravel & TailwindCSS
-                        •
-                        v{{ config('app.version', '1.0.0') }}
-                    </p>
+                    {{-- Tengah --}}
+                    <div class="text-xs text-slate-500 dark:text-slate-400 text-center">
+                        @role('super admin')
+                        <span class="inline-flex items-center gap-1">
+                            Made with
+                            <x-heroicon-s-heart class="w-4 h-4 text-red-500" />
+                            by
+                            <a href="https://wustho.smedi.my.id/"
+                                target="_blank"
+                                class="text-blue-600 hover:underline font-medium">
+                                MADIN WUSTHA WAHIDIYAH
+                            </a>
+                        </span>
+                        @endrole
+
+                        @role('pengurus')
+                        <span class="inline-flex items-center gap-1">
+                            Made with
+                            <x-heroicon-s-heart class="w-4 h-4 text-red-500" />
+                            by
+                            <a href="https://wustho.smedi.my.id/"
+                                target="_blank"
+                                class="text-blue-600 hover:underline font-medium">
+                                PONDOK PESANTREN KEDUNGLO WAHIDIYAH
+                            </a>
+                        </span>
+                        @endrole
+
+                        @role('siswa')
+                        <span class="inline-flex items-center gap-1">
+                            Made with
+                            <x-heroicon-s-heart class="w-4 h-4 text-red-500" />
+                            by
+                            <a href="https://wustho.smedi.my.id/"
+                                target="_blank"
+                                class="text-blue-600 hover:underline font-medium">
+                                MADIN WUSTHA WAHIDIYAH
+                            </a>
+                        </span>
+                        @endrole
+                    </div>
+
+                    {{-- Kanan --}}
+                    <div class="text-xs text-slate-400 dark:text-slate-500 text-center md:text-right">
+                        Powered by Laravel 12 • TailwindCSS •
+                        <span class="font-semibold">
+                            v{{ config('app.version', '1.0.0') }}
+                        </span>
+                    </div>
 
                 </div>
 

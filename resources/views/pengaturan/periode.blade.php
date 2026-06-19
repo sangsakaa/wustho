@@ -124,23 +124,21 @@
 
                         <tr class="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">
 
-                            <th class="px-6 py-4 text-left">
+                            <th class="px-4 py-4 text-center">
                                 Periode
                             </th>
 
-                            <th class="px-6 py-4 text-center">
-                                Semester
-                            </th>
 
-                            <th class="px-6 py-4 text-center">
+
+                            <th class="px-4 py-4 text-center">
                                 Hijriyah
                             </th>
 
-                            <th class="px-6 py-4 text-center">
+                            <th class="px-4 py-4 text-center">
                                 Status
                             </th>
 
-                            <th class="px-6 py-4 text-center">
+                            <th class="px-4 py-4 text-center">
                                 Aksi
                             </th>
 
@@ -172,7 +170,7 @@
                         <tr class="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition">
 
                             {{-- PERIODE --}}
-                            <td class="px-6 py-4">
+                            <td class="px-6 py-2">
 
                                 <div class="flex items-center gap-3">
 
@@ -181,12 +179,12 @@
                                         <div class="font-semibold text-slate-800 dark:text-white">
                                             {{ $list->periode }}
                                         </div>
-
                                         <div class="mt-1">
 
                                             <span class="px-2.5 py-1 rounded-full text-xs font-medium {{ $badge }}">
-                                                {{ $list->semester->ket_semester }}
+                                                {{ $list->semester->ket_semester }} | {{ $list->semester->semester }}
                                             </span>
+
 
                                         </div>
 
@@ -197,14 +195,6 @@
                             </td>
 
                             {{-- SEMESTER --}}
-                            <td class="px-6 py-4 text-center">
-
-                                <span class="text-slate-700 dark:text-slate-200">
-                                    {{ $list->semester->semester }}
-                                </span>
-
-                            </td>
-
                             {{-- HIJRIYAH --}}
                             <td class="px-6 py-4 text-center">
 
