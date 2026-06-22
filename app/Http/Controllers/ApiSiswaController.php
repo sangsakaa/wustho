@@ -205,19 +205,28 @@ class ApiSiswaController extends Controller
     {
         try {
             $host = $request->getHost();
+            $path = $request->path(); // calon-siswa
 
-            // 🔥 default filter
+            // default
             $jenjangFilter = null;
+            $lembagaName   = null;
 
-            // 🔥 LOCALHOST = selalu SMA
+            // LOCALHOST
             if (app()->environment('local') || in_array($host, ['127.0.0.1', 'localhost'])) {
                 $jenjangFilter = 'SMA';
+                $lembagaName   = 'LOCAL';
             }
-            // 🔥 DOMAIN RULE
+
+            // DOMAIN WUSTHO (SMA)
             elseif ($host === 'wustho.smedi.my.id') {
                 $jenjangFilter = 'SMA';
-            } elseif ($host === 'ula.smedi.my.id') {
+                $lembagaName   = 'Wustho';
+            }
+
+            // DOMAIN ULA (SMP)
+            elseif ($host === 'ula.smedi.my.id') {
                 $jenjangFilter = 'SMP';
+                $lembagaName   = 'Ula';
             }
 
             $response = Http::withHeaders([
@@ -236,7 +245,7 @@ class ApiSiswaController extends Controller
 
                 $jenjangName = $siswa['jenjang']['name'] ?? null;
 
-                // 🔥 FILTER
+                // filter jenjang sesuai domain
                 if ($jenjangFilter && $jenjangName !== $jenjangFilter) {
                     continue;
                 }
@@ -251,6 +260,8 @@ class ApiSiswaController extends Controller
                         'jenjang_id'    => $siswa['jenjang']['id'] ?? null,
                         'jenjang'       => $jenjangName,
                         'jenjang_title' => $siswa['jenjang']['title'] ?? null,
+
+                        'lembaga'       => $lembagaName, // 🔥 penting (Ula / Wustho)
 
                         'nomor_pendaftaran' => $siswa['nomorPendaftaran'] ?? null,
                         'nama'              => $siswa['nama_lengkap'] ?? null,
@@ -296,7 +307,7 @@ class ApiSiswaController extends Controller
             }
 
             return redirect('/calon-siswa')
-                ->with('success', "Live sync berhasil: $total data");
+                ->with('success', "Live sync {$lembagaName} berhasil: $total data");
         } catch (\Exception $e) {
             return back()->with('error', $e->getMessage());
         }
