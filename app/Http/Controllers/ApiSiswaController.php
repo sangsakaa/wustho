@@ -428,7 +428,7 @@ class ApiSiswaController extends Controller
         if (str_contains($rawJenjang, 'SMP')) {
 
             $jenjang = 'Ula';
-            $kodeJenjang = '01';
+            $kodeJenjang = '03';
         } elseif (str_contains($rawJenjang, 'SMA')) {
 
             $jenjang = 'Wustho';
