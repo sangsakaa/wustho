@@ -205,33 +205,36 @@ class ApiSiswaController extends Controller
     }
 
     /* ================= PUSH TO SISWA ================= */
+    /* ================= PUSH TO SISWA ================= */
     public function pushToSiswa($id)
     {
         $calon = CalonSiswa::findOrFail($id);
 
+        // ================= CEK STATUS =================
         if ($calon->status === 'dipindah_ke_siswa') {
             return response()->json([
                 'success' => false,
-                'message' => 'Sudah dipindah'
+                'message' => 'Sudah dipindah ke siswa'
             ], 422);
         }
 
-        $map = self::JENJANG_MAP[$calon->jenjang] ?? null;
+        // ================= VALIDASI JENJANG =================
+        $jenjang = strtoupper(trim($calon->jenjang));
+        $map = self::JENJANG_MAP[$jenjang] ?? null;
 
         if (!$map) {
             return response()->json([
                 'success' => false,
-                'message' => 'Jenjang tidak valid'
+                'message' => "Jenjang tidak valid: {$calon->jenjang}"
             ], 422);
         }
 
         try {
-
             return DB::transaction(function () use ($calon, $map) {
 
-                /* ================= SISWA ================= */
+                // ================= SISWA =================
                 $siswa = Siswa::create([
-                    'nama_siswa'     => $calon->nama,
+                    'nama_siswa'    => $calon->nama,
                     'jenis_kelamin'  => $calon->jenis_kelamin,
                     'agama'          => $calon->agama ?? 'Islam',
                     'tempat_lahir'   => $calon->tempat_lahir,
@@ -241,49 +244,49 @@ class ApiSiswaController extends Controller
                         ?? 'Tidak diketahui',
                 ]);
 
-                /* ================= NIS ================= */
+                // ================= NIS =================
                 $nis = $this->generateNis($map['kode']);
 
                 Nis::create([
-                    'siswa_id'          => $siswa->id,
-                    'nis'               => $nis,
-                    'nama_lembaga'      => 'Wahidiyah', // 🔥 FIX WAJIB KAMU
-                    'madrasah_diniyah'  => $map['madrasah'], // Ula / Wustho
-                    'tanggal_masuk'     => now()->format('Y-m-d'),
+                    'siswa_id'         => $siswa->id,
+                    'nis'              => $nis,
+                    'nama_lembaga'     => 'Wahidiyah',
+                    'madrasah_diniyah' => $map['madrasah'],
+                    'tanggal_masuk'    => now()->toDateString(),
                 ]);
 
-                /* ================= STATUS PENGAMAL ================= */
+                // ================= STATUS PENGAMAL =================
                 Statuspengamal::create([
-                    'siswa_id' => $siswa->id,
-                    'status_pengamal' => 'Pengamal',
+                    'siswa_id'         => $siswa->id,
+                    'status_pengamal'  => 'Pengamal',
                 ]);
 
-                /* ================= STATUS ANAK ================= */
+                // ================= STATUS ANAK =================
                 Statusanak::create([
-                    'siswa_id'        => $siswa->id,
-                    'anak_ke'         => $calon->anak_ke,
-                    'jumlah_saudara'  => $calon->jumlah_saudara_kandung,
+                    'siswa_id'       => $siswa->id,
+                    'anak_ke'        => $calon->anak_ke,
+                    'jumlah_saudara' => $calon->jumlah_saudara_kandung,
                 ]);
 
-                /* ================= UPDATE CALON ================= */
+                // ================= UPDATE CALON =================
                 $calon->update([
                     'status' => 'dipindah_ke_siswa'
                 ]);
 
                 return response()->json([
                     'success' => true,
-                    'message' => 'Berhasil dipindah',
+                    'message' => 'Berhasil dipindahkan ke siswa',
                     'data' => [
-                        'status' => 'dipindah_ke_siswa',
-                        'nis'    => $nis,
+                        'siswa_id' => $siswa->id,
+                        'nis'      => $nis,
+                        'jenjang'  => $jenjang,
                     ]
                 ]);
             });
         } catch (\Throwable $e) {
-
             return response()->json([
                 'success' => false,
-                'message' => $e->getMessage()
+                'message' => 'Terjadi kesalahan: ' . $e->getMessage()
             ], 500);
         }
     }
