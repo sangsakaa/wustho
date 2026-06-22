@@ -37,27 +37,24 @@
     <div class="bg-white p-4 rounded-xl shadow flex gap-2">
 
       <a href="?jenjang_tab=&status={{ request('status') }}&search={{ request('search') }}"
-        class="px-3 py-1 rounded text-sm
-         {{ !request('jenjang_tab') ? 'bg-black text-white' : 'bg-gray-200' }}">
+        class="px-3 py-1 rounded text-sm {{ !request('jenjang_tab') ? 'bg-black text-white' : 'bg-gray-200' }}">
         Semua
       </a>
 
       <a href="?jenjang_tab=SMP&status={{ request('status') }}&search={{ request('search') }}"
-        class="px-3 py-1 rounded text-sm
-         {{ request('jenjang_tab')=='SMP' ? 'bg-black text-white' : 'bg-gray-200' }}">
+        class="px-3 py-1 rounded text-sm {{ request('jenjang_tab')=='SMP' ? 'bg-black text-white' : 'bg-gray-200' }}">
         SMP
       </a>
 
       <a href="?jenjang_tab=SMA&status={{ request('status') }}&search={{ request('search') }}"
-        class="px-3 py-1 rounded text-sm
-         {{ request('jenjang_tab')=='SMA' ? 'bg-black text-white' : 'bg-gray-200' }}">
+        class="px-3 py-1 rounded text-sm {{ request('jenjang_tab')=='SMA' ? 'bg-black text-white' : 'bg-gray-200' }}">
         SMA
       </a>
 
     </div>
 
     {{-- ================= FILTER ================= --}}
-    <form class="bg-white p-4 rounded-xl shadow space-y-3">
+    <form class="bg-white p-4 rounded-xl shadow space-y-3" method="GET">
 
       <input name="search"
         value="{{ request('search') }}"
@@ -70,8 +67,7 @@
 
         @foreach(['','calon-siswa','dipindah_ke_siswa','done-briva'] as $s)
         <a href="?status={{ $s }}&jenjang_tab={{ request('jenjang_tab') }}&search={{ request('search') }}"
-          class="px-3 py-1 rounded text-sm
-            {{ request('status')==$s?'bg-black text-white':'bg-gray-200' }}">
+          class="px-3 py-1 rounded text-sm {{ request('status')==$s ? 'bg-black text-white' : 'bg-gray-200' }}">
           {{ $s ?: 'Semua' }}
         </a>
         @endforeach
@@ -83,12 +79,13 @@
     {{-- ================= SYNC ================= --}}
     <div class="bg-white p-4 rounded-xl shadow">
 
-      <button onclick="syncData()" class="bg-green-600 text-white px-4 py-2 rounded">
+      <button onclick="syncData()"
+        class="bg-green-600 text-white px-4 py-2 rounded">
         Live Sync
       </button>
 
       <div class="w-full bg-gray-200 h-2 mt-3 rounded">
-        <div id="bar" class="bg-green-500 h-2 w-0 rounded"></div>
+        <div id="bar" class="bg-green-500 h-2 w-0 rounded transition-all duration-300"></div>
       </div>
 
       <p id="syncText" class="text-sm mt-2"></p>
@@ -111,7 +108,7 @@
 
         <tbody>
 
-          @foreach($data as $row)
+          @forelse($data as $row)
           <tr id="row-{{ $row->id }}" class="border-b">
 
             <td class="p-3">{{ $row->nama }}</td>
@@ -144,7 +141,13 @@
             </td>
 
           </tr>
-          @endforeach
+          @empty
+          <tr>
+            <td colspan="4" class="text-center p-4 text-gray-500">
+              Data tidak ditemukan
+            </td>
+          </tr>
+          @endforelse
 
         </tbody>
 
@@ -162,10 +165,11 @@
   {{-- ================= JS ================= --}}
   <script>
     function updateRow(id, status) {
-      document.getElementById(`status-${id}`).innerText = status;
+      const el = document.getElementById(`status-${id}`);
+      if (el) el.innerText = status;
     }
 
-    // KIRIM
+    // ================= KIRIM =================
     function kirim(id) {
 
       Swal.fire({
@@ -211,13 +215,15 @@
 
     }
 
-    // RESET
+    // ================= RESET =================
     function resetData(id) {
 
       Swal.fire({
-        title: 'Reset?',
+        title: 'Reset status?',
         icon: 'warning',
-        showCancelButton: true
+        showCancelButton: true,
+        confirmButtonText: 'Ya',
+        cancelButtonText: 'Batal'
       }).then(res => {
 
         if (!res.isConfirmed) return;
@@ -250,7 +256,7 @@
 
     }
 
-    // LIVE SYNC
+    // ================= LIVE SYNC =================
     function syncData() {
 
       let bar = document.getElementById('bar');
@@ -282,7 +288,6 @@
               timer: 1500,
               showConfirmButton: false
             });
-
           } else {
             text.innerText = res.message;
           }
