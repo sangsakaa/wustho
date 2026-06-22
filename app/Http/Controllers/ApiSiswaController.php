@@ -9,20 +9,31 @@ use App\Models\Statusanak;
 use App\Models\Statuspengamal;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 
 class ApiSiswaController extends Controller
 {
-    /**
-     * =========================
-     * PARSE TANGGAL (AMAN)
-     * =========================
-     */
+    /* ================= CONFIG ================= */
+    private const API_URL = 'https://spmb.kedunglo.com/api/public/siswa';
+    private const API_KEY = 'sPbM_SMeDi-8Vq3N-xK7pL-2dR9t-U6aH4mZ1';
+
+    private const JENJANG_MAP = [
+        'SMP' => ['kode' => '03', 'madrasah' => 'Ula'],
+        'SMA' => ['kode' => '02', 'madrasah' => 'Wustho'],
+    ];
+
+    /* ================= INDEX ================= */
+    public function index(Request $request)
+    {
+        return $this->view($request);
+    }
+
+    /* ================= PARSE TANGGAL ================= */
     private function parseTanggal($tgl)
     {
         if (!$tgl) return null;
 
-        // kalau sudah format Y-m-d
         if (preg_match('/^\d{4}-\d{2}-\d{2}$/', $tgl)) {
             return $tgl;
         }
@@ -42,522 +53,232 @@ class ApiSiswaController extends Controller
             'Desember' => '12',
         ];
 
-        foreach ($bulan as $indo => $num) {
-            if (str_contains($tgl, $indo)) {
-                $tgl = str_replace($indo, $num, $tgl);
-                break;
-            }
-        }
-
-        // sekarang format jadi: 24 04 2021
+        $tgl = str_replace(array_keys($bulan), array_values($bulan), $tgl);
         $tgl = preg_replace('/\s+/', ' ', trim($tgl));
 
         try {
             return Carbon::createFromFormat('d m Y', $tgl)->format('Y-m-d');
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             return null;
         }
     }
-    /**
-     * =========================
-     * SYNC DATA API → DATABASE
-     * =========================
-     */
-    public function sinkron()
-    {
-        $response = Http::withHeaders([
-            'X-API-KEY' => 'sPbM_SMeDi-8Vq3N-xK7pL-2dR9t-U6aH4mZ1',
-            'Accept'    => 'application/json',
-        ])->timeout(60)
-            ->get('https://spmb.kedunglo.com/api/public/siswa');
-            
 
-        if (!$response->successful()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Gagal mengambil data API',
-                'status'  => $response->status(),
-            ], 400);
-        }
-
-        $dataSiswa = $response->json();
-        $total = 0;
-
-        foreach ($dataSiswa as $siswa) {
-
-            CalonSiswa::updateOrCreate(
-                [
-                    'api_id' => $siswa['id'] ?? null,
-                ],
-                [
-                    // JENJANG
-                    'jenjang_id'    => $siswa['jenjang']['id'] ?? null,
-                    'jenjang'       => $siswa['jenjang']['name'] ?? null,
-                    'jenjang_title' => $siswa['jenjang']['title'] ?? null,
-
-                    // DATA DASAR
-                    'nomor_pendaftaran' => $siswa['nomorPendaftaran'] ?? null,
-                    'nama'              => $siswa['nama_lengkap'] ?? null,
-                    'jenis_kelamin'     => $siswa['jenis_kelamin'] ?? null,
-
-                    // KELUARGA
-                    'anak_ke'                 => $siswa['anak_ke'] ?? null,
-                    'jumlah_saudara_kandung'  => $siswa['jumlah_saudara_kandung'] ?? null,
-
-                    // IDENTITAS
-                    'nisn'      => $siswa['nisn'] ?? null,
-                    'nis'       => $siswa['nis'] ?? null,
-                    'nik'       => $siswa['nik'] ?? null,
-                    'nomor_kk'  => $siswa['nomor_kk'] ?? null,
-                    'no_kip'    => $siswa['no_kip'] ?? null,
-                    'npsn'      => $siswa['npsn'] ?? null,
-
-                    // LAHIR
-                    'tempat_lahir'  => $siswa['tempat_lahir'] ?? null,
-                    'tanggal_lahir' => $this->parseTanggal($siswa['tanggal_lahir'] ?? null),
-
-                    // AGAMA & NEGARA
-                    'agama'           => $siswa['agama'] ?? null,
-                    'kewarganegaraan' => $siswa['kewarganegaraan'] ?? null,
-
-                    // PENDIDIKAN
-                    'rencana_pendidikan' => $siswa['rencana_pendidikan'] ?? null,
-
-                    // ALAMAT
-                    'alamat_jalan' => $siswa['alamat_jalan'] ?? null,
-                    'nama_dusun'   => $siswa['nama_dusun'] ?? null,
-                    'rt'           => $siswa['rt'] ?? null,
-                    'rw'           => $siswa['rw'] ?? null,
-                    'kode_pos'     => $siswa['kode_pos'] ?? null,
-
-                    // FISIK
-                    'tinggi_badan'   => $siswa['tinggi_badan'] ?? null,
-                    'berat_badan'    => $siswa['berat_badan'] ?? null,
-                    'lingkar_kepala' => $siswa['lingkar_kepala'] ?? null,
-
-                    // STATUS
-                    'status' => $siswa['status'] ?? null,
-                    'no_registrasi_akta' => $siswa['no_registrasi_akta'] ?? null,
-
-                    // RELASI
-                    'user_id'  => $siswa['user'] ?? null,
-                    'tapel_id' => $siswa['tapel'] ?? null,
-
-                    'kelurahan_desa'    => $siswa['kelurahan_desa'] ?? null,
-                    'riwayat_kesehatan' => $siswa['riwayatKesehatan'] ?? null,
-                    'kebutuhan_khusus'  => $siswa['kebutuhanKhusus'] ?? null,
-
-                    'asal_sekolah' => $siswa['sekolah_asal'] ?? null,
-
-                    // META
-                    'ip'         => $siswa['ip'] ?? null,
-                    'user_agent' => $siswa['user_agent'] ?? null,
-
-                    // RAW
-                    'data_api' => $siswa,
-                ]
-            );
-
-            $total++;
-        }
-
-        return redirect('/calon-siswa')
-            ->with('success', "Sinkron berhasil: {$total} data");
-    }
-
-    /**
-     * =========================
-     * VIEW + FILTER
-     * =========================
-     */
+    /* ================= DOMAIN ================= */
     private function getJenjangDomain()
     {
         $host = request()->getHost();
 
-        // LOCAL = semua
-        if (
-            app()->environment('local') ||
-            in_array($host, ['localhost', '127.0.0.1'])
-        ) {
-            return null;
-        }
+        if (app()->environment('local')) return null;
 
-        if ($host === 'ula.smedi.my.id') {
-            return 'SMP';
-        }
-
-        if ($host === 'wustho.smedi.my.id') {
-            return 'SMA';
-        }
-
-        return null;
+        return match ($host) {
+            'ula.smedi.my.id' => 'SMP',
+            'wustho.smedi.my.id' => 'SMA',
+            default => null,
+        };
     }
+
+    /* ================= VIEW ================= */
     public function view(Request $request)
     {
+        // simpan filter ke session
+        if ($request->has('jenjang')) {
+            session(['active_jenjang' => $request->jenjang]);
+        }
+
+        if ($request->has('status')) {
+            session(['active_status' => $request->status]);
+        }
+
+        $domain = $this->getJenjangDomain();
+
         $query = CalonSiswa::query();
 
-        $jenjangDomain = $this->getJenjangDomain();
+        // dari session (bukan request)
+        $jenjang = session('active_jenjang');
+        $status  = session('active_status');
 
-        /**
-         * =========================
-         * SESSION ACTIVE FILTER
-         * =========================
-         */
-        session([
-            'active_jenjang' => $jenjangDomain,
-            'active_status'  => $request->status
-        ]);
-
-        /**
-         * =========================
-         * FILTER JENJANG (DOMAIN)
-         * =========================
-         */
-        if ($jenjangDomain) {
-            $query->where('jenjang', $jenjangDomain);
+        if ($domain) {
+            $query->where('jenjang', $domain);
         }
 
-        /**
-         * =========================
-         * FILTER STATUS (TAB)
-         * =========================
-         */
-        if ($request->status) {
-            $query->where('status', $request->status);
+        if ($jenjang) {
+            $query->where('jenjang', $jenjang);
         }
 
-        /**
-         * =========================
-         * SEARCH
-         * =========================
-         */
+        if ($status) {
+            $query->where('status', $status);
+        }
+
         if ($request->search) {
-            $query->where('nama', 'like', '%' . $request->search . '%');
+            $query->where('nama', 'like', "%{$request->search}%");
         }
 
-        $data = $query
-            ->orderBy('nama')
-            ->paginate(20)
-            ->withQueryString();
+        $data = $query->latest()->paginate(20);
 
-        /**
-         * =========================
-         * STATS (GLOBAL + FILTERED DOMAIN)
-         * =========================
-         */
-        $statQuery = CalonSiswa::query();
-
-        if ($jenjangDomain) {
-            $statQuery->where('jenjang', $jenjangDomain);
-        }
+        $base = CalonSiswa::when($domain, fn($q) => $q->where('jenjang', $domain));
 
         $stats = [
-            // TOTAL
-            'all' => (clone $statQuery)->count(),
-
-            // STATUS
-            'calon'    => (clone $statQuery)->where('status', 'calon-siswa')->count(),
-            'dipindah' => (clone $statQuery)->where('status', 'dipindah_ke_siswa')->count(),
-            'briva'    => (clone $statQuery)->where('status', 'done-briva')->count(),
-
-            // JENJANG
-            'smp' => (clone $statQuery)->where('jenjang', 'SMP')->count(),
-            'sma' => (clone $statQuery)->where('jenjang', 'SMA')->count(),
+            'all' => (clone $base)->count(),
+            'SMP' => (clone $base)->where('jenjang', 'SMP')->count(),
+            'SMA' => (clone $base)->where('jenjang', 'SMA')->count(),
+            'calon' => (clone $base)->where('status', 'calon-siswa')->count(),
         ];
 
         return view('calon_siswa.index', compact('data', 'stats'));
     }
-    public function liveSync(Request $request)
+    /* ================= LIVE SYNC ================= */
+    public function liveSync()
     {
         try {
-            $jenjangDomain = $this->getJenjangDomain();
-            // hasil: SMP / SMA / null (local)
-
             $response = Http::withHeaders([
-                'X-API-KEY' => 'sPbM_SMeDi-8Vq3N-xK7pL-2dR9t-U6aH4mZ1',
-                'Accept'    => 'application/json',
-            ])->timeout(60)
-                ->get('https://spmb.kedunglo.com/api/public/siswa');
+                'X-API-KEY' => self::API_KEY,
+                'Accept' => 'application/json',
+            ])->timeout(60)->get(self::API_URL);
 
             if (!$response->ok()) {
-                return back()->with('error', 'API gagal diakses: ' . $response->status());
+                return response()->json([
+                    'success' => false,
+                    'message' => 'API gagal: ' . $response->status()
+                ], 500);
             }
 
-            $dataSiswa = $response->json();
+            $students = $response->json();
+            $domain = $this->getJenjangDomain();
+
             $total = 0;
 
-            foreach ($dataSiswa as $siswa) {
+            foreach ($students as $item) {
 
-                // normalisasi jenjang dari API
-                $jenjangName = strtoupper(trim($siswa['jenjang']['name'] ?? ''));
+                $jenjang = strtoupper(data_get($item, 'jenjang.name'));
 
-                // hanya izinkan SMP / SMA
-                if (!in_array($jenjangName, ['SMP', 'SMA'])) {
-                    continue;
-                }
-
-                /**
-                 * =========================
-                 * FILTER DOMAIN (STRICT)
-                 * =========================
-                 * ula.smedi.my.id  => SMP saja
-                 * wustho.smedi.my.id => SMA saja
-                 */
-                if ($jenjangDomain && $jenjangName !== $jenjangDomain) {
-                    continue;
-                }
-
-                $tanggalLahir = $this->parseTanggal($siswa['tanggal_lahir'] ?? null);
+                if (!isset(self::JENJANG_MAP[$jenjang])) continue;
+                if ($domain && $domain !== $jenjang) continue;
 
                 CalonSiswa::updateOrCreate(
+                    ['api_id' => data_get($item, 'id')],
                     [
-                        'api_id' => $siswa['id'] ?? null,
-                    ],
-                    [
-                        'jenjang_id'    => $siswa['jenjang']['id'] ?? null,
-                        'jenjang'       => $jenjangName,
-                        'jenjang_title' => $siswa['jenjang']['title'] ?? null,
-
-                        'nomor_pendaftaran' => $siswa['nomorPendaftaran'] ?? null,
-                        'nama'              => $siswa['nama_lengkap'] ?? null,
-                        'jenis_kelamin'     => $siswa['jenis_kelamin'] ?? null,
-
-                        'anak_ke' => $siswa['anak_ke'] ?? null,
-                        'jumlah_saudara_kandung' => $siswa['jumlah_saudara_kandung'] ?? null,
-
-                        'nisn' => $siswa['nisn'] ?? null,
-                        'nis'  => $siswa['nis'] ?? null,
-                        'nik'  => $siswa['nik'] ?? null,
-
-                        'nomor_kk' => $siswa['nomor_kk'] ?? null,
-                        'no_kip'   => $siswa['no_kip'] ?? null,
-
-                        'tempat_lahir'  => $siswa['tempat_lahir'] ?? null,
-                        'tanggal_lahir' => $tanggalLahir,
-
-                        'agama'           => $siswa['agama'] ?? null,
-                        'kewarganegaraan' => $siswa['kewarganegaraan'] ?? null,
-
-                        'rencana_pendidikan' => $siswa['rencana_pendidikan'] ?? null,
-
-                        'alamat_jalan' => $siswa['alamat_jalan'] ?? null,
-                        'rt'           => $siswa['rt'] ?? null,
-                        'rw'           => $siswa['rw'] ?? null,
-                        'kode_pos'     => $siswa['kode_pos'] ?? null,
-
+                        'jenjang' => $jenjang,
+                        'jenjang_id' => data_get($item, 'jenjang.id'),
+                        'nama' => data_get($item, 'nama_lengkap'),
+                        'jenis_kelamin' => data_get($item, 'jenis_kelamin'),
+                        'nisn' => data_get($item, 'nisn'),
+                        'nis' => data_get($item, 'nis'),
+                        'nik' => data_get($item, 'nik'),
+                        'tempat_lahir' => data_get($item, 'tempat_lahir'),
+                        'tanggal_lahir' => $this->parseTanggal(data_get($item, 'tanggal_lahir')),
+                        'agama' => data_get($item, 'agama'),
+                        'alamat_jalan' => data_get($item, 'alamat_jalan'),
                         'status' => 'calon-siswa',
-
-                        'tapel_id' => $siswa['tapel'] ?? null,
-                        'user_id'  => $siswa['user'] ?? null,
-
-                        'asal_sekolah' => $siswa['sekolah_asal'] ?? null,
-
-                        'ip'         => $siswa['ip'] ?? null,
-                        'user_agent' => $siswa['user_agent'] ?? null,
-
-                        'data_api' => $siswa,
+                        'data_api' => $item,
                     ]
                 );
 
                 $total++;
             }
 
-            return back()->with('success', "Live Sync berhasil : {$total} data");
-        } catch (\Exception $e) {
-            return back()->with('error', $e->getMessage());
-        }
-    }
-    private function getTanggalMasukSemester()
-    {
-        $year = now()->year;
-
-        return [
-            'ganjil' => $year . '-07-01',
-            'genap'  => $year . '-01-01',
-        ];
-    }
-    public function pushToSiswa($calonSiswaId)
-    {
-        $calon = CalonSiswa::findOrFail($calonSiswaId);
-        $jenjangDomain = $this->getJenjangDomain();
-
-        if (
-            $jenjangDomain &&
-            strtoupper($calon->jenjang) !== $jenjangDomain
-        ) {
-            return back()->with(
-                'warning',
-                'Data tidak sesuai dengan domain aktif.'
-            );
-        }
-
-        // =========================
-        // CEGAH PUSH DUA KALI
-        // =========================
-        if ($calon->status === 'dipindah_ke_siswa') {
-            return back()->with('warning', 'Data sudah pernah dipindahkan.');
-        }
-
-        // =========================
-        // VALIDASI MINIMAL
-        // =========================
-        $missing = [];
-
-        if (!$calon->nama) $missing[] = 'nama';
-        if (!$calon->jenis_kelamin) $missing[] = 'jenis_kelamin';
-        if (!$calon->tempat_lahir) $missing[] = 'tempat_lahir';
-        if (!$calon->tanggal_lahir) $missing[] = 'tanggal_lahir';
-
-        if (!empty($missing)) {
-            return back()->with(
-                'warning',
-                'Data belum lengkap: ' . implode(', ', $missing)
-            );
-        }
-
-        // =========================
-        // CEK SUDAH ADA SISWA?
-        // =========================
-        $existingSiswa = Siswa::where('nama_siswa', $calon->nama)
-            ->whereDate('tanggal_lahir', $calon->tanggal_lahir)
-            ->first();
-
-        if ($existingSiswa) {
-            return back()->with(
-                'warning',
-                'Siswa dengan nama dan tanggal lahir yang sama sudah ada.'
-            );
-        }
-
-        // =========================
-        // SIMPAN SISWA
-        // =========================
-        $siswa = Siswa::create([
-            'nama_siswa'    => $calon->nama,
-            'jenis_kelamin' => $calon->jenis_kelamin,
-            'agama'         => $calon->agama,
-            'tempat_lahir'  => $calon->tempat_lahir,
-            'tanggal_lahir' => $calon->tanggal_lahir,
-            'kota_asal'     => $calon->alamat_jalan,
-        ]);
-
-        // =========================
-        // NORMALISASI JENJANG
-        // =========================
-        $rawJenjang = strtoupper(trim($calon->jenjang ?? ''));
-
-        if (str_contains($rawJenjang, 'SMP')) {
-
-            $jenjang = 'Ula';
-            $kodeJenjang = '03';
-        } elseif (str_contains($rawJenjang, 'SMA')) {
-
-            $jenjang = 'Wustho';
-            $kodeJenjang = '02';
-        } else {
-
-            return back()->with(
-                'warning',
-                'Jenjang tidak dikenali: ' . ($calon->jenjang ?? '-')
-            );
-        }
-
-        // =========================
-        // GENERATE NIS
-        // FORMAT:
-        // YYYY + KK + NNNNN
-        // 2026 + 01 + 00001
-        // =========================
-        $tahun = date('Y');
-
-        $prefix = $tahun . $kodeJenjang;
-
-        $lastNis = Nis::where('nis', 'like', $prefix . '%')
-            ->orderBy('nis', 'desc')
-            ->first();
-
-        if ($lastNis) {
-
-            $lastNumber = (int) substr(
-                $lastNis->nis,
-                strlen($prefix)
-            );
-
-            $nextNumber = $lastNumber + 1;
-        } else {
-
-            $nextNumber = 1;
-        }
-
-        $nisBaru = $prefix .
-            str_pad(
-                $nextNumber,
-                5,
-                '0',
-                STR_PAD_LEFT
-            );
-
-        // =========================
-        // SIMPAN NIS
-        // =========================
-        Nis::create([
-            'siswa_id'         => $siswa->id,
-            'nis'              => $nisBaru,
-            'nama_lembaga'     => 'Wahidiyah',
-            'madrasah_diniyah' => $jenjang,
-            'tanggal_masuk'    => $this->getTanggalMasukSemester()['ganjil'],
-        ]);
-
-        // =========================
-        // STATUS PENGAMAL
-        // =========================
-        Statuspengamal::create([
-            'siswa_id'        => $siswa->id,
-            'status_pengamal' => 'Pengamal',
-        ]);
-
-        // =========================
-        // STATUS ANAK
-        // =========================
-        Statusanak::create([
-            'siswa_id'       => $siswa->id,
-            'status_anak'    => null,
-            'anak_ke'        => $calon->anak_ke,
-            'jumlah_saudara' => $calon->jumlah_saudara_kandung,
-        ]);
-
-        // =========================
-        // UPDATE STATUS CALON SISWA
-        // =========================
-        $calon->update([
-            'status' => 'dipindah_ke_siswa',
-        ]);
-
-        return response()->json([
-            'success' => true,
-            'message' => "Berhasil dipindahkan ke siswa. NIS: {$nisBaru}",
-            'data' => [
-                'status' => 'dipindah_ke_siswa',
-                'nis' => $nisBaru
-            ]
-        ]);
-    }
-    public function resetStatus(CalonSiswa $calonSiswa)
-    {
-        try {
-
-            $calonSiswa->update([
-                'status' => 'calon-siswa'
-            ]);
-
             return response()->json([
                 'success' => true,
-                'message' => 'Status berhasil dikembalikan menjadi calon siswa.',
-                'data' => [
-                    'id' => $calonSiswa->id,
-                    'status' => $calonSiswa->status
-                ]
+                'message' => "Sync berhasil: {$total} data"
             ]);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /* ================= GENERATE NIS ================= */
+    private function generateNis($kode)
+    {
+        $prefix = date('Y') . $kode;
+
+        $last = Nis::where('nis', 'like', $prefix . '%')
+            ->orderByDesc('nis')
+            ->first();
+
+        $next = $last
+            ? ((int) substr($last->nis, strlen($prefix))) + 1
+            : 1;
+
+        return $prefix . str_pad($next, 5, '0', STR_PAD_LEFT);
+    }
+
+    /* ================= PUSH TO SISWA ================= */
+    public function pushToSiswa($id)
+    {
+        $calon = CalonSiswa::findOrFail($id);
+
+        if ($calon->status === 'dipindah_ke_siswa') {
+            return response()->json([
+                'success' => false,
+                'message' => 'Sudah dipindah'
+            ], 422);
+        }
+
+        $map = self::JENJANG_MAP[$calon->jenjang] ?? null;
+
+        if (!$map) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Jenjang tidak valid'
+            ], 422);
+        }
+
+        try {
+
+            return DB::transaction(function () use ($calon, $map) {
+
+                /* ================= SISWA ================= */
+                $siswa = Siswa::create([
+                    'nama_siswa'     => $calon->nama,
+                    'jenis_kelamin'  => $calon->jenis_kelamin,
+                    'agama'          => $calon->agama ?? 'Islam',
+                    'tempat_lahir'   => $calon->tempat_lahir,
+                    'tanggal_lahir'  => $calon->tanggal_lahir,
+                    'kota_asal'      => $calon->alamat_jalan
+                        ?? $calon->kelurahan_desa
+                        ?? 'Tidak diketahui',
+                ]);
+
+                /* ================= NIS ================= */
+                $nis = $this->generateNis($map['kode']);
+
+                Nis::create([
+                    'siswa_id'          => $siswa->id,
+                    'nis'               => $nis,
+                    'nama_lembaga'      => 'Wahidiyah', // 🔥 FIX WAJIB KAMU
+                    'madrasah_diniyah'  => $map['madrasah'], // Ula / Wustho
+                    'tanggal_masuk'     => now()->format('Y-m-d'),
+                ]);
+
+                /* ================= STATUS PENGAMAL ================= */
+                Statuspengamal::create([
+                    'siswa_id' => $siswa->id,
+                    'status_pengamal' => 'Pengamal',
+                ]);
+
+                /* ================= STATUS ANAK ================= */
+                Statusanak::create([
+                    'siswa_id'        => $siswa->id,
+                    'anak_ke'         => $calon->anak_ke,
+                    'jumlah_saudara'  => $calon->jumlah_saudara_kandung,
+                ]);
+
+                /* ================= UPDATE CALON ================= */
+                $calon->update([
+                    'status' => 'dipindah_ke_siswa'
+                ]);
+
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Berhasil dipindah',
+                    'data' => [
+                        'status' => 'dipindah_ke_siswa',
+                        'nis'    => $nis,
+                    ]
+                ]);
+            });
         } catch (\Throwable $e) {
 
             return response()->json([
@@ -565,5 +286,15 @@ class ApiSiswaController extends Controller
                 'message' => $e->getMessage()
             ], 500);
         }
+    }
+    /* ================= RESET ================= */
+    public function resetStatus(CalonSiswa $calon)
+    {
+        $calon->update(['status' => 'calon-siswa']);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Reset berhasil',
+        ]);
     }
 }

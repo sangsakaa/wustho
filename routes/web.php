@@ -686,16 +686,19 @@ Route::middleware(['auth'])->group(function () {
 });
 
 
-// api calon siswa
-Route::get('/calon-siswa', [ApiSiswaController::class, 'view'])->name('calon-siswa');
-Route::get('/calon-siswa/sinkron', [ApiSiswaController::class, 'index']);
-Route::get('/calon-siswa/sync', [ApiSiswaController::class, 'sinkron']);
-Route::get('/calon-siswa/live-sync', [ApiSiswaController::class, 'liveSync']);
-Route::post('/calon-siswa/{id}/push', [ApiSiswaController::class, 'pushToSiswa'])
-    ->name('calon.push');
+/**
+ * =========================
+ * CALON SISWA ROUTES
+ * =========================
+ */
 
-Route::put('/calon-siswa/{calonSiswa}/reset-status', [ApiSiswaController::class, 'resetStatus'])
-    ->name('calon-siswa.reset-status');
+Route::prefix('calon-siswa')->group(function () {
+    Route::get('/', [ApiSiswaController::class, 'view'])->name('calon-siswa');
+});
+Route::get('/calon-siswa/sync', [ApiSiswaController::class, 'liveSync'])->name('calon-siswa.sync');
+Route::post('/calon-siswa/{id}/push', [ApiSiswaController::class, 'pushToSiswa']);
+Route::post('/calon-siswa/{calon}/reset-status', [ApiSiswaController::class, 'resetStatus']);
+
 
 require __DIR__ . '/auth.php';
 
