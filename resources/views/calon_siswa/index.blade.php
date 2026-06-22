@@ -10,7 +10,6 @@
 
     {{-- ================= DASHBOARD ================= --}}
     <div class="grid grid-cols-4 gap-3">
-
       <div class="bg-white p-4 rounded-xl shadow">
         <p>Total</p>
         <b>{{ $stats['all'] ?? 0 }}</b>
@@ -30,73 +29,12 @@
         <p>Calon</p>
         <b>{{ $stats['calon'] ?? 0 }}</b>
       </div>
-
-    </div>
-
-    {{-- ================= TAB JENJANG ================= --}}
-    <div class="bg-white p-4 rounded-xl shadow flex gap-2">
-
-      <a href="?jenjang_tab=&status={{ request('status') }}&search={{ request('search') }}"
-        class="px-3 py-1 rounded text-sm {{ !request('jenjang_tab') ? 'bg-black text-white' : 'bg-gray-200' }}">
-        Semua
-      </a>
-
-      <a href="?jenjang_tab=SMP&status={{ request('status') }}&search={{ request('search') }}"
-        class="px-3 py-1 rounded text-sm {{ request('jenjang_tab')=='SMP' ? 'bg-black text-white' : 'bg-gray-200' }}">
-        SMP
-      </a>
-
-      <a href="?jenjang_tab=SMA&status={{ request('status') }}&search={{ request('search') }}"
-        class="px-3 py-1 rounded text-sm {{ request('jenjang_tab')=='SMA' ? 'bg-black text-white' : 'bg-gray-200' }}">
-        SMA
-      </a>
-
-    </div>
-
-    {{-- ================= FILTER ================= --}}
-    <form class="bg-white p-4 rounded-xl shadow space-y-3" method="GET">
-
-      <input name="search"
-        value="{{ request('search') }}"
-        class="w-full border rounded px-3 py-2"
-        placeholder="Cari nama...">
-
-      <input type="hidden" name="jenjang_tab" value="{{ request('jenjang_tab') }}">
-
-      <div class="flex gap-2 flex-wrap">
-
-        @foreach(['','calon-siswa','dipindah_ke_siswa','done-briva'] as $s)
-        <a href="?status={{ $s }}&jenjang_tab={{ request('jenjang_tab') }}&search={{ request('search') }}"
-          class="px-3 py-1 rounded text-sm {{ request('status')==$s ? 'bg-black text-white' : 'bg-gray-200' }}">
-          {{ $s ?: 'Semua' }}
-        </a>
-        @endforeach
-
-      </div>
-
-    </form>
-
-    {{-- ================= SYNC ================= --}}
-    <div class="bg-white p-4 rounded-xl shadow">
-
-      <button onclick="syncData()"
-        class="bg-green-600 text-white px-4 py-2 rounded">
-        Live Sync
-      </button>
-
-      <div class="w-full bg-gray-200 h-2 mt-3 rounded">
-        <div id="bar" class="bg-green-500 h-2 w-0 rounded transition-all duration-300"></div>
-      </div>
-
-      <p id="syncText" class="text-sm mt-2"></p>
-
     </div>
 
     {{-- ================= TABLE ================= --}}
     <div class="bg-white rounded-xl shadow overflow-hidden">
 
       <table class="w-full text-sm">
-
         <thead class="bg-gray-100">
           <tr>
             <th class="p-3 text-left">Nama</th>
@@ -107,7 +45,6 @@
         </thead>
 
         <tbody>
-
           @forelse($data as $row)
           <tr id="row-{{ $row->id }}" class="border-b">
 
@@ -120,15 +57,14 @@
             </td>
 
             <td class="p-3">
-              <span id="status-{{ $row->id }}"
-                class="px-2 py-1 text-xs rounded bg-gray-200">
+              <span id="status-{{ $row->id }}" class="px-2 py-1 text-xs rounded bg-gray-200">
                 {{ $row->status }}
               </span>
             </td>
 
             <td class="p-3 space-x-2">
 
-              <button onclick="kirim({{ $row->id }})"
+              <button onclick="kirim({{ $row->id }}, this)"
                 class="bg-blue-600 text-white px-3 py-1 rounded text-xs">
                 Kirim
               </button>
@@ -148,153 +84,134 @@
             </td>
           </tr>
           @endforelse
-
         </tbody>
-
       </table>
 
     </div>
 
-    {{-- ================= PAGINATION ================= --}}
-    <div>
-      {{ $data->links() }}
-    </div>
+    {{-- ================= JS ================= --}}
+    <script>
+      // ================= UPDATE STATUS =================
+      function updateRow(id, status) {
+        const el = document.getElementById(`status-${id}`);
+        if (el) el.innerText = status;
+      }
 
-  </div>
+      // ================= KIRIM =================
+      function kirim(id, btn) {
 
-  {{-- ================= JS ================= --}}
-  <script>
-    function updateRow(id, status) {
-      const el = document.getElementById(`status-${id}`);
-      if (el) el.innerText = status;
-    }
+        btn.disabled = true;
+        btn.innerText = "Proses...";
 
-    // ================= KIRIM =================
-    function kirim(id) {
+        Swal.fire({
+          title: 'Push To Siswa?',
+          icon: 'question',
+          showCancelButton: true,
+          confirmButtonText: 'Ya',
+          cancelButtonText: 'Batal'
+        }).then(res => {
 
-      Swal.fire({
-        title: 'Push To Siswa?',
-        icon: 'question',
-        showCancelButton: true,
-        confirmButtonText: 'Ya',
-        cancelButtonText: 'Batal',
-        buttonsStyling: false,
-        customClass: {
-          popup: 'rounded-2xl bg-white shadow-xl',
-          confirmButton: 'bg-blue-600 text-white px-4 py-2 rounded-lg mx-1',
-          cancelButton: 'bg-gray-200 text-gray-700 px-4 py-2 rounded-lg mx-1'
-        }
-      }).then(res => {
-
-        if (!res.isConfirmed) return;
-
-        fetch(`/calon-siswa/${id}/push`, {
-            method: 'POST',
-            headers: {
-              'X-CSRF-TOKEN': '{{ csrf_token() }}',
-              'Accept': 'application/json'
-            }
-          })
-          .then(r => r.json())
-          .then(res => {
-
-            if (res.success) {
-              updateRow(id, res.data.status);
-
-              Swal.fire({
-                icon: 'success',
-                title: res.message,
-                timer: 1200,
-                showConfirmButton: false
-              });
-            }
-
-          });
-
-      });
-
-    }
-
-    // ================= RESET =================
-    function resetData(id) {
-
-      Swal.fire({
-        title: 'Reset status?',
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'Ya',
-        cancelButtonText: 'Batal'
-      }).then(res => {
-
-        if (!res.isConfirmed) return;
-
-        fetch(`/calon-siswa/${id}/reset-status`, {
-            method: 'POST',
-            headers: {
-              'X-CSRF-TOKEN': '{{ csrf_token() }}',
-              'X-HTTP-Method-Override': 'PUT',
-              'Accept': 'application/json'
-            }
-          })
-          .then(r => r.json())
-          .then(res => {
-
-            if (res.success) {
-              updateRow(id, res.data.status);
-
-              Swal.fire({
-                icon: 'success',
-                title: res.message,
-                timer: 1200,
-                showConfirmButton: false
-              });
-            }
-
-          });
-
-      });
-
-    }
-
-    // ================= LIVE SYNC =================
-    function syncData() {
-
-      let bar = document.getElementById('bar');
-      let text = document.getElementById('syncText');
-
-      bar.style.width = '10%';
-      text.innerText = 'Sync...';
-
-      let p = 10;
-
-      let i = setInterval(() => {
-        p += 10;
-        bar.style.width = p + '%';
-        if (p >= 90) clearInterval(i);
-      }, 200);
-
-      fetch('/calon-siswa/live-sync')
-        .then(r => r.json())
-        .then(res => {
-
-          bar.style.width = '100%';
-
-          if (res.success) {
-            text.innerText = `Selesai ${res.total} data`;
-
-            Swal.fire({
-              icon: 'success',
-              title: 'Sync selesai',
-              timer: 1500,
-              showConfirmButton: false
-            });
-          } else {
-            text.innerText = res.message;
+          if (!res.isConfirmed) {
+            btn.disabled = false;
+            btn.innerText = "Kirim";
+            return;
           }
+
+          fetch(`/calon-siswa/${id}/push`, {
+              method: 'POST',
+              headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+              }
+            })
+            .then(async r => {
+              const data = await r.json();
+
+              if (!r.ok) throw data;
+
+              return data;
+            })
+            .then(res => {
+
+              updateRow(id, res.data.status);
+
+              Swal.fire({
+                icon: 'success',
+                title: res.message || 'Berhasil',
+                timer: 1500,
+                showConfirmButton: false
+              });
+
+            })
+            .catch(err => {
+
+              Swal.fire({
+                icon: 'error',
+                title: err.message || 'Gagal proses',
+              });
+
+            })
+            .finally(() => {
+              btn.disabled = false;
+              btn.innerText = "Kirim";
+            });
 
         });
 
-    }
-  </script>
+      }
+
+      // ================= RESET =================
+      function resetData(id) {
+
+        Swal.fire({
+          title: 'Reset status?',
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Ya',
+          cancelButtonText: 'Batal'
+        }).then(res => {
+
+          if (!res.isConfirmed) return;
+
+          fetch(`/calon-siswa/${id}/reset-status`, {
+              method: 'POST',
+              headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                'Accept': 'application/json'
+              }
+            })
+            .then(async r => {
+              const data = await r.json();
+              if (!r.ok) throw data;
+              return data;
+            })
+            .then(res => {
+
+              updateRow(id, res.data.status);
+
+              Swal.fire({
+                icon: 'success',
+                title: res.message,
+                timer: 1200,
+                showConfirmButton: false
+              });
+
+            })
+            .catch(err => {
+
+              Swal.fire({
+                icon: 'error',
+                title: err.message || 'Error reset',
+              });
+
+            });
+
+        });
+
+      }
+    </script>
+
+  </div>
 
 </x-app-layout>

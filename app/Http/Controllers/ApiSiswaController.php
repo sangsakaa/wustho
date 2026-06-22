@@ -236,21 +236,16 @@ class ApiSiswaController extends Controller
     public function liveSync(Request $request)
     {
         try {
-
             $jenjangDomain = $this->getJenjangDomain();
+            $jenjangDomain = $jenjangDomain ? strtoupper($jenjangDomain) : null;
 
             $response = Http::withHeaders([
                 'X-API-KEY' => 'sPbM_SMeDi-8Vq3N-xK7pL-2dR9t-U6aH4mZ1',
                 'Accept'    => 'application/json',
-            ])->timeout(60)->get(
-                'https://spmb.kedunglo.com/api/public/siswa'
-            );
+            ])->timeout(60)->get('https://spmb.kedunglo.com/api/public/siswa');
 
             if (!$response->ok()) {
-                return back()->with(
-                    'error',
-                    'API gagal diakses: ' . $response->status()
-                );
+                return back()->with('error', 'API gagal diakses: ' . $response->status());
             }
 
             $dataSiswa = $response->json();
@@ -259,26 +254,21 @@ class ApiSiswaController extends Controller
 
             foreach ($dataSiswa as $siswa) {
 
-                $jenjangName = strtoupper(
-                    trim($siswa['jenjang']['name'] ?? '')
-                );
+                $jenjangName = strtoupper(trim($siswa['jenjang']['name'] ?? ''));
 
-                // Tolak selain SMP/SMA
+                // validasi jenjang hanya SMP / SMA
                 if (!in_array($jenjangName, ['SMP', 'SMA'])) {
                     continue;
                 }
 
-                // Domain filter
-                if (
-                    $jenjangDomain &&
-                    $jenjangName !== $jenjangDomain
-                ) {
+                // =========================
+                // FILTER BERDASARKAN DOMAIN
+                // =========================
+                if ($jenjangDomain && $jenjangName !== $jenjangDomain) {
                     continue;
                 }
 
-                $tanggalLahir = $this->parseTanggal(
-                    $siswa['tanggal_lahir'] ?? null
-                );
+                $tanggalLahir = $this->parseTanggal($siswa['tanggal_lahir'] ?? null);
 
                 CalonSiswa::updateOrCreate(
                     [
@@ -333,19 +323,11 @@ class ApiSiswaController extends Controller
                 $total++;
             }
 
-            return back()->with(
-                'success',
-                "Live Sync berhasil : {$total} data"
-            );
+            return back()->with('success', "Live Sync berhasil : {$total} data");
         } catch (\Exception $e) {
-
-            return back()->with(
-                'error',
-                $e->getMessage()
-            );
+            return back()->with('error', $e->getMessage());
         }
     }
-    
     private function getTanggalMasukSemester()
     {
         $year = now()->year;
@@ -512,10 +494,14 @@ class ApiSiswaController extends Controller
             'status' => 'dipindah_ke_siswa',
         ]);
 
-        return back()->with(
-            'success',
-            "Berhasil dipindahkan ke siswa. NIS: {$nisBaru}"
-        );
+        return response()->json([
+            'success' => true,
+            'message' => "Berhasil dipindahkan ke siswa. NIS: {$nisBaru}",
+            'data' => [
+                'status' => 'dipindah_ke_siswa',
+                'nis' => $nisBaru
+            ]
+        ]);
     }
     public function resetStatus(CalonSiswa $calonSiswa)
     {
