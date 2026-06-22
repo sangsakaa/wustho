@@ -85,9 +85,14 @@ class ApiSiswaController extends Controller
 
         $query = CalonSiswa::query();
 
-        // Filter otomatis berdasarkan domain
+        // ================= DOMAIN FILTER (DEFAULT) =================
         if ($domain) {
             $query->where('jenjang', $domain);
+        }
+
+        // ================= OVERRIDE FILTER DARI URL =================
+        if ($request->filled('jenjang')) {
+            $query->where('jenjang', $request->jenjang);
         }
 
         // Search
@@ -100,11 +105,9 @@ class ApiSiswaController extends Controller
             $query->where('status', $request->status);
         }
 
-        $data = $query
-            ->latest()
-            ->paginate(20)
-            ->withQueryString();
+        $data = $query->latest()->paginate(20)->withQueryString();
 
+        // ================= STATS =================
         $base = CalonSiswa::query();
 
         if ($domain) {
@@ -113,16 +116,12 @@ class ApiSiswaController extends Controller
 
         $stats = [
             'all'   => (clone $base)->count(),
-            'smp'   => (clone $base)->where('jenjang', 'SMP')->count(),
-            'sma'   => (clone $base)->where('jenjang', 'SMA')->count(),
+            'SMP'   => (clone $base)->where('jenjang', 'SMP')->count(),
+            'SMA'   => (clone $base)->where('jenjang', 'SMA')->count(),
             'calon' => (clone $base)->where('status', 'calon-siswa')->count(),
         ];
 
-        return view('calon_siswa.index', compact(
-            'data',
-            'stats',
-            'domain'
-        ));
+        return view('calon_siswa.index', compact('data', 'stats', 'domain'));
     }
     /* ================= LIVE SYNC ================= */
     public function liveSync()
@@ -134,12 +133,18 @@ class ApiSiswaController extends Controller
                 'Accept'    => 'application/json',
             ])->timeout(60)->get(self::API_URL);
 
+
+            // DEBUG FULL RESPONSE
+
             if (!$response->successful()) {
                 return response()->json([
                     'success' => false,
                     'message' => 'API gagal : ' . $response->status(),
                 ], 500);
             }
+
+
+            // DEBUG FULL RESPONSE
 
             $students = $response->json();
 

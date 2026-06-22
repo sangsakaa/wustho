@@ -45,19 +45,19 @@
 
         <a href="{{ request()->fullUrlWithQuery(['jenjang' => null]) }}"
           class="px-4 py-2 text-sm rounded-xl border
-                {{ !session('active_jenjang') ? 'bg-blue-600 text-white' : 'bg-white text-slate-600' }}">
+   {{ !request('jenjang') ? 'bg-blue-600 text-white' : 'bg-white text-slate-600' }}">
           Semua
         </a>
 
         <a href="{{ request()->fullUrlWithQuery(['jenjang' => 'SMP']) }}"
           class="px-4 py-2 text-sm rounded-xl border
-                {{ session('active_jenjang') == 'SMP' ? 'bg-blue-600 text-white' : 'bg-white text-slate-600' }}">
+   {{ request('jenjang') == 'SMP' ? 'bg-blue-600 text-white' : 'bg-white text-slate-600' }}">
           SMP
         </a>
 
         <a href="{{ request()->fullUrlWithQuery(['jenjang' => 'SMA']) }}"
           class="px-4 py-2 text-sm rounded-xl border
-                {{ session('active_jenjang') == 'SMA' ? 'bg-blue-600 text-white' : 'bg-white text-slate-600' }}">
+   {{ request('jenjang') == 'SMA' ? 'bg-blue-600 text-white' : 'bg-white text-slate-600' }}">
           SMA
         </a>
 
