@@ -253,7 +253,9 @@
                                     @method('delete')
 
                                     <button type="button"
-                                        onclick="confirmDelete({{ $peserta->id }}, '{{ $peserta->nama_siswa }}')"
+                                        data-id="{{ $peserta->id }}"
+                                        data-nama="{{ $peserta->nama_siswa }}"
+                                        onclick="confirmDelete(this)"
                                         class="inline-flex items-center gap-1 bg-red-500 hover:bg-red-600 text-white px-2.5 py-1.5 rounded-lg text-xs font-medium transition shadow-sm">
 
                                         <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -314,7 +316,11 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
-    function confirmDelete(id, nama) {
+    function confirmDelete(button) {
+
+        const id = button.dataset.id;
+        const nama = button.dataset.nama;
+
         Swal.fire({
             title: 'Hapus Data?',
             text: nama,
@@ -322,28 +328,31 @@
             showCancelButton: true,
             confirmButtonText: 'Ya, Hapus',
             cancelButtonText: 'Batal',
+            reverseButtons: true,
 
-            buttonsStyling: false, // 🔥 penting supaya Tailwind jalan
+            buttonsStyling: false,
 
             customClass: {
-                popup: 'rounded-2xl bg-white dark:bg-gray-900',
-                title: 'text-gray-800 dark:text-white text-lg font-semibold',
-                htmlContainer: 'text-gray-500',
-                confirmButton: 'bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-medium mx-1',
-                cancelButton: 'bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium mx-1'
+                popup: 'rounded-2xl',
+                title: 'text-lg font-semibold',
+                confirmButton: 'bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg mx-1',
+                cancelButton: 'bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-lg mx-1'
             }
         }).then((result) => {
+
             if (result.isConfirmed) {
 
                 Swal.fire({
                     title: 'Menghapus...',
                     allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    showConfirmButton: false,
                     didOpen: () => {
                         Swal.showLoading();
                     }
                 });
 
-                document.getElementById(`delete-form-${id}`).submit();
+                document.getElementById('delete-form-' + id).submit();
             }
         });
     }
