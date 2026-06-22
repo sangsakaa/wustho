@@ -273,6 +273,7 @@ class ApiSiswaController extends Controller
                 'data' => [
                     'siswa_id' => $siswa->id,
                     'nis' => $nis,
+                    'status' => 'dipindah_ke_siswa',
                 ]
             ]);
         } catch (\Throwable $e) {
@@ -294,6 +295,9 @@ class ApiSiswaController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Reset berhasil',
+            'data' => [
+                'status' => 'calon-siswa'
+            ]
         ]);
     }
 }

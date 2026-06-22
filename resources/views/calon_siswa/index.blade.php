@@ -102,12 +102,12 @@
 
       <div class="bg-white rounded-2xl shadow p-5">
         <p class="text-xs text-slate-500">SMP</p>
-        <h3 class="text-2xl font-bold text-blue-600">{{ $stats['smp'] ?? 0 }}</h3>
+        <h3 class="text-2xl font-bold text-blue-600">{{ $stats['SMP'] ?? 0 }}</h3>
       </div>
 
       <div class="bg-white rounded-2xl shadow p-5">
         <p class="text-xs text-slate-500">SMA</p>
-        <h3 class="text-2xl font-bold text-green-600">{{ $stats['sma'] ?? 0 }}</h3>
+        <h3 class="text-2xl font-bold text-green-600">{{ $stats['SMA'] ?? 0 }}</h3>
       </div>
 
       <div class="bg-white rounded-2xl shadow p-5">
