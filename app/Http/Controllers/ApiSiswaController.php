@@ -237,33 +237,38 @@ class ApiSiswaController extends Controller
     {
         try {
             $jenjangDomain = $this->getJenjangDomain();
-            $jenjangDomain = $jenjangDomain ? strtoupper($jenjangDomain) : null;
+            // hasil: SMP / SMA / null (local)
 
             $response = Http::withHeaders([
                 'X-API-KEY' => 'sPbM_SMeDi-8Vq3N-xK7pL-2dR9t-U6aH4mZ1',
                 'Accept'    => 'application/json',
-            ])->timeout(60)->get('https://spmb.kedunglo.com/api/public/siswa');
+            ])->timeout(60)
+                ->get('https://spmb.kedunglo.com/api/public/siswa');
 
             if (!$response->ok()) {
                 return back()->with('error', 'API gagal diakses: ' . $response->status());
             }
 
             $dataSiswa = $response->json();
-
             $total = 0;
 
             foreach ($dataSiswa as $siswa) {
 
+                // normalisasi jenjang dari API
                 $jenjangName = strtoupper(trim($siswa['jenjang']['name'] ?? ''));
 
-                // validasi jenjang hanya SMP / SMA
+                // hanya izinkan SMP / SMA
                 if (!in_array($jenjangName, ['SMP', 'SMA'])) {
                     continue;
                 }
 
-                // =========================
-                // FILTER BERDASARKAN DOMAIN
-                // =========================
+                /**
+                 * =========================
+                 * FILTER DOMAIN (STRICT)
+                 * =========================
+                 * ula.smedi.my.id  => SMP saja
+                 * wustho.smedi.my.id => SMA saja
+                 */
                 if ($jenjangDomain && $jenjangName !== $jenjangDomain) {
                     continue;
                 }
