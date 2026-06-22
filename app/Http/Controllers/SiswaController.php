@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
+use App\Models\CalonSiswa;
 use App\Models\Nis;
 use App\Models\Perangkat;
+use App\Models\Pesertaasrama;
+use App\Models\Pesertakelas;
 use App\Models\Siswa;
 use App\Models\Statusanak;
-use App\Models\Pesertakelas;
-use Illuminate\Http\Request;
-use App\Models\Pesertaasrama;
 use App\Models\Statuspengamal;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
 
@@ -368,8 +369,23 @@ class SiswaController extends Controller
 
     public function destroy(Siswa $siswa)
     {
-        Siswa::destroy($siswa->id);
-        return redirect()->back()->with('delete', 'data berhasil dihapus');
+        // Kembalikan status calon siswa
+        CalonSiswa::where('nama', $siswa->nama_siswa)
+            ->update([
+                'status' => 'calon-siswa',
+            ]);
+
+        // Hapus relasi
+        Nis::where('siswa_id', $siswa->id)->delete();
+
+        Statuspengamal::where('siswa_id', $siswa->id)->delete();
+
+        Statusanak::where('siswa_id', $siswa->id)->delete();
+
+        // Hapus siswa
+        $siswa->delete();
+
+        return back()->with('delete', 'Data berhasil dihapus');
     }
     public function destroyNis(Nis $nis)
     {

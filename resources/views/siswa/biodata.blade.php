@@ -41,12 +41,9 @@
                 </div>
                 <div class="flex items-center gap-2">
                     <span class="text-slate-500 w-32 shrink-0">Asrama</span>
+
                     <span class="font-medium text-slate-800 dark:text-white">
-                        @if($siswa->asramaTerkhir?->asramaSiswa->asrama->nama_asrama)
-                        {{$siswa->asramaTerkhir->asramaSiswa->asrama->nama_asrama}}
-                        @else
-                        <span class="text-amber-600">Belum ada</span>
-                        @endif
+                        {{ $siswa->asramaTerkhir?->asramaSiswa?->asrama?->nama_asrama ?? 'Belum ada' }}
                     </span>
                 </div>
             </div>

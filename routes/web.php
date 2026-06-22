@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\BulkAccountController;
 use App\Http\Controllers\Admin\RoleManagementController;
 use App\Http\Controllers\Admin\UserManagementController;
 use App\Http\Controllers\Admin\UserPermissionController;
+use App\Http\Controllers\ApiSiswaController;
 use App\Http\Controllers\AsramaController;
 use App\Http\Controllers\AsramasiswaController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
@@ -684,6 +685,17 @@ Route::middleware(['auth'])->group(function () {
         ->name('activity.logs');
 });
 
+
+// api calon siswa
+Route::get('/calon-siswa', [ApiSiswaController::class, 'view'])->name('calon-siswa');
+Route::get('/calon-siswa/sinkron', [ApiSiswaController::class, 'index']);
+Route::get('/calon-siswa/sync', [ApiSiswaController::class, 'sinkron']);
+Route::get('/calon-siswa/live-sync', [ApiSiswaController::class, 'liveSync']);
+Route::post('/calon-siswa/{id}/push', [ApiSiswaController::class, 'pushToSiswa'])
+    ->name('calon.push');
+
+Route::put('/calon-siswa/{calonSiswa}/reset-status', [ApiSiswaController::class, 'resetStatus'])
+    ->name('calon-siswa.reset-status');
 
 require __DIR__ . '/auth.php';
 

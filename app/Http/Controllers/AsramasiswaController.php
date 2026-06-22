@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Siswa;
 use App\Models\Asrama;
 use App\Models\Asramasiswa;
+use App\Models\Nis;
 use App\Models\Periode;
-use Illuminate\Http\Request;
 use App\Models\Pesertaasrama;
+use App\Models\Siswa;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
 
@@ -707,39 +708,179 @@ class AsramasiswaController extends Controller
                 return back()->with('error', 'Periode sebelumnya tidak ditemukan');
             }
 
-            $dataLama = Asramasiswa::where('periode_id', $periodeLama->id)->get();
+            $dataAsramaLama = Asramasiswa::where(
+                'periode_id',
+                $periodeLama->id
+            )->get();
 
-            $jumlah = 0;
+            $jumlahAsrama = 0;
+            $jumlahSiswa = 0;
 
-            foreach ($dataLama as $item) {
+            foreach ($dataAsramaLama as $asramaLama) {
 
-                $exists = Asramasiswa::where('periode_id', $periodeAktif->id)
-                    ->where('asrama_id', $item->asrama_id)
-                    ->exists();
-
-                if (!$exists) {
-
-                    Asramasiswa::create([
-                        'asrama_id'  => $item->asrama_id,
+                /*
+            |--------------------------------------------------------------------------
+            | Buat / Ambil Asrama Periode Baru
+            |--------------------------------------------------------------------------
+            */
+                $asramaBaru = Asramasiswa::firstOrCreate(
+                    [
                         'periode_id' => $periodeAktif->id,
-                        'kuota'      => $item->kuota,
-                    ]);
+                        'asrama_id'  => $asramaLama->asrama_id,
+                    ],
+                    [
+                        'kuota' => $asramaLama->kuota,
+                    ]
+                );
 
-                    $jumlah++;
+                $jumlahAsrama++;
+
+                /*
+            |--------------------------------------------------------------------------
+            | Ambil Seluruh Peserta Asrama Lama
+            |--------------------------------------------------------------------------
+            */
+                $pesertaLama = Pesertaasrama::where(
+                    'asramasiswa_id',
+                    $asramaLama->id
+                )->get();
+
+                foreach ($pesertaLama as $peserta) {
+
+                    $bolehTransfer = true;
+
+                    /*
+                |--------------------------------------------------------------------------
+                | GENAP -> GANJIL (TAHUN AJARAN BARU)
+                |--------------------------------------------------------------------------
+                */
+                    if (
+                        $periodeLama->semester_id == 2 &&
+                        $periodeAktif->semester_id == 1
+                    ) {
+
+                        $nis = Nis::where('siswa_id', $peserta->siswa_id)
+                            ->latest('id')
+                            ->first();
+
+                        if (!$nis) {
+
+                            $bolehTransfer = false;
+                        } else {
+
+                            $tahunMasuk = (int) substr($nis->nis, 0, 4);
+
+                            [$tahunAwalAktif] = explode(
+                                '/',
+                                $periodeAktif->periode
+                            );
+
+                            $tahunAwalAktif = (int) $tahunAwalAktif;
+
+                            $masaBelajar = $tahunAwalAktif - $tahunMasuk;
+
+                            /*
+                        |--------------------------------------------------------------------------
+                        | ULA = 6 TAHUN
+                        |--------------------------------------------------------------------------
+                        */
+                            if (
+                                $nis->madrasah_diniyah == 'Ula' &&
+                                $masaBelajar >= 6
+                            ) {
+                                $bolehTransfer = false;
+                            }
+
+                            /*
+                        |--------------------------------------------------------------------------
+                        | WUSTHO = 3 TAHUN
+                        |--------------------------------------------------------------------------
+                        */
+                            if (
+                                $nis->madrasah_diniyah == 'Wustho' &&
+                                $masaBelajar >= 3
+                            ) {
+                                $bolehTransfer = false;
+                            }
+
+                            /*
+                        |--------------------------------------------------------------------------
+                        | ULYA = 3 TAHUN
+                        |--------------------------------------------------------------------------
+                        */
+                            if (
+                                $nis->madrasah_diniyah == 'Ulya' &&
+                                $masaBelajar >= 3
+                            ) {
+                                $bolehTransfer = false;
+                            }
+                        }
+                    }
+
+                    if (!$bolehTransfer) {
+                        continue;
+                    }
+
+                    /*
+                |--------------------------------------------------------------------------
+                | Cek apakah siswa sudah ada di periode baru
+                |--------------------------------------------------------------------------
+                */
+                    $exists = Pesertaasrama::query()
+                        ->join(
+                            'asramasiswa',
+                            'asramasiswa.id',
+                            '=',
+                            'pesertaasrama.asramasiswa_id'
+                        )
+                        ->where(
+                            'pesertaasrama.siswa_id',
+                            $peserta->siswa_id
+                        )
+                        ->where(
+                            'asramasiswa.periode_id',
+                            $periodeAktif->id
+                        )
+                        ->exists();
+
+                    if (!$exists) {
+
+                        Pesertaasrama::create([
+                            'siswa_id'       => $peserta->siswa_id,
+                            'asramasiswa_id' => $asramaBaru->id,
+                        ]);
+
+                        $jumlahSiswa++;
+                    }
                 }
+
+                /*
+            |--------------------------------------------------------------------------
+            | Update Kuota Sesuai Jumlah Penghuni
+            |--------------------------------------------------------------------------
+            */
+                $asramaBaru->update([
+                    'kuota' => Pesertaasrama::where(
+                        'asramasiswa_id',
+                        $asramaBaru->id
+                    )->count()
+                ]);
             }
 
             DB::commit();
 
             return back()->with(
                 'success',
-                "{$jumlah} data asrama berhasil ditransfer dari {$periodeLama->periode} ke {$periodeAktif->periode}"
+                "{$jumlahAsrama} asrama dan {$jumlahSiswa} peserta berhasil ditransfer dari {$periodeLama->periode} ke {$periodeAktif->periode}"
             );
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
 
             DB::rollBack();
 
-            return back()->with('error', $e->getMessage());
+            return back()->with(
+                'error',
+                $e->getMessage()
+            );
         }
     }
 }

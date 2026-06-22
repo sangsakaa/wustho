@@ -130,6 +130,7 @@
         </x-slot>
 
         <div class="space-y-1">
+            <x-sidebar.sublink title="Calon Siswa" href="{{ route('calon-siswa') }}" :active="request()->routeIs('calon-siswa')" />
             <x-sidebar.sublink title="Data Siswa" href="{{ route('siswa.index') }}" :active="request()->routeIs('siswa.index')" />
             <x-sidebar.sublink title="Data Asrama" href="{{ route('asramasiswa') }}" :active="request()->routeIs('asramasiswa')" />
             <x-sidebar.sublink title="Data Kelas" href="{{ route('kelas_mi') }}" :active="request()->routeIs('kelas_mi')" />

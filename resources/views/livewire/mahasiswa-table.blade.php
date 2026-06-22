@@ -244,18 +244,28 @@
                                 @endcan
 
                                 @can('delete post')
-                                <form action="/siswa/{{ $peserta->id }}" method="post"
-                                    onsubmit="return confirm('Yakin hapus {{ $peserta->nama_siswa }}?')">
+
+                                <form id="delete-form-{{ $peserta->id }}"
+                                    action="/siswa/{{ $peserta->id }}"
+                                    method="POST">
+
                                     @csrf
                                     @method('delete')
-                                    <button type="submit"
+
+                                    <button type="button"
+                                        onclick="confirmDelete({{ $peserta->id }}, '{{ $peserta->nama_siswa }}')"
                                         class="inline-flex items-center gap-1 bg-red-500 hover:bg-red-600 text-white px-2.5 py-1.5 rounded-lg text-xs font-medium transition shadow-sm">
+
                                         <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                         </svg>
+
                                         Hapus
                                     </button>
+
                                 </form>
+
                                 @endcan
                             </div>
                         </td>
@@ -300,4 +310,41 @@
             });
         }
     });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    function confirmDelete(id, nama) {
+        Swal.fire({
+            title: 'Hapus Data?',
+            text: nama,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Ya, Hapus',
+            cancelButtonText: 'Batal',
+
+            buttonsStyling: false, // 🔥 penting supaya Tailwind jalan
+
+            customClass: {
+                popup: 'rounded-2xl bg-white dark:bg-gray-900',
+                title: 'text-gray-800 dark:text-white text-lg font-semibold',
+                htmlContainer: 'text-gray-500',
+                confirmButton: 'bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-medium mx-1',
+                cancelButton: 'bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium mx-1'
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+
+                Swal.fire({
+                    title: 'Menghapus...',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+
+                document.getElementById(`delete-form-${id}`).submit();
+            }
+        });
+    }
 </script>
