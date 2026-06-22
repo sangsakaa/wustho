@@ -313,14 +313,11 @@ class ApiSiswaController extends Controller
         // CEGAH PUSH DUA KALI
         // =========================
         if ($calon->status === 'dipindah_ke_siswa') {
-            return back()->with(
-                'warning',
-                'Data calon siswa sudah pernah dipindahkan.'
-            );
+            return back()->with('warning', 'Data sudah pernah dipindahkan.');
         }
 
         // =========================
-        // VALIDASI DATA MINIMAL
+        // VALIDASI MINIMAL
         // =========================
         $missing = [];
 
@@ -329,84 +326,59 @@ class ApiSiswaController extends Controller
         if (!$calon->tempat_lahir) $missing[] = 'tempat_lahir';
         if (!$calon->tanggal_lahir) $missing[] = 'tanggal_lahir';
 
-        if (count($missing)) {
-            return back()->with(
-                'warning',
-                'Data belum lengkap: ' . implode(', ', $missing)
-            );
+        if ($missing) {
+            return back()->with('warning', 'Data belum lengkap: ' . implode(', ', $missing));
         }
 
         // =========================
-        // SIMPAN KE TABEL SISWA
+        // CREATE SISWA
         // =========================
         $siswa = Siswa::create([
-            'nama_siswa'     => $calon->nama,
-            'jenis_kelamin'  => $calon->jenis_kelamin,
-            'agama'          => $calon->agama,
-            'tempat_lahir'   => $calon->tempat_lahir,
-            'tanggal_lahir'  => $calon->tanggal_lahir,
-            'kota_asal'      => $calon->alamat_jalan,
+            'nama_siswa'    => $calon->nama,
+            'jenis_kelamin' => $calon->jenis_kelamin,
+            'agama'         => $calon->agama,
+            'tempat_lahir'  => $calon->tempat_lahir,
+            'tanggal_lahir' => $calon->tanggal_lahir,
+            'kota_asal'     => $calon->alamat_jalan,
         ]);
 
         // =========================
-        // SIMPAN NIS
+        // NORMALISASI JENJANG (INI KUNCI FIX SMP)
         // =========================
-        if ($calon->nis) {
+        $rawJenjang = strtoupper(trim($calon->jenjang ?? ''));
 
-            // Jenjang dari API
-            $jenjangApi = strtoupper(trim($calon->jenjang));
-
-            // Konversi ke Madrasah Diniyah
-            $mappingJenjang = [
-                'SMP' => 'Ula',
-                'SMA' => 'Wustho',
-            ];
-
-            $jenjang = $mappingJenjang[$jenjangApi] ?? null;
-
-            // Kode Jenjang NIS
-            $kodeJenjang = [
-                'Ula'    => '01',
-                'Wustho' => '02',
-                'Ulya'   => '03',
-            ];
-
-            $kode = $kodeJenjang[$jenjang] ?? '00';
-
-            $tahun = date('Y');
-
-            // Ambil NIS terakhir
-            // Cari NIS terakhir berdasarkan tahun + jenjang
-            $prefix = $tahun . $kode;
-
-            $last = Nis::where('nis', 'like', $prefix . '%')
-                ->orderByDesc('nis')
-                ->first();
-
-            if ($last) {
-
-                // Ambil nomor urut setelah prefix YYYYKK
-                $lastNumber = (int) substr($last->nis, strlen($prefix));
-
-                $nextNumber = $lastNumber + 1;
-            } else {
-
-                // Jika tahun + jenjang belum ada data
-                $nextNumber = 1;
-            }
-
-            $nisBaru = $prefix . str_pad($nextNumber, 5, '0', STR_PAD_LEFT);
-
-            $nisBaru = $tahun . $kode . str_pad($nextNumber, 5, '0', STR_PAD_LEFT);
-
-            Nis::create([
-                'siswa_id'          => $siswa->id,
-                'nis'               => $nisBaru,
-                'nama_lembaga'      => 'Wahidiyah',
-                'madrasah_diniyah'  => $jenjang,
-                'tanggal_masuk'     => $this->getTanggalMasukSemester()['ganjil'],
-            ]);
+        if (str_contains($rawJenjang, 'SMP')) {
+            $jenjang = 'Ula';
+            $kode    = '01';
+        } elseif (str_contains($rawJenjang, 'SMA')) {
+            $jenjang = 'Wustho';
+            $kode    = '02';
+        } else {
+            return back()->with('warning', 'Jenjang tidak dikenali: ' . $calon->jenjang);
         }
+
+        // =========================
+        // GENERATE NIS
+        // =========================
+        $tahun = date('Y');
+        $prefix = $tahun . $kode;
+
+        $last = Nis::where('nis', 'like', $prefix . '%')
+            ->orderByDesc('nis')
+            ->first();
+
+        $lastNumber = $last ? (int) substr($last->nis, strlen($prefix)) : 0;
+        $nextNumber = $lastNumber + 1;
+
+        $nisBaru = $prefix . str_pad($nextNumber, 5, '0', STR_PAD_LEFT);
+
+        Nis::create([
+            'siswa_id'         => $siswa->id,
+            'nis'              => $nisBaru,
+            'nama_lembaga'     => 'Wahidiyah',
+            'madrasah_diniyah' => $jenjang,
+            'tanggal_masuk'    => $this->getTanggalMasukSemester()['ganjil'],
+        ]);
 
         // =========================
         // STATUS PENGAMAL
@@ -420,29 +392,19 @@ class ApiSiswaController extends Controller
         // STATUS ANAK
         // =========================
         Statusanak::create([
-            'siswa_id'        => $siswa->id,
-            'status_anak'     => null,
-            'anak_ke'         => $calon->anak_ke,
-            'jumlah_saudara'  => $calon->jumlah_saudara_kandung,
-            'nama_ayah'       => null,
-            'nama_ibu'        => null,
-            'pekerjaan_ayah'  => null,
-            'pekerjaan_ibu'   => null,
-            'nomor_hp_ayah'   => null,
-            'nomor_hp_ibu'    => null,
+            'siswa_id'       => $siswa->id,
+            'anak_ke'        => $calon->anak_ke,
+            'jumlah_saudara' => $calon->jumlah_saudara_kandung,
         ]);
 
         // =========================
-        // UPDATE STATUS CALON SISWA
+        // UPDATE STATUS CALON
         // =========================
         $calon->update([
             'status' => 'dipindah_ke_siswa'
         ]);
 
-        return back()->with(
-            'success',
-            'Data berhasil dipindahkan ke tabel siswa'
-        );
+        return back()->with('success', 'Berhasil dipindahkan ke siswa');
     }
     public function resetStatus(CalonSiswa $calonSiswa)
     {
