@@ -11,6 +11,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
+use Log;
 
 class ApiSiswaController extends Controller
 {
@@ -208,59 +209,74 @@ class ApiSiswaController extends Controller
     /* ================= PUSH TO SISWA ================= */
     public function pushToSiswa($id)
     {
-        $calon = CalonSiswa::findOrFail($id);
-
-        if ($calon->status === 'dipindah_ke_siswa') {
-            return response()->json([
-                'success' => false,
-                'message' => 'Sudah dipindah ke siswa'
-            ], 422);
-        }
-
-        $jenjang = strtoupper(trim($calon->jenjang));
-        $map = self::JENJANG_MAP[$jenjang] ?? null;
-
-        if (!$map) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Jenjang tidak valid'
-            ], 422);
-        }
-
         try {
 
             DB::beginTransaction();
 
+            $calon = CalonSiswa::lockForUpdate()->findOrFail($id);
+
+            // Sudah dipindahkan
+            if ($calon->status === 'dipindah_ke_siswa') {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Data sudah dipindahkan'
+                ], 422);
+            }
+
+            // Ambil jenjang dari data calon siswa
+            $jenjang = strtoupper(trim($calon->jenjang));
+
+            $map = [
+                'SMP' => [
+                    'kode' => '03',
+                    'madrasah' => 'Ula',
+                ],
+                'SMA' => [
+                    'kode' => '02',
+                    'madrasah' => 'Wustho',
+                ],
+            ];
+
+            if (!isset($map[$jenjang])) {
+                throw new \Exception("Jenjang {$jenjang} tidak dikenali");
+            }
+
+            // Generate NIS sesuai jenjang
+            $nis = $this->generateNis($map[$jenjang]['kode']);
+
+            // Simpan siswa
             $siswa = Siswa::create([
                 'nama_siswa'     => $calon->nama,
                 'jenis_kelamin'  => $calon->jenis_kelamin,
-                'agama'          => $calon->agama ?? 'Islam',
+                'agama'          => $calon->agama ?: 'Islam',
                 'tempat_lahir'   => $calon->tempat_lahir,
                 'tanggal_lahir'  => $calon->tanggal_lahir,
                 'kota_asal'      => $calon->alamat_jalan ?: 'Tidak diketahui',
             ]);
 
-            $nis = $this->generateNis($map['kode']);
-
+            // Simpan NIS
             Nis::create([
                 'siswa_id'         => $siswa->id,
                 'nis'              => $nis,
                 'nama_lembaga'     => 'Wahidiyah',
-                'madrasah_diniyah' => $map['madrasah'],
+                'madrasah_diniyah' => $map[$jenjang]['madrasah'],
                 'tanggal_masuk'    => now()->toDateString(),
             ]);
 
+            // Status Pengamal
             Statuspengamal::create([
                 'siswa_id' => $siswa->id,
                 'status_pengamal' => 'Pengamal',
             ]);
 
+            // Status Anak
             Statusanak::create([
-                'siswa_id' => $siswa->id,
-                'anak_ke' => $calon->anak_ke,
+                'siswa_id'       => $siswa->id,
+                'anak_ke'        => $calon->anak_ke,
                 'jumlah_saudara' => $calon->jumlah_saudara_kandung,
             ]);
 
+            // Update status calon
             $calon->update([
                 'status' => 'dipindah_ke_siswa'
             ]);
@@ -272,18 +288,25 @@ class ApiSiswaController extends Controller
                 'message' => 'Berhasil dipindahkan ke siswa',
                 'data' => [
                     'siswa_id' => $siswa->id,
-                    'nis' => $nis,
-                    'status' => 'dipindah_ke_siswa',
+                    'nis'      => $nis,
+                    'jenjang'  => $jenjang,
+                    'status'   => 'dipindah_ke_siswa',
                 ]
             ]);
         } catch (\Throwable $e) {
 
             DB::rollBack();
 
+            \Log::error('PUSH SISWA ERROR', [
+                'message' => $e->getMessage(),
+                'line'    => $e->getLine(),
+                'file'    => $e->getFile(),
+            ]);
+
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage(),
-                'line' => $e->getLine(),
+                'line'    => $e->getLine(),
             ], 500);
         }
     }
