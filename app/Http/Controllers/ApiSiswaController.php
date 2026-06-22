@@ -198,19 +198,41 @@ class ApiSiswaController extends Controller
 
         $jenjangDomain = $this->getJenjangDomain();
 
-        // Filter domain
+        /**
+         * =========================
+         * SESSION ACTIVE FILTER
+         * =========================
+         */
+        session([
+            'active_jenjang' => $jenjangDomain,
+            'active_status'  => $request->status
+        ]);
+
+        /**
+         * =========================
+         * FILTER JENJANG (DOMAIN)
+         * =========================
+         */
         if ($jenjangDomain) {
             $query->where('jenjang', $jenjangDomain);
         }
 
-        // Search
-        if ($request->search) {
-            $query->where('nama', 'like', '%' . $request->search . '%');
-        }
-
-        // Status
+        /**
+         * =========================
+         * FILTER STATUS (TAB)
+         * =========================
+         */
         if ($request->status) {
             $query->where('status', $request->status);
+        }
+
+        /**
+         * =========================
+         * SEARCH
+         * =========================
+         */
+        if ($request->search) {
+            $query->where('nama', 'like', '%' . $request->search . '%');
         }
 
         $data = $query
@@ -218,6 +240,11 @@ class ApiSiswaController extends Controller
             ->paginate(20)
             ->withQueryString();
 
+        /**
+         * =========================
+         * STATS (GLOBAL + FILTERED DOMAIN)
+         * =========================
+         */
         $statQuery = CalonSiswa::query();
 
         if ($jenjangDomain) {
@@ -225,10 +252,17 @@ class ApiSiswaController extends Controller
         }
 
         $stats = [
-            'all'      => (clone $statQuery)->count(),
+            // TOTAL
+            'all' => (clone $statQuery)->count(),
+
+            // STATUS
             'calon'    => (clone $statQuery)->where('status', 'calon-siswa')->count(),
             'dipindah' => (clone $statQuery)->where('status', 'dipindah_ke_siswa')->count(),
             'briva'    => (clone $statQuery)->where('status', 'done-briva')->count(),
+
+            // JENJANG
+            'smp' => (clone $statQuery)->where('jenjang', 'SMP')->count(),
+            'sma' => (clone $statQuery)->where('jenjang', 'SMA')->count(),
         ];
 
         return view('calon_siswa.index', compact('data', 'stats'));
