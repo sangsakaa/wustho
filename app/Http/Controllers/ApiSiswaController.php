@@ -170,39 +170,65 @@ class ApiSiswaController extends Controller
      * VIEW + FILTER
      * =========================
      */
+    private function getJenjangDomain()
+    {
+        $host = request()->getHost();
+
+        // LOCAL = semua
+        if (
+            app()->environment('local') ||
+            in_array($host, ['localhost', '127.0.0.1'])
+        ) {
+            return null;
+        }
+
+        if ($host === 'ula.smedi.my.id') {
+            return 'SMP';
+        }
+
+        if ($host === 'wustho.smedi.my.id') {
+            return 'SMA';
+        }
+
+        return null;
+    }
     public function view(Request $request)
     {
         $query = CalonSiswa::query();
 
-        // SEARCH
+        $jenjangDomain = $this->getJenjangDomain();
+
+        // Filter domain
+        if ($jenjangDomain) {
+            $query->where('jenjang', $jenjangDomain);
+        }
+
+        // Search
         if ($request->search) {
             $query->where('nama', 'like', '%' . $request->search . '%');
         }
 
-        // STATUS FILTER
+        // Status
         if ($request->status) {
             $query->where('status', $request->status);
         }
 
-        // 🔥 TAB JENJANG (SMP / SMA)
-        $jenjangTab = $request->jenjang_tab;
+        $data = $query
+            ->orderBy('nama')
+            ->paginate(20)
+            ->withQueryString();
 
-        if ($jenjangTab) {
-            $query->where('jenjang', $jenjangTab);
+        $statQuery = CalonSiswa::query();
+
+        if ($jenjangDomain) {
+            $statQuery->where('jenjang', $jenjangDomain);
         }
 
-        $data = $query->latest()->paginate(20)->withQueryString();
-
-        // ================= DASHBOARD STAT =================
         $stats = [
-            'all' => CalonSiswa::count(),
-
-            'smp' => CalonSiswa::where('jenjang', 'SMP')->count(),
-            'sma' => CalonSiswa::where('jenjang', 'SMA')->count(),
-
-            'calon' => CalonSiswa::where('status', 'calon-siswa')->count(),
-            'dipindah' => CalonSiswa::where('status', 'dipindah_ke_siswa')->count(),
-            'briva' => CalonSiswa::where('status', 'done-briva')->count(),
+            'all'      => (clone $statQuery)->count(),
+            'calon'    => (clone $statQuery)->where('status', 'calon-siswa')->count(),
+            'dipindah' => (clone $statQuery)->where('status', 'dipindah_ke_siswa')->count(),
+            'briva'    => (clone $statQuery)->where('status', 'done-briva')->count(),
         ];
 
         return view('calon_siswa.index', compact('data', 'stats'));
@@ -211,28 +237,48 @@ class ApiSiswaController extends Controller
     {
         try {
 
+            $jenjangDomain = $this->getJenjangDomain();
+
             $response = Http::withHeaders([
                 'X-API-KEY' => 'sPbM_SMeDi-8Vq3N-xK7pL-2dR9t-U6aH4mZ1',
                 'Accept'    => 'application/json',
-            ])->timeout(60)->get('https://spmb.kedunglo.com/api/public/siswa');
+            ])->timeout(60)->get(
+                'https://spmb.kedunglo.com/api/public/siswa'
+            );
 
             if (!$response->ok()) {
-                return back()->with('error', 'API gagal diakses: ' . $response->status());
+                return back()->with(
+                    'error',
+                    'API gagal diakses: ' . $response->status()
+                );
             }
 
             $dataSiswa = $response->json();
+
             $total = 0;
 
             foreach ($dataSiswa as $siswa) {
 
-                $jenjangName = $siswa['jenjang']['name'] ?? null;
+                $jenjangName = strtoupper(
+                    trim($siswa['jenjang']['name'] ?? '')
+                );
 
-                // 🔥 hanya ambil SMP & SMA
+                // Tolak selain SMP/SMA
                 if (!in_array($jenjangName, ['SMP', 'SMA'])) {
                     continue;
                 }
 
-                $tanggalLahir = $this->parseTanggal($siswa['tanggal_lahir'] ?? null);
+                // Domain filter
+                if (
+                    $jenjangDomain &&
+                    $jenjangName !== $jenjangDomain
+                ) {
+                    continue;
+                }
+
+                $tanggalLahir = $this->parseTanggal(
+                    $siswa['tanggal_lahir'] ?? null
+                );
 
                 CalonSiswa::updateOrCreate(
                     [
@@ -242,9 +288,6 @@ class ApiSiswaController extends Controller
                         'jenjang_id'    => $siswa['jenjang']['id'] ?? null,
                         'jenjang'       => $jenjangName,
                         'jenjang_title' => $siswa['jenjang']['title'] ?? null,
-
-                        // optional: tetap simpan asal data
-                        'lembaga'       => 'SPMB-API',
 
                         'nomor_pendaftaran' => $siswa['nomorPendaftaran'] ?? null,
                         'nama'              => $siswa['nama_lengkap'] ?? null,
@@ -273,7 +316,8 @@ class ApiSiswaController extends Controller
                         'rw'           => $siswa['rw'] ?? null,
                         'kode_pos'     => $siswa['kode_pos'] ?? null,
 
-                        'status'   => 'calon-siswa',
+                        'status' => 'calon-siswa',
+
                         'tapel_id' => $siswa['tapel'] ?? null,
                         'user_id'  => $siswa['user'] ?? null,
 
@@ -289,10 +333,16 @@ class ApiSiswaController extends Controller
                 $total++;
             }
 
-            return redirect('/calon-siswa')
-                ->with('success', "Full sync SMP & SMA berhasil: $total data");
+            return back()->with(
+                'success',
+                "Live Sync berhasil : {$total} data"
+            );
         } catch (\Exception $e) {
-            return back()->with('error', $e->getMessage());
+
+            return back()->with(
+                'error',
+                $e->getMessage()
+            );
         }
     }
     
@@ -308,6 +358,17 @@ class ApiSiswaController extends Controller
     public function pushToSiswa($calonSiswaId)
     {
         $calon = CalonSiswa::findOrFail($calonSiswaId);
+        $jenjangDomain = $this->getJenjangDomain();
+
+        if (
+            $jenjangDomain &&
+            strtoupper($calon->jenjang) !== $jenjangDomain
+        ) {
+            return back()->with(
+                'warning',
+                'Data tidak sesuai dengan domain aktif.'
+            );
+        }
 
         // =========================
         // CEGAH PUSH DUA KALI
