@@ -171,63 +171,45 @@ class ApiSiswaController extends Controller
      * =========================
      */
     public function view(Request $request)
-{
-    $query = CalonSiswa::query();
+    {
+        $query = CalonSiswa::query();
 
-    // SEARCH
-    if ($request->search) {
-        $query->where('nama', 'like', '%' . $request->search . '%');
+        // SEARCH
+        if ($request->search) {
+            $query->where('nama', 'like', '%' . $request->search . '%');
+        }
+
+        // STATUS FILTER
+        if ($request->status) {
+            $query->where('status', $request->status);
+        }
+
+        // 🔥 TAB JENJANG (SMP / SMA)
+        $jenjangTab = $request->jenjang_tab;
+
+        if ($jenjangTab) {
+            $query->where('jenjang', $jenjangTab);
+        }
+
+        $data = $query->latest()->paginate(20)->withQueryString();
+
+        // ================= DASHBOARD STAT =================
+        $stats = [
+            'all' => CalonSiswa::count(),
+
+            'smp' => CalonSiswa::where('jenjang', 'SMP')->count(),
+            'sma' => CalonSiswa::where('jenjang', 'SMA')->count(),
+
+            'calon' => CalonSiswa::where('status', 'calon-siswa')->count(),
+            'dipindah' => CalonSiswa::where('status', 'dipindah_ke_siswa')->count(),
+            'briva' => CalonSiswa::where('status', 'done-briva')->count(),
+        ];
+
+        return view('calon_siswa.index', compact('data', 'stats'));
     }
-
-    // JENJANG
-    if ($request->jenjang) {
-        $query->where('jenjang', $request->jenjang);
-    }
-
-    // STATUS FILTER
-    if ($request->status) {
-        $query->where('status', $request->status);
-    }
-
-    $data = $query->latest()->paginate(20)->withQueryString();
-
-    // ================= DASHBOARD STAT =================
-    $stats = [
-        'all' => CalonSiswa::count(),
-        'calon' => CalonSiswa::where('status', 'calon-siswa')->count(),
-        'dipindah' => CalonSiswa::where('status', 'dipindah_ke_siswa')->count(),
-        'briva' => CalonSiswa::where('status', 'done-briva')->count(),
-    ];
-
-    return view('calon_siswa.index', compact('data', 'stats'));
-}
     public function liveSync(Request $request)
     {
         try {
-            $host = $request->getHost();
-            $path = $request->path(); // calon-siswa
-
-            // default
-            $jenjangFilter = null;
-            $lembagaName   = null;
-
-            // LOCALHOST
-            if (app()->environment('local') || in_array($host, ['127.0.0.1', 'localhost'])) {
-                $jenjangFilter = 'SMA';
-                $lembagaName   = 'LOCAL';
-            }
-
-            // DOMAIN WUSTHO (SMA)
-            elseif ($host === 'wustho.smedi.my.id') {
-                $jenjangFilter = 'SMA';
-                $lembagaName   = 'Wustho';
-            }
-
-            // DOMAIN ULA (SMP)
-            elseif ($host === 'ula.smedi.my.id') {
-                $jenjangFilter = 'SMP';
-                $lembagaName   = 'Ula';
-            }
 
             $response = Http::withHeaders([
                 'X-API-KEY' => 'sPbM_SMeDi-8Vq3N-xK7pL-2dR9t-U6aH4mZ1',
@@ -245,8 +227,8 @@ class ApiSiswaController extends Controller
 
                 $jenjangName = $siswa['jenjang']['name'] ?? null;
 
-                // filter jenjang sesuai domain
-                if ($jenjangFilter && $jenjangName !== $jenjangFilter) {
+                // 🔥 hanya ambil SMP & SMA
+                if (!in_array($jenjangName, ['SMP', 'SMA'])) {
                     continue;
                 }
 
@@ -261,7 +243,8 @@ class ApiSiswaController extends Controller
                         'jenjang'       => $jenjangName,
                         'jenjang_title' => $siswa['jenjang']['title'] ?? null,
 
-                        'lembaga'       => $lembagaName, // 🔥 penting (Ula / Wustho)
+                        // optional: tetap simpan asal data
+                        'lembaga'       => 'SPMB-API',
 
                         'nomor_pendaftaran' => $siswa['nomorPendaftaran'] ?? null,
                         'nama'              => $siswa['nama_lengkap'] ?? null,
@@ -290,7 +273,7 @@ class ApiSiswaController extends Controller
                         'rw'           => $siswa['rw'] ?? null,
                         'kode_pos'     => $siswa['kode_pos'] ?? null,
 
-                        'status' => 'calon-siswa',
+                        'status'   => 'calon-siswa',
                         'tapel_id' => $siswa['tapel'] ?? null,
                         'user_id'  => $siswa['user'] ?? null,
 
@@ -307,7 +290,7 @@ class ApiSiswaController extends Controller
             }
 
             return redirect('/calon-siswa')
-                ->with('success', "Live sync {$lembagaName} berhasil: $total data");
+                ->with('success', "Full sync SMP & SMA berhasil: $total data");
         } catch (\Exception $e) {
             return back()->with('error', $e->getMessage());
         }

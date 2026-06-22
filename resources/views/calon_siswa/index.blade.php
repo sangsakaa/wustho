@@ -9,7 +9,7 @@
   <div class="py-6 max-w-7xl mx-auto space-y-4">
 
     {{-- ================= DASHBOARD ================= --}}
-    <div class="grid grid-cols-3 gap-3">
+    <div class="grid grid-cols-4 gap-3">
 
       <div class="bg-white p-4 rounded-xl shadow">
         <p>Total</p>
@@ -17,14 +17,42 @@
       </div>
 
       <div class="bg-white p-4 rounded-xl shadow">
+        <p>SMP</p>
+        <b>{{ $stats['smp'] ?? 0 }}</b>
+      </div>
+
+      <div class="bg-white p-4 rounded-xl shadow">
+        <p>SMA</p>
+        <b>{{ $stats['sma'] ?? 0 }}</b>
+      </div>
+
+      <div class="bg-white p-4 rounded-xl shadow">
         <p>Calon</p>
         <b>{{ $stats['calon'] ?? 0 }}</b>
       </div>
 
-      <div class="bg-white p-4 rounded-xl shadow">
-        <p>Dipindah</p>
-        <b>{{ $stats['dipindah'] ?? 0 }}</b>
-      </div>
+    </div>
+
+    {{-- ================= TAB JENJANG ================= --}}
+    <div class="bg-white p-4 rounded-xl shadow flex gap-2">
+
+      <a href="?jenjang_tab=&status={{ request('status') }}&search={{ request('search') }}"
+        class="px-3 py-1 rounded text-sm
+         {{ !request('jenjang_tab') ? 'bg-black text-white' : 'bg-gray-200' }}">
+        Semua
+      </a>
+
+      <a href="?jenjang_tab=SMP&status={{ request('status') }}&search={{ request('search') }}"
+        class="px-3 py-1 rounded text-sm
+         {{ request('jenjang_tab')=='SMP' ? 'bg-black text-white' : 'bg-gray-200' }}">
+        SMP
+      </a>
+
+      <a href="?jenjang_tab=SMA&status={{ request('status') }}&search={{ request('search') }}"
+        class="px-3 py-1 rounded text-sm
+         {{ request('jenjang_tab')=='SMA' ? 'bg-black text-white' : 'bg-gray-200' }}">
+        SMA
+      </a>
 
     </div>
 
@@ -36,12 +64,14 @@
         class="w-full border rounded px-3 py-2"
         placeholder="Cari nama...">
 
-      <div class="flex gap-2">
+      <input type="hidden" name="jenjang_tab" value="{{ request('jenjang_tab') }}">
+
+      <div class="flex gap-2 flex-wrap">
 
         @foreach(['','calon-siswa','dipindah_ke_siswa','done-briva'] as $s)
-        <a href="?status={{ $s }}"
+        <a href="?status={{ $s }}&jenjang_tab={{ request('jenjang_tab') }}&search={{ request('search') }}"
           class="px-3 py-1 rounded text-sm
-  {{ request('status')==$s?'bg-black text-white':'bg-gray-200' }}">
+            {{ request('status')==$s?'bg-black text-white':'bg-gray-200' }}">
           {{ $s ?: 'Semua' }}
         </a>
         @endforeach
@@ -72,10 +102,10 @@
 
         <thead class="bg-gray-100">
           <tr>
-            <th>Nama</th>
-            <th>Jenjang</th>
-            <th>Status</th>
-            <th>Aksi</th>
+            <th class="p-3 text-left">Nama</th>
+            <th class="p-3 text-left">Jenjang</th>
+            <th class="p-3 text-left">Status</th>
+            <th class="p-3 text-left">Aksi</th>
           </tr>
         </thead>
 
@@ -86,7 +116,11 @@
 
             <td class="p-3">{{ $row->nama }}</td>
 
-            <td class="p-3">{{ $row->jenjang }}</td>
+            <td class="p-3">
+              <span class="px-2 py-1 text-xs rounded bg-blue-100">
+                {{ $row->jenjang }}
+              </span>
+            </td>
 
             <td class="p-3">
               <span id="status-{{ $row->id }}"
@@ -118,6 +152,11 @@
 
     </div>
 
+    {{-- ================= PAGINATION ================= --}}
+    <div>
+      {{ $data->links() }}
+    </div>
+
   </div>
 
   {{-- ================= JS ================= --}}
@@ -135,15 +174,11 @@
         showCancelButton: true,
         confirmButtonText: 'Ya',
         cancelButtonText: 'Batal',
-
-        buttonsStyling: false, // 🔥 WAJIB supaya Tailwind aktif
-
+        buttonsStyling: false,
         customClass: {
-          popup: 'rounded-2xl bg-white dark:bg-gray-900 shadow-xl',
-          title: 'text-gray-800 dark:text-white text-lg font-semibold',
-          icon: 'text-blue-500',
-          confirmButton: 'bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium mx-1 transition',
-          cancelButton: 'bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-lg text-sm font-medium mx-1 transition'
+          popup: 'rounded-2xl bg-white shadow-xl',
+          confirmButton: 'bg-blue-600 text-white px-4 py-2 rounded-lg mx-1',
+          cancelButton: 'bg-gray-200 text-gray-700 px-4 py-2 rounded-lg mx-1'
         }
       }).then(res => {
 
@@ -168,9 +203,10 @@
                 timer: 1200,
                 showConfirmButton: false
               });
-
             }
+
           });
+
       });
 
     }
@@ -226,12 +262,9 @@
       let p = 10;
 
       let i = setInterval(() => {
-
         p += 10;
         bar.style.width = p + '%';
-
         if (p >= 90) clearInterval(i);
-
       }, 200);
 
       fetch('/calon-siswa/live-sync')
