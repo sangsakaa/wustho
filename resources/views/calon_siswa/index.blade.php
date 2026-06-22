@@ -13,22 +13,7 @@
         </p>
       </div>
 
-      <div class="flex flex-wrap gap-3">
 
-        <button onclick="syncData()"
-          class="rounded-xl bg-emerald-600 px-4 py-2 text-sm font-semibold text-white shadow hover:bg-emerald-700 transition">
-          🔄 Sync Data
-        </button>
-
-        @if(session('active_jenjang') || session('active_status'))
-        <div class="rounded-xl bg-slate-100 px-4 py-2 text-xs text-slate-600">
-          Mode:
-          {{ session('active_jenjang') ?? 'ALL' }} |
-          {{ session('active_status') ?? 'ALL' }}
-        </div>
-        @endif
-
-      </div>
 
     </div>
   </x-slot>
@@ -85,9 +70,19 @@
                 {{ session('active_status') == 'dipindah_ke_siswa' ? 'bg-emerald-600 text-white' : 'bg-white text-slate-600' }}">
           Dipindah
         </a>
+        <button onclick="syncData()"
+          class="rounded-xl bg-emerald-600 px-4 py-2 text-sm font-semibold text-white shadow hover:bg-emerald-700 transition">
+          🔄 Sync Data
+        </button>
 
+        @if(session('active_jenjang') || session('active_status'))
+        <div class="rounded-xl bg-slate-100 px-4 py-2 text-xs text-slate-600">
+          Mode:
+          {{ session('active_jenjang') ?? 'ALL' }} |
+          {{ session('active_status') ?? 'ALL' }}
+        </div>
+        @endif
       </div>
-
     </div>
 
     {{-- =========================================================
@@ -159,8 +154,8 @@
               <td class="p-4 flex gap-2">
 
                 <button onclick="kirim({{ $row->id }}, this)"
-                  class="px-3 py-1 text-xs rounded-xl bg-blue-600 text-white hover:bg-blue-700">
-                  Kirim
+                  class="px-3 py-1 text-xs rounded-xl bg-blue-600 text-white hover:bg-blue-700 transition-all duration-200 disabled:opacity-100 disabled:bg-blue-600">
+                  Jadikan Siswa
                 </button>
 
                 <button onclick="resetData({{ $row->id }})"
@@ -218,14 +213,31 @@
 
     function kirim(id, btn) {
       Swal.fire({
-        title: 'Push ke Siswa?',
+        title: 'Jadikan Siswa?',
+        text: 'Data akan dipindahkan ke tabel siswa aktif',
         icon: 'question',
-        showCancelButton: true
+        showCancelButton: true,
+        confirmButtonText: 'Ya, Proses',
+        cancelButtonText: 'Batal',
+        confirmButtonColor: '#2563eb', // blue-600
+        cancelButtonColor: '#64748b' // slate-500
       }).then(res => {
         if (!res.isConfirmed) return;
 
+        // ================= LOADING BUTTON STYLE =================
         btn.disabled = true;
-        btn.innerText = '...';
+        btn.innerHTML = `
+      <span class="flex items-center gap-2">
+        <svg class="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+        </svg>
+        Memproses...
+      </span>
+    `;
+
+        btn.className =
+          "px-3 py-1 text-xs rounded-xl bg-slate-400 text-white cursor-not-allowed";
 
         fetch(`/calon-siswa/${id}/push`, {
             method: 'POST',
@@ -236,12 +248,43 @@
           })
           .then(r => r.json())
           .then(res => {
+
             updateStatus(id, res.data.status);
-            Swal.fire('Success', res.message, 'success');
+
+            Swal.fire({
+              title: 'Berhasil!',
+              text: res.message,
+              icon: 'success',
+              confirmButtonColor: '#22c55e' // green-500
+            });
+
+            // ================= SUCCESS BUTTON STYLE =================
+            btn.innerHTML = '✓ Selesai';
+            btn.className =
+              "px-3 py-1 text-xs rounded-xl bg-green-600 text-white";
+
+          })
+          .catch(() => {
+            Swal.fire({
+              title: 'Gagal!',
+              text: 'Terjadi kesalahan saat proses data',
+              icon: 'error',
+              confirmButtonColor: '#ef4444'
+            });
+
+            // ================= RESET BUTTON =================
+            btn.disabled = false;
+            btn.innerHTML = 'Jadikan Siswa';
+            btn.className =
+              "px-3 py-1 text-xs rounded-xl bg-blue-600 text-white hover:bg-blue-600";
           })
           .finally(() => {
-            btn.disabled = false;
-            btn.innerText = 'Kirim';
+            if (!btn.disabled) {
+              btn.disabled = false;
+              btn.innerHTML = 'Jadikan Siswa';
+              btn.className =
+                "px-3 py-1 text-xs rounded-xl bg-blue-600 text-white hover:bg-blue-600";
+            }
           });
       });
     }
