@@ -210,7 +210,6 @@ class ApiSiswaController extends Controller
     {
         $calon = CalonSiswa::findOrFail($id);
 
-        // ================= CEK STATUS =================
         if ($calon->status === 'dipindah_ke_siswa') {
             return response()->json([
                 'success' => false,
@@ -218,75 +217,72 @@ class ApiSiswaController extends Controller
             ], 422);
         }
 
-        // ================= VALIDASI JENJANG =================
         $jenjang = strtoupper(trim($calon->jenjang));
         $map = self::JENJANG_MAP[$jenjang] ?? null;
 
         if (!$map) {
             return response()->json([
                 'success' => false,
-                'message' => "Jenjang tidak valid: {$calon->jenjang}"
+                'message' => 'Jenjang tidak valid'
             ], 422);
         }
 
         try {
-            return DB::transaction(function () use ($calon, $map) {
 
-                // ================= SISWA =================
-                $siswa = Siswa::create([
-                    'nama_siswa'    => $calon->nama,
-                    'jenis_kelamin'  => $calon->jenis_kelamin,
-                    'agama'          => $calon->agama ?? 'Islam',
-                    'tempat_lahir'   => $calon->tempat_lahir,
-                    'tanggal_lahir'  => $calon->tanggal_lahir,
-                    'kota_asal'      => $calon->alamat_jalan
-                        ?? $calon->kelurahan_desa
-                        ?? 'Tidak diketahui',
-                ]);
+            DB::beginTransaction();
 
-                // ================= NIS =================
-                $nis = $this->generateNis($map['kode']);
+            $siswa = Siswa::create([
+                'nama_siswa'     => $calon->nama,
+                'jenis_kelamin'  => $calon->jenis_kelamin,
+                'agama'          => $calon->agama ?? 'Islam',
+                'tempat_lahir'   => $calon->tempat_lahir,
+                'tanggal_lahir'  => $calon->tanggal_lahir,
+                'kota_asal'      => $calon->alamat_jalan ?: 'Tidak diketahui',
+            ]);
 
-                Nis::create([
-                    'siswa_id'         => $siswa->id,
-                    'nis'              => $nis,
-                    'nama_lembaga'     => 'Wahidiyah',
-                    'madrasah_diniyah' => $map['madrasah'],
-                    'tanggal_masuk'    => now()->toDateString(),
-                ]);
+            $nis = $this->generateNis($map['kode']);
 
-                // ================= STATUS PENGAMAL =================
-                Statuspengamal::create([
-                    'siswa_id'         => $siswa->id,
-                    'status_pengamal'  => 'Pengamal',
-                ]);
+            Nis::create([
+                'siswa_id'         => $siswa->id,
+                'nis'              => $nis,
+                'nama_lembaga'     => 'Wahidiyah',
+                'madrasah_diniyah' => $map['madrasah'],
+                'tanggal_masuk'    => now()->toDateString(),
+            ]);
 
-                // ================= STATUS ANAK =================
-                Statusanak::create([
-                    'siswa_id'       => $siswa->id,
-                    'anak_ke'        => $calon->anak_ke,
-                    'jumlah_saudara' => $calon->jumlah_saudara_kandung,
-                ]);
+            Statuspengamal::create([
+                'siswa_id' => $siswa->id,
+                'status_pengamal' => 'Pengamal',
+            ]);
 
-                // ================= UPDATE CALON =================
-                $calon->update([
-                    'status' => 'dipindah_ke_siswa'
-                ]);
+            Statusanak::create([
+                'siswa_id' => $siswa->id,
+                'anak_ke' => $calon->anak_ke,
+                'jumlah_saudara' => $calon->jumlah_saudara_kandung,
+            ]);
 
-                return response()->json([
-                    'success' => true,
-                    'message' => 'Berhasil dipindahkan ke siswa',
-                    'data' => [
-                        'siswa_id' => $siswa->id,
-                        'nis'      => $nis,
-                        'jenjang'  => $jenjang,
-                    ]
-                ]);
-            });
+            $calon->update([
+                'status' => 'dipindah_ke_siswa'
+            ]);
+
+            DB::commit();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Berhasil dipindahkan ke siswa',
+                'data' => [
+                    'siswa_id' => $siswa->id,
+                    'nis' => $nis,
+                ]
+            ]);
         } catch (\Throwable $e) {
+
+            DB::rollBack();
+
             return response()->json([
                 'success' => false,
-                'message' => 'Terjadi kesalahan: ' . $e->getMessage()
+                'message' => $e->getMessage(),
+                'line' => $e->getLine(),
             ], 500);
         }
     }
