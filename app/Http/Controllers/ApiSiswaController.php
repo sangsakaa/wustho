@@ -326,12 +326,29 @@ class ApiSiswaController extends Controller
         if (!$calon->tempat_lahir) $missing[] = 'tempat_lahir';
         if (!$calon->tanggal_lahir) $missing[] = 'tanggal_lahir';
 
-        if ($missing) {
-            return back()->with('warning', 'Data belum lengkap: ' . implode(', ', $missing));
+        if (!empty($missing)) {
+            return back()->with(
+                'warning',
+                'Data belum lengkap: ' . implode(', ', $missing)
+            );
         }
 
         // =========================
-        // CREATE SISWA
+        // CEK SUDAH ADA SISWA?
+        // =========================
+        $existingSiswa = Siswa::where('nama_siswa', $calon->nama)
+            ->whereDate('tanggal_lahir', $calon->tanggal_lahir)
+            ->first();
+
+        if ($existingSiswa) {
+            return back()->with(
+                'warning',
+                'Siswa dengan nama dan tanggal lahir yang sama sudah ada.'
+            );
+        }
+
+        // =========================
+        // SIMPAN SISWA
         // =========================
         $siswa = Siswa::create([
             'nama_siswa'    => $calon->nama,
@@ -343,35 +360,64 @@ class ApiSiswaController extends Controller
         ]);
 
         // =========================
-        // NORMALISASI JENJANG (INI KUNCI FIX SMP)
+        // NORMALISASI JENJANG
         // =========================
         $rawJenjang = strtoupper(trim($calon->jenjang ?? ''));
 
         if (str_contains($rawJenjang, 'SMP')) {
+
             $jenjang = 'Ula';
-            $kode    = '01';
+            $kodeJenjang = '01';
         } elseif (str_contains($rawJenjang, 'SMA')) {
+
             $jenjang = 'Wustho';
-            $kode    = '02';
+            $kodeJenjang = '02';
         } else {
-            return back()->with('warning', 'Jenjang tidak dikenali: ' . $calon->jenjang);
+
+            return back()->with(
+                'warning',
+                'Jenjang tidak dikenali: ' . ($calon->jenjang ?? '-')
+            );
         }
 
         // =========================
         // GENERATE NIS
+        // FORMAT:
+        // YYYY + KK + NNNNN
+        // 2026 + 01 + 00001
         // =========================
         $tahun = date('Y');
-        $prefix = $tahun . $kode;
 
-        $last = Nis::where('nis', 'like', $prefix . '%')
-            ->orderByDesc('nis')
+        $prefix = $tahun . $kodeJenjang;
+
+        $lastNis = Nis::where('nis', 'like', $prefix . '%')
+            ->orderBy('nis', 'desc')
             ->first();
 
-        $lastNumber = $last ? (int) substr($last->nis, strlen($prefix)) : 0;
-        $nextNumber = $lastNumber + 1;
+        if ($lastNis) {
 
-        $nisBaru = $prefix . str_pad($nextNumber, 5, '0', STR_PAD_LEFT);
+            $lastNumber = (int) substr(
+                $lastNis->nis,
+                strlen($prefix)
+            );
 
+            $nextNumber = $lastNumber + 1;
+        } else {
+
+            $nextNumber = 1;
+        }
+
+        $nisBaru = $prefix .
+            str_pad(
+                $nextNumber,
+                5,
+                '0',
+                STR_PAD_LEFT
+            );
+
+        // =========================
+        // SIMPAN NIS
+        // =========================
         Nis::create([
             'siswa_id'         => $siswa->id,
             'nis'              => $nisBaru,
@@ -385,7 +431,7 @@ class ApiSiswaController extends Controller
         // =========================
         Statuspengamal::create([
             'siswa_id'        => $siswa->id,
-            'status_pengamal' => 'Pengamal'
+            'status_pengamal' => 'Pengamal',
         ]);
 
         // =========================
@@ -393,18 +439,22 @@ class ApiSiswaController extends Controller
         // =========================
         Statusanak::create([
             'siswa_id'       => $siswa->id,
+            'status_anak'    => null,
             'anak_ke'        => $calon->anak_ke,
             'jumlah_saudara' => $calon->jumlah_saudara_kandung,
         ]);
 
         // =========================
-        // UPDATE STATUS CALON
+        // UPDATE STATUS CALON SISWA
         // =========================
         $calon->update([
-            'status' => 'dipindah_ke_siswa'
+            'status' => 'dipindah_ke_siswa',
         ]);
 
-        return back()->with('success', 'Berhasil dipindahkan ke siswa');
+        return back()->with(
+            'success',
+            "Berhasil dipindahkan ke siswa. NIS: {$nisBaru}"
+        );
     }
     public function resetStatus(CalonSiswa $calonSiswa)
     {
