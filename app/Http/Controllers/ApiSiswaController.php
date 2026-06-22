@@ -81,96 +81,108 @@ class ApiSiswaController extends Controller
     /* ================= VIEW ================= */
     public function view(Request $request)
     {
-        // simpan filter ke session
-        if ($request->has('jenjang')) {
-            session(['active_jenjang' => $request->jenjang]);
-        }
-
-        if ($request->has('status')) {
-            session(['active_status' => $request->status]);
-        }
-
         $domain = $this->getJenjangDomain();
 
         $query = CalonSiswa::query();
 
-        // dari session (bukan request)
-        $jenjang = session('active_jenjang');
-        $status  = session('active_status');
-
+        // Filter otomatis berdasarkan domain
         if ($domain) {
             $query->where('jenjang', $domain);
         }
 
-        if ($jenjang) {
-            $query->where('jenjang', $jenjang);
+        // Search
+        if ($request->filled('search')) {
+            $query->where('nama', 'like', '%' . $request->search . '%');
         }
 
-        if ($status) {
-            $query->where('status', $status);
+        // Status
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
         }
 
-        if ($request->search) {
-            $query->where('nama', 'like', "%{$request->search}%");
+        $data = $query
+            ->latest()
+            ->paginate(20)
+            ->withQueryString();
+
+        $base = CalonSiswa::query();
+
+        if ($domain) {
+            $base->where('jenjang', $domain);
         }
-
-        $data = $query->latest()->paginate(20);
-
-        $base = CalonSiswa::when($domain, fn($q) => $q->where('jenjang', $domain));
 
         $stats = [
-            'all' => (clone $base)->count(),
-            'SMP' => (clone $base)->where('jenjang', 'SMP')->count(),
-            'SMA' => (clone $base)->where('jenjang', 'SMA')->count(),
+            'all'   => (clone $base)->count(),
+            'smp'   => (clone $base)->where('jenjang', 'SMP')->count(),
+            'sma'   => (clone $base)->where('jenjang', 'SMA')->count(),
             'calon' => (clone $base)->where('status', 'calon-siswa')->count(),
         ];
 
-        return view('calon_siswa.index', compact('data', 'stats'));
+        return view('calon_siswa.index', compact(
+            'data',
+            'stats',
+            'domain'
+        ));
     }
     /* ================= LIVE SYNC ================= */
     public function liveSync()
     {
         try {
+
             $response = Http::withHeaders([
                 'X-API-KEY' => self::API_KEY,
-                'Accept' => 'application/json',
+                'Accept'    => 'application/json',
             ])->timeout(60)->get(self::API_URL);
 
-            if (!$response->ok()) {
+            if (!$response->successful()) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'API gagal: ' . $response->status()
+                    'message' => 'API gagal : ' . $response->status(),
                 ], 500);
             }
 
             $students = $response->json();
+
             $domain = $this->getJenjangDomain();
 
             $total = 0;
 
             foreach ($students as $item) {
 
-                $jenjang = strtoupper(data_get($item, 'jenjang.name'));
+                $jenjang = strtoupper(
+                    trim(data_get($item, 'jenjang.name'))
+                );
 
-                if (!isset(self::JENJANG_MAP[$jenjang])) continue;
-                if ($domain && $domain !== $jenjang) continue;
+                // hanya SMP atau SMA
+                if (!isset(self::JENJANG_MAP[$jenjang])) {
+                    continue;
+                }
+
+                // filter domain
+                if ($domain && $domain !== $jenjang) {
+                    continue;
+                }
 
                 CalonSiswa::updateOrCreate(
-                    ['api_id' => data_get($item, 'id')],
                     [
-                        'jenjang' => $jenjang,
-                        'jenjang_id' => data_get($item, 'jenjang.id'),
-                        'nama' => data_get($item, 'nama_lengkap'),
-                        'jenis_kelamin' => data_get($item, 'jenis_kelamin'),
-                        'nisn' => data_get($item, 'nisn'),
-                        'nis' => data_get($item, 'nis'),
-                        'nik' => data_get($item, 'nik'),
-                        'tempat_lahir' => data_get($item, 'tempat_lahir'),
-                        'tanggal_lahir' => $this->parseTanggal(data_get($item, 'tanggal_lahir')),
-                        'agama' => data_get($item, 'agama'),
-                        'alamat_jalan' => data_get($item, 'alamat_jalan'),
-                        'status' => 'calon-siswa',
-                        'data_api' => $item,
+                        'api_id' => data_get($item, 'id'),
+                    ],
+                    [
+                        'jenjang'        => $jenjang,
+                        'jenjang_id'     => data_get($item, 'jenjang.id'),
+                        'nama'           => data_get($item, 'nama_lengkap'),
+                        'jenis_kelamin'  => data_get($item, 'jenis_kelamin'),
+                        'nisn'           => data_get($item, 'nisn'),
+                        'nis'            => data_get($item, 'nis'),
+                        'nik'            => data_get($item, 'nik'),
+                        'tempat_lahir'   => data_get($item, 'tempat_lahir'),
+                        'tanggal_lahir'  => $this->parseTanggal(
+                            data_get($item, 'tanggal_lahir')
+                        ),
+                        'agama'          => data_get($item, 'agama'),
+                        'alamat_jalan'   => data_get($item, 'alamat_jalan'),
+                        'status'         => 'calon-siswa',
+                        'data_api'       => $item,
                     ]
                 );
 
@@ -179,12 +191,19 @@ class ApiSiswaController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => "Sync berhasil: {$total} data"
+                'message' => "Sync berhasil {$total} data {$domain}",
             ]);
         } catch (\Throwable $e) {
+
+            \Log::error('SYNC ERROR', [
+                'message' => $e->getMessage(),
+                'line'    => $e->getLine(),
+                'file'    => $e->getFile(),
+            ]);
+
             return response()->json([
                 'success' => false,
-                'message' => $e->getMessage()
+                'message' => $e->getMessage(),
             ], 500);
         }
     }
