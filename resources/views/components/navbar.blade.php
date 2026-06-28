@@ -27,155 +27,139 @@ $periodeAktif = null;
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <nav
-    class="sticky top-0 z-10 flex items-center justify-between px-4 py-2 bg-white border-b dark:bg-dark-eval-1 dark:border-slate-700">
+    aria-label="secondary"
+    x-data="{ open: false }"
+    class="sticky top-0 z-30 flex items-center justify-between px-4 py-3 bg-white border-b border-green-100 shadow-sm dark:bg-dark-eval-1 dark:border-slate-700"
+    :class="{
+        '-translate-y-full': scrollingDown,
+        'translate-y-0': scrollingUp,
+    }">
 
     {{-- LEFT --}}
-    <div class="flex items-center gap-2">
+    <div class="flex items-center gap-3">
 
-        <x-button
+        {{-- SIDEBAR --}}
+        <button
             type="button"
-            class="md:hidden"
-            iconOnly
-            variant="secondary"
-            srText="Toggle dark mode"
-            @click="toggleTheme">
+            class="p-2 rounded-lg md:hidden hover:bg-green-50"
+            @click="isSidebarOpen = !isSidebarOpen">
 
-            <x-heroicon-o-moon
-                x-show="!isDarkMode"
-                class="w-5 h-5" />
+            <svg class="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24">
 
-            <x-heroicon-o-sun
-                x-show="isDarkMode"
-                class="w-5 h-5" />
-        </x-button>
+                <path stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M4 6h16M4 12h16M4 18h16" />
+
+            </svg>
+
+        </button>
+
+        <div>
+
+            <h1 class="font-bold text-green-700">
+                SMEDI
+            </h1>
+
+            <p class="text-xs text-slate-500">
+                Sistem Manajemen Madrasah
+            </p>
+
+        </div>
 
     </div>
 
     {{-- RIGHT --}}
     <div class="flex items-center gap-2">
 
-        {{-- PERIODE --}}
-        @if($periodeAktif)
-
-        <x-dropdown align="right" width="64">
-
-            {{-- TRIGGER --}}
-            <x-slot name="trigger">
-
-                <button
-                    class="flex items-center gap-2 px-3 py-2 text-sm border rounded-lg dark:border-slate-700">
-
-                    <div class="font-medium whitespace-nowrap">
-                        {{ $periodeAktif->periode }}
-                        -
-                        {{ $periodeAktif->semester->ket_semester ?? '-' }}
-                    </div>
-
-                    <x-heroicon-o-chevron-down class="w-4 h-4" />
-
-                </button>
-
-            </x-slot>
-
-            {{-- CONTENT --}}
-            <x-slot name="content">
-
-                @foreach ($dataperiode as $list)
-
-                <form
-                    method="POST"
-                    action="{{ route('setperiode') }}"
-                    class="form-periode">
-
-                    @csrf
-
-                    <input
-                        type="hidden"
-                        name="periode_id"
-                        value="{{ $list->id }}">
-
-                    <button
-                        type="submit"
-                        class="w-full flex items-center justify-between px-4 py-3 text-sm hover:bg-slate-100 dark:hover:bg-slate-700">
-
-                        <div class="flex items-center gap-2">
-
-                            <span>
-                                {{ $list->periode }}
-                                -
-                                {{ $list->semester->ket_semester ?? '-' }}
-                            </span>
-
-                        </div>
-
-                        @php
-                        $isDipilih = session('periode_id') == $list->id;
-                        $isAktif = $list->is_active;
-                        @endphp
-
-                        @if($isAktif)
-
-                        <span class="text-[10px] text-green-500 font-medium">
-                            Aktif Sistem
-                        </span>
-
-                        @elseif($isDipilih)
-
-                        <span class="text-[10px] text-blue-500 font-medium">
-                            Dipilih Sementara
-                        </span>
-
-                        @endif
-
-                    </button>
-
-                </form>
-
-                @endforeach
-
-            </x-slot>
-
-        </x-dropdown>
-
-        @endif
-
         {{-- DARK MODE --}}
-        <x-button
+        <button
             type="button"
-            class="hidden md:inline-flex"
-            iconOnly
-            variant="secondary"
-            srText="Toggle dark mode"
+            class="p-2 rounded-lg hover:bg-slate-100"
             @click="toggleTheme">
 
-            <x-heroicon-o-moon
-                x-show="!isDarkMode"
-                class="w-5 h-5" />
+            <svg x-show="!isDarkMode"
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24">
 
-            <x-heroicon-o-sun
-                x-show="isDarkMode"
-                class="w-5 h-5" />
-        </x-button>
+                <path stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M20.354 15.354A9 9 0 018.646 3.646 9 9 0 1020.354 15.354z" />
+            </svg>
 
-        {{-- USER --}}
-        @if($user)
+            <svg x-show="isDarkMode"
+                class="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24">
 
-        <x-dropdown align="right" width="48">
+                <path stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 3v1m0 16v1m8-9h1M3 12H2m15.364 6.364l.707.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707" />
+            </svg>
+
+        </button>
+
+        @auth
+
+        <x-dropdown align="right" width="60">
 
             <x-slot name="trigger">
 
                 <button
-                    class="flex items-center gap-2 px-3 py-2 text-sm border rounded-lg dark:border-slate-700">
+                    class="flex items-center gap-3 px-3 py-2 rounded-xl border border-green-100 hover:bg-green-50">
 
-                    {{ $user->name }}
+                    <div
+                        class="w-10 h-10 rounded-full bg-green-600 text-white flex items-center justify-center font-bold">
 
-                    <x-heroicon-o-chevron-down class="w-4 h-4" />
+                        {{ strtoupper(substr(auth()->user()->name,0,1)) }}
+
+                    </div>
+
+                    <div class="hidden md:block text-left">
+
+                        <div class="font-semibold text-sm">
+                            {{ auth()->user()->name }}
+                        </div>
+
+                        <div class="text-xs text-slate-500">
+                            {{ auth()->user()->getRoleNames()->first() ?? 'User' }}
+                        </div>
+
+                    </div>
 
                 </button>
 
             </x-slot>
 
             <x-slot name="content">
+
+                <div class="px-4 py-3 border-b">
+
+                    <div class="font-semibold">
+                        {{ auth()->user()->name }}
+                    </div>
+
+                    <div class="text-xs text-slate-500">
+                        {{ auth()->user()->email }}
+                    </div>
+
+                </div>
+
+                <x-dropdown-link :href="route('dashboard')">
+                    🏠 Dashboard
+                </x-dropdown-link>
+
+                <x-dropdown-link :href="route('user')">
+                    👤 Profil Saya
+                </x-dropdown-link>
 
                 <form
                     method="POST"
@@ -187,7 +171,7 @@ $periodeAktif = null;
                         :href="route('logout')"
                         onclick="event.preventDefault(); this.closest('form').submit();">
 
-                        Log Out
+                        🚪 Logout
 
                     </x-dropdown-link>
 
@@ -197,7 +181,25 @@ $periodeAktif = null;
 
         </x-dropdown>
 
+        @else
+
+        <a href="{{ route('login') }}"
+            class="px-4 py-2 text-sm font-medium text-white bg-green-600 rounded-xl hover:bg-green-700">
+
+            Login
+
+        </a>
+
+        @if(Route::has('register'))
+        <a href="{{ route('register') }}"
+            class="px-4 py-2 text-sm border rounded-xl hover:bg-slate-50">
+
+            Register
+
+        </a>
         @endif
+
+        @endauth
 
     </div>
 

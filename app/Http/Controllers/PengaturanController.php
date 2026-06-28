@@ -180,31 +180,31 @@ class PengaturanController extends Controller
     }
     public function cardlogin(Request $request)
     {
-        // dd($request);
         $kelasmi = Kelasmi::query()
-            ->where('kelasmi.periode_id', session('periode_id'))
-            ->orderby('nama_kelas')
+            ->where('periode_id', session('periode_id'))
+            ->orderBy('nama_kelas')
             ->get();
+
         $peserta = Pesertakelas::query()
             ->join('siswa', 'siswa.id', '=', 'pesertakelas.siswa_id')
             ->join('nis', 'siswa.id', '=', 'nis.siswa_id')
             ->join('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
-            ->leftjoin('kelas', 'kelasmi.id', '=', 'kelasmi.kelas_id')
-            ->select('siswa.nama_siswa', 'kelasmi.nama_kelas', 'nis.nis')
+            ->select(
+                'siswa.nama_siswa',
+                'kelasmi.nama_kelas',
+                'nis.nis'
+            )
+            ->when($request->filled('cari'), function ($query) use ($request) {
+                $query->where('kelasmi.nama_kelas', $request->cari);
+            })
             ->orderBy('kelasmi.nama_kelas')
+            ->orderBy('siswa.nama_siswa')
+            ->get();
 
-        ->orderBy('siswa.nama_siswa');
-        if (request('cari')) {
-            $peserta->where('nama_kelas', 'like', '%' . request('cari') . '%');
-        }
-        
-        return view(
-            'pengaturan/cardlogin',
-            [
-                'peserta' => $peserta->get(),
-                'kelasmi' => $kelasmi
-            ]
-        );
+        return view('pengaturan.cardlogin', [
+            'peserta' => $peserta,
+            'kelasmi' => $kelasmi,
+        ]);
     }
     public function download_file()
     {

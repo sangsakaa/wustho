@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\SiswaExport;
 use App\Models\CalonSiswa;
 use App\Models\Nis;
 use App\Models\Perangkat;
@@ -14,6 +15,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 class SiswaController extends Controller
 {
@@ -401,5 +403,12 @@ class SiswaController extends Controller
         } catch (\Exception $e) {
             return back()->with('error', 'Status pengamal gagal dihapus.');
         }
+    }
+    public function exportExcel()
+    {
+        return Excel::download(
+            new SiswaExport(),
+            'Data_Siswa_' . now()->format('Ymd_His') . '.xlsx'
+        );
     }
 }

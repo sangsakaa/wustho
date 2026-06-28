@@ -152,6 +152,10 @@
                                     class="inline-flex items-center px-4 py-2 rounded-lg bg-sky-500 text-white text-xs font-semibold hover:bg-purple-600 transition">
                                     Cetak
                                 </a>
+                                <a href="{{ url('/raport/'.$list->id.'/pdf') }}" target="_blank"
+                                    class="bg-blue-600 text-white px-2 py-1 rounded">
+                                    Download PDF
+                                </a>
                             </td>
 
                         </tr>

@@ -5,11 +5,7 @@
 
     {{-- ================= DASHBOARD ================= --}}
     @role('super admin|pengurus')
-    <x-sidebar.link
-        title="Dashboard"
-        href="/dashboard"
-        :isActive="request()->is('dashboard')">
-
+    <x-sidebar.link title="Dashboard" href="/dashboard" :isActive="request()->is('dashboard')">
         <x-slot name="icon">
             <x-icons.dashboard class="w-5 h-5 text-emerald-600" />
         </x-slot>
@@ -17,11 +13,7 @@
     @endrole
 
     @role('siswa')
-    <x-sidebar.link
-        title="Dashboard"
-        href="/userdashboard"
-        :isActive="request()->is('userdashboard')">
-
+    <x-sidebar.link title="Dashboard" href="/userdashboard" :isActive="request()->is('userdashboard')">
         <x-slot name="icon">
             <x-icons.dashboard class="w-5 h-5 text-emerald-600" />
         </x-slot>
@@ -29,21 +21,13 @@
     @endrole
 
     @role('guru')
-    <x-sidebar.link
-        title="Dashboard"
-        href="/gurudashboard"
-        :isActive="request()->is('gurudashboard')">
-
+    <x-sidebar.link title="Dashboard" href="/gurudashboard" :isActive="request()->is('gurudashboard')">
         <x-slot name="icon">
             <x-icons.usercircle class="w-5 h-5 text-emerald-600" />
         </x-slot>
     </x-sidebar.link>
 
-    <x-sidebar.link
-        title="Nilai Per Guru"
-        href="/nilaiperguru"
-        :isActive="request()->is('nilaiperguru')">
-
+    <x-sidebar.link title="Nilai Per Guru" href="/nilaiperguru" :isActive="request()->is('nilaiperguru')">
         <x-slot name="icon">
             <x-icons.usercircle class="w-5 h-5 text-emerald-600" />
         </x-slot>
@@ -58,7 +42,7 @@
         Menu Utama
     </div>
 
-    {{-- ================= MANAGEMEN DROPDOWN ================= --}}
+    {{-- ================= MANAJEMEN ================= --}}
     @php
     $manajemenOpen =
     request()->routeIs('lembaga.*')
@@ -66,61 +50,23 @@
     || request()->is('data-perangkat*');
     @endphp
 
-    <div x-data="{ open: {{ $manajemenOpen ? 'true' : 'false' }} }" class="space-y-1">
+    <x-sidebar.dropdown
+        title="Manajemen"
+        :active="$manajemenOpen">
 
-        {{-- HEADER --}}
-        <button
-            @click="open = !open"
-            class="flex items-center justify-between w-full px-3 py-2 text-sm font-medium rounded-lg hover:bg-emerald-50">
+        <x-slot name="icon">
+            <x-icons.usercircle class="w-5 h-5 text-emerald-600" />
+        </x-slot>
 
-            <div class="flex items-center gap-2 text-gray-700">
-                <x-icons.usercircle class="w-5 h-5 text-emerald-600" />
-                <span>Manajemen</span>
-            </div>
-
-            <svg class="w-4 h-4 transition-transform duration-200 text-emerald-600"
-                :class="{ 'rotate-180': open }"
-                fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M19 9l-7 7-7-7" />
-            </svg>
-        </button>
-
-        {{-- CONTENT --}}
-        <div x-show="open" x-transition class="pl-6 space-y-1 border-l border-emerald-100">
-
-            <x-sidebar.link
-                title="Lembaga"
-                href="{{ route('lembaga.index') }}"
-                :isActive="request()->routeIs('lembaga.*')">
-                <x-slot name="icon">
-                    <x-icons.usercircle class="w-5 h-5 text-emerald-600" />
-                </x-slot>
-            </x-sidebar.link>
-
-            <x-sidebar.link
-                title="User"
-                href="/manajemen-user"
-                :isActive="request()->is('manajemen-user*')">
-                <x-slot name="icon">
-                    <x-icons.usercircle class="w-5 h-5 text-emerald-600" />
-                </x-slot>
-            </x-sidebar.link>
-
-            <x-sidebar.link
-                title="Perangkat"
-                href="/data-perangkat"
-                :isActive="request()->is('data-perangkat*')">
-                <x-slot name="icon">
-                    <x-icons.usercircle class="w-5 h-5 text-emerald-600" />
-                </x-slot>
-            </x-sidebar.link>
-
+        <div class="space-y-1">
+            <x-sidebar.sublink title="Lembaga" href="{{ route('lembaga.index') }}" />
+            <x-sidebar.sublink title="User" href="/manajemen-user" />
+            <x-sidebar.sublink title="Perangkat" href="/data-perangkat" />
         </div>
-    </div>
+    </x-sidebar.dropdown>
 
 
-    {{-- ================= DROPDOWN LAIN (TETAP DIPERTAHANKAN) ================= --}}
+    {{-- ================= KESISWAAN ================= --}}
     <x-sidebar.dropdown
         title="Kesiswaan"
         :active="request()->is('siswa*') || request()->is('asramasiswa*') || request()->is('kelas_mi*')">
@@ -130,14 +76,15 @@
         </x-slot>
 
         <div class="space-y-1">
-            <x-sidebar.sublink title="Calon Siswa" href="{{ route('calon-siswa') }}" :active="request()->routeIs('calon-siswa')" />
-            <x-sidebar.sublink title="Data Siswa" href="{{ route('siswa.index') }}" :active="request()->routeIs('siswa.index')" />
-            <x-sidebar.sublink title="Data Asrama" href="{{ route('asramasiswa') }}" :active="request()->routeIs('asramasiswa')" />
-            <x-sidebar.sublink title="Data Kelas" href="{{ route('kelas_mi') }}" :active="request()->routeIs('kelas_mi')" />
+            <x-sidebar.sublink title="Calon Siswa" href="{{ route('calon-siswa') }}" />
+            <x-sidebar.sublink title="Data Siswa" href="{{ route('siswa.index') }}" />
+            <x-sidebar.sublink title="Data Asrama" href="{{ route('asramasiswa') }}" />
+            <x-sidebar.sublink title="Data Kelas" href="{{ route('kelas_mi') }}" />
         </div>
     </x-sidebar.dropdown>
 
 
+    {{-- ================= KURIKULUM ================= --}}
     <x-sidebar.dropdown
         title="Kurikulum"
         :active="request()->is('mapel*') || request()->is('guru*') || request()->is('Daftar-Jadwal*') || request()->is('nilaimapel*') || request()->is('daftar-seleksi*') || request()->is('lulusan*') || request()->is('raportkelas*') || request()->is('peringkat*')">
@@ -160,6 +107,7 @@
     </x-sidebar.dropdown>
 
 
+    {{-- ================= PRESENSI ================= --}}
     <x-sidebar.dropdown
         title="Presensi"
         :active="request()->is('sesi*') || request()->is('Qr-Scan*')">
@@ -178,6 +126,7 @@
     </x-sidebar.dropdown>
 
 
+    {{-- ================= QR CODE ================= --}}
     <x-sidebar.dropdown
         title="QR Code"
         :active="request()->is('qr*') || request()->is('Qr-Scan*')">
@@ -200,40 +149,30 @@
     || request()->is('pengaturan*');
     @endphp
 
-    <div x-data="{ open: {{ $pengaturanOpen ? 'true' : 'false' }} }" class="space-y-1">
+    <x-sidebar.dropdown
+        title="Pengaturan"
+        :active="$pengaturanOpen">
 
-        <button
-            @click="open = !open"
-            class="flex items-center justify-between w-full px-3 py-2 text-sm font-medium rounded-lg hover:bg-emerald-50">
+        <x-slot name="icon">
+            <x-icons.setting class="w-5 h-5 text-emerald-600" />
+        </x-slot>
 
-            <div class="flex items-center gap-2">
-                <x-icons.setting class="w-5 h-5 text-emerald-600" />
-                <span>Pengaturan</span>
-            </div>
-
-            <svg class="w-4 h-4 text-emerald-600 transition-transform"
-                :class="{ 'rotate-180': open }"
-                fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M19 9l-7 7-7-7" />
-            </svg>
-        </button>
-
-        <div x-show="open" x-transition class="pl-6 space-y-1 border-l border-emerald-100">
-
-            <x-sidebar.link title="Periode" :href="route('periode')" />
-            <x-sidebar.link title="Kalender Pendidikan" :href="route('kalender-pendidikan.index')" />
-            <x-sidebar.link title="Pengaturan" href="/pengaturan" />
-
+        <div class="space-y-1">
+            <x-sidebar.sublink title="Periode" href="{{ route('periode') }}" />
+            <x-sidebar.sublink title="Kalender Pendidikan" href="{{ route('kalender-pendidikan.index') }}" />
+            <x-sidebar.sublink title="Pengaturan" href="/pengaturan" />
         </div>
-    </div>
+    </x-sidebar.dropdown>
+
 
     {{-- ================= PENDUKUNG ================= --}}
     <div class="pt-4 pb-1 text-[11px] font-bold tracking-widest text-emerald-600 uppercase">
         Menu Pendukung
     </div>
 
-    <x-sidebar.dropdown title="Blanko" :active="request()->is('sap*') || request()->is('blankoHarian*') || request()->is('absensikelas/blanko*') || request()->is('blanko-pernyataan*')">
+    <x-sidebar.dropdown
+        title="Blanko"
+        :active="request()->is('sap*') || request()->is('blankoHarian*') || request()->is('absensikelas/blanko*') || request()->is('blanko-pernyataan*')">
 
         <x-slot name="icon">
             <x-icons.books class="w-5 h-5 text-emerald-600" />
@@ -247,7 +186,10 @@
         </div>
     </x-sidebar.dropdown>
 
-    <x-sidebar.dropdown title="Laporan" :active="request()->is('absensikelas/rekap-per-hari*') || request()->is('absensikelas/rekap-per-bulan*') || request()->is('absensikelas/rekap-semester*') || request()->is('Laporan-Kehadiran*')">
+
+    <x-sidebar.dropdown
+        title="Laporan"
+        :active="request()->is('absensikelas/rekap-per-hari*') || request()->is('absensikelas/rekap-per-bulan*') || request()->is('absensikelas/rekap-semester*') || request()->is('Laporan-Kehadiran*')">
 
         <x-slot name="icon">
             <x-icons.books class="w-5 h-5 text-emerald-600" />

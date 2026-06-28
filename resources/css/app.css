@@ -11,3 +11,6 @@
 .dark .ps__rail-x {
     background-color: transparent !important;
 }
+[x-cloak] {
+    display: none !important;
+}

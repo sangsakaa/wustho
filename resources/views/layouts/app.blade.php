@@ -13,7 +13,7 @@
 
     <title>
         {{ config('app.name') }}
-        - v{{ config('app.version') }}
+
         @yield('title')
     </title>
 
@@ -58,16 +58,14 @@ use Illuminate\Support\Facades\DB;
 
 $dbOnline = true;
 $user = null;
+$dbError = null;
 
 try {
-
 DB::connection()->getPdo();
-
 $user = Auth::user();
-
 } catch (\Throwable $e) {
-
 $dbOnline = false;
+$dbError = $e->getMessage(); // 👈 ambil pesan asli error
 }
 
 @endphp
@@ -241,32 +239,103 @@ $dbOnline = false;
     @else
 
     {{-- OFFLINE --}}
-    <div class="flex items-center justify-center min-h-screen bg-slate-100 dark:bg-dark-bg px-4">
+    {{-- OFFLINE --}}
+    <div class="flex items-center justify-center min-h-screen bg-gradient-to-br from-slate-100 via-white to-emerald-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 px-4">
 
-        <div
-            class="w-full max-w-md bg-white dark:bg-dark-eval-1 rounded-2xl shadow-xl p-8 text-center border border-slate-200 dark:border-slate-700">
+        <div class="w-full max-w-2xl">
 
-            <div class="text-5xl mb-4">
-                ⚠️
+            <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-700 overflow-hidden">
+
+                {{-- HEADER --}}
+                <div class="bg-gradient-to-r from-red-500 to-rose-600 p-6 text-white">
+
+                    <div class="flex items-center gap-4">
+
+                        <div class="w-14 h-14 flex items-center justify-center rounded-2xl bg-white/20">
+                            ⚠️
+                        </div>
+
+                        <div>
+                            <h1 class="text-2xl font-bold">
+                                Database Connection Error
+                            </h1>
+                            <p class="text-sm text-red-100 mt-1">
+                                Sistem gagal terhubung ke database
+                            </p>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                {{-- BODY --}}
+                <div class="p-6">
+
+                    <div class="mb-4">
+                        <h2 class="font-semibold text-slate-800 dark:text-white">
+                            Detail Error
+                        </h2>
+                        <p class="text-sm text-slate-500 dark:text-slate-400">
+                            Silakan cek MySQL, .env, atau server database Anda
+                        </p>
+                    </div>
+
+                    {{-- ERROR CONSOLE --}}
+                    <div class="bg-slate-900 text-slate-100 rounded-2xl p-4 overflow-x-auto">
+
+                        <div class="flex gap-2 mb-3">
+                            <span class="w-3 h-3 bg-red-500 rounded-full"></span>
+                            <span class="w-3 h-3 bg-yellow-500 rounded-full"></span>
+                            <span class="w-3 h-3 bg-green-500 rounded-full"></span>
+                        </div>
+
+                        <pre class="text-xs text-red-300 whitespace-pre-wrap font-mono">
+                        {{ $dbError ?? 'SQLSTATE[HY000] [2002] Connection refused' }}
+                        </pre>
+
+                    </div>
+
+                    {{-- INFO BOX --}}
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mt-5">
+
+                        <div class="p-3 rounded-xl bg-slate-100 dark:bg-slate-700">
+                            <div class="text-xs text-slate-500">Status</div>
+                            <div class="font-semibold text-red-600">Offline</div>
+                        </div>
+
+                        <div class="p-3 rounded-xl bg-slate-100 dark:bg-slate-700">
+                            <div class="text-xs text-slate-500">Environment</div>
+                            <div class="font-semibold">{{ app()->environment() }}</div>
+                        </div>
+
+                        <div class="p-3 rounded-xl bg-slate-100 dark:bg-slate-700">
+                            <div class="text-xs text-slate-500">Time</div>
+                            <div class="font-semibold">{{ now()->format('d M Y H:i:s') }}</div>
+                        </div>
+
+                    </div>
+
+                    {{-- ACTION --}}
+                    <div class="flex gap-3 mt-6">
+
+                        <button
+                            onclick="window.location.reload()"
+                            class="px-5 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold transition">
+
+                            Refresh
+                        </button>
+
+                        <a href="/"
+                            class="px-5 py-3 rounded-xl border border-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 transition">
+
+                            Kembali
+                        </a>
+
+                    </div>
+
+                </div>
+
             </div>
-
-            <h1 class="text-2xl font-bold text-slate-800 dark:text-white mb-2">
-                Database Offline
-            </h1>
-
-            <p class="text-slate-500 dark:text-slate-400 mb-6">
-                Sistem tidak dapat terhubung ke database.
-                <br>
-                Silakan hubungi administrator.
-            </p>
-
-            <button
-                onclick="window.location.reload()"
-                class="px-5 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl transition">
-
-                Refresh Halaman
-
-            </button>
 
         </div>
 

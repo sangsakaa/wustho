@@ -1,38 +1,55 @@
-<footer class="flex-shrink-0 px-6 py-4   ">
-    @role('super admin')
-    <p class="flex items-center justify-center gap-1 text-sm text-gray-600 dark:text-gray-400">
-        <span>Made with</span>
-        <span>
-            <x-heroicon-s-heart class="w-6 h-6 text-red-500" />
-        </span>
-        <span>by</span>
-        <a href="https://wustho.smedi.my.id/" target="_blank" class="text-blue-600 hover:underline sm:text-xs text-xs">
-            MADIN WUSTHA WAHIDIYAH &copy 2022 <span class=" uppercase text-xs"></span>
-        </a>
-    </p>
-    @endrole
-    @role('pengurus')
-    <p class="flex items-center justify-center gap-1 text-sm text-gray-600 dark:text-gray-400">
-        <span>Made with</span>
-        <span>
-            <x-heroicon-s-heart class="w-6 h-6 text-red-500" />
-        </span>
-        <span>by</span>
-        <a href="https://wustho.smedi.my.id/" target="_blank" class="text-blue-600 hover:underline sm:text-xs text-xs">
-            PONDOK PESANTREN KEDUNGLO WAHIDIYAH &copy 2022
-        </a>
-    </p>
-    @endrole
-    @role('siswa')
-    <p class="flex items-center justify-center gap-1 text-sm text-gray-600 dark:text-gray-400">
-        <span>Made with</span>
-        <span>
-            <x-heroicon-s-heart class="w-5 h-6 text-red-500" />
-        </span>
-        <span>by</span>
-        <a href="https://wustho.smedi.my.id/" target="_blank" class="text-blue-600 hover:underline sm:text-xs text-xs">
-            MADIN WUSTHA WAHIDIYAH &copy 2022
-        </a>
-    </p>
-    @endrole
-</footer>
+<div class="p-3 border-t border-slate-200 dark:border-slate-700">
+
+    @auth
+
+    <div class="flex items-center gap-3">
+
+        <div
+            class="flex items-center justify-center w-10 h-10 font-bold text-white rounded-full bg-emerald-600">
+
+            {{ strtoupper(substr(auth()->user()->name ?? 'U', 0, 1)) }}
+
+        </div>
+
+        <div x-show="isSidebarOpen || isSidebarHovered">
+
+            <div class="text-sm font-semibold text-slate-800 dark:text-white">
+                {{ auth()->user()->name }}
+            </div>
+
+            <div class="text-xs text-slate-500">
+                {{ auth()->user()->getRoleNames()->first() ?? 'User' }}
+            </div>
+
+        </div>
+
+    </div>
+
+    @else
+
+    <div class="flex items-center gap-3">
+
+        <div
+            class="flex items-center justify-center w-10 h-10 font-bold text-white rounded-full bg-slate-400">
+
+            ?
+
+        </div>
+
+        <div x-show="isSidebarOpen || isSidebarHovered">
+
+            <div class="text-sm font-semibold text-slate-600">
+                Guest
+            </div>
+
+            <div class="text-xs text-slate-500">
+                Belum Login
+            </div>
+
+        </div>
+
+    </div>
+
+    @endauth
+
+</div>

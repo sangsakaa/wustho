@@ -178,14 +178,25 @@ class SesikelasController
 
         $created = 0;
 
+        $existing = array_flip($existingKelasIds);
+
+        $dataInsert = [];
+
         foreach ($dataKelasMi as $kelasmi) {
-            if (!in_array($kelasmi->id, $existingKelasIds)) {
-                Sesikelas::create([
+
+            if (!isset($existing[$kelasmi->id])) {
+
+                $dataInsert[] = [
                     'tgl' => $request->tgl,
                     'kelasmi_id' => $kelasmi->id,
-                ]);
-                $created++;
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ];
             }
+        }
+
+        if ($dataInsert) {
+            Sesikelas::insert($dataInsert);
         }
 
         if ($created === 0) {

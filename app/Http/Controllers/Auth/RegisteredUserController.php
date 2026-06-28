@@ -96,7 +96,7 @@ class RegisteredUserController extends Controller
                 ->withInput();
         }
 
-        $randomPassword = Str::password(8);
+        $randomPassword = Str::random(8);
 
         $user = User::create([
             'name' => $validated['name'],

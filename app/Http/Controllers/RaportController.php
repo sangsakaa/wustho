@@ -2,19 +2,20 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Nilai;
-use App\Models\Siswa;
-use App\Models\Kelasmi;
-use App\Models\Semester;
-use App\Models\Perangkat;
-use App\Models\Nilaimapel;
-use App\Models\Absensikelas;
-use App\Models\Pesertakelas;
-use Illuminate\Http\Request;
-
-use App\Models\Presensikelas;
-use Illuminate\Routing\Controller;
 use Alkoumi\LaravelHijriDate\Hijri;
+use App\Models\Absensikelas;
+use App\Models\Kelasmi;
+use App\Models\Nilai;
+use App\Models\Nilaimapel;
+use App\Models\Perangkat;
+use App\Models\Pesertakelas;
+use App\Models\Presensikelas;
+use App\Models\Semester;
+use App\Models\Siswa;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Http\Request;
+use Illuminate\Routing\Controller;
+
 use function PHPUnit\Framework\isEmpty;
 
 class RaportController extends Controller
@@ -69,7 +70,18 @@ class RaportController extends Controller
             }) + 1;
 
         $dataraport = $dataraportkelas->where("pesertakelas_id", $pesertakelas->id);
-        $ringkasanraportpeserta = $ringkasanraportkelas[$pesertakelas->id];
+        $ringkasanraportpeserta = $ringkasanraportkelas->get($pesertakelas->id);
+
+        if (!$ringkasanraportpeserta) {
+            $ringkasanraportpeserta = [
+                'id' => $pesertakelas->id,
+                'jmlujian' => 0,
+                'jmlharian' => 0,
+                'rata2ujian' => 0,
+                'rata2harian' => 0,
+                'nilaiperingkat' => 0,
+            ];
+        }
 
         return view(
             'report/report',
@@ -342,5 +354,70 @@ class RaportController extends Controller
                 'presensi' => $presensi
             ]
         );
+    }
+    public function pdf(Pesertakelas $pesertakelas)
+    {
+        $siswa = Pesertakelas::query()
+            ->join('siswa', 'pesertakelas.siswa_id', '=', 'siswa.id')
+            ->join('nis', 'nis.siswa_id', '=', 'siswa.id')
+            ->join('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
+            ->join('kelas', 'kelas.id', '=', 'kelasmi.kelas_id')
+            ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
+            ->join('semester', 'semester.id', '=', 'periode.semester_id')
+            ->leftJoin('presensikelas', 'presensikelas.pesertakelas_id', '=', 'pesertakelas.id')
+            ->where('pesertakelas.id', $pesertakelas->id)
+            ->first();
+
+        $dataraportkelas = Nilaimapel::query()
+            ->join('nilai', 'nilai.nilaimapel_id', '=', 'nilaimapel.id')
+            ->join('mapel', 'mapel.id', '=', 'nilaimapel.mapel_id')
+            ->join('guru', 'guru.id', '=', 'nilaimapel.guru_id')
+            ->where('nilaimapel.kelasmi_id', $siswa->kelasmi_id)
+            ->get();
+
+        $ringkasanraportkelas = $dataraportkelas
+            ->groupBy('pesertakelas_id')
+            ->map(function ($item, $key) {
+                $item = collect($item);
+                $jmlujian = $item->sum('nilai_ujian');
+                $jmlharian = $item->sum('nilai_harian');
+                $rata2ujian = $item->count() ? $jmlujian / $item->count() : 0;
+                $rata2harian = $item->count() ? $jmlharian / $item->count() : 0;
+
+                return [
+                    'id' => $key,
+                    'jmlujian' => $jmlujian,
+                    'jmlharian' => $jmlharian,
+                    'rata2ujian' => $rata2ujian,
+                    'rata2harian' => $rata2harian,
+                    'nilaiperingkat' => ($rata2ujian * 0.4) + ($rata2harian * 0.6)
+                ];
+            });
+
+        $peringkatpeserta = $ringkasanraportkelas
+            ->sortByDesc('nilaiperingkat')
+            ->values()
+            ->search(fn($item) => $item['id'] == $pesertakelas->id) + 1;
+
+        $dataraport = $dataraportkelas->where("pesertakelas_id", $pesertakelas->id);
+
+        $ringkasanraportpeserta = $ringkasanraportkelas->get($pesertakelas->id) ?? [
+            'id' => $pesertakelas->id,
+            'jmlujian' => 0,
+            'jmlharian' => 0,
+            'rata2ujian' => 0,
+            'rata2harian' => 0,
+            'nilaiperingkat' => 0,
+        ];
+
+        $pdf = Pdf::loadView('report.report-pdf', [
+            'siswa' => $siswa,
+            'data' => $dataraport,
+            'ringkasan' => $ringkasanraportpeserta,
+            'peringkat' => $peringkatpeserta,
+            'jumlahsiswa' => $ringkasanraportkelas->count()
+        ])->setPaper('a4', 'portrait');
+
+        return $pdf->stream('raport-' . $siswa->nama_siswa . '.pdf');
     }
 }

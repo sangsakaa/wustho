@@ -9,8 +9,10 @@ use Illuminate\Auth\Events\Logout;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\DB;
+
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -51,11 +53,18 @@ class AppServiceProvider extends ServiceProvider
         // ✅ GLOBAL VIEW COMPOSER (FIX UTAMA KAMU)
         View::composer('*', function ($view) {
 
-            $dataperiode = \App\Models\Periode::getNavbarPeriode();
+            try {
 
-            $periodeAktif =
-                $dataperiode->firstWhere('id', session('periode_id'))
-                ?? $dataperiode->firstWhere('is_active', true);
+                $dataperiode = \App\Models\Periode::getNavbarPeriode();
+
+                $periodeAktif =
+                    $dataperiode->firstWhere('id', session('periode_id'))
+                    ?? $dataperiode->firstWhere('is_active', true);
+            } catch (\Throwable $e) {
+
+                $dataperiode = collect();
+                $periodeAktif = null;
+            }
 
             $view->with([
                 'dataperiode' => $dataperiode,
@@ -70,8 +79,13 @@ class AppServiceProvider extends ServiceProvider
 
         Gate::before(function ($user, $ability) {
 
-            if ($user->hasRole('super admin')) {
-                return true;
+            try {
+
+                if ($user && $user->hasRole('super admin')) {
+                    return true;
+                }
+            } catch (\Throwable $e) {
+                return null;
             }
 
             return null;

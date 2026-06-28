@@ -249,6 +249,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('biodata/{siswa}', [SiswaController::class, 'biodata']);
     Route::get('transkip/{siswa}', [SiswaController::class, 'transkip']);
 
+    Route::get('/siswa/export/excel', [SiswaController::class, 'exportExcel'])->name('siswa.export.excel');
+
     // NIS Siswa
     Route::get('nis/{siswa}', [SiswaController::class, 'nis']);
     Route::get('nis/{nis}/edit', [SiswaController::class, 'editNis']);
@@ -560,6 +562,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('peringkat', [RaportController::class, 'peringkat']);
     Route::get('juara-pararel', [PararelController::class, 'index']);
 
+    Route::get('/raport/{pesertakelas}/pdf', [RaportController::class, 'pdf']);
+
     // Manajemen Kelulusan & Ijazah
     Route::get('lulusan', [LulusanCotroller::class, 'index'])->name('lulusan');
     Route::post('lulusan', [LulusanCotroller::class, 'store'])->name('lulusan');
@@ -696,6 +700,9 @@ Route::prefix('calon-siswa')->group(function () {
     Route::get('/', [ApiSiswaController::class, 'view'])->name('calon-siswa');
 });
 Route::get('/calon-siswa/sync', [ApiSiswaController::class, 'liveSync'])->name('calon-siswa.sync');
+Route::get('/debug-sync', [ApiSiswaController::class, 'debugSync'])->name('debug.sync');
+
+
 Route::post('/calon-siswa/{id}/push', [ApiSiswaController::class, 'pushToSiswa']);
 Route::post('/calon-siswa/{calon}/reset-status', [ApiSiswaController::class, 'resetStatus']);
 

@@ -1,125 +1,202 @@
 <x-app-layout>
-
+  {{-- ================= HEADER ================= --}}
   <x-slot name="header">
-    <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-
-      <div>
-        <h1 class="text-2xl md:text-3xl font-extrabold text-slate-900">
-          📚 Dashboard Calon Siswa
-        </h1>
-
-        <p class="text-sm text-slate-500 mt-1">
-          Kelola data calon siswa dan proses mutasi ke siswa aktif
-        </p>
-      </div>
-
-
-
+    <div class="flex flex-col gap-1">
+      <h1 class="text-2xl md:text-3xl font-extrabold text-slate-900">
+        📚 Dashboard Calon Siswa
+      </h1>
+      <p class="text-sm text-slate-500">
+        Kelola data calon siswa dan proses mutasi ke siswa aktif
+      </p>
     </div>
   </x-slot>
 
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-  <div class="px-6 py-6 max-w-7xl mx-auto space-y-6">
+  @php
+  $total = ($stats['mondok'] ?? 0) + ($stats['tidak_mondok'] ?? 0);
+  $mondokPercent = $total ? round(($stats['mondok'] / $total) * 100) : 0;
+  $tidakPercent = $total ? round(($stats['tidak_mondok'] / $total) * 100) : 0;
+  @endphp
 
-    {{-- =========================================================
-            TAB JENJANG
-        ========================================================= --}}
-    <div class=" flex gap-2">
-      <div class="flex flex-wrap gap-2 border-b pb-3">
+  <div class="max-w-7xl mx-auto px-6 py-6 space-y-6">
 
+    {{-- ================= TOP BAR ================= --}}
+    <div class="bg-white rounded-2xl shadow p-5">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+
+        {{-- Keterangan --}}
+        <div>
+          <h2 class="text-sm font-semibold text-slate-700">
+            Distribusi Rencana Pendidikan
+          </h2>
+          <p class="text-xs text-slate-400">
+            Monitoring data Mondok vs Tidak Mondok
+          </p>
+        </div>
+
+        {{-- Tombol --}}
+        <div class="flex flex-col sm:flex-row gap-2">
+
+          <a href="{{ route('debug.sync') }}"
+            target="_blank"
+            class="inline-flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium text-white bg-amber-500 rounded-xl shadow hover:bg-amber-600 transition">
+            🐞 Debug API
+          </a>
+
+          <button
+            onclick="syncData()"
+            class="inline-flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium text-white bg-emerald-600 rounded-xl shadow hover:bg-emerald-700 transition">
+            🔄 Sync Data
+          </button>
+
+        </div>
+
+      </div>
+    </div>
+
+    {{-- ================= STATS ================= --}}
+    <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-4">
+
+      <form method="GET" class="bg-white p-4 rounded-2xl shadow">
+        <div class="flex flex-col md:flex-row gap-3">
+          <input
+            type="text"
+            name="search"
+            value="{{ request('search') }}"
+            placeholder="Cari nama siswa..."
+            class="w-full rounded-xl border-slate-300 focus:border-blue-500 focus:ring-blue-500">
+
+          <button
+            type="submit"
+            class="px-5 py-2 rounded-xl bg-blue-600 text-white font-semibold">
+            Cari
+          </button>
+        </div>
+      </form>
+
+      <div class="bg-white p-4 rounded-xl shadow">
+        <p class="text-xs text-slate-500">Total</p>
+        <p class="text-xl font-bold">{{ $stats['all'] }}</p>
+      </div>
+
+      <div class="bg-white p-4 rounded-xl shadow">
+        <p class="text-xs text-slate-500">Calon</p>
+        <p class="text-xl font-bold text-yellow-600">
+          {{ $stats['calon'] }}
+        </p>
+      </div>
+
+      <div class="bg-white p-4 rounded-xl shadow">
+        <p class="text-xs text-slate-500">Dipindah</p>
+        <p class="text-xl font-bold text-green-600">
+          {{ $stats['dipindah'] }}
+        </p>
+      </div>
+
+      <div class="bg-white p-4 rounded-xl shadow">
+        <p class="text-xs text-slate-500">Mondok / Tidak</p>
+        <p class="text-sm font-bold text-red-600">
+          {{ $stats['mondok'] }}
+          /
+          <span class="text-blue-600">
+            {{ $stats['tidak_mondok'] }}
+          </span>
+        </p>
+      </div>
+
+    </div>
+
+    {{-- ================= FILTER ================= --}}
+    <div class="bg-white shadow rounded-2xl p-3 overflow-x-auto">
+      <div class="flex gap-2 min-w-max">
+
+        {{-- JENJANG --}}
         <a href="{{ request()->fullUrlWithQuery(['jenjang' => null]) }}"
-          class="px-4 py-2 text-sm rounded-xl border
-   {{ !request('jenjang') ? 'bg-blue-600 text-white' : 'bg-white text-slate-600' }}">
+          class="px-4 py-2 text-sm rounded-xl border {{ !request('jenjang') ? 'bg-blue-600 text-white' : 'bg-white text-slate-600' }}">
           Semua
         </a>
 
         <a href="{{ request()->fullUrlWithQuery(['jenjang' => 'SMP']) }}"
-          class="px-4 py-2 text-sm rounded-xl border
-   {{ request('jenjang') == 'SMP' ? 'bg-blue-600 text-white' : 'bg-white text-slate-600' }}">
+          class="px-4 py-2 text-sm rounded-xl border {{ request('jenjang') == 'SMP' ? 'bg-blue-600 text-white' : 'bg-white text-slate-600' }}">
           SMP
         </a>
 
         <a href="{{ request()->fullUrlWithQuery(['jenjang' => 'SMA']) }}"
-          class="px-4 py-2 text-sm rounded-xl border
-   {{ request('jenjang') == 'SMA' ? 'bg-blue-600 text-white' : 'bg-white text-slate-600' }}">
+          class="px-4 py-2 text-sm rounded-xl border {{ request('jenjang') == 'SMA' ? 'bg-blue-600 text-white' : 'bg-white text-slate-600' }}">
           SMA
         </a>
 
-      </div>
+        <div class="w-px bg-slate-200 mx-2"></div>
 
-      {{-- =========================================================
-            TAB STATUS
-        ========================================================= --}}
-      <div class="flex flex-wrap gap-2 border-b pb-3">
-
+        {{-- STATUS --}}
         <a href="{{ request()->fullUrlWithQuery(['status' => null]) }}"
-          class="px-4 py-2 text-sm rounded-xl border
-                {{ !session('active_status') ? 'bg-emerald-600 text-white' : 'bg-white text-slate-600' }}">
+          class="px-4 py-2 text-sm rounded-xl border {{ !request('status') ? 'bg-emerald-600 text-white' : 'bg-white text-slate-600' }}">
           Semua Status
         </a>
 
         <a href="{{ request()->fullUrlWithQuery(['status' => 'calon-siswa']) }}"
-          class="px-4 py-2 text-sm rounded-xl border
-                {{ session('active_status') == 'calon-siswa' ? 'bg-emerald-600 text-white' : 'bg-white text-slate-600' }}">
+          class="px-4 py-2 text-sm rounded-xl border {{ request('status') == 'calon-siswa' ? 'bg-emerald-600 text-white' : 'bg-white text-slate-600' }}">
           Calon
         </a>
 
         <a href="{{ request()->fullUrlWithQuery(['status' => 'dipindah_ke_siswa']) }}"
-          class="px-4 py-2 text-sm rounded-xl border
-                {{ session('active_status') == 'dipindah_ke_siswa' ? 'bg-emerald-600 text-white' : 'bg-white text-slate-600' }}">
+          class="px-4 py-2 text-sm rounded-xl border {{ request('status') == 'dipindah_ke_siswa' ? 'bg-emerald-600 text-white' : 'bg-white text-slate-600' }}">
           Dipindah
         </a>
-        <button onclick="syncData()"
-          class="rounded-xl bg-emerald-600 px-4 py-2 text-sm font-semibold text-white shadow hover:bg-emerald-700 transition">
-          🔄 Sync Data
-        </button>
 
-        @if(session('active_jenjang') || session('active_status'))
-        <div class="rounded-xl bg-slate-100 px-4 py-2 text-xs text-slate-600">
-          Mode:
-          {{ session('active_jenjang') ?? 'ALL' }} |
-          {{ session('active_status') ?? 'ALL' }}
+        <div class="w-px bg-slate-200 mx-2"></div>
+
+        {{-- RENCANA --}}
+        <a href="{{ request()->fullUrlWithQuery(['rencana_pendidikan' => null]) }}"
+          class="px-4 py-2 text-sm rounded-xl border {{ !request('rencana_pendidikan') ? 'bg-purple-600 text-white' : 'bg-white text-slate-600' }}">
+          Semua Rencana
+        </a>
+
+        <a href="{{ request()->fullUrlWithQuery(['rencana_pendidikan' => 'Mondok']) }}"
+          class="px-4 py-2 text-sm rounded-xl border flex items-center gap-2 {{ request('rencana_pendidikan') == 'Mondok' ? 'bg-red-600 text-white' : 'bg-white text-slate-600' }}">
+          Mondok
+          <span class="text-xs px-2 py-0.5 rounded-full bg-white text-red-600">
+            {{ $stats['mondok'] ?? 0 }}
+          </span>
+        </a>
+
+        <a href="{{ request()->fullUrlWithQuery(['rencana_pendidikan' => 'Tidak Mondok']) }}"
+          class="px-4 py-2 text-sm rounded-xl border flex items-center gap-2 {{ request('rencana_pendidikan') == 'Tidak Mondok' ? 'bg-blue-600 text-white' : 'bg-white text-slate-600' }}">
+          Tidak Mondok
+          <span class="text-xs px-2 py-0.5 rounded-full bg-blue-100 text-blue-600">
+            {{ $stats['tidak_mondok'] ?? 0 }}
+          </span>
+        </a>
+
+      </div>
+    </div>
+
+    {{-- ================= PROGRESS ================= --}}
+    <div class="bg-white p-4 rounded-2xl shadow">
+      <div class="flex justify-between text-sm mb-2">
+        <span class="text-red-600 font-semibold">Mondok</span>
+        <span class="text-blue-600 font-semibold">Tidak Mondok</span>
+      </div>
+
+      <div class="w-full bg-slate-200 h-3 rounded-full overflow-hidden flex">
+        <div
+          class="bg-red-500 h-3"
+          style="width: {{ $mondokPercent }}%">
         </div>
-        @endif
+
+        <div
+          class="bg-blue-500 h-3"
+          style="width: {{ $tidakPercent }}%">
+        </div>
       </div>
     </div>
 
-    {{-- =========================================================
-            DASHBOARD STATS
-        ========================================================= --}}
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-
-      <div class="bg-white rounded-2xl shadow p-5">
-        <p class="text-xs text-slate-500">Total</p>
-        <h3 class="text-2xl font-bold">{{ $stats['all'] ?? 0 }}</h3>
-      </div>
-
-      <div class="bg-white rounded-2xl shadow p-5">
-        <p class="text-xs text-slate-500">SMP</p>
-        <h3 class="text-2xl font-bold text-blue-600">{{ $stats['SMP'] ?? 0 }}</h3>
-      </div>
-
-      <div class="bg-white rounded-2xl shadow p-5">
-        <p class="text-xs text-slate-500">SMA</p>
-        <h3 class="text-2xl font-bold text-green-600">{{ $stats['SMA'] ?? 0 }}</h3>
-      </div>
-
-      <div class="bg-white rounded-2xl shadow p-5">
-        <p class="text-xs text-slate-500">Calon</p>
-        <h3 class="text-2xl font-bold text-yellow-600">{{ $stats['calon'] ?? 0 }}</h3>
-      </div>
-
-    </div>
-
-    {{-- =========================================================
-            TABLE
-        ========================================================= --}}
-    <div class="bg-white rounded-2xl shadow overflow-hidden">
+    {{-- ================= TABLE DESKTOP ================= --}}
+    <div class="bg-white rounded-2xl shadow overflow-hidden hidden lg:block">
 
       <div class="overflow-x-auto">
         <table class="w-full text-sm">
-
           <thead class="bg-slate-50 text-slate-500 text-xs uppercase">
             <tr>
               <th class="p-4 text-left">Nama</th>
@@ -130,192 +207,274 @@
           </thead>
 
           <tbody class="divide-y">
-
             @forelse($data as $row)
-            <tr id="row-{{ $row->id }}" class="hover:bg-slate-50">
+            @php
+            $rencana = $row->data_api['rencana_pendidikan'] ?? '-';
+            @endphp
 
+            <tr class="hover:bg-slate-50">
               <td class="p-4 font-semibold">
                 {{ $row->nama }}
               </td>
 
               <td class="p-4">
-                <span class="px-3 py-1 text-xs rounded-xl bg-blue-100 text-blue-700">
-                  {{ $row->jenjang }}
+                <span class="px-3 py-1 text-xs rounded-xl {{ $rencana == 'Mondok' ? 'bg-red-100 text-red-700' : 'bg-blue-100 text-blue-700' }}">
+                  {{ $row->jenjang }} - {{ $rencana }}
                 </span>
               </td>
 
               <td class="p-4">
-                <span id="status-{{ $row->id }}"
+                <span
+                  id="status-{{ $row->id }}"
                   class="px-3 py-1 text-xs rounded-xl bg-slate-200">
                   {{ $row->status }}
                 </span>
               </td>
 
               <td class="p-4 flex gap-2">
-
-                <button onclick="kirim({{ $row->id }}, this)"
-                  class="px-3 py-1 text-xs rounded-xl bg-blue-600 text-white hover:bg-blue-700 transition-all duration-200 disabled:opacity-100 disabled:bg-blue-600">
+                <button
+                  onclick="kirim({{ $row->id }})"
+                  class="px-3 py-1 text-xs rounded-xl bg-blue-600 text-white hover:bg-blue-700">
                   Jadikan Siswa
                 </button>
 
-                <button onclick="resetData({{ $row->id }})"
+                <button
+                  onclick="resetData({{ $row->id }})"
                   class="px-3 py-1 text-xs rounded-xl bg-yellow-500 text-white hover:bg-yellow-600">
                   Reset
                 </button>
-
               </td>
-
             </tr>
             @empty
             <tr>
               <td colspan="4" class="p-6 text-center text-slate-400">
-                Tidak ada data calon siswa
+                Tidak ada data
               </td>
             </tr>
             @endforelse
-
           </tbody>
-
         </table>
       </div>
 
+      @if ($data->hasPages())
+      <div class="p-4 border-t">
+        {{ $data->links() }}
+      </div>
+      @endif
+    </div>
+
+    {{-- ================= MOBILE CARD ================= --}}
+    <div class="lg:hidden bg-white rounded-2xl shadow divide-y">
+      {{-- isi mobile card tetap seperti milik Anda --}}
     </div>
 
   </div>
 
-  {{-- =========================================================
-        JAVASCRIPT (TIDAK DIHAPUS)
-    ========================================================= --}}
+  {{-- ================= JAVASCRIPT ================= --}}
   <script>
     function syncData() {
       Swal.fire({
-        title: 'Sinkronisasi data?',
-        icon: 'info',
+        title: 'Sinkronisasi Data?',
+        text: 'Data calon siswa akan diperbarui dari sumber API.',
+        icon: 'question',
         showCancelButton: true,
-        confirmButtonText: 'Sync'
-      }).then(res => {
-        if (!res.isConfirmed) return;
+        confirmButtonText: 'Ya, Sinkronkan',
+        cancelButtonText: 'Batal',
+        reverseButtons: true,
+        customClass: {
+          popup: 'rounded-3xl',
+          confirmButton: 'bg-emerald-600 hover:bg-emerald-700 text-white font-semibold px-5 py-2 rounded-xl mx-2',
+          cancelButton: 'bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold px-5 py-2 rounded-xl mx-2'
+        },
+        buttonsStyling: false
+      }).then((result) => {
+
+        if (!result.isConfirmed) return;
 
         Swal.fire({
-          title: 'Loading...',
+          title: 'Memproses...',
+          html: 'Sedang melakukan sinkronisasi data',
+          allowOutsideClick: false,
           didOpen: () => Swal.showLoading()
         });
 
         fetch("{{ route('calon-siswa.sync') }}")
           .then(r => r.json())
           .then(res => {
-            Swal.fire('Success', res.message, 'success');
-            setTimeout(() => location.reload(), 800);
-          })
-          .catch(() => Swal.fire('Error', 'Sync gagal', 'error'));
+            Swal.fire({
+              icon: 'success',
+              title: 'Sinkronisasi Berhasil',
+              text: res.message,
+              confirmButtonText: 'OK',
+              customClass: {
+                popup: 'rounded-3xl',
+                confirmButton: 'bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2 rounded-xl'
+              },
+              buttonsStyling: false
+            }).then(() => {
+              location.reload();
+            });
+          });
       });
     }
 
-    function kirim(id, btn) {
+    function kirim(id) {
+
       Swal.fire({
-        title: 'Jadikan Siswa?',
-        text: 'Data akan dipindahkan ke tabel siswa aktif',
-        icon: 'question',
+        title: 'Jadikan Siswa Aktif?',
+        text: 'Data calon siswa akan dipindahkan menjadi siswa aktif.',
+        icon: 'warning',
         showCancelButton: true,
-        confirmButtonText: 'Ya, Proses',
+        confirmButtonText: 'Ya, Jadikan Siswa',
         cancelButtonText: 'Batal',
-        confirmButtonColor: '#2563eb', // blue-600
-        cancelButtonColor: '#64748b' // slate-500
-      }).then(res => {
-        if (!res.isConfirmed) return;
+        reverseButtons: true,
+        customClass: {
+          popup: 'rounded-3xl',
+          confirmButton: 'bg-blue-600 hover:bg-blue-700 text-white font-semibold px-5 py-2 rounded-xl mx-2',
+          cancelButton: 'bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold px-5 py-2 rounded-xl mx-2'
+        },
+        buttonsStyling: false
+      }).then(async (result) => {
 
-        // ================= LOADING BUTTON STYLE =================
-        btn.disabled = true;
-        btn.innerHTML = `
-      <span class="flex items-center gap-2">
-        <svg class="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
-        </svg>
-        Memproses...
-      </span>
-    `;
+        if (!result.isConfirmed) return;
 
-        btn.className =
-          "px-3 py-1 text-xs rounded-xl bg-slate-400 text-white cursor-not-allowed";
+        Swal.fire({
+          title: 'Memproses...',
+          html: 'Sedang memindahkan data siswa',
+          allowOutsideClick: false,
+          didOpen: () => Swal.showLoading()
+        });
 
-        fetch(`/calon-siswa/${id}/push`, {
+        try {
+
+          const response = await fetch(`/calon-siswa/${id}/push`, {
             method: 'POST',
             headers: {
               'X-CSRF-TOKEN': '{{ csrf_token() }}',
               'Accept': 'application/json'
             }
-          })
-          .then(r => r.json())
-          .then(res => {
-
-            updateStatus(id, res.data.status);
-
-            Swal.fire({
-              title: 'Berhasil!',
-              text: res.message,
-              icon: 'success',
-              confirmButtonColor: '#22c55e' // green-500
-            });
-
-            // ================= SUCCESS BUTTON STYLE =================
-            btn.innerHTML = '✓ Selesai';
-            btn.className =
-              "px-3 py-1 text-xs rounded-xl bg-green-600 text-white";
-
-          })
-          .catch(() => {
-            Swal.fire({
-              title: 'Gagal!',
-              text: 'Terjadi kesalahan saat proses data',
-              icon: 'error',
-              confirmButtonColor: '#ef4444'
-            });
-
-            // ================= RESET BUTTON =================
-            btn.disabled = false;
-            btn.innerHTML = 'Jadikan Siswa';
-            btn.className =
-              "px-3 py-1 text-xs rounded-xl bg-blue-600 text-white hover:bg-blue-600";
-          })
-          .finally(() => {
-            if (!btn.disabled) {
-              btn.disabled = false;
-              btn.innerHTML = 'Jadikan Siswa';
-              btn.className =
-                "px-3 py-1 text-xs rounded-xl bg-blue-600 text-white hover:bg-blue-600";
-            }
           });
+
+          const res = await response.json();
+
+          if (!response.ok) {
+            throw new Error(
+              res.message ||
+              'Terjadi kesalahan saat memindahkan siswa'
+            );
+          }
+
+          updateStatus(id, res.data.status);
+
+          Swal.fire({
+            icon: 'success',
+            title: 'Berhasil',
+            text: res.message || 'Siswa berhasil dipindahkan',
+            confirmButtonText: 'OK',
+            customClass: {
+              popup: 'rounded-3xl',
+              confirmButton: 'bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-xl'
+            },
+            buttonsStyling: false
+          });
+
+        } catch (error) {
+
+          Swal.fire({
+            icon: 'error',
+            title: 'Gagal',
+            text: error.message,
+            confirmButtonText: 'Tutup',
+            customClass: {
+              popup: 'rounded-3xl',
+              confirmButton: 'bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-xl'
+            },
+            buttonsStyling: false
+          });
+
+        }
+
       });
     }
 
     function resetData(id) {
-      fetch(`/calon-siswa/${id}/reset-status`, {
-          method: 'POST',
-          headers: {
-            'X-CSRF-TOKEN': '{{ csrf_token() }}',
-            'Accept': 'application/json'
+
+      Swal.fire({
+        title: 'Reset Status?',
+        text: 'Status siswa akan dikembalikan menjadi calon siswa.',
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonText: 'Ya, Reset',
+        cancelButtonText: 'Batal',
+        reverseButtons: true
+      }).then(async (result) => {
+
+        if (!result.isConfirmed) return;
+
+        try {
+
+          const response = await fetch(`/calon-siswa/${id}/reset-status`, {
+            method: 'POST',
+            headers: {
+              'X-CSRF-TOKEN': '{{ csrf_token() }}',
+              'Accept': 'application/json'
+            }
+          });
+
+          const res = await response.json();
+
+          if (!response.ok) {
+            throw new Error(
+              res.message || 'Gagal mereset status siswa'
+            );
           }
-        })
-        .then(r => r.json())
-        .then(res => {
+
           updateStatus(id, res.data.status);
-          Swal.fire('Success', res.message, 'success');
-        });
+
+          Swal.fire({
+            icon: 'success',
+            title: 'Berhasil',
+            text: res.message || 'Status berhasil direset'
+          });
+
+        } catch (error) {
+
+          Swal.fire({
+            icon: 'error',
+            title: 'Gagal',
+            text: error.message
+          });
+
+        }
+
+      });
     }
 
     function updateStatus(id, status) {
-      const el = document.getElementById(`status-${id}`);
-      if (!el) return;
+      const desktop = document.getElementById(`status-${id}`);
+      const mobile = document.getElementById(`status-mobile-${id}`);
 
-      el.innerText = status;
+      const cls = status === 'dipindah_ke_siswa' ?
+        'px-3 py-1 text-xs rounded-xl bg-green-100 text-green-700' :
+        'px-3 py-1 text-xs rounded-xl bg-yellow-100 text-yellow-700';
 
-      el.className =
-        'px-3 py-1 text-xs rounded-xl ' +
-        (status === 'dipindah_ke_siswa' ?
-          'bg-green-200' :
-          'bg-slate-200');
+      if (desktop) {
+        desktop.innerText = status;
+        desktop.className = cls;
+      }
+
+      if (mobile) {
+        mobile.innerText = status;
+        mobile.className = cls;
+      }
+
+      Swal.fire({
+        icon: 'success',
+        title: 'Berhasil',
+        text: 'Status berhasil diperbarui',
+        timer: 1500,
+        showConfirmButton: false
+      });
     }
   </script>
-
 </x-app-layout>

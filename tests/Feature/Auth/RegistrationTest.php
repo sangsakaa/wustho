@@ -19,14 +19,27 @@ class RegistrationTest extends TestCase
 
     public function test_new_users_can_register()
     {
+        $siswa = \App\Models\Siswa::create([
+            'nama_siswa' => 'Test Siswa',
+            'jenis_kelamin' => 'L',
+            'agama' => 'Islam',
+            'tempat_lahir' => 'Jakarta',
+            'tanggal_lahir' => '2010-01-01',
+            'kota_asal' => 'Jakarta',
+        ]);
+
         $response = $this->post('/register', [
             'name' => 'Test User',
             'email' => 'test@example.com',
-            'password' => 'password',
-            'password_confirmation' => 'password',
+            'siswa_id' => $siswa->id,
         ]);
 
-        $this->assertAuthenticated();
-        $response->assertRedirect(RouteServiceProvider::HOME);
+        $this->assertDatabaseHas('users', [
+            'name' => 'Test User',
+            'email' => 'test@example.com',
+            'siswa_id' => $siswa->id,
+        ]);
+
+        $response->assertRedirect(route('register.index'));
     }
 }

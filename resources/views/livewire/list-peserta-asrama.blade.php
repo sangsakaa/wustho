@@ -137,7 +137,12 @@
 
                     {{-- NAMA --}}
                     <td class="p-3 font-medium capitalize">
+                        <!-- {!! $this->highlight($siswa->nama_siswa) !!} -->
+                        @if(!empty($siswa?->nama_siswa))
                         {!! $this->highlight($siswa->nama_siswa) !!}
+                        @else
+                        <span class="text-gray-400 italic">Data tidak tersedia</span>
+                        @endif
                     </td>
 
                     {{-- JK --}}

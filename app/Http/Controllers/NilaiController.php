@@ -168,6 +168,7 @@ class NilaiController extends Controller
      */
     public function show(Nilaimapel $nilaimapel)
     {
+
         $titlenilai = Nilaimapel::query()
             ->join('mapel', 'mapel.id', '=', 'nilaimapel.mapel_id')
             ->join('guru', 'guru.id', '=', 'nilaimapel.guru_id')

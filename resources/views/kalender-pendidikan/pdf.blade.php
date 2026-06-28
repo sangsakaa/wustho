@@ -21,9 +21,6 @@ return match ($kategori) {
 default => 'X',
 };
 }
-
-
-
 /*
 |--------------------------------------------------------------------------
 | Prioritas Event
@@ -37,12 +34,9 @@ $prioritasKategori = [
 'Ujian' => 4,
 'Libur' => 5,
 ];
-
 $kalenderEvent = [];
 $catatan = collect();
-
 foreach ($events as $event) {
-
 $catatan->push([
 'kode' => $event->kode_kegiatan,
 'nama' => $event->nama_kegiatan,
@@ -65,18 +59,12 @@ $dataEvent = [
 'prioritas' => $prioritasKategori[$event->kategori] ?? 0,
 ];
 
-if (
-!isset($kalenderEvent[$tanggalKey]) ||
-$dataEvent['prioritas'] > ($kalenderEvent[$tanggalKey]['prioritas'] ?? 0)
-) {
-$kalenderEvent[$tanggalKey] = $dataEvent;
-}
+$kalenderEvent[$tanggalKey][] = $dataEvent;
 
 $mulai->addDay();
 }
 }
 @endphp
-
 <!DOCTYPE html>
 <html>
 
@@ -95,19 +83,14 @@ $mulai->addDay();
       margin: 12px 12px 12px;
     }
 
-
-
     .box {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-
       padding: 2px 6px;
       margin: 2px 3px;
-
       font-size: 9px;
       font-weight: 600;
-
       border-radius: 999px;
       /* full pill */
       border: 1px solid rgba(0, 0, 0, 0.15);
@@ -285,7 +268,6 @@ $mulai->addDay();
       line-height: 1.2;
     }
 
-    /* FOOTER (dipisah, jangan di dalam loop notes) */
     .footer {
       position: fixed;
       bottom: 0;
@@ -309,11 +291,68 @@ $mulai->addDay();
       background-color: #2ecc71;
       height: 21px;
     }
+
+    .split-diagonal {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .split-diagonal::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(to bottom right,
+          transparent 49%,
+          #000 49.5%,
+          #000 50.5%,
+          transparent 51%);
+      pointer-events: none;
+    }
+
+    .diag-top {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 65%;
+      height: 65%;
+      display: flex;
+      align-items: flex-start;
+      justify-content: flex-start;
+      padding: 1px;
+      font-size: 4px;
+      font-weight: bold;
+    }
+
+    .diag-bottom {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      width: 65%;
+      height: 65%;
+      display: flex;
+      align-items: flex-end;
+      justify-content: flex-end;
+      padding: 1px;
+      font-size: 4px;
+      font-weight: bold;
+    }
+
+    .diag-bg-top {
+      position: absolute;
+      inset: 0;
+      clip-path: polygon(0 0, 100% 0, 0 100%);
+    }
+
+    .diag-bg-bottom {
+      position: absolute;
+      inset: 0;
+      clip-path: polygon(100% 0, 100% 100%, 0 100%);
+    }
   </style>
 </head>
 
 <body>
-
   @php
   $jenjang = 'Wustho'; // Wustho | Ula | Ulya
 
@@ -331,10 +370,8 @@ $mulai->addDay();
   'logo' => public_path('asset/images/logo_ulya.jpeg'),
   ],
   ];
-
   $dataJenjang = $jenjangData[$jenjang] ?? null;
   @endphp
-
   {{-- WATERMARK --}}
   @if($dataJenjang)
   <img src="{{ $dataJenjang['logo'] }}"
@@ -364,21 +401,17 @@ $mulai->addDay();
     <tr>
       <td width="15%" align="center" valign="middle" style="border:none; padding:0; margin:0;">
         @if($dataJenjang)
-        <img src="{{ $dataJenjang['logo'] }}"
-          style="width:70px; height:auto; display:block; margin:0 auto;">
+        <img src="{{ $dataJenjang['logo'] }}" style="width:70px; height:auto; display:block; margin:0 auto;">
         @endif
       </td>
-
       <td width="70%" align="center" valign="middle" style="border:none; padding:0; margin:0;">
         <div style="font-size:14px; font-weight:bold; line-height:1.2; margin:0;">
           DEPARTEMEN PENDIDIKAN DINIYAH WAHIDIYAH
         </div>
-
         <div style="font-size:18px; font-weight:bold; line-height:1.2; margin:0;">
           {{ strtoupper($dataJenjang['nama'] ?? 'MADRASAH DINIYAH WAHIDIYAH') }}
         </div>
       </td>
-
       <td width="15%" style="border:none; padding:0; margin:0;">
         &nbsp;
       </td>
@@ -386,7 +419,6 @@ $mulai->addDay();
   </table>
   <div style="border-top:1px solid #000;"></div>
   <div style="border-top:3px solid #000; margin-top:2px; margin-bottom:1px;"></div>
-
   {{-- JUDUL --}}
   <div style="text-align:center; margin-bottom:1px;">
     <div style="font-size:18px; font-weight:bold;">
@@ -397,25 +429,19 @@ $mulai->addDay();
     </div>
   </div>
   <div style="width:100%;">
-
     @for ($bulan = 1; $bulan <= 12; $bulan++)
-
       @php
       $start=Carbon::create($tahun, $bulan, 1);
       $days=$start->daysInMonth;
       $startDay = $start->dayOfWeek;
       @endphp
-
       <div class="month">
-
         <table>
-
           <tr>
             <th colspan="7" class="bg-bulan">
               {{ strtoupper($start->translatedFormat('F')) }}
             </th>
           </tr>
-
           <tr>
             <th>Min</th>
             <th>Sen</th>
@@ -425,59 +451,66 @@ $mulai->addDay();
             <th>Jum</th>
             <th>Sab</th>
           </tr>
-
           @for($row = 0; $row < 6; $row++)
             <tr>
-
             @for($col = 0; $col < 7; $col++)
-
               @php
               $cell=($row * 7) + $col;
               $tanggal=$cell - $startDay + 1;
               @endphp
-
               @if($tanggal < 1 || $tanggal> $days)
-
               <td></td>
-
               @else
-
               @php
               $tanggalAktif = Carbon::create($tahun, $bulan, $tanggal);
               $keyTanggal = $tanggalAktif->format('Y-m-d');
-
-              $eventHari = $kalenderEvent[$keyTanggal] ?? null;
+              $eventsHari = $kalenderEvent[$keyTanggal] ?? [];
               @endphp
+              @if(count($eventsHari) == 0)
 
-              <td class="{{ $eventHari['kategori'] ?? '' }}">
+              <td>
+                <div class="tanggal">{{ $tanggal }}</div>
+              </td>
 
-                <div class="tanggal">
+              @elseif(count($eventsHari) == 1)
+
+              <td class="{{ $eventsHari[0]['kategori'] }}">
+                <div class="tanggal">{{ $tanggal }}</div>
+                <div class="kode">{{ $eventsHari[0]['kode'] }}</div>
+              </td>
+
+              @else
+
+              <td class="split-diagonal" style="position:relative;">
+
+                <div class="diag-bg-top {{ $eventsHari[0]['kategori'] }}"></div>
+
+                <div class="diag-bg-bottom {{ $eventsHari[1]['kategori'] }}"></div>
+
+                <div class="tanggal"
+                  style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:5;">
                   {{ $tanggal }}
                 </div>
 
-                @if($eventHari)
-                <div class="kode">
-                  {{ $eventHari['kode'] }}
+                <div class="diag-top" style="z-index:5;">
+                  {{ $eventsHari[0]['kode'] }}
                 </div>
-                @endif
+
+                <div class="diag-bottom" style="z-index:5;">
+                  {{ $eventsHari[1]['kode'] }}
+                </div>
 
               </td>
 
               @endif
-
+              @endif
               @endfor
-
               </tr>
               @endfor
-
         </table>
-
       </div>
-
       @endfor
-
   </div>
-
   <div class="clearfix"></div>
   <div class="notes">
     <div class="legend">
@@ -497,10 +530,8 @@ $mulai->addDay();
     </div>
     <strong>Keterangan Kode Kegiatan:</strong>
     <br> <br>
-
     @foreach($catatan->sortBy('mulai') as $item)
     <div class="note-item">
-
       <span class="badge {{ $item['kategori'] }}">
         {{ $item['kode'] }}
       </span><span class="name-label">
@@ -513,18 +544,11 @@ $mulai->addDay();
         ) -
         {{ $item['nama'] }}
       </span>
-
-
-
     </div>
     @endforeach
-
   </div>
-
-
   <div class="footer">
     <div class="footer-line"></div>
-
     <div class="footer-content">
       <div class="footer-text">
         &copy; {{ date('Y') }} {{ config('app.name') }} - Sistem Manajemen Madrasah Diniyah
@@ -535,8 +559,6 @@ $mulai->addDay();
       </div>
     </div>
   </div>
-
 </body>
-
 
 </html>

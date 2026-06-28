@@ -32,9 +32,8 @@
                         close: true,
                         stopOnFocus: true,
                         style: {
-                            background: result.summary.errors > 0
-                                ? "linear-gradient(to right, #ff5f6d, #ffc371)"
-                                : "linear-gradient(to right, #00b09b, #96c93d)",
+                            background: result.summary.errors > 0 ?
+                                "linear-gradient(to right, #ff5f6d, #ffc371)" : "linear-gradient(to right, #00b09b, #96c93d)",
                         }
                     }).showToast();
                 });
@@ -52,7 +51,9 @@
         <div class="mt-5 bg-gradient-to-r from-blue-50 to-sky-50 dark:from-blue-950/30 dark:to-sky-950/30 border border-blue-200/60 dark:border-blue-800/30 rounded-2xl p-5 shadow-sm">
             <div class="flex items-start gap-4">
                 <div class="bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 p-2.5 rounded-xl shrink-0">
-                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12A9 9 0 1112 3a9 9 0 019 9z"/></svg>
+                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12A9 9 0 1112 3a9 9 0 019 9z" />
+                    </svg>
                 </div>
                 <div>
                     <h4 class="font-semibold text-blue-700 dark:text-blue-400 mb-2">Keterangan</h4>

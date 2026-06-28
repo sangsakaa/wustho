@@ -85,40 +85,84 @@ class ApiSiswaController extends Controller
 
         $query = CalonSiswa::query();
 
-        // ================= DOMAIN FILTER (DEFAULT) =================
+        // FILTER DOMAIN
         if ($domain) {
             $query->where('jenjang', $domain);
         }
 
-        // ================= OVERRIDE FILTER DARI URL =================
+        // FILTER JENJANG
         if ($request->filled('jenjang')) {
             $query->where('jenjang', $request->jenjang);
         }
 
-        // Search
+        // SEARCH
         if ($request->filled('search')) {
             $query->where('nama', 'like', '%' . $request->search . '%');
         }
 
-        // Status
+        // STATUS FILTER
         if ($request->filled('status')) {
             $query->where('status', $request->status);
         }
 
+        // RENCANA PENDIDIKAN FILTER (JSON)
+        if ($request->filled('rencana_pendidikan')) {
+            $query->whereRaw("
+            JSON_UNQUOTE(JSON_EXTRACT(data_api, '$.rencana_pendidikan')) = ?
+        ", [$request->rencana_pendidikan]);
+        }
+
         $data = $query->latest()->paginate(20)->withQueryString();
 
-        // ================= STATS =================
+        // ================= BASE STAT QUERY =================
         $base = CalonSiswa::query();
 
         if ($domain) {
             $base->where('jenjang', $domain);
         }
 
+        // helper function json count
+        $countRencana = function ($value, $jenjang = null, $status = null) use ($base) {
+            $q = (clone $base);
+
+            if ($jenjang) {
+                $q->where('jenjang', $jenjang);
+            }
+
+            if ($status) {
+                $q->where('status', $status);
+            }
+
+            return $q->whereRaw("
+            JSON_UNQUOTE(JSON_EXTRACT(data_api, '$.rencana_pendidikan')) = ?
+        ", [$value])->count();
+        };
+
         $stats = [
+            // umum
             'all'   => (clone $base)->count(),
             'SMP'   => (clone $base)->where('jenjang', 'SMP')->count(),
             'SMA'   => (clone $base)->where('jenjang', 'SMA')->count(),
+
+            // status
             'calon' => (clone $base)->where('status', 'calon-siswa')->count(),
+            'dipindah' => (clone $base)->where('status', 'dipindah_ke_siswa')->count(),
+
+            // rencana global
+            'mondok' => $countRencana('Mondok'),
+            'tidak_mondok' => $countRencana('Tidak Mondok'),
+
+            // per jenjang SMP
+            'smp_mondok' => $countRencana('Mondok', 'SMP'),
+            'smp_tidak_mondok' => $countRencana('Tidak Mondok', 'SMP'),
+            'smp_calon' => (clone $base)->where('jenjang', 'SMP')->where('status', 'calon-siswa')->count(),
+            'smp_dipindah' => (clone $base)->where('jenjang', 'SMP')->where('status', 'dipindah_ke_siswa')->count(),
+
+            // per jenjang SMA
+            'sma_mondok' => $countRencana('Mondok', 'SMA'),
+            'sma_tidak_mondok' => $countRencana('Tidak Mondok', 'SMA'),
+            'sma_calon' => (clone $base)->where('jenjang', 'SMA')->where('status', 'calon-siswa')->count(),
+            'sma_dipindah' => (clone $base)->where('jenjang', 'SMA')->where('status', 'dipindah_ke_siswa')->count(),
         ];
 
         return view('calon_siswa.index', compact('data', 'stats', 'domain'));
@@ -135,6 +179,13 @@ class ApiSiswaController extends Controller
 
 
             // DEBUG FULL RESPONSE
+            // dd([
+            //     'status'  => $response->status(),
+            //     'headers' => $response->headers(),
+            //     'body'    => $response->body(),
+            //     'json'    => $response->json(),
+            // ]);
+            // 
 
             if (!$response->successful()) {
                 return response()->json([
@@ -168,6 +219,12 @@ class ApiSiswaController extends Controller
                     continue;
                 }
 
+                $existing = CalonSiswa::where('api_id', data_get($item, 'id'))->first();
+
+                $status = $existing?->status === 'dipindah_ke_siswa'
+                    ? 'dipindah_ke_siswa'
+                    : 'calon-siswa';
+
                 CalonSiswa::updateOrCreate(
                     [
                         'api_id' => data_get($item, 'id'),
@@ -177,16 +234,18 @@ class ApiSiswaController extends Controller
                         'jenjang_id'     => data_get($item, 'jenjang.id'),
                         'nama'           => data_get($item, 'nama_lengkap'),
                         'jenis_kelamin'  => data_get($item, 'jenis_kelamin'),
+                        'rencana_pendidikan'  => data_get($item, 'rencana_pendidikan'),
+                        'jumlah_saudara_kandung'  => data_get($item, 'jumlah_saudara_kandung'),
+                        'anak_ke'  => data_get($item, 'anak_ke'),
                         'nisn'           => data_get($item, 'nisn'),
                         'nis'            => data_get($item, 'nis'),
                         'nik'            => data_get($item, 'nik'),
                         'tempat_lahir'   => data_get($item, 'tempat_lahir'),
-                        'tanggal_lahir'  => $this->parseTanggal(
-                            data_get($item, 'tanggal_lahir')
-                        ),
+                        'tanggal_lahir'  => $this->parseTanggal(data_get($item, 'tanggal_lahir')),
                         'agama'          => data_get($item, 'agama'),
                         'alamat_jalan'   => data_get($item, 'alamat_jalan'),
-                        'status'         => 'calon-siswa',
+                        'tapel_id'   => data_get($item, 'tapel_id'),
+                        'status'         => $status,
                         'data_api'       => $item,
                     ]
                 );
@@ -213,6 +272,31 @@ class ApiSiswaController extends Controller
         }
     }
 
+    public function debugSync()
+    {
+        try {
+
+            $response = Http::withHeaders([
+                'X-API-KEY' => self::API_KEY,
+                'Accept'    => 'application/json',
+            ])->timeout(60)->get(self::API_URL);
+
+            return response()->json([
+                'success'    => $response->successful(),
+                'status'     => $response->status(),
+                'headers'    => $response->headers(),
+                'total_data' => count($response->json() ?? []),
+                'sample'     => collect($response->json())->take(3),
+            ]);
+        } catch (\Exception $e) {
+
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+                'line'    => $e->getLine(),
+            ], 500);
+        }
+    }
     /* ================= GENERATE NIS ================= */
     private function generateNis($kode)
     {

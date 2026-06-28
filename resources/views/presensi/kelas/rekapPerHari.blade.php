@@ -8,27 +8,7 @@
     </x-slot>
 
     {{-- LOADING OVERLAY --}}
-    <div id="loading-overlay" class="hidden">
-        <div class="text-center">
 
-            <div class="flex justify-center gap-2">
-                <div class="w-5 h-5 bg-white rounded-full animate-bounce"></div>
-                <div class="w-5 h-5 bg-white rounded-full animate-bounce [animation-delay:0.2s]"></div>
-                <div class="w-5 h-5 bg-white rounded-full animate-bounce [animation-delay:0.4s]"></div>
-            </div>
-
-            <p class="text-white mt-5 text-lg font-semibold tracking-wide">
-                Sedang memproses rekap absensi...
-            </p>
-
-            <div class="w-72 bg-gray-300 rounded-full h-4 mt-5 overflow-hidden">
-                <div
-                    class="bg-red-600 h-4 rounded-full animate-pulse progress-bar">
-                </div>
-            </div>
-
-        </div>
-    </div>
 
     {{-- FILTER --}}
     <div class="my-3">
@@ -214,117 +194,169 @@
                     {{-- TABEL --}}
                     <div class="overflow-x-auto rounded-lg border border-green-700 mt-2">
 
-                        <table class="table-fixed w-full text-green-900">
+                        <div class="overflow-auto rounded-xl border border-slate-200 shadow">
 
-                            <thead class="border border-b-2 border-green-600">
+                            <table class="w-full text-sm border-collapse">
 
-                                <tr class="border border-green-600 text-xs sm:text-sm bg-green-50 dark:bg-gray-800">
+                                <thead class="sticky top-0 bg-slate-100 z-10">
 
-                                    <th class="border border-green-600 px-1 w-8">No</th>
-                                    <th class="border border-green-600 px-1 w-1/6">Asrama</th>
-                                    <th class="border border-green-600 px-1 w-10">Kls</th>
-                                    <th class="border border-green-600 px-1 w-11">Total</th>
-                                    <th class="border border-green-600 px-1 w-11">Tidak Hadir</th>
-                                    <th class="border border-green-600 px-1 w-11">Hadir</th>
-                                    <th class="border border-green-600 px-1 w-1/3 sm:w-1/2">Yang Tidak Hadir</th>
-                                    <th class="border border-green-600 px-1 w-10 sm:w-11">Ket</th>
-                                    <th class="border border-green-600 px-1 w-1/6">Presentase Kehadiran</th>
+                                    <tr>
 
-                                </tr>
+                                        <th class="border px-2 py-2">No</th>
+                                        <th class="border px-2 py-2">Asrama</th>
+                                        <th class="border px-2 py-2">Kelas</th>
+                                        <th class="border px-2 py-2">Total</th>
+                                        <th class="border px-2 py-2">TH</th>
+                                        <th class="border px-2 py-2">H</th>
+                                        <th class="border px-2 py-2">Siswa Tidak Hadir</th>
+                                        <th class="border px-2 py-2">Ket</th>
+                                        <th class="border px-2 py-2">%</th>
 
-                            </thead>
+                                    </tr>
 
-                            <tbody class="text-sm">
+                                </thead>
 
-                                @php
-                                $nomor = 1;
-                                @endphp
+                                <tbody class="text-sm" style="font-size: small;">
 
-                                @foreach ($rekapAbsensi as $nama_asrama => $dataAsrama)
-                                @foreach ($dataAsrama as $nama_kelas => $dataKelas)
-                                @foreach ($dataKelas['absensi'] as $absensi )
+                                    @php $nomor = 1; @endphp
 
-                                <tr class="border border-green-600 text-xs sm:text-sm even:bg-green-50 dark:even:bg-gray-800">
+                                    @foreach($rekapAbsensi as $namaAsrama => $dataAsrama)
 
-                                    @if ($loop->first)
-                                    <td
-                                        class="border border-green-600 text-center px-1"
-                                        rowspan="{{ $dataKelas['row'] }}">
-                                        {{ $nomor++ }}
-                                    </td>
-                                    @endif
+                                    @php
+                                    $firstAsrama = true;
+                                    @endphp
 
-                                    @if ($loop->parent->first && $loop->first)
-                                    <td
-                                        class="border border-green-600 px-1 text-center text-sm"
-                                        rowspan="{{ $dataAsrama->sum('row') }}">
-                                        {{ $nama_asrama }}
-                                    </td>
-                                    @endif
+                                    @foreach($dataAsrama as $namaKelas => $dataKelas)
 
-                                    @if ($loop->first)
+                                    @foreach($dataKelas['absensi'] as $index => $absensi)
 
-                                    <td class="border border-green-600 text-center px-1"
-                                        rowspan="{{ $dataKelas['row'] }}">
-                                        {{ $nama_kelas }}
-                                    </td>
+                                    <tr class="border border-green-600 even:bg-green-50 dark:even:bg-gray-800 hover:bg-green-100 dark:hover:bg-gray-700">
 
-                                    <td class="border border-green-600 text-center px-1"
-                                        rowspan="{{ $dataKelas['row'] }}">
-                                        {{ $dataKelas['total'] }}
-                                    </td>
+                                        {{-- NOMOR --}}
+                                        @if($index === 0)
 
-                                    <td class="border border-green-600 text-center px-1"
-                                        rowspan="{{ $dataKelas['row'] }}">
-                                        {{ $dataKelas['tidakHadir'] }}
-                                    </td>
+                                        <td
+                                            rowspan="{{ $dataKelas['row'] }}"
+                                            class="border border-green-600 text-center px-1">
 
-                                    <td class="border border-green-600 text-center px-1"
-                                        rowspan="{{ $dataKelas['row'] }}">
-                                        {{ $dataKelas['hadir'] }}
-                                    </td>
+                                            {{ $nomor++ }}
 
-                                    @endif
+                                        </td>
 
-                                    <td class="border border-green-600 px-2 text-xs capitalize">
+                                        @endif
 
-                                        {{ $dataKelas['tidakHadir'] !== 0
-                                            ? $loop->iteration . '. ' . strtolower($absensi->nama_siswa)
-                                            : 'NIHIL'
-                                        }}
+                                        {{-- ASRAMA --}}
+                                        @if($firstAsrama && $index === 0)
 
-                                    </td>
+                                        <td
+                                            rowspan="{{ $rowspanAsrama[$namaAsrama] }}"
+                                            class="border border-green-600 px-2 font-semibold bg-green-50 dark:bg-gray-800">
 
-                                    <td class="border border-green-600 px-1 text-center capitalize">
+                                            {{ $namaAsrama }}
 
-                                        {{ $dataKelas['tidakHadir'] !== 0
-                                            ? $absensi->keterangan
-                                            : 'NIHIL'
-                                        }}
+                                        </td>
 
-                                    </td>
+                                        @php
+                                        $firstAsrama = false;
+                                        @endphp
 
-                                    @if ($loop->first)
+                                        @endif
 
-                                    <td
-                                        class="border border-green-600 text-center px-1 font-semibold"
-                                        rowspan="{{ $dataKelas['row'] }}">
+                                        {{-- KELAS --}}
+                                        @if($index === 0)
 
-                                        {{ number_format($dataKelas['persentase'], 1, ',') }}%
+                                        <td
+                                            rowspan="{{ $dataKelas['row'] }}"
+                                            class="border border-green-600 text-center">
 
-                                    </td>
+                                            {{ $namaKelas }}
 
-                                    @endif
+                                        </td>
 
-                                </tr>
+                                        <td
+                                            rowspan="{{ $dataKelas['row'] }}"
+                                            class="border border-green-600 text-center">
 
-                                @endforeach
-                                @endforeach
-                                @endforeach
+                                            {{ $dataKelas['total'] }}
 
-                            </tbody>
+                                        </td>
 
-                        </table>
+                                        <td
+                                            rowspan="{{ $dataKelas['row'] }}"
+                                            class="border border-green-600 text-center text-red-600 font-bold">
+
+                                            {{ $dataKelas['tidakHadir'] }}
+
+                                        </td>
+
+                                        <td
+                                            rowspan="{{ $dataKelas['row'] }}"
+                                            class="border border-green-600 text-center text-green-600 font-bold">
+
+                                            {{ $dataKelas['hadir'] }}
+
+                                        </td>
+
+                                        @endif
+
+                                        {{-- SISWA --}}
+                                        <td class="border border-green-600 px-2">
+
+                                            @if($dataKelas['tidakHadir'] > 0)
+
+                                            {{ $loop->iteration }}. {{ ucwords(strtolower($absensi->nama_siswa)) }}
+
+                                            @else
+
+                                            <span class="text-gray-400 italic">
+                                                Nihil
+                                            </span>
+
+                                            @endif
+
+                                        </td>
+
+                                        {{-- KETERANGAN --}}
+                                        <td class="border border-green-600 text-center capitalize">
+
+                                            @if($dataKelas['tidakHadir'] > 0)
+
+                                            {{ $absensi->keterangan }}
+
+                                            @else
+
+                                            -
+
+                                            @endif
+
+                                        </td>
+
+                                        {{-- PERSENTASE --}}
+                                        @if($index === 0)
+
+                                        <td
+                                            rowspan="{{ $dataKelas['row'] }}"
+                                            class="border border-green-600 text-center font-bold">
+
+                                            {{ number_format($dataKelas['persentase'], 1, ',', '.') }}%
+
+                                        </td>
+
+                                        @endif
+
+                                    </tr>
+
+                                    @endforeach
+
+                                    @endforeach
+
+                                    @endforeach
+
+                                </tbody>
+
+                            </table>
+
+                        </div>
 
                     </div>
 

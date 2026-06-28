@@ -24,7 +24,7 @@
                     <x-label for="email" :value="__('Email')" />
                     <x-input-with-icon-wrapper>
                         <x-slot name="icon">
-                            <x-heroicon-o-mail aria-hidden="true" class="w-5 h-5" />
+                            <x-heroicon-o-envelope aria-hidden="true" class="w-5 h-5" />
                         </x-slot>
                         <x-input withicon id="email" class="block w-full" type="email" name="email"
                             :value="old('email')" required placeholder="{{ __('Email') }}" />
@@ -57,7 +57,7 @@
 
                 <div>
                     <x-button class="justify-center w-full gap-2">
-                        <x-heroicon-o-user-add class="w-6 h-6" aria-hidden="true" />
+                        <x-heroicon-o-user-plus class="w-6 h-6" aria-hidden="true" />
                         <span>{{ __('Register') }}</span>
                     </x-button>
                 </div>
