@@ -290,7 +290,7 @@ class ValidasiController
             ->map(function ($item) use ($tahunSekarang) {
 
                 $minimalStudi = match ($item->madrasah_diniyah) {
-                    'Ula' => 6,
+                'Ula' => 3,
                     'Wustho', 'Ulya' => 3,
                     default => 3,
                 };

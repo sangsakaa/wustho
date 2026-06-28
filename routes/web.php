@@ -471,7 +471,6 @@ Route::get('laporan-harian-perangkat', [SesiPerangkatController::class, 'Laporan
 Route::get('laporan-Bulanan-perangkat', [SesiPerangkatController::class, 'LaporanBulanan']);
 Route::get('rekap-Bulanan', [SesiPerangkatController::class, 'rekapSesiPerangkat']);
 
-
 /*
 |--------------------------------------------------------------------------
 | 12. QR CODE SYSTEM & REAL-TIME MONITORING
@@ -582,7 +581,6 @@ Route::middleware(['auth'])->group(function () {
     Route::post('nilai_transkip/{transkip}', [TranskipController::class, 'NilaiTranskip'])->name('nilai_transkip');
     Route::delete('daftar-transkip/{transkip}', [TranskipController::class, 'DeleteTraskip']);
 });
-
 
 /*
 |--------------------------------------------------------------------------
