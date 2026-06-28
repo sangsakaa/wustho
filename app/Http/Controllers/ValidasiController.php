@@ -301,9 +301,97 @@ class ValidasiController
                 $punyaIjazah = filled($item->nomor_ijazah);
                 $sudahLulus = filled($item->tahun_lulus);
 
-                $item->tahun_nis = substr($item->nis, 0, 4);
-                $nisValid = $item->tahun_nis == $item->tahun_masuk;
+            /*
+|--------------------------------------------------------------------------
+| VALIDASI NIS BERDASARKAN JENJANG
+|--------------------------------------------------------------------------
+*/
 
+            $nisValid = true;
+            $item->tahun_nis = '';
+
+            switch ($item->madrasah_diniyah) {
+
+                case 'Ula':
+
+                    // Format : 2503044
+                    // 25 = Tahun
+                    // 03 = Kode Ula
+                    // 044 = Nomor Urut
+
+                    if (strlen($item->nis) != 7) {
+
+                        $nisValid = false;
+                    } else {
+
+                        $item->tahun_nis = '20' . substr($item->nis, 0, 2);
+
+                        if ($item->tahun_nis != $item->tahun_masuk) {
+                            $nisValid = false;
+                        }
+
+                        if (substr($item->nis, 2, 2) != '03') {
+                            $nisValid = false;
+                        }
+                    }
+
+                    break;
+
+                case 'Wustho':
+
+                    // Format : 20240200087
+                    // 2024 = Tahun
+                    // 02 = Kode Wustho
+                    // 00087 = Nomor Urut
+
+                    if (strlen($item->nis) != 11) {
+
+                        $nisValid = false;
+                    } else {
+
+                        $item->tahun_nis = substr($item->nis, 0, 4);
+
+                        if ($item->tahun_nis != $item->tahun_masuk) {
+                            $nisValid = false;
+                        }
+
+                        if (substr($item->nis, 4, 2) != '02') {
+                            $nisValid = false;
+                        }
+                    }
+
+                    break;
+
+                case 'Ulya':
+
+                    // Format : 20250100015
+                    // 2025 = Tahun
+                    // 01 = Kode Ulya
+                    // 00015 = Nomor Urut
+
+                    if (strlen($item->nis) != 11) {
+
+                        $nisValid = false;
+                    } else {
+
+                        $item->tahun_nis = substr($item->nis, 0, 4);
+
+                        if ($item->tahun_nis != $item->tahun_masuk) {
+                            $nisValid = false;
+                        }
+
+                        if (substr($item->nis, 4, 2) != '01') {
+                            $nisValid = false;
+                        }
+                    }
+
+                    break;
+
+                default:
+
+                    $nisValid = false;
+                    break;
+            }
                 $item->lama_studi = null;
                 $layakLulus = $item->masa_berjalan >= $minimalStudi;
 
