@@ -12,7 +12,7 @@ use App\Models\Perangkat;
 use App\Models\Periode;
 use App\Models\Pesertakelas;
 use App\Models\Siswa;
-use App\Models\Transkip;
+
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Riskihajar\Terbilang\Facades\Terbilang;

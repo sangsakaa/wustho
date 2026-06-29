@@ -173,8 +173,16 @@ class KelasmiController extends Controller
 
     public function edit(Kelasmi $kelasmi)
     {
-        return view('kelas_mi/editkelasmi', [
-            'kelasmi' => $kelasmi
+        $kelas = Kelas::orderBy('kelas')->get();
+
+        $periode = Periode::orderBy('periode', 'desc')
+            ->orderBy('semester_id')
+            ->get();
+
+        return view('kelas_mi.editkelasmi', [
+            'kelasmi' => $kelasmi,
+            'kelas'   => $kelas,
+            'periode' => $periode,
         ]);
     }
 

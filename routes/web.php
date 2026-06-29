@@ -291,7 +291,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('pesertakolektif/{kelasmi}', [KelasController::class, 'pesertakolektif']);
 
     // Manajemen Kelas MI
-    Route::get('kelas_mi', [KelasmiController::class, 'index'])->name('kelas_mi');
+    Route::get('kelas_mi', [KelasmiController::class, 'index'])->name('kelas_mi.index');
     Route::get('addkelas_mi', [KelasmiController::class, 'create'])->name('addkelas_mi');
     Route::post('kelas_mi', [KelasmiController::class, 'store'])->name('kelas_mi');
     Route::get('kelas_mi/{kelasmi}/edit', [KelasmiController::class, 'edit']);
