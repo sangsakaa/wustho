@@ -13,20 +13,51 @@
             </div>
 
             <div class="flex flex-wrap gap-2">
-                <a href="/periode"
-                    class="inline-flex items-center px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg shadow-sm text-sm font-medium transition">
-                    Periode
-                </a>
 
-                <a href="/daftar-transkip"
-                    class="inline-flex items-center px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg shadow-sm text-sm font-medium transition">
-                    Daftar Transkrip
-                </a>
+
+
             </div>
         </div>
     </x-slot>
 
+
     <div class="p-4 lg:p-6 space-y-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+
+            <div class="bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl p-6 text-white shadow">
+                <p class="text-sm opacity-80">
+                    Total Lulusan
+                </p>
+
+                <h1 class="text-4xl font-bold mt-2">
+                    {{ $totalLulusan }}
+                </h1>
+            </div>
+
+            <div class="bg-gradient-to-r from-green-500 to-green-600 rounded-xl p-6 text-white shadow">
+                <p class="text-sm opacity-80">
+                    Total Kelas
+                </p>
+
+                <h1 class="text-4xl font-bold mt-2">
+                    {{ $totalKelas }}
+                </h1>
+            </div>
+
+            <div class="bg-gradient-to-r from-orange-500 to-orange-600 rounded-xl p-6 text-white shadow">
+                <p class="text-sm opacity-80">
+                    Data Kelulusan
+                </p>
+
+                <h1 class="text-4xl font-bold mt-2">
+                    {{ count($dataLulusan) }}
+                </h1>
+            </div>
+
+
+        </div>
+
+
 
         {{-- SUCCESS --}}
         @if(session('success'))
@@ -191,10 +222,25 @@
 
         {{-- TABLE --}}
         <div class="bg-white rounded-xl border shadow-sm overflow-hidden">
-            <div class="px-6 py-4 border-b bg-slate-50">
-                <h3 class="font-semibold text-slate-700">
-                    Daftar Data Lulusan
-                </h3>
+            <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between px-6 py-4 border-b bg-slate-50">
+
+                <div>
+                    <h3 class="text-lg font-semibold text-slate-800">
+                        Daftar Data Lulusan
+                    </h3>
+                    <p class="text-sm text-slate-500">
+                        Kelola data lulusan dan transkrip siswa.
+                    </p>
+                </div>
+
+                <a href="/daftar-transkip"
+                    class="inline-flex items-center gap-2 rounded-lg bg-emerald-600 px-4 py-2.5 text-sm font-medium text-white shadow-sm transition hover:bg-emerald-700 hover:shadow-md">
+
+                    <x-heroicon-o-document-text class="w-5 h-5" />
+
+                    <span>Daftar Transkrip</span>
+                </a>
+
             </div>
 
             <div class="overflow-x-auto">
@@ -223,7 +269,9 @@
                                 </a>
                             </td>
 
-                            <td class="px-4 py-3 text-center">{{ $list->nama_kelas }}</td>
+                            <td class="px-4 py-3 text-center">{{ $list->nama_kelas }}
+                                {{$list->jumlah_lulusan}}
+                            </td>
 
                             <td class="px-4 py-3 text-center">
                                 {{ \Carbon\Carbon::parse($list->tanggal_mulai)->isoFormat('D MMM Y') }}

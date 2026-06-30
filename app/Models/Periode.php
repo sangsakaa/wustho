@@ -79,14 +79,26 @@ class Periode extends Model
     }
     public static function getNavbarPeriode()
     {
+        $aktif = self::active()->first();
+
+        $tahunAktif = $aktif
+            ? (int) explode('/', $aktif->periode)[0]
+            : now()->year;
+
         return self::with('semester')
-            ->select([
-                'id',
-                'periode',
-                'semester_id',
-                'is_active'
+            ->get()
+            ->filter(function ($item) use ($tahunAktif) {
+
+                $tahun = (int) explode('/', $item->periode)[0];
+
+                return $tahun >= ($tahunAktif - 1)
+                    && $tahun <= ($tahunAktif + 1);
+            })
+            ->sortBy([
+                ['periode', 'asc'],
+                ['semester_id', 'asc'],
             ])
-            ->get();
+            ->values();
     }
 
 

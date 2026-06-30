@@ -29,6 +29,7 @@ use App\Http\Controllers\PararelController;
 use App\Http\Controllers\PelanggaranController;
 use App\Http\Controllers\PengaturanController;
 use App\Http\Controllers\PerangkatController;
+use App\Http\Controllers\PeriodeController;
 use App\Http\Controllers\PresensiGuruController;
 use App\Http\Controllers\PresensikelasController;
 use App\Http\Controllers\QrcodeController;
@@ -53,6 +54,8 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 */
 
+Route::post('/periode/set-active', [PeriodeController::class, 'setActive'])
+    ->name('periode.set-active');
 Route::get('/', function () {
     $dataNIS = collect();
     if (request('cari')) {

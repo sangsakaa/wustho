@@ -36,17 +36,29 @@ class LulusanCotroller
             ->join('periode', 'periode.id', '=', 'lulusan.periode_id')
             ->join('kelasmi', 'kelasmi.id', '=', 'lulusan.kelasmi_id')
             ->join('semester', 'semester.id', '=', 'periode.semester_id')
+            ->leftJoin('daftar_lulusan', 'daftar_lulusan.lulusan_id', '=', 'lulusan.id')
             ->where('lulusan.periode_id', session('periode_id'))
-            ->select([
+            ->select(
                 'kelasmi.nama_kelas',
             'lulusan.id',
-            'periode',
-            'ket_semester',
+            'periode.periode',
+            'semester.ket_semester',
             'lulusan.tanggal_mulai',
             'lulusan.tanggal_selesai',
             'lulusan.tanggal_kelulusan',
-                'tanggal_lulus_hijriyah'
-            ])
+                'lulusan.tanggal_lulus_hijriyah',
+                DB::raw('COUNT(daftar_lulusan.id) as jumlah_lulusan')
+            )
+            ->groupBy(
+                'kelasmi.nama_kelas',
+                'lulusan.id',
+                'periode.periode',
+                'semester.ket_semester',
+                'lulusan.tanggal_mulai',
+                'lulusan.tanggal_selesai',
+                'lulusan.tanggal_kelulusan',
+                'lulusan.tanggal_lulus_hijriyah'
+            )
             ->orderBy('kelasmi.nama_kelas')
             ->get();
 
@@ -58,12 +70,35 @@ class LulusanCotroller
             ->first();
 
         $bolehLulus = $periodeAktif && strtolower($periodeAktif->ket_semester) == 'genap';
+        // Dashboard Statistik
+        $dashboardKelas = DB::table('lulusan')
+            ->join('kelasmi', 'kelasmi.id', '=', 'lulusan.kelasmi_id')
+            ->leftJoin('daftar_lulusan', 'daftar_lulusan.lulusan_id', '=', 'lulusan.id')
+            ->select(
+                'kelasmi.nama_kelas',
+                DB::raw('COUNT(daftar_lulusan.id) as jumlah')
+            )
+            ->where('lulusan.periode_id', session('periode_id'))
+            ->groupBy('kelasmi.nama_kelas')
+            ->orderBy('kelasmi.nama_kelas')
+            ->get();
+
+        $totalLulusan = Daftar_lulusan::query()
+            ->join('lulusan', 'lulusan.id', '=', 'daftar_lulusan.lulusan_id')
+            ->where('lulusan.periode_id', session('periode_id'))
+            ->count();
+
+        $totalKelas = $dashboardKelas->count();
 
         return view('lulusan.index', [
             'dataLulusan' => $dataLulusan,
             'dataPeriode' => $dataPeriode,
             'kelasMi' => $kelasMi,
             'bolehLulus' => $bolehLulus,
+            // dashboard
+            'dashboardKelas' => $dashboardKelas,
+            'totalLulusan' => $totalLulusan,
+            'totalKelas' => $totalKelas,
         ]);
     }
     public function store(Request $request)

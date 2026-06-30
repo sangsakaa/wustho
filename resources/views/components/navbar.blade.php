@@ -17,225 +17,257 @@ $dataperiode->firstWhere('id', session('periode_id'))
 ?? $dataperiode->firstWhere('is_active', true)
 ?? $dataperiode->first();
 
-} catch (\Throwable $e) {
+$dataperiodeNavbar = collect();
 
-$periodeAktif = null;
+if ($periodeAktif && !empty($periodeAktif->periode)) {
+
+$tahunAktif = (int) explode('/', $periodeAktif->periode)[0];
+
+$dataperiodeNavbar = $dataperiode
+->filter(function ($periode) use ($tahunAktif) {
+
+if (empty($periode->periode)) {
+return false;
 }
-@endphp
 
-{{-- SWEET ALERT --}}
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+$tahun = (int) explode('/', $periode->periode)[0];
 
-<nav
-    aria-label="secondary"
-    x-data="{ open: false }"
-    class="sticky top-0 z-30 flex items-center justify-between px-4 py-3 bg-white border-b border-green-100 shadow-sm dark:bg-dark-eval-1 dark:border-slate-700"
-    :class="{
-        '-translate-y-full': scrollingDown,
-        'translate-y-0': scrollingUp,
-    }">
+return $tahun >= ($tahunAktif - 1)
+&& $tahun <= ($tahunAktif + 1);
 
-    {{-- LEFT --}}
-    <div class="flex items-center gap-3">
+    })
+    ->sort(function ($a, $b) {
 
-        {{-- SIDEBAR --}}
-        <button
-            type="button"
-            class="p-2 rounded-lg md:hidden hover:bg-green-50"
-            @click="isSidebarOpen = !isSidebarOpen">
+    if ($a->periode == $b->periode) {
+    return $a->semester_id <=> $b->semester_id;
+        }
 
-            <svg class="w-6 h-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24">
+        return strcmp($a->periode, $b->periode);
 
-                <path stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M4 6h16M4 12h16M4 18h16" />
+        })
+        ->values();
+        }
 
-            </svg>
+        } catch (\Throwable $e) {
 
-        </button>
+        $periodeAktif = null;
+        $dataperiodeNavbar = collect();
 
-        <div>
+        }
+        @endphp
 
-            <h1 class="font-bold text-green-700">
-                SMEDI
-            </h1>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-            <p class="text-xs text-slate-500">
-                Sistem Manajemen Madrasah
-            </p>
+        <nav
+            aria-label="secondary"
+            x-data="{ open: false }"
+            class="sticky top-0 z-30 flex items-center justify-between px-4 py-3 bg-white border-b border-green-100 shadow-sm dark:bg-dark-eval-1 dark:border-slate-700">
 
-        </div>
-
-    </div>
-
-    {{-- RIGHT --}}
-    <div class="flex items-center gap-2">
-
-        {{-- DARK MODE --}}
-        <button
-            type="button"
-            class="p-2 rounded-lg hover:bg-slate-100"
-            @click="toggleTheme">
-
-            <svg x-show="!isDarkMode"
-                class="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24">
-
-                <path stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M20.354 15.354A9 9 0 018.646 3.646 9 9 0 1020.354 15.354z" />
-            </svg>
-
-            <svg x-show="isDarkMode"
-                class="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24">
-
-                <path stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M12 3v1m0 16v1m8-9h1M3 12H2m15.364 6.364l.707.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707" />
-            </svg>
-
-        </button>
-
-        @auth
-
-        <x-dropdown align="right" width="60">
-
-            <x-slot name="trigger">
+            <div class="flex items-center gap-3">
 
                 <button
-                    class="flex items-center gap-3 px-3 py-2 rounded-xl border border-green-100 hover:bg-green-50">
+                    type="button"
+                    class="p-2 rounded-lg md:hidden hover:bg-green-50"
+                    @click="isSidebarOpen = !isSidebarOpen">
 
-                    <div
-                        class="w-10 h-10 rounded-full bg-green-600 text-white flex items-center justify-center font-bold">
-
-                        {{ strtoupper(substr(auth()->user()->name,0,1)) }}
-
-                    </div>
-
-                    <div class="hidden md:block text-left">
-
-                        <div class="font-semibold text-sm">
-                            {{ auth()->user()->name }}
-                        </div>
-
-                        <div class="text-xs text-slate-500">
-                            {{ auth()->user()->getRoleNames()->first() ?? 'User' }}
-                        </div>
-
-                    </div>
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
 
                 </button>
 
-            </x-slot>
+                <div>
 
-            <x-slot name="content">
+                    <h1 class="font-bold text-green-700">
+                        SMEDI
+                    </h1>
 
-                <div class="px-4 py-3 border-b">
-
-                    <div class="font-semibold">
-                        {{ auth()->user()->name }}
-                    </div>
-
-                    <div class="text-xs text-slate-500">
-                        {{ auth()->user()->email }}
-                    </div>
+                    <p class="text-xs text-slate-500">
+                        Sistem Manajemen Madrasah
+                    </p>
 
                 </div>
 
-                <x-dropdown-link :href="route('dashboard')">
-                    🏠 Dashboard
-                </x-dropdown-link>
+            </div>
 
-                <x-dropdown-link :href="route('user')">
-                    👤 Profil Saya
-                </x-dropdown-link>
+            <div class="flex items-center gap-2">
+
+                <button
+                    type="button"
+                    @click="toggleTheme"
+                    class="p-2 rounded-xl text-slate-600 hover:bg-slate-100 hover:text-green-600 dark:text-slate-300 dark:hover:bg-slate-700 transition duration-200">
+
+                    {{-- Moon --}}
+                    <x-heroicon-o-moon
+                        x-show="!isDarkMode"
+                        class="w-5 h-5" />
+
+                    {{-- Sun --}}
+                    <x-heroicon-o-sun
+                        x-show="isDarkMode"
+                        class="w-5 h-5" />
+
+                </button>
+
+                @if($dataperiodeNavbar->isNotEmpty())
 
                 <form
+                    action="{{ route('periode.set-active') }}"
                     method="POST"
-                    action="{{ route('logout') }}">
+                    class="form-periode">
 
                     @csrf
 
-                    <x-dropdown-link
-                        :href="route('logout')"
-                        onclick="event.preventDefault(); this.closest('form').submit();">
+                    <select
+                        name="periode_id"
+                        onchange="this.form.submit()"
+                        class="px-4 py-2 text-sm rounded-xl border border-green-200 bg-white dark:bg-slate-800 dark:border-slate-700">
 
-                        🚪 Logout
+                        @foreach($dataperiodeNavbar as $periode)
 
-                    </x-dropdown-link>
+                        <option
+                            value="{{ $periode->id }}"
+                            @selected($periodeAktif?->id == $periode->id)>
+
+                            {{ $periode->periode }}
+                            - {{ $periode->semester?->ket_semester }}
+
+                        </option>
+
+                        @endforeach
+
+                    </select>
 
                 </form>
 
-            </x-slot>
+                @endif
+                @auth
 
-        </x-dropdown>
+                <x-dropdown align="right" width="60">
 
-        @else
+                    <x-slot name="trigger">
 
-        <a href="{{ route('login') }}"
-            class="px-4 py-2 text-sm font-medium text-white bg-green-600 rounded-xl hover:bg-green-700">
+                        <button class="flex items-center gap-3 px-3 py-2 rounded-xl border border-green-100 hover:bg-green-50">
 
-            Login
+                            <div class="w-10 h-10 rounded-full bg-green-600 text-white flex items-center justify-center font-bold">
 
-        </a>
+                                {{ strtoupper(substr(auth()->user()->name,0,1)) }}
 
-        @if(Route::has('register'))
-        <a href="{{ route('register') }}"
-            class="px-4 py-2 text-sm border rounded-xl hover:bg-slate-50">
+                            </div>
 
-            Register
+                            <div class="hidden md:block text-left">
 
-        </a>
-        @endif
+                                <div class="font-semibold text-sm">
 
-        @endauth
+                                    {{ auth()->user()->name }}
 
-    </div>
+                                </div>
 
-</nav>
+                                <div class="text-xs text-slate-500">
 
-{{-- SWEET ALERT CONFIRM --}}
-<script>
-    document.querySelectorAll('.form-periode').forEach(form => {
+                                    {{ auth()->user()->getRoleNames()->first() ?? 'User' }}
 
-        form.addEventListener('submit', function(e) {
+                                </div>
 
-            e.preventDefault();
+                            </div>
 
-            Swal.fire({
-                title: 'Ganti Periode?',
-                text: 'Pastikan periode yang dipilih sudah benar.',
-                icon: 'question',
-                showCancelButton: true,
-                confirmButtonText: 'Ya, Pilih',
-                cancelButtonText: 'Batal',
-                reverseButtons: true,
-                customClass: {
-                    popup: 'rounded-2xl',
-                    confirmButton: 'bg-blue-600 text-white px-4 py-2 rounded-lg mx-1',
-                    cancelButton: 'bg-gray-200 text-gray-700 px-4 py-2 rounded-lg mx-1',
-                },
-                buttonsStyling: false
-            }).then((result) => {
+                        </button>
 
-                if (result.isConfirmed) {
-                    form.submit();
-                }
+                    </x-slot>
+
+                    <x-slot name="content">
+
+                        <div class="px-4 py-3 border-b">
+
+                            <div class="font-semibold">
+                                {{ auth()->user()->name }}
+                            </div>
+
+                            <div class="text-xs text-slate-500">
+                                {{ auth()->user()->email }}
+                            </div>
+
+                        </div>
+
+                        <x-dropdown-link :href="route('dashboard')">
+                            🏠 Dashboard
+                        </x-dropdown-link>
+
+                        <x-dropdown-link :href="route('user')">
+                            👤 Profil Saya
+                        </x-dropdown-link>
+
+                        <form method="POST" action="{{ route('logout') }}">
+
+                            @csrf
+
+                            <x-dropdown-link
+                                :href="route('logout')"
+                                onclick="event.preventDefault(); this.closest('form').submit();">
+
+                                🚪 Logout
+
+                            </x-dropdown-link>
+
+                        </form>
+
+                    </x-slot>
+
+                </x-dropdown>
+
+                @else
+
+                <a href="{{ route('login') }}"
+                    class="px-4 py-2 text-sm font-medium text-white bg-green-600 rounded-xl hover:bg-green-700">
+
+                    Login
+
+                </a>
+
+                @if(Route::has('register'))
+
+                <a href="{{ route('register') }}"
+                    class="px-4 py-2 text-sm border rounded-xl hover:bg-slate-50">
+
+                    Register
+
+                </a>
+
+                @endif
+
+                @endauth
+
+            </div>
+
+        </nav>
+
+        <script>
+            document.querySelectorAll('.form-periode').forEach(form => {
+
+                form.addEventListener('submit', function(e) {
+
+                    e.preventDefault();
+
+                    Swal.fire({
+                        title: 'Ganti Periode?',
+                        text: 'Pastikan periode yang dipilih sudah benar.',
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonText: 'Ya, Pilih',
+                        cancelButtonText: 'Batal',
+                        reverseButtons: true
+                    }).then((result) => {
+
+                        if (result.isConfirmed) {
+                            form.submit();
+                        }
+
+                    });
+
+                });
 
             });
-
-        });
-
-    });
-</script>
+        </script>

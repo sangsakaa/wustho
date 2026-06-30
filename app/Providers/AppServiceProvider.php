@@ -57,9 +57,15 @@ class AppServiceProvider extends ServiceProvider
 
                 $dataperiode = \App\Models\Periode::getNavbarPeriode();
 
-                $periodeAktif =
-                    $dataperiode->firstWhere('id', session('periode_id'))
-                    ?? $dataperiode->firstWhere('is_active', true);
+                $periodeAktif = null;
+
+                if (session()->has('periode_id')) {
+                    $periodeAktif = $dataperiode->firstWhere('id', session('periode_id'));
+                }
+
+                if (!$periodeAktif) {
+                    $periodeAktif = $dataperiode->firstWhere('is_active', true);
+                }
             } catch (\Throwable $e) {
 
                 $dataperiode = collect();

@@ -295,7 +295,7 @@
 
                         @forelse ($data as $item)
 
-                        <tr class="hover:bg-gray-50 dark:hover:bg-gray-800 transition">
+                        <tr class="hover:bg-green-300 dark:hover:bg-gray-800 transition ">
 
                             <td class="px-4 py-3">
 
@@ -309,8 +309,14 @@
                                 {{ $loop->iteration }}
                             </td>
 
-                            <td class="px-4 py-3 font-medium text-gray-900 dark:text-white">
-                                {{ $item->asrama->nama_asrama }}
+                            <td class="px-4 py-3 font-medium text-gray-900 dark:text-white ">
+                                <a href="/pesertaasrama/{{ $item->id }}"
+                                    class="text-emerald-600  ">
+
+                                    {{ $item->asrama->nama_asrama }}
+
+                                </a>
+
                             </td>
 
                             <td class="px-4 py-3 text-center text-gray-600 dark:text-gray-300">

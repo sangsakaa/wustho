@@ -21,18 +21,10 @@ class ViewServiceProvider extends ServiceProvider
 
                 $dataperiode = Periode::getDataPeriode();
 
-                // jaga session tetap valid
-                if (session('periode_id')) {
-                    $cek = $dataperiode->firstWhere('id', session('periode_id'));
+                $periodeAktif = Periode::active()->first();
 
-                    if (!$cek && $dataperiode->count()) {
-                        session(['periode_id' => $dataperiode->first()->id]);
-                    }
-                } else {
-                    // default pertama kali
-                    if ($dataperiode->count()) {
-                        session(['periode_id' => $dataperiode->first()->id]);
-                    }
+                if ($periodeAktif) {
+                    session(['periode_id' => $periodeAktif->id]);
                 }
 
                 $view->with('dataperiode', $dataperiode);
