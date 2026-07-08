@@ -119,13 +119,17 @@
                 </h1>
 
                 <h2 class="text-sm font-semibold text-slate-700">
-                    MADRASAH DINIYAH WUSTHO WAHIDIYAH
+                    MADRASAH DINIYAH{{$kelasmi->jenjang}} WAHIDIYAH
                 </h2>
 
                 <div class="mt-2 text-xs text-slate-600">
                     <p>
                         Kelas:
-                        <span class="font-semibold">{{ $kelasmi->nama_kelas }}</span>
+                        <span class="font-semibold">
+                            {{ $kelasmi->nama_kelas }}
+
+
+                        </span>
                         |
                         Periode:
                         <span class="font-semibold">{{ $kelasmi->periode }}</span>

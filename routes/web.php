@@ -452,6 +452,8 @@ Route::middleware(['auth'])->group(function () {
 
     // Blanko & Rekap Absensi
     Route::get('absensikelas/blanko', [AbsensikelasController::class, 'blanko'])->name('absensikelas/blanko');
+    Route::get('/absensikelas/blanko/pdf', [AbsensiKelasController::class, 'cetakBlankoPdf'])
+        ->name('absensikelas.blanko.pdf');
     Route::get('blankoHarian', [AbsensikelasController::class, 'blankoLApHarian'])->name('blankoHarian');
     Route::get('absensikelas/rekap-per-hari', [AbsensikelasController::class, 'rekapPerHari'])->name('absensikelas/rekap-per-hari');
     Route::get('absensikelas/rekap-per-bulan', [AbsensikelasController::class, 'rekapPerBulan'])->name('absensikelas/rekap-per-bulan');

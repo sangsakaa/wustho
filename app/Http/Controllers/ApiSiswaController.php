@@ -83,36 +83,64 @@ class ApiSiswaController extends Controller
     {
         $domain = $this->getJenjangDomain();
 
-        $query = CalonSiswa::query();
+        $query = CalonSiswa::query()
+            ->leftJoin('provinces', function ($join) {
+                $join->on(
+                    'provinces.code',
+                    '=',
+                    DB::raw("LEFT(CAST(calon_siswas.kelurahan_desa AS CHAR),2)")
+                );
+            })
+            ->leftJoin('regencies', function ($join) {
+                $join->on(
+                    'regencies.code',
+                    '=',
+                    DB::raw("
+                    CONCAT(
+                        LEFT(CAST(calon_siswas.kelurahan_desa AS CHAR),2),
+                        '.',
+                        SUBSTRING(CAST(calon_siswas.kelurahan_desa AS CHAR),3,2)
+                    )
+                ")
+                );
+            })
+            ->select(
+                'calon_siswas.*',
+                'provinces.name as provinsi',
+                'regencies.name as kabupaten'
+            );
 
         // FILTER DOMAIN
         if ($domain) {
-            $query->where('jenjang', $domain);
+            $query->where('calon_siswas.jenjang', $domain);
         }
 
         // FILTER JENJANG
         if ($request->filled('jenjang')) {
-            $query->where('jenjang', $request->jenjang);
+            $query->where('calon_siswas.jenjang', $request->jenjang);
         }
 
         // SEARCH
         if ($request->filled('search')) {
-            $query->where('nama', 'like', '%' . $request->search . '%');
+            $query->where('calon_siswas.nama', 'like', '%' . $request->search . '%');
         }
 
         // STATUS FILTER
         if ($request->filled('status')) {
-            $query->where('status', $request->status);
+            $query->where('calon_siswas.status', $request->status);
         }
 
         // RENCANA PENDIDIKAN FILTER (JSON)
         if ($request->filled('rencana_pendidikan')) {
             $query->whereRaw("
-            JSON_UNQUOTE(JSON_EXTRACT(data_api, '$.rencana_pendidikan')) = ?
+            JSON_UNQUOTE(JSON_EXTRACT(calon_siswas.data_api, '$.rencana_pendidikan')) = ?
         ", [$request->rencana_pendidikan]);
         }
 
-        $data = $query->latest()->paginate(20)->withQueryString();
+        $data = $query
+            ->orderByDesc('calon_siswas.id')
+            ->paginate(20)
+            ->withQueryString();
 
         // ================= BASE STAT QUERY =================
         $base = CalonSiswa::query();
@@ -164,8 +192,51 @@ class ApiSiswaController extends Controller
             'sma_calon' => (clone $base)->where('jenjang', 'SMA')->where('status', 'calon-siswa')->count(),
             'sma_dipindah' => (clone $base)->where('jenjang', 'SMA')->where('status', 'dipindah_ke_siswa')->count(),
         ];
+        $chartProvinsi = CalonSiswa::query()
+            ->leftJoin('provinces', function ($join) {
+                $join->on(
+                    'provinces.code',
+                    '=',
+                    DB::raw("LEFT(CAST(calon_siswas.kelurahan_desa AS CHAR),2)")
+                );
+            })
+            ->select(
+                'provinces.name',
+                DB::raw('COUNT(*) as total')
+            )
+            ->groupBy('provinces.name')
+            ->orderByDesc('total')
+            ->get();
 
-        return view('calon_siswa.index', compact('data', 'stats', 'domain'));
+        $chartKabupaten = CalonSiswa::query()
+            ->leftJoin('regencies', function ($join) {
+                $join->on(
+                    'regencies.code',
+                    '=',
+                    DB::raw("
+                CONCAT(
+                    LEFT(CAST(calon_siswas.kelurahan_desa AS CHAR),2),
+                    '.',
+                    SUBSTRING(CAST(calon_siswas.kelurahan_desa AS CHAR),3,2)
+                )
+            ")
+                );
+            })
+            ->select(
+                'regencies.name',
+                DB::raw('COUNT(*) as total')
+            )
+            ->groupBy('regencies.name')
+            ->orderByDesc('total')
+            ->get();
+
+        return view('calon_siswa.index', compact(
+            'data',
+            'stats',
+            'domain',
+            'chartProvinsi',
+            'chartKabupaten'
+        ));
     }
     /* ================= LIVE SYNC ================= */
     public function liveSync()
@@ -244,6 +315,7 @@ class ApiSiswaController extends Controller
                         'tanggal_lahir'  => $this->parseTanggal(data_get($item, 'tanggal_lahir')),
                         'agama'          => data_get($item, 'agama'),
                         'alamat_jalan'   => data_get($item, 'alamat_jalan'),
+                        'kelurahan_desa'   => data_get($item, 'kelurahan_desa'),
                         'tapel_id'   => data_get($item, 'tapel_id'),
                         'status'         => $status,
                         'data_api'       => $item,
@@ -513,11 +585,29 @@ class ApiSiswaController extends Controller
     /* ================= RESET ================= */
     public function resetStatus(CalonSiswa $calon)
     {
-        $calon->update(['status' => 'calon-siswa']);
+        DB::transaction(function () use ($calon) {
+
+            // Cari siswa yang berasal dari calon ini
+            $siswa = Siswa::where('nama_siswa', $calon->nama)->first();
+
+            if ($siswa) {
+
+                Nis::where('siswa_id', $siswa->id)->delete();
+                Statuspengamal::where('siswa_id', $siswa->id)->delete();
+                Statusanak::where('siswa_id', $siswa->id)->delete();
+
+                $siswa->delete();
+            }
+
+            // Reset status calon
+            $calon->update([
+                'status' => 'calon-siswa'
+            ]);
+        });
 
         return response()->json([
             'success' => true,
-            'message' => 'Reset berhasil',
+            'message' => 'Status berhasil direset.',
             'data' => [
                 'status' => 'calon-siswa'
             ]

@@ -51,6 +51,15 @@
                     class="bg-red-600 hover:bg-purple-600 transition duration-200 text-white px-5 py-2 rounded-lg shadow text-sm font-medium w-full sm:w-40">
                     Cetak
                 </button>
+                <a
+                    href="{{ route('absensikelas.blanko.pdf', [
+        'kelasmi_id' => request('kelasmi_id'),
+        'bulan' => request('bulan')
+    ]) }}"
+                    target="_blank"
+                    class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg shadow text-sm">
+                    PDF
+                </a>
 
             </div>
 
@@ -83,18 +92,11 @@
     @if($kelasmi)
 
     <div class="py-2 px-2">
-
-        <div
-            class="bg-white dark:bg-dark-bg rounded-xl shadow border border-gray-200 dark:border-gray-700"
-            id="blanko">
-
+        <div class="bg-white dark:bg-dark-bg " id="blanko">
             <div class="py-3 px-3">
-
-                <div class="overflow-x-auto bg-white dark:bg-dark-bg">
-
+                <div class="overflow-x-auto ">
                     {{-- HEADER --}}
                     <div class="flex items-center gap-3 text-center text-green-900 tracking-wide">
-
                         <div>
                             <img
                                 src="{{ asset('asset/images/logo.png') }}"
@@ -102,73 +104,50 @@
                                 width="95"
                                 class="mb-1">
                         </div>
-
                         <div class="w-full">
-
                             @if($kelasmi->jenjang === "Wustho")
-
                             <div class="grid justify-items-center">
-
                                 <p class="text-lg uppercase font-semibold tracking-widest">
                                     departemen pendidikan diniyah wahidiyah
                                 </p>
-
                                 <p class="font-bold text-3xl uppercase">
                                     MADRASAH DINIYAH {{$kelasmi->jenjang}} WAHIDIYAH
                                 </p>
-
                                 <p class="font-semibold uppercase tracking-widest text-sm">
                                     TAHUN PELAJARAN {{$kelasmi->periode}} {{$kelasmi->ket_semester}}
                                 </p>
-
                             </div>
-
                             @elseif($kelasmi->jenjang === "Ulya")
-
                             <p class="text-lg uppercase font-semibold tracking-widest">
                                 departemen pendidikan diniyah wahidiyah
                             </p>
-
                             <p class="font-bold text-3xl uppercase">
                                 MADRASAH DINIYAH {{$kelasmi->jenjang}} WAHIDIYAH
                             </p>
-
                             <p class="font-semibold uppercase tracking-widest text-sm">
                                 TAHUN PELAJARAN {{$kelasmi->periode}} {{$kelasmi->ket_semester}}
                             </p>
-
                             @elseif($kelasmi->jenjang === "Ula")
-
                             <p class="text-lg uppercase font-semibold tracking-widest">
                                 departemen pendidikan diniyah wahidiyah
                             </p>
-
                             <p class="font-bold text-3xl uppercase">
                                 MADRASAH DINIYAH {{$kelasmi->jenjang}} WAHIDIYAH
                             </p>
-
                             <p class="font-semibold uppercase tracking-widest text-sm">
                                 TAHUN PELAJARAN {{$kelasmi->periode}} {{$kelasmi->ket_semester}}
                             </p>
-
                             @endif
-
                         </div>
-
                     </div>
-
                     <hr class="border-b-2 border-green-900 mt-2">
                     <hr class="mt-0.5 border-b border-green-900">
-
                     {{-- INFO --}}
                     <div class="uppercase grid grid-cols-1 md:grid-cols-3 gap-2 py-2">
-
                         <div class="text-green-900 text-xl md:text-2xl font-bold">
                             Bulan : {{ $bulan->monthName }}
                         </div>
-
                         <div class="flex justify-center gap-3 text-green-900 font-semibold text-sm md:text-base">
-
                             <div class="py-1 px-3 rounded-lg bg-green-100 border border-green-300">
                                 Putra : {{$dataSiswa->where('jenis_kelamin','L')->count()}}
                             </div>

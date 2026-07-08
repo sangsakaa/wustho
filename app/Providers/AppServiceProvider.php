@@ -11,8 +11,6 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
-use Illuminate\Support\Facades\DB;
-
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -29,6 +27,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Carbon::setLocale('id');
         View::share('appVersion', AppVersion::get());
         Event::listen(Login::class, function ($event) {
             activity()

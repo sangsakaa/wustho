@@ -22,38 +22,64 @@
   <div class="max-w-7xl mx-auto px-6 py-6 space-y-6">
 
     {{-- ================= TOP BAR ================= --}}
-    <div class="bg-white rounded-2xl shadow p-5">
-      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+    <div class="bg-white rounded-2xl shadow p-6">
 
-        {{-- Keterangan --}}
+      <!-- Header -->
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b pb-4">
+
         <div>
-          <h2 class="text-sm font-semibold text-slate-700">
-            Distribusi Rencana Pendidikan
+          <h2 class="text-lg font-semibold text-slate-800">
+            Distribusi Calon Siswa
           </h2>
-          <p class="text-xs text-slate-400">
-            Monitoring data Mondok vs Tidak Mondok
+          <p class="text-sm text-slate-500">
+            Monitoring data Provinsi dan Kabupaten
           </p>
         </div>
 
-        {{-- Tombol --}}
-        <div class="flex flex-col sm:flex-row gap-2">
+        <div class="flex flex-wrap gap-2">
 
           <a href="{{ route('debug.sync') }}"
             target="_blank"
-            class="inline-flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium text-white bg-amber-500 rounded-xl shadow hover:bg-amber-600 transition">
+            class="inline-flex items-center gap-2 rounded-lg bg-amber-500 px-4 py-2 text-sm font-medium text-white shadow hover:bg-amber-600 transition">
             🐞 Debug API
           </a>
 
           <button
             onclick="syncData()"
-            class="inline-flex items-center justify-center gap-2 px-4 py-2 text-sm font-medium text-white bg-emerald-600 rounded-xl shadow hover:bg-emerald-700 transition">
+            class="inline-flex items-center gap-2 rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white shadow hover:bg-emerald-700 transition">
             🔄 Sync Data
           </button>
 
         </div>
 
       </div>
+
+      <!-- Grafik -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+
+        <!-- Grafik Provinsi -->
+        <div class="rounded-xl border bg-white p-4 shadow-sm">
+          <h3 class="text-sm font-semibold text-slate-700 mb-4">
+            📍 Grafik Calon Siswa Berdasarkan Provinsi
+          </h3>
+
+          <canvas id="chartProvinsi" height="280"></canvas>
+        </div>
+
+        <!-- Grafik Kabupaten -->
+        <div class="rounded-xl border bg-white p-4 shadow-sm">
+          <h3 class="text-sm font-semibold text-slate-700 mb-4">
+            🏙️ Grafik Calon Siswa Berdasarkan Kabupaten
+          </h3>
+
+          <canvas id="chartKabupaten" height="280"></canvas>
+        </div>
+
+      </div>
+
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
     {{-- ================= STATS ================= --}}
     <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-5 gap-4">
@@ -214,7 +240,13 @@
 
             <tr class="hover:bg-slate-50">
               <td class="p-4 font-semibold">
-                {{ $row->nama }}
+                {{ $row->nama }} <br>
+                <span class=" text-xs text-gray-500">
+                  {{$row->tempat_lahir}} -
+                  {{ \Carbon\Carbon::parse($row->tanggal_lahir)->translatedFormat('l, d F Y') }}
+                  {{ $row->provinsi ?? '-' }}
+                  {{ $row->kabupaten ??'-'}}
+                </span>
               </td>
 
               <td class="p-4">
@@ -232,17 +264,23 @@
               </td>
 
               <td class="p-4 flex gap-2">
+
+                @if($row->status == 'calon-siswa')
                 <button
                   onclick="kirim({{ $row->id }})"
                   class="px-3 py-1 text-xs rounded-xl bg-blue-600 text-white hover:bg-blue-700">
                   Jadikan Siswa
                 </button>
+                @endif
 
+                @if($row->status == 'dipindah_ke_siswa')
                 <button
                   onclick="resetData({{ $row->id }})"
                   class="px-3 py-1 text-xs rounded-xl bg-yellow-500 text-white hover:bg-yellow-600">
                   Reset
                 </button>
+                @endif
+
               </td>
             </tr>
             @empty
@@ -476,5 +514,50 @@
         showConfirmButton: false
       });
     }
+  </script>
+  <script>
+    const chartProvinsi = @json($chartProvinsi);
+    const chartKabupaten = @json($chartKabupaten);
+
+    new Chart(document.getElementById('chartProvinsi'), {
+      type: 'bar',
+      data: {
+        labels: chartProvinsi.map(item => item.name),
+        datasets: [{
+          label: 'Jumlah Calon Siswa',
+          data: chartProvinsi.map(item => item.total),
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: {
+            display: false
+          }
+        }
+      }
+    });
+
+    new Chart(document.getElementById('chartKabupaten'), {
+      type: 'bar',
+      data: {
+        labels: chartKabupaten.map(item => item.name),
+        datasets: [{
+          label: 'Jumlah Calon Siswa',
+          data: chartKabupaten.map(item => item.total),
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        indexAxis: 'y',
+        plugins: {
+          legend: {
+            display: false
+          }
+        }
+      }
+    });
   </script>
 </x-app-layout>

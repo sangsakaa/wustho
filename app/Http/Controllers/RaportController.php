@@ -267,7 +267,7 @@ class RaportController extends Controller
         $kelasmi = Kelasmi::query()
             ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
             ->join('semester', 'semester.id', '=', 'periode.semester_id')
-            ->select('kelasmi.id', 'kelasmi.nama_kelas', 'periode.periode', 'semester.ket_semester')
+            ->select('kelasmi.id', 'kelasmi.nama_kelas', 'periode.periode', 'semester.ket_semester', 'kelasmi.jenjang')
             ->where('kelasmi.periode_id', session('periode_id'))
             ->where('kelasmi.id', $request->kelasmi_id)
             ->first();

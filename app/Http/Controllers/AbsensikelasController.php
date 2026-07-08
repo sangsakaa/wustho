@@ -173,6 +173,60 @@ class AbsensikelasController
             'bulan' => $bulan,
         ]);
     }
+    public function cetakBlankoPdf(Request $request)
+    {
+        $kelasmi = Kelasmi::query()
+            ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
+            ->join('semester', 'semester.id', '=', 'periode.semester_id')
+            ->select(
+                'kelasmi.id',
+                'kelasmi.nama_kelas',
+                'periode.periode',
+                'semester.ket_semester',
+                'jenjang'
+            )
+            ->where('kelasmi.periode_id', session('periode_id'))
+            ->where('kelasmi.id', $request->kelasmi_id)
+            ->firstOrFail();
+
+        $bulan = $request->bulan
+            ? Carbon::parse($request->bulan)
+            : now();
+
+        $periodeBulan = $bulan->copy()
+            ->startOfMonth()
+            ->daysUntil($bulan->copy()->endOfMonth());
+
+        $dataSiswa = Pesertakelas::query()
+            ->join('siswa', 'siswa.id', '=', 'pesertakelas.siswa_id')
+            ->join('nis', 'siswa.id', '=', 'nis.siswa_id')
+            ->join('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
+            ->join('kelas', 'kelas.id', '=', 'kelasmi.kelas_id')
+            ->where('pesertakelas.kelasmi_id', $kelasmi->id)
+            ->select(
+                'pesertakelas.id',
+                'siswa.nama_siswa',
+                'nis.nis',
+                'jenis_kelamin',
+                'kelas.kelas',
+                'kelasmi.nama_kelas',
+            )
+            ->orderBy('siswa.nama_siswa')
+            ->get();
+
+        $pdf = Pdf::loadView('presensi.kelas.pdf_blanko', [
+            'kelasmi'      => $kelasmi,
+            'dataSiswa'    => $dataSiswa,
+            'periodeBulan' => $periodeBulan,
+            'bulan'        => $bulan,
+        ]);
+
+        $pdf->setPaper('a4', 'landscape');
+
+        return $pdf->stream(
+            'Blanko-Presensi-' . $kelasmi->nama_kelas . '-' . $bulan->format('F-Y') . '.pdf'
+        );
+    }
 
     public function rekapPerHari(Request $request)
     {

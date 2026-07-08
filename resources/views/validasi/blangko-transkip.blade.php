@@ -107,8 +107,8 @@
                 </div>
             </div>
             <hr class=" border-black">
-            <div class=" mt-4">
-                <span class=" font-semibold"> 1. Nilai Ujian Tulis</span>
+            <div style="margin-top:30px;">
+                <span style="font-family:'Times New Roman', serif; font-size:16px; font-weight:bold; color:#000;">1. Nilai Ujian Tulis</span>
             </div>
             <hr class=" border-black">
             <table class=" w-full mt-0.5">
@@ -123,16 +123,16 @@
                 <tbody class=" border border-black">
                     @foreach($data_lulusan['nilai_tulis'] as $nilai_tulis)
                     <tr class="">
-                        <td class=" border-l border-black p-1 text-center w-1">
+                        <td class=" border-l border-black p-1 text-center w-1" style="font-family:'Times New Roman', serif; font-size:16px; color:#000;">
                             {{$loop->iteration}}
                         </td>
-                        <td class=" border-l border-black p-1 w-1/2 ">
+                        <td class=" border-l border-black p-1 w-1/2 " style="font-family:'Times New Roman', serif; font-size:16px; font-weight:bold;color:#000;">
                             {{$nilai_tulis->mapel}}
                         </td>
-                        <td class=" border-l text-center w-20 border-black p-1">
+                        <td class=" border-l text-center w-20 border-black p-1" style="font-family:'Times New Roman', serif; font-size:16px; font-weight:bold;color:#000;">
                             {{$nilai_tulis->nilai_akhir}}
                         </td>
-                        <td class=" border-l  border-black p-1 capitalize text-center">
+                        <td class=" border-l  border-black p-1 capitalize text-center" style="font-family:'Times New Roman', serif; font-size:16px; color:#000;">
                             {{Terbilang::make($nilai_tulis->nilai_akhir); }}
                         </td>
                     </tr>
@@ -142,7 +142,7 @@
                             <span>Jumlah</span><br>
                             <span>Rata Rata</span>
                         </td>
-                        <td class=" border text-center w-20 border-black p-1">
+                        <td class=" border text-center w-20 border-black p-1" style="font-family:'Times New Roman', serif; font-size:16px; font-weight:bold;color:#000;">
                             {{$data_lulusan['nilai_tulis']->sum('nilai_akhir')}} <br>
                             @if($data_lulusan['tulis'] != 0)
                             {{ number_format($data_lulusan['nilai_tulis']->sum('nilai_akhir')/$data_lulusan['tulis']),',',2}}
@@ -154,8 +154,16 @@
 
                 </tbody>
             </table>
-            <div class=" mt-8">
-                <span class=" font-semibold mt-4">2. Nilai Ujian Praktek</span>
+            <div style="margin-top:30px;">
+                <span style="
+        font-family:'Times New Roman', serif;
+        font-size:16px;
+        font-weight:bold;
+        color:#000;
+        
+    ">
+                    2. Nilai Ujian Praktik
+                </span>
             </div>
             <table class=" w-full ">
                 <thead>
@@ -172,10 +180,10 @@
                         <td class=" border-l border-black text-center p-1 w-1.5">
                             {{$loop->iteration}}
                         </td>
-                        <td class=" border-l border-black w-1/2 p-1">
+                        <td class=" border-l border-black w-1/2 p-1" style="font-family:'Times New Roman', serif; font-size:16px; font-weight:bold;color:#000;">
                             {{$nilai_praktek->mapel}}
                         </td>
-                        <td class=" border-l text-center w-20 border-black p-1">
+                        <td class=" border-l text-center w-20 border-black p-1" style="font-family:'Times New Roman', serif; font-size:16px; font-weight:bold;color:#000;">
                             {{$nilai_praktek->nilai_akhir}}
                         </td>
                         <td class=" border-l border-black p-1 capitalize text-center">
@@ -188,7 +196,7 @@
                             <span>Jumlah</span><br>
                             <span>Rata Rata</span>
                         </td>
-                        <td class=" border text-center w-20 border-black p-1">
+                        <td class=" border text-center w-20 border-black p-1" style="font-family:'Times New Roman', serif; font-size:16px; font-weight:bold;color:#000;">
                             {{$data_lulusan['nilai_praktek']->sum('nilai_akhir')}} <br>
                             @if($data_lulusan['praktik'] != 0)
                             {{ number_format($data_lulusan['nilai_praktek']->sum('nilai_akhir')/$data_lulusan['praktik']),2}}
@@ -200,7 +208,7 @@
                 </tbody>
             </table>
 
-            <div class="  grid grid-cols-2    ">
+            <div class="  grid grid-cols-2    " style="font-family:'Times New Roman', serif; font-size:16px; font-weight:bold;color:#000;">
                 <div class="   px-10 py-12">
 
                 </div>
