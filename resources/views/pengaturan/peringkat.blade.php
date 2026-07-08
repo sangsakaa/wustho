@@ -119,7 +119,7 @@
                 </h1>
 
                 <h2 class="text-sm font-semibold text-slate-700">
-                    MADRASAH DINIYAH{{$kelasmi->jenjang}} WAHIDIYAH
+                    MADRASAH DINIYAH {{$kelasmi->jenjang}} WAHIDIYAH
                 </h2>
 
                 <div class="mt-2 text-xs text-slate-600">
@@ -127,7 +127,7 @@
                         Kelas:
                         <span class="font-semibold">
                             {{ $kelasmi->nama_kelas }}
-
+                            {{$kelasmi->jenjang}}
 
                         </span>
                         |
