@@ -15,6 +15,7 @@ class ListKolektifKelas extends Component
     protected $paginationTheme = 'tailwind';
 
     public $kelasmi;
+    public $kelasmi_id;
     public $search = '';
     public $perPage = 10;
     public $angkatan = '';
@@ -25,6 +26,7 @@ class ListKolektifKelas extends Component
     public function mount($kelasmi)
     {
         $this->kelasmi = $kelasmi;
+        $this->kelasmi_id = $kelasmi;
     }
 
     // =============================
@@ -104,6 +106,41 @@ class ListKolektifKelas extends Component
             ->when($this->angkatan, function ($q) {
                 $q->whereYear('nis.tanggal_masuk', $this->angkatan);
             });
+    }
+    public function storeKolektif()
+    {
+        $this->validate([
+            'kelasmi_id' => 'required',
+        ], [
+            'kelasmi_id.required' => 'Silakan pilih kelas.',
+        ]);
+
+        if (count($this->selected) == 0) {
+
+            session()->flash('error', 'Silakan checklist minimal satu siswa.');
+
+            return;
+        }
+
+        foreach ($this->selected as $id) {
+
+            Pesertakelas::firstOrCreate([
+                'kelasmi_id' => $this->kelasmi_id,
+                'siswa_id'   => $id,
+            ]);
+        }
+
+        $jumlah = count($this->selected);
+
+        $this->selected = [];
+        $this->selectAll = false;
+
+        session()->flash(
+            'success',
+            "{$jumlah} siswa berhasil dimasukkan ke kelas."
+        );
+
+        $this->resetPage();
     }
 
     public function render()

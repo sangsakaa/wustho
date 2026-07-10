@@ -6,6 +6,17 @@
         <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3">
 
             <!-- LEFT -->
+            @if(session('success'))
+            <div class="alert alert-success mb-3">
+                {{ session('success') }}
+            </div>
+            @endif
+
+            @if($errors->any())
+            <div class="alert alert-danger mb-3">
+                {{ $errors->first() }}
+            </div>
+            @endif
             <div class="flex flex-wrap items-center gap-2 w-full">
 
                 <input type="search"
@@ -54,13 +65,13 @@
     </div>
 
     <!-- 🔹 FORM -->
-    <form action="/pesertakolektif" method="POST" class="space-y-3">
-        @csrf
+    <form wire:submit.prevent="storeKolektif">
+
 
         <!-- SELECT KELAS -->
         <div class="bg-white p-4 rounded-xl shadow-sm border flex flex-col sm:flex-row gap-2 items-center">
 
-            <select name="kelasmi_id"
+            <select wire:model="kelasmi_id"
                 class="border rounded-lg px-3 py-2 w-full sm:w-1/3 focus:ring-2 focus:ring-blue-500"
                 required>
 
@@ -76,7 +87,8 @@
             </select>
 
             <button
-                class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg shadow-sm hover:shadow transition">
+                type="submit"
+                class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-lg">
                 Kolektif
             </button>
 

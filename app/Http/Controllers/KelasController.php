@@ -114,15 +114,40 @@ class KelasController extends Controller
             'kelasmi' => $kelasmi
         ]);
     }
-    public function StoreKolektif(Request $request)
-    {
-        
-        foreach ($request->siswa as $siswa) {
-            $peserta = new Pesertakelas();
-            $peserta->siswa_id = $siswa;
-            $peserta->kelasmi_id = $request->kelasmi_id;
-            $peserta->save();
-        }
-        return redirect()->back();
-    }
+    // public function storeKolektif()
+    // {
+    //     $this->validate([
+    //         'kelasmi_id' => 'required',
+    //     ]);
+
+    //     if (count($this->selected) == 0) {
+
+    //         $this->dispatch('swal', [
+    //             'icon' => 'warning',
+    //             'title' => 'Peringatan',
+    //             'text' => 'Silakan checklist minimal satu siswa.'
+    //         ]);
+
+    //         return;
+    //     }
+
+    //     foreach ($this->selected as $siswa) {
+
+    //         Pesertakelas::firstOrCreate([
+    //             'kelasmi_id' => $this->kelasmi_id,
+    //             'siswa_id'   => $siswa,
+    //         ]);
+    //     }
+
+    //     $jumlah = count($this->selected);
+
+    //     $this->selected = [];
+    //     $this->selectAll = false;
+
+    //     $this->dispatch('swal', [
+    //         'icon' => 'success',
+    //         'title' => 'Berhasil',
+    //         'text' => "{$jumlah} siswa berhasil dimasukkan ke kelas."
+    //     ]);
+    // }
 }

@@ -709,6 +709,12 @@ Route::get('/debug-sync', [ApiSiswaController::class, 'debugSync'])->name('debug
 Route::post('/calon-siswa/{id}/push', [ApiSiswaController::class, 'pushToSiswa']);
 Route::post('/calon-siswa/{calon}/reset-status', [ApiSiswaController::class, 'resetStatus']);
 
-
+Route::get('/php-info-test', function () {
+    return [
+        'PHP_VERSION'  => PHP_VERSION,
+        'PHP_INT_SIZE' => PHP_INT_SIZE,
+        'PHP_INT_MAX'  => PHP_INT_MAX,
+    ];
+});
 require __DIR__ . '/auth.php';
 
