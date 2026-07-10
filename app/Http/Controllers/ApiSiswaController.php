@@ -248,16 +248,6 @@ class ApiSiswaController extends Controller
                 'Accept'    => 'application/json',
             ])->timeout(60)->get(self::API_URL);
 
-
-            // DEBUG FULL RESPONSE
-            // dd([
-            //     'status'  => $response->status(),
-            //     'headers' => $response->headers(),
-            //     'body'    => $response->body(),
-            //     'json'    => $response->json(),
-            // ]);
-            // 
-
             if (!$response->successful()) {
                 return response()->json([
                     'success' => false,
@@ -265,10 +255,18 @@ class ApiSiswaController extends Controller
                 ], 500);
             }
 
+            /*
+        |--------------------------------------------------------------------------
+        | Decode JSON dengan aman untuk BIGINT
+        |--------------------------------------------------------------------------
+        */
 
-            // DEBUG FULL RESPONSE
-
-            $students = $response->json();
+            $students = json_decode(
+                $response->body(),
+                true,
+                512,
+                JSON_BIGINT_AS_STRING
+            );
 
             $domain = $this->getJenjangDomain();
 
@@ -276,51 +274,114 @@ class ApiSiswaController extends Controller
 
             foreach ($students as $item) {
 
-                $jenjang = strtoupper(
-                    trim(data_get($item, 'jenjang.name'))
-                );
+                $jenjang = strtoupper(trim(data_get($item, 'jenjang.name')));
 
-                // hanya SMP atau SMA
+                // Hanya SMP dan SMA
                 if (!isset(self::JENJANG_MAP[$jenjang])) {
                     continue;
                 }
 
-                // filter domain
+                // Filter domain
                 if ($domain && $domain !== $jenjang) {
                     continue;
                 }
 
-                $existing = CalonSiswa::where('api_id', data_get($item, 'id'))->first();
+                $apiId = data_get($item, 'id');
 
-                $status = $existing?->status === 'dipindah_ke_siswa'
-                    ? 'dipindah_ke_siswa'
+                $calon = CalonSiswa::firstOrNew([
+                    'api_id' => $apiId,
+                ]);
+
+                /*
+            |--------------------------------------------------------------------------
+            | Simpan status lama
+            |--------------------------------------------------------------------------
+            */
+
+                $status = $calon->exists
+                    ? $calon->status
                     : 'calon-siswa';
 
-                CalonSiswa::updateOrCreate(
-                    [
-                        'api_id' => data_get($item, 'id'),
-                    ],
-                    [
-                        'jenjang'        => $jenjang,
-                        'jenjang_id'     => data_get($item, 'jenjang.id'),
-                        'nama'           => data_get($item, 'nama_lengkap'),
-                        'jenis_kelamin'  => data_get($item, 'jenis_kelamin'),
-                        'rencana_pendidikan'  => data_get($item, 'rencana_pendidikan'),
-                        'jumlah_saudara_kandung'  => data_get($item, 'jumlah_saudara_kandung'),
-                        'anak_ke'  => data_get($item, 'anak_ke'),
-                        'nisn'           => data_get($item, 'nisn'),
-                        'nis'            => data_get($item, 'nis'),
-                        'nik'            => data_get($item, 'nik'),
-                        'tempat_lahir'   => data_get($item, 'tempat_lahir'),
-                        'tanggal_lahir'  => $this->parseTanggal(data_get($item, 'tanggal_lahir')),
-                        'agama'          => data_get($item, 'agama'),
-                        'alamat_jalan'   => data_get($item, 'alamat_jalan'),
-                        'kelurahan_desa'   => data_get($item, 'kelurahan_desa'),
-                        'tapel_id'   => data_get($item, 'tapel_id'),
-                        'status'         => $status,
-                        'data_api'       => $item,
-                    ]
-                );
+                /*
+            |--------------------------------------------------------------------------
+            | BIGINT SAFE
+            |--------------------------------------------------------------------------
+            */
+
+                $kelurahanDesa = data_get($item, 'kelurahan_desa');
+
+                if (is_array($kelurahanDesa)) {
+                    $kelurahanDesa = $kelurahanDesa['id']
+                        ?? $kelurahanDesa['value']
+                        ?? null;
+                }
+
+                if ($kelurahanDesa !== null) {
+                    $kelurahanDesa = (string) $kelurahanDesa;
+                }
+
+                $calon->fill([
+
+                    'jenjang'                  => $jenjang,
+                    'jenjang_id'               => data_get($item, 'jenjang.id'),
+
+                    'nama'                     => data_get($item, 'nama_lengkap'),
+                    'jenis_kelamin'            => data_get($item, 'jenis_kelamin'),
+
+                    'rencana_pendidikan'       => data_get($item, 'rencana_pendidikan'),
+
+                    'jumlah_saudara_kandung'   => data_get($item, 'jumlah_saudara_kandung'),
+                    'anak_ke'                  => data_get($item, 'anak_ke'),
+
+                    'nisn'                     => data_get($item, 'nisn'),
+                    'nis'                      => data_get($item, 'nis'),
+                    'nik'                      => data_get($item, 'nik'),
+                    'nomor_kk'                 => data_get($item, 'nomor_kk'),
+                    'no_kip'                   => data_get($item, 'no_kip'),
+                    'npsn'                     => data_get($item, 'npsn'),
+                    'alumni'                   => data_get($item, 'alumni'),
+
+                    'tempat_lahir'             => data_get($item, 'tempat_lahir'),
+                    'tanggal_lahir'            => $this->parseTanggal(
+                        data_get($item, 'tanggal_lahir')
+                    ),
+
+                    'agama'                    => data_get($item, 'agama'),
+                    'kewarganegaraan'          => data_get($item, 'kewarganegaraan'),
+
+                    'alamat_jalan'             => data_get($item, 'alamat_jalan'),
+                    'nama_dusun'               => data_get($item, 'nama_dusun'),
+                    'rt'                       => data_get($item, 'rt'),
+                    'rw'                       => data_get($item, 'rw'),
+                    'kode_pos'                 => data_get($item, 'kode_pos'),
+
+                    'tinggi_badan'             => data_get($item, 'tinggi_badan'),
+                    'berat_badan'              => data_get($item, 'berat_badan'),
+                    'lingkar_kepala'           => data_get($item, 'lingkar_kepala'),
+
+                    'no_registrasi_akta'       => data_get($item, 'no_registrasi_akta'),
+
+                    // Sesuaikan dengan nama field API
+                    'user_id'                  => data_get($item, 'user'),
+                    'tapel_id'                 => data_get($item, 'tapel'),
+
+                    'kelurahan_desa'           => $kelurahanDesa,
+
+                    'riwayat_kesehatan'        => data_get($item, 'riwayatKesehatan'),
+                    'kebutuhan_khusus'         => data_get($item, 'kebutuhanKhusus'),
+
+                    'asal_sekolah'             => data_get($item, 'sekolah_asal'),
+
+                    'user_agent'               => data_get($item, 'user_agent'),
+                    'ip'                       => data_get($item, 'ip'),
+
+                    'data_api'                 => $item,
+                ]);
+
+                // Status tetap dipertahankan
+                $calon->status = $status;
+
+                $calon->save();
 
                 $total++;
             }
@@ -343,7 +404,6 @@ class ApiSiswaController extends Controller
             ], 500);
         }
     }
-
     public function debugSync()
     {
         try {
