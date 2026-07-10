@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Jenjang;
 use App\Models\KalenderPendidikan;
+use App\Models\Lembaga;
 use App\Models\Periode;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
@@ -126,6 +127,7 @@ class KalenderPendidikanController extends Controller
 
     public function pdf()
     {
+        $lembaga = Lembaga::where('is_active', true)->first();
         $periodeAktif = Periode::where('is_active', true)->first();
         
 
@@ -184,7 +186,7 @@ class KalenderPendidikanController extends Controller
                 'periodeAktif',
                 'events',
                 'tahun',
-                
+                'lembaga'
             )
         )
             ->setPaper('f4', 'landscape')

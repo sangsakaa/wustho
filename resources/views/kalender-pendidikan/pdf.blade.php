@@ -409,7 +409,7 @@ $mulai->addDay();
           DEPARTEMEN PENDIDIKAN DINIYAH WAHIDIYAH
         </div>
         <div style="font-size:18px; font-weight:bold; line-height:1.2; margin:0;">
-          {{ strtoupper($dataJenjang['nama'] ?? 'MADRASAH DINIYAH WAHIDIYAH') }}
+          MADRASAH DINIYAH {{ strtoupper($lembaga->nama ?? '-') }} WAHIDIYAH
         </div>
       </td>
       <td width="15%" style="border:none; padding:0; margin:0;">
