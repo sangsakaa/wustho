@@ -77,11 +77,52 @@ class ApiSiswaController extends Controller
             default => null,
         };
     }
+    private function applyFilters($query, Request $request, $domain)
+    {
+        if ($domain) {
+            $query->where('calon_siswas.jenjang', $domain);
+        }
+
+        if ($request->filled('jenjang')) {
+            $query->where('calon_siswas.jenjang', $request->jenjang);
+        }
+
+        if ($request->filled('status')) {
+            $query->where('calon_siswas.status', $request->status);
+        }
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+
+            $query->where(function ($q) use ($search) {
+                $q->where('calon_siswas.nama', 'like', "%{$search}%")
+                    ->orWhere('calon_siswas.nisn', 'like', "%{$search}%")
+                    ->orWhere('calon_siswas.nik', 'like', "%{$search}%")
+                    ->orWhere('calon_siswas.nomor_pendaftaran', 'like', "%{$search}%")
+                    ->orWhere('calon_siswas.asal_sekolah', 'like', "%{$search}%");
+            });
+        }
+
+        if ($request->filled('rencana_pendidikan')) {
+            $query->whereRaw(
+                "JSON_UNQUOTE(JSON_EXTRACT(calon_siswas.data_api, '$.rencana_pendidikan')) = ?",
+                [$request->rencana_pendidikan]
+            );
+        }
+
+        return $query;
+    }
 
     /* ================= VIEW ================= */
     public function view(Request $request)
     {
         $domain = $this->getJenjangDomain();
+
+        /*
+    |--------------------------------------------------------------------------
+    | QUERY DATA
+    |--------------------------------------------------------------------------
+    */
 
         $query = CalonSiswa::query()
             ->leftJoin('provinces', function ($join) {
@@ -110,48 +151,136 @@ class ApiSiswaController extends Controller
                 'regencies.name as kabupaten'
             );
 
-        // FILTER DOMAIN
+        /*
+    |--------------------------------------------------------------------------
+    | FILTER DOMAIN
+    |--------------------------------------------------------------------------
+    */
+
         if ($domain) {
             $query->where('calon_siswas.jenjang', $domain);
         }
 
-        // FILTER JENJANG
+        /*
+    |--------------------------------------------------------------------------
+    | FILTER JENJANG
+    |--------------------------------------------------------------------------
+    */
+
         if ($request->filled('jenjang')) {
             $query->where('calon_siswas.jenjang', $request->jenjang);
         }
 
-        // SEARCH
-        if ($request->filled('search')) {
-            $query->where('calon_siswas.nama', 'like', '%' . $request->search . '%');
-        }
+        /*
+    |--------------------------------------------------------------------------
+    | FILTER STATUS
+    |--------------------------------------------------------------------------
+    */
 
-        // STATUS FILTER
         if ($request->filled('status')) {
             $query->where('calon_siswas.status', $request->status);
         }
 
-        // RENCANA PENDIDIKAN FILTER (JSON)
-        if ($request->filled('rencana_pendidikan')) {
-            $query->whereRaw("
-            JSON_UNQUOTE(JSON_EXTRACT(calon_siswas.data_api, '$.rencana_pendidikan')) = ?
-        ", [$request->rencana_pendidikan]);
+        /*
+    |--------------------------------------------------------------------------
+    | FILTER SEARCH
+    |--------------------------------------------------------------------------
+    */
+
+        if ($request->filled('search')) {
+
+            $search = trim($request->search);
+
+            $query->where(function ($q) use ($search) {
+
+                $q->where('calon_siswas.nama', 'like', "%{$search}%")
+                    ->orWhere('calon_siswas.nisn', 'like', "%{$search}%")
+                    ->orWhere('calon_siswas.nik', 'like', "%{$search}%")
+                    ->orWhere('calon_siswas.nomor_pendaftaran', 'like', "%{$search}%")
+                    ->orWhere('calon_siswas.asal_sekolah', 'like', "%{$search}%");
+            });
         }
 
+        /*
+    |--------------------------------------------------------------------------
+    | FILTER RENCANA PENDIDIKAN
+    |--------------------------------------------------------------------------
+    */
+
+        if ($request->filled('rencana_pendidikan')) {
+
+            $query->whereRaw(
+                "JSON_UNQUOTE(JSON_EXTRACT(calon_siswas.data_api,'$.rencana_pendidikan')) = ?",
+                [$request->rencana_pendidikan]
+            );
+        }
+
+        /*
+    |--------------------------------------------------------------------------
+    | DATA TABLE
+    |--------------------------------------------------------------------------
+    */
+
         $data = $query
-            ->orderByDesc('calon_siswas.id')
+            ->latest('calon_siswas.created_at')
             ->paginate(20)
             ->withQueryString();
 
-        // ================= BASE STAT QUERY =================
+        /*
+    |--------------------------------------------------------------------------
+    | BASE QUERY UNTUK DASHBOARD
+    |--------------------------------------------------------------------------
+    */
+
         $base = CalonSiswa::query();
 
         if ($domain) {
             $base->where('jenjang', $domain);
         }
 
-        // helper function json count
-        $countRencana = function ($value, $jenjang = null, $status = null) use ($base) {
-            $q = (clone $base);
+        if ($request->filled('jenjang')) {
+            $base->where('jenjang', $request->jenjang);
+        }
+
+        if ($request->filled('status')) {
+            $base->where('status', $request->status);
+        }
+
+        if ($request->filled('search')) {
+
+            $search = trim($request->search);
+
+            $base->where(function ($q) use ($search) {
+
+                $q->where('nama', 'like', "%{$search}%")
+                    ->orWhere('nisn', 'like', "%{$search}%")
+                    ->orWhere('nik', 'like', "%{$search}%")
+                    ->orWhere('nomor_pendaftaran', 'like', "%{$search}%")
+                    ->orWhere('asal_sekolah', 'like', "%{$search}%");
+            });
+        }
+
+        if ($request->filled('rencana_pendidikan')) {
+
+            $base->whereRaw(
+                "JSON_UNQUOTE(JSON_EXTRACT(data_api,'$.rencana_pendidikan')) = ?",
+                [$request->rencana_pendidikan]
+            );
+        }
+
+        /*
+    |--------------------------------------------------------------------------
+    | HELPER COUNT RENCANA
+    |--------------------------------------------------------------------------
+    */
+
+        $countRencana = function (
+            $value,
+            $jenjang = null,
+            $status = null
+        ) use ($base) {
+
+            $q = clone $base;
 
             if ($jenjang) {
                 $q->where('jenjang', $jenjang);
@@ -161,38 +290,149 @@ class ApiSiswaController extends Controller
                 $q->where('status', $status);
             }
 
-            return $q->whereRaw("
-            JSON_UNQUOTE(JSON_EXTRACT(data_api, '$.rencana_pendidikan')) = ?
-        ", [$value])->count();
+            return $q->whereRaw(
+                "JSON_UNQUOTE(JSON_EXTRACT(data_api,'$.rencana_pendidikan')) = ?",
+                [$value]
+            )->count();
         };
 
+        /*
+    |--------------------------------------------------------------------------
+    | STATISTIK
+    |--------------------------------------------------------------------------
+    */
         $stats = [
-            // umum
-            'all'   => (clone $base)->count(),
-            'SMP'   => (clone $base)->where('jenjang', 'SMP')->count(),
-            'SMA'   => (clone $base)->where('jenjang', 'SMA')->count(),
 
-            // status
-            'calon' => (clone $base)->where('status', 'calon-siswa')->count(),
-            'dipindah' => (clone $base)->where('status', 'dipindah_ke_siswa')->count(),
+            /*
+        |--------------------------------------------------------------------------
+        | TOTAL
+        |--------------------------------------------------------------------------
+        */
 
-            // rencana global
+            'all' => (clone $base)->count(),
+
+            'SMP' => (clone $base)
+                ->where('jenjang', 'SMP')
+                ->count(),
+
+            'SMA' => (clone $base)
+                ->where('jenjang', 'SMA')
+                ->count(),
+
+            /*
+        |--------------------------------------------------------------------------
+        | STATUS
+        |--------------------------------------------------------------------------
+        */
+
+            'calon' => (clone $base)
+                ->where('status', 'calon-siswa')
+                ->count(),
+
+            'dipindah' => (clone $base)
+                ->where('status', 'dipindah_ke_siswa')
+                ->count(),
+
+            'belum_dipindah' => (clone $base)
+                ->where('status', 'calon-siswa')
+                ->count(),
+
+            /*
+        |--------------------------------------------------------------------------
+        | RENCANA PENDIDIKAN
+        |--------------------------------------------------------------------------
+        */
+
             'mondok' => $countRencana('Mondok'),
+
             'tidak_mondok' => $countRencana('Tidak Mondok'),
 
-            // per jenjang SMP
-            'smp_mondok' => $countRencana('Mondok', 'SMP'),
-            'smp_tidak_mondok' => $countRencana('Tidak Mondok', 'SMP'),
-            'smp_calon' => (clone $base)->where('jenjang', 'SMP')->where('status', 'calon-siswa')->count(),
-            'smp_dipindah' => (clone $base)->where('jenjang', 'SMP')->where('status', 'dipindah_ke_siswa')->count(),
+            /*
+        |--------------------------------------------------------------------------
+        | SMP
+        |--------------------------------------------------------------------------
+        */
 
-            // per jenjang SMA
+            'smp_total' => (clone $base)
+                ->where('jenjang', 'SMP')
+                ->count(),
+
+            'smp_calon' => (clone $base)
+                ->where('jenjang', 'SMP')
+                ->where('status', 'calon-siswa')
+                ->count(),
+
+            'smp_dipindah' => (clone $base)
+                ->where('jenjang', 'SMP')
+                ->where('status', 'dipindah_ke_siswa')
+                ->count(),
+
+            'smp_mondok' => $countRencana('Mondok', 'SMP'),
+
+            'smp_tidak_mondok' => $countRencana('Tidak Mondok', 'SMP'),
+
+            /*
+        |--------------------------------------------------------------------------
+        | SMA
+        |--------------------------------------------------------------------------
+        */
+
+            'sma_total' => (clone $base)
+                ->where('jenjang', 'SMA')
+                ->count(),
+
+            'sma_calon' => (clone $base)
+                ->where('jenjang', 'SMA')
+                ->where('status', 'calon-siswa')
+                ->count(),
+
+            'sma_dipindah' => (clone $base)
+                ->where('jenjang', 'SMA')
+                ->where('status', 'dipindah_ke_siswa')
+                ->count(),
+
             'sma_mondok' => $countRencana('Mondok', 'SMA'),
+
             'sma_tidak_mondok' => $countRencana('Tidak Mondok', 'SMA'),
-            'sma_calon' => (clone $base)->where('jenjang', 'SMA')->where('status', 'calon-siswa')->count(),
-            'sma_dipindah' => (clone $base)->where('jenjang', 'SMA')->where('status', 'dipindah_ke_siswa')->count(),
+
         ];
-        $chartProvinsi = CalonSiswa::query()
+
+        /*
+    |--------------------------------------------------------------------------
+    | PROGRESS
+    |--------------------------------------------------------------------------
+    */
+
+        $stats['progress'] = $stats['all'] > 0
+            ? round(($stats['dipindah'] / $stats['all']) * 100, 2)
+            : 0;
+
+        $stats['smp_progress'] = $stats['smp_total'] > 0
+            ? round(($stats['smp_dipindah'] / $stats['smp_total']) * 100, 2)
+            : 0;
+
+        $stats['sma_progress'] = $stats['sma_total'] > 0
+            ? round(($stats['sma_dipindah'] / $stats['sma_total']) * 100, 2)
+            : 0;
+
+        $stats['smp_belum'] = max(
+            0,
+            $stats['smp_total'] - $stats['smp_dipindah']
+        );
+
+        $stats['sma_belum'] = max(
+            0,
+            $stats['sma_total'] - $stats['sma_dipindah']
+        );
+
+        /*
+    |--------------------------------------------------------------------------
+    | CHART PROVINSI
+    |--------------------------------------------------------------------------
+    */
+        $chartProvinsi = clone $base;
+
+        $chartProvinsi = $chartProvinsi
             ->leftJoin('provinces', function ($join) {
                 $join->on(
                     'provinces.code',
@@ -208,18 +448,26 @@ class ApiSiswaController extends Controller
             ->orderByDesc('total')
             ->get();
 
-        $chartKabupaten = CalonSiswa::query()
+        /*
+    |--------------------------------------------------------------------------
+    | CHART KABUPATEN
+    |--------------------------------------------------------------------------
+    */
+
+        $chartKabupaten = clone $base;
+
+        $chartKabupaten = $chartKabupaten
             ->leftJoin('regencies', function ($join) {
                 $join->on(
                     'regencies.code',
                     '=',
                     DB::raw("
-                CONCAT(
-                    LEFT(CAST(calon_siswas.kelurahan_desa AS CHAR),2),
-                    '.',
-                    SUBSTRING(CAST(calon_siswas.kelurahan_desa AS CHAR),3,2)
-                )
-            ")
+                    CONCAT(
+                        LEFT(CAST(calon_siswas.kelurahan_desa AS CHAR),2),
+                        '.',
+                        SUBSTRING(CAST(calon_siswas.kelurahan_desa AS CHAR),3,2)
+                    )
+                ")
                 );
             })
             ->select(
@@ -230,12 +478,76 @@ class ApiSiswaController extends Controller
             ->orderByDesc('total')
             ->get();
 
+        /*
+    |--------------------------------------------------------------------------
+    | TOP 10 PROVINSI
+    |--------------------------------------------------------------------------
+    */
+
+        $topProvinsi = clone $base;
+
+        $topProvinsi = $topProvinsi
+            ->leftJoin('provinces', function ($join) {
+                $join->on(
+                    'provinces.code',
+                    '=',
+                    DB::raw("LEFT(CAST(calon_siswas.kelurahan_desa AS CHAR),2)")
+                );
+            })
+            ->select(
+                'provinces.name',
+                DB::raw('COUNT(*) as total')
+            )
+            ->groupBy('provinces.name')
+            ->orderByDesc('total')
+            ->limit(10)
+            ->get();
+
+        /*
+    |--------------------------------------------------------------------------
+    | TOP 10 KABUPATEN
+    |--------------------------------------------------------------------------
+    */
+
+        $topKabupaten = clone $base;
+
+        $topKabupaten = $topKabupaten
+            ->leftJoin('regencies', function ($join) {
+                $join->on(
+                    'regencies.code',
+                    '=',
+                    DB::raw("
+                    CONCAT(
+                        LEFT(CAST(calon_siswas.kelurahan_desa AS CHAR),2),
+                        '.',
+                        SUBSTRING(CAST(calon_siswas.kelurahan_desa AS CHAR),3,2)
+                    )
+                ")
+                );
+            })
+            ->select(
+                'regencies.name',
+                DB::raw('COUNT(*) as total')
+            )
+            ->groupBy('regencies.name')
+            ->orderByDesc('total')
+            ->limit(10)
+            ->get();
+
+        /*
+    |--------------------------------------------------------------------------
+    | RETURN VIEW
+    |--------------------------------------------------------------------------
+    */
+
         return view('calon_siswa.index', compact(
             'data',
             'stats',
             'domain',
             'chartProvinsi',
-            'chartKabupaten'
+            'chartKabupaten',
+            'topProvinsi',
+            'topKabupaten'
         ));
     }
     /* ================= LIVE SYNC ================= */
