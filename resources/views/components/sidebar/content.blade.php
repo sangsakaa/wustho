@@ -38,7 +38,10 @@
     {{-- ================= SUPER ADMIN ================= --}}
     @role('super admin')
 
-    <div class="pt-4 pb-1 text-[11px] font-bold tracking-widest text-emerald-600 uppercase">
+    <div
+        x-show="!isSidebarCollapsed"
+        x-transition
+        class="pt-4 pb-1 text-[11px] font-bold tracking-widest text-emerald-600 uppercase">
         Menu Utama
     </div>
 

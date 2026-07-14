@@ -8,7 +8,6 @@
             </h2>
         </div>
     </x-slot>
-
     <div class="py-6 max-w-7xl mx-auto px-4 space-y-6">
 
         {{-- INFO KELAS --}}

@@ -283,7 +283,7 @@
 
                             <p class="  font-semibold">
                                 @if ($dataKelas->first()->jenjang == 'Wustho')
-                                <img src="{{ asset('asset/images/ttd.png') }}" width="150" alt="">
+                                <img src="{{ asset('asset/images/ttdks.png') }}" width="150" alt="">
 
                                 @elseif ($dataKelas->first()->jenjang == 'Ula')
                                 <br><br><br><br>

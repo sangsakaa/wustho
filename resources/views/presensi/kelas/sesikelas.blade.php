@@ -204,7 +204,7 @@
                 </p>
             </div>
 
-            <div class="overflow-x-auto">
+            <div class="hidden lg:block">
                 <table class="w-full">
 
                     <thead class="bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 text-sm">
@@ -386,6 +386,88 @@
                     </tbody>
                 </table>
             </div>
+            <div class="lg:hidden space-y-4">
+
+                @foreach($Datasesikelas as $sesi)
+
+                <div
+                    class="bg-white dark:bg-slate-800
+rounded-3xl
+shadow
+border
+p-5">
+
+                    <h3
+                        class="font-bold text-lg">
+
+                        {{ $sesi->nama_kelas }}
+
+                    </h3>
+
+                    <p class="text-sm text-slate-500">
+
+                        {{ $sesi->hadir_count }}
+                        /
+                        {{ $sesi->peserta_count }}
+
+                    </p>
+
+                    <div class="mt-3">
+
+                        <span
+                            class="px-3 py-1 rounded-full
+{{ $badge }}">
+
+                            {{ strtoupper($sesi->status_ui) }}
+
+                        </span>
+
+                    </div>
+
+                    <div class="mt-4">
+
+                        <div
+                            class="h-2 bg-slate-200 rounded-full">
+
+                            <div
+                                class="bg-indigo-500 h-2 rounded-full"
+                                style="width:{{ $sesi->progress }}%">
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div
+                        class="grid grid-cols-2 gap-2 mt-5">
+
+                        <a
+                            href="/absensi/monitor/{{ $sesi->id }}"
+                            class="rounded-xl bg-blue-600 text-white py-2 text-center">
+
+                            Monitor
+
+                        </a>
+
+                        <button>
+
+                            Open
+
+                        </button>
+
+                        <button>
+
+                            Delete
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+                @endforeach
+
+            </div>
         </div>
     </div>
 
@@ -461,24 +543,29 @@
         function popup(title, text, icon, callback = null) {
 
             Swal.fire({
-                title: title,
-                text: text,
-                icon: icon,
+                title,
+                text,
+                icon,
 
                 showCancelButton: true,
 
                 confirmButtonText: 'Ya',
                 cancelButtonText: 'Batal',
 
-                confirmButtonColor: '#4f46e5',
-                cancelButtonColor: '#64748b',
+                // Nonaktifkan style bawaan SweetAlert
+                buttonsStyling: false,
 
-                background: '#fff',
+                allowOutsideClick: false,
+                reverseButtons: true,
 
                 customClass: {
-                    popup: 'rounded-3xl shadow-2xl',
-                    confirmButton: 'rounded-xl px-5 py-2',
-                    cancelButton: 'rounded-xl px-5 py-2',
+                    popup: 'rounded-3xl shadow-2xl p-6',
+                    title: 'text-xl font-bold text-slate-800',
+                    htmlContainer: 'text-slate-500 mt-2',
+
+                    confirmButton: 'px-5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold transition',
+
+                    cancelButton: 'px-5 py-2 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold transition'
                 }
 
             }).then((result) => {
@@ -486,7 +573,9 @@
                 if (result.isConfirmed && callback) {
                     callback();
                 }
+
             });
+
         }
 
         /*
@@ -496,14 +585,40 @@
         */
         function confirmGenerate() {
 
-            popup(
-                'Generate Sesi?',
-                'Buat sesi presensi baru?',
-                'question',
-                () => {
-                    document.getElementById('generateForm').submit();
+            Swal.fire({
+                title: 'Generate Sesi?',
+                text: 'Sistem akan membuat sesi presensi untuk semua kelas yang belum memiliki sesi pada tanggal tersebut.',
+                icon: 'question',
+
+                showCancelButton: true,
+
+                confirmButtonText: 'Ya, Generate',
+                cancelButtonText: 'Batal',
+
+                buttonsStyling: false,
+
+                customClass: {
+                    popup: 'rounded-3xl shadow-2xl',
+
+                    title: 'text-xl font-bold text-slate-800',
+
+                    htmlContainer: 'text-slate-500',
+
+                    confirmButton: 'px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold transition',
+
+                    cancelButton: 'ml-3 px-5 py-2 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold transition'
                 }
-            );
+
+            }).then((result) => {
+
+                if (result.isConfirmed) {
+
+                    document.getElementById('generateForm').submit();
+
+                }
+
+            });
+
         }
 
         /*
@@ -519,24 +634,54 @@
 
                 Swal.fire({
                     icon: 'warning',
-                    title: 'Oops',
+                    title: 'Oops...',
                     text: 'Pilih minimal 1 data',
-                    confirmButtonColor: '#f59e0b'
+
+                    buttonsStyling: false,
+
+                    customClass: {
+                        popup: 'rounded-3xl',
+                        confirmButton: 'px-5 py-2 rounded-xl bg-amber-500 hover:bg-amber-600 text-white font-medium transition'
+                    }
                 });
 
                 return;
             }
 
-            popup(
-                'Hapus Data?',
-                'Data akan dihapus permanen',
-                'warning',
-                () => {
+            Swal.fire({
+                title: 'Hapus Data?',
+                text: 'Data yang dipilih akan dihapus permanen.',
+                icon: 'warning',
 
-                    appendIds('bulkDeleteForm', checked)
-                        .submit();
+                showCancelButton: true,
+
+                confirmButtonText: 'Ya, Hapus',
+                cancelButtonText: 'Batal',
+
+                buttonsStyling: false,
+
+                customClass: {
+                    popup: 'rounded-3xl shadow-2xl',
+
+                    title: 'text-xl font-bold text-slate-800',
+
+                    htmlContainer: 'text-slate-500',
+
+                    confirmButton: 'px-5 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white font-semibold transition',
+
+                    cancelButton: 'ml-3 px-5 py-2 rounded-xl bg-slate-200 hover:bg-slate-300 text-slate-700 font-semibold transition'
                 }
-            );
+
+            }).then((result) => {
+
+                if (result.isConfirmed) {
+
+                    appendIds('bulkDeleteForm', checked).submit();
+
+                }
+
+            });
+
         }
 
         /*

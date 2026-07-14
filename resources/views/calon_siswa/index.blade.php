@@ -416,8 +416,6 @@
 
     {{-- ================= GRAFIK ================= --}}
 
-
-
     {{-- ================= TABLE ================= --}}
     <div class="bg-white rounded-2xl shadow overflow-hidden hidden lg:block">
 

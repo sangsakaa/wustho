@@ -6,32 +6,28 @@
     x-cloak>
 
 <head>
-
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>
         {{ config('app.name') }}
-
         @yield('title')
     </title>
 
-    {{-- FAVICON --}}
-    <link
-        rel="shortcut icon"
+    {{-- Favicon --}}
+    <link rel="shortcut icon"
         href="{{ asset('asset/images/logo.png') }}"
         type="image/x-icon">
 
-    {{-- FONT --}}
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet" />
+    {{-- Font --}}
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
 
-    {{-- SWEET ALERT --}}
+    {{-- SweetAlert --}}
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    {{-- APP --}}
+    {{-- Assets --}}
     @vite([
     'resources/css/app.css',
     'resources/js/app.js'
@@ -48,11 +44,9 @@
             font-family: 'Inter', sans-serif;
         }
     </style>
-
 </head>
 
 @php
-
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
@@ -65,38 +59,37 @@ DB::connection()->getPdo();
 $user = Auth::user();
 } catch (\Throwable $e) {
 $dbOnline = false;
-$dbError = $e->getMessage(); // 👈 ambil pesan asli error
+$dbError = $e->getMessage();
 }
-
 @endphp
 
-<body class="antialiased bg-slate-100 dark:bg-dark-bg overflow-hidden">
+<body class="min-h-screen antialiased bg-slate-100 dark:bg-dark-bg overflow-x-hidden">
 
     @if ($dbOnline)
 
-    <div class="flex h-screen overflow-hidden">
+    <div class="flex min-h-screen">
 
-        {{-- SIDEBAR --}}
+        {{-- Sidebar --}}
         <x-sidebar.sidebar />
 
-        {{-- MAIN --}}
+        {{-- Main Content --}}
         <div
-            class="flex flex-col flex-1 transition-all duration-200 ease-in-out"
+            class="flex flex-col flex-1 w-full transition-all duration-200"
             :class="{
-                'lg:ml-64': isSidebarOpen,
-                'lg:ml-16': !isSidebarOpen
-            }">
+        'lg:ml-64': isSidebarOpen,
+        'lg:ml-16': !isSidebarOpen
+}">
 
-            {{-- NAVBAR --}}
+            {{-- Navbar --}}
             <x-navbar />
 
-            {{-- HEADER --}}
+            {{-- Header --}}
             <header
                 class="bg-white dark:bg-dark-eval-1 border-b border-slate-200 dark:border-slate-700 px-4 py-3 shadow-sm">
 
                 <div class="flex items-center justify-between">
 
-                    {{-- LEFT --}}
+                    {{-- Left --}}
                     <div>
 
                         <h1 class="text-lg font-semibold text-slate-800 dark:text-white">
@@ -109,18 +102,15 @@ $dbError = $e->getMessage(); // 👈 ambil pesan asli error
 
                     </div>
 
-                    {{-- RIGHT --}}
+                    {{-- Right --}}
                     <div class="hidden md:flex items-center gap-4">
 
-                        {{-- ONLINE --}}
+                        {{-- Status --}}
                         <div class="flex items-center gap-2">
 
                             <span class="relative flex h-2 w-2">
-
                                 <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-
                                 <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-
                             </span>
 
                             <span class="text-xs text-slate-500 dark:text-slate-400">
@@ -129,7 +119,7 @@ $dbError = $e->getMessage(); // 👈 ambil pesan asli error
 
                         </div>
 
-                        {{-- PERIODE --}}
+                        {{-- Periode --}}
                         @if($periodeAktif)
 
                         <div class="flex items-center gap-2 px-3 py-1 rounded-lg bg-slate-100 dark:bg-slate-800">
@@ -139,11 +129,9 @@ $dbError = $e->getMessage(); // 👈 ambil pesan asli error
                             </span>
 
                             <span class="text-xs font-semibold text-slate-700 dark:text-white">
-
                                 {{ $periodeAktif->periode }}
                                 -
                                 {{ $periodeAktif->semester?->ket_semester }}
-
                             </span>
 
                         </div>
@@ -155,77 +143,124 @@ $dbError = $e->getMessage(); // 👈 ambil pesan asli error
                 </div>
 
             </header>
-
             {{-- CONTENT --}}
-            <main class="flex-1 overflow-y-auto bg-slate-100 dark:bg-dark-bg">
+            <main class="flex-1 overflow-y-auto overflow-x-hidden bg-slate-100 dark:bg-dark-bg">
 
-                <div class="min-h-full">
-
+                <div class="min-h-full w-full max-w-full overflow-x-hidden">
                     {{ $slot }}
-
                 </div>
 
             </main>
 
             {{-- FOOTER --}}
-            <footer class="bg-white dark:bg-dark-eval-1 border-t border-slate-200 dark:border-slate-700 px-4 py-3">
+            <footer
+                class="bg-white dark:bg-dark-eval-1 border-t border-slate-200 dark:border-slate-700 px-4 py-3">
 
-                <div class="flex flex-col md:flex-row items-center justify-between gap-2">
+                <div
+                    class="flex flex-col md:flex-row items-center justify-between gap-2">
 
-                    {{-- Kiri --}}
-                    <div class="text-xs text-slate-500 dark:text-slate-400 text-center md:text-left">
+                    {{-- LEFT --}}
+                    <div
+                        class="text-xs text-slate-500 dark:text-slate-400 text-center md:text-left">
+
                         © {{ date('Y') }}
-                        <span class="font-medium">SMEDI - Sistem Madrasah Diniyah</span>
+
+                        <span class="font-medium">
+                            SMEDI - Sistem Madrasah Diniyah
+                        </span>
+
                     </div>
 
-                    {{-- Tengah --}}
-                    <div class="text-xs text-slate-500 dark:text-slate-400 text-center">
+                    {{-- CENTER --}}
+                    <div
+                        class="text-xs text-slate-500 dark:text-slate-400 text-center">
+
                         @role('super admin')
+
                         <span class="inline-flex items-center gap-1">
+
                             Made with
-                            <x-heroicon-s-heart class="w-4 h-4 text-red-500" />
+
+                            <x-heroicon-s-heart
+                                class="w-4 h-4 text-red-500" />
+
                             by
-                            <a href="https://wustho.smedi.my.id/"
+
+                            <a
+                                href="https://wustho.smedi.my.id/"
                                 target="_blank"
                                 class="text-blue-600 hover:underline font-medium">
+
                                 MADIN WUSTHA WAHIDIYAH
+
                             </a>
+
                         </span>
+
                         @endrole
 
                         @role('pengurus')
+
                         <span class="inline-flex items-center gap-1">
+
                             Made with
-                            <x-heroicon-s-heart class="w-4 h-4 text-red-500" />
+
+                            <x-heroicon-s-heart
+                                class="w-4 h-4 text-red-500" />
+
                             by
-                            <a href="https://wustho.smedi.my.id/"
+
+                            <a
+                                href="https://wustho.smedi.my.id/"
                                 target="_blank"
                                 class="text-blue-600 hover:underline font-medium">
-                                PONDOK PESANTREN KEDUNGLO WAHIDIYAH
+
+                                PONDOK PESANTREN
+                                KEDUNGLO WAHIDIYAH
+
                             </a>
+
                         </span>
+
                         @endrole
 
                         @role('siswa')
+
                         <span class="inline-flex items-center gap-1">
+
                             Made with
-                            <x-heroicon-s-heart class="w-4 h-4 text-red-500" />
+
+                            <x-heroicon-s-heart
+                                class="w-4 h-4 text-red-500" />
+
                             by
-                            <a href="https://wustho.smedi.my.id/"
+
+                            <a
+                                href="https://wustho.smedi.my.id/"
                                 target="_blank"
                                 class="text-blue-600 hover:underline font-medium">
-                                MADIN WUSTHA WAHIDIYAH
+
+                                MADIN WUSTHA
+                                WAHIDIYAH
+
                             </a>
+
                         </span>
+
                         @endrole
+
                     </div>
 
-                    {{-- Kanan --}}
-                    <div class="text-xs text-slate-400 dark:text-slate-500 text-center md:text-right">
+                    {{-- RIGHT --}}
+                    <div
+                        class="text-xs text-slate-400 dark:text-slate-500 text-center md:text-right">
+
                         Powered by Laravel 12 • TailwindCSS •
+
                         <span class="font-semibold">
                             v{{ config('app.version', '1.0.0') }}
                         </span>
+
                     </div>
 
                 </div>
@@ -237,9 +272,9 @@ $dbError = $e->getMessage(); // 👈 ambil pesan asli error
     </div>
 
     @else
-
-    {{-- OFFLINE --}}
-    {{-- OFFLINE --}}
+    {{-- ============================= --}}
+    {{-- OFFLINE DATABASE --}}
+    {{-- ============================= --}}
     <div class="flex items-center justify-center min-h-screen bg-gradient-to-br from-slate-100 via-white to-emerald-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 px-4">
 
         <div class="w-full max-w-2xl">
@@ -256,12 +291,15 @@ $dbError = $e->getMessage(); // 👈 ambil pesan asli error
                         </div>
 
                         <div>
+
                             <h1 class="text-2xl font-bold">
                                 Database Connection Error
                             </h1>
+
                             <p class="text-sm text-red-100 mt-1">
                                 Sistem gagal terhubung ke database
                             </p>
+
                         </div>
 
                     </div>
@@ -272,15 +310,18 @@ $dbError = $e->getMessage(); // 👈 ambil pesan asli error
                 <div class="p-6">
 
                     <div class="mb-4">
+
                         <h2 class="font-semibold text-slate-800 dark:text-white">
                             Detail Error
                         </h2>
+
                         <p class="text-sm text-slate-500 dark:text-slate-400">
-                            Silakan cek MySQL, .env, atau server database Anda
+                            Silakan cek MySQL, file .env atau server database Anda.
                         </p>
+
                     </div>
 
-                    {{-- ERROR CONSOLE --}}
+                    {{-- ERROR BOX --}}
                     <div class="bg-slate-900 text-slate-100 rounded-2xl p-4 overflow-x-auto">
 
                         <div class="flex gap-2 mb-3">
@@ -289,33 +330,52 @@ $dbError = $e->getMessage(); // 👈 ambil pesan asli error
                             <span class="w-3 h-3 bg-green-500 rounded-full"></span>
                         </div>
 
-                        <pre class="text-xs text-red-300 whitespace-pre-wrap font-mono">
-                        {{ $dbError ?? 'SQLSTATE[HY000] [2002] Connection refused' }}
-                        </pre>
+                        <pre class="text-xs text-red-300 whitespace-pre-wrap font-mono">{{ $dbError ?? 'SQLSTATE[HY000] [2002] Connection refused' }}</pre>
 
                     </div>
 
-                    {{-- INFO BOX --}}
+                    {{-- INFO --}}
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mt-5">
 
                         <div class="p-3 rounded-xl bg-slate-100 dark:bg-slate-700">
-                            <div class="text-xs text-slate-500">Status</div>
-                            <div class="font-semibold text-red-600">Offline</div>
+
+                            <div class="text-xs text-slate-500">
+                                Status
+                            </div>
+
+                            <div class="font-semibold text-red-600">
+                                Offline
+                            </div>
+
                         </div>
 
                         <div class="p-3 rounded-xl bg-slate-100 dark:bg-slate-700">
-                            <div class="text-xs text-slate-500">Environment</div>
-                            <div class="font-semibold">{{ app()->environment() }}</div>
+
+                            <div class="text-xs text-slate-500">
+                                Environment
+                            </div>
+
+                            <div class="font-semibold">
+                                {{ app()->environment() }}
+                            </div>
+
                         </div>
 
                         <div class="p-3 rounded-xl bg-slate-100 dark:bg-slate-700">
-                            <div class="text-xs text-slate-500">Time</div>
-                            <div class="font-semibold">{{ now()->format('d M Y H:i:s') }}</div>
+
+                            <div class="text-xs text-slate-500">
+                                Time
+                            </div>
+
+                            <div class="font-semibold">
+                                {{ now()->format('d M Y H:i:s') }}
+                            </div>
+
                         </div>
 
                     </div>
 
-                    {{-- ACTION --}}
+                    {{-- BUTTON --}}
                     <div class="flex gap-3 mt-6">
 
                         <button
@@ -323,12 +383,15 @@ $dbError = $e->getMessage(); // 👈 ambil pesan asli error
                             class="px-5 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-semibold transition">
 
                             Refresh
+
                         </button>
 
-                        <a href="/"
+                        <a
+                            href="/"
                             class="px-5 py-3 rounded-xl border border-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 transition">
 
                             Kembali
+
                         </a>
 
                     </div>
@@ -343,7 +406,10 @@ $dbError = $e->getMessage(); // 👈 ambil pesan asli error
 
     @endif
 
+    {{-- Livewire --}}
     @livewireScripts
+
+    {{-- SweetAlert --}}
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 </body>

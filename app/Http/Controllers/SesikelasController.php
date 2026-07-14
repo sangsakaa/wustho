@@ -162,21 +162,24 @@ class SesikelasController
     }
     public function store(Request $request)
     {
-        // dd($request->tgl, now()->toDateString());
-
         $request->validate([
             'tgl' => ['required', 'date', 'before_or_equal:today'],
         ]);
 
-        $dataKelasMi = Kelasmi::where('periode_id', session('periode_id'))
+        $periodeId = session('periode_id');
+
+        // Semua kelas pada periode aktif
+        $dataKelasMi = Kelasmi::where('periode_id', $periodeId)
             ->orderBy('nama_kelas')
             ->get();
 
-        $existingKelasIds = Sesikelas::whereDate('tgl', $request->tgl)
-            ->pluck('kelasmi_id')
+        // Kelas yang sudah memiliki sesi pada tanggal tersebut
+        $existingKelasIds = Sesikelas::query()
+            ->join('kelasmi', 'kelasmi.id', '=', 'sesikelas.kelasmi_id')
+            ->where('kelasmi.periode_id', $periodeId)
+            ->whereDate('sesikelas.tgl', $request->tgl)
+            ->pluck('sesikelas.kelasmi_id')
             ->toArray();
-
-        $created = 0;
 
         $existing = array_flip($existingKelasIds);
 
@@ -187,23 +190,31 @@ class SesikelasController
             if (!isset($existing[$kelasmi->id])) {
 
                 $dataInsert[] = [
-                    'tgl' => $request->tgl,
+                    'tgl'        => $request->tgl,
                     'kelasmi_id' => $kelasmi->id,
+                    'status'     => 'open', // jika field status ada
                     'created_at' => now(),
                     'updated_at' => now(),
                 ];
             }
         }
 
-        if ($dataInsert) {
+        // Jumlah sesi yang akan dibuat
+        $created = count($dataInsert);
+
+        if ($created > 0) {
             Sesikelas::insert($dataInsert);
+
+            return back()->with(
+                'success',
+                "{$created} sesi berhasil ditambahkan"
+            );
         }
 
-        if ($created === 0) {
-            return back()->with('error', 'Semua sesi sudah tersedia');
-        }
-
-        return back()->with('success', "{$created} sesi berhasil ditambahkan");
+        return back()->with(
+            'error',
+            'Semua sesi sudah tersedia'
+        );
     }
 
     public function destroy(Sesikelas $sesikelas)

@@ -484,8 +484,7 @@ class KelasmiController extends Controller
         */
             return back()->with(
                 'success',
-                'Generate berhasil ke periode ' .
-                    $periodeTujuan->periode .
+                'Generate berhasil ke periode ' . $periodeTujuan->periode .
                     '. Kelas dibuat: ' . $totalKelas .
                     ', Peserta dipindahkan: ' . $totalPeserta .
                     ', Sudah ada: ' . $totalSudahAda .
@@ -499,6 +498,7 @@ class KelasmiController extends Controller
             );
         }
     }
+
     public function generateKelasSatu(Request $request)
     {
         try {

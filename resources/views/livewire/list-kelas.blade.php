@@ -89,6 +89,14 @@
                         <span>Tambah Kelas</span>
 
                     </a>
+                    @if(session('periode_pdf'))
+                    <a
+                        href="{{ route('kelas.generate.pdf', session('periode_pdf')) }}"
+                        target="_blank"
+                        class="btn btn-danger">
+                        Download PDF Ploting
+                    </a>
+                    @endif
 
                     <form action="{{ route('kelasmi.generatePeriode') }}"
                         method="POST">

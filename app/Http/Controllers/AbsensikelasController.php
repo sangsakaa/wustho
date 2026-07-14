@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
+use App\Models\Absensikelas;
 use App\Models\Kelasmi;
 use App\Models\Periode;
-
-use App\Models\Sesikelas;
-use App\Models\Absensikelas;
-use App\Models\Pesertakelas;
-use Illuminate\Http\Request;
 use App\Models\Pesertaasrama;
+use App\Models\Pesertakelas;
+use App\Models\Sesikelas;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Mpdf\Mpdf;
 use Mpdf\Output\Destination;
 
@@ -20,6 +20,7 @@ use Mpdf\Output\Destination;
 
 class AbsensikelasController
 {
+
     public function index(Sesikelas $sesikelas)
     {
         $prev_url = session('prev_url') ?? url()->previous();
@@ -91,29 +92,50 @@ class AbsensikelasController
 
     public function store(Request $request)
     {
-        $data = [];
+        $request->validate([
+            'sesikelas' => 'required',
+            'pesertakelas' => 'required|array',
+        ]);
 
         foreach ($request->pesertakelas as $peserta) {
-            $data[] = [
-                'sesikelas_id' => $request->sesikelas,
-                'pesertakelas_id' => $peserta,
+
+            $data = [
                 'keterangan' => $request->keterangan[$peserta] ?? 'hadir',
                 'alasan' => $request->alasan[$peserta] ?? null,
-                'created_at' => now(),
                 'updated_at' => now(),
             ];
+
+
+            $absensi = Absensikelas::where('sesikelas_id', $request->sesikelas)
+                ->where('pesertakelas_id', $peserta)
+                ->first();
+
+
+            if ($absensi) {
+
+                // Jika sudah ada → UPDATE
+                $absensi->update($data);
+            } else {
+
+                // Jika belum ada → INSERT
+                Absensikelas::create([
+                    'sesikelas_id' => $request->sesikelas,
+                    'pesertakelas_id' => $peserta,
+                    'keterangan' => $data['keterangan'],
+                    'alasan' => $data['alasan'],
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+            }
         }
 
-        Absensikelas::upsert(
-            $data,
-            ['sesikelas_id', 'pesertakelas_id'],
-            ['keterangan', 'alasan', 'updated_at']
-        );
 
-        return redirect()->back()->with([
-            'status' => 'Presensi berhasil disimpan pada ' . now()->format('d-m-Y H:i'),
-            'prev_url' => $request->prev_url,
-        ]);
+        return redirect()
+            ->back()
+            ->with([
+                'status' => 'Presensi berhasil disimpan pada ' . now()->format('d-m-Y H:i'),
+                'prev_url' => $request->prev_url,
+            ]);
     }
 
     public function blanko(Request $request)
