@@ -29,128 +29,70 @@
     <div class="p-4 md:p-6 bg-slate-100 dark:bg-slate-900 min-h-screen space-y-6">
 
         {{-- SUMMARY CARD --}}
-        <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5">
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-2">
 
-            {{-- TOTAL --}}
-            <div
-                class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl p-5 shadow-sm">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-sm text-slate-500">
-                            Total Kelas
-                        </p>
-
-                        <h2 class="mt-2 text-3xl font-bold text-slate-800 dark:text-white">
-                            {{ $total }}
-                        </h2>
-                    </div>
-
-                    <div
-                        class="w-14 h-14 rounded-2xl bg-blue-100 text-blue-600 flex items-center justify-center text-2xl">
-                        🏫
-                    </div>
+            <div class="flex items-center justify-between rounded-lg border border-slate-200 bg-white px-3 py-2">
+                <div class="flex items-center gap-2">
+                    <span>🏫</span>
+                    <span class="text-xs text-slate-600">Kelas</span>
                 </div>
+                <span class="text-lg font-bold text-slate-800">{{ $total }}</span>
             </div>
 
-            {{-- DONE --}}
-            <div
-                class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl p-5 shadow-sm">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-sm text-slate-500">
-                            Selesai
-                        </p>
-
-                        <h2 class="mt-2 text-3xl font-bold text-emerald-600">
-                            {{ $done }}
-                        </h2>
-                    </div>
-
-                    <div
-                        class="w-14 h-14 rounded-2xl bg-emerald-100 text-emerald-600 flex items-center justify-center text-2xl">
-                        ✅
-                    </div>
+            <div class="flex items-center justify-between rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2">
+                <div class="flex items-center gap-2">
+                    <span>✅</span>
+                    <span class="text-xs text-emerald-700">Selesai</span>
                 </div>
+                <span class="text-lg font-bold text-emerald-600">{{ $done }}</span>
             </div>
 
-            {{-- BELUM --}}
-            <div
-                class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl p-5 shadow-sm">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-sm text-slate-500">
-                            Belum Selesai
-                        </p>
-
-                        <h2 class="mt-2 text-3xl font-bold text-rose-600">
-                            {{ $notDone }}
-                        </h2>
-                    </div>
-
-                    <div
-                        class="w-14 h-14 rounded-2xl bg-rose-100 text-rose-600 flex items-center justify-center text-2xl">
-                        ⏳
-                    </div>
+            <div class="flex items-center justify-between rounded-lg border border-rose-200 bg-rose-50 px-3 py-2">
+                <div class="flex items-center gap-2">
+                    <span>⏳</span>
+                    <span class="text-xs text-rose-700">Belum</span>
                 </div>
+                <span class="text-lg font-bold text-rose-600">{{ $notDone }}</span>
             </div>
 
-            {{-- PROGRESS --}}
-            <div
-                class="bg-gradient-to-r from-indigo-600 to-blue-600 rounded-3xl p-5 shadow-lg text-white">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-sm text-indigo-100">
-                            Progress Hari Ini
-                        </p>
-
-                        <h2 class="mt-2 text-3xl font-bold">
-                            {{ $percent }}%
-                        </h2>
-                    </div>
-
-                    <div
-                        class="w-14 h-14 rounded-2xl bg-white/20 flex items-center justify-center text-2xl">
-                        📊
-                    </div>
+            <div class="flex items-center justify-between rounded-lg border border-indigo-200 bg-indigo-50 px-3 py-2">
+                <div class="flex items-center gap-2">
+                    <span>📊</span>
+                    <span class="text-xs text-indigo-700">Progress</span>
                 </div>
-
-                <div class="mt-4">
-                    <div class="w-full h-2 bg-white/20 rounded-full overflow-hidden">
-                        <div class="h-2 bg-white rounded-full"
-                            style="width: {{ $percent }}%">
-                        </div>
-                    </div>
-                </div>
+                <span class="text-lg font-bold text-indigo-600">{{ $percent }}%</span>
             </div>
 
         </div>
-
         {{-- FILTER & ACTION --}}
-        <div
-            class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl p-5 shadow-sm">
+        <div class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-sm p-4">
 
-            <div class="flex flex-col xl:flex-row xl:items-center xl:justify-between gap-4">
+            <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
 
-                {{-- FILTER --}}
+                {{-- Filter --}}
                 <form action="/sesikelas" method="GET"
-                    class="flex flex-col sm:flex-row gap-3">
+                    class="flex flex-col sm:flex-row gap-2">
 
-                    <input type="date"
+                    <input
+                        type="date"
                         name="tgl"
                         value="{{ $tgl?->toDateString() }}"
-                        class="border border-slate-300 dark:border-slate-700 dark:bg-slate-900 dark:text-white rounded-2xl px-4 py-2 text-sm focus:ring-2 focus:ring-indigo-500">
+                        class="w-full sm:w-auto rounded-lg border border-slate-300 dark:border-slate-700 dark:bg-slate-900 dark:text-white px-3 py-2 text-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
 
                     <button
-                        class="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-2xl text-sm font-medium transition">
-                        Filter
+                        type="submit"
+                        class="inline-flex items-center justify-center rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 transition">
+                        🔍 Filter
                     </button>
+
                 </form>
 
-                {{-- ACTION --}}
-                <div class="flex flex-wrap gap-3">
+                {{-- Action --}}
+                <div class="grid grid-cols-2 sm:flex gap-2">
 
-                    <a href="/sesikelas/rekap"
-                        class="px-4 py-2 bg-slate-700 hover:bg-slate-800 text-white rounded-2xl text-sm font-medium transition">
+                    <a
+                        href="/sesikelas/rekap"
+                        class="inline-flex items-center justify-center rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-700 px-4 py-2 text-sm font-medium text-slate-700 dark:text-white hover:bg-slate-100 dark:hover:bg-slate-600 transition">
                         📄 Rekap
                     </a>
 
@@ -158,36 +100,45 @@
                         @csrf
                         <input type="hidden" name="tgl" value="{{ $tgl?->toDateString() }}">
 
-                        <button type="button"
+                        <button
+                            type="button"
                             onclick="confirmGenerate()"
-                            class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl text-sm font-medium transition">
-                            + Buat Sesi
+                            class="w-full inline-flex items-center justify-center rounded-lg bg-emerald-600 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-700 transition">
+                            ➕ Buat
                         </button>
                     </form>
 
-                    <form id="bulkToggleForm" action="{{ route('sesi.bulkToggle') }}" method="POST">
+                    <form id="bulkToggleForm"
+                        action="{{ route('sesi.bulkToggle') }}"
+                        method="POST">
                         @csrf
 
-                        <button type="button"
+                        <button
+                            type="button"
                             onclick="confirmBulkToggle()"
-                            class="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white rounded-2xl text-sm font-medium transition">
-                            🔄 Toggle Status
+                            class="w-full inline-flex items-center justify-center rounded-lg bg-amber-500 px-4 py-2 text-sm font-medium text-white hover:bg-amber-600 transition">
+                            🔄 Status
                         </button>
                     </form>
 
-                    <form id="bulkDeleteForm" action="/sesikelas/bulk-delete" method="POST">
+                    <form id="bulkDeleteForm"
+                        action="/sesikelas/bulk-delete"
+                        method="POST">
                         @csrf
                         @method('DELETE')
 
-                        <button type="button"
+                        <button
+                            type="button"
                             onclick="confirmBulkDelete()"
-                            class="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-2xl text-sm font-medium transition">
+                            class="w-full inline-flex items-center justify-center rounded-lg bg-rose-600 px-4 py-2 text-sm font-medium text-white hover:bg-rose-700 transition">
                             🗑 Hapus
                         </button>
                     </form>
 
                 </div>
+
             </div>
+
         </div>
 
         {{-- TABLE --}}
@@ -386,80 +337,72 @@
                     </tbody>
                 </table>
             </div>
-            <div class="lg:hidden space-y-4">
+            <div class="lg:hidden space-y-2">
 
                 @foreach($Datasesikelas as $sesi)
 
-                <div
-                    class="bg-white dark:bg-slate-800
-rounded-3xl
-shadow
-border
-p-5">
+                <div class="bg-white dark:bg-slate-800 border rounded-xl shadow-sm p-3">
 
-                    <h3
-                        class="font-bold text-lg">
+                    {{-- Header --}}
+                    <div class="flex items-start justify-between gap-2">
 
-                        {{ $sesi->nama_kelas }}
+                        <div class="min-w-0 flex-1">
+                            <h3 class="font-semibold text-sm truncate">
+                                {{ $sesi->nama_kelas }}
+                            </h3>
 
-                    </h3>
+                            <p class="text-xs text-gray-500">
+                                {{ $sesi->hadir_count }} / {{ $sesi->peserta_count }} Siswa
+                            </p>
+                        </div>
 
-                    <p class="text-sm text-slate-500">
-
-                        {{ $sesi->hadir_count }}
-                        /
-                        {{ $sesi->peserta_count }}
-
-                    </p>
-
-                    <div class="mt-3">
-
-                        <span
-                            class="px-3 py-1 rounded-full
-{{ $badge }}">
-
+                        <span class="px-2 py-1 rounded-full text-[10px] font-medium {{ $badge }}">
                             {{ strtoupper($sesi->status_ui) }}
-
                         </span>
 
                     </div>
 
-                    <div class="mt-4">
+                    {{-- Progress --}}
+                    <div class="mt-2">
 
-                        <div
-                            class="h-2 bg-slate-200 rounded-full">
+                        <div class="flex justify-between text-[10px] text-gray-500 mb-1">
+                            <span>Progress</span>
+                            <span>{{ $sesi->progress }}%</span>
+                        </div>
 
+                        <div class="h-1.5 bg-gray-200 rounded-full overflow-hidden">
                             <div
-                                class="bg-indigo-500 h-2 rounded-full"
-                                style="width:{{ $sesi->progress }}%">
+                                class="h-full bg-indigo-600 rounded-full"
+                                style="width: {{ $sesi->progress }}%">
                             </div>
-
                         </div>
 
                     </div>
 
-                    <div
-                        class="grid grid-cols-2 gap-2 mt-5">
+                    {{-- Action --}}
+                    <div class="grid grid-cols-2 gap-2 mt-3">
 
                         <a
-                            href="/absensi/monitor/{{ $sesi->id }}"
-                            class="rounded-xl bg-blue-600 text-white py-2 text-center">
-
-                            Monitor
-
+                            href="/absensikelas/{{ $sesi->id }}"
+                            class="flex items-center justify-center rounded-lg bg-emerald-600 py-2 text-xs font-medium text-white">
+                            Open
                         </a>
 
-                        <button>
+                        <form
+                            action="/absensikelas/{{ $sesi->id }}"
+                            method="POST"
+                            onsubmit="return confirm('Yakin ingin menghapus data ini?')">
 
-                            Open
+                            @csrf
+                            @method('DELETE')
 
-                        </button>
+                            <button
+                                type="submit"
+                                class="w-full rounded-lg bg-red-600 py-2 text-xs font-medium text-white">
+                                Delete
+                            </button>
 
-                        <button>
-
-                            Delete
-
-                        </button>
+                        </form>
 
                     </div>
 

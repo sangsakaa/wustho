@@ -43,6 +43,21 @@
         body {
             font-family: 'Inter', sans-serif;
         }
+
+        body {
+            padding-bottom: env(safe-area-inset-bottom);
+            padding-top: env(safe-area-inset-top);
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 20px;
+        }
     </style>
 </head>
 
@@ -63,7 +78,8 @@ $dbError = $e->getMessage();
 }
 @endphp
 
-<body class="min-h-screen antialiased bg-slate-100 dark:bg-dark-bg overflow-x-hidden">
+<body class="min-h-screen antialiased bg-slate-50
+dark:bg-slate-900 dark:bg-dark-bg overflow-x-hidden">
 
     @if ($dbOnline)
 
@@ -74,7 +90,7 @@ $dbError = $e->getMessage();
 
         {{-- Main Content --}}
         <div
-            class="flex flex-col flex-1 w-full transition-all duration-200"
+            class="flex flex-col flex-1 max-w-7xl mx-auto transition-all duration-200"
             :class="{
         'lg:ml-64': isSidebarOpen,
         'lg:ml-16': !isSidebarOpen
@@ -85,9 +101,9 @@ $dbError = $e->getMessage();
 
             {{-- Header --}}
             <header
-                class="bg-white dark:bg-dark-eval-1 border-b border-slate-200 dark:border-slate-700 px-4 py-3 shadow-sm">
+                class="bg-white dark:bg-dark-eval-1 border-b border-slate-200 dark:border-slate-700 px-3 py-3 md:px-5 shadow-sm">
 
-                <div class="flex items-center justify-between">
+                <div class="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
 
                     {{-- Left --}}
                     <div>
@@ -103,13 +119,13 @@ $dbError = $e->getMessage();
                     </div>
 
                     {{-- Right --}}
-                    <div class="hidden md:flex items-center gap-4">
+                    <div class="flex flex-wrap items-center gap-2 text-xs">
 
                         {{-- Status --}}
                         <div class="flex items-center gap-2">
 
                             <span class="relative flex h-2 w-2">
-                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                                <span class="animate-ping absolute inline-flex h-full max-w-7xl mx-auto rounded-full bg-green-400 opacity-75"></span>
                                 <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
                             </span>
 
@@ -122,7 +138,8 @@ $dbError = $e->getMessage();
                         {{-- Periode --}}
                         @if($periodeAktif)
 
-                        <div class="flex items-center gap-2 px-3 py-1 rounded-lg bg-slate-100 dark:bg-slate-800">
+                        <div class="flex items-center gap-2 px-3 py-1 rounded-lg bg-slate-50
+dark:bg-slate-900 dark:bg-slate-800">
 
                             <span class="text-xs text-slate-500 dark:text-slate-400">
                                 Periode:
@@ -144,17 +161,17 @@ $dbError = $e->getMessage();
 
             </header>
             {{-- CONTENT --}}
-            <main class="flex-1 overflow-y-auto overflow-x-hidden bg-slate-100 dark:bg-dark-bg">
+            <main class="flex-1 bg-slate-50
+dark:bg-slate-900 dark:bg-dark-bg overflow-x-hidden">
 
-                <div class="min-h-full w-full max-w-full overflow-x-hidden">
+                <div class="mx-auto max-w-7xl mx-auto max-w-7xl px-3 py-3 sm:px-4 lg:px-6">
                     {{ $slot }}
                 </div>
 
             </main>
 
             {{-- FOOTER --}}
-            <footer
-                class="bg-white dark:bg-dark-eval-1 border-t border-slate-200 dark:border-slate-700 px-4 py-3">
+            <footer class="bg-white dark:bg-dark-eval-1 border-t px-3 py-2">
 
                 <div
                     class="flex flex-col md:flex-row items-center justify-between gap-2">
@@ -277,7 +294,7 @@ $dbError = $e->getMessage();
     {{-- ============================= --}}
     <div class="flex items-center justify-center min-h-screen bg-gradient-to-br from-slate-100 via-white to-emerald-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 px-4">
 
-        <div class="w-full max-w-2xl">
+        <div class="max-w-7xl mx-auto ">
 
             <div class="bg-white dark:bg-slate-800 rounded-3xl shadow-2xl border border-slate-200 dark:border-slate-700 overflow-hidden">
 
@@ -337,7 +354,8 @@ $dbError = $e->getMessage();
                     {{-- INFO --}}
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-3 mt-5">
 
-                        <div class="p-3 rounded-xl bg-slate-100 dark:bg-slate-700">
+                        <div class="p-3 rounded-xl bg-slate-50
+dark:bg-slate-900 ">
 
                             <div class="text-xs text-slate-500">
                                 Status
@@ -349,7 +367,8 @@ $dbError = $e->getMessage();
 
                         </div>
 
-                        <div class="p-3 rounded-xl bg-slate-100 dark:bg-slate-700">
+                        <div class="p-3 rounded-xl bg-slate-50
+dark:bg-slate-900 ">
 
                             <div class="text-xs text-slate-500">
                                 Environment
@@ -361,7 +380,8 @@ $dbError = $e->getMessage();
 
                         </div>
 
-                        <div class="p-3 rounded-xl bg-slate-100 dark:bg-slate-700">
+                        <div class="p-3 rounded-xl bg-slate-50
+dark:bg-slate-900 ">
 
                             <div class="text-xs text-slate-500">
                                 Time
@@ -409,8 +429,7 @@ $dbError = $e->getMessage();
     {{-- Livewire --}}
     @livewireScripts
 
-    {{-- SweetAlert --}}
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
 </body>
 

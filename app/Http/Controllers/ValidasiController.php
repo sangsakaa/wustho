@@ -450,4 +450,9 @@ class ValidasiController
             'tab'
         ));
     }
+    public function pdf()
+    {
+        // 
+        'dd';
+    }
 }
