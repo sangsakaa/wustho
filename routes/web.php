@@ -709,6 +709,29 @@ Route::get('/debug-sync', [ApiSiswaController::class, 'debugSync'])->name('debug
 Route::post('/calon-siswa/{id}/push', [ApiSiswaController::class, 'pushToSiswa']);
 Route::post('/calon-siswa/{calon}/reset-status', [ApiSiswaController::class, 'resetStatus']);
 
+// cek store hosting
+
+Route::get('/disk-check', function () {
+
+    $path = base_path(); // lokasi aplikasi Laravel
+
+    $total = disk_total_space($path);
+    $free  = disk_free_space($path);
+    $used  = $total - $free;
+
+    return response()->json([
+        'path' => $path,
+        'total_bytes' => $total,
+        'used_bytes' => $used,
+        'free_bytes' => $free,
+
+        'total_gb' => round($total / 1024 / 1024 / 1024, 2),
+        'used_gb'  => round($used / 1024 / 1024 / 1024, 2),
+        'free_gb'  => round($free / 1024 / 1024 / 1024, 2),
+    ]);
+});
+
+
 Route::get('/php-info-test', function () {
     return [
         'PHP_VERSION'  => PHP_VERSION,
