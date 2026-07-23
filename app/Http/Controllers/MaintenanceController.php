@@ -261,4 +261,103 @@ class MaintenanceController extends Controller
             ->route('maintenance.detail', 'logs')
             ->with('success', basename($file) . ' berhasil dikosongkan.');
     }
+    public function analyzer()
+    {
+        $targets = [
+            [
+                'name' => 'Laravel Logs',
+                'path' => storage_path('logs'),
+                'cleanable' => true,
+                'action' => 'clear-log',
+            ],
+            [
+                'name' => 'Framework Cache',
+                'path' => storage_path('framework/cache'),
+                'cleanable' => true,
+                'action' => 'cache',
+            ],
+            [
+                'name' => 'Framework Views',
+                'path' => storage_path('framework/views'),
+                'cleanable' => true,
+                'action' => 'view',
+            ],
+            [
+                'name' => 'Framework Sessions',
+                'path' => storage_path('framework/sessions'),
+                'cleanable' => true,
+                'action' => 'sessions',
+            ],
+            [
+                'name' => 'Bootstrap Cache',
+                'path' => base_path('bootstrap/cache'),
+                'cleanable' => true,
+                'action' => 'bootstrap',
+            ],
+            [
+                'name' => 'Storage Public',
+                'path' => storage_path('app/public'),
+                'cleanable' => false,
+                'action' => null,
+            ],
+            [
+                'name' => 'Public Upload',
+                'path' => public_path('uploads'),
+                'cleanable' => false,
+                'action' => null,
+            ],
+        ];
+
+        $result = [];
+
+        foreach ($targets as $item) {
+
+            if (!File::exists($item['path'])) {
+                continue;
+            }
+
+            $size = $this->folderBytes($item['path']);
+
+            $result[] = [
+                'name' => $item['name'],
+                'path' => $item['path'],
+                'bytes' => $size,
+                'size' => $this->formatSize($size),
+                'cleanable' => $item['cleanable'],
+                'action' => $item['action'],
+                'status' => $this->statusStorage($size),
+            ];
+        }
+
+        usort($result, fn($a, $b) => $b['bytes'] <=> $a['bytes']);
+
+        return view('maintenance.analyzer', compact('result'));
+    }
+    private function folderBytes($dir)
+    {
+        $size = 0;
+
+        if (!File::exists($dir)) {
+            return 0;
+        }
+
+        foreach (File::allFiles($dir) as $file) {
+            $size += $file->getSize();
+        }
+
+        return $size;
+    }
+
+    private function statusStorage($bytes)
+    {
+        if ($bytes > 1024 * 1024 * 1024) {
+            return 'danger';
+        }
+
+        if ($bytes > 300 * 1024 * 1024) {
+            return 'warning';
+        }
+
+        return 'success';
+    }
 }

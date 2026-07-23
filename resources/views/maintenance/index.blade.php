@@ -68,6 +68,56 @@
         </form>
 
       </div>
+      {{-- SUMMARY --}}
+
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-5 mb-6">
+
+        <div class="bg-white rounded-xl shadow p-5">
+          <div class="text-gray-500 text-sm">
+            Total Folder
+          </div>
+          <div class="text-3xl font-bold text-blue-600">
+            {{ count($data) }}
+          </div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow p-5">
+          <div class="text-gray-500 text-sm">
+            Folder Aktif
+          </div>
+          <div class="text-3xl font-bold text-green-600">
+            {{ collect($data)->where('exists',true)->count() }}
+          </div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow p-5">
+          <div class="text-gray-500 text-sm">
+            Cache Laravel
+          </div>
+
+          <div class="text-lg font-bold text-orange-600">
+            Framework + Bootstrap
+          </div>
+        </div>
+
+        <div class="bg-white rounded-xl shadow p-5">
+
+          <div class="text-gray-500 text-sm">
+
+            Storage Analyzer
+
+          </div>
+
+          <a href="{{ route('maintenance.analyzer') }}"
+            class="inline-block mt-2 rounded bg-red-600 px-4 py-2 text-white">
+
+            🔍 Analisa
+
+          </a>
+
+        </div>
+
+      </div>
 
       {{-- TABLE --}}
       <div class="overflow-hidden rounded-xl bg-white dark:bg-gray-800 shadow">

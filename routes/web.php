@@ -746,6 +746,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/maintenance', [MaintenanceController::class, 'index'])
         ->name('maintenance.index');
 
+    Route::get('/maintenance/analyzer', [MaintenanceController::class, 'analyzer'])
+        ->name('maintenance.analyzer');
+
     Route::post('/maintenance/optimize', [MaintenanceController::class, 'optimize'])
         ->name('maintenance.optimize');
 
@@ -760,12 +763,9 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/maintenance/route', [MaintenanceController::class, 'routeClear'])
         ->name('maintenance.route');
-    Route::get('/maintenance/{folder}', [MaintenanceController::class, 'detail'])
-        ->name('maintenance.detail');
+
     Route::get('/maintenance/log/view/{file}', [MaintenanceController::class, 'viewLog'])
         ->where('file', '.*')
-        ->name('maintenance.log.view');
-    Route::get('/maintenance/log/view/{file}', [MaintenanceController::class, 'viewLog'])
         ->name('maintenance.log.view');
 
     Route::get('/maintenance/log/download/{file}', [MaintenanceController::class, 'downloadLog'])
@@ -773,8 +773,10 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/maintenance/log/clear/{file}', [MaintenanceController::class, 'clearLog'])
         ->name('maintenance.log.clear');
-});
 
+    Route::get('/maintenance/{folder}', [MaintenanceController::class, 'detail'])
+        ->name('maintenance.detail');
+});
 
 
 require __DIR__ . '/auth.php';
