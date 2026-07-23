@@ -760,6 +760,19 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/maintenance/route', [MaintenanceController::class, 'routeClear'])
         ->name('maintenance.route');
+    Route::get('/maintenance/{folder}', [MaintenanceController::class, 'detail'])
+        ->name('maintenance.detail');
+    Route::get('/maintenance/log/view/{file}', [MaintenanceController::class, 'viewLog'])
+        ->where('file', '.*')
+        ->name('maintenance.log.view');
+    Route::get('/maintenance/log/view/{file}', [MaintenanceController::class, 'viewLog'])
+        ->name('maintenance.log.view');
+
+    Route::get('/maintenance/log/download/{file}', [MaintenanceController::class, 'downloadLog'])
+        ->name('maintenance.log.download');
+
+    Route::post('/maintenance/log/clear/{file}', [MaintenanceController::class, 'clearLog'])
+        ->name('maintenance.log.clear');
 });
 
 

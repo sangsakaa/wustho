@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\File;
 
 class MaintenanceController extends Controller
 {
@@ -126,5 +127,138 @@ class MaintenanceController extends Controller
         Artisan::call('view:clear');
 
         return back()->with('success', Artisan::output());
+    }
+    private function formatSize($bytes)
+    {
+        if ($bytes <= 0) {
+            return '0 B';
+        }
+
+        $units = ['B', 'KB', 'MB', 'GB', 'TB'];
+
+        $power = floor(log($bytes, 1024));
+
+        return number_format(
+            $bytes / pow(1024, $power),
+            2
+        ) . ' ' . $units[$power];
+    }
+
+    public function detail($folder)
+    {
+        $folders = [
+            'logs' => storage_path('logs'),
+            'cache' => storage_path('framework/cache'),
+            'views' => storage_path('framework/views'),
+            'sessions' => storage_path('framework/sessions'),
+            'bootstrap' => base_path('bootstrap/cache'),
+        ];
+
+        abort_unless(isset($folders[$folder]), 404);
+
+        $path = $folders[$folder];
+
+        $files = [];
+
+        if (File::exists($path)) {
+
+            foreach (File::files($path) as $file) {
+
+                $files[] = [
+                    'name' => $file->getFilename(),
+                    'size' => $this->formatSize($file->getSize()),
+                    'bytes' => $file->getSize(),
+                    'modified' => date(
+                        'd-m-Y H:i:s',
+                        $file->getMTime()
+                    ),
+                    'path' => $file->getRealPath(),
+                ];
+            }
+        }
+
+        usort($files, function ($a, $b) {
+            return $b['bytes'] <=> $a['bytes'];
+        });
+
+        return view('maintenance.detail', compact(
+            'folder',
+            'files'
+        ));
+    }
+    public function viewLog($file)
+    {
+        $path = storage_path('logs/' . basename($file));
+
+        if (!File::exists($path)) {
+            abort(404, 'File tidak ditemukan.');
+        }
+
+        // Maksimal baca 200 baris terakhir
+        $lines = [];
+        $fp = fopen($path, 'r');
+
+        if ($fp) {
+            $buffer = '';
+            $pos = -1;
+            $lineCount = 0;
+
+            fseek($fp, 0, SEEK_END);
+            $filesize = ftell($fp);
+
+            while ($lineCount < 200 && abs($pos) <= $filesize) {
+
+                fseek($fp, $pos, SEEK_END);
+                $char = fgetc($fp);
+
+                if ($char === "\n") {
+                    $lines[] = strrev($buffer);
+                    $buffer = '';
+                    $lineCount++;
+                } else {
+                    $buffer .= $char;
+                }
+
+                $pos--;
+            }
+
+            if ($buffer != '') {
+                $lines[] = strrev($buffer);
+            }
+
+            fclose($fp);
+        }
+
+        $lines = array_reverse($lines);
+
+        return view('maintenance.log-view', [
+            'filename' => basename($file),
+            'content' => implode("\n", $lines),
+        ]);
+    }
+    public function downloadLog($file)
+    {
+        $path = storage_path('logs/' . basename($file));
+
+        abort_unless(File::exists($path), 404);
+
+        return response()->download($path);
+    }
+
+    /**
+     * Kosongkan isi file log (truncate)
+     */
+    public function clearLog($file)
+    {
+        $path = storage_path('logs/' . basename($file));
+
+        abort_unless(File::exists($path), 404);
+
+        // Kosongkan isi file tanpa menghapus file
+        file_put_contents($path, '');
+
+        return redirect()
+            ->route('maintenance.detail', 'logs')
+            ->with('success', basename($file) . ' berhasil dikosongkan.');
     }
 }
