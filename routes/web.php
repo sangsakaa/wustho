@@ -23,6 +23,7 @@ use App\Http\Controllers\KenaikanKelasController;
 use App\Http\Controllers\LembagaController;
 use App\Http\Controllers\LogController;
 use App\Http\Controllers\LulusanCotroller;
+use App\Http\Controllers\MaintenanceController;
 use App\Http\Controllers\MapelController;
 use App\Http\Controllers\NilaiController;
 use App\Http\Controllers\PararelController;
@@ -739,5 +740,29 @@ Route::get('/php-info-test', function () {
         'PHP_INT_MAX'  => PHP_INT_MAX,
     ];
 });
+
+Route::middleware(['auth'])->group(function () {
+
+    Route::get('/maintenance', [MaintenanceController::class, 'index'])
+        ->name('maintenance.index');
+
+    Route::post('/maintenance/optimize', [MaintenanceController::class, 'optimize'])
+        ->name('maintenance.optimize');
+
+    Route::post('/maintenance/cache', [MaintenanceController::class, 'cache'])
+        ->name('maintenance.cache');
+
+    Route::post('/maintenance/config', [MaintenanceController::class, 'config'])
+        ->name('maintenance.config');
+
+    Route::post('/maintenance/view', [MaintenanceController::class, 'viewClear'])
+        ->name('maintenance.view');
+
+    Route::post('/maintenance/route', [MaintenanceController::class, 'routeClear'])
+        ->name('maintenance.route');
+});
+
+
+
 require __DIR__ . '/auth.php';
 
