@@ -2,105 +2,129 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\File;
 
 class MaintenanceController extends Controller
 {
     public function index()
     {
         $folders = [
-            'Storage' => storage_path(),
-            'Logs' => storage_path('logs'),
-            'Framework Cache' => storage_path('framework/cache'),
-            'Framework Views' => storage_path('framework/views'),
-            'Framework Sessions' => storage_path('framework/sessions'),
-            'Bootstrap Cache' => base_path('bootstrap/cache'),
-            'Public' => public_path(),
-            'Vendor' => base_path('vendor'),
-            'Node Modules' => base_path('node_modules'),
+            [
+                'name' => 'Storage',
+                'path' => storage_path(),
+            ],
+            [
+                'name' => 'Logs',
+                'path' => storage_path('logs'),
+            ],
+            [
+                'name' => 'Framework Cache',
+                'path' => storage_path('framework/cache'),
+            ],
+            [
+                'name' => 'Framework Views',
+                'path' => storage_path('framework/views'),
+            ],
+            [
+                'name' => 'Framework Sessions',
+                'path' => storage_path('framework/sessions'),
+            ],
+            [
+                'name' => 'Bootstrap Cache',
+                'path' => base_path('bootstrap/cache'),
+            ],
+            [
+                'name' => 'Public',
+                'path' => public_path(),
+            ],
+            [
+                'name' => 'Vendor',
+                'path' => base_path('vendor'),
+            ],
+            [
+                'name' => 'Node Modules',
+                'path' => base_path('node_modules'),
+            ],
         ];
 
         $data = [];
 
-        foreach ($folders as $name => $path) {
+        foreach ($folders as $folder) {
 
             $data[] = [
-                'name' => $name,
-                'path' => $path,
-                'exists' => File::exists($path),
-                'size' => File::exists($path)
-                    ? $this->formatSize($this->folderSize($path))
-                    : '-',
-                'files' => File::exists($path)
-                    ? count(File::allFiles($path))
-                    : 0,
+                'name'   => $folder['name'],
+                'path'   => $folder['path'],
+                'exists' => is_dir($folder['path']),
+                'size'   => $this->getFolderSize($folder['path']),
             ];
         }
 
         return view('maintenance.index', compact('data'));
     }
 
-    private function folderSize($dir)
+    /**
+     * Mengambil ukuran folder TANPA membaca semua file.
+     */
+    private function getFolderSize($path)
     {
-        $size = 0;
-
-        if (!File::exists($dir))
-            return 0;
-
-        foreach (File::allFiles($dir) as $file) {
-            $size += $file->getSize();
+        if (!is_dir($path)) {
+            return '-';
         }
 
-        return $size;
-    }
+        // Linux / Hosting / cPanel
+        if (function_exists('shell_exec')) {
 
-    private function formatSize($bytes)
-    {
-        $units = ['B', 'KB', 'MB', 'GB', 'TB'];
+            $result = @shell_exec(
+                'du -sh '
+                    . escapeshellarg($path)
+                    . ' 2>/dev/null'
+            );
 
-        $i = 0;
+            if (!empty($result)) {
 
-        while ($bytes >= 1024 && $i < count($units) - 1) {
-            $bytes /= 1024;
-            $i++;
+                $parts = preg_split('/\s+/', trim($result));
+
+                return $parts[0] ?? '-';
+            }
         }
 
-        return round($bytes, 2) . ' ' . $units[$i];
+        // Fallback jika shell_exec dimatikan hosting
+        return '-';
     }
 
     public function optimize()
     {
         Artisan::call('optimize:clear');
 
-        return back()->with('success', 'Optimize Clear berhasil.');
+        return back()->with('success', Artisan::output());
     }
 
     public function cache()
     {
         Artisan::call('cache:clear');
 
-        return back()->with('success', 'Cache berhasil dibersihkan.');
+        return back()->with('success', Artisan::output());
     }
 
     public function config()
     {
         Artisan::call('config:clear');
 
-        return back()->with('success', 'Config berhasil dibersihkan.');
+        return back()->with('success', Artisan::output());
     }
 
     public function routeClear()
     {
         Artisan::call('route:clear');
 
-        return back()->with('success', 'Route berhasil dibersihkan.');
+        return back()->with('success', Artisan::output());
     }
 
     public function viewClear()
     {
         Artisan::call('view:clear');
 
-        return back()->with('success', 'View berhasil dibersihkan.');
+        return back()->with('success', Artisan::output());
     }
 }

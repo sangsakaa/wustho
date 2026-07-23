@@ -67,71 +67,36 @@
 
         <table class="w-full">
 
-          <thead class="bg-gray-100">
-
+          <thead>
             <tr>
-
-              <th class="p-3 text-left">Folder</th>
-
-              <th class="p-3">Status</th>
-
-              <th class="p-3">Ukuran</th>
-
-              <th class="p-3">Jumlah File</th>
-
-              <th class="p-3">Path</th>
-
+              <th>Folder</th>
+              <th>Status</th>
+              <th>Ukuran</th>
+              <th>Path</th>
             </tr>
-
           </thead>
 
           <tbody>
 
             @foreach($data as $item)
 
-            <tr class="border-t">
+            <tr>
 
-              <td class="p-3 font-semibold">
+              <td>{{ $item['name'] }}</td>
 
-                {{ $item['name'] }}
-
-              </td>
-
-              <td class="text-center">
+              <td>
 
                 @if($item['exists'])
-
-                <span class="text-green-600">
-                  ✔ Ada
-                </span>
-
+                <span class="text-green-600">✔ Ada</span>
                 @else
-
-                <span class="text-red-600">
-                  ✘ Tidak Ada
-                </span>
-
+                <span class="text-red-600">✘ Tidak Ada</span>
                 @endif
 
               </td>
 
-              <td class="text-center">
+              <td>{{ $item['size'] }}</td>
 
-                {{ $item['size'] }}
-
-              </td>
-
-              <td class="text-center">
-
-                {{ $item['files'] }}
-
-              </td>
-
-              <td class="text-xs text-gray-500">
-
-                {{ $item['path'] }}
-
-              </td>
+              <td>{{ $item['path'] }}</td>
 
             </tr>
 
