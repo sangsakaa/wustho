@@ -389,10 +389,7 @@ class MaintenanceController extends Controller
 
         usort($result, fn($a, $b) => $b['bytes'] <=> $a['bytes']);
 
-        return view(
-            'maintenance.hosting',
-            compact('result')
-        );
+        return view('maintenance.hosting-analyzer', compact('result'));
     }
     private function recommendation($folder, $bytes)
     {

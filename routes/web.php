@@ -741,59 +741,35 @@ Route::get('/php-info-test', function () {
     ];
 });
 
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth'])->prefix('maintenance')->group(function () {
 
-    Route::get('/maintenance', [MaintenanceController::class, 'index'])
+    Route::get('/', [MaintenanceController::class, 'index'])
         ->name('maintenance.index');
 
-    Route::get('/maintenance/analyzer', [MaintenanceController::class, 'analyzer'])
+    Route::get('/analyzer', [MaintenanceController::class, 'analyzer'])
         ->name('maintenance.analyzer');
 
-    Route::post('/maintenance/optimize', [MaintenanceController::class, 'optimize'])
-        ->name('maintenance.optimize');
+    Route::get('/hosting-analyzer', [MaintenanceController::class, 'hostingAnalyzer'])
+        ->name('maintenance.hosting');
 
-    Route::post('/maintenance/cache', [MaintenanceController::class, 'cache'])
-        ->name('maintenance.cache');
+    Route::post('/optimize', [MaintenanceController::class, 'optimize']);
+    Route::post('/cache', [MaintenanceController::class, 'cache']);
+    Route::post('/config', [MaintenanceController::class, 'config']);
+    Route::post('/view', [MaintenanceController::class, 'viewClear']);
+    Route::post('/route', [MaintenanceController::class, 'routeClear']);
 
-    Route::post('/maintenance/config', [MaintenanceController::class, 'config'])
-        ->name('maintenance.config');
+    Route::get('/log/view/{file}', [MaintenanceController::class, 'viewLog']);
+    Route::get('/log/download/{file}', [MaintenanceController::class, 'downloadLog']);
+    Route::post('/log/clear/{file}', [MaintenanceController::class, 'clearLog']);
 
-    Route::post('/maintenance/view', [MaintenanceController::class, 'viewClear'])
-        ->name('maintenance.view');
+    Route::post('/delete-file', [MaintenanceController::class, 'deleteFile']);
+    Route::post('/delete-folder', [MaintenanceController::class, 'deleteFolder']);
+    Route::post('/auto-clean', [MaintenanceController::class, 'autoClean']);
 
-    Route::post('/maintenance/route', [MaintenanceController::class, 'routeClear'])
-        ->name('maintenance.route');
-
-    Route::get('/maintenance/log/view/{file}', [MaintenanceController::class, 'viewLog'])
-        ->where('file', '.*')
-        ->name('maintenance.log.view');
-
-    Route::get('/maintenance/log/download/{file}', [MaintenanceController::class, 'downloadLog'])
-        ->name('maintenance.log.download');
-
-    Route::post('/maintenance/log/clear/{file}', [MaintenanceController::class, 'clearLog'])
-        ->name('maintenance.log.clear');
-
-    Route::get('/maintenance/{folder}', [MaintenanceController::class, 'detail'])
+    // HARUS PALING BAWAH
+    Route::get('/{folder}', [MaintenanceController::class, 'detail'])
         ->name('maintenance.detail');
 });
-Route::prefix('maintenance')
-    ->middleware(['auth'])
-    ->group(function () {
-
-        Route::get('/hosting-analyzer', [MaintenanceController::class, 'hostingAnalyzer'])
-            ->name('maintenance.hosting');
-
-        Route::post('/delete-file', [MaintenanceController::class, 'deleteFile'])
-            ->name('maintenance.delete.file');
-
-        Route::post('/delete-folder', [MaintenanceController::class, 'deleteFolder'])
-            ->name('maintenance.delete.folder');
-
-        Route::post('/auto-clean', [MaintenanceController::class, 'autoClean'])
-            ->name('maintenance.auto.clean');
-    });
-
 
 require __DIR__ . '/auth.php';
 
