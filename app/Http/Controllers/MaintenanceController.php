@@ -335,17 +335,22 @@ class MaintenanceController extends Controller
     }
     private function folderBytes($dir)
     {
-        $size = 0;
-
-        if (!File::exists($dir)) {
+        if (!is_dir($dir)) {
             return 0;
         }
 
-        foreach (File::allFiles($dir) as $file) {
-            $size += $file->getSize();
+        if (function_exists('shell_exec')) {
+
+            $size = trim(shell_exec(
+                "du -sb " . escapeshellarg($dir) . " 2>/dev/null | cut -f1"
+            ));
+
+            return is_numeric($size)
+                ? (int)$size
+                : 0;
         }
 
-        return $size;
+        return 0;
     }
 
     private function statusStorage($bytes)
@@ -376,14 +381,28 @@ class MaintenanceController extends Controller
 
                 'path' => $dir,
 
+                'bytes' => $bytes,
+
                 'size' => $this->formatSize($bytes),
 
-                'bytes' => $bytes,
+                'status' => $this->statusStorage($bytes),
+
+                'cleanable' => in_array(
+                    strtolower(basename($dir)),
+                    [
+                        'logs',
+                        'cache',
+                        'sessions',
+                        'tmp',
+                        'backup'
+                    ]
+                ),
 
                 'recommendation' => $this->recommendation(
                     basename($dir),
                     $bytes
                 ),
+
             ];
         }
 
