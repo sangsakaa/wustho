@@ -360,4 +360,96 @@ class MaintenanceController extends Controller
 
         return 'success';
     }
+    public function hostingAnalyzer()
+    {
+        $root = dirname(base_path());
+
+        $result = [];
+
+        foreach (File::directories($root) as $dir) {
+
+            $bytes = $this->folderBytes($dir);
+
+            $result[] = [
+
+                'name' => basename($dir),
+
+                'path' => $dir,
+
+                'size' => $this->formatSize($bytes),
+
+                'bytes' => $bytes,
+
+                'recommendation' => $this->recommendation(
+                    basename($dir),
+                    $bytes
+                ),
+            ];
+        }
+
+        usort($result, fn($a, $b) => $b['bytes'] <=> $a['bytes']);
+
+        return view(
+            'maintenance.hosting',
+            compact('result')
+        );
+    }
+    private function recommendation($folder, $bytes)
+    {
+        $folder = strtolower($folder);
+
+        if ($folder == "logs") {
+            return [
+                'status' => 'Aman',
+                'color' => 'warning',
+                'message' => 'Log dapat dibersihkan.'
+            ];
+        }
+
+        if ($folder == "tmp") {
+            return [
+                'status' => 'Aman',
+                'color' => 'warning',
+                'message' => 'Temporary dapat dihapus.'
+            ];
+        }
+
+        if ($folder == "backup") {
+            return [
+                'status' => 'Aman',
+                'color' => 'danger',
+                'message' => 'Backup lama dapat dihapus.'
+            ];
+        }
+
+        if ($folder == "mail") {
+            return [
+                'status' => 'Periksa',
+                'color' => 'danger',
+                'message' => 'Email sering memenuhi storage.'
+            ];
+        }
+
+        if ($folder == "vendor") {
+            return [
+                'status' => 'Jangan',
+                'color' => 'secondary',
+                'message' => 'Folder Laravel.'
+            ];
+        }
+
+        if ($folder == "storage") {
+            return [
+                'status' => 'Analisa',
+                'color' => 'info',
+                'message' => 'Periksa log dan upload.'
+            ];
+        }
+
+        return [
+            'status' => 'Periksa',
+            'color' => 'secondary',
+            'message' => 'Belum diketahui.'
+        ];
+    }
 }

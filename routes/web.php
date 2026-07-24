@@ -777,6 +777,22 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/maintenance/{folder}', [MaintenanceController::class, 'detail'])
         ->name('maintenance.detail');
 });
+Route::prefix('maintenance')
+    ->middleware(['auth'])
+    ->group(function () {
+
+        Route::get('/hosting-analyzer', [MaintenanceController::class, 'hostingAnalyzer'])
+            ->name('maintenance.hosting');
+
+        Route::post('/delete-file', [MaintenanceController::class, 'deleteFile'])
+            ->name('maintenance.delete.file');
+
+        Route::post('/delete-folder', [MaintenanceController::class, 'deleteFolder'])
+            ->name('maintenance.delete.folder');
+
+        Route::post('/auto-clean', [MaintenanceController::class, 'autoClean'])
+            ->name('maintenance.auto.clean');
+    });
 
 
 require __DIR__ . '/auth.php';
