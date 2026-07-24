@@ -770,6 +770,12 @@ Route::middleware(['auth'])->prefix('maintenance')->group(function () {
     Route::get('/{folder}', [MaintenanceController::class, 'detail'])
         ->name('maintenance.detail');
 });
+Route::post(
+    '/maintenance/delete-folder',
+    [MaintenanceController::class, 'deleteFolder']
+)
+    ->name('maintenance.delete.folder');
+
 
 require __DIR__ . '/auth.php';
 

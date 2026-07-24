@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\File;
 
@@ -467,5 +469,17 @@ class MaintenanceController extends Controller
             'color' => 'secondary',
             'message' => 'Belum diketahui.'
         ];
+    }
+    public function deleteFolder(Request $request)
+    {
+        $path = $request->path;
+
+        if (!File::exists($path)) {
+            return back()->with('error', 'Folder tidak ditemukan.');
+        }
+
+        File::deleteDirectory($path);
+
+        return back()->with('success', 'Folder berhasil dihapus.');
     }
 }
