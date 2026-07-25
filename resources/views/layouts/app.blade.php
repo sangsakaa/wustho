@@ -9,7 +9,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
+    <meta name="theme-color" content="#2563eb">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="apple-touch-icon" href="/pwa/logo.png">
     <title>
         {{ config('app.name') }}
         @yield('title')
@@ -306,6 +308,18 @@ dark:bg-slate-900 dark:bg-slate-800">
     @endif
     {{-- Livewire --}}
     @livewireScripts
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js')
+                .then(function(registration) {
+                    console.log('Service Worker berhasil:', registration.scope);
+                })
+                .catch(function(error) {
+                    console.error('Service Worker gagal:', error);
+                });
+        }
+    </script>
 </body>
 
 </html>

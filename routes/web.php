@@ -776,6 +776,6 @@ Route::post(
 )
     ->name('maintenance.delete.folder');
 
-
+Route::view('/offline', 'offline');
 require __DIR__ . '/auth.php';
 
