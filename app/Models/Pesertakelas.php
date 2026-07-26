@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
-use App\Models\Siswa;
+use App\Models\Absensikelas;
 use App\Models\Kelasmi;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\Siswa;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class Pesertakelas extends Model
 {
@@ -21,10 +22,7 @@ class Pesertakelas extends Model
     {
         return $this->belongsTo(Kelasmi::class, 'kelasmi_id');
     }
-    public function pesertakelas()
-    {
-        return $this->hasMany(Pesertakelas::class, 'kelasmi_id');
-    }
+
     public static function search($search)
     {
         // dd($search);
@@ -34,6 +32,10 @@ class Pesertakelas extends Model
             ->whereHas('kelasmi', function ($query) use ($search) {
                 $query->where('periode_id', session('periode_id'));
             });
+    }
+    public function absensikelas()
+    {
+        return $this->hasMany(Absensikelas::class, 'pesertakelas_id', 'id');
     }
 
     

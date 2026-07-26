@@ -11,7 +11,6 @@ use App\Models\Sesikelas;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Mpdf\Mpdf;
 use Mpdf\Output\Destination;
 
@@ -25,6 +24,13 @@ class AbsensikelasController
     {
         $prev_url = session('prev_url') ?? url()->previous();
 
+
+        /*
+    |--------------------------------------------------------------------------
+    | Informasi Kelas
+    |--------------------------------------------------------------------------
+    */
+
         $dataKelas = Kelasmi::query()
             ->join('kelas', 'kelas.id', '=', 'kelasmi.kelas_id')
             ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
@@ -36,60 +42,129 @@ class AbsensikelasController
                 'periode.periode',
                 'semester.ket_semester'
             )
-            ->first();
+            ->firstOrFail();
+
+        /*
+    |--------------------------------------------------------------------------
+    | Data Siswa + Absensi Terbaru
+    |--------------------------------------------------------------------------
+    */
 
         $dataSiswa = Pesertakelas::query()
+
             ->join('siswa', 'siswa.id', '=', 'pesertakelas.siswa_id')
+
             ->leftJoin('nis', 'nis.siswa_id', '=', 'siswa.id')
+
             ->leftJoin('absensikelas', function ($join) use ($sesikelas) {
-                $join->on('absensikelas.pesertakelas_id', '=', 'pesertakelas.id')
-                    ->where('absensikelas.sesikelas_id', '=', $sesikelas->id);
-            })
-            ->where('pesertakelas.kelasmi_id', $sesikelas->kelasmi_id)
-            ->select(
-                'pesertakelas.id',
-            'nis.nis',
-            'siswa.nama_siswa',
-                'absensikelas.id as absensikelas_id',
-                'absensikelas.keterangan',
-            'absensikelas.alasan',
-                'absensikelas.updated_at as tglsimpan'
+
+            $join->on(
+                'absensikelas.pesertakelas_id',
+                '=',
+                'pesertakelas.id'
             )
+                ->where(
+                    'absensikelas.sesikelas_id',
+                    '=',
+                    $sesikelas->id
+                );
+            })
+
+            ->where(
+                'pesertakelas.kelasmi_id',
+                $sesikelas->kelasmi_id
+            )
+
+            ->select(
+
+            'pesertakelas.id',
+
+            'nis.nis',
+
+            'siswa.nama_siswa',
+
+            'absensikelas.id as absensikelas_id',
+
+            'absensikelas.keterangan',
+
+            'absensikelas.alasan',
+
+            'absensikelas.created_at',
+
+            'absensikelas.updated_at'
+
+        )
+
             ->orderBy('siswa.nama_siswa')
+
             ->get()
+
             ->map(function ($item) {
-                $item->is_default = is_null($item->absensikelas_id);
+
+            /*
+            |--------------------------------------------------------------------------
+            | Jika belum ada record absensi
+            |--------------------------------------------------------------------------
+            */
+
+            $item->is_default = is_null($item->absensikelas_id);
 
                 if ($item->is_default) {
-                    $item->keterangan = 'hadir';
-                    $item->alasan = '';
+
+                $item->keterangan = 'hadir';
+
+                $item->alasan = '';
                 }
 
                 return $item;
             });
 
+        /*
+    |--------------------------------------------------------------------------
+    | Statistik
+    |--------------------------------------------------------------------------
+    */
+
+        $saved = $dataSiswa->whereNotNull('absensikelas_id');
+
         $jumlahAbsensi = collect([
-            'hadir' => $dataSiswa->where('keterangan', 'hadir')->count(),
-            'izin'  => $dataSiswa->where('keterangan', 'izin')->count(),
-            'sakit' => $dataSiswa->where('keterangan', 'sakit')->count(),
-            'alfa'  => $dataSiswa->where('keterangan', 'alfa')->count(),
+
+            'hadir' => $saved->where('keterangan', 'hadir')->count(),
+
+            'izin' => $saved->where('keterangan', 'izin')->count(),
+
+            'sakit' => $saved->where('keterangan', 'sakit')->count(),
+
+            'alfa' => $saved->where('keterangan', 'alfa')->count(),
+
         ]);
 
-        $diSimpanPada = $dataSiswa
-            ->whereNotNull('tglsimpan')
-            ->sortByDesc('tglsimpan')
-            ->value('tglsimpan');
+        /*
+    |--------------------------------------------------------------------------
+    | Waktu Simpan Terakhir
+    |--------------------------------------------------------------------------
+    */
 
-        return view('presensi.kelas.absensi', compact(
-            'dataSiswa',
-            'dataKelas',
-            'sesikelas',
-            'jumlahAbsensi',
-            'diSimpanPada',
-            'prev_url'
-        ));
+        $diSimpanPada = Absensikelas::where(
+            'sesikelas_id',
+            $sesikelas->id
+        )
+            ->latest('updated_at')
+            ->value('updated_at');
+
+        return view(
+            'presensi.kelas.absensi',
+            compact(
+                'dataSiswa',
+                'dataKelas',
+                'sesikelas',
+                'jumlahAbsensi',
+                'diSimpanPada',
+                'prev_url',
+
+            )
+        );
     }
-
     public function store(Request $request)
     {
         $request->validate([

@@ -165,7 +165,14 @@
 
                                 @php
                                 $isSaved = !is_null($item->absensikelas_id);
-                                $current = $item->keterangan ?? 'hadir';
+
+                                // Status dari database
+                                $current = $item->keterangan;
+
+                                // Jika belum ada record absensi
+                                if (empty($current)) {
+                                $current = 'hadir';
+                                }
                                 @endphp
 
                                 <tr class="border-t hover:bg-gray-50 transition">
@@ -186,14 +193,11 @@
 
                                     </td>
 
-                                    <td class="px-2 py-2 align-top">
-                                        <div class="font-medium leading-tight break-words  md:max-w-xs">
-                                            {{ $item->nama_siswa }}
-                                        </div>
-
+                                    <td class="px-2 py-2">
+                                        {{ $item->nama_siswa }}
                                     </td>
 
-                                    <td class="px-2 py-2 align-top">
+                                    <td class="px-2 py-2">
 
                                         <div class="flex justify-center gap-1">
 
@@ -219,41 +223,25 @@
 
                                                 <span
                                                     class="
-                            flex items-center justify-center
-                            w-7 h-7 md:w-9 md:h-9
-                            rounded-md
-                            border
-                            text-[10px] md:text-xs
-                            font-semibold
-                            cursor-pointer
-                            transition-all
+                                flex items-center justify-center
+                                w-8 h-8 rounded-md
+                                border
+                                cursor-pointer
+                                transition
 
-                            border-gray-300
-                            bg-white
-                            text-gray-600
+                                border-gray-300
 
-                            peer-checked:text-white
+                                peer-checked:text-white
 
-                            {{ $key == 'hadir'
-                                ? 'peer-checked:bg-green-600 peer-checked:border-green-600'
-                                : '' }}
+                                {{ $key=='hadir' ? 'peer-checked:bg-green-600 peer-checked:border-green-600':'' }}
+                                {{ $key=='izin' ? 'peer-checked:bg-blue-600 peer-checked:border-blue-600':'' }}
+                                {{ $key=='sakit' ? 'peer-checked:bg-yellow-500 peer-checked:border-yellow-500':'' }}
+                                {{ $key=='alfa' ? 'peer-checked:bg-red-600 peer-checked:border-red-600':'' }}
 
-                            {{ $key == 'izin'
-                                ? 'peer-checked:bg-blue-600 peer-checked:border-blue-600'
-                                : '' }}
-
-                            {{ $key == 'sakit'
-                                ? 'peer-checked:bg-yellow-500 peer-checked:border-yellow-500'
-                                : '' }}
-
-                            {{ $key == 'alfa'
-                                ? 'peer-checked:bg-red-600 peer-checked:border-red-600'
-                                : '' }}
-
-                            {{ !$isSaved && $key == 'hadir' && $selected
-                                ? 'bg-red-100 border-red-300 text-red-700'
-                                : '' }}
-                        ">
+                                {{ !$isSaved && $key=='hadir' && $selected
+                                    ? 'bg-red-100 border-red-300 text-red-700'
+                                    : 'bg-white text-gray-700' }}
+                            ">
                                                     {{ $label }}
                                                 </span>
 
@@ -264,17 +252,6 @@
                                         </div>
 
                                     </td>
-
-                                    <!-- <td class="px-2 py-2 align-top">
-
-                                        <input
-                                            type="text"
-                                            name="alasan[{{ $item->id }}]"
-                                            value="{{ old("alasan.$item->id", $item->alasan) }}"
-                                            class="w-full min-w-[120px] md:min-w-[180px] rounded-md border border-gray-300 px-2 py-1.5 text-xs md:text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                            placeholder="Opsional...">
-
-                                    </td> -->
 
                                 </tr>
 

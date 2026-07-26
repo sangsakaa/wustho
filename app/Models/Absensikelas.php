@@ -18,7 +18,7 @@ class Absensikelas extends Model
         'alasan',
     ];
 
-    public $guarded = [];
+
     public function pesertakelas()
     {
         return $this->belongsTo(Pesertakelas::class);

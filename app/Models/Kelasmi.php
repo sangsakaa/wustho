@@ -25,10 +25,7 @@ class Kelasmi extends Model
         return $this->belongsTo(Kelas::class);
     }
 
-    public function KelasMi()
-    {
-        return $this->hasMany(Pesertakelas::class, 'id', 'kelasmi');
-    }
+
     public static function search($search)
     {
         // dd($search);
