@@ -752,23 +752,39 @@ Route::middleware(['auth'])->prefix('maintenance')->group(function () {
     Route::get('/hosting-analyzer', [MaintenanceController::class, 'hostingAnalyzer'])
         ->name('maintenance.hosting');
 
-    Route::post('/optimize', [MaintenanceController::class, 'optimize']);
-    Route::post('/cache', [MaintenanceController::class, 'cache']);
-    Route::post('/config', [MaintenanceController::class, 'config']);
-    Route::post('/view', [MaintenanceController::class, 'viewClear']);
-    Route::post('/route', [MaintenanceController::class, 'routeClear']);
+    Route::post('/optimize', [MaintenanceController::class, 'optimize'])
+        ->name('maintenance.optimize');
 
-    Route::get('/log/view/{file}', [MaintenanceController::class, 'viewLog']);
-    Route::get('/log/download/{file}', [MaintenanceController::class, 'downloadLog']);
-    Route::post('/log/clear/{file}', [MaintenanceController::class, 'clearLog']);
+    Route::post('/cache', [MaintenanceController::class, 'cache'])
+        ->name('maintenance.cache');
 
-    Route::post('/delete-file', [MaintenanceController::class, 'deleteFile']);
-    Route::post('/delete-folder', [MaintenanceController::class, 'deleteFolder']);
-    Route::post('/auto-clean', [MaintenanceController::class, 'autoClean']);
+    Route::post('/config', [MaintenanceController::class, 'config'])
+        ->name('maintenance.config');
 
-    // HARUS PALING BAWAH
+    Route::post('/view', [MaintenanceController::class, 'viewClear'])
+        ->name('maintenance.view');
+
+    Route::post('/route', [MaintenanceController::class, 'routeClear'])
+        ->name('maintenance.route');
+
+    Route::post('/delete-file', [MaintenanceController::class, 'deleteFile'])
+        ->name('maintenance.delete.file');
+
+    Route::post('/delete-folder', [MaintenanceController::class, 'deleteFolder'])
+        ->name('maintenance.delete.folder');
+
+    Route::post('/auto-clean', [MaintenanceController::class, 'autoClean'])
+        ->name('maintenance.auto.clean');
     Route::get('/{folder}', [MaintenanceController::class, 'detail'])
         ->name('maintenance.detail');
+    Route::get('/log/view/{file}', [MaintenanceController::class, 'viewLog'])
+        ->name('maintenance.log.view');
+
+    Route::get('/log/download/{file}', [MaintenanceController::class, 'downloadLog'])
+        ->name('maintenance.log.download');
+
+    Route::post('/log/clear/{file}', [MaintenanceController::class, 'clearLog'])
+        ->name('maintenance.log.clear');
 });
 Route::post(
     '/maintenance/delete-folder',
