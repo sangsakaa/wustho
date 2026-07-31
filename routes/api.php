@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/getDataSiswa', [ApiSiswaController::class, 'getDataSiswa']);
 Route::get('/data-asrama', [ApiSiswaController::class, 'dataAsrama']);
 Route::get('/getDataGuru', [ApiGuruController::class, 'getDataGuru']);
+
 /*
 |--------------------------------------------------------------------------
 | API V1
@@ -25,11 +26,13 @@ Route::get('/getDataGuru', [ApiGuruController::class, 'getDataGuru']);
 */
 
 Route::prefix('v1')->group(function () {
+
     /*
     |--------------------------------------------------------------------------
     | Authentication
     |--------------------------------------------------------------------------
     */
+
     Route::post('/login', [AuthController::class, 'login']);
 
     /*
@@ -40,23 +43,31 @@ Route::prefix('v1')->group(function () {
 
     Route::middleware('auth:sanctum')->group(function () {
 
+        // Auth
         Route::post('/logout', [AuthController::class, 'logout']);
 
+        // Dashboard
         Route::get('/dashboard', [DashboardController::class, 'index']);
 
-        // Session
+        // =========================
+        // SESSION
+        // =========================
+        Route::post('/session/create', [SessionController::class, 'store']);
         Route::get('/session/today', [SessionController::class, 'today']);
         Route::get('/session/{session}/students', [SessionController::class, 'students']);
 
-        // Attendance
+        // =========================
+        // ATTENDANCE
+        // =========================
         Route::post('/attendance/checkin', [AttendanceController::class, 'checkin']);
         Route::get('/attendance/history', [AttendanceController::class, 'history']);
 
         /*
         |--------------------------------------------------------------------------
-        | Debug (hapus saat production)
+        | Debug
         |--------------------------------------------------------------------------
         */
+
         Route::get('/test', function (Request $request) {
             return response()->json([
                 'guard_default' => config('auth.defaults.guard'),
@@ -78,7 +89,4 @@ Route::prefix('v1')->group(function () {
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
-});
-Route::middleware('auth:sanctum')->group(function () {
-    Route::post('/session/create', [SessionController::class, 'store']);
 });
