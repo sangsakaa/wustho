@@ -27,57 +27,24 @@ Route::get('/getDataGuru', [ApiGuruController::class, 'getDataGuru']);
 
 Route::prefix('v1')->group(function () {
 
-    /*
-    |--------------------------------------------------------------------------
-    | Authentication
-    |--------------------------------------------------------------------------
-    */
-
     Route::post('/login', [AuthController::class, 'login']);
-
-    /*
-    |--------------------------------------------------------------------------
-    | Protected Routes
-    |--------------------------------------------------------------------------
-    */
 
     Route::middleware('auth:sanctum')->group(function () {
 
-        // Auth
         Route::post('/logout', [AuthController::class, 'logout']);
 
-        // Dashboard
         Route::get('/dashboard', [DashboardController::class, 'index']);
 
-        // =========================
-        // SESSION
-        // =========================
-        Route::post('/session/create', [SessionController::class, 'store']);
         Route::get('/session/today', [SessionController::class, 'today']);
+
         Route::get('/session/{session}/students', [SessionController::class, 'students']);
 
-        // =========================
-        // ATTENDANCE
-        // =========================
+        // TAMBAHKAN DI SINI
+        Route::post('/session/create', [SessionController::class, 'store']);
+
         Route::post('/attendance/checkin', [AttendanceController::class, 'checkin']);
+
         Route::get('/attendance/history', [AttendanceController::class, 'history']);
-
-        /*
-        |--------------------------------------------------------------------------
-        | Debug
-        |--------------------------------------------------------------------------
-        */
-
-        Route::get('/test', function (Request $request) {
-            return response()->json([
-                'guard_default' => config('auth.defaults.guard'),
-                'guard_used'    => auth()->getDefaultDriver(),
-                'check'         => auth()->check(),
-                'user'          => auth()->user(),
-                'request_user'  => $request->user(),
-                'bearer'        => $request->bearerToken(),
-            ]);
-        });
     });
 });
 
