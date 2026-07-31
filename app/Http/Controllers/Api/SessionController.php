@@ -121,4 +121,60 @@ class SessionController extends Controller
             'students' => $students,
         ]);
     }
+    public function store(Request $request)
+    {
+        $request->validate([
+            'tgl' => ['required', 'date'],
+        ]);
+
+        // jika periode disimpan di user
+        $periodeId = auth()->user()->periode_id;
+
+        // atau jika masih tetap 1
+        // $periodeId = 1;
+
+        $kelas = Kelasmi::where('periode_id', $periodeId)
+            ->orderBy('nama_kelas')
+            ->get();
+
+        $existing = Sesikelas::query()
+            ->join('kelasmi', 'kelasmi.id', '=', 'sesikelas.kelasmi_id')
+            ->where('kelasmi.periode_id', $periodeId)
+            ->whereDate('sesikelas.tgl', $request->tgl)
+            ->pluck('sesikelas.kelasmi_id')
+            ->toArray();
+
+        $existing = array_flip($existing);
+
+        $insert = [];
+
+        foreach ($kelas as $item) {
+
+            if (!isset($existing[$item->id])) {
+
+                $insert[] = [
+                    'tgl' => $request->tgl,
+                    'kelasmi_id' => $item->id,
+                    'status' => 'open',
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ];
+            }
+        }
+
+        if (count($insert) == 0) {
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Semua sesi sudah tersedia'
+            ]);
+        }
+
+        Sesikelas::insert($insert);
+
+        return response()->json([
+            'success' => true,
+            'message' => count($insert) . ' sesi berhasil dibuat'
+        ]);
+    }
 }
