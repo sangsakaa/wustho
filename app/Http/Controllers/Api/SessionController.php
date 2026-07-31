@@ -17,6 +17,20 @@ class SessionController extends Controller
 
     public function today()
     {
+
+
+        try {
+
+            // isi method
+
+        } catch (\Throwable $e) {
+
+            return response()->json([
+                'message' => $e->getMessage(),
+                'line'    => $e->getLine(),
+                'file'    => $e->getFile(),
+            ], 500);
+        }
         $periode = Periode::active()->first();
 
         if (!$periode) {
@@ -39,11 +53,25 @@ class SessionController extends Controller
             'date'    => today()->toDateString(),
             'total'   => $sessions->count(),
             'data'    => $sessions->map(function ($session) {
+
+                $query = Absensikelas::where('sesikelas_id', $session->id);
+
+                $hadir = (clone $query)->whereRaw('LOWER(keterangan)="hadir"')->count();
+                $izin  = (clone $query)->whereRaw('LOWER(keterangan)="izin"')->count();
+                $sakit = (clone $query)->whereRaw('LOWER(keterangan)="sakit"')->count();
+                $alfa  = (clone $query)->whereRaw('LOWER(keterangan)="alfa"')->count();
+
                 return [
                     'id'       => $session->id,
                     'kelas_id' => $session->kelasmi_id,
                     'kelas'    => optional($session->kelasmi)->nama_kelas,
                     'tanggal'  => $session->tgl,
+
+                    'total' => $hadir + $izin + $sakit + $alfa,
+                    'hadir' => $hadir,
+                    'izin'  => $izin,
+                    'sakit' => $sakit,
+                    'alfa'  => $alfa,
                 ];
             }),
         ]);
@@ -51,32 +79,6 @@ class SessionController extends Controller
 
     public function students(Sesikelas $session)
     {
-        /*
-        |--------------------------------------------------------------------------
-        | Default semua siswa = Hadir
-        |--------------------------------------------------------------------------
-        */
-        $peserta = Pesertakelas::where('kelasmi_id', $session->kelasmi_id)->get();
-
-        foreach ($peserta as $item) {
-
-            Absensikelas::firstOrCreate(
-                [
-                    'sesikelas_id'    => $session->id,
-                    'pesertakelas_id' => $item->id,
-                ],
-                [
-                    'keterangan' => 'Hadir',
-                    'alasan'     => null,
-                ]
-            );
-        }
-
-        /*
-        |--------------------------------------------------------------------------
-        | Ambil daftar siswa beserta status presensinya
-        |--------------------------------------------------------------------------
-        */
         $students = Pesertakelas::with([
             'siswa.nis',
             'absensikelas' => function ($q) use ($session) {
@@ -95,8 +97,18 @@ class SessionController extends Controller
                     'siswa_id'        => $peserta->siswa->id,
                     'nis'             => optional($peserta->siswa->nis)->nis,
                     'nama'            => $peserta->siswa->nama_siswa,
-                    'status'          => optional($absen)->keterangan,
-                    'alasan'          => optional($absen)->alasan,
+
+                // Status default hanya untuk tampilan
+                'status'          => $absen
+                    ? strtolower($absen->keterangan)
+                    : 'hadir',
+
+                'alasan'          => $absen?->alasan,
+
+                // Menandai apakah sudah pernah disimpan
+                'is_saved'        => $absen !== null,
+
+                'updated_at'      => optional($absen)->updated_at,
                 ];
             });
 
@@ -104,7 +116,7 @@ class SessionController extends Controller
             'success' => true,
             'session' => [
                 'id'      => $session->id,
-                'kelas'   => $session->kelasmi->nama_kelas,
+                'kelas'   => optional($session->kelasmi)->nama_kelas,
                 'tanggal' => $session->tgl,
             ],
             'total'    => $students->count(),

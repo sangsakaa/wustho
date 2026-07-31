@@ -22,6 +22,7 @@ class AbsensikelasController
 
     public function index(Sesikelas $sesikelas)
     {
+
         $prev_url = session('prev_url') ?? url()->previous();
 
 
@@ -164,6 +165,7 @@ class AbsensikelasController
 
             )
         );
+        // return response()->json($dataSiswa);
     }
     public function store(Request $request)
     {
@@ -354,6 +356,7 @@ class AbsensikelasController
             ->join('asrama', 'asrama.id', '=', 'asramasiswa.asrama_id')
 
             ->where('asramasiswa.periode_id', session('periode_id'))
+            ->where('kelasmi.periode_id', session('periode_id'))
             ->whereDate('sesikelas.tgl', $tgl)
 
             ->select(

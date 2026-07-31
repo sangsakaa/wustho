@@ -21,10 +21,13 @@
     // hanya yang sudah disimpan
     $savedData = $dataSiswa->whereNotNull('absensikelas_id');
 
-    $hadir = $savedData->where('keterangan', 'hadir')->count();
-    $izin = $savedData->where('keterangan', 'izin')->count();
-    $sakit = $savedData->where('keterangan', 'sakit')->count();
-    $alfa = $savedData->where('keterangan', 'alfa')->count();
+    $hadir = $savedData->filter(fn($i) => strtolower($i->keterangan) == 'hadir')->count();
+
+    $izin = $savedData->filter(fn($i) => strtolower($i->keterangan) == 'izin')->count();
+
+    $sakit = $savedData->filter(fn($i) => strtolower($i->keterangan) == 'sakit')->count();
+
+    $alfa = $savedData->filter(fn($i) => strtolower($i->keterangan) == 'alfa')->count();
 
     $total = $dataSiswa->count();
     $tersimpan = $savedData->count();
@@ -167,10 +170,9 @@
                                 $isSaved = !is_null($item->absensikelas_id);
 
                                 // Status dari database
-                                $current = $item->keterangan;
+                                $current = strtolower(trim($item->keterangan ?? ''));
 
-                                // Jika belum ada record absensi
-                                if (empty($current)) {
+                                if ($current === '') {
                                 $current = 'hadir';
                                 }
                                 @endphp
