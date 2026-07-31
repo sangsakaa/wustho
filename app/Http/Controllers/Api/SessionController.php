@@ -85,8 +85,10 @@ class SessionController extends Controller
                 $q->where('sesikelas_id', $session->id);
             }
         ])
-            ->where('kelasmi_id', $session->kelasmi_id)
-            ->orderBy('id')
+            ->join('siswas', 'siswas.id', '=', 'pesertakelas.siswa_id')
+            ->where('pesertakelas.kelasmi_id', $session->kelasmi_id)
+            ->orderBy('siswas.nama_siswa', 'asc')
+            ->select('pesertakelas.*')
             ->get()
             ->map(function ($peserta) {
 
@@ -98,17 +100,13 @@ class SessionController extends Controller
                     'nis'             => optional($peserta->siswa->nis)->nis,
                     'nama'            => $peserta->siswa->nama_siswa,
 
-                // Status default hanya untuk tampilan
-                'status'          => $absen
+                'status' => $absen
                     ? strtolower($absen->keterangan)
                     : 'hadir',
 
-                'alasan'          => $absen?->alasan,
-
-                // Menandai apakah sudah pernah disimpan
-                'is_saved'        => $absen !== null,
-
-                'updated_at'      => optional($absen)->updated_at,
+                'alasan'     => $absen?->alasan,
+                'is_saved'   => $absen !== null,
+                'updated_at' => optional($absen)->updated_at,
                 ];
             });
 
