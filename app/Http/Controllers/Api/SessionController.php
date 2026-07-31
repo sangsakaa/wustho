@@ -85,7 +85,7 @@ class SessionController extends Controller
                 $q->where('sesikelas_id', $session->id);
             }
         ])
-            ->join('siswas', 'siswas.id', '=', 'pesertakelas.siswa_id')
+            ->join('siswa', 'siswa.id', '=', 'pesertakelas.siswa_id')
             ->where('pesertakelas.kelasmi_id', $session->kelasmi_id)
             ->orderBy('siswa.nama_siswa', 'asc')
             ->select('pesertakelas.*')
