@@ -1,14 +1,14 @@
 <?php
 
-use App\Http\Controllers\Api\ApiGuruController;
-use App\Http\Controllers\Api\ApiSiswaController;
-use App\Http\Controllers\Api\AttendanceController;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
+
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\SessionController;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\Api\AttendanceController;
+use App\Http\Controllers\Api\ApiSiswaController;
+use App\Http\Controllers\Api\ApiGuruController;
 /*
 |--------------------------------------------------------------------------
 | Public API
@@ -26,31 +26,43 @@ Route::get('/getDataGuru', [ApiGuruController::class, 'getDataGuru']);
 */
 
 Route::prefix('v1')->group(function () {
-
+    /*
+    |--------------------------------------------------------------------------
+    | Login
+    |--------------------------------------------------------------------------
+    */
     Route::post('/login', [AuthController::class, 'login']);
-
+    /*
+    |--------------------------------------------------------------------------
+    | Protected
+    |--------------------------------------------------------------------------
+    */
     Route::middleware('auth:sanctum')->group(function () {
 
+        // Auth
         Route::post('/logout', [AuthController::class, 'logout']);
-
+        // Dashboard
         Route::get('/dashboard', [DashboardController::class, 'index']);
-
+        // Session
         Route::get('/session/today', [SessionController::class, 'today']);
-
         Route::get('/session/{session}/students', [SessionController::class, 'students']);
-
-        // TAMBAHKAN DI SINI
         Route::post('/session/create', [SessionController::class, 'store']);
-
+        // Attendance
         Route::post('/attendance/checkin', [AttendanceController::class, 'checkin']);
-
         Route::get('/attendance/history', [AttendanceController::class, 'history']);
+        // Debug
+        Route::get('/test', function (Request $request) {
+            return response()->json([
+                'user' => $request->user(),
+                'guard' => auth()->getDefaultDriver(),
+            ]);
+        });
     });
 });
 
 /*
 |--------------------------------------------------------------------------
-| Default Sanctum User
+| User
 |--------------------------------------------------------------------------
 */
 
