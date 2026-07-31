@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Absensikelas;
+use App\Models\Kelasmi;
 use App\Models\Periode;
 use App\Models\Pesertakelas;
 use App\Models\Sesikelas;
 use App\Services\SessionService;
+use Illuminate\Http\Request;
 
 class SessionController extends Controller
 {
