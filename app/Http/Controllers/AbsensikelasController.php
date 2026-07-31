@@ -214,6 +214,129 @@ class AbsensikelasController
                 'prev_url' => $request->prev_url,
             ]);
     }
+    public function rekapPerBulan(Request $request)
+    {
+        $dataKelasMi = Kelasmi::query()
+            ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
+            ->join('semester', 'semester.id', '=', 'periode.semester_id')
+            ->select(
+                'kelasmi.id',
+                'kelasmi.nama_kelas',
+                'periode.periode',
+                'semester.ket_semester'
+            )
+            ->where('kelasmi.periode_id', session('periode_id'))
+            ->orderBy('kelasmi.nama_kelas')
+            ->get();
+
+        $kelasmi = Kelasmi::query()
+            ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
+            ->join('semester', 'semester.id', '=', 'periode.semester_id')
+            ->select(
+                'kelasmi.id',
+                'kelasmi.nama_kelas',
+                'periode.periode',
+                'semester.ket_semester',
+                'kelasmi.jenjang'
+            )
+            ->where('kelasmi.periode_id', session('periode_id'))
+            ->where('kelasmi.id', $request->kelasmi_id)
+            ->first();
+
+        $bulan = $request->bulan
+            ? Carbon::parse($request->bulan)
+            : now();
+
+        $periodeBulan = $bulan->copy()
+            ->startOfMonth()
+            ->daysUntil($bulan->copy()->endOfMonth());
+
+        if (!$kelasmi) {
+            return view('presensi.kelas.rekapPerBulan', [
+                'dataKelasMi' => $dataKelasMi,
+                'kelasmi' => null,
+                'dataSiswa' => collect(),
+                'periodeBulan' => $periodeBulan,
+                'bulan' => $bulan,
+            ]);
+        }
+
+        $dataSiswa = Pesertakelas::query()
+            ->join('siswa', 'siswa.id', '=', 'pesertakelas.siswa_id')
+            ->join('nis', 'nis.siswa_id', '=', 'siswa.id')
+            ->join('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
+            ->join('kelas', 'kelas.id', '=', 'kelasmi.kelas_id')
+            ->where('pesertakelas.kelasmi_id', $kelasmi->id)
+            ->select(
+                'pesertakelas.id',
+                'siswa.nama_siswa',
+                'siswa.jenis_kelamin',
+                'nis.nis',
+                'kelas.kelas',
+                'kelasmi.nama_kelas'
+            )
+            ->orderBy('siswa.nama_siswa')
+            ->get();
+
+        $dataAbsensi = Absensikelas::query()
+            ->join('sesikelas', 'sesikelas.id', '=', 'absensikelas.sesikelas_id')
+            ->select(
+                'absensikelas.pesertakelas_id',
+                'absensikelas.keterangan',
+                'sesikelas.tgl'
+            )
+            ->whereBetween('sesikelas.tgl', [
+                $periodeBulan->first()->toDateString(),
+                $periodeBulan->last()->toDateString()
+            ])
+            ->whereIn(
+                'absensikelas.pesertakelas_id',
+                $dataSiswa->pluck('id')
+            )
+            ->get()
+            ->groupBy('pesertakelas_id');
+
+        $dataSiswa = $dataSiswa
+            ->keyBy('id')
+            ->map(function ($siswa, $id) use ($dataAbsensi, $periodeBulan) {
+
+                $absensiPerBulan = [];
+
+                foreach ($periodeBulan as $hari) {
+
+                    $record = optional($dataAbsensi->get($id))
+                        ->firstWhere('tgl', $hari->toDateString());
+
+                    $absensiPerBulan[] = [
+                        'hari' => $hari,
+                        'data' => $record,
+                    ];
+                }
+
+                $total = collect(
+                    $dataAbsensi->get($id, collect())
+                )->countBy('keterangan');
+
+                return [
+                    'siswa' => $siswa,
+                    'absensiPerBulan' => $absensiPerBulan,
+                    'total' => [
+                        'hadir' => $total->get('hadir', 0),
+                        'izin'  => $total->get('izin', 0),
+                        'sakit' => $total->get('sakit', 0),
+                        'alfa'  => $total->get('alfa', 0),
+                    ],
+                ];
+            });
+
+        return view('presensi.kelas.rekapPerBulan', [
+            'dataKelasMi' => $dataKelasMi,
+            'kelasmi' => $kelasmi,
+            'dataSiswa' => $dataSiswa,
+            'periodeBulan' => $periodeBulan,
+            'bulan' => $bulan,
+        ]);
+    }
 
     public function blanko(Request $request)
     {
