@@ -87,7 +87,7 @@ class SessionController extends Controller
         ])
             ->join('siswas', 'siswas.id', '=', 'pesertakelas.siswa_id')
             ->where('pesertakelas.kelasmi_id', $session->kelasmi_id)
-            ->orderBy('siswas.nama_siswa', 'asc')
+            ->orderBy('siswa.nama_siswa', 'asc')
             ->select('pesertakelas.*')
             ->get()
             ->map(function ($peserta) {
