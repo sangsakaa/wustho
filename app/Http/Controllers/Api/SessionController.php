@@ -152,10 +152,6 @@ class SessionController extends Controller
             'students' => $students,
         ]);
     }
-    use Illuminate\Http\Request;
-    use App\Models\Periode;
-    use App\Models\Kelasmi;
-    use App\Models\Sesikelas;
 
     public function store(Request $request)
     {
