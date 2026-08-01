@@ -19,64 +19,93 @@ class SessionController extends Controller
 
     public function today()
     {
-
-
         try {
 
-            // isi method
+            $periode = Periode::active()->first();
 
+            if (!$periode) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Periode aktif tidak ditemukan'
+                ], 404);
+            }
+
+            $sessions = Sesikelas::with([
+                'kelasmi',
+                'kelasmi.pesertakelas'
+            ])
+                ->whereDate('tgl', today())
+                ->whereHas('kelasmi', function ($q) use ($periode) {
+                    $q->where('periode_id', $periode->id);
+                })
+                ->orderBy('id')
+                ->get();
+
+            return response()->json([
+                'success' => true,
+                'date'    => today()->toDateString(),
+                'total'   => $sessions->count(),
+                'data'    => $sessions->map(function ($session) {
+
+                    $query = Absensikelas::where('sesikelas_id', $session->id);
+
+                    $hadir = (clone $query)->whereRaw('LOWER(keterangan)="hadir"')->count();
+                    $izin  = (clone $query)->whereRaw('LOWER(keterangan)="izin"')->count();
+                    $sakit = (clone $query)->whereRaw('LOWER(keterangan)="sakit"')->count();
+                    $alfa  = (clone $query)->whereRaw('LOWER(keterangan)="alfa"')->count();
+
+                    $sudahAbsen = $hadir + $izin + $sakit + $alfa;
+
+                    $totalSiswa = Pesertakelas::where(
+                        'kelasmi_id',
+                        $session->kelasmi_id
+                    )->count();
+
+                    return [
+
+                        'id' => $session->id,
+
+                        'kelas_id' => $session->kelasmi_id,
+
+                        'kelas' => optional($session->kelasmi)->nama_kelas,
+
+                        'tanggal' => $session->tgl,
+
+                        'total_siswa' => $totalSiswa,
+
+                        'sudah_absen' => $sudahAbsen,
+
+                        'belum_absen' => max($totalSiswa - $sudahAbsen, 0),
+
+                        'hadir' => $hadir,
+
+                        'izin' => $izin,
+
+                        'sakit' => $sakit,
+
+                        'alfa' => $alfa,
+
+                        'status' => $sudahAbsen >= $totalSiswa && $totalSiswa > 0
+                            ? 'selesai'
+                            : 'belum',
+
+                        'selesai' => $sudahAbsen >= $totalSiswa && $totalSiswa > 0,
+
+                        'progress' => $totalSiswa > 0
+                            ? round(($sudahAbsen / $totalSiswa) * 100)
+                            : 0,
+                    ];
+                })->values(),
+            ]);
         } catch (\Throwable $e) {
 
             return response()->json([
+                'success' => false,
                 'message' => $e->getMessage(),
-                'line'    => $e->getLine(),
-                'file'    => $e->getFile(),
+                'line' => $e->getLine(),
+                'file' => $e->getFile(),
             ], 500);
         }
-        $periode = Periode::active()->first();
-
-        if (!$periode) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Periode aktif tidak ditemukan'
-            ], 404);
-        }
-
-        $sessions = Sesikelas::with('kelasmi')
-            ->whereDate('tgl', today())
-            ->whereHas('kelasmi', function ($q) use ($periode) {
-                $q->where('periode_id', $periode->id);
-            })
-            ->orderBy('id')
-            ->get();
-
-        return response()->json([
-            'success' => true,
-            'date'    => today()->toDateString(),
-            'total'   => $sessions->count(),
-            'data'    => $sessions->map(function ($session) {
-
-                $query = Absensikelas::where('sesikelas_id', $session->id);
-
-                $hadir = (clone $query)->whereRaw('LOWER(keterangan)="hadir"')->count();
-                $izin  = (clone $query)->whereRaw('LOWER(keterangan)="izin"')->count();
-                $sakit = (clone $query)->whereRaw('LOWER(keterangan)="sakit"')->count();
-                $alfa  = (clone $query)->whereRaw('LOWER(keterangan)="alfa"')->count();
-
-                return [
-                    'id'       => $session->id,
-                    'kelas_id' => $session->kelasmi_id,
-                    'kelas'    => optional($session->kelasmi)->nama_kelas,
-                    'tanggal'  => $session->tgl,
-
-                    'total' => $hadir + $izin + $sakit + $alfa,
-                    'hadir' => $hadir,
-                    'izin'  => $izin,
-                    'sakit' => $sakit,
-                    'alfa'  => $alfa,
-                ];
-            }),
-        ]);
     }
 
     public function students(Sesikelas $session)
@@ -129,30 +158,39 @@ class SessionController extends Controller
             'tgl' => ['required', 'date'],
         ]);
 
-        // jika periode disimpan di user
-        $periodeId = auth()->user()->periode_id;
+        // Ambil periode aktif
+        $periodeId = Periode::where('status', 'aktif')->value('id');
 
-        // atau jika masih tetap 1
-        // $periodeId = 1;
+        if (!$periodeId) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Periode aktif tidak ditemukan'
+            ]);
+        }
 
+        // Ambil semua kelas pada periode aktif
         $kelas = Kelasmi::where('periode_id', $periodeId)
             ->orderBy('nama_kelas')
             ->get();
 
-        $existing = Sesikelas::query()
-            ->join('kelasmi', 'kelasmi.id', '=', 'sesikelas.kelasmi_id')
-            ->where('kelasmi.periode_id', $periodeId)
-            ->whereDate('sesikelas.tgl', $request->tgl)
-            ->pluck('sesikelas.kelasmi_id')
-            ->toArray();
+        if ($kelas->isEmpty()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Tidak ada kelas pada periode aktif'
+            ]);
+        }
 
-        $existing = array_flip($existing);
+        // Cari sesi yang sudah dibuat
+        $existing = Sesikelas::whereDate('tgl', $request->tgl)
+            ->whereIn('kelasmi_id', $kelas->pluck('id'))
+            ->pluck('kelasmi_id')
+            ->toArray();
 
         $insert = [];
 
         foreach ($kelas as $item) {
 
-            if (!isset($existing[$item->id])) {
+            if (!in_array($item->id, $existing)) {
 
                 $insert[] = [
                     'tgl' => $request->tgl,
@@ -164,11 +202,16 @@ class SessionController extends Controller
             }
         }
 
-        if (count($insert) == 0) {
+        if (empty($insert)) {
 
             return response()->json([
                 'success' => false,
-                'message' => 'Semua sesi sudah tersedia'
+                'message' => 'Semua sesi sudah tersedia',
+                'debug' => [
+                    'periode_id' => $periodeId,
+                    'jumlah_kelas' => $kelas->count(),
+                    'jumlah_sesi' => count($existing),
+                ]
             ]);
         }
 
@@ -176,7 +219,12 @@ class SessionController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => count($insert) . ' sesi berhasil dibuat'
+            'message' => count($insert) . ' sesi berhasil dibuat',
+            'debug' => [
+                'periode_id' => $periodeId,
+                'jumlah_kelas' => $kelas->count(),
+                'dibuat' => count($insert),
+            ]
         ]);
     }
 }
