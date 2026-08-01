@@ -152,6 +152,11 @@ class SessionController extends Controller
             'students' => $students,
         ]);
     }
+    use Illuminate\Http\Request;
+    use App\Models\Periode;
+    use App\Models\Kelasmi;
+    use App\Models\Sesikelas;
+
     public function store(Request $request)
     {
         $request->validate([
@@ -159,28 +164,31 @@ class SessionController extends Controller
         ]);
 
         // Ambil periode aktif
-        $periodeId = Periode::where('status', 'aktif')->value('id');
+        $periode = Periode::where('is_active', 1)->first();
 
-        if (!$periodeId) {
+        if (!$periode) {
             return response()->json([
                 'success' => false,
                 'message' => 'Periode aktif tidak ditemukan'
-            ]);
+            ], 404);
         }
 
         // Ambil semua kelas pada periode aktif
-        $kelas = Kelasmi::where('periode_id', $periodeId)
+        $kelas = Kelasmi::where('periode_id', $periode->id)
             ->orderBy('nama_kelas')
             ->get();
 
         if ($kelas->isEmpty()) {
             return response()->json([
                 'success' => false,
-                'message' => 'Tidak ada kelas pada periode aktif'
+                'message' => 'Tidak ada kelas pada periode aktif',
+                'debug' => [
+                    'periode_id' => $periode->id,
+                ]
             ]);
         }
 
-        // Cari sesi yang sudah dibuat
+        // Cari sesi yang sudah ada
         $existing = Sesikelas::whereDate('tgl', $request->tgl)
             ->whereIn('kelasmi_id', $kelas->pluck('id'))
             ->pluck('kelasmi_id')
@@ -193,11 +201,11 @@ class SessionController extends Controller
             if (!in_array($item->id, $existing)) {
 
                 $insert[] = [
-                    'tgl' => $request->tgl,
-                    'kelasmi_id' => $item->id,
-                    'status' => 'open',
-                    'created_at' => now(),
-                    'updated_at' => now(),
+                    'tgl'         => $request->tgl,
+                    'kelasmi_id'  => $item->id,
+                    'status'      => 'open',
+                    'created_at'  => now(),
+                    'updated_at'  => now(),
                 ];
             }
         }
@@ -208,9 +216,9 @@ class SessionController extends Controller
                 'success' => false,
                 'message' => 'Semua sesi sudah tersedia',
                 'debug' => [
-                    'periode_id' => $periodeId,
+                    'periode_id'   => $periode->id,
                     'jumlah_kelas' => $kelas->count(),
-                    'jumlah_sesi' => count($existing),
+                    'jumlah_sesi'  => count($existing),
                 ]
             ]);
         }
@@ -221,9 +229,9 @@ class SessionController extends Controller
             'success' => true,
             'message' => count($insert) . ' sesi berhasil dibuat',
             'debug' => [
-                'periode_id' => $periodeId,
+                'periode_id'   => $periode->id,
                 'jumlah_kelas' => $kelas->count(),
-                'dibuat' => count($insert),
+                'dibuat'       => count($insert),
             ]
         ]);
     }
