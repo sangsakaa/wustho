@@ -133,7 +133,7 @@ class SessionController extends Controller
 
                 'status' => $absen
                     ? strtolower($absen->keterangan)
-                    : 'hadir',
+                    : null,
 
                 'alasan'     => $absen?->alasan,
                 'is_saved'   => $absen !== null,
@@ -230,5 +230,48 @@ class SessionController extends Controller
                 'dibuat'       => count($insert),
             ]
         ]);
+    }
+
+    public function checkin(Request $request)
+    {
+        $request->validate([
+            'session_id'        => ['required', 'exists:sesikelas,id'],
+            'peserta_kelas_id'  => ['required', 'exists:pesertakelas,id'],
+            'status'            => ['required', 'in:hadir,izin,sakit,alfa'],
+            'alasan'            => ['nullable', 'string'],
+        ]);
+
+        try {
+
+            $absen = Absensikelas::updateOrCreate(
+
+                [
+                    'sesikelas_id'   => $request->session_id,
+                    'pesertakelas_id' => $request->peserta_kelas_id,
+                ],
+
+                [
+                    'keterangan' => ucfirst(strtolower($request->status)),
+                    'alasan'     => $request->alasan,
+                ]
+
+            );
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Presensi berhasil disimpan',
+                'data' => [
+                    'id' => $absen->id,
+                    'status' => strtolower($absen->keterangan),
+                ]
+            ]);
+        } catch (\Throwable $e) {
+
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+                'line'    => $e->getLine(),
+            ], 500);
+        }
     }
 }
