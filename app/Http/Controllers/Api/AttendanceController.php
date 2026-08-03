@@ -13,19 +13,19 @@ class AttendanceController
     public function checkin(Request $request)
     {
         $request->validate([
-            'sesikelas_id'     => 'required|exists:sesikelas,id',
-            'pesertakelas_id'  => 'required|exists:pesertakelas,id',
-            'keterangan'       => 'required|in:Hadir,Izin,Sakit,Alfa',
-            'alasan'           => 'nullable|string',
+            'session_id'        => 'required|exists:sesikelas,id',
+            'peserta_kelas_id'  => 'required|exists:pesertakelas,id',
+            'status'            => 'required|in:hadir,izin,sakit,alfa',
+            'alasan'            => 'nullable|string',
         ]);
 
         $absensi = Absensikelas::updateOrCreate(
             [
-                'sesikelas_id'    => $request->sesikelas_id,
-                'pesertakelas_id' => $request->pesertakelas_id,
+                'sesikelas_id'    => $request->session_id,
+                'pesertakelas_id' => $request->peserta_kelas_id,
             ],
             [
-                'keterangan' => $request->keterangan,
+                'keterangan' => ucfirst(strtolower($request->status)),
                 'alasan'     => $request->alasan,
             ]
         );
@@ -33,7 +33,10 @@ class AttendanceController
         return response()->json([
             'success' => true,
             'message' => 'Presensi berhasil disimpan',
-            'data'    => $absensi,
+            'data' => [
+                'id' => $absensi->id,
+                'status' => strtolower($absensi->keterangan),
+            ]
         ]);
     }
 }
