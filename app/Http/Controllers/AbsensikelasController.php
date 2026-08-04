@@ -592,6 +592,7 @@ class AbsensikelasController
             $rekapAbsensi->put($namaAsrama, $kelasCollection);
         }
 
+
         return view('presensi.kelas.rekapPerHari', [
             'dataKelasMi'   => $dataKelasMi,
             'rekapAbsensi'  => $rekapAbsensi,
