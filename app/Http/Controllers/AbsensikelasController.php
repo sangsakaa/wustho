@@ -478,7 +478,7 @@ class AbsensikelasController
 
         /*
     |--------------------------------------------------------------------------
-    | Asrama Aktif
+    | Asrama Aktif (1 siswa = 1 asrama)
     |--------------------------------------------------------------------------
     */
 
@@ -490,8 +490,9 @@ class AbsensikelasController
             ->join('asrama', 'asrama.id', '=', 'asramasiswa.asrama_id')
             ->select(
                 'pesertaasrama.siswa_id',
-                'asrama.nama_asrama'
-            );
+                DB::raw('MIN(asrama.nama_asrama) as nama_asrama')
+            )
+            ->groupBy('pesertaasrama.siswa_id');
 
         /*
     |--------------------------------------------------------------------------
@@ -515,18 +516,18 @@ class AbsensikelasController
 
             ->join('siswa', 'siswa.id', '=', 'pesertakelas.siswa_id')
 
-            ->joinSub($asramaAktif, 'asramaaktif', function ($join) {
+            ->leftJoinSub($asramaAktif, 'asramaaktif', function ($join) {
                 $join->on('asramaaktif.siswa_id', '=', 'siswa.id');
             })
 
             ->select(
-            'asramaaktif.nama_asrama',
+            DB::raw("COALESCE(asramaaktif.nama_asrama,'Belum Ada Asrama') as nama_asrama"),
                 'kelasmi.nama_kelas',
                 'siswa.nama_siswa',
                 'absensikelas.keterangan'
             )
 
-            ->orderBy('asramaaktif.nama_asrama')
+            ->orderBy('nama_asrama')
             ->orderBy('kelasmi.nama_kelas')
             ->orderBy('siswa.nama_siswa')
 
@@ -544,21 +545,22 @@ class AbsensikelasController
         foreach ($rows->groupBy('nama_asrama') as $namaAsrama => $groupAsrama) {
 
             $kelasCollection = collect();
-
             $rowspanAsrama[$namaAsrama] = 0;
 
             foreach ($groupAsrama->groupBy('nama_kelas') as $namaKelas => $groupKelas) {
 
                 $total = $groupKelas->count();
 
-                $hadir = $groupKelas
-                    ->where('keterangan', 'hadir')
-                    ->count();
+                $hadir = $groupKelas->filter(function ($item) {
+                    return strtolower(trim($item->keterangan)) === 'hadir';
+                })->count();
 
                 $tidakHadir = $total - $hadir;
 
                 $absensi = $groupKelas
-                    ->filter(fn($item) => strtolower($item->keterangan) != 'hadir')
+                    ->filter(function ($item) {
+                        return strtolower(trim($item->keterangan)) !== 'hadir';
+                    })
                     ->values();
 
                 if ($absensi->isEmpty()) {
@@ -575,19 +577,19 @@ class AbsensikelasController
 
                 $rowspanAsrama[$namaAsrama] += $row;
 
-                $kelasCollection[$namaKelas] = [
-                    'hadir'       => $hadir,
-                    'tidakHadir'  => $tidakHadir,
-                    'total'       => $total,
-                    'persentase'  => $total
+                $kelasCollection->put($namaKelas, [
+                    'hadir'      => $hadir,
+                    'tidakHadir' => $tidakHadir,
+                    'total'      => $total,
+                    'persentase' => $total > 0
                         ? round(($hadir / $total) * 100, 2)
                         : 0,
-                    'absensi'     => $absensi,
-                    'row'         => $row,
-                ];
+                    'absensi'    => $absensi,
+                    'row'        => $row,
+                ]);
             }
 
-            $rekapAbsensi[$namaAsrama] = $kelasCollection;
+            $rekapAbsensi->put($namaAsrama, $kelasCollection);
         }
 
         return view('presensi.kelas.rekapPerHari', [
