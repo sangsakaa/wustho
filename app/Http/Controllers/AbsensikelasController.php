@@ -11,6 +11,7 @@ use App\Models\Sesikelas;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Mpdf\Mpdf;
 use Mpdf\Output\Destination;
 
@@ -453,106 +454,149 @@ class AbsensikelasController
     public function rekapPerHari(Request $request)
     {
         $tgl = $request->filled('tgl')
-            ? Carbon::parse($request->tgl)
-            : now();
+            ? Carbon::parse($request->tgl)->toDateString()
+            : now()->toDateString();
+
+        $periodeId = session('periode_id');
+
+        /*
+    |--------------------------------------------------------------------------
+    | Header
+    |--------------------------------------------------------------------------
+    */
 
         $dataKelasMi = Kelasmi::query()
             ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
             ->join('semester', 'semester.id', '=', 'periode.semester_id')
+            ->where('kelasmi.periode_id', $periodeId)
             ->select(
-                'kelasmi.id',
                 'periode.periode',
                 'semester.ket_semester',
                 'kelasmi.jenjang'
-            )
-            ->where('kelasmi.periode_id', session('periode_id'))
+        )
             ->first();
 
-        $dataAbsensiKelas = Absensikelas::query()
-            ->join('sesikelas', 'sesikelas.id', '=', 'absensikelas.sesikelas_id')
-            ->join('pesertakelas', 'pesertakelas.id', '=', 'absensikelas.pesertakelas_id')
-            ->join('siswa', 'siswa.id', '=', 'pesertakelas.siswa_id')
-            ->join('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
+        /*
+    |--------------------------------------------------------------------------
+    | Asrama Aktif
+    |--------------------------------------------------------------------------
+    */
 
-            ->join('pesertaasrama', 'pesertaasrama.siswa_id', '=', 'siswa.id')
-            ->join('asramasiswa', 'asramasiswa.id', '=', 'pesertaasrama.asramasiswa_id')
+        $asramaAktif = DB::table('pesertaasrama')
+            ->join('asramasiswa', function ($join) use ($periodeId) {
+                $join->on('asramasiswa.id', '=', 'pesertaasrama.asramasiswa_id')
+                    ->where('asramasiswa.periode_id', $periodeId);
+            })
             ->join('asrama', 'asrama.id', '=', 'asramasiswa.asrama_id')
+            ->select(
+                'pesertaasrama.siswa_id',
+                'asrama.nama_asrama'
+            );
 
-            ->where('asramasiswa.periode_id', session('periode_id'))
-            ->where('kelasmi.periode_id', session('periode_id'))
-            ->whereDate('sesikelas.tgl', $tgl)
+        /*
+    |--------------------------------------------------------------------------
+    | Data Absensi
+    |--------------------------------------------------------------------------
+    */
+
+        $rows = DB::table('absensikelas')
+
+            ->join('sesikelas', function ($join) use ($tgl) {
+                $join->on('sesikelas.id', '=', 'absensikelas.sesikelas_id')
+                    ->whereDate('sesikelas.tgl', $tgl);
+            })
+
+            ->join('pesertakelas', 'pesertakelas.id', '=', 'absensikelas.pesertakelas_id')
+
+            ->join('kelasmi', function ($join) use ($periodeId) {
+                $join->on('kelasmi.id', '=', 'pesertakelas.kelasmi_id')
+                    ->where('kelasmi.periode_id', $periodeId);
+            })
+
+            ->join('siswa', 'siswa.id', '=', 'pesertakelas.siswa_id')
+
+            ->joinSub($asramaAktif, 'asramaaktif', function ($join) {
+                $join->on('asramaaktif.siswa_id', '=', 'siswa.id');
+            })
 
             ->select(
-                'asrama.nama_asrama',
+            'asramaaktif.nama_asrama',
                 'kelasmi.nama_kelas',
                 'siswa.nama_siswa',
                 'absensikelas.keterangan'
             )
 
-            ->orderBy('asrama.nama_asrama')
+            ->orderBy('asramaaktif.nama_asrama')
             ->orderBy('kelasmi.nama_kelas')
             ->orderBy('siswa.nama_siswa')
 
             ->get();
 
-        $rekapAbsensi = [];
+        /*
+    |--------------------------------------------------------------------------
+    | Rekap
+    |--------------------------------------------------------------------------
+    */
 
-        foreach ($dataAbsensiKelas->groupBy('nama_asrama') as $namaAsrama => $asramaGroup) {
+        $rekapAbsensi = collect();
+        $rowspanAsrama = [];
 
-            foreach ($asramaGroup->groupBy('nama_kelas') as $namaKelas => $kelasGroup) {
+        foreach ($rows->groupBy('nama_asrama') as $namaAsrama => $groupAsrama) {
 
-                $total = $kelasGroup->count();
+            $kelasCollection = collect();
 
-                $hadir = $kelasGroup
+            $rowspanAsrama[$namaAsrama] = 0;
+
+            foreach ($groupAsrama->groupBy('nama_kelas') as $namaKelas => $groupKelas) {
+
+                $total = $groupKelas->count();
+
+                $hadir = $groupKelas
                     ->where('keterangan', 'hadir')
                     ->count();
 
                 $tidakHadir = $total - $hadir;
 
-                $absensi = $kelasGroup
-                    ->where('keterangan', '!=', 'hadir')
+                $absensi = $groupKelas
+                    ->filter(fn($item) => strtolower($item->keterangan) != 'hadir')
                     ->values();
 
                 if ($absensi->isEmpty()) {
+
                     $absensi = collect([
-                        (object) [
-                            'nama_asrama' => $namaAsrama,
-                            'nama_kelas' => $namaKelas,
+                        (object)[
                             'nama_siswa' => '-',
                             'keterangan' => '-',
                         ]
                     ]);
                 }
 
-                $rekapAbsensi[$namaAsrama][$namaKelas] = [
-                    'hadir' => $hadir,
-                    'tidakHadir' => $tidakHadir,
-                    'total' => $total,
-                    'persentase' => $total > 0
+                $row = $absensi->count();
+
+                $rowspanAsrama[$namaAsrama] += $row;
+
+                $kelasCollection[$namaKelas] = [
+                    'hadir'       => $hadir,
+                    'tidakHadir'  => $tidakHadir,
+                    'total'       => $total,
+                    'persentase'  => $total
                         ? round(($hadir / $total) * 100, 2)
                         : 0,
-                    'absensi' => $absensi,
-                    'row' => $absensi->count(),
+                    'absensi'     => $absensi,
+                    'row'         => $row,
                 ];
             }
-        }
 
-        $rekapAbsensi = collect($rekapAbsensi);
-
-        $rowspanAsrama = [];
-
-        foreach ($rekapAbsensi as $namaAsrama => $dataAsrama) {
-            $rowspanAsrama[$namaAsrama] = collect($dataAsrama)->sum('row');
+            $rekapAbsensi[$namaAsrama] = $kelasCollection;
         }
 
         return view('presensi.kelas.rekapPerHari', [
             'dataKelasMi'   => $dataKelasMi,
             'rekapAbsensi'  => $rekapAbsensi,
             'rowspanAsrama' => $rowspanAsrama,
-            'tgl'           => $tgl,
+            'tgl'           => Carbon::parse($tgl),
         ]);
     }
-
     public function rekapSemester(Request $request)
     {
         $periode = Periode::query()

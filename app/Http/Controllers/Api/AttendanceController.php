@@ -42,4 +42,8 @@ class AttendanceController extends Controller
             ]
         ]);
     }
+    // public function checkin(Request $request)
+    // {
+    //     dd($request->all());
+    // }
 }

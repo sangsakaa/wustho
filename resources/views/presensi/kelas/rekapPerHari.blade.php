@@ -287,6 +287,7 @@
 
                                             {{ $dataKelas['tidakHadir'] }}
 
+
                                         </td>
 
                                         <td
