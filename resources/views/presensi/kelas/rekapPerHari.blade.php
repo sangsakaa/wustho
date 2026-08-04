@@ -284,39 +284,25 @@
                                         <td
                                             rowspan="{{ $dataKelas['row'] }}"
                                             class="border border-green-600 text-center text-red-600 font-bold">
-
                                             {{ $dataKelas['tidakHadir'] }}
-
-
                                         </td>
 
                                         <td
                                             rowspan="{{ $dataKelas['row'] }}"
                                             class="border border-green-600 text-center text-green-600 font-bold">
-
                                             {{ $dataKelas['hadir'] }}
-
                                         </td>
-
                                         @endif
-
                                         {{-- SISWA --}}
                                         <td class="border border-green-600 px-2">
-
                                             @if($dataKelas['tidakHadir'] > 0)
-
                                             {{ $loop->iteration }}. {{ ucwords(strtolower($absensi->nama_siswa)) }}
-
                                             @else
-
                                             <span class="text-gray-400 italic">
                                                 Nihil
                                             </span>
-
                                             @endif
-
                                         </td>
-
                                         {{-- KETERANGAN --}}
                                         <td class="border border-green-600 text-center capitalize">
 
