@@ -327,8 +327,16 @@ class QrcodeController extends Controller
                 ->first();
 
             if (!$peserta) {
+
                 return response()->json([
                     'success' => false,
+                    'debug' => [
+                        'nis' => $request->nis,
+                        'siswa_id' => $nis->siswa_id,
+                        'periode_aktif' => $periode->id,
+                        'jumlah_peserta_siswa' => Pesertakelas::where('siswa_id', $nis->siswa_id)->count(),
+                        'data_peserta' => Pesertakelas::where('siswa_id', $nis->siswa_id)->get(),
+                    ],
                     'message' => 'Siswa tidak terdaftar pada kelas aktif',
                 ], 404);
             }
