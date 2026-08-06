@@ -287,6 +287,115 @@ class QrcodeController extends Controller
     | CREATE SESI HARI INI
     |--------------------------------------------------------------------------
     */
+    public function scanAttendance(Request $request)
+    {
+        $request->validate([
+            'nis' => 'required|string',
+        ]);
+
+        try {
+
+            // Cari NIS
+            $nis = Nis::with('siswa')
+                ->where('nis', $request->nis)
+                ->first();
+
+            if (!$nis || !$nis->siswa) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'QR / NIS tidak ditemukan',
+                ], 404);
+            }
+
+            // Periode aktif
+            $periode = Periode::where('is_active', 1)->first();
+
+            if (!$periode) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Periode aktif tidak ditemukan',
+                ], 404);
+            }
+
+            // Peserta kelas
+            $peserta = Pesertakelas::where('siswa_id', $nis->siswa_id)
+                ->whereHas('kelasmi', function ($q) use ($periode) {
+                    $q->where('periode_id', $periode->id);
+                })
+                ->first();
+
+            if (!$peserta) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Siswa tidak terdaftar pada kelas aktif',
+                ], 404);
+            }
+
+            // Cari sesi hari ini
+            $sesi = Sesikelas::where('kelasmi_id', $peserta->kelasmi_id)
+                ->whereDate('tgl', today())
+                ->latest()
+                ->first();
+
+            if (!$sesi) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Sesi presensi hari ini belum dibuat',
+                ], 404);
+            }
+
+            if ($sesi->status != 'open') {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Sesi presensi sudah ditutup',
+                ], 403);
+            }
+
+            // Sudah absen?
+            $exists = Absensikelas::where('sesikelas_id', $sesi->id)
+                ->where('pesertakelas_id', $peserta->id)
+                ->first();
+
+            if ($exists) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Siswa sudah melakukan presensi',
+                    'data' => [
+                        'nama' => $nis->siswa->nama_siswa,
+                        'nis'  => $nis->nis,
+                        'status' => $exists->keterangan,
+                    ],
+                ], 409);
+            }
+
+            // Simpan hadir
+            $absen = Absensikelas::create([
+                'pesertakelas_id' => $peserta->id,
+                'sesikelas_id'    => $sesi->id,
+                'keterangan'      => 'hadir',
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Presensi berhasil',
+                'data' => [
+                    'id' => $absen->id,
+                    'nama' => $nis->siswa->nama_siswa,
+                    'nis' => $nis->nis,
+                    'kelas' => optional($peserta->kelasmi)->nama_kelas,
+                    'status' => 'Hadir',
+                    'jam' => now()->format('H:i:s'),
+                ],
+            ]);
+        } catch (\Throwable $e) {
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Terjadi kesalahan sistem',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
     public function createSessionToday()
     {
         $periode = Periode::where('is_active', 1)->first();

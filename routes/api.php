@@ -1,14 +1,14 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use Illuminate\Http\Request;
-
+use App\Http\Controllers\Api\ApiGuruController;
+use App\Http\Controllers\Api\ApiSiswaController;
+use App\Http\Controllers\Api\AttendanceController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\SessionController;
-use App\Http\Controllers\Api\AttendanceController;
-use App\Http\Controllers\Api\ApiSiswaController;
-use App\Http\Controllers\Api\ApiGuruController;
+use App\Http\Controllers\QrcodeController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 /*
 |--------------------------------------------------------------------------
 | Public API
@@ -50,6 +50,11 @@ Route::prefix('v1')->group(function () {
         // Attendance
         Route::post('/attendance/checkin', [AttendanceController::class, 'checkin']);
         Route::get('/attendance/history', [AttendanceController::class, 'history']);
+
+
+        Route::post('/attendance/scan', [QrcodeController::class, 'scanAttendance']);
+        Route::get('/attendance/today-log', [QrcodeController::class, 'todayLog']);
+
         // Debug
         Route::get('/test', function (Request $request) {
             return response()->json([
