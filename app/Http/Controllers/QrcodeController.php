@@ -22,6 +22,7 @@ class QrcodeController extends Controller
     | INDEX
     |--------------------------------------------------------------------------
     */
+
     public function index()
     {
         $kelasList = \App\Models\Kelasmi::query()
@@ -287,6 +288,7 @@ class QrcodeController extends Controller
     | CREATE SESI HARI INI
     |--------------------------------------------------------------------------
     */
+
     public function scanAttendance(Request $request)
     {
         $request->validate([
