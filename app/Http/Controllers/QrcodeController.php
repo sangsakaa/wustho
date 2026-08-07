@@ -640,7 +640,7 @@ class QrcodeController extends Controller
             ]);
         }
 
-        // Semua kelas pada periode aktif
+        // Semua kelas periode aktif
         $kelasIds = Kelasmi::where('periode_id', $periode->id)
             ->pluck('id');
 
@@ -649,20 +649,60 @@ class QrcodeController extends Controller
             ->count();
 
         // Semua sesi hari ini
+        $sesi = Sesikelas::whereIn('kelasmi_id', $kelasIds)
+            ->whereDate('tgl', today())
+            ->first();
+
+        if (!$sesi) {
+            return response()->json([
+                'success' => true,
+                'data' => [
+                    'status' => 'close',
+                    'hadir' => 0,
+                    'izin' => 0,
+                    'sakit' => 0,
+                    'alfa' => 0,
+                    'belum' => $total,
+                    'total' => $total,
+                ]
+            ]);
+        }
+
         $sesiIds = Sesikelas::whereIn('kelasmi_id', $kelasIds)
             ->whereDate('tgl', today())
             ->pluck('id');
 
-        // Hitung hadir (Hadir / hadir / HADIR)
+        // Hadir
         $hadir = Absensikelas::whereIn('sesikelas_id', $sesiIds)
-            ->whereRaw('LOWER(keterangan) = ?', ['hadir'])
+            ->whereRaw('LOWER(keterangan)="hadir"')
             ->distinct('pesertakelas_id')
             ->count('pesertakelas_id');
+
+        // Izin
+        $izin = Absensikelas::whereIn('sesikelas_id', $sesiIds)
+            ->whereRaw('LOWER(keterangan)="izin"')
+            ->distinct('pesertakelas_id')
+            ->count('pesertakelas_id');
+
+        // Sakit
+        $sakit = Absensikelas::whereIn('sesikelas_id', $sesiIds)
+            ->whereRaw('LOWER(keterangan)="sakit"')
+            ->distinct('pesertakelas_id')
+            ->count('pesertakelas_id');
+
+        // Alfa
+        $alfa = Absensikelas::whereIn('sesikelas_id', $sesiIds)
+            ->whereRaw('LOWER(keterangan)="alfa"')
+            ->distinct('pesertakelas_id')
+            ->count('pesertakelas_id');
+
+        // Belum presensi
+        $belum = max($total - ($hadir + $izin + $sakit + $alfa), 0);
 
         return response()->json([
             'success' => true,
             'data' => [
-                'status' => 'open', // atau $session->status
+                'status' => $sesi->status,
                 'hadir' => $hadir,
                 'izin' => $izin,
                 'sakit' => $sakit,
