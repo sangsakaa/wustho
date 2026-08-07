@@ -662,9 +662,13 @@ class QrcodeController extends Controller
         return response()->json([
             'success' => true,
             'data' => [
+                'status' => 'open', // atau $session->status
                 'hadir' => $hadir,
-                'belum' => max($total - $hadir, 0),
-                'total'  => $total,
+                'izin' => $izin,
+                'sakit' => $sakit,
+                'alfa' => $alfa,
+                'belum' => $belum,
+                'total' => $total,
             ]
         ]);
     }
