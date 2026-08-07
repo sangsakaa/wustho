@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Absensikelas;
+use App\Models\Kelasmi;
 use App\Models\Nis;
 use App\Models\Periode;
 use App\Models\Pesertakelas;
@@ -11,7 +12,6 @@ use App\Models\Siswa;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-
 use Illuminate\Support\Facades\File;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
@@ -22,15 +22,13 @@ class QrcodeController extends Controller
     | INDEX
     |--------------------------------------------------------------------------
     */
-
     public function index()
     {
-        $kelasList = \App\Models\Kelasmi::query()
-            ->withCount('pesertakelas as total_siswa')
-            ->whereHas('periode', function ($q) {
-            $q->where('periode.is_active', 1);
-            })
-            ->with(['periode']) // optional biar data siap dipakai di view
+        $periode = Periode::where('is_active', 1)->firstOrFail();
+
+        $kelasList = Kelasmi::with('periode')
+            ->where('periode_id', $periode->id)
+            ->withCount('pesertakelas')
             ->orderBy('nama_kelas')
             ->get();
 
@@ -550,24 +548,29 @@ class QrcodeController extends Controller
             ->whereHas('NisTerakhir')
             ->get();
     }
-    public function kartuLoginPdfKelas($kelas)
+    public function kartuLoginPdfKelas($kelasId)
     {
-        $siswas = Siswa::query()
-            ->with([
-                'NisTerakhir',
-            'kelasTerakhir.KelasMi',
+        $kelas = Kelasmi::with('periode')->findOrFail($kelasId);
+
+        $peserta = Pesertakelas::with([
+            'siswa.NisTerakhir'
         ])
-            ->whereHas('kelasTerakhir.KelasMi', function ($query) use ($kelas) {
-                $query->where('nama_kelas', $kelas);
-            })
-            ->whereHas('NisTerakhir')
+            ->where('kelasmi_id', $kelasId)
+            ->orderBy('id')
             ->get();
 
-        if ($siswas->isEmpty()) {
+        if ($peserta->isEmpty()) {
             return back()->with('error', 'Data siswa tidak ditemukan');
         }
 
-        $dataSiswa = $siswas->map(function ($siswa) {
+        $dataSiswa = $peserta->map(function ($item) {
+
+            $siswa = $item->siswa;
+
+            if (!$siswa || !$siswa->NisTerakhir) {
+                return null;
+            }
+
             $nis = $siswa->NisTerakhir->nis;
 
             $qr = base64_encode(
@@ -582,16 +585,18 @@ class QrcodeController extends Controller
                 'nis'   => $nis,
                 'qr'    => $qr,
             ];
-        });
+        })->filter()->values();
 
         $pdf = Pdf::loadView('kartu.login-kolektif', [
             'dataSiswa' => $dataSiswa,
-            'kelas'     => $kelas,
+            'kelas'     => $kelas->nama_kelas,
+            'periode'   => $kelas->periode->periode,
         ])->setPaper('a4', 'portrait');
 
-        return $pdf->stream("kartu-login-{$kelas}.pdf");
+        return $pdf->stream(
+            'kartu-login-' . $kelas->nama_kelas . '.pdf'
+        );
     }
-
 
     public function manualAbsen(Request $request)
     {

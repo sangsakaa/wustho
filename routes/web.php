@@ -485,7 +485,8 @@ Route::get('/qr', [QrcodeController::class, 'index'])->name('qr.index');
 Route::post('/qr/generate/{id}', [QrcodeController::class, 'generate'])->name('qr.siswa');
 Route::post('/qr/generate-all', [QrcodeController::class, 'generateAll'])->name('qr.generate.all');
 Route::get('/kartu-login/pdf/all', [QrcodeController::class, 'kartuLoginPdfAll'])->name('kartu.login.all');
-Route::get('/kartu-login/kelas/{kelas}', [QrcodeController::class, 'kartuLoginPdfKelas'])->name('kartu.login.kelas');
+Route::get('/kartu-login/kelas/{kelasId}', [QrcodeController::class, 'kartuLoginPdfKelas'])
+    ->name('kartu.login.kelas');
 Route::get('/kartu-login/{id}', [QrcodeController::class, 'kartuLoginPdf'])->name('kartu.login.pdf');
 
 Route::get('/scan-qr', [QrcodeController::class, 'scan'])->name('qr.scan');

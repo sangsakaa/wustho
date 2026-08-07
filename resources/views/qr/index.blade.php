@@ -74,7 +74,7 @@
                 <td class="px-4 py-3">
                   <div class="flex justify-center gap-2">
 
-                    <a href="{{ route('kartu.login.kelas', ['kelas' => $kelas->nama_kelas]) }}"
+                    <a href="{{ route('kartu.login.kelas', ['kelasId' => $kelas->id]) }}"
                       target="_blank"
                       class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-xs">
                       Download PDF
