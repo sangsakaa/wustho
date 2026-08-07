@@ -629,4 +629,36 @@ class QrcodeController extends Controller
 
         return back()->with('success', 'Absensi berhasil diperbarui');
     }
+    public function statistic()
+    {
+        $periode = Periode::where('is_active', 1)->first();
+
+        if (!$periode) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Periode aktif tidak ditemukan'
+            ]);
+        }
+
+        $kelasIds = Kelasmi::where('periode_id', $periode->id)
+            ->pluck('id');
+
+        $total = Pesertakelas::whereIn('kelasmi_id', $kelasIds)->count();
+
+        $sesiIds = Sesikelas::whereIn('kelasmi_id', $kelasIds)
+            ->whereDate('tgl', today())
+            ->pluck('id');
+
+        $hadir = Absensikelas::whereIn('sesikelas_id', $sesiIds)
+            ->where('keterangan', 'hadir')
+            ->distinct('pesertakelas_id')
+            ->count('pesertakelas_id');
+
+        return response()->json([
+            'success' => true,
+            'hadir' => $hadir,
+            'belum' => max($total - $hadir, 0),
+            'total' => $total,
+        ]);
+    }
 }

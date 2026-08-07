@@ -54,6 +54,7 @@ Route::prefix('v1')->group(function () {
 
         Route::post('/attendance/scan', [QrcodeController::class, 'scanAttendance']);
         Route::get('/attendance/today-log', [QrcodeController::class, 'todayLog']);
+        Route::get('/attendance/statistic', [QrcodeController::class, 'statistic']);
 
         // Debug
         Route::get('/test', function (Request $request) {
