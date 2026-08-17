@@ -89,6 +89,8 @@
                     Wustha
                     @elseif ($dataKelas->first()->jenjang == 'Ula')
                     Ula
+                    @elseif ($dataKelas->first()->jenjang == 'Ulya')
+                    Ulya
                     @endif
                     Wahidiyah
                 </p>
