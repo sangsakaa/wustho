@@ -113,9 +113,9 @@ $dbError = $e->getMessage();
                             {{ $header ?? 'Dashboard' }}
                         </h1>
 
-                        <p class="text-xs text-slate-500 dark:text-slate-400">
+                        <!-- <p class="text-xs text-slate-500 dark:text-slate-400">
                             Sistem Manajemen Madrasah Diniyah
-                        </p>
+                        </p> -->
                     </div>
                     {{-- Right --}}
                     <div class="flex flex-wrap items-center gap-2 text-xs">
@@ -150,7 +150,7 @@ dark:bg-slate-900 dark:bg-slate-800">
             </header>
             {{-- CONTENT --}}
             <main class="flex-1 w-full min-w-0 overflow-x-hidden bg-slate-50 dark:bg-slate-900 pb-20 lg:pb-4">
-                <div class="w-full max-w-full px-3 sm:px-4 lg:px-6 py-4">
+                <div class="w-full max-w-full px-0 sm:px-2 lg:px-0 py-2">
                     {{ $slot }}
                 </div>
             </main>

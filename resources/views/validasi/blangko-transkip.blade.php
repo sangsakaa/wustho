@@ -243,10 +243,8 @@
                         <p class=" mb-0">Kepala Madin, </p>
                         <br><br><br><br> <br>
                         <p class="  font-semibold">
-                            @if ($dataKelas->first()->jenjang == 'Wustho')
-                            {{$kepalaSekolah->nama_perangkat}}
-                            @elseif ($dataKelas->first()->jenjang == 'Ula')
-                            {{$kepalaSekolah->nama_perangkat}}
+                            @if (in_array($dataKelas->first()->jenjang, ['Wustho', 'Ula', 'Ulya']))
+                            {{ $kepalaSekolah->nama_perangkat }}
                             @endif
                         </p>
                     </div>

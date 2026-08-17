@@ -14,78 +14,294 @@ use App\Models\Nilai_Transkip;
 
 class TranskipController
 {
-    public function index()
+    public function index(Request $request)
     {
+        $periodeId = session('periode_id');
+
+        // =========================================================
+        // FILTER
+        // =========================================================
+        $search = $request->input('search');
+        $kelasmiId = $request->input('kelasmi_id');
+        $jenisUjianId = $request->input('jenis_ujian_id');
+        $mapelId = $request->input('mapel_id');
+
+
+        // =========================================================
+        // PERIODE AKTIF
+        // =========================================================
         $periodeAktif = Periode::query()
             ->join('semester', 'semester.id', '=', 'periode.semester_id')
-            ->where('periode.id', session('periode_id'))
-            ->select('periode.id', 'periode.periode', 'semester.ket_semester')
+            ->where('periode.id', $periodeId)
+            ->select([
+                'periode.id',
+                'periode.periode',
+                'semester.ket_semester',
+            ])
             ->first();
 
-        $isGenap = strtolower($periodeAktif->ket_semester ?? '') === 'genap';
+        $isGenap = strtolower(
+            $periodeAktif?->ket_semester ?? ''
+        ) === 'genap';
 
+
+        // =========================================================
+        // DATA KELAS
+        // =========================================================
         $kelasMi = Kelasmi::query()
             ->join('kelas', 'kelas.id', '=', 'kelasmi.kelas_id')
             ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
             ->join('semester', 'semester.id', '=', 'periode.semester_id')
-            ->where('kelasmi.periode_id', session('periode_id'))
-            ->select('kelasmi.id', 'kelas', 'nama_kelas', 'ket_semester', 'periode')
+
+            ->where('kelasmi.periode_id', $periodeId)
             ->where('kelas.kelas', 3)
-            ->orderBy('nama_kelas')
+
+            ->select([
+                'kelasmi.id',
+                'kelasmi.nama_kelas',
+                'kelas.kelas as tingkat',
+                'periode.periode',
+                'semester.ket_semester',
+            ])
+
+            ->orderBy('kelasmi.nama_kelas')
             ->get();
 
+
+        // =========================================================
+        // DATA PERIODE
+        // =========================================================
         $dataPeriode = Periode::query()
             ->join('semester', 'semester.id', '=', 'periode.semester_id')
-            ->select('periode.periode', 'ket_semester', 'periode.id')
-            ->where('periode.id', session('periode_id'))
+
+            ->where('periode.id', $periodeId)
+
+            ->select([
+                'periode.id',
+                'periode.periode',
+                'semester.ket_semester',
+            ])
+
             ->get();
 
+
+        // =========================================================
+        // DATA MAPEL
+        // =========================================================
         $dataMapel = Mapel::query()
             ->join('kelas', 'kelas.id', '=', 'mapel.kelas_id')
             ->join('periode', 'periode.id', '=', 'mapel.periode_id')
             ->join('semester', 'semester.id', '=', 'periode.semester_id')
-            ->where('periode.id', session('periode_id'))
-            ->select(
-                'kelas.kelas',
-                'mapel.mapel',
-                'mapel.id',
-                'periode.periode',
-            'ket_semester',
-        )
+
+            ->where('mapel.periode_id', $periodeId)
             ->where('kelas.kelas', 3)
+
+            ->select([
+                'mapel.id',
+                'mapel.mapel',
+            'kelas.kelas as tingkat',
+                'periode.periode',
+                'semester.ket_semester',
+            ])
+
             ->orderBy('mapel.mapel')
             ->get();
 
-        $dataJenisUjian = Jenis_Ujian::all();
 
+        // =========================================================
+        // JENIS UJIAN
+        // =========================================================
+        $dataJenisUjian = Jenis_Ujian::query()
+            ->orderBy('nama_ujian')
+            ->get();
+
+
+        // =========================================================
+        // DATA TRANSKIP
+        // =========================================================
         $dataTranskip = Transkip::query()
-            ->join('periode', 'periode.id', '=', 'transkip.periode_id')
-            ->join('semester', 'semester.id', '=', 'periode.semester_id')
-            ->join('jenis_ujian', 'jenis_ujian.id', '=', 'transkip.jenis_ujian_id')
-            ->join('mapel', 'mapel.id', '=', 'transkip.mapel_id')
-            ->leftJoin('kelasmi', 'kelasmi.id', '=', 'transkip.kelasmi_id')
-            ->join('kelas', 'kelas.id', '=', 'mapel.kelas_id')
-            ->select([
-                'periode.periode',
-                'ket_semester',
-                'nama_ujian',
-            'mapel',
-            'kelas',
-            'transkip.id',
-            'kelasmi.nama_kelas',
-        ])
-            ->where('transkip.periode_id', session('periode_id'))
-            ->orderBy('kelasmi.nama_kelas')
-            ->paginate(8);
 
-        return view('lulusan.transkip.index', [
-            'dataPeriode' => $dataPeriode,
-            'dataMapel' => $dataMapel,
-            'dataJenisUjian' => $dataJenisUjian,
-            'dataTranskip' => $dataTranskip,
-            'kelasMi' => $kelasMi,
-            'isGenap' => $isGenap,
-        ]);
+            ->join(
+                'periode',
+                'periode.id',
+                '=',
+                'transkip.periode_id'
+            )
+
+            ->join(
+                'semester',
+                'semester.id',
+                '=',
+                'periode.semester_id'
+            )
+
+            ->join(
+                'jenis_ujian',
+                'jenis_ujian.id',
+                '=',
+                'transkip.jenis_ujian_id'
+            )
+
+            ->join(
+                'mapel',
+                'mapel.id',
+                '=',
+                'transkip.mapel_id'
+            )
+
+            ->join(
+            'kelas',
+                'kelas.id',
+                '=',
+                'mapel.kelas_id'
+            )
+
+            ->leftJoin(
+                'kelasmi',
+                'kelasmi.id',
+                '=',
+                'transkip.kelasmi_id'
+            )
+
+            // =====================================================
+            // PERIODE AKTIF
+            // =====================================================
+            ->where(
+                'transkip.periode_id',
+                $periodeId
+            )
+
+
+            // =====================================================
+            // FILTER KELAS
+            // =====================================================
+            ->when($kelasmiId, function ($query) use ($kelasmiId) {
+
+                $query->where(
+                    'transkip.kelasmi_id',
+                    $kelasmiId
+                );
+            })
+
+
+            // =====================================================
+            // FILTER JENIS UJIAN
+            // =====================================================
+            ->when($jenisUjianId, function ($query) use ($jenisUjianId) {
+
+                $query->where(
+                    'transkip.jenis_ujian_id',
+                    $jenisUjianId
+                );
+            })
+
+
+            // =====================================================
+            // FILTER MAPEL
+            // =====================================================
+            ->when($mapelId, function ($query) use ($mapelId) {
+
+                $query->where(
+                    'transkip.mapel_id',
+                    $mapelId
+                );
+            })
+
+
+            // =====================================================
+            // PENCARIAN
+            // =====================================================
+            ->when($search, function ($query) use ($search) {
+
+                $query->where(function ($q) use ($search) {
+
+                    $q->where(
+                        'mapel.mapel',
+                        'like',
+                        "%{$search}%"
+                    )
+
+                        ->orWhere(
+                            'kelasmi.nama_kelas',
+                            'like',
+                            "%{$search}%"
+                        )
+
+                        ->orWhere(
+                            'jenis_ujian.nama_ujian',
+                            'like',
+                            "%{$search}%"
+                        );
+                });
+            })
+
+
+            // =====================================================
+            // SELECT
+            // =====================================================
+            ->select([
+            'transkip.id',
+            'transkip.kelasmi_id',
+            'transkip.periode_id',
+            'transkip.mapel_id',
+            'transkip.jenis_ujian_id',
+
+            'periode.periode',
+            'semester.ket_semester',
+
+            'kelasmi.nama_kelas',
+
+            'kelas.kelas as tingkat',
+
+            'jenis_ujian.nama_ujian',
+
+            'mapel.mapel',
+        ])
+
+
+            // =====================================================
+            // JUMLAH PESERTA
+            // =====================================================
+            ->withCount('nilaiTranskip')
+
+
+            // =====================================================
+            // SORTING
+            // =====================================================
+            ->orderBy('kelasmi.nama_kelas')
+            ->orderBy('jenis_ujian.nama_ujian')
+            ->orderBy('mapel.mapel')
+
+
+            // =====================================================
+            // PAGINATION
+            // =====================================================
+            ->paginate(8)
+
+            ->withQueryString();
+
+
+        // =========================================================
+        // VIEW
+        // =========================================================
+        return view(
+            'lulusan.transkip.index',
+            compact(
+                'periodeAktif',
+                'dataPeriode',
+                'dataMapel',
+                'dataJenisUjian',
+                'dataTranskip',
+                'kelasMi',
+                'isGenap',
+
+                // FILTER
+                'search',
+                'kelasmiId',
+                'jenisUjianId',
+                'mapelId'
+            )
+        );
     }
     public function store(Request $request)
     {

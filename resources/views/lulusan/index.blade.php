@@ -12,115 +12,110 @@
                 </p>
             </div>
 
-            <div class="flex flex-wrap gap-2">
-
-
-
-            </div>
         </div>
     </x-slot>
 
 
     <div class="p-4 lg:p-6 space-y-6">
+        {{-- STATISTIK --}}
         <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
 
-            <div class="bg-gradient-to-r from-blue-500 to-blue-600 rounded-xl p-6 text-white shadow">
-                <p class="text-sm opacity-80">
+            {{-- Total Lulusan --}}
+            <div class="rounded-2xl bg-gradient-to-br from-blue-500 to-blue-600 p-6 text-white shadow-sm">
+                <p class="text-sm font-medium text-blue-100">
                     Total Lulusan
                 </p>
-
-                <h1 class="text-4xl font-bold mt-2">
+                <h2 class="mt-2 text-4xl font-bold">
                     {{ $totalLulusan }}
-                </h1>
+                </h2>
             </div>
 
-            <div class="bg-gradient-to-r from-green-500 to-green-600 rounded-xl p-6 text-white shadow">
-                <p class="text-sm opacity-80">
+            {{-- Total Kelas --}}
+            <div class="rounded-2xl bg-gradient-to-br from-emerald-500 to-emerald-600 p-6 text-white shadow-sm">
+                <p class="text-sm font-medium text-emerald-100">
                     Total Kelas
                 </p>
-
-                <h1 class="text-4xl font-bold mt-2">
+                <h2 class="mt-2 text-4xl font-bold">
                     {{ $totalKelas }}
-                </h1>
+                </h2>
             </div>
 
-            <div class="bg-gradient-to-r from-orange-500 to-orange-600 rounded-xl p-6 text-white shadow">
-                <p class="text-sm opacity-80">
-                    Data Kelulusan
+            {{-- Status Kelulusan --}}
+            <div class="rounded-2xl bg-white border border-slate-200 p-6 shadow-sm">
+                <p class="text-sm font-medium text-slate-500">
+                    Status Input Kelulusan
                 </p>
 
-                <h1 class="text-4xl font-bold mt-2">
-                    {{ count($dataLulusan) }}
-                </h1>
-            </div>
+                <div class="flex items-center gap-2 mt-3">
+                    <span class="w-3 h-3 rounded-full
+                {{ $bolehLulus ? 'bg-emerald-500' : 'bg-red-500' }}">
+                    </span>
 
+                    <h2 class="text-xl font-bold
+                {{ $bolehLulus ? 'text-emerald-600' : 'text-red-600' }}">
+                        {{ $bolehLulus ? 'Aktif' : 'Nonaktif' }}
+                    </h2>
+                </div>
+
+                <p class="text-xs text-slate-400 mt-2">
+                    {{ count($dataLulusan) }} data telah tercatat
+                </p>
+            </div>
 
         </div>
 
+
+        {{-- ALERT --}}
+        @if(!$bolehLulus)
+        <div class="flex items-start gap-3 rounded-xl border border-amber-200
+                bg-amber-50 p-4 text-amber-700 shadow-sm">
+
+            <span class="text-lg">⚠️</span>
+
+            <div>
+                <p class="font-semibold">
+                    Input Kelulusan Ditutup
+                </p>
+
+                <p class="text-sm mt-1 text-amber-600">
+                    Data kelulusan hanya dapat diinput pada
+                    <span class="font-semibold">
+                        kelas 3 semester genap
+                    </span>.
+                </p>
+            </div>
+
+        </div>
+        @endif
 
 
         {{-- SUCCESS --}}
         @if(session('success'))
-        <div class="rounded-xl border border-green-200 bg-green-50 p-4 text-green-700 shadow-sm">
+        <div class="rounded-xl border border-emerald-200
+                bg-emerald-50 px-4 py-3 text-sm
+                text-emerald-700 shadow-sm">
             {{ session('success') }}
         </div>
         @endif
 
-        {{-- ERROR VALIDATION --}}
-        @if ($errors->any())
-        <div class="rounded-xl border border-red-200 bg-red-50 p-4 shadow-sm">
-            <h3 class="font-semibold text-red-700 mb-2">
+
+        {{-- ERROR --}}
+        @if($errors->any())
+        <div class="rounded-xl border border-red-200
+                bg-red-50 p-4 text-red-700 shadow-sm">
+
+            <p class="font-semibold text-sm mb-2">
                 Terjadi kesalahan:
-            </h3>
-            <ul class="list-disc pl-5 text-sm text-red-600 space-y-1">
-                @foreach ($errors->all() as $error)
+            </p>
+
+            <ul class="list-disc pl-5 text-sm space-y-1">
+                @foreach($errors->all() as $error)
                 <li>{{ $error }}</li>
                 @endforeach
             </ul>
+
         </div>
         @endif
-
-        {{-- ALERT SEMESTER --}}
-        @if(!$bolehLulus)
-        <div class="rounded-xl border border-amber-200 bg-amber-50 p-4 shadow-sm">
-            <div class="flex gap-3">
-                <div class="text-xl">⚠️</div>
-                <div>
-                    <h3 class="font-semibold text-amber-700">
-                        Input Ditutup
-                    </h3>
-                    <p class="text-sm text-amber-600 mt-1">
-                        Data kelulusan hanya dapat diinput pada
-                        <span class="font-semibold">kelas 3 semester genap</span>.
-                    </p>
-                </div>
-            </div>
-        </div>
-        @endif
-
-        {{-- SUMMARY --}}
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div class="bg-white rounded-xl border shadow-sm p-5">
-                <p class="text-sm text-slate-500">Total Data Lulusan</p>
-                <h3 class="text-3xl font-bold text-blue-600 mt-2">
-                    {{ count($dataLulusan) }}
-                </h3>
-            </div>
-
-            <div class="bg-white rounded-xl border shadow-sm p-5">
-                <p class="text-sm text-slate-500">Status Input</p>
-                <h3 class="text-xl font-bold mt-2 {{ $bolehLulus ? 'text-green-600' : 'text-red-600' }}">
-                    {{ $bolehLulus ? 'Aktif' : 'Nonaktif' }}
-                </h3>
-            </div>
-
-            <div class="bg-white rounded-xl border shadow-sm p-5">
-                <p class="text-sm text-slate-500">Periode Aktif</p>
-                <h3 class="text-xl font-bold text-slate-700 mt-2">
-                    {{ session('periode_id') }}
-                </h3>
-            </div>
-        </div>
 
         {{-- FORM --}}
         <div class="bg-white rounded-xl border shadow-sm overflow-hidden">
@@ -291,16 +286,180 @@
                             </td>
 
                             <td class="px-4 py-3 text-center">
-                                <form action="/lulusan/{{ $list->id }}" method="POST"
-                                    onsubmit="return confirm('Hapus data lulusan ini?')">
+                                <form action="/lulusan/{{ $list->id }}"
+                                    method="POST"
+                                    class="inline">
+
                                     @csrf
                                     @method('DELETE')
+
                                     <button
-                                        class="px-3 py-1.5 bg-red-600 hover:bg-red-700 text-white rounded-lg text-xs shadow-sm transition">
-                                        Hapus
+                                        type="button"
+                                        onclick="openDeleteModal('{{ $list->id }}')"
+                                        title="Hapus data"
+                                        class="inline-flex items-center justify-center
+                   w-9 h-9 rounded-xl
+                   bg-red-50 text-red-500
+                   border border-red-100
+                   hover:bg-red-500 hover:text-white
+                   hover:border-red-500
+                   hover:scale-105
+                   transition-all duration-200">
+
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            stroke-width="1.8"
+                                            stroke="currentColor"
+                                            class="w-4 h-4">
+
+                                            <path stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                d="M6 7h12M9 7V4h6v3m-8 0
+                         1 13h8l1-13M10 11v6m4-6v6" />
+                                        </svg>
                                     </button>
                                 </form>
                             </td>
+
+
+                            {{-- MODAL KONFIRMASI HAPUS --}}
+                            <div id="deleteModal"
+                                class="fixed inset-0 z-50 hidden">
+
+                                {{-- Overlay --}}
+                                <div class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"
+                                    onclick="closeDeleteModal()"></div>
+
+                                {{-- Modal --}}
+                                <div class="relative flex min-h-full items-center justify-center p-4">
+
+                                    <div id="deleteModalContent"
+                                        class="w-full max-w-md rounded-2xl bg-white
+                    shadow-2xl border border-slate-200
+                    transform scale-95 opacity-0
+                    transition-all duration-200">
+
+                                        <div class="p-6">
+
+                                            {{-- Icon --}}
+                                            <div class="flex justify-center mb-4">
+                                                <div class="flex items-center justify-center
+                                w-14 h-14 rounded-2xl
+                                bg-red-50 text-red-500">
+
+                                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                                        fill="none"
+                                                        viewBox="0 0 24 24"
+                                                        stroke-width="1.8"
+                                                        stroke="currentColor"
+                                                        class="w-7 h-7">
+
+                                                        <path stroke-linecap="round"
+                                                            stroke-linejoin="round"
+                                                            d="M12 9v4m0 4h.01M10.3 4.2
+                                     2.8 14.8A2 2 0 0 0 15 17h6
+                                     a2 2 0 0 0 1.7-2.2L17.7 4.2
+                                     A2 2 0 0 0 15.8 3H12.2
+                                     a2 2 0 0 0-1.9 1.2Z" />
+                                                    </svg>
+                                                </div>
+                                            </div>
+
+                                            {{-- Judul --}}
+                                            <h3 class="text-lg font-bold text-center text-slate-800">
+                                                Hapus Data Lulusan?
+                                            </h3>
+
+                                            {{-- Deskripsi --}}
+                                            <p class="mt-2 text-sm text-center text-slate-500 leading-relaxed">
+                                                Data lulusan yang dihapus tidak dapat dikembalikan.
+                                                Apakah Anda yakin ingin melanjutkan?
+                                            </p>
+
+                                            {{-- Tombol --}}
+                                            <div class="flex gap-3 mt-6">
+
+                                                <button
+                                                    type="button"
+                                                    onclick="closeDeleteModal()"
+                                                    class="flex-1 px-4 py-2.5 rounded-xl
+                               border border-slate-200
+                               bg-white text-slate-600
+                               font-medium text-sm
+                               hover:bg-slate-50
+                               transition">
+                                                    Batal
+                                                </button>
+
+                                                <button
+                                                    type="button"
+                                                    onclick="confirmDelete()"
+                                                    class="flex-1 px-4 py-2.5 rounded-xl
+                               bg-red-500 text-white
+                               font-medium text-sm
+                               hover:bg-red-600
+                               shadow-sm
+                               transition">
+                                                    Ya, Hapus
+                                                </button>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <script>
+                                let deleteForm = null;
+
+                                function openDeleteModal(id) {
+
+                                    deleteForm = document.querySelector(
+                                        `form[action$="/lulusan/${id}"]`
+                                    );
+
+                                    const modal = document.getElementById('deleteModal');
+                                    const content = document.getElementById('deleteModalContent');
+
+                                    modal.classList.remove('hidden');
+
+                                    requestAnimationFrame(() => {
+                                        content.classList.remove('scale-95', 'opacity-0');
+                                        content.classList.add('scale-100', 'opacity-100');
+                                    });
+                                }
+
+                                function closeDeleteModal() {
+
+                                    const modal = document.getElementById('deleteModal');
+                                    const content = document.getElementById('deleteModalContent');
+
+                                    content.classList.remove('scale-100', 'opacity-100');
+                                    content.classList.add('scale-95', 'opacity-0');
+
+                                    setTimeout(() => {
+                                        modal.classList.add('hidden');
+                                        deleteForm = null;
+                                    }, 200);
+                                }
+
+                                function confirmDelete() {
+
+                                    if (deleteForm) {
+                                        deleteForm.submit();
+                                    }
+                                }
+
+                                // Tutup dengan tombol ESC
+                                document.addEventListener('keydown', function(e) {
+                                    if (e.key === 'Escape') {
+                                        closeDeleteModal();
+                                    }
+                                });
+                            </script>
                         </tr>
                         @empty
                         <tr>

@@ -33,7 +33,7 @@
     $belumLulusChart = $grafikMasukLulus->pluck('belum_lulus');
     @endphp
 
-    <div class="min-h-screen bg-slate-100 dark:bg-slate-900 p-4 md:p-6 space-y-6">
+    <div class="min-h-screen dark:bg-slate-900 p-4 md:p-6 space-y-6">
 
         {{-- INFO MADRASAH --}}
         <div class="bg-white dark:bg-slate-800 rounded-3xl border border-slate-200 dark:border-slate-700 shadow-sm p-6">
@@ -106,44 +106,142 @@
         </div>
 
         {{-- TIMELINE --}}
-        <div class="bg-white dark:bg-slate-800 rounded-3xl border shadow-sm p-6">
-            <div class="mb-6">
-                <h3 class="text-lg font-bold text-slate-800 dark:text-white">
-                    Progress Akademik Siswa
-                </h3>
-                <p class="text-sm text-slate-500">
-                    Monitoring lifecycle siswa
-                </p>
-            </div>
+        {{-- TIMELINE AKADEMIK --}}
+        <div class="bg-white dark:bg-slate-800
+            rounded-3xl
+            border border-slate-200 dark:border-slate-700
+            shadow-sm p-6">
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                @foreach ($timeline as $item)
-                <div class="bg-slate-50 dark:bg-slate-700/30 rounded-2xl p-5 hover:shadow-md transition">
-                    <div class="flex justify-between items-center">
-                        <span class="text-3xl">{{ $item['icon'] }}</span>
-                        <span class="text-sm font-bold text-slate-600 dark:text-slate-300">
-                            {{ $item['progress'] }}%
-                        </span>
-                    </div>
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-2 mb-6">
 
-                    <h4 class="mt-4 font-semibold text-slate-800 dark:text-white">
-                        {{ $item['title'] }}
-                    </h4>
+                <div>
+                    <h3 class="text-lg font-bold text-slate-800 dark:text-white">
+                        Progress Akademik Siswa
+                    </h3>
 
-                    <p class="mt-2 text-3xl font-bold text-slate-900 dark:text-white">
-                        {{ number_format($item['count']) }}
+                    <p class="text-sm text-slate-500 dark:text-slate-400 mt-1">
+                        Monitoring perkembangan peserta didik pada periode aktif
                     </p>
-
-                    <div class="mt-4 h-2 bg-slate-200 dark:bg-slate-600 rounded-full overflow-hidden">
-                        <div class="h-full bg-blue-500 rounded-full"
-                            style="width: {{ $item['progress'] }}%">
-                        </div>
-                    </div>
                 </div>
-                @endforeach
-            </div>
-        </div>
 
+                <span
+                    class="inline-flex items-center px-3 py-1.5
+                   rounded-lg
+                   bg-slate-100 dark:bg-slate-700
+                   text-xs font-medium
+                   text-slate-600 dark:text-slate-300">
+
+                    Periode Aktif
+
+                </span>
+
+            </div>
+
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+
+                @foreach($timeline as $item)
+
+                <div
+                    class="group relative overflow-hidden
+                       bg-slate-50 dark:bg-slate-700/30
+                       border border-slate-100 dark:border-slate-700
+                       rounded-2xl p-5
+                       transition-all duration-200
+                       hover:shadow-md
+                       hover:-translate-y-0.5">
+
+                    {{-- TOP --}}
+                    <div class="flex items-center justify-between">
+
+                        <div>
+                            <p class="text-sm font-medium
+                                  text-slate-500 dark:text-slate-400">
+
+                                {{ $item['title'] }}
+
+                            </p>
+                        </div>
+
+                        <span
+                            class="text-sm font-bold
+                               text-slate-700 dark:text-slate-200">
+
+                            {{ $item['progress'] }}%
+
+                        </span>
+
+                    </div>
+
+
+                    {{-- TOTAL --}}
+                    <div class="mt-4">
+
+                        <span
+                            class="text-3xl font-bold
+                               text-slate-800 dark:text-white">
+
+                            {{ number_format($item['count']) }}
+
+                        </span>
+
+                        <span class="ml-1 text-sm text-slate-400">
+                            siswa
+                        </span>
+
+                    </div>
+
+
+                    {{-- PROGRESS BAR --}}
+                    <div class="mt-5">
+
+                        <div
+                            class="h-2 w-full
+                               rounded-full
+                               bg-slate-200 dark:bg-slate-600
+                               overflow-hidden">
+
+                            @if($item['color'] === 'blue')
+
+                            <div
+                                class="h-full bg-blue-500 rounded-full transition-all duration-500"
+                                style="width: {{ min($item['progress'], 100) }}%">
+                            </div>
+
+                            @elseif($item['color'] === 'violet')
+
+                            <div
+                                class="h-full bg-violet-500 rounded-full transition-all duration-500"
+                                style="width: {{ min($item['progress'], 100) }}%">
+                            </div>
+
+                            @elseif($item['color'] === 'emerald')
+
+                            <div
+                                class="h-full bg-emerald-500 rounded-full transition-all duration-500"
+                                style="width: {{ min($item['progress'], 100) }}%">
+                            </div>
+
+                            @else
+
+                            <div
+                                class="h-full bg-slate-500 rounded-full transition-all duration-500"
+                                style="width: {{ min($item['progress'], 100) }}%">
+                            </div>
+
+                            @endif
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                @endforeach
+
+            </div>
+
+        </div>
         {{-- CHART SECTION --}}
         <div class="grid grid-cols-1 xl:grid-cols-2 gap-6">
             @foreach ([
