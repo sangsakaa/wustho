@@ -2,15 +2,15 @@
 
 namespace App\Models;
 
-use App\Models\Nig;
-use App\Models\Daftar_Jadwal;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 class Guru extends Model
 {
     use HasFactory;
-    protected $table = "guru";
+
+    protected $table = 'guru';
+
     protected $fillable = [
         'nama_guru',
         'jenis_kelamin',
@@ -19,35 +19,71 @@ class Guru extends Model
         'tanggal_lahir',
         'tanggal_masuk',
         'status',
-        'jenjang'
+        'jenjang',
     ];
-    public function NigTerakhir()
-    {
 
-        return $this->hasOne(Nig::class)->latestOfMany();
-    }
 
-    public function daftar_jadwal()
-    {
-        return $this->hasMany(Daftar_Jadwal::class, 'guru_id'); // ✅ WAJIB
-    }
+    /**
+     * Semua NIG milik guru
+     */
     public function nig()
     {
-        return $this->hasOne(Nig::class, 'guru_id');
+        return $this->hasMany(Nig::class, 'guru_id');
     }
 
+
+    /**
+     * NIG terakhir milik guru
+     */
+    public function NigTerakhir()
+    {
+        return $this->hasOne(Nig::class, 'guru_id')
+            ->latestOfMany();
+    }
+
+
+    /**
+     * Jadwal guru
+     */
+    public function daftar_jadwal()
+    {
+        return $this->hasMany(
+            Daftar_Jadwal::class,
+            'guru_id'
+        );
+    }
+
+
+    /**
+     * User yang terkait dengan guru
+     */
     public function user()
     {
         return $this->hasOne(User::class, 'guru_id');
     }
+
+
+    /**
+     * Mapel guru
+     */
     public function mapel()
     {
-        return $this->belongsToMany(Mapel::class, 'pengampus');
+        return $this->belongsToMany(
+            Mapel::class,
+            'pengampus'
+        );
     }
 
+
+    /**
+     * Relasi guru dengan guru
+     * melalui tabel pengampus.
+     */
     public function gurus()
     {
-        return $this->belongsToMany(Guru::class, 'pengampus')
-            ->withTimestamps();
+        return $this->belongsToMany(
+            Guru::class,
+            'pengampus'
+        )->withTimestamps();
     }
 }
