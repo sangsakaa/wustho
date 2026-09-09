@@ -171,7 +171,16 @@ class LulusanCotroller
     }
     public function exportDaftarLulusan(Lulusan $lulusan)
     {
-        $namaFile = 'Daftar-Lulusan-' . $lulusan->id . '.xlsx';
+        $namaKelas = \DB::table('kelasmi')
+            ->where('id', $lulusan->kelasmi_id)
+            ->value('nama_kelas');
+
+        $namaKelas = $namaKelas ?: 'Kelas';
+
+        // Bersihkan karakter yang tidak boleh ada di nama file
+        $namaKelas = preg_replace('/[\/\\\\:*?"<>|]/', '-', $namaKelas);
+
+        $namaFile = 'Daftar-Lulusan-' . $namaKelas . '.xlsx';
 
         return Excel::download(
             new DaftarLulusanExport($lulusan->id),
