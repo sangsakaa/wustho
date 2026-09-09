@@ -10,6 +10,8 @@ use Illuminate\Http\Request;
 use App\Models\Daftar_lulusan;
 use App\Models\Kelasmi;
 use Illuminate\Support\Facades\DB;
+use App\Exports\DaftarLulusanExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 class LulusanCotroller
 {
@@ -165,6 +167,15 @@ class LulusanCotroller
                 'daftarLulusan' => $daftarLulusan,
                 'daftar_lulusan' => $daftar_lulusan,
             ]
+        );
+    }
+    public function exportDaftarLulusan(Lulusan $lulusan)
+    {
+        $namaFile = 'Daftar-Lulusan-' . $lulusan->id . '.xlsx';
+
+        return Excel::download(
+            new DaftarLulusanExport($lulusan->id),
+            $namaFile
         );
     }
     public function kolektifLulusan(Lulusan $lulusan,)

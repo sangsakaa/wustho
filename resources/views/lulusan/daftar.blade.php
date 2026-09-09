@@ -52,6 +52,21 @@
 
 
             <div class="flex flex-wrap gap-2">
+                <a href="{{ route('lulusan.daftar.export', $lulusan->id) }}"
+                    class="inline-flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                        class="w-5 h-5"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h7l5 5v11a2 2 0 01-2 2z" />
+                    </svg>
+
+                    Export Excel
+                </a>
 
                 {{-- Tambah --}}
                 <a

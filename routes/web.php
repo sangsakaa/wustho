@@ -573,6 +573,10 @@ Route::middleware(['auth'])->group(function () {
     Route::get('lulusan', [LulusanCotroller::class, 'index'])->name('lulusan');
     Route::post('lulusan', [LulusanCotroller::class, 'store'])->name('lulusan');
     Route::get('daftar-lulusan/{lulusan}', [LulusanCotroller::class, 'daftarLulusan']);
+    Route::get(
+        '/lulusan/{lulusan}/daftar/export',
+        [LulusanCotroller::class, 'exportDaftarLulusan']
+    )->name('lulusan.daftar.export');
     Route::get('kolektif-lulusan/{lulusan}', [LulusanCotroller::class, 'kolektifLulusan']);
     Route::post('kolektif-lulusan/{lulusan}', [LulusanCotroller::class, 'storeLulusan']);
     Route::delete('daftar-lulusan/{daftar_lulusan}', [LulusanCotroller::class, 'DeletePeserta']);
