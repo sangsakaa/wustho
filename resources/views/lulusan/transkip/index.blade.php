@@ -34,9 +34,10 @@
 
 
             {{-- DATA LULUSAN --}}
-            <a
-                href="{{ url('/lulusan') }}"
-                class="inline-flex items-center justify-center gap-2
+            <div class="flex items-center gap-3">
+                <a
+                    href="{{ url('/lulusan') }}"
+                    class="inline-flex items-center justify-center gap-2
                px-4 py-2.5
                bg-emerald-600 hover:bg-emerald-700
                text-white
@@ -45,26 +46,168 @@
                shadow-sm
                transition">
 
-                <svg xmlns="http://www.w3.org/2000/svg"
-                    class="w-4 h-4"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    stroke-width="1.8">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                        class="w-4 h-4"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        stroke-width="1.8">
 
-                    <path stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+                        <path stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
 
-                    <path stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z" />
+                        <path stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z" />
 
-                </svg>
+                    </svg>
 
-                Data Lulusan
+                    Data Lulusan
 
-            </a>
+                </a>
+                <!-- BUTTON EXPORT -->
+                <button
+                    type="button"
+                    onclick="document.getElementById('modalExportTranskip').classList.remove('hidden')"
+                    class="inline-flex items-center gap-2 px-4 py-2
+           bg-green-600 hover:bg-green-700
+           text-white font-medium rounded-lg shadow-sm
+           transition">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="w-5 h-5"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                            d="M12 10v6m0 0l-3-3m3 3l3-3
+               M4 7h16M4 7v10a2 2 0 002 2h12a2 2 0 002-2V7
+               M4 7l2-3h12l2 3" />
+                    </svg>
+
+                    Export Semua Nilai
+                </button>
+
+            </div>
+
+            <!-- MODAL EXPORT -->
+            <div
+                id="modalExportTranskip"
+                class="hidden fixed inset-0 z-50
+           bg-black/50 flex items-center justify-center
+           p-4">
+                <div
+                    class="bg-white w-full max-w-md rounded-2xl shadow-2xl overflow-hidden">
+
+                    <!-- HEADER -->
+                    <div class="px-6 py-4 border-b flex items-center justify-between">
+
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-800">
+                                Export Transkip
+                            </h3>
+
+                            <p class="text-sm text-gray-500 mt-1">
+                                Pilih kelas yang ingin diexport
+                            </p>
+                        </div>
+
+                        <button
+                            type="button"
+                            onclick="document.getElementById('modalExportTranskip').classList.add('hidden')"
+                            class="text-gray-400 hover:text-gray-700 text-2xl">
+                            &times;
+                        </button>
+
+                    </div>
+
+
+                    <!-- BODY -->
+                    <form
+                        action="{{ route('lulusan.transkip.export-semua-mapel') }}"
+                        method="GET">
+
+                        <div class="p-6">
+
+                            <label
+                                for="kelasmi_id"
+                                class="block text-sm font-medium text-gray-700 mb-2">
+                                Kelas
+                            </label>
+
+                            <select
+                                name="kelasmi_id"
+                                id="kelasmi_id"
+                                required
+                                class="w-full rounded-lg border-gray-300
+                           focus:border-green-500
+                           focus:ring-green-500">
+
+                                <option value="">
+                                    -- Pilih Kelas --
+                                </option>
+
+                                @foreach($kelasMi as $kelas)
+                                <option value="{{ $kelas->id }}">
+                                    {{ $kelas->nama_kelas }}
+                                </option>
+                                @endforeach
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- FOOTER -->
+                        <div
+                            class="px-6 py-4 bg-gray-50
+                       border-t flex justify-end gap-3">
+
+                            <button
+                                type="button"
+                                onclick="document.getElementById('modalExportTranskip').classList.add('hidden')"
+                                class="px-4 py-2 rounded-lg
+                           border border-gray-300
+                           text-gray-700
+                           hover:bg-gray-100">
+                                Batal
+                            </button>
+
+                            <button
+                                type="submit"
+                                class="inline-flex items-center gap-2
+                           px-4 py-2 rounded-lg
+                           bg-green-600
+                           hover:bg-green-700
+                           text-white">
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    class="w-5 h-5"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor">
+                                    <path
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round"
+                                        stroke-width="2"
+                                        d="M12 10v6m0 0l-3-3m3 3l3-3
+                               M4 7h16M4 7v10a2 2 0 002 2h12a2 2 0 002-2V7
+                               M4 7l2-3h12l2 3" />
+                                </svg>
+
+                                Export Excel
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
 
         </div>
 

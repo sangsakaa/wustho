@@ -44,6 +44,7 @@
                         Input Nilai
                     </span>
 
+
                 </div>
 
                 <h1 class="text-2xl font-bold tracking-tight
@@ -203,6 +204,52 @@
 
                 Daftar Transkip
 
+            </a>
+            <a
+                href="{{ route('lulusan.transkip.export', $transkip->id) }}"
+                class="inline-flex items-center gap-2 px-4 py-2
+           bg-green-600 hover:bg-green-700
+           text-white rounded-lg shadow-sm transition">
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="w-5 h-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M12 10v6m0 0l-3-3m3 3l3-3
+               M4 7h16M4 7v10a2 2 0 002 2h12a2 2 0 002-2V7
+               M4 7l2-3h12l2 3" />
+                </svg>
+
+                Export Excel
+            </a>
+            <a
+                href="{{ route('lulusan.transkip.export-semua-mapel', [
+        'kelasmi_id' => $transkip->kelasmi_id
+    ]) }}"
+                class="inline-flex items-center gap-2 px-4 py-2
+           bg-green-600 hover:bg-green-700
+           text-white rounded-lg shadow">
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="w-5 h-5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M12 10v6m0 0l-3-3m3 3l3-3
+               M4 7h16M4 7v10a2 2 0 002 2h12a2 2 0 002-2V7
+               M4 7l2-3h12l2 3" />
+                </svg>
+
+                Export Semua Mapel
             </a>
 
         </div>

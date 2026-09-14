@@ -4,13 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\Mapel;
 use App\Models\Kelasmi;
-use App\Models\Lulusan;
 use App\Models\Periode;
 use App\Models\Transkip;
 use App\Models\Jenis_Ujian;
 use Illuminate\Http\Request;
 use App\Models\Daftar_lulusan;
 use App\Models\Nilai_Transkip;
+use App\Exports\TranskipExport;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\TranskipSemuaMapelExport;
 
 class TranskipController
 {
@@ -52,18 +54,15 @@ class TranskipController
             ->join('kelas', 'kelas.id', '=', 'kelasmi.kelas_id')
             ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
             ->join('semester', 'semester.id', '=', 'periode.semester_id')
-
             ->where('kelasmi.periode_id', $periodeId)
             ->where('kelas.kelas', 3)
-
             ->select([
                 'kelasmi.id',
                 'kelasmi.nama_kelas',
                 'kelas.kelas as tingkat',
                 'periode.periode',
                 'semester.ket_semester',
-            ])
-
+        ])
             ->orderBy('kelasmi.nama_kelas')
             ->get();
 
@@ -370,6 +369,42 @@ class TranskipController
             $peserta->save();
         }
         return redirect()->back()->with('message', 'Data telah berhasil disimpan!');
+    }
+    public function exportExcel(Transkip $transkip)
+    {
+        $namaMapel = $transkip->mapel?->mapel ?? 'Mapel';
+        $namaUjian = $transkip->jenisUjian?->nama_ujian ?? 'Ujian';
+
+        $filename = 'Transkip_' .
+            str_replace(' ', '_', $namaMapel) .
+            '_' .
+            str_replace(' ', '_', $namaUjian) .
+            '.xlsx';
+
+        return Excel::download(
+            new TranskipExport($transkip),
+            $filename
+        );
+    }
+    public function exportSemuaMapel(Request $request)
+    {
+        $periodeId = session('periode_id');
+
+        $kelasmiId = $request->input('kelasmi_id');
+
+        if (!$kelasmiId) {
+            return redirect()
+                ->back()
+                ->with('error', 'Silakan pilih kelas terlebih dahulu.');
+        }
+
+        return Excel::download(
+            new TranskipSemuaMapelExport(
+                $periodeId,
+                $kelasmiId
+            ),
+            'Transkip_Semua_Mapel.xlsx'
+        );
     }
     public function DeleteTraskip(Transkip $transkip)
     {

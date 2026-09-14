@@ -590,6 +590,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('nilai_transkip/{transkip}', [TranskipController::class, 'daftarTranskip'])->name('nilai_transkip');
     Route::post('nilai_transkip/{transkip}', [TranskipController::class, 'NilaiTranskip'])->name('nilai_transkip');
     Route::delete('daftar-transkip/{transkip}', [TranskipController::class, 'DeleteTraskip']);
+    Route::get('/lulusan/transkip/{transkip}/export', [TranskipController::class, 'exportExcel'])->name('lulusan.transkip.export');
+    Route::get('/lulusan/transkip/export-semua-mapel', [TranskipController::class, 'exportSemuaMapel'])->name('lulusan.transkip.export-semua-mapel');
 });
 
 /*
