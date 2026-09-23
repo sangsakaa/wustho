@@ -18,7 +18,7 @@
 
 
     {{-- =========================================================
-        STYLE CETAK
+        STYLE
     ========================================================== --}}
 
     <style>
@@ -31,47 +31,109 @@
             page-break-after: auto;
         }
 
+        /* =========================
+           TAMPILAN LAYAR
+        ========================== */
+
+        @media screen {
+            .surat-page {
+                max-width: 210mm;
+                margin-left: auto;
+                margin-right: auto;
+            }
+        }
+
+        /* =========================
+           TAMPILAN CETAK
+        ========================== */
+
         @media print {
+
+            html,
+            body {
+                background: #ffffff !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+
+            /* Sembunyikan semua elemen aplikasi */
+            body * {
+                visibility: hidden !important;
+            }
+
+            /* Hanya area surat yang terlihat */
+            #print-area,
+            #print-area * {
+                visibility: visible !important;
+            }
+
+            #print-area {
+                position: absolute !important;
+                left: 0 !important;
+                top: 0 !important;
+                width: 100% !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
 
             .no-print {
                 display: none !important;
             }
 
-            body {
-                background: white !important;
-            }
-
             .surat-page {
+                width: 100% !important;
                 min-height: auto !important;
                 margin: 0 !important;
                 padding: 0 !important;
+
                 border: none !important;
                 border-radius: 0 !important;
                 box-shadow: none !important;
-                page-break-after: always;
+
+                page-break-after: always !important;
+                break-after: page !important;
             }
 
             .surat-page:last-child {
-                page-break-after: auto;
+                page-break-after: auto !important;
+                break-after: auto !important;
+            }
+
+            table {
+                page-break-inside: avoid !important;
+                break-inside: avoid !important;
+            }
+
+            .signature-area {
+                page-break-inside: avoid !important;
+                break-inside: avoid !important;
             }
 
             @page {
                 size: A4 portrait;
                 margin: 18mm;
             }
-
         }
     </style>
 
 
     {{-- =========================================================
-        JAVASCRIPT
+        JAVASCRIPT CETAK
     ========================================================== --}}
 
     <script>
         function printContent() {
-            window.print();
+
+            // Beri sedikit waktu agar browser menyelesaikan rendering
+            setTimeout(function() {
+                window.print();
+            }, 100);
         }
+
+        // Setelah selesai mencetak, fokus kembali ke halaman
+        window.addEventListener('afterprint', function() {
+            window.focus();
+        });
     </script>
 
 
@@ -93,16 +155,20 @@
                 class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
 
 
-                {{-- FILTER --}}
+                {{-- =================================================
+                    FILTER
+                ================================================== --}}
 
                 <form
                     action="{{ url('/blanko-pernyataan') }}"
                     method="GET"
-                    class="flex w-full flex-col gap-3 sm:flex-row">
+                    class="flex w-full flex-col gap-3 sm:flex-row sm:items-center">
+
+                    {{-- SELECT KELAS --}}
 
                     <select
                         name="kelasmi_id"
-                        class="rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm text-slate-700 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100">
+                        class="w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm text-slate-700 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-100 sm:w-auto">
 
                         <option value="">
                             -- Semua Kelas --
@@ -126,34 +192,91 @@
                     </select>
 
 
-                    {{-- TAMPILKAN --}}
+                    {{-- =================================================
+                        TAMPILKAN
+                    ================================================== --}}
 
                     <button
                         type="submit"
-                        class="inline-flex items-center justify-center rounded-xl bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700">
+                        class="inline-flex items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300">
+
+                        {{-- ICON FILTER --}}
+
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            class="h-4 w-4"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor">
+
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M3 4h18M6 8h12M10 12h4M11 16h2M12 20v-4" />
+
+                        </svg>
 
                         Tampilkan
 
                     </button>
 
 
-                    {{-- CETAK --}}
+                    {{-- =================================================
+                        CETAK
+                    ================================================== --}}
 
                     <button
                         type="button"
                         onclick="printContent()"
-                        class="inline-flex items-center justify-center rounded-xl bg-emerald-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-emerald-700">
+                        class="inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-300">
 
-                        Cetak
+                        {{-- ICON PRINTER --}}
+
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            class="h-4 w-4"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor">
+
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M6 9V3h12v6M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2M6 14h12v7H6v-7z" />
+
+                        </svg>
+
+                        Cetak Surat
 
                     </button>
 
 
-                    {{-- BATAL --}}
+                    {{-- =================================================
+                        BATAL
+                    ================================================== --}}
 
                     <a
                         href="{{ url('/pengaturan') }}"
-                        class="inline-flex items-center justify-center rounded-xl bg-red-500 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-red-600">
+                        class="inline-flex items-center justify-center gap-2 rounded-xl bg-red-500 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-300">
+
+                        {{-- ICON X --}}
+
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            class="h-4 w-4"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor">
+
+                            <path
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                                stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12" />
+
+                        </svg>
 
                         Batal
 
@@ -162,23 +285,32 @@
                 </form>
 
 
-                {{-- TOTAL --}}
+                {{-- =================================================
+                    TOTAL SISWA
+                ================================================== --}}
 
                 <div
-                    class="shrink-0 rounded-xl bg-red-50 px-4 py-3 text-sm text-slate-600">
+                    class="shrink-0 rounded-xl border border-red-100 bg-red-50 px-4 py-3 text-sm text-slate-600">
 
-                    Kehadiran
-                    <span class="font-semibold">
+                    <span>
+                        Kehadiran
+                    </span>
+
+                    <span class="font-semibold text-slate-700">
                         &lt; 75%
                     </span>
 
-                    :
+                    <span>
+                        :
+                    </span>
 
                     <span class="font-bold text-red-600">
                         {{ $totalCountBelow75 }}
                     </span>
 
-                    siswa
+                    <span>
+                        siswa
+                    </span>
 
                 </div>
 
@@ -188,7 +320,7 @@
 
 
         {{-- =====================================================
-            PRINT AREA
+            AREA CETAK
         ====================================================== --}}
 
         <div id="print-area">
@@ -420,11 +552,8 @@
 
                                     <td class="border border-black p-2">
 
-                                        <span
-                                            class="font-semibold text-red-600">
-
+                                        <span class="font-semibold text-red-600">
                                             Belum Tuntas
-
                                         </span>
 
                                     </td>
@@ -466,7 +595,7 @@
                     ================================================== --}}
 
                 <div
-                    class="mt-16 grid grid-cols-3 gap-8 text-center text-sm">
+                    class="signature-area mt-16 grid grid-cols-3 gap-8 text-center text-sm">
 
 
                     {{-- KEPALA MADRASAH --}}
@@ -481,7 +610,7 @@
 
                         <p class="font-semibold underline">
 
-                            {{ $namaKepalaMadrasah }}
+                            {{ $namaKepalaMadrasah ?? '........................................' }}
 
                         </p>
 
@@ -570,6 +699,7 @@
 
                 </h3>
 
+
                 <p class="mt-2 text-sm text-slate-500">
 
                     Semua siswa pada periode atau kelas yang
@@ -578,7 +708,6 @@
                 </p>
 
             </div>
-
 
             @endforelse
 
