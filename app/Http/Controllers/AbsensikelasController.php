@@ -1018,16 +1018,9 @@ class AbsensikelasController
 
         $kepalaMadrasah = Perangkat::query()
             ->whereHas('jabatan', function ($query) {
-
-                $query->where(
-                    'nama_jabatan',
-                    'Kepala Madrasah'
-                );
+            $query->where('nama_jabatan', 'Kepala Sekolah');
             })
-            ->where(
-                'status',
-                'Aktif'
-            )
+            ->where('status', 'Aktif')
             ->first();
 
 
@@ -1047,24 +1040,15 @@ class AbsensikelasController
     |--------------------------------------------------------------------------
     */
 
-        return view(
-            'presensi.kelas.pernyataan',
-            [
+        return view('presensi.kelas.pernyataan', [
             'periode' => $periode,
-
-                'kelasmi' => $kelasmi,
-
-                'dataKelasMi' => $dataKelasMi,
-
-                'dataAbsensi' => $dataAbsensi,
-
-                'totalCountBelow75' => $dataAbsensi->count(),
-
-                'kepalaMadrasah' => $kepalaMadrasah,
-
-                'namaKepalaMadrasah' => $namaKepalaMadrasah,
-            ]
-        );
+            'kelasmi' => $kelasmi,
+            'dataKelasMi' => $dataKelasMi,
+            'dataAbsensi' => $dataAbsensi,
+            'totalCountBelow75' => $dataAbsensi->count(),
+            'kepalaMadrasah' => $kepalaMadrasah,
+            'namaKepalaMadrasah' => $namaKepalaMadrasah,
+        ]);
     }
 
 
