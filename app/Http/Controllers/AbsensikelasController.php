@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Absensikelas;
 use App\Models\Kelasmi;
+use App\Models\Perangkat;
 use App\Models\Periode;
 use App\Models\Pesertaasrama;
 use App\Models\Pesertakelas;
@@ -670,118 +671,403 @@ class AbsensikelasController
             ->where('kelasmi.periode_id', session('periode_id'))->get();
         return view('presensi.kelas.blankoHarian', compact('kelasmi', 'bulan'));
     }
+
     public function pernyataan(Request $request)
     {
+        /*
+    |--------------------------------------------------------------------------
+    | PERIODE AKTIF
+    |--------------------------------------------------------------------------
+    */
+
         $periodeId = session('periode_id');
 
-        abort_unless($periodeId, 403, 'Periode belum dipilih');
+        abort_unless(
+            $periodeId,
+            403,
+            'Periode belum dipilih.'
+        );
+
+
+        /*
+    |--------------------------------------------------------------------------
+    | DATA PERIODE
+    |--------------------------------------------------------------------------
+    */
 
         $periode = Periode::query()
-            ->join('semester', 'semester.id', '=', 'periode.semester_id')
-            ->select(
+            ->join(
+                'semester',
+                'semester.id',
+                '=',
+                'periode.semester_id'
+            )
+            ->select([
                 'periode.id',
                 'periode.periode',
-                'semester.ket_semester'
-            )
-            ->find($periodeId);
+                'semester.ket_semester',
+            ])
+            ->where('periode.id', $periodeId)
+            ->firstOrFail();
+
+
+        /*
+    |--------------------------------------------------------------------------
+    | DATA KELAS
+    |--------------------------------------------------------------------------
+    */
 
         $dataKelasMi = Kelasmi::query()
-            ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
-            ->join('semester', 'semester.id', '=', 'periode.semester_id')
-            ->select(
+            ->join(
+                'periode',
+                'periode.id',
+                '=',
+                'kelasmi.periode_id'
+            )
+            ->join(
+                'semester',
+                'semester.id',
+                '=',
+                'periode.semester_id'
+            )
+            ->select([
                 'kelasmi.id',
                 'kelasmi.nama_kelas',
-                'periode.periode',
-                'semester.ket_semester',
-                'kelasmi.jenjang'
+            'kelasmi.jenjang',
+            'periode.periode',
+            'semester.ket_semester',
+            ])
+            ->where(
+                'kelasmi.periode_id',
+                $periodeId
             )
-            ->where('kelasmi.periode_id', $periodeId)
-            ->orderBy('kelasmi.nama_kelas')
+            ->orderBy(
+                'kelasmi.nama_kelas'
+            )
             ->get();
+
+
+        /*
+    |--------------------------------------------------------------------------
+    | KELAS YANG DIPILIH
+    |--------------------------------------------------------------------------
+    */
 
         $kelasmi = null;
 
         if ($request->filled('kelasmi_id')) {
+
             $kelasmi = Kelasmi::query()
-                ->join('periode', 'periode.id', '=', 'kelasmi.periode_id')
-                ->join('semester', 'semester.id', '=', 'periode.semester_id')
-                ->select(
+                ->join(
+                    'periode',
+                    'periode.id',
+                    '=',
+                    'kelasmi.periode_id'
+                )
+                ->join(
+                    'semester',
+                    'semester.id',
+                    '=',
+                    'periode.semester_id'
+                )
+                ->select([
                     'kelasmi.id',
                     'kelasmi.nama_kelas',
-                    'periode.periode',
-                    'semester.ket_semester',
-                    'kelasmi.jenjang'
+                'kelasmi.jenjang',
+                'periode.periode',
+                'semester.ket_semester',
+                ])
+                ->where(
+                    'kelasmi.periode_id',
+                    $periodeId
                 )
-                ->where('kelasmi.periode_id', $periodeId)
-                ->where('kelasmi.id', $request->kelasmi_id)
+                ->where(
+                    'kelasmi.id',
+                    $request->integer('kelasmi_id')
+                )
                 ->first();
         }
 
+
+        /*
+    |--------------------------------------------------------------------------
+    | DATA ASRAMA
+    |--------------------------------------------------------------------------
+    */
+
         $pesertaAsrama = Pesertaasrama::query()
-            ->join('siswa', 'siswa.id', '=', 'pesertaasrama.siswa_id')
-            ->join('asramasiswa', 'asramasiswa.id', '=', 'pesertaasrama.asramasiswa_id')
-            ->join('asrama', 'asrama.id', '=', 'asramasiswa.asrama_id')
-            ->select(
-                'siswa.id as siswa_id',
-                'asrama.nama_asrama'
+            ->join(
+                'siswa',
+                'siswa.id',
+                '=',
+                'pesertaasrama.siswa_id'
             )
-            ->where('asramasiswa.periode_id', $periodeId);
+            ->join(
+                'asramasiswa',
+                'asramasiswa.id',
+                '=',
+                'pesertaasrama.asramasiswa_id'
+            )
+            ->join(
+                'asrama',
+                'asrama.id',
+                '=',
+                'asramasiswa.asrama_id'
+            )
+            ->select([
+                'siswa.id as siswa_id',
+                'asrama.nama_asrama',
+            ])
+            ->where(
+                'asramasiswa.periode_id',
+                $periodeId
+            );
+
+
+        /*
+    |--------------------------------------------------------------------------
+    | DATA ABSENSI
+    |--------------------------------------------------------------------------
+    */
 
         $dataAbsensi = Absensikelas::query()
-            ->join('sesikelas', 'sesikelas.id', '=', 'absensikelas.sesikelas_id')
-            ->join('pesertakelas', 'pesertakelas.id', '=', 'absensikelas.pesertakelas_id')
-            ->join('siswa', 'siswa.id', '=', 'pesertakelas.siswa_id')
-            ->join('kelasmi', 'kelasmi.id', '=', 'pesertakelas.kelasmi_id')
-            ->leftJoinSub($pesertaAsrama, 'peserta_asrama', function ($join) {
-                $join->on('peserta_asrama.siswa_id', '=', 'siswa.id');
-            })
-            ->selectRaw("
+
+            ->join(
+                'sesikelas',
+                'sesikelas.id',
+                '=',
+                'absensikelas.sesikelas_id'
+            )
+
+            ->join(
+                'pesertakelas',
+                'pesertakelas.id',
+                '=',
+                'absensikelas.pesertakelas_id'
+            )
+
+            ->join(
+                'siswa',
+                'siswa.id',
+                '=',
+                'pesertakelas.siswa_id'
+            )
+
+            ->join(
+                'kelasmi',
+                'kelasmi.id',
+                '=',
+                'pesertakelas.kelasmi_id'
+            )
+
+            ->leftJoinSub(
+                $pesertaAsrama,
+                'peserta_asrama',
+                function ($join) {
+
+                    $join->on(
+                        'peserta_asrama.siswa_id',
+                        '=',
+                        'siswa.id'
+                    );
+                }
+            )
+
+            ->selectRaw('
             pesertakelas.id,
+
+            kelasmi.id as kelasmi_id,
             kelasmi.jenjang,
-            peserta_asrama.nama_asrama,
             kelasmi.nama_kelas,
+
+            peserta_asrama.nama_asrama,
+
+            siswa.id as siswa_id,
             siswa.nama_siswa,
             siswa.jenis_kelamin,
 
-            COUNT(CASE WHEN keterangan='hadir' THEN 1 END) as hadir,
-            COUNT(CASE WHEN keterangan='izin' THEN 1 END) as izin,
-            COUNT(CASE WHEN keterangan='sakit' THEN 1 END) as sakit,
-            COUNT(CASE WHEN keterangan='alfa' THEN 1 END) as alfa
-        ")
-            ->groupBy(
+            COUNT(
+                CASE
+                    WHEN absensikelas.keterangan = "hadir"
+                    THEN 1
+                END
+            ) AS hadir,
+
+            COUNT(
+                CASE
+                    WHEN absensikelas.keterangan = "izin"
+                    THEN 1
+                END
+            ) AS izin,
+
+            COUNT(
+                CASE
+                    WHEN absensikelas.keterangan = "sakit"
+                    THEN 1
+                END
+            ) AS sakit,
+
+            COUNT(
+                CASE
+                    WHEN absensikelas.keterangan = "alfa"
+                    THEN 1
+                END
+            ) AS alfa
+        ')
+
+            ->groupBy([
                 'pesertakelas.id',
-                'kelasmi.jenjang',
-                'peserta_asrama.nama_asrama',
-                'kelasmi.nama_kelas',
-                'siswa.nama_siswa',
-                'siswa.jenis_kelamin'
+            'kelasmi.id',
+            'kelasmi.jenjang',
+            'kelasmi.nama_kelas',
+            'peserta_asrama.nama_asrama',
+            'siswa.id',
+            'siswa.nama_siswa',
+                'siswa.jenis_kelamin',
+            ])
+
+            /*
+        |--------------------------------------------------------------------------
+        | FILTER KELAS
+        |--------------------------------------------------------------------------
+        */
+
+            ->when(
+                $kelasmi,
+                function ($query) use ($kelasmi) {
+
+                    $query->where(
+                        'kelasmi.id',
+                        $kelasmi->id
+                    );
+                },
+                function ($query) use ($periodeId) {
+
+                    $query->where(
+                        'kelasmi.periode_id',
+                        $periodeId
+                    );
+                }
             )
-            ->when($kelasmi, function ($query) use ($kelasmi) {
-                $query->where('kelasmi.id', $kelasmi->id);
-            }, function ($query) use ($periodeId) {
-                $query->where('kelasmi.periode_id', $periodeId);
-            })
+
             ->get()
+
+            /*
+        |--------------------------------------------------------------------------
+        | HITUNG PERSENTASE
+        |--------------------------------------------------------------------------
+        */
+
             ->map(function ($item) {
-                $total = $item->hadir + $item->izin + $item->sakit + $item->alfa;
 
-                $item->persentase = $total > 0
-                    ? round(($item->hadir / $total) * 100, 2)
-                    : 0;
+            $item->hadir = (int) $item->hadir;
+            $item->izin  = (int) $item->izin;
+            $item->sakit = (int) $item->sakit;
+            $item->alfa  = (int) $item->alfa;
 
-                return $item;
+            $total =
+                $item->hadir +
+                $item->izin +
+                $item->sakit +
+                $item->alfa;
+
+            $item->total_absensi = $total;
+
+            $item->persentase = $total > 0
+                ? round(
+                    ($item->hadir / $total) * 100,
+                    2
+                )
+                : 0;
+
+            return $item;
             })
-            ->filter(fn($item) => $item->persentase < 75)
-            ->sortBy('persentase');
 
-        return view('presensi.kelas.pernyataan', [
+            /*
+        |--------------------------------------------------------------------------
+        | HANYA YANG DI BAWAH 75%
+        |--------------------------------------------------------------------------
+        */
+
+            ->filter(function ($item) {
+
+                return $item->persentase < 75;
+            })
+
+            ->sortBy([
+                ['persentase', 'asc'],
+                ['nama_siswa', 'asc'],
+            ])
+
+            ->values();
+
+
+        /*
+    |--------------------------------------------------------------------------
+    | KEPALA MADRASAH
+    |--------------------------------------------------------------------------
+    |
+    | Relasi:
+    | perangkat
+    |    ↕
+    | jabatan_perangkat
+    |    ↕
+    | jabatan
+    |
+    */
+
+        $kepalaMadrasah = Perangkat::query()
+            ->whereHas('jabatan', function ($query) {
+
+                $query->where(
+                    'nama_jabatan',
+                    'Kepala Madrasah'
+                );
+            })
+            ->where(
+                'status',
+                'Aktif'
+            )
+            ->first();
+
+
+        /*
+    |--------------------------------------------------------------------------
+    | NAMA KEPALA MADRASAH
+    |--------------------------------------------------------------------------
+    */
+
+        $namaKepalaMadrasah = $kepalaMadrasah?->nama_perangkat
+            ?? '........................................';
+
+
+        /*
+    |--------------------------------------------------------------------------
+    | RETURN VIEW
+    |--------------------------------------------------------------------------
+    */
+
+        return view(
+            'presensi.kelas.pernyataan',
+            [
             'periode' => $periode,
-            'kelasmi' => $kelasmi,
-            'dataKelasMi' => $dataKelasMi,
-            'dataAbsensi' => $dataAbsensi,
-            'totalCountBelow75' => $dataAbsensi->count(),
-        ]);
+
+                'kelasmi' => $kelasmi,
+
+                'dataKelasMi' => $dataKelasMi,
+
+                'dataAbsensi' => $dataAbsensi,
+
+                'totalCountBelow75' => $dataAbsensi->count(),
+
+                'kepalaMadrasah' => $kepalaMadrasah,
+
+                'namaKepalaMadrasah' => $namaKepalaMadrasah,
+            ]
+        );
     }
+
+
     public function rekapPerBulanAsrama(Request $request)
     {
         $datakelasmi = Kelasmi::query()
